@@ -38,12 +38,10 @@ export function Navbar() {
           right: 0,
           height: "64px",
           backgroundColor: "#ffffff",
-          borderBottom: "0.5px solid #e2e8f0",
-          boxShadow: scrolled
-            ? "0 1px 3px rgba(0,0,0,0.05)"
-            : "none",
+          borderBottom: scrolled ? "0.5px solid #e2e8f0" : "none",
+          boxShadow: scrolled ? "0 1px 3px rgba(0,0,0,0.05)" : "none",
           zIndex: 50,
-          transition: "box-shadow 150ms ease",
+          transition: "border-color 150ms ease, box-shadow 150ms ease",
         }}
       >
         <div
@@ -61,10 +59,7 @@ export function Navbar() {
             <Logo variant="horizontal" theme="mono-light" size="md" />
           </Link>
 
-          <div
-            className="hidden md:flex"
-            style={{ gap: "32px", alignItems: "center" }}
-          >
+          <div className="hidden md:flex" style={{ gap: "32px", alignItems: "center" }}>
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href;
               return (
@@ -75,22 +70,22 @@ export function Navbar() {
                     fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: "#0f172a",
+                    color: active ? "#0f172a" : "#475569",
                     textDecoration: "none",
                     paddingBottom: "4px",
-                    borderBottom: active
-                      ? "2px solid #C68B2F"
-                      : "2px solid transparent",
-                    transition: "border-color 150ms ease",
+                    borderBottom: active ? "2px solid #C68B2F" : "2px solid transparent",
+                    transition: "border-color 150ms ease, color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
                     if (!active) {
                       e.currentTarget.style.borderBottomColor = "#C68B2F";
+                      e.currentTarget.style.color = "#0f172a";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!active) {
                       e.currentTarget.style.borderBottomColor = "transparent";
+                      e.currentTarget.style.color = "#475569";
                     }
                   }}
                 >
@@ -100,10 +95,7 @@ export function Navbar() {
             })}
           </div>
 
-          <div
-            className="hidden md:flex"
-            style={{ gap: "16px", alignItems: "center" }}
-          >
+          <div className="hidden md:flex" style={{ gap: "16px", alignItems: "center" }}>
             <a
               href={`${APP_URL}/login`}
               style={{
@@ -116,7 +108,7 @@ export function Navbar() {
             >
               Sign in
             </a>
-            <Button variant="nav-cta" href="/contact">
+            <Button variant="navy" size="sm" href="/contact">
               Request access
             </Button>
           </div>
@@ -125,14 +117,9 @@ export function Navbar() {
             className="md:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              padding: "8px",
-            }}
+            style={{ background: "none", border: "none", cursor: "pointer", padding: "8px" }}
           >
-            <Menu size={24} color="#0f172a" />
+            <Menu size={18} color="#0f172a" strokeWidth={1.5} />
           </button>
         </div>
       </nav>

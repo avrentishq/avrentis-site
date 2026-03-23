@@ -4,39 +4,42 @@ import Link from "next/link";
 import Logo from "@/components/ui/logo";
 
 const FOOTER_LINKS = [
-  { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Use", href: "/terms" },
 ];
 
 export function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "#020617",
-        padding: "64px 24px 32px",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "48px",
-        }}
-      >
+    <footer style={{ backgroundColor: "#020617", padding: "64px 24px 32px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "48px" }}>
+        {/* Top — 3-column grid */}
         <div
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-            flexWrap: "wrap",
-            gap: "32px",
+            display: "grid",
+            gridTemplateColumns: "1fr",
+            gap: "40px",
           }}
+          className="md:grid-cols-3"
         >
-          <Logo variant="horizontal" theme="primary" size="md" />
+          {/* Column 1 — Logo + tagline */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+            <Logo variant="mark" theme="primary" size="lg" />
+            <span
+              style={{
+                fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+                fontWeight: 400,
+                fontSize: "13px",
+                color: "#475569",
+                lineHeight: 1.6,
+                maxWidth: "280px",
+              }}
+            >
+              Every decision, structured. Every approval, on record.
+            </span>
+          </div>
 
-          <div style={{ display: "flex", gap: "24px" }}>
+          {/* Column 2 — Nav links */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {FOOTER_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -44,74 +47,62 @@ export function Footer() {
                 style={{
                   fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
                   fontWeight: 400,
-                  fontSize: "14px",
-                  color: "#94a3b8",
+                  fontSize: "13px",
+                  color: "#475569",
                   textDecoration: "none",
                   transition: "color 150ms ease",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "#ffffff";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "#94a3b8";
-                }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "#C68B2F"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "#475569"; }}
               >
                 {link.label}
               </Link>
             ))}
           </div>
+
+          {/* Column 3 — NDPR note */}
+          <div>
+            <p
+              style={{
+                fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+                fontWeight: 400,
+                fontSize: "11px",
+                color: "#475569",
+                lineHeight: 1.6,
+                margin: 0,
+              }}
+            >
+              AVRENTIS is built in compliance with the Nigeria Data Protection Regulation (NDPR).
+            </p>
+          </div>
         </div>
 
-        <hr
-          style={{
-            border: "none",
-            borderTop: "0.5px solid rgba(198, 139, 47, 0.2)",
-            margin: 0,
-          }}
-        />
+        {/* Divider */}
+        <hr style={{ border: "none", borderTop: "0.5px solid rgba(198, 139, 47, 0.2)", margin: 0 }} />
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-            gap: "16px",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-            <span
-              style={{
-                fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                fontWeight: 400,
-                fontSize: "13px",
-                color: "#64748b",
-              }}
-            >
-              &copy; 2026 AVRENTIS. All rights reserved.
-            </span>
-            <span
-              style={{
-                fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                fontWeight: 400,
-                fontSize: "13px",
-                color: "#64748b",
-              }}
-            >
-              Built for Nigerian Oil &amp; Gas operations.
-            </span>
-          </div>
-
+        {/* Bottom bar */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
           <span
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
-              fontSize: "12px",
+              fontSize: "11px",
               color: "#475569",
-              maxWidth: "360px",
             }}
           >
-            Data processed in accordance with the Nigeria Data Protection
-            Regulation (NDPR).
+            &copy; 2026 AVRENTIS. All rights reserved.
+          </span>
+
+          <span
+            style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontWeight: 400,
+              fontSize: "10px",
+              color: "#C68B2F",
+              letterSpacing: "0.08em",
+            }}
+          >
+            POWERED BY AVRENTIS
           </span>
         </div>
       </div>

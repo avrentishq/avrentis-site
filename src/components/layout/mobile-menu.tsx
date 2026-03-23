@@ -67,7 +67,7 @@ export function MobileMenu({
                 padding: "4px",
               }}
             >
-              <X size={24} color="#94a3b8" />
+              <X size={24} color="#C68B2F" />
             </button>
 
             <div

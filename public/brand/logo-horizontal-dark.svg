@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="168" height="36" viewBox="0 0 168 36"><g>
+  <rect width="36" height="36" rx="8" fill="#0F172A" stroke="rgba(198,139,47,0.3)" stroke-width="0.5"/>
+  <path d="M18,7.4 5.76,28.6 30.24,28.6 Z" fill="rgba(198,139,47,0.07)" stroke="rgba(198,139,47,0.18)" stroke-width="0.75" stroke-linejoin="round"/>
+  <path d="M0 7.92 L0 8 Q0 0 8 0 L7.92 0" stroke="rgba(198,139,47,0.5)" stroke-width="1.008" stroke-linecap="round" fill="none"/>
+  <path d="M36 28.08 L36 28 Q36 36 28 36 L28.08 36" stroke="rgba(198,139,47,0.5)" stroke-width="1.008" stroke-linecap="round" fill="none"/>
+  <path d="M18,7.4 5.76,28.6 30.24,28.6 Z" stroke="#C68B2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M18,11.216 12.125,21.392 23.875,21.392 Z" stroke="#C68B2F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <line x1="15.051" y1="15.103" x2="20.949" y2="15.103" stroke="#C68B2F" stroke-width="1.4" stroke-linecap="round"/>
+</g><text x="48" y="22" fill="#FFFFFF" font-family="IBM Plex Sans, system-ui, sans-serif" font-weight="300" font-size="14" letter-spacing="0.1em">AVRENTIS</text></svg>

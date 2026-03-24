@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { Button } from "@/components/ui/button";
 
 export default function PrivacyPage() {
   return (
@@ -13,14 +14,14 @@ export default function PrivacyPage() {
           alignItems: "center",
           justifyContent: "center",
           padding: "96px 24px",
-          gap: "12px",
+          gap: "16px",
         }}
       >
         <h1
           style={{
             fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
             fontWeight: 400,
-            fontSize: "36px",
+            fontSize: "32px",
             color: "#0f172a",
             margin: 0,
           }}
@@ -32,12 +33,18 @@ export default function PrivacyPage() {
             fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#64748b",
+            color: "#475569",
             margin: 0,
+            textAlign: "center",
           }}
         >
-          This page is being built.
+          This page is on its way. In the meantime, request access to AVRENTIS.
         </p>
+        <div style={{ marginTop: "8px" }}>
+          <Button variant="navy" href="/contact">
+            Request access
+          </Button>
+        </div>
       </main>
       <Footer />
     </>

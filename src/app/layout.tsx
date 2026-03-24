@@ -17,22 +17,22 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AVRENTIS — Approval Workflow Infrastructure",
+  title: "AVRENTIS — Financial Decision Infrastructure",
   description:
-    "Every document in your organisation follows a structured path — from submission through review to final approval — with a permanent record of every action taken along the way. Built for Nigerian business.",
+    "AVRENTIS gives every financial decision in your organisation a defined structure. From the moment it is raised to the moment it is permanently on record.",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "AVRENTIS — Approval Workflow Infrastructure",
+    title: "AVRENTIS — Financial Decision Infrastructure",
     description: "Every decision, structured. Every approval, on record.",
     type: "website",
     locale: "en_NG",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVRENTIS — Approval Workflow Infrastructure",
+    title: "AVRENTIS — Financial Decision Infrastructure",
     description: "Every decision, structured. Every approval, on record.",
   },
 };
@@ -43,7 +43,7 @@ const orgSchema = {
   name: "AVRENTIS",
   url: "https://avrentis.com",
   description:
-    "Approval workflow infrastructure for Nigerian Oil & Gas SMEs.",
+    "Financial decision infrastructure for Nigerian business.",
   foundingDate: "2026",
   foundingLocation: "Nigeria",
   areaServed: "Nigeria",

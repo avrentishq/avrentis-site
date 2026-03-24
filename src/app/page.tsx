@@ -25,7 +25,7 @@ export default function Home() {
 
         <SolutionRow
           label="PAYMENT VOUCHERS"
-          headline="Structure every payment before it moves."
+          headline="Structure every payment decision before money moves."
           body="Every payment voucher raised in AVRENTIS travels a defined path — from the staff member who raises it, through HOD review, finance validation, and MD sanction. No shortcuts. No WhatsApp. Every step on record."
           features={[
             "Sequential approval chain — Staff → HOD → Finance → MD",
@@ -51,7 +51,7 @@ export default function Home() {
         <SolutionRow
           label="AUDIT TRAIL"
           headline="An immutable record of everything."
-          body="Every action across your organisation — who submitted, who reviewed, who approved, who returned — permanently on record. The audit trail cannot be edited. It cannot be deleted. It exists because it must."
+          body="Every financial decision across your organisation — who raised it, who reviewed it, who sanctioned it — permanently on record. The structure of your organisation, written in every action."
           features={[
             "Every action timestamped and attributed",
             "Exportable for regulatory review",

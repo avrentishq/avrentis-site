@@ -1,71 +1,94 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { StatusBadge, RoleBadge } from "@/components/ui/badge";
 import { fadeUp, stagger } from "@/lib/animations";
 
 const CHAIN_STEPS: {
   role: "staff" | "hod" | "finance" | "md";
   action: string;
-  status: "draft" | "submitted" | "under_review" | "approved";
+  status: "submitted" | "under_review" | "queried" | "approved";
 }[] = [
-  { role: "staff", action: "Raises document", status: "draft" },
-  { role: "hod", action: "Reviews and approves", status: "submitted" },
-  { role: "finance", action: "Verifies and approves", status: "under_review" },
+  { role: "staff", action: "Raises PV", status: "submitted" },
+  { role: "hod", action: "Reviews", status: "under_review" },
+  { role: "finance", action: "Validates", status: "queried" },
   { role: "md", action: "Sanctions", status: "approved" },
+];
+
+const CALLOUTS = [
+  "Immutable audit record",
+  "Role-based authority",
+  "Real-time status tracking",
 ];
 
 export function ApprovalChain() {
   return (
-    <section style={{ backgroundColor: "#ffffff", padding: "96px 24px" }}>
+    <section style={{ backgroundColor: "#0f172a", padding: "100px 24px" }}>
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
           display: "flex",
           flexDirection: "column",
-          gap: "48px",
+          gap: "64px",
           alignItems: "center",
         }}
       >
-        <div style={{ textAlign: "center", maxWidth: "640px" }}>
-          <motion.h2
+        {/* Header */}
+        <div style={{ textAlign: "center", maxWidth: "560px" }}>
+          <motion.span
             {...fadeUp}
             style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "36px",
-              color: "#0f172a",
-              lineHeight: 1.2,
-              margin: "0 0 12px",
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontWeight: 500,
+              fontSize: "10px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase" as const,
+              color: "#C68B2F",
+              display: "block",
+              marginBottom: "16px",
             }}
           >
-            A structured path for every document
-          </motion.h2>
-          <motion.p
+            HOW AVRENTIS WORKS
+          </motion.span>
+          <motion.h2
             {...stagger(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
+              fontSize: "36px",
+              color: "#ffffff",
+              lineHeight: 1.2,
+              margin: "0 0 16px",
+            }}
+          >
+            Every document follows a structured path.
+          </motion.h2>
+          <motion.p
+            {...stagger(2)}
+            style={{
+              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+              fontWeight: 400,
               fontSize: "16px",
-              color: "#64748b",
+              color: "#94a3b8",
               lineHeight: 1.65,
               margin: 0,
             }}
           >
-            From submission to final approval — every step on record.
+            From the moment a payment voucher is raised to the moment it is
+            sanctioned by the MD — every step is recorded, every action
+            attributed.
           </motion.p>
         </div>
 
+        {/* Chain diagram */}
         <motion.div
-          {...stagger(2)}
+          {...stagger(3)}
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: "0",
             width: "100%",
-            maxWidth: "800px",
+            maxWidth: "900px",
           }}
           className="lg:flex-row lg:items-center lg:justify-between"
         >
@@ -75,10 +98,10 @@ export function ApprovalChain() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0",
               }}
               className="flex-col lg:flex-row"
             >
+              {/* Step node */}
               <div
                 style={{
                   display: "flex",
@@ -86,10 +109,7 @@ export function ApprovalChain() {
                   alignItems: "center",
                   gap: "12px",
                   padding: "24px 20px",
-                  backgroundColor: "#ffffff",
-                  border: "0.5px solid #e2e8f0",
-                  borderRadius: "8px",
-                  minWidth: "150px",
+                  minWidth: "140px",
                   textAlign: "center",
                 }}
               >
@@ -99,7 +119,7 @@ export function ApprovalChain() {
                     fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: "#64748b",
+                    color: "#94a3b8",
                     lineHeight: 1.4,
                   }}
                 >
@@ -108,53 +128,70 @@ export function ApprovalChain() {
                 <StatusBadge status={step.status} />
               </div>
 
+              {/* Connecting line */}
               {i < CHAIN_STEPS.length - 1 && (
                 <div
+                  className="hidden lg:block"
                   style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "8px",
+                    width: "40px",
+                    height: "0.5px",
+                    backgroundColor: "rgba(198,139,47,0.2)",
+                    flexShrink: 0,
                   }}
-                  className="rotate-90 lg:rotate-0"
-                >
-                  <ArrowRight
-                    size={16}
-                    color="rgba(198,139,47,0.4)"
-                    strokeWidth={1.5}
-                  />
-                </div>
+                />
+              )}
+              {i < CHAIN_STEPS.length - 1 && (
+                <div
+                  className="lg:hidden"
+                  style={{
+                    width: "0.5px",
+                    height: "24px",
+                    backgroundColor: "rgba(198,139,47,0.2)",
+                    margin: "0 auto",
+                  }}
+                />
               )}
             </div>
           ))}
         </motion.div>
 
+        {/* Feature callouts */}
         <motion.div
-          {...stagger(3)}
+          {...stagger(4)}
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
-            padding: "16px 20px",
-            backgroundColor: "rgba(91,33,182,0.04)",
-            border: "0.5px solid rgba(91,33,182,0.15)",
-            borderRadius: "8px",
-            maxWidth: "480px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: "0",
           }}
         >
-          <StatusBadge status="queried" />
-          <span
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "13px",
-              color: "#64748b",
-              lineHeight: 1.5,
-            }}
-          >
-            At any stage, an approver can raise a query. The document pauses
-            until the creator responds.
-          </span>
+          {CALLOUTS.map((callout, i) => (
+            <span key={callout} style={{ display: "flex", alignItems: "center" }}>
+              <span
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontWeight: 500,
+                  fontSize: "11px",
+                  color: "#C68B2F",
+                  letterSpacing: "0.06em",
+                }}
+              >
+                {callout}
+              </span>
+              {i < CALLOUTS.length - 1 && (
+                <span
+                  style={{
+                    margin: "0 16px",
+                    color: "rgba(198,139,47,0.2)",
+                    fontSize: "11px",
+                  }}
+                >
+                  |
+                </span>
+              )}
+            </span>
+          ))}
         </motion.div>
       </div>
     </section>

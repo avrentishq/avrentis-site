@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import Logo from "@/components/ui/logo";
+import { AvrentisLogo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 
@@ -56,7 +56,7 @@ export function Navbar() {
           }}
         >
           <Link href="/" aria-label="AVRENTIS home">
-            <Logo variant="horizontal" theme="mono-light" size="md" />
+            <AvrentisLogo variant="transparent-navy" size={36} />
           </Link>
 
           <div className="hidden md:flex" style={{ gap: "32px", alignItems: "center" }}>

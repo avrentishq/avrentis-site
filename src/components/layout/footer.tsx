@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Logo from "@/components/ui/logo";
+import { AvrentisMark } from "@/components/ui/logo";
 
 const FOOTER_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
@@ -23,7 +23,7 @@ export function Footer() {
         >
           {/* Column 1 — Logo + tagline */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <Logo variant="mark" theme="primary" size="lg" />
+            <AvrentisMark variant="primary" size={40} />
             <span
               style={{
                 fontFamily: "'IBM Plex Sans', system-ui, sans-serif",

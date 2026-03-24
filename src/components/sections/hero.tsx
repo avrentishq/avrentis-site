@@ -53,9 +53,7 @@ export function Hero() {
               margin: 0,
             }}
           >
-            AVRENTIS gives every payment voucher and purchase order a structured
-            path from submission to approval — with a permanent record of every
-            action.
+            Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.
           </motion.p>
 
           <motion.div

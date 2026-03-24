@@ -58,7 +58,7 @@ export function Problem() {
               margin: 0,
             }}
           >
-            Most Nigerian businesses approve money on trust, not process.
+            Most Nigerian businesses make financial decisions without structure.
           </motion.h2>
 
           <motion.p
@@ -72,9 +72,7 @@ export function Problem() {
               margin: 0,
             }}
           >
-            Payment vouchers approved over WhatsApp. Purchase orders signed on
-            paper. Audit trails that exist only in someone&apos;s memory. When
-            something goes wrong, there is no record.
+            Financial decisions made in chat threads. Approvals given verbally. Authority assumed, not defined. When something goes wrong, there is nothing on record and no structure to point to.
           </motion.p>
         </div>
 

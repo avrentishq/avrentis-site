@@ -40,7 +40,7 @@ export function QuoteBand() {
             letterSpacing: "0.06em",
           }}
         >
-          AVRENTIS — Approval workflow infrastructure for African business.
+          AVRENTIS — The structure every African business runs on.
         </motion.span>
       </div>
     </section>

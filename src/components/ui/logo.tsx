@@ -277,11 +277,7 @@ export function LogoWordmark({
 }: LogoWordmarkProps) {
   const colors = getThemeColors(theme);
 
-  // Paired with mark: 15px / weight 500 / tight tracking / gold on dark bg
-  // Standalone (emails, documents): size-table / weight 300 / wide tracking
   const fontSize = paired ? 15 : WORDMARK_SIZES[size];
-  const fontWeight = paired ? 700 : 300;
-  const letterSpacing = paired ? "0.475em" : "0.525em";
   const color = paired && theme === "primary" ? GOLD_HEX : colors.wordmark;
 
   return (
@@ -291,11 +287,12 @@ export function LogoWordmark({
       className={cn("inline-block", className)}
       style={{
         fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-        fontWeight,
+        fontWeight: 600,
         fontSize,
-        letterSpacing,
+        letterSpacing: "0.10em",
         color,
         lineHeight: 1,
+        textTransform: "uppercase" as const,
       }}
     >
       AVRENTIS

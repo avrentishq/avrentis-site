@@ -1,123 +1,116 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageSquare, Mail, Phone } from "lucide-react";
 import { fadeUp, stagger } from "@/lib/animations";
 
 const PAIN_POINTS = [
   {
-    icon: MessageSquare,
-    title: "WhatsApp approvals",
-    description:
-      'Payment vouchers forwarded through group chats. "Approved" typed as a reply with no timestamp, no attribution, no trail.',
+    heading: "Approvals over WhatsApp and email",
+    body: "Decisions made in chat threads leave no structured record. There is no chain of authority — only assumption.",
   },
   {
-    icon: Mail,
-    title: "Email chains",
-    description:
-      "Documents buried in inboxes. Who approved what, and when? Nobody knows until the auditor asks.",
+    heading: "No audit trail when it matters",
+    body: "When a query arises, there is no document showing who approved what, when, and why. Compliance becomes impossible to demonstrate.",
   },
   {
-    icon: Phone,
-    title: "Verbal sign-offs",
-    description:
-      '"The MD said yes on the call." No record. No proof. No way to verify when the question comes six months later.',
+    heading: "The MD is the only control",
+    body: "Without structured approval chains, every decision defaults upward. The MD becomes a bottleneck for every payment.",
   },
 ];
 
 export function Problem() {
   return (
-    <section style={{ backgroundColor: "#ffffff", padding: "96px 24px" }}>
+    <section style={{ backgroundColor: "#ffffff", padding: "100px 24px" }}>
       <div
         style={{
           maxWidth: "1200px",
           margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "48px",
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "64px",
         }}
+        className="lg:grid-cols-2"
       >
-        <div style={{ maxWidth: "600px" }}>
-          <motion.h2
+        {/* Left — Intro copy */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+          <motion.span
             {...fadeUp}
+            style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontWeight: 500,
+              fontSize: "10px",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase" as const,
+              color: "#C68B2F",
+            }}
+          >
+            THE PROBLEM
+          </motion.span>
+
+          <motion.h2
+            {...stagger(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
               fontSize: "36px",
               color: "#0f172a",
               lineHeight: 1.2,
-              margin: "0 0 12px",
+              margin: 0,
             }}
           >
-            How financial approvals work today
+            Most Nigerian businesses approve money on trust, not process.
           </motion.h2>
+
           <motion.p
-            {...stagger(1)}
+            {...stagger(2)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
               fontSize: "16px",
-              color: "#64748b",
-              lineHeight: 1.65,
+              color: "#475569",
+              lineHeight: 1.7,
               margin: 0,
             }}
           >
-            No structure. No record. No control.
+            Payment vouchers approved over WhatsApp. Purchase orders signed on
+            paper. Audit trails that exist only in someone&apos;s memory. When
+            something goes wrong, there is no record.
           </motion.p>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "32px",
-          }}
-        >
+        {/* Right — Pain points with gold left border */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
           {PAIN_POINTS.map((point, i) => (
             <motion.div
-              key={point.title}
-              {...stagger(i + 2)}
+              key={point.heading}
+              {...stagger(i + 3)}
               style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
+                borderLeft: "3px solid #C68B2F",
+                paddingLeft: "20px",
               }}
             >
-              <div
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "8px",
-                  backgroundColor: "#fef2f2",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <point.icon size={20} color="#ef4444" strokeWidth={1.5} />
-              </div>
               <h3
                 style={{
                   fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
                   fontWeight: 500,
-                  fontSize: "18px",
+                  fontSize: "15px",
                   color: "#0f172a",
-                  margin: 0,
+                  margin: "0 0 8px",
                 }}
               >
-                {point.title}
+                {point.heading}
               </h3>
               <p
                 style={{
                   fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
                   fontWeight: 400,
-                  fontSize: "15px",
-                  color: "#64748b",
-                  lineHeight: 1.65,
+                  fontSize: "14px",
+                  color: "#475569",
+                  lineHeight: 1.6,
                   margin: 0,
                 }}
               >
-                {point.description}
+                {point.body}
               </p>
             </motion.div>
           ))}

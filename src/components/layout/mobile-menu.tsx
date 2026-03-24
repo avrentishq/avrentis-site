@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { AvrentisMark } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 
 interface MobileMenuProps {
@@ -56,26 +57,35 @@ export function MobileMenu({
               padding: "24px",
             }}
           >
-            <button
-              onClick={onClose}
-              aria-label="Close menu"
+            {/* Header — logo + close */}
+            <div
               style={{
-                alignSelf: "flex-end",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: "4px",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              <X size={24} color="#C68B2F" />
-            </button>
+              <AvrentisMark variant="primary" size={32} />
+              <button
+                onClick={onClose}
+                aria-label="Close menu"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "4px",
+                }}
+              >
+                <X size={24} color="#C68B2F" />
+              </button>
+            </div>
 
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
                 gap: "24px",
-                marginTop: "32px",
+                marginTop: "24px",
               }}
             >
               {navLinks.map((link) => (

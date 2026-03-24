@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { fadeUp } from "@/lib/animations";
 
 const CAPABILITIES = [
-  "Sequential approval chains",
-  "Permanent audit records",
-  "Bank-ready documentation",
+  "Structured decision chains",
+  "Permanent institutional records",
+  "Authority by role",
 ];
 
 export function TrustBar() {
@@ -42,7 +42,7 @@ export function TrustBar() {
             color: "#475569",
           }}
         >
-          Built for Nigerian Oil &amp; Gas operators
+          Financial decision infrastructure for Nigerian business
         </span>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0" }}>

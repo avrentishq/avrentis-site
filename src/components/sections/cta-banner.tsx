@@ -35,7 +35,7 @@ export function CtaBanner() {
             margin: 0,
           }}
         >
-          Your money should move on your terms.
+          Give your organisation the structure it runs on.
         </motion.h2>
         <motion.p
           {...stagger(1)}
@@ -49,8 +49,7 @@ export function CtaBanner() {
             maxWidth: "480px",
           }}
         >
-          Give your organisation the approval infrastructure it needs. Structured
-          decisions. Permanent records. Total command.
+          Every financial decision, structured. Every action, permanently on record. Total authority — properly organised.
         </motion.p>
         <motion.div {...stagger(2)}>
           <Button variant="primary" size="lg" href="/contact">

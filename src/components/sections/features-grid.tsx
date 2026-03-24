@@ -1,84 +1,62 @@
 "use client";
 
 import { motion } from "framer-motion";
-import {
-  GitBranch,
-  Eye,
-  Shield,
-  Lock,
-  FileText,
-  Download,
-} from "lucide-react";
+import { GitBranch, Shield, Users, Bell, FileText, Activity } from "lucide-react";
 import { FeatureCard } from "@/components/ui/card";
-import { stagger } from "@/lib/animations";
-import { fadeUp } from "@/lib/animations";
+import { fadeUp, stagger } from "@/lib/animations";
 
 const FEATURES = [
   {
     icon: GitBranch,
-    title: "Sequential approval chains",
-    description:
-      "Define who approves what, in what order. Staff submit. HODs review. Finance verify. MD sanctions. In sequence, every time.",
-  },
-  {
-    icon: Eye,
-    title: "Real-time document status",
-    description:
-      "See exactly where every payment voucher and purchase order is at any moment — Draft, Pending, Under review, Approved, Bank ready.",
+    title: "Sequential Approval Chains",
+    description: "Staff → HOD → Finance → MD. Every document follows a defined path. No step can be skipped.",
   },
   {
     icon: Shield,
-    title: "Permanent audit trail",
-    description:
-      "Every action timestamped and attributed. Who approved it. When. From where. Immutable and audit-ready before they ask.",
+    title: "Permanent Audit Trail",
+    description: "Every action is recorded with timestamp and attribution. The record cannot be altered.",
   },
   {
-    icon: Lock,
-    title: "Role-based access control",
-    description:
-      "Five levels of access — Staff, HOD, Finance, MD, Admin. Each sees only what they should. Each can only do what they must.",
+    icon: Users,
+    title: "Role-Based Authority",
+    description: "Each role in your organisation sees only what they need and acts only within their authority.",
+  },
+  {
+    icon: Bell,
+    title: "WhatsApp & Email Notifications",
+    description: "Approvers are notified the moment a document reaches their queue. No chasing required.",
   },
   {
     icon: FileText,
-    title: "Purchase order workflow",
-    description:
-      "Raise and track purchase orders through the same structured approval chain. Required-by dates, vendor details, department tracking.",
+    title: "Bank-Ready Documentation",
+    description: "Approved documents carry an institutional stamp — ready for your bank without additional preparation.",
   },
   {
-    icon: Download,
-    title: "Bank-ready document exports",
-    description:
-      "Approved documents export in formats your Nigerian bank accepts. The record follows the payment.",
+    icon: Activity,
+    title: "Real-Time Status Tracking",
+    description: "Every document shows its current status across the full approval chain at any moment.",
   },
 ];
 
 export function FeaturesGrid() {
   return (
-    <section style={{ backgroundColor: "#ffffff", padding: "96px 24px" }}>
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "48px",
-        }}
-      >
-        <div>
+    <section style={{ backgroundColor: "#ffffff", padding: "100px 24px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "48px" }}>
+        <div style={{ textAlign: "center" }}>
           <motion.span
             {...fadeUp}
             style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+              fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 500,
-              fontSize: "11px",
+              fontSize: "10px",
               letterSpacing: "0.1em",
               textTransform: "uppercase" as const,
               color: "#C68B2F",
               display: "block",
-              marginBottom: "12px",
+              marginBottom: "16px",
             }}
           >
-            WHAT IS INCLUDED
+            CAPABILITIES
           </motion.span>
           <motion.h2
             {...stagger(1)}
@@ -91,7 +69,7 @@ export function FeaturesGrid() {
               margin: 0,
             }}
           >
-            Built for how Nigerian business actually works
+            Everything your approval chain needs.
           </motion.h2>
         </div>
 
@@ -99,16 +77,12 @@ export function FeaturesGrid() {
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "24px",
+            gap: "8px",
           }}
         >
           {FEATURES.map((feature, i) => (
             <motion.div key={feature.title} {...stagger(i + 2)}>
-              <FeatureCard
-                icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
-              />
+              <FeatureCard icon={feature.icon} title={feature.title} description={feature.description} />
             </motion.div>
           ))}
         </div>

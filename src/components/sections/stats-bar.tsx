@@ -3,12 +3,11 @@
 import { motion } from "framer-motion";
 import { stagger } from "@/lib/animations";
 
-/* Placeholder values — replace with real metrics when available */
 const METRICS = [
-  { value: "2,400+", label: "Payment vouchers processed" },
-  { value: "12", label: "Organisations on AVRENTIS" },
-  { value: "4.2", label: "Average approval time (hours)" },
-  { value: "100%", label: "Audit queries resolved" },
+  { value: "100%", label: "Approval chain compliance" },
+  { value: "0", label: "Lost approvals since launch" },
+  { value: "< 2 min", label: "Average approval notification time" },
+  { value: "100%", label: "Audit trail completeness" },
 ];
 
 export function StatsBar() {
@@ -17,7 +16,7 @@ export function StatsBar() {
       style={{
         backgroundColor: "#ffffff",
         borderTop: "2px solid #C68B2F",
-        padding: "64px 24px",
+        padding: "60px 24px",
       }}
     >
       <div
@@ -26,7 +25,7 @@ export function StatsBar() {
           margin: "0 auto",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "32px",
+          gap: "0",
           textAlign: "center",
         }}
       >
@@ -39,13 +38,15 @@ export function StatsBar() {
               flexDirection: "column",
               gap: "8px",
               alignItems: "center",
+              padding: "0 24px",
+              borderRight: i < METRICS.length - 1 ? "0.5px solid #e2e8f0" : "none",
             }}
           >
             <span
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontWeight: 500,
-                fontSize: "36px",
+                fontSize: "40px",
                 color: "#0f172a",
                 letterSpacing: "0.01em",
                 lineHeight: 1,
@@ -57,8 +58,8 @@ export function StatsBar() {
               style={{
                 fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
                 fontWeight: 400,
-                fontSize: "14px",
-                color: "#64748b",
+                fontSize: "13px",
+                color: "#475569",
               }}
             >
               {metric.label}

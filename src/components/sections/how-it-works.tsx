@@ -6,23 +6,23 @@ import { fadeUp, stagger } from "@/lib/animations";
 const STEPS = [
   {
     number: "01",
-    title: "Set up your organisation",
-    description: "Add your company details, configure your approval chain, and register your team by role.",
+    title: "Define your structure",
+    description: "Configure your approval chain, set role permissions, and establish the authority levels that govern financial decisions in your organisation.",
   },
   {
     number: "02",
-    title: "Invite your team",
-    description: "Staff, HODs, Finance, and your MD each receive access matched to their authority level.",
+    title: "Bring in your team",
+    description: "Every team member receives access matched precisely to their authority. Staff raise. HODs review. Finance validates. The MD sanctions.",
   },
   {
     number: "03",
-    title: "Raise your first document",
-    description: "Create a payment voucher or purchase order. It enters the approval chain immediately.",
+    title: "Raise your first decision",
+    description: "Create a payment voucher or purchase order. It enters the structured chain immediately and every stakeholder is notified.",
   },
   {
     number: "04",
-    title: "Approve and record",
-    description: "Each approver acts in sequence. The MD sanctions. The record is permanent.",
+    title: "The record is permanent",
+    description: "Every action is timestamped and attributed. The decision is sanctioned. The record exists. It cannot be altered.",
   },
 ];
 
@@ -57,7 +57,7 @@ export function HowItWorks() {
               margin: 0,
             }}
           >
-            Up and running in one day.
+            Your organisation, properly structured.
           </motion.h2>
         </div>
 

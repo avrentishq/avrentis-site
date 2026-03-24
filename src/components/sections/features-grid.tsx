@@ -8,33 +8,33 @@ import { fadeUp, stagger } from "@/lib/animations";
 const FEATURES = [
   {
     icon: GitBranch,
-    title: "Sequential Approval Chains",
-    description: "Staff → HOD → Finance → MD. Every document follows a defined path. No step can be skipped.",
+    title: "Structured decision chains",
+    description: "Every financial action moves through defined stages of authority. No shortcuts. No ambiguity. Structure is enforced, not assumed.",
   },
   {
     icon: Shield,
-    title: "Permanent Audit Trail",
-    description: "Every action is recorded with timestamp and attribution. The record cannot be altered.",
+    title: "Permanent institutional record",
+    description: "Every action is timestamped, attributed, and permanently on record. The record cannot be altered.",
   },
   {
     icon: Users,
-    title: "Role-Based Authority",
-    description: "Each role in your organisation sees only what they need and acts only within their authority.",
+    title: "Authority by role",
+    description: "Five levels of permission govern who can raise, review, approve, and sanction. Each role sees only what they need.",
   },
   {
     icon: Bell,
-    title: "WhatsApp & Email Notifications",
-    description: "Approvers are notified the moment a document reaches their queue. No chasing required.",
+    title: "Real-time notifications",
+    description: "Every approver is notified the moment a decision reaches their queue. No chasing. No delays.",
   },
   {
     icon: FileText,
-    title: "Bank-Ready Documentation",
-    description: "Approved documents carry an institutional stamp — ready for your bank without additional preparation.",
+    title: "Bank-ready documentation",
+    description: "Every sanctioned decision carries an institutional record — ready for your bank without additional preparation.",
   },
   {
     icon: Activity,
-    title: "Real-Time Status Tracking",
-    description: "Every document shows its current status across the full approval chain at any moment.",
+    title: "Complete visibility",
+    description: "Track the status of every financial decision across your organisation, in real time, from anywhere.",
   },
 ];
 
@@ -69,7 +69,7 @@ export function FeaturesGrid() {
               margin: 0,
             }}
           >
-            Everything your approval chain needs.
+            Everything your organisation needs.
           </motion.h2>
         </div>
 

@@ -23,7 +23,7 @@ export function Footer() {
         >
           {/* Column 1 — Logo + tagline */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <AvrentisLogo size={36} variant="primary" />
+            <AvrentisLogo size={36} variant="primary" wordmarkColor="#ffffff" />
             <span
               style={{
                 fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
@@ -106,7 +106,7 @@ export function Footer() {
               textTransform: "uppercase",
             }}
           >
-            POWERED BY <AvrentisWordmark color="gold" />
+            POWERED BY <AvrentisWordmark size={10} color="#C68B2F" />
           </div>
         </div>
       </div>

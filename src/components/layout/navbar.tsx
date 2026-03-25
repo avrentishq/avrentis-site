@@ -56,7 +56,7 @@ export function Navbar() {
           }}
         >
           <Link href="/" aria-label="AVRENTIS home">
-            <AvrentisLogo variant="transparent-navy" size={36} />
+            <AvrentisLogo variant="transparent-navy" size={36} wordmarkColor="#0f172a" />
           </Link>
 
           <div className="hidden md:flex" style={{ gap: "32px", alignItems: "center" }}>

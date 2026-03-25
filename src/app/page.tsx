@@ -8,7 +8,6 @@ import { ApprovalChain } from "@/components/sections/approval-chain";
 import { SolutionRow } from "@/components/sections/solution-row";
 import { FeaturesGrid } from "@/components/sections/features-grid";
 import { HowItWorks } from "@/components/sections/how-it-works";
-import { StatsBar } from "@/components/sections/stats-bar";
 import { QuoteBand } from "@/components/sections/quote-band";
 import { CtaBanner } from "@/components/sections/cta-banner";
 
@@ -42,7 +41,7 @@ export default function Home() {
           features={[
             "Registered vendor database with bank details",
             "Full approval chain with role-based authority",
-            "Reference numbers in IBM Plex Mono for every document",
+            "Reference numbers in IBM Plex Mono for every financial decision",
           ]}
           bg="#ffffff"
           reversed
@@ -62,7 +61,6 @@ export default function Home() {
 
         <FeaturesGrid />
         <HowItWorks />
-        <StatsBar />
         <QuoteBand />
         <CtaBanner />
       </main>

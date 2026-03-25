@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { StatusBadge, RoleBadge } from "@/components/ui/badge";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const CHAIN_STEPS: {
   role: "staff" | "hod" | "finance" | "md";
@@ -23,7 +23,7 @@ const CALLOUTS = [
 
 export function ApprovalChain() {
   return (
-    <section style={{ backgroundColor: "#0f172a", padding: "100px 24px" }}>
+    <section style={{ backgroundColor: "#0f172a", padding: "120px 24px" }}>
       <div
         style={{
           maxWidth: "1200px",
@@ -37,7 +37,11 @@ export function ApprovalChain() {
         {/* Header */}
         <div style={{ textAlign: "center", maxWidth: "560px" }}>
           <motion.span
-            {...fadeUp}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 500,
@@ -52,7 +56,11 @@ export function ApprovalChain() {
             HOW AVRENTIS WORKS
           </motion.span>
           <motion.h2
-            {...stagger(1)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -62,10 +70,14 @@ export function ApprovalChain() {
               margin: "0 0 16px",
             }}
           >
-            Every document follows a structured path.
+            Every financial decision follows a structured path.
           </motion.h2>
           <motion.p
-            {...stagger(2)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -83,7 +95,11 @@ export function ApprovalChain() {
 
         {/* Chain diagram */}
         <motion.div
-          {...stagger(3)}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(3)}
           style={{
             display: "flex",
             flexDirection: "column",
@@ -157,7 +173,11 @@ export function ApprovalChain() {
 
         {/* Feature callouts */}
         <motion.div
-          {...stagger(4)}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(4)}
           style={{
             display: "flex",
             alignItems: "center",

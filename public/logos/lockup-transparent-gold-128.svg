@@ -1,0 +1,10 @@
+<svg width="466.17600000000004" height="128" viewBox="0 0 466.17600000000004 128" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <rect x="30.144" y="24.319999999999993" width="67.712" height="6.4" fill="#C68B2F"/>
+    <rect x="32.192" y="30.71999999999999" width="11.52" height="66.56" fill="#C68B2F"/>
+    <rect x="84.80000000000001" y="30.71999999999999" width="11.008" height="66.56" fill="#C68B2F"/>
+    <rect x="43.712" y="71.85408" width="41.088" height="2" fill="#C68B2F" opacity="0.35"/>
+    <rect x="30.144" y="97.28" width="67.712" height="6.4" fill="#C68B2F"/>
+  </g>
+  <text x="160" y="84.608" font-family="'Hanken Grotesk', 'Inter', system-ui, sans-serif" font-weight="700" font-size="58.88" letter-spacing="8.832px" fill="#C68B2F">AVRENTIS</text>
+</svg>

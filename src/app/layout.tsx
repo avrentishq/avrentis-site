@@ -5,42 +5,45 @@ import "./globals.css";
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
-  variable: "--font-sans",
+  variable: "--font-ibm-plex-sans",
   display: "swap",
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-mono",
+  variable: "--font-ibm-plex-mono",
   display: "swap",
 });
 
 const hankenGrotesk = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: ["700"],
-  variable: "--font-wordmark",
+  weight: ["600"],
+  variable: "--font-hanken-grotesk",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AVRENTIS — Financial Decision Infrastructure",
+  title: "AVRENTIS — Financial Decision Infrastructure for Nigerian Business",
   description:
-    "AVRENTIS gives every financial decision in your organisation a defined structure. From the moment it is raised to the moment it is permanently on record.",
+    "Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.",
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "AVRENTIS — Financial Decision Infrastructure",
-    description: "Every decision, structured. Every approval, on record.",
+    title: "AVRENTIS — Financial Decision Infrastructure for Nigerian Business",
+    description:
+      "Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.",
+    url: "https://avrentis.com",
+    siteName: "AVRENTIS",
     type: "website",
-    locale: "en_NG",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVRENTIS — Financial Decision Infrastructure",
-    description: "Every decision, structured. Every approval, on record.",
+    title: "AVRENTIS — Financial Decision Infrastructure for Nigerian Business",
+    description:
+      "Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.",
   },
 };
 
@@ -49,8 +52,7 @@ const orgSchema = {
   "@type": "Organization",
   name: "AVRENTIS",
   url: "https://avrentis.com",
-  description:
-    "Financial decision infrastructure for Nigerian business.",
+  description: "Financial decision infrastructure for Nigerian business.",
   foundingDate: "2026",
   foundingLocation: "Nigeria",
   areaServed: "Nigeria",
@@ -62,17 +64,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${hankenGrotesk.variable}`}
+    >
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
       </head>
-      <body
-        className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${hankenGrotesk.variable} antialiased`}
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
+      <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
         {children}
       </body>
     </html>

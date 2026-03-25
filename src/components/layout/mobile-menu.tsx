@@ -65,7 +65,7 @@ export function MobileMenu({
                 alignItems: "center",
               }}
             >
-              <AvrentisLogo size={36} variant="primary" wordmarkColor="#ffffff" />
+              <AvrentisLogo size={36} variant="primary" />
               <button
                 onClick={onClose}
                 aria-label="Close menu"

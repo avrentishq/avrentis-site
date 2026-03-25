@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const STEPS = [
   {
@@ -32,7 +32,11 @@ export function HowItWorks() {
       <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "48px" }}>
         <div style={{ textAlign: "center" }}>
           <motion.span
-            {...fadeUp}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 500,
@@ -47,7 +51,11 @@ export function HowItWorks() {
             GET STARTED
           </motion.span>
           <motion.h2
-            {...stagger(1)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -72,7 +80,11 @@ export function HowItWorks() {
           {STEPS.map((step, i) => (
             <motion.div
               key={step.number}
-              {...stagger(i + 2)}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={staggerDelay(i + 2)}
               style={{
                 display: "flex",
                 flexDirection: "column",

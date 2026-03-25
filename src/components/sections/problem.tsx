@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const PAIN_POINTS = [
   {
@@ -34,7 +34,11 @@ export function Problem() {
         {/* Left — Intro copy */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <motion.span
-            {...fadeUp}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 500,
@@ -48,7 +52,11 @@ export function Problem() {
           </motion.span>
 
           <motion.h2
-            {...stagger(1)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -62,7 +70,11 @@ export function Problem() {
           </motion.h2>
 
           <motion.p
-            {...stagger(2)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -81,7 +93,11 @@ export function Problem() {
           {PAIN_POINTS.map((point, i) => (
             <motion.div
               key={point.heading}
-              {...stagger(i + 3)}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={staggerDelay(i + 3)}
               style={{
                 borderLeft: "3px solid #C68B2F",
                 paddingLeft: "20px",

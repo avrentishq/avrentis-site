@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { stagger } from "@/lib/animations";
+import { fadeUp, staggerDelay } from "@/lib/animations";
 
 const METRICS = [
   { value: "100%", label: "Approval chain compliance" },
@@ -32,7 +32,11 @@ export function StatsBar() {
         {METRICS.map((metric, i) => (
           <motion.div
             key={metric.label}
-            {...stagger(i)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(i)}
             style={{
               display: "flex",
               flexDirection: "column",

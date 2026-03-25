@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 interface SolutionRowProps {
   label: string;
@@ -45,7 +45,11 @@ export function SolutionRow({
           className={reversed ? "lg:order-2" : "lg:order-1"}
         >
           <motion.span
-            {...fadeUp}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 500,
@@ -59,7 +63,11 @@ export function SolutionRow({
           </motion.span>
 
           <motion.h2
-            {...stagger(1)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -73,7 +81,11 @@ export function SolutionRow({
           </motion.h2>
 
           <motion.p
-            {...stagger(2)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -90,7 +102,11 @@ export function SolutionRow({
             {features.map((feature, i) => (
               <motion.div
                 key={feature}
-                {...stagger(i + 3)}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                transition={staggerDelay(i + 3)}
                 style={{
                   borderLeft: "3px solid #C68B2F",
                   paddingLeft: "12px",
@@ -105,7 +121,13 @@ export function SolutionRow({
             ))}
           </div>
 
-          <motion.div {...stagger(6)}>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(6)}
+          >
             <Button variant="ghost">
               See how it works &rarr;
             </Button>
@@ -114,7 +136,11 @@ export function SolutionRow({
 
         {/* Screenshot placeholder */}
         <motion.div
-          {...fadeUp}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={fadeUpTransition}
           style={{
             backgroundColor: "#ffffff",
             borderRadius: "8px",

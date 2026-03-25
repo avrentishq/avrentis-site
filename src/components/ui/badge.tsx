@@ -36,7 +36,7 @@ const STATUS_CONFIG: Record<DocumentStatus, StatusConfig> = {
     pulseDot: false,
   },
   under_review: {
-    label: "Awaiting MD",
+    label: "Under review",
     bg: "rgba(198,139,47,0.08)",
     text: "#92400e",
     dot: "#C68B2F",
@@ -136,7 +136,7 @@ const ROLE_STYLES: Record<Role, { bg: string; text: string; border?: string }> =
   {
     staff: { bg: "#f1f5f9", text: "#475569" },
     hod: { bg: "#FDF8EF", text: "#78350f", border: "#C68B2F" },
-    finance: { bg: "#ecfdf5", text: "#047857" },
+    finance: { bg: "rgba(4,120,87,0.08)", text: "#047857" },
     md: { bg: "#1e293b", text: "#C68B2F", border: "#C68B2F" },
     admin: { bg: "#1e293b", text: "#cbd5e1", border: "#334155" },
   };

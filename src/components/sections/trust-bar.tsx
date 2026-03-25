@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp } from "@/lib/animations";
+import { fadeUp, fadeUpTransition } from "@/lib/animations";
 
 const CAPABILITIES = [
   "Structured decision chains",
@@ -12,11 +12,15 @@ const CAPABILITIES = [
 export function TrustBar() {
   return (
     <motion.section
-      {...fadeUp}
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+      transition={fadeUpTransition}
       style={{
         backgroundColor: "#ffffff",
         borderTop: "2px solid #C68B2F",
-        height: "80px",
+        height: "72px",
         display: "flex",
         alignItems: "center",
         padding: "0 24px",

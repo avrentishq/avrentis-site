@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 export function CtaBanner() {
   return (
@@ -10,7 +10,7 @@ export function CtaBanner() {
       style={{
         backgroundColor: "#0f172a",
         borderTop: "0.5px solid rgba(198,139,47,0.2)",
-        padding: "100px 24px",
+        padding: "120px 24px",
       }}
     >
       <div
@@ -25,7 +25,11 @@ export function CtaBanner() {
         }}
       >
         <motion.h2
-          {...fadeUp}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={fadeUpTransition}
           style={{
             fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
             fontWeight: 400,
@@ -38,7 +42,11 @@ export function CtaBanner() {
           Give your organisation the structure it runs on.
         </motion.h2>
         <motion.p
-          {...stagger(1)}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(1)}
           style={{
             fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
             fontWeight: 400,
@@ -51,7 +59,13 @@ export function CtaBanner() {
         >
           Every financial decision, structured. Every action, permanently on record. Total authority — properly organised.
         </motion.p>
-        <motion.div {...stagger(2)}>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(2)}
+        >
           <Button variant="primary" size="lg" href="/contact">
             Request access
           </Button>

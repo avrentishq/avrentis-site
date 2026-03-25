@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { GitBranch, Shield, Users, Bell, FileText, Activity } from "lucide-react";
 import { FeatureCard } from "@/components/ui/card";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const FEATURES = [
   {
@@ -40,11 +40,15 @@ const FEATURES = [
 
 export function FeaturesGrid() {
   return (
-    <section style={{ backgroundColor: "#ffffff", padding: "100px 24px" }}>
+    <section style={{ backgroundColor: "#ffffff", padding: "80px 24px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "48px" }}>
         <div style={{ textAlign: "center" }}>
           <motion.span
-            {...fadeUp}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
             style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontWeight: 500,
@@ -59,7 +63,11 @@ export function FeaturesGrid() {
             CAPABILITIES
           </motion.span>
           <motion.h2
-            {...stagger(1)}
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
             style={{
               fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
               fontWeight: 400,
@@ -81,7 +89,14 @@ export function FeaturesGrid() {
           }}
         >
           {FEATURES.map((feature, i) => (
-            <motion.div key={feature.title} {...stagger(i + 2)}>
+            <motion.div
+              key={feature.title}
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={staggerDelay(i + 2)}
+            >
               <FeatureCard icon={feature.icon} title={feature.title} description={feature.description} />
             </motion.div>
           ))}

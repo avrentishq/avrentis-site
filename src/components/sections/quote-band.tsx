@@ -1,11 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 export function QuoteBand() {
   return (
-    <section style={{ backgroundColor: "#0f172a", padding: "80px 24px" }}>
+    <section style={{ backgroundColor: "#0f172a", padding: "64px 24px" }}>
       <div
         style={{
           maxWidth: "640px",
@@ -18,7 +18,11 @@ export function QuoteBand() {
         }}
       >
         <motion.p
-          {...fadeUp}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={fadeUpTransition}
           style={{
             fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
             fontWeight: 400,
@@ -31,7 +35,11 @@ export function QuoteBand() {
           Every decision, structured. Every approval, on record.
         </motion.p>
         <motion.span
-          {...stagger(1)}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(1)}
           style={{
             fontFamily: "'IBM Plex Mono', monospace",
             fontWeight: 400,

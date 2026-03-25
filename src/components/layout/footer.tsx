@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AvrentisMark } from "@/components/ui/logo";
+import { AvrentisLogo, AvrentisWordmark } from "@/components/ui/logo";
 
 const FOOTER_LINKS = [
   { label: "Privacy Policy", href: "/privacy" },
@@ -23,7 +23,7 @@ export function Footer() {
         >
           {/* Column 1 — Logo + tagline */}
           <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-            <AvrentisMark variant="primary" size={40} />
+            <AvrentisLogo size={36} variant="primary" wordmarkColor="#ffffff" />
             <span
               style={{
                 fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
@@ -93,17 +93,21 @@ export function Footer() {
             &copy; 2026 AVRENTIS. All rights reserved.
           </span>
 
-          <span
+          <div
             style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 400,
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              fontFamily: "var(--font-mono)",
               fontSize: "10px",
+              fontWeight: 500,
+              letterSpacing: "0.10em",
               color: "#C68B2F",
-              letterSpacing: "0.08em",
+              textTransform: "uppercase",
             }}
           >
-            POWERED BY AVRENTIS
-          </span>
+            POWERED BY <AvrentisWordmark size={10} color="#C68B2F" />
+          </div>
         </div>
       </div>
     </footer>

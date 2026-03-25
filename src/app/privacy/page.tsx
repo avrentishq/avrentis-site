@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Button } from "@/components/ui/button";
+import { AvrentisMark } from "@/components/ui/logo";
 
 export default function PrivacyPage() {
   return (
@@ -17,6 +18,7 @@ export default function PrivacyPage() {
           gap: "16px",
         }}
       >
+        <AvrentisMark size={48} variant="transparent-navy" />
         <h1
           style={{
             fontFamily: "'IBM Plex Sans', system-ui, sans-serif",

@@ -37,8 +37,9 @@
   --color-info-bg:    #EDF2FF;
 
   /* -- Typography -- */
-  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
-  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  --font-sans:      var(--font-ibm-plex-sans), system-ui, sans-serif;
+  --font-mono:      var(--font-ibm-plex-mono), "Courier New", monospace;
+  --font-wordmark:  var(--font-hanken-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* -- Radii -- */
   --radius-xs:    3px;

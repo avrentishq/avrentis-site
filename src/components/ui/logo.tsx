@@ -1,277 +1,268 @@
-/**
- * AVRENTIS Logo System — Gate Mark
- *
- * An architectural two-post gate with beam, ledger, document slot,
- * and full-bleed ledger line. All geometry derived from a single
- * `size` parameter.
- */
+// AVRENTIS Logo — variant usage guide
+//
+// primary          → navy container + gold mark
+//                    use: sidebar, topbar, dark section backgrounds
+//
+// reversed         → gold container + navy mark
+//                    use: gold CTA surfaces only
+//
+// transparent-gold → no container, gold mark
+//                    use: any dark surface (#0f172a, #020617, dark photography)
+//
+// transparent-navy → no container, navy mark
+//                    use: any light surface (#ffffff, #f1f5f9, #FDF8EF)
+//
+// WORDMARK COLOURS
+//   on dark:  #ffffff (white)
+//   on light: #0f172a (navy)
+//   never:    gold (#C68B2F) on white navbar surface
+//
+// SIZES
+//   favicon:         16px  (document slot suppresses automatically)
+//   sidebar/navbar:  36–40px
+//   marketing:       48–64px
+//   hero/display:    80–120px
+//
+// LOCKUP GAP
+//   Always: size × 0.10 — never a fixed pixel value
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-// ── Brand colours ──────────────────────────────────────────────
+type MarkVariant =
+  | "primary"
+  | "reversed"
+  | "transparent-gold"
+  | "transparent-navy"
 
-const NAVY = "#0f172a";
-const GOLD = "#C68B2F";
-
-// ── Types ──────────────────────────────────────────────────────
-
-type MarkVariant = "primary" | "reversed" | "transparent-gold" | "transparent-navy";
-
-interface VariantColours {
-  containerFill: string | null;
-  stroke: string;
-  containerBorder: string | null;
-  wordmark: string;
-  ledgerFullBleed: boolean;
+interface AvrentisMarkProps {
+  size?: number
+  variant?: MarkVariant
+  className?: string
 }
 
-// ── Variant colour map ─────────────────────────────────────────
+interface AvrentisLogoProps extends AvrentisMarkProps {
+  showWordmark?: boolean
+  wordmarkColor?: string
+}
 
-function getVariantColours(variant: MarkVariant): VariantColours {
-  switch (variant) {
-    case "primary":
-      return {
-        containerFill: NAVY,
-        stroke: GOLD,
-        containerBorder: "rgba(198,139,47,0.2)",
-        wordmark: "#ffffff",
-        ledgerFullBleed: true,
-      };
-    case "reversed":
-      return {
-        containerFill: GOLD,
-        stroke: NAVY,
-        containerBorder: null,
-        wordmark: NAVY,
-        ledgerFullBleed: true,
-      };
-    case "transparent-gold":
-      return {
-        containerFill: null,
-        stroke: GOLD,
-        containerBorder: null,
-        wordmark: "#ffffff",
-        ledgerFullBleed: false,
-      };
-    case "transparent-navy":
-      return {
-        containerFill: null,
-        stroke: NAVY,
-        containerBorder: null,
-        wordmark: NAVY,
-        ledgerFullBleed: false,
-      };
+// ── Proportion engine ─────────────────────────────────────────────────────────
+
+function getProps(size: number) {
+  const postH      = size * 0.520
+  const passageW   = size * 0.321
+  const leftPostW  = size * 0.090
+  const rightPostW = size * 0.086
+  const beamH      = size * 0.050
+  const ledgerH    = size * 0.050
+  const overhang   = size * 0.016
+  const rx         = size * 0.16
+
+  const markW = overhang + leftPostW + passageW + rightPostW + overhang
+  const markH = beamH + postH + ledgerH
+
+  const padH = (size - markW) / 2
+  const padV = (size - markH) / 2
+
+  const beamX      = padH
+  const beamY      = padV
+  const beamW      = markW
+
+  const leftPostX  = padH + overhang
+  const rightPostX = padH + overhang + leftPostW + passageW
+  const postY      = padV + beamH
+
+  const slotX = leftPostX + leftPostW
+  const slotY = postY + (postH * 0.618)
+  const slotW = passageW
+  const slotH = Math.max(2, size * 0.004)
+
+  const ledgerY            = postY + postH
+  const ledgerXContained   = 0
+  const ledgerWContained   = size
+  const ledgerXTransparent = padH
+  const ledgerWTransparent = markW
+
+  return {
+    rx, beamX, beamY, beamW, beamH,
+    leftPostX, rightPostX, postY,
+    leftPostW, rightPostW, postH,
+    slotX, slotY, slotW, slotH,
+    ledgerY, ledgerH,
+    ledgerXContained, ledgerWContained,
+    ledgerXTransparent, ledgerWTransparent,
   }
 }
 
-// ── Geometry engine ────────────────────────────────────────────
+// ── Colour engine ─────────────────────────────────────────────────────────────
 
-function computeGateGeometry(size: number) {
-  const postH = size * 0.52;
-  const passageW = size * 0.321;
-  const leftPostW = size * 0.09;
-  const rightPostW = size * 0.086;
-  const beamH = size * 0.05;
-  const ledgerH = size * 0.05;
-  const overhang = size * 0.016;
-  const cornerRadius = size * 0.16;
-
-  // Total mark dimensions
-  const markW = overhang + leftPostW + passageW + rightPostW + overhang;
-  const markH = beamH + postH + ledgerH;
-
-  // Center the mark in the container
-  const offsetX = (size - markW) / 2;
-  const offsetY = (size - markH) / 2;
-
-  // Beam (top horizontal bar)
-  const beam = {
-    x: offsetX,
-    y: offsetY,
-    w: markW,
-    h: beamH,
-  };
-
-  // Left post
-  const leftPost = {
-    x: offsetX + overhang,
-    y: offsetY + beamH,
-    w: leftPostW,
-    h: postH,
-  };
-
-  // Right post
-  const rightPost = {
-    x: offsetX + overhang + leftPostW + passageW,
-    y: offsetY + beamH,
-    w: rightPostW,
-    h: postH,
-  };
-
-  // Document slot (golden ratio from top of posts)
-  const slotY = offsetY + beamH + postH * 0.618;
-  const slotH = Math.max(2, size * 0.004);
-  const slot = {
-    x: offsetX + overhang + leftPostW,
-    y: slotY,
-    w: passageW,
-    h: slotH,
-    visible: size >= 48,
-  };
-
-  // Ledger line
-  const ledger = {
-    y: offsetY + beamH + postH,
-    h: ledgerH,
-    // Full-bleed uses size, mark-width uses markW
-    fullBleedX: 0,
-    fullBleedW: size,
-    markX: offsetX,
-    markW: markW,
-  };
-
-  return {
-    cornerRadius,
-    beam,
-    leftPost,
-    rightPost,
-    slot,
-    ledger,
-  };
+function getColors(variant: MarkVariant) {
+  switch (variant) {
+    case "primary":
+      return {
+        container: "#0f172a",
+        stroke: "#C68B2F",
+        slot: "#C68B2F",
+        slotOpacity: 0.35,
+        border: "rgba(198,139,47,0.2)",
+        transparent: false,
+      }
+    case "reversed":
+      return {
+        container: "#C68B2F",
+        stroke: "#0f172a",
+        slot: "#0f172a",
+        slotOpacity: 0.35,
+        border: "none",
+        transparent: false,
+      }
+    case "transparent-gold":
+      return {
+        container: "none",
+        stroke: "#C68B2F",
+        slot: "#C68B2F",
+        slotOpacity: 0.35,
+        border: "none",
+        transparent: true,
+      }
+    case "transparent-navy":
+      return {
+        container: "none",
+        stroke: "#0f172a",
+        slot: "#0f172a",
+        slotOpacity: 0.35,
+        border: "none",
+        transparent: true,
+      }
+  }
 }
 
-// ── AvrentisMark ───────────────────────────────────────────────
-
-interface AvrentisMarkProps {
-  variant?: MarkVariant;
-  size?: number;
-  className?: string;
-}
+// ── Mark ──────────────────────────────────────────────────────────────────────
 
 export function AvrentisMark({
+  size = 40,
   variant = "primary",
-  size = 44,
   className,
 }: AvrentisMarkProps) {
-  const colours = getVariantColours(variant);
-  const geo = computeGateGeometry(size);
-  const hasContainer = colours.containerFill !== null;
+  const p = getProps(size)
+  const c = getColors(variant)
+
+  const ledgerX = c.transparent ? p.ledgerXTransparent : p.ledgerXContained
+  const ledgerW = c.transparent ? p.ledgerWTransparent : p.ledgerWContained
 
   return (
     <svg
       width={size}
       height={size}
       viewBox={`0 0 ${size} ${size}`}
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("flex-shrink-0", className)}
-      aria-hidden="true"
+      className={className}
+      aria-label="AVRENTIS"
+      role="img"
     >
-      {/* Container background */}
-      {hasContainer && (
+      {c.container !== "none" && (
         <rect
           width={size}
           height={size}
-          rx={geo.cornerRadius}
-          fill={colours.containerFill!}
-          stroke={colours.containerBorder ?? "none"}
-          strokeWidth={colours.containerBorder ? 0.5 : 0}
+          rx={p.rx}
+          fill={c.container}
+          stroke={c.border !== "none" ? c.border : undefined}
+          strokeWidth={c.border !== "none" ? 0.5 : undefined}
         />
       )}
 
-      {/* Beam */}
-      <rect
-        x={geo.beam.x}
-        y={geo.beam.y}
-        width={geo.beam.w}
-        height={geo.beam.h}
-        fill={colours.stroke}
-      />
+      <rect x={p.beamX} y={p.beamY} width={p.beamW} height={p.beamH} fill={c.stroke} />
+      <rect x={p.leftPostX} y={p.postY} width={p.leftPostW} height={p.postH} fill={c.stroke} />
+      <rect x={p.rightPostX} y={p.postY} width={p.rightPostW} height={p.postH} fill={c.stroke} />
 
-      {/* Left post */}
-      <rect
-        x={geo.leftPost.x}
-        y={geo.leftPost.y}
-        width={geo.leftPost.w}
-        height={geo.leftPost.h}
-        fill={colours.stroke}
-      />
-
-      {/* Right post */}
-      <rect
-        x={geo.rightPost.x}
-        y={geo.rightPost.y}
-        width={geo.rightPost.w}
-        height={geo.rightPost.h}
-        fill={colours.stroke}
-      />
-
-      {/* Document slot */}
-      {geo.slot.visible && (
+      {size >= 48 && (
         <rect
-          x={geo.slot.x}
-          y={geo.slot.y}
-          width={geo.slot.w}
-          height={geo.slot.h}
-          fill={colours.stroke}
-          opacity={0.35}
+          x={p.slotX}
+          y={p.slotY}
+          width={p.slotW}
+          height={p.slotH}
+          fill={c.slot}
+          opacity={c.slotOpacity}
         />
       )}
 
-      {/* Ledger line */}
-      <rect
-        x={colours.ledgerFullBleed ? geo.ledger.fullBleedX : geo.ledger.markX}
-        y={geo.ledger.y}
-        width={colours.ledgerFullBleed ? geo.ledger.fullBleedW : geo.ledger.markW}
-        height={geo.ledger.h}
-        fill={colours.stroke}
-      />
+      <rect x={ledgerX} y={p.ledgerY} width={ledgerW} height={p.ledgerH} fill={c.stroke} />
     </svg>
-  );
+  )
 }
 
-// ── AvrentisLogo (mark + wordmark) ─────────────────────────────
+// ── Wordmark only ─────────────────────────────────────────────────────────────
 
-interface AvrentisLogoProps {
-  variant?: MarkVariant;
-  size?: number;
-  className?: string;
+interface AvrentisWordmarkProps {
+  size?: number
+  color?: string
+  className?: string
 }
 
-export function AvrentisLogo({
-  variant = "primary",
-  size = 44,
+export function AvrentisWordmark({
+  size = 15,
+  color = "#C68B2F",
   className,
-}: AvrentisLogoProps) {
-  const colours = getVariantColours(variant);
-  const gap = size * 0.25;
-  const fontSize = size * 0.46;
-
+}: AvrentisWordmarkProps) {
   return (
     <span
-      role="img"
-      aria-label="AVRENTIS"
-      className={cn("inline-flex items-center", className)}
-      style={{ gap }}
+      className={className}
+      style={{
+        fontFamily: "var(--font-wordmark)",
+        fontWeight: 600,
+        fontSize: size,
+        letterSpacing: "0.10em",
+        color,
+        lineHeight: 1,
+        textTransform: "uppercase",
+        display: "inline-block",
+      }}
     >
-      <AvrentisMark variant={variant} size={size} />
-      <span
-        style={{
-          fontFamily: "var(--font-wordmark), 'Hanken Grotesk', system-ui, sans-serif",
-          fontWeight: 700,
-          fontSize,
-          letterSpacing: "0.15em",
-          color: colours.wordmark,
-          lineHeight: 1,
-          textTransform: "uppercase" as const,
-        }}
-      >
-        AVRENTIS
-      </span>
+      AVRENTIS
     </span>
-  );
+  )
 }
 
-// ── Default export for backward compat ─────────────────────────
+// ── Full lockup (mark + wordmark) ─────────────────────────────────────────────
 
-export default AvrentisLogo;
+export function AvrentisLogo({
+  size = 40,
+  variant = "primary",
+  showWordmark = true,
+  wordmarkColor,
+  className,
+}: AvrentisLogoProps) {
+
+  const defaultWordmarkColor =
+    variant === "transparent-navy" ? "#0f172a" :
+    variant === "reversed"         ? "#0f172a" :
+    "#ffffff"
+
+  const wColor = wordmarkColor ?? defaultWordmarkColor
+
+  return (
+    <div
+      className={cn("flex items-end", className)}
+      style={{ gap: Math.round(size * 0.10) }}
+    >
+      <AvrentisMark size={size} variant={variant} />
+      {showWordmark && (
+        <span
+          style={{
+            fontFamily: "var(--font-wordmark)",
+            fontWeight: 600,
+            fontSize: size * 0.34,
+            letterSpacing: "0.10em",
+            color: wColor,
+            lineHeight: 1,
+            textTransform: "uppercase" as const,
+            paddingBottom: Math.round(size * 0.024),
+          }}
+        >
+          AVRENTIS
+        </span>
+      )}
+    </div>
+  )
+}
+
+export default AvrentisLogo

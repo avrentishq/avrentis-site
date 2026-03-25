@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { AvrentisMark } from "@/components/ui/logo";
+import { AvrentisLogo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 
 interface MobileMenuProps {
@@ -65,7 +65,7 @@ export function MobileMenu({
                 alignItems: "center",
               }}
             >
-              <AvrentisMark variant="primary" size={32} />
+              <AvrentisLogo size={36} variant="primary" wordmarkColor="#ffffff" />
               <button
                 onClick={onClose}
                 aria-label="Close menu"

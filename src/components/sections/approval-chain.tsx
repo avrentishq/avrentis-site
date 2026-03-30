@@ -1,218 +1,113 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { StatusBadge, RoleBadge } from "@/components/ui/badge";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { RoleBadge } from "@/components/ui/role-badge";
 
-const CHAIN_STEPS: {
-  role: "staff" | "hod" | "finance" | "md";
-  action: string;
-  status: "submitted" | "under_review" | "queried" | "approved";
-}[] = [
-  { role: "staff", action: "Raises PV", status: "submitted" },
-  { role: "hod", action: "Reviews", status: "under_review" },
-  { role: "finance", action: "Validates", status: "queried" },
-  { role: "md", action: "Sanctions", status: "approved" },
+const PV_CHAIN = [
+  { stage: "STAGE 01", role: "staff" as const, title: "Raises the voucher", body: "Staff creates the Payment Voucher with vendor, amount, and purpose." },
+  { stage: "STAGE 02", role: "finance" as const, title: "Reviews & approves", body: "Finance checks budget position and vendor standing before escalation.", active: true },
+  { stage: "STAGE 03", role: "md" as const, title: "Gives final sanction", body: "The MD gives final authority. The record is sealed permanently." },
 ];
 
-const CALLOUTS = [
-  "Immutable audit record",
-  "Role-based authority",
-  "Real-time status tracking",
+const PO_CHAIN = [
+  { stage: "STAGE 01", role: "staff" as const, title: "Raises the order", body: "Staff creates the Purchase Order with vendor, items, and justification." },
+  { stage: "STAGE 02", role: "hod" as const, title: "Reviews & approves", body: "Head of Department confirms legitimacy before the decision advances.", active: true },
+  { stage: "STAGE 03", role: "md" as const, title: "Gives final sanction", body: "The MD gives final authority. The record is sealed permanently." },
 ];
+
+type ChainNode = (typeof PV_CHAIN)[number] | (typeof PO_CHAIN)[number];
+
+function ChainCard({ node, index, baseDelay }: { node: ChainNode; index: number; baseDelay: number }) {
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+      transition={staggerDelay(baseDelay + index)}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "8px",
+        background: "#1e293b",
+        border: node.active ? "0.5px solid rgba(198,139,47,0.4)" : "0.5px solid rgba(198,139,47,0.15)",
+        borderRadius: "8px",
+        padding: "20px 16px",
+      }}
+    >
+      <span style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "9px", letterSpacing: "0.10em", textTransform: "uppercase", color: "#475569", marginBottom: "4px" }}>
+        {node.stage}
+      </span>
+      <RoleBadge role={node.role} />
+      <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "13px", color: "#ffffff", margin: "4px 0 2px" }}>{node.title}</h3>
+      <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#64748b", lineHeight: 1.5, margin: 0 }}>{node.body}</p>
+    </motion.div>
+  );
+}
 
 export function ApprovalChain() {
   return (
-    <section style={{ backgroundColor: "#0f172a", padding: "120px 24px" }}>
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: "64px",
-          alignItems: "center",
-        }}
-      >
-        {/* Header */}
-        <div style={{ textAlign: "center", maxWidth: "560px" }}>
-          <motion.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 500,
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
-              color: "#C68B2F",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            HOW AVRENTIS WORKS
-          </motion.span>
-          <motion.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "36px",
-              color: "#ffffff",
-              lineHeight: 1.2,
-              margin: "0 0 16px",
-            }}
-          >
-            Every financial decision follows a structured path.
-          </motion.h2>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "16px",
-              color: "#94a3b8",
-              lineHeight: 1.65,
-              margin: 0,
-            }}
-          >
-            From the moment a payment voucher is raised to the moment it is
-            sanctioned by the MD — every step is recorded, every action
-            attributed.
-          </motion.p>
-        </div>
-
-        {/* Chain diagram */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(3)}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "100%",
-            maxWidth: "900px",
-          }}
-          className="lg:flex-row lg:items-center lg:justify-between"
+    <section id="the-structure" style={{ backgroundColor: "#0f172a", padding: "120px 40px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <motion.span
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.10em", textTransform: "uppercase", color: "#C68B2F", display: "block", marginBottom: "16px" }}
         >
-          {CHAIN_STEPS.map((step, i) => (
-            <div
-              key={step.role}
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-              className="flex-col lg:flex-row"
+          THE STRUCTURE
+        </motion.span>
+
+        <motion.h2
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(1)}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "22px", color: "#ffffff", lineHeight: 1.3, margin: "0 0 12px", maxWidth: "480px" }}
+        >
+          Two document types. Two defined authority chains.
+        </motion.h2>
+
+        <motion.p
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(2)}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#94a3b8", lineHeight: 1.7, margin: "0 0 48px", maxWidth: "520px" }}
+        >
+          Payment Vouchers follow one chain. Purchase Orders follow another. Each chain is role-enforced and permanently on record. Authority at every stage.
+        </motion.p>
+
+        {/* Two parallel chains */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "40px" }} className="lg:grid-cols-2">
+          {/* Payment Voucher chain */}
+          <div>
+            <motion.h3
+              variants={fadeUp} initial="hidden" whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(3)}
+              style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#C68B2F", marginBottom: "16px" }}
             >
-              {/* Step node */}
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "12px",
-                  padding: "24px 20px",
-                  minWidth: "140px",
-                  textAlign: "center",
-                }}
-              >
-                <RoleBadge role={step.role} />
-                <span
-                  style={{
-                    fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                    fontWeight: 400,
-                    fontSize: "13px",
-                    color: "#94a3b8",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {step.action}
-                </span>
-                <StatusBadge status={step.status} />
-              </div>
-
-              {/* Connecting line */}
-              {i < CHAIN_STEPS.length - 1 && (
-                <div
-                  className="hidden lg:block"
-                  style={{
-                    width: "40px",
-                    height: "0.5px",
-                    backgroundColor: "rgba(198,139,47,0.2)",
-                    flexShrink: 0,
-                  }}
-                />
-              )}
-              {i < CHAIN_STEPS.length - 1 && (
-                <div
-                  className="lg:hidden"
-                  style={{
-                    width: "0.5px",
-                    height: "24px",
-                    backgroundColor: "rgba(198,139,47,0.2)",
-                    margin: "0 auto",
-                  }}
-                />
-              )}
+              Payment Voucher Chain
+            </motion.h3>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px" }} className="sm:grid-cols-3">
+              {PV_CHAIN.map((node, i) => (
+                <ChainCard key={node.stage} node={node} index={i} baseDelay={4} />
+              ))}
             </div>
-          ))}
-        </motion.div>
+          </div>
 
-        {/* Feature callouts */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(4)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexWrap: "wrap",
-            gap: "0",
-          }}
-        >
-          {CALLOUTS.map((callout, i) => (
-            <span key={callout} style={{ display: "flex", alignItems: "center" }}>
-              <span
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontWeight: 500,
-                  fontSize: "11px",
-                  color: "#C68B2F",
-                  letterSpacing: "0.06em",
-                }}
-              >
-                {callout}
-              </span>
-              {i < CALLOUTS.length - 1 && (
-                <span
-                  style={{
-                    margin: "0 16px",
-                    color: "rgba(198,139,47,0.2)",
-                    fontSize: "11px",
-                  }}
-                >
-                  |
-                </span>
-              )}
-            </span>
-          ))}
-        </motion.div>
+          {/* Purchase Order chain */}
+          <div>
+            <motion.h3
+              variants={fadeUp} initial="hidden" whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(3)}
+              style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#C68B2F", marginBottom: "16px" }}
+            >
+              Purchase Order Chain
+            </motion.h3>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px" }} className="sm:grid-cols-3">
+              {PO_CHAIN.map((node, i) => (
+                <ChainCard key={node.stage} node={node} index={i} baseDelay={7} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,213 +1,124 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { fadeUp, staggerDelay } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { RoleBadge } from "@/components/ui/role-badge";
+import { StatusBadge } from "@/components/ui/status-badge";
 
 export function Hero() {
   return (
-    <section style={{ backgroundColor: "#0f172a", padding: "160px 24px 120px" }}>
+    <section style={{ backgroundColor: "#0f172a", padding: "140px 40px 120px", borderBottom: "0.5px solid rgba(198,139,47,0.1)" }}>
       <div
-        style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr", gap: "64px", alignItems: "center" }}
-        className="lg:grid-cols-[1.5fr_1fr]"
+        style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr", gap: "48px", alignItems: "center" }}
+        className="lg:grid-cols-2"
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        {/* Left — Copy */}
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <motion.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(0)}
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 500,
-              fontSize: "11px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
-              color: "#C68B2F",
-            }}
+            variants={fadeUp} initial="hidden" whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
+            style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.12em", textTransform: "uppercase", color: "#C68B2F", marginBottom: "16px" }}
           >
-            APPROVAL WORKFLOW INFRASTRUCTURE
+            FINANCIAL DECISION INFRASTRUCTURE
           </motion.span>
 
           <motion.h1
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "clamp(32px, 5vw, 52px)",
-              letterSpacing: "0.01em",
-              color: "#ffffff",
-              lineHeight: 1.15,
-              margin: 0,
-            }}
+            variants={fadeUp} initial="hidden" whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(1)}
+            style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "28px", color: "#ffffff", lineHeight: 1.3, margin: "0 0 20px" }}
           >
-            Your money moves on your terms.
+            Every decision, structured.{"\n"}Every approval, <span style={{ color: "#C68B2F" }}>on record.</span>
           </motion.h1>
 
           <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "18px",
-              color: "#94a3b8",
-              maxWidth: "480px",
-              lineHeight: 1.6,
-              margin: 0,
-            }}
+            variants={fadeUp} initial="hidden" whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(2)}
+            style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "480px" }}
           >
-            Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.
+            AVRENTIS gives every financial decision a defined path — from the Staff who raises it to the MD who sanctions it — with a permanent institutional record of every action, at every stage.
           </motion.p>
 
           <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
-            style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}
+            variants={fadeUp} initial="hidden" whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(3)}
+            style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}
           >
-            <Button variant="primary" size="lg" href="/contact">
-              Request access
-            </Button>
-            <Button variant="navy" size="lg" href={process.env.NEXT_PUBLIC_APP_URL ?? "https://app.avrentis.com"}>
-              Sign in
-            </Button>
+            <a href="/contact" style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1, backgroundColor: "#C68B2F", color: "#0f172a", border: "none", borderRadius: "3px", height: "36px", padding: "0 20px", display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none", cursor: "pointer", transition: "background-color 150ms ease" }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#A87425"; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#C68B2F"; }}>
+              REQUEST A DEMO
+            </a>
+            <a href="#the-structure" style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1, backgroundColor: "transparent", color: "#C68B2F", border: "0.5px solid rgba(198,139,47,0.4)", borderRadius: "3px", height: "36px", padding: "0 20px", display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none", cursor: "pointer", transition: "border-color 150ms ease" }}>
+              SEE HOW IT WORKS
+            </a>
           </motion.div>
         </div>
 
-        {/* Right — Compact approval chain visual */}
+        {/* Right — Approval chain widget */}
         <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(4)}
-          style={{
-            background: "#1e293b",
-            borderRadius: "8px",
-            border: "0.5px solid rgba(198,139,47,0.2)",
-            padding: "32px 24px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-          }}
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(4)}
+          style={{ background: "#1e293b", borderRadius: "8px", border: "0.5px solid rgba(198,139,47,0.2)", padding: "24px" }}
         >
-          {/* Header label */}
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              fontWeight: 500,
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "#C68B2F",
-            }}
-          >
-            Live approval chain
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", fontWeight: 500, letterSpacing: "0.10em", textTransform: "uppercase", color: "#C68B2F", display: "block", marginBottom: "20px" }}>
+            APPROVAL CHAINS — LIVE
           </span>
 
-          {/* Four approval nodes */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "16px",
-            }}
-            className="lg:grid-cols-4"
-          >
-            {[
-              { role: "Staff", roleBg: "#f1f5f9", roleText: "#475569", action: "Raises PV", status: "Pending review", statusBg: "rgba(180,83,9,0.08)", statusText: "#78350f", statusDot: "#b45309" },
-              { role: "HOD", roleBg: "#FDF8EF", roleText: "#78350f", roleBorder: "#C68B2F", action: "Reviews", status: "Under review", statusBg: "rgba(198,139,47,0.08)", statusText: "#92400e", statusDot: "#C68B2F", statusBorder: "rgba(198,139,47,0.4)" },
-              { role: "Finance", roleBg: "rgba(4,120,87,0.08)", roleText: "#047857", action: "Validates", status: "Queried", statusBg: "rgba(91,33,182,0.08)", statusText: "#3B0764", statusDot: "#5B21B6", statusBorder: "rgba(91,33,182,0.4)", pulse: true },
-              { role: "MD", roleBg: "#1e293b", roleText: "#C68B2F", roleBorder: "#C68B2F", action: "Sanctions", status: "Approved", statusBg: "rgba(4,120,87,0.08)", statusText: "#047857", statusDot: "#047857" },
-            ].map((node) => (
-              <div
-                key={node.role}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "8px",
-                  textAlign: "center",
-                }}
-              >
-                {/* Role badge */}
-                <span
-                  style={{
-                    padding: "3px 8px",
-                    backgroundColor: node.roleBg,
-                    color: node.roleText,
-                    fontSize: "11px",
-                    fontWeight: 500,
-                    fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                    letterSpacing: "0.04em",
-                    lineHeight: 1,
-                    borderRadius: "4px",
-                    border: node.roleBorder ? `0.5px solid ${node.roleBorder}` : "0.5px solid transparent",
-                  }}
-                >
-                  {node.role}
-                </span>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            {/* Payment Voucher chain */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", color: "#94a3b8", marginBottom: "4px" }}>
+                PAYMENT VOUCHER
+              </span>
+              {[
+                { role: "staff" as const, action: "Raised PV-2026-0041", status: "approved" as const },
+                { role: "finance" as const, action: "Reviewing", status: "under_review" as const },
+                { role: "md" as const, action: "Final sanction", status: "draft" as const },
+              ].map((node, i, arr) => (
+                <div key={node.role}>
+                  <div style={{ background: "#0f172a", border: "0.5px solid rgba(198,139,47,0.15)", borderRadius: "6px", padding: "12px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
+                    <RoleBadge role={node.role} />
+                    <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#94a3b8" }}>{node.action}</span>
+                    <StatusBadge status={node.status} />
+                  </div>
+                  {i < arr.length - 1 && (
+                    <div style={{ display: "flex", justifyContent: "center", padding: "4px 0" }}>
+                      <span style={{ fontSize: "10px", color: "rgba(198,139,47,0.4)" }}>&#9662;</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
 
-                {/* Action */}
-                <span style={{ fontFamily: "'IBM Plex Sans', system-ui, sans-serif", fontSize: "11px", color: "#94a3b8" }}>
-                  {node.action}
-                </span>
-
-                {/* Status badge */}
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    padding: "2px 6px",
-                    backgroundColor: node.statusBg,
-                    color: node.statusText,
-                    fontSize: "10px",
-                    fontWeight: 500,
-                    fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                    letterSpacing: "0.04em",
-                    lineHeight: 1,
-                    borderRadius: "4px",
-                    border: node.statusBorder ? `0.5px solid ${node.statusBorder}` : "0.5px solid transparent",
-                  }}
-                >
-                  <span
-                    style={{
-                      width: "4px",
-                      height: "4px",
-                      borderRadius: "50%",
-                      backgroundColor: node.statusDot,
-                      flexShrink: 0,
-                      ...(node.pulse && { animation: "avrentis-pulse 1.4s ease-in-out infinite" }),
-                    }}
-                  />
-                  {node.status}
-                </span>
-              </div>
-            ))}
+            {/* Purchase Order chain */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "9px", fontWeight: 500, letterSpacing: "0.08em", textTransform: "uppercase", color: "#94a3b8", marginBottom: "4px" }}>
+                PURCHASE ORDER
+              </span>
+              {[
+                { role: "staff" as const, action: "Raised PO-2026-0012", status: "approved" as const },
+                { role: "hod" as const, action: "Reviewing", status: "under_review" as const },
+                { role: "md" as const, action: "Final sanction", status: "draft" as const },
+              ].map((node, i, arr) => (
+                <div key={node.role}>
+                  <div style={{ background: "#0f172a", border: "0.5px solid rgba(198,139,47,0.15)", borderRadius: "6px", padding: "12px", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "8px" }}>
+                    <RoleBadge role={node.role} />
+                    <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#94a3b8" }}>{node.action}</span>
+                    <StatusBadge status={node.status} />
+                  </div>
+                  {i < arr.length - 1 && (
+                    <div style={{ display: "flex", justifyContent: "center", padding: "4px 0" }}>
+                      <span style={{ fontSize: "10px", color: "rgba(198,139,47,0.4)" }}>&#9662;</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Footer callouts */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0", flexWrap: "wrap" }}>
-            {["Immutable audit record", "Role-based authority", "Real-time visibility"].map((item, i, arr) => (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flexWrap: "wrap", marginTop: "20px" }}>
+            {["Immutable audit record", "Authority by role", "Real-time visibility"].map((item, i, arr) => (
               <span key={item} style={{ display: "flex", alignItems: "center" }}>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", fontWeight: 500, color: "#C68B2F", letterSpacing: "0.06em" }}>
-                  {item}
-                </span>
-                {i < arr.length - 1 && (
-                  <span style={{ margin: "0 10px", color: "rgba(198,139,47,0.2)", fontSize: "10px" }}>|</span>
-                )}
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", fontWeight: 500, letterSpacing: "0.05em", color: "#C68B2F" }}>{item}</span>
+                {i < arr.length - 1 && <span style={{ margin: "0 8px", color: "rgba(198,139,47,0.3)", fontSize: "10px" }}>|</span>}
               </span>
             ))}
           </div>

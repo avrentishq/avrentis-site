@@ -4,7 +4,7 @@ import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500"],
   variable: "--font-ibm-plex-sans",
   display: "swap",
 });
@@ -24,26 +24,26 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "AVRENTIS — Financial Decision Infrastructure for Nigerian Business",
+  title: "AVRENTIS — Financial decision infrastructure for Nigerian business",
   description:
-    "Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.",
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+    "AVRENTIS structures the financial decisions that authorise money to move. Every Payment Voucher and Purchase Order follows a defined approval chain — permanently on record. Built for Nigerian business.",
   openGraph: {
-    title: "AVRENTIS — Financial Decision Infrastructure for Nigerian Business",
+    title: "AVRENTIS — Every decision, structured. Every approval, on record.",
     description:
-      "Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.",
+      "Financial decision infrastructure for any Nigerian organisation where financial decisions require structured authority.",
     url: "https://avrentis.com",
     siteName: "AVRENTIS",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVRENTIS — Financial Decision Infrastructure for Nigerian Business",
+    title: "AVRENTIS — Every decision, structured. Every approval, on record.",
     description:
-      "Give every financial decision in your organisation a defined structure — from the moment it is raised to the moment it is permanently on record.",
+      "Financial decision infrastructure for any Nigerian organisation where financial decisions require structured authority.",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -53,9 +53,7 @@ const orgSchema = {
   name: "AVRENTIS",
   url: "https://avrentis.com",
   description: "Financial decision infrastructure for Nigerian business.",
-  foundingDate: "2026",
-  foundingLocation: "Nigeria",
-  areaServed: "Nigeria",
+  slogan: "Every decision, structured. Every approval, on record.",
 };
 
 export default function RootLayout({

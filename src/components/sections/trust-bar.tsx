@@ -3,73 +3,30 @@
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpTransition } from "@/lib/animations";
 
-const CAPABILITIES = [
-  "Structured decision chains",
-  "Permanent institutional records",
-  "Authority by role",
+const ITEMS = [
+  "BUILT FOR NIGERIAN BUSINESS",
+  "SEQUENTIAL APPROVAL CHAIN",
+  "WHATSAPP & EMAIL NOTIFICATION",
+  "AUDIT-READY AT ALL TIMES",
+  "NDPR COMPLIANT",
 ];
 
 export function TrustBar() {
   return (
     <motion.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-      transition={fadeUpTransition}
-      style={{
-        backgroundColor: "#ffffff",
-        borderTop: "2px solid #C68B2F",
-        height: "72px",
-        display: "flex",
-        alignItems: "center",
-        padding: "0 24px",
-      }}
+      variants={fadeUp} initial="hidden" whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
+      style={{ height: "72px", backgroundColor: "#ffffff", borderBottom: "0.5px solid #e2e8f0", display: "flex", alignItems: "center", padding: "0 40px" }}
     >
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "0 auto",
-          width: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "16px",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-            fontWeight: 400,
-            fontSize: "14px",
-            color: "#475569",
-          }}
-        >
-          Financial decision infrastructure for Nigerian business
-        </span>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "0" }}>
-          {CAPABILITIES.map((cap, i) => (
-            <span key={cap} style={{ display: "flex", alignItems: "center" }}>
-              <span
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  color: "#475569",
-                }}
-              >
-                {cap}
-              </span>
-              {i < CAPABILITIES.length - 1 && (
-                <span style={{ margin: "0 12px", color: "#C68B2F", fontSize: "12px" }}>
-                  |
-                </span>
-              )}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "40px", flexWrap: "wrap" }}>
+        {ITEMS.map((item) => (
+          <span key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "rgba(198,139,47,0.4)", flexShrink: 0 }} />
+            <span style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#94a3b8" }}>
+              {item}
             </span>
-          ))}
-        </div>
+          </span>
+        ))}
       </div>
     </motion.section>
   );

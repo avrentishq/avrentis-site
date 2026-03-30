@@ -7,13 +7,10 @@ import { Menu } from "lucide-react";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.avrentis.com";
-
 const NAV_LINKS = [
-  { label: "Features", href: "/features" },
+  { label: "Product", href: "/product" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -28,7 +25,7 @@ export function Navbar() {
           top: 0,
           left: 0,
           right: 0,
-          height: "64px",
+          height: "56px",
           backgroundColor: "#0f172a",
           borderBottom: "0.5px solid rgba(198,139,47,0.2)",
           zIndex: 50,
@@ -38,7 +35,7 @@ export function Navbar() {
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "0 24px",
+            padding: "0 40px",
             height: "100%",
             display: "flex",
             alignItems: "center",
@@ -46,7 +43,7 @@ export function Navbar() {
           }}
         >
           <Link href="/" aria-label="AVRENTIS home">
-            <AvrentisLogo variant="primary" size={36} wordmarkColor="#ffffff" />
+            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
           </Link>
 
           <div className="hidden md:flex" style={{ gap: "32px", alignItems: "center" }}>
@@ -59,24 +56,16 @@ export function Navbar() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "14px",
+                    fontSize: "12px",
                     color: active ? "#ffffff" : "#94a3b8",
                     textDecoration: "none",
-                    paddingBottom: "4px",
-                    borderBottom: active ? "2px solid #C68B2F" : "2px solid transparent",
-                    transition: "border-color 150ms ease, color 150ms ease",
+                    transition: "color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    if (!active) {
-                      e.currentTarget.style.borderBottomColor = "#C68B2F";
-                      e.currentTarget.style.color = "#ffffff";
-                    }
+                    if (!active) e.currentTarget.style.color = "#ffffff";
                   }}
                   onMouseLeave={(e) => {
-                    if (!active) {
-                      e.currentTarget.style.borderBottomColor = "transparent";
-                      e.currentTarget.style.color = "#94a3b8";
-                    }
+                    if (!active) e.currentTarget.style.color = "#94a3b8";
                   }}
                 >
                   {link.label}
@@ -85,49 +74,34 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="hidden md:flex" style={{ gap: "16px", alignItems: "center" }}>
-            <a
-              href={`${APP_URL}/login`}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 400,
-                fontSize: "14px",
-                color: "#94a3b8",
-                textDecoration: "none",
-                transition: "color 150ms ease",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = "#ffffff"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.color = "#94a3b8"; }}
-            >
-              Sign in
-            </a>
-            <a
-              href="/contact"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                letterSpacing: "0.05em",
-                borderRadius: "3px",
-                cursor: "pointer",
-                transition: "background-color 150ms ease",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                lineHeight: 1,
-                backgroundColor: "#C68B2F",
-                color: "#0f172a",
-                border: "none",
-                height: "32px",
-                padding: "0 16px",
-                fontSize: "13px",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#A87425"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#C68B2F"; }}
-            >
-              Request access
-            </a>
-          </div>
+          <a
+            href="/contact"
+            className="hidden md:inline-flex"
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "11px",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              lineHeight: 1,
+              backgroundColor: "#C68B2F",
+              color: "#0f172a",
+              border: "none",
+              borderRadius: "3px",
+              height: "32px",
+              padding: "0 16px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "background-color 150ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#A87425"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#C68B2F"; }}
+          >
+            REQUEST DEMO
+          </a>
 
           <button
             className="md:hidden"
@@ -140,13 +114,13 @@ export function Navbar() {
         </div>
       </nav>
 
-      <div style={{ height: "64px" }} />
+      <div style={{ height: "56px" }} />
 
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         navLinks={NAV_LINKS}
-        signinUrl={`${APP_URL}/login`}
+        signinUrl="https://app.avrentis.com/login"
         pathname={pathname}
       />
     </>

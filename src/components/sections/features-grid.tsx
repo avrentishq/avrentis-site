@@ -1,103 +1,48 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { GitBranch, Shield, Users, Bell, FileText, Activity } from "lucide-react";
-import { FeatureCard } from "@/components/ui/card";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const FEATURES = [
-  {
-    icon: GitBranch,
-    title: "Structured decision chains",
-    description: "Every financial action moves through defined stages of authority. No shortcuts. No ambiguity. Structure is enforced, not assumed.",
-  },
-  {
-    icon: Shield,
-    title: "Permanent institutional record",
-    description: "Every action is timestamped, attributed, and permanently on record. The record cannot be altered.",
-  },
-  {
-    icon: Users,
-    title: "Authority by role",
-    description: "Five levels of permission govern who can raise, review, approve, and sanction. Each role sees only what they need.",
-  },
-  {
-    icon: Bell,
-    title: "Real-time notifications",
-    description: "Every approver is notified the moment a decision reaches their queue. No chasing. No delays.",
-  },
-  {
-    icon: FileText,
-    title: "Bank-ready documentation",
-    description: "Every sanctioned decision carries an institutional record — ready for your bank without additional preparation.",
-  },
-  {
-    icon: Activity,
-    title: "Complete visibility",
-    description: "Track the status of every financial decision across your organisation, in real time, from anywhere.",
-  },
+  { title: "Authority by role", body: "Each stage of the approval chain is locked to the correct role. Structure is enforced, not assumed." },
+  { title: "Immutable audit record", body: "Every action timestamped and attributed. Every financial decision permanently on record. Audit-ready before they ask." },
+  { title: "WhatsApp & email notification", body: "Every approver is notified the moment a decision enters their stage — via WhatsApp or email." },
+  { title: "Sanctioned document PDF", body: "Every sanctioned decision generates a stamped PDF with the complete authority record embedded." },
+  { title: "Approval delegation", body: "Delegate authority to a named deputy during absence. The delegate inherits the delegator's full scope — department, thresholds, and position in the chain. Time-limited with automatic expiry." },
+  { title: "MD command view", body: "The MD has total command — current financial exposure, pending decisions, turnaround status, and auto-escalation alerts. Documents exceeding approval thresholds escalate automatically." },
 ];
 
 export function FeaturesGrid() {
   return (
-    <section style={{ backgroundColor: "#ffffff", padding: "80px 24px" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "48px" }}>
-        <div style={{ textAlign: "center" }}>
-          <motion.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 500,
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
-              color: "#C68B2F",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            CAPABILITIES
-          </motion.span>
-          <motion.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "36px",
-              color: "#0f172a",
-              lineHeight: 1.2,
-              margin: 0,
-            }}
-          >
-            Everything your organisation needs.
-          </motion.h2>
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "8px",
-          }}
+    <section style={{ backgroundColor: "#f8fafc", padding: "80px 40px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <motion.span
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.10em", textTransform: "uppercase", color: "#C68B2F", display: "block", textAlign: "center", marginBottom: "16px" }}
         >
-          {FEATURES.map((feature, i) => (
+          WHAT IS INCLUDED
+        </motion.span>
+
+        <motion.h2
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(1)}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "22px", color: "#0f172a", lineHeight: 1.3, margin: "0 auto 40px", textAlign: "center", maxWidth: "520px" }}
+        >
+          Built for any Nigerian organisation where financial decisions require structured authority.
+        </motion.h2>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px" }}>
+          {FEATURES.map((feat, i) => (
             <motion.div
-              key={feature.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(i + 2)}
+              key={feat.title}
+              variants={fadeUp} initial="hidden" whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(i + 2)}
+              style={{ background: "#ffffff", border: "0.5px solid #e2e8f0", borderRadius: "8px", padding: "20px" }}
             >
-              <FeatureCard icon={feature.icon} title={feature.title} description={feature.description} />
+              <div style={{ width: "24px", height: "24px", borderRadius: "3px", backgroundColor: "rgba(198,139,47,0.08)", border: "0.5px solid rgba(198,139,47,0.2)", marginBottom: "12px" }} />
+              <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "13px", color: "#0f172a", margin: "0 0 6px" }}>{feat.title}</h3>
+              <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>{feat.body}</p>
             </motion.div>
           ))}
         </div>

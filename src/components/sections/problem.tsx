@@ -2,26 +2,22 @@
 
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { AlertTriangle, ShieldOff, EyeOff } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const CARDS = [
+const CARDS: { icon: LucideIcon; title: string; body: string }[] = [
   {
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="#b91c1c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M8 6v3" stroke="#b91c1c" strokeWidth="1.5" strokeLinecap="round" /><circle cx="8" cy="11.5" r="0.5" fill="#b91c1c" /></svg>
-    ),
+    icon: AlertTriangle,
     title: "No permanent record",
     body: "Financial decisions sanctioned verbally or via WhatsApp leave nothing permanently on record. When questions arise, there is nothing to show.",
   },
   {
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#b91c1c" strokeWidth="1.5" /><path d="M5 8h6M8 5v6" stroke="#b91c1c" strokeWidth="1.5" strokeLinecap="round" /></svg>
-    ),
+    icon: ShieldOff,
     title: "Authority bypassed",
     body: "Without enforced role gates, financial decisions are sanctioned by the wrong person — or by no one at all. Structure is assumed, not enforced.",
   },
   {
-    icon: (
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#b91c1c" strokeWidth="1.5" /><path d="M8 4.5v4" stroke="#b91c1c" strokeWidth="1.5" strokeLinecap="round" /><circle cx="8" cy="11" r="0.5" fill="#b91c1c" /></svg>
-    ),
+    icon: EyeOff,
     title: "MD without command",
     body: "The MD has no live view of what financial decisions are pending, what has moved, or the total exposure currently in the approval chain.",
   },
@@ -56,20 +52,23 @@ export function Problem() {
         </motion.p>
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px" }}>
-          {CARDS.map((card, i) => (
-            <motion.div
-              key={card.title}
-              variants={fadeUp} initial="hidden" whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(i + 3)}
-              style={{ border: "0.5px solid #e2e8f0", borderRadius: "8px", padding: "20px" }}
-            >
-              <div style={{ width: "28px", height: "28px", borderRadius: "4px", backgroundColor: "rgba(185,28,28,0.06)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
-                {card.icon}
-              </div>
-              <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "13px", color: "#0f172a", margin: "0 0 6px" }}>{card.title}</h3>
-              <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>{card.body}</p>
-            </motion.div>
-          ))}
+          {CARDS.map((card, i) => {
+            const Icon = card.icon;
+            return (
+              <motion.div
+                key={card.title}
+                variants={fadeUp} initial="hidden" whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(i + 3)}
+                style={{ border: "0.5px solid #e2e8f0", borderRadius: "8px", padding: "20px" }}
+              >
+                <div style={{ width: "28px", height: "28px", borderRadius: "4px", backgroundColor: "rgba(185,28,28,0.06)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "12px" }}>
+                  <Icon size={16} strokeWidth={1.5} color="#b91c1c" aria-hidden="true" />
+                </div>
+                <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "13px", color: "#0f172a", margin: "0 0 6px" }}>{card.title}</h3>
+                <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>{card.body}</p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

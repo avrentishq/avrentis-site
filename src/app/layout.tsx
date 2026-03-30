@@ -1,39 +1,49 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { IBM_Plex_Sans, IBM_Plex_Mono, Hanken_Grotesk } from "next/font/google";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-sans",
+  weight: ["400", "500"],
+  variable: "--font-ibm-plex-sans",
   display: "swap",
 });
 
 const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-mono",
+  variable: "--font-ibm-plex-mono",
+  display: "swap",
+});
+
+const hankenGrotesk = Hanken_Grotesk({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-hanken-grotesk",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "AVRENTIS — Financial Decision Infrastructure",
+  title: "AVRENTIS — Financial decision infrastructure for Nigerian business",
   description:
-    "AVRENTIS gives every financial decision in your organisation a defined structure. From the moment it is raised to the moment it is permanently on record.",
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+    "AVRENTIS structures the financial decisions that authorise money to move. Every Payment Voucher and Purchase Order follows a defined approval chain — permanently on record. Built for Nigerian business.",
   openGraph: {
-    title: "AVRENTIS — Financial Decision Infrastructure",
-    description: "Every decision, structured. Every approval, on record.",
+    title: "AVRENTIS — Every decision, structured. Every approval, on record.",
+    description:
+      "Financial decision infrastructure for any Nigerian organisation where financial decisions require structured authority.",
+    url: "https://avrentis.com",
+    siteName: "AVRENTIS",
     type: "website",
-    locale: "en_NG",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVRENTIS — Financial Decision Infrastructure",
-    description: "Every decision, structured. Every approval, on record.",
+    title: "AVRENTIS — Every decision, structured. Every approval, on record.",
+    description:
+      "Financial decision infrastructure for any Nigerian organisation where financial decisions require structured authority.",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
@@ -42,11 +52,8 @@ const orgSchema = {
   "@type": "Organization",
   name: "AVRENTIS",
   url: "https://avrentis.com",
-  description:
-    "Financial decision infrastructure for Nigerian business.",
-  foundingDate: "2026",
-  foundingLocation: "Nigeria",
-  areaServed: "Nigeria",
+  description: "Financial decision infrastructure for Nigerian business.",
+  slogan: "Every decision, structured. Every approval, on record.",
 };
 
 export default function RootLayout({
@@ -55,17 +62,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html
+      lang="en"
+      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${hankenGrotesk.variable}`}
+    >
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
       </head>
-      <body
-        className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} antialiased`}
-        style={{ fontFamily: "var(--font-sans)" }}
-      >
+      <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
         {children}
       </body>
     </html>

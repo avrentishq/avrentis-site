@@ -1,298 +1,258 @@
-/**
- * Avrentis Logo System — Geometric Triangle Mark
- *
- * The mark is a nested triangle construction: an outer triangle containing
- * a smaller inner triangle with a horizontal crossbar at the golden ratio.
- * The crossbar extends beyond the inner diagonals on both sides.
- *
- * All geometry is derived from proportional constants — no hardcoded pixels.
- */
+// AVRENTIS Logo — variant usage guide
+//
+// primary          → navy container + gold mark
+//                    use: sidebar, topbar, dark section backgrounds
+//
+// reversed         → gold container + navy mark
+//                    use: gold CTA surfaces only
+//
+// transparent-gold → no container, gold mark
+//                    use: any dark surface (#0f172a, #020617, dark photography)
+//
+// transparent-navy → no container, navy mark
+//                    use: any light surface (#ffffff, #f1f5f9, #FDF8EF)
+//
+// WORDMARK COLOURS
+//   on dark:  #ffffff (white)
+//   on light: #0f172a (navy)
+//   never:    gold (#C68B2F) on white navbar surface
+//
+// SIZES
+//   favicon:         16px  (document slot suppresses automatically)
+//   sidebar/navbar:  36–40px
+//   marketing:       48–64px
+//   hero/display:    80–120px
+//
+// LOCKUP GAP
+//   Always: size × 0.10 — never a fixed pixel value
 
 import { cn } from "@/lib/utils";
 
-// ── Brand colours ────────────────────────────────────────────────────────
+type MarkVariant =
+  | "primary"
+  | "reversed"
+  | "transparent-gold"
+  | "transparent-navy";
 
-const NAVY_HEX = "#0F172A";
-const GOLD_HEX = "#C68B2F";
-const WHITE = "var(--color-inverse)";
-const NAVY_VAR = "var(--color-primary-800)";
-const BLACK = "#000000";
-const TRANSPARENT = "transparent";
+interface AvrentisMarkProps {
+  size?: number;
+  variant?: MarkVariant;
+  className?: string;
+}
 
-// ── Types ────────────────────────────────────────────────────────────────
+interface AvrentisLogoProps extends AvrentisMarkProps {
+  showWordmark?: boolean;
+  wordmarkColor?: string;
+}
 
-type LogoSize = "sm" | "md" | "lg" | "xl";
-type LogoVariant = "horizontal" | "stacked" | "mark" | "wordmark";
-type LogoTheme = "primary" | "reversed" | "mono-dark" | "mono-light";
+// ── Proportion engine ─────────────────────────────────────────────────────────
 
-// ── Size scale ───────────────────────────────────────────────────────────
+function getProps(size: number) {
+  const postH = size * 0.52;
+  const passageW = size * 0.321;
+  const leftPostW = size * 0.09;
+  const rightPostW = size * 0.086;
+  const beamH = size * 0.05;
+  const ledgerH = size * 0.05;
+  const overhang = size * 0.016;
+  const rx = size * 0.16;
 
-const MARK_SIZES: Record<LogoSize, number> = {
-  sm: 24,
-  md: 36,
-  lg: 48,
-  xl: 64,
-};
+  const markW = overhang + leftPostW + passageW + rightPostW + overhang;
+  const markH = beamH + postH + ledgerH;
 
-const WORDMARK_SIZES: Record<LogoSize, number> = {
-  sm: 13,
-  md: 14,
-  lg: 18,
-  xl: 24,
-};
+  const padH = (size - markW) / 2;
+  const padV = (size - markH) / 2;
 
-const GAP_SIZES: Record<LogoSize, number> = {
-  sm: 8,
-  md: 12,
-  lg: 14,
-  xl: 18,
-};
+  const beamX = padH;
+  const beamY = padV;
+  const beamW = markW;
 
-const STACKED_GAP: Record<LogoSize, number> = {
-  sm: 4,
-  md: 6,
-  lg: 8,
-  xl: 10,
-};
+  const leftPostX = padH + overhang;
+  const rightPostX = padH + overhang + leftPostW + passageW;
+  const postY = padV + beamH;
 
-// ── Theme colours ────────────────────────────────────────────────────────
+  const slotX = leftPostX + leftPostW;
+  const slotY = postY + postH * 0.618;
+  const slotW = passageW;
+  const slotH = Math.max(2, size * 0.004);
 
-function getThemeColors(theme: LogoTheme) {
-  switch (theme) {
+  const ledgerY = postY + postH;
+  const ledgerXContained = 0;
+  const ledgerWContained = size;
+  const ledgerXTransparent = padH;
+  const ledgerWTransparent = markW;
+
+  return {
+    rx,
+    beamX,
+    beamY,
+    beamW,
+    beamH,
+    leftPostX,
+    rightPostX,
+    postY,
+    leftPostW,
+    rightPostW,
+    postH,
+    slotX,
+    slotY,
+    slotW,
+    slotH,
+    ledgerY,
+    ledgerH,
+    ledgerXContained,
+    ledgerWContained,
+    ledgerXTransparent,
+    ledgerWTransparent,
+  };
+}
+
+// ── Colour engine ─────────────────────────────────────────────────────────────
+
+function getColors(variant: MarkVariant) {
+  switch (variant) {
     case "primary":
       return {
-        containerFill: NAVY_HEX,
-        stroke: GOLD_HEX,
-        wordmark: WHITE,
-        containerBorder: "rgba(198,139,47,0.2)",
-        ghost: true,
+        container: "#0f172a",
+        stroke: "#C68B2F",
+        slot: "#C68B2F",
+        slotOpacity: 0.35,
+        border: "rgba(198,139,47,0.2)",
+        transparent: false,
       };
     case "reversed":
       return {
-        containerFill: GOLD_HEX,
-        stroke: NAVY_HEX,
-        wordmark: NAVY_VAR,
-        containerBorder: undefined,
-        ghost: false,
+        container: "#C68B2F",
+        stroke: "#0f172a",
+        slot: "#0f172a",
+        slotOpacity: 0.35,
+        border: "none",
+        transparent: false,
       };
-    case "mono-dark":
+    case "transparent-gold":
       return {
-        containerFill: BLACK,
-        stroke: "#FFFFFF",
-        wordmark: WHITE,
-        containerBorder: undefined,
-        ghost: false,
+        container: "none",
+        stroke: "#C68B2F",
+        slot: "#C68B2F",
+        slotOpacity: 0.35,
+        border: "none",
+        transparent: true,
       };
-    case "mono-light":
+    case "transparent-navy":
       return {
-        containerFill: TRANSPARENT,
-        stroke: NAVY_HEX,
-        wordmark: NAVY_VAR,
-        containerBorder: NAVY_HEX,
-        ghost: false,
+        container: "none",
+        stroke: "#0f172a",
+        slot: "#0f172a",
+        slotOpacity: 0.35,
+        border: "none",
+        transparent: true,
       };
   }
 }
 
-// ── Geometry computation — equalized proportion system ────────────────────
+// ── Mark ──────────────────────────────────────────────────────────────────────
 
-function computeMarkGeometry(size: number) {
-  // ── Proportional constants ─────────────────────────────
-  const CONTAINER_PADDING = 0.14;
-  const INNER_SCALE = 0.52;
-  const INNER_TOP_OFFSET = 0.18;
-  const GOLDEN_RATIO = 0.382;
-  const CROSSBAR_EXTENSION = 0.07;
-  const OPTICAL_SHIFT = 0.02;
-  const CONTAINER_RX = 0.2;
-  const STROKE_OUTER = 0.055;
-  const STROKE_INNER = 0.038;
-  const GHOST_PADDING = 0.07;
+export function AvrentisMark({
+  size = 40,
+  variant = "primary",
+  className,
+}: AvrentisMarkProps) {
+  const p = getProps(size);
+  const c = getColors(variant);
 
-  // ── Derived values ─────────────────────────────────────
-  const cx = size / 2;
-
-  // Outer triangle
-  const pad = size * CONTAINER_PADDING;
-  const triW = size - pad * 2;
-  const triH = triW * (Math.sqrt(3) / 2);
-
-  // Optical centre correction
-  const shift = size * OPTICAL_SHIFT;
-  const topY = (size - triH) / 2 - shift;
-  const botY = topY + triH;
-  const leftX = cx - triW / 2;
-  const rightX = cx + triW / 2;
-
-  // Inner triangle
-  const iW = triW * INNER_SCALE;
-  const iH = iW * (Math.sqrt(3) / 2);
-  const iTopY = topY + triH * INNER_TOP_OFFSET;
-  const iBotY = iTopY + iH;
-
-  // Crossbar
-  const cbY = iTopY + iH * GOLDEN_RATIO;
-  const prog = (cbY - iTopY) / (iBotY - iTopY);
-  const cbLi = cx + (cx - iW / 2 - cx) * prog;
-  const cbRi = cx + (cx + iW / 2 - cx) * prog;
-  const ext = iW * CROSSBAR_EXTENSION;
-  const cbX1 = cbLi - ext;
-  const cbX2 = cbRi + ext;
-
-  // Ghost triangle
-  const gPad = size * GHOST_PADDING;
-  const gW = size - gPad * 2;
-  const gH = gW * (Math.sqrt(3) / 2);
-  const gTopY = (size - gH) / 2 - shift;
-  const gBotY = gTopY + gH;
-  const gLX = cx - gW / 2;
-  const gRX = cx + gW / 2;
-
-  // Derived stroke weights and radius
-  const rx = size * CONTAINER_RX;
-  const sw1 = size * STROKE_OUTER;
-  const sw2 = size * STROKE_INNER;
-  const gSW = size * 0.015;
-
-  return {
-    container: { rx, sw: 0.5 },
-    outer: {
-      apex: { x: cx, y: topY },
-      left: { x: leftX, y: botY },
-      right: { x: rightX, y: botY },
-      sw: sw1,
-    },
-    inner: {
-      apex: { x: cx, y: iTopY },
-      left: { x: cx - iW / 2, y: iBotY },
-      right: { x: cx + iW / 2, y: iBotY },
-      sw: sw2,
-    },
-    crossbar: { y: cbY, x1: cbX1, x2: cbX2, sw: sw2 },
-    ghost: {
-      apex: { x: cx, y: gTopY },
-      left: { x: gLX, y: gBotY },
-      right: { x: gRX, y: gBotY },
-      sw: gSW,
-    },
-  };
-}
-
-// ── LogoMark (geometric triangle) ────────────────────────────────────────
-
-interface LogoMarkProps {
-  theme?: LogoTheme;
-  size?: number;
-  className?: string;
-}
-
-export function LogoMark({ theme = "primary", size = 36, className }: LogoMarkProps) {
-  const colors = getThemeColors(theme);
-  const geo = computeMarkGeometry(size);
-
-  const outerPath = `M${geo.outer.apex.x},${geo.outer.apex.y} L${geo.outer.left.x},${geo.outer.left.y} L${geo.outer.right.x},${geo.outer.right.y} Z`;
-  const innerPath = `M${geo.inner.apex.x},${geo.inner.apex.y} L${geo.inner.left.x},${geo.inner.left.y} L${geo.inner.right.x},${geo.inner.right.y} Z`;
-  const ghostPath = `M${geo.ghost.apex.x},${geo.ghost.apex.y} L${geo.ghost.right.x},${geo.ghost.right.y} L${geo.ghost.left.x},${geo.ghost.left.y} Z`;
+  const ledgerX = c.transparent ? p.ledgerXTransparent : p.ledgerXContained;
+  const ledgerW = c.transparent ? p.ledgerWTransparent : p.ledgerWContained;
 
   return (
     <svg
       width={size}
       height={size}
       viewBox={`0 0 ${size} ${size}`}
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={cn("flex-shrink-0", className)}
-      aria-hidden="true"
+      className={className}
+      aria-label="AVRENTIS"
+      role="img"
     >
-      {/* 1. Container */}
-      <rect
-        width={size}
-        height={size}
-        rx={geo.container.rx}
-        fill={colors.containerFill}
-        stroke={colors.containerBorder}
-        strokeWidth={colors.containerBorder ? geo.container.sw : 0}
-      />
-
-      {/* 2. Ghost triangle — primary only */}
-      {colors.ghost && (
-        <path
-          d={ghostPath}
-          fill="rgba(198,139,47,0.07)"
-          stroke="rgba(198,139,47,0.18)"
-          strokeWidth={geo.ghost.sw}
-          strokeLinejoin="round"
+      {c.container !== "none" && (
+        <rect
+          width={size}
+          height={size}
+          rx={p.rx}
+          fill={c.container}
+          stroke={c.border !== "none" ? c.border : undefined}
+          strokeWidth={c.border !== "none" ? 0.5 : undefined}
         />
       )}
 
-      {/* 3. Outer triangle */}
-      <path
-        d={outerPath}
-        stroke={colors.stroke}
-        strokeWidth={geo.outer.sw}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
+      <rect
+        x={p.beamX}
+        y={p.beamY}
+        width={p.beamW}
+        height={p.beamH}
+        fill={c.stroke}
+      />
+      <rect
+        x={p.leftPostX}
+        y={p.postY}
+        width={p.leftPostW}
+        height={p.postH}
+        fill={c.stroke}
+      />
+      <rect
+        x={p.rightPostX}
+        y={p.postY}
+        width={p.rightPostW}
+        height={p.postH}
+        fill={c.stroke}
       />
 
-      {/* 4. Inner triangle */}
-      <path
-        d={innerPath}
-        stroke={colors.stroke}
-        strokeWidth={geo.inner.sw}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
+      {size >= 48 && (
+        <rect
+          x={p.slotX}
+          y={p.slotY}
+          width={p.slotW}
+          height={p.slotH}
+          fill={c.slot}
+          opacity={c.slotOpacity}
+        />
+      )}
 
-      {/* 5. Crossbar */}
-      <line
-        x1={geo.crossbar.x1}
-        y1={geo.crossbar.y}
-        x2={geo.crossbar.x2}
-        y2={geo.crossbar.y}
-        stroke={colors.stroke}
-        strokeWidth={geo.crossbar.sw}
-        strokeLinecap="round"
+      <rect
+        x={ledgerX}
+        y={p.ledgerY}
+        width={ledgerW}
+        height={p.ledgerH}
+        fill={c.stroke}
       />
     </svg>
   );
 }
 
-// ── LogoWordmark (text only) ─────────────────────────────────────────────
+// ── Wordmark only ─────────────────────────────────────────────────────────────
 
-interface LogoWordmarkProps {
-  theme?: LogoTheme;
-  size?: LogoSize;
-  /** When paired with the mark (sidebar, login), uses heavier weight */
-  paired?: boolean;
+interface AvrentisWordmarkProps {
+  size?: number;
+  color?: string;
   className?: string;
 }
 
-export function LogoWordmark({
-  theme = "primary",
-  size = "md",
-  paired = false,
+export function AvrentisWordmark({
+  size = 15,
+  color = "#C68B2F",
   className,
-}: LogoWordmarkProps) {
-  const colors = getThemeColors(theme);
-
-  const fontSize = paired ? 15 : WORDMARK_SIZES[size];
-  const color = paired && theme === "primary" ? GOLD_HEX : colors.wordmark;
-
+}: AvrentisWordmarkProps) {
   return (
     <span
-      role="img"
-      aria-label="Avrentis"
-      className={cn("inline-block", className)}
+      className={className}
       style={{
-        fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+        fontFamily: "var(--font-wordmark)",
         fontWeight: 600,
-        fontSize,
+        fontSize: size,
         letterSpacing: "0.10em",
         color,
         lineHeight: 1,
-        textTransform: "uppercase" as const,
+        textTransform: "uppercase",
+        display: "inline-block",
       }}
     >
       AVRENTIS
@@ -300,60 +260,47 @@ export function LogoWordmark({
   );
 }
 
-// ── Logo (full system) ───────────────────────────────────────────────────
+// ── Full lockup (mark + wordmark) ─────────────────────────────────────────────
 
-interface LogoProps {
-  variant?: LogoVariant;
-  theme?: LogoTheme;
-  size?: LogoSize;
-  className?: string;
-}
-
-export default function Logo({
-  variant = "horizontal",
-  theme = "primary",
-  size = "md",
+export function AvrentisLogo({
+  size = 40,
+  variant = "primary",
+  showWordmark = true,
+  wordmarkColor,
   className,
-}: LogoProps) {
-  const markSize = MARK_SIZES[size];
+}: AvrentisLogoProps) {
+  const defaultWordmarkColor =
+    variant === "transparent-navy"
+      ? "#0f172a"
+      : variant === "reversed"
+        ? "#0f172a"
+        : "#ffffff";
 
-  if (variant === "mark") {
-    return (
-      <span role="img" aria-label="Avrentis" className={className}>
-        <LogoMark theme={theme} size={markSize} />
-      </span>
-    );
-  }
-
-  if (variant === "wordmark") {
-    return <LogoWordmark theme={theme} size={size} className={className} />;
-  }
-
-  if (variant === "stacked") {
-    return (
-      <span
-        role="img"
-        aria-label="Avrentis"
-        className={cn("inline-flex flex-col items-center", className)}
-        style={{ gap: STACKED_GAP[size] }}
-      >
-        <LogoMark theme={theme} size={markSize} />
-        <LogoWordmark theme={theme} size={size} paired />
-      </span>
-    );
-  }
+  const wColor = wordmarkColor ?? defaultWordmarkColor;
 
   return (
-    <span
-      role="img"
-      aria-label="Avrentis"
-      className={cn("inline-flex items-center", className)}
-      style={{ gap: GAP_SIZES[size] }}
+    <div
+      className={cn("flex items-center", className)}
+      style={{ gap: Math.round(size * 0.25) }}
     >
-      <LogoMark theme={theme} size={markSize} />
-      <LogoWordmark theme={theme} size={size} paired />
-    </span>
+      <AvrentisMark size={size} variant={variant} />
+      {showWordmark && (
+        <span
+          style={{
+            fontFamily: "var(--font-wordmark)",
+            fontWeight: 700,
+            fontSize: size * 0.46,
+            letterSpacing: "0.15em",
+            color: wColor,
+            lineHeight: 1,
+            textTransform: "uppercase" as const,
+          }}
+        >
+          AVRENTIS
+        </span>
+      )}
+    </div>
   );
 }
 
-export { Logo };
+export default AvrentisLogo;

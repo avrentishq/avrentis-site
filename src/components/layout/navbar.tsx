@@ -1,32 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
-import Logo from "@/components/ui/logo";
-import { Button } from "@/components/ui/button";
+import { AvrentisLogo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 
-const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://app.avrentis.com";
-
 const NAV_LINKS = [
-  { label: "Features", href: "/features" },
+  { label: "Product", href: "/product" },
+  { label: "How it works", href: "/how-it-works" },
   { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
     <>
@@ -36,19 +25,17 @@ export function Navbar() {
           top: 0,
           left: 0,
           right: 0,
-          height: "64px",
-          backgroundColor: "#ffffff",
-          borderBottom: scrolled ? "0.5px solid #e2e8f0" : "none",
-          boxShadow: scrolled ? "0 1px 3px rgba(0,0,0,0.05)" : "none",
+          height: "56px",
+          backgroundColor: "#0f172a",
+          borderBottom: "0.5px solid rgba(198,139,47,0.2)",
           zIndex: 50,
-          transition: "border-color 150ms ease, box-shadow 150ms ease",
         }}
       >
         <div
           style={{
             maxWidth: "1200px",
             margin: "0 auto",
-            padding: "0 24px",
+            padding: "0 40px",
             height: "100%",
             display: "flex",
             alignItems: "center",
@@ -56,7 +43,7 @@ export function Navbar() {
           }}
         >
           <Link href="/" aria-label="AVRENTIS home">
-            <Logo variant="horizontal" theme="mono-light" size="md" />
+            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
           </Link>
 
           <div className="hidden md:flex" style={{ gap: "32px", alignItems: "center" }}>
@@ -67,26 +54,18 @@ export function Navbar() {
                   key={link.href}
                   href={link.href}
                   style={{
-                    fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "14px",
-                    color: active ? "#0f172a" : "#475569",
+                    fontSize: "12px",
+                    color: active ? "#ffffff" : "#94a3b8",
                     textDecoration: "none",
-                    paddingBottom: "4px",
-                    borderBottom: active ? "2px solid #C68B2F" : "2px solid transparent",
-                    transition: "border-color 150ms ease, color 150ms ease",
+                    transition: "color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    if (!active) {
-                      e.currentTarget.style.borderBottomColor = "#C68B2F";
-                      e.currentTarget.style.color = "#0f172a";
-                    }
+                    if (!active) e.currentTarget.style.color = "#ffffff";
                   }}
                   onMouseLeave={(e) => {
-                    if (!active) {
-                      e.currentTarget.style.borderBottomColor = "transparent";
-                      e.currentTarget.style.color = "#475569";
-                    }
+                    if (!active) e.currentTarget.style.color = "#94a3b8";
                   }}
                 >
                   {link.label}
@@ -95,23 +74,34 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="hidden md:flex" style={{ gap: "16px", alignItems: "center" }}>
-            <a
-              href={`${APP_URL}/login`}
-              style={{
-                fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                fontWeight: 400,
-                fontSize: "14px",
-                color: "#64748b",
-                textDecoration: "none",
-              }}
-            >
-              Sign in
-            </a>
-            <Button variant="navy" size="sm" href="/contact">
-              Request access
-            </Button>
-          </div>
+          <a
+            href="/contact"
+            className="hidden md:inline-flex"
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "11px",
+              letterSpacing: "0.06em",
+              textTransform: "uppercase",
+              lineHeight: 1,
+              backgroundColor: "#C68B2F",
+              color: "#0f172a",
+              border: "none",
+              borderRadius: "3px",
+              height: "32px",
+              padding: "0 16px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "background-color 150ms ease",
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#A87425"; }}
+            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#C68B2F"; }}
+          >
+            REQUEST DEMO
+          </a>
 
           <button
             className="md:hidden"
@@ -119,18 +109,18 @@ export function Navbar() {
             aria-label="Open menu"
             style={{ background: "none", border: "none", cursor: "pointer", padding: "8px" }}
           >
-            <Menu size={18} color="#0f172a" strokeWidth={1.5} />
+            <Menu size={18} color="#94a3b8" strokeWidth={1.5} />
           </button>
         </div>
       </nav>
 
-      <div style={{ height: "64px" }} />
+      <div style={{ height: "56px" }} />
 
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         navLinks={NAV_LINKS}
-        signinUrl={`${APP_URL}/login`}
+        signinUrl="https://app.avrentis.com/login"
         pathname={pathname}
       />
     </>

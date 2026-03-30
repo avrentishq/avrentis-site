@@ -1,137 +1,47 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { fadeUp, stagger } from "@/lib/animations";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const STEPS = [
-  {
-    number: "01",
-    title: "Define your structure",
-    description: "Configure your approval chain, set role permissions, and establish the authority levels that govern financial decisions in your organisation.",
-  },
-  {
-    number: "02",
-    title: "Bring in your team",
-    description: "Every team member receives access matched precisely to their authority. Staff raise. HODs review. Finance validates. The MD sanctions.",
-  },
-  {
-    number: "03",
-    title: "Raise your first decision",
-    description: "Create a payment voucher or purchase order. It enters the structured chain immediately and every stakeholder is notified.",
-  },
-  {
-    number: "04",
-    title: "The record is permanent",
-    description: "Every action is timestamped and attributed. The decision is sanctioned. The record exists. It cannot be altered.",
-  },
+  { num: "01", title: "Register your organisation", body: "Add your organisation name, CAC number, and configure the sequential approval chain for your structure." },
+  { num: "02", title: "Assign roles to your team", body: "Invite team members and assign each a defined role — Staff, HOD, Finance, MD, or Admin. Each role sees only what they need and can only act within their authority." },
+  { num: "03", title: "Register your vendors", body: "Add approved vendors with bank details and CAC numbers. Purchase Orders are raised against registered vendors only." },
+  { num: "04", title: "Raise your first decision", body: "Raise a Payment Voucher or Purchase Order. It enters the approval chain immediately. The record begins from the moment it is raised." },
 ];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" style={{ backgroundColor: "#0f172a", padding: "100px 24px" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "48px" }}>
-        <div style={{ textAlign: "center" }}>
-          <motion.span
-            {...fadeUp}
-            style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontWeight: 500,
-              fontSize: "10px",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase" as const,
-              color: "#C68B2F",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            GET STARTED
-          </motion.span>
-          <motion.h2
-            {...stagger(1)}
-            style={{
-              fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-              fontWeight: 400,
-              fontSize: "36px",
-              color: "#ffffff",
-              lineHeight: 1.2,
-              margin: 0,
-            }}
-          >
-            Your organisation, properly structured.
-          </motion.h2>
-        </div>
-
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "0",
-            position: "relative",
-          }}
+    <section style={{ backgroundColor: "#ffffff", padding: "100px 40px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <motion.span
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.10em", textTransform: "uppercase", color: "#C68B2F", display: "block", marginBottom: "16px" }}
         >
+          GETTING STARTED
+        </motion.span>
+
+        <motion.h2
+          variants={fadeUp} initial="hidden" whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(1)}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "22px", color: "#0f172a", lineHeight: 1.3, margin: "0 0 48px", maxWidth: "520px" }}
+        >
+          From configuration to first sanctioned decision in under a day.
+        </motion.h2>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "16px" }}>
           {STEPS.map((step, i) => (
             <motion.div
-              key={step.number}
-              {...stagger(i + 2)}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "12px",
-                padding: "24px",
-                position: "relative",
-              }}
+              key={step.num}
+              variants={fadeUp} initial="hidden" whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(i + 2)}
+              style={{ display: "flex", flexDirection: "column", gap: "0" }}
             >
-              {i < STEPS.length - 1 && (
-                <div
-                  className="hidden lg:block"
-                  style={{
-                    position: "absolute",
-                    top: "36px",
-                    right: "0",
-                    width: "100%",
-                    height: "0.5px",
-                    backgroundColor: "rgba(198, 139, 47, 0.2)",
-                    zIndex: 0,
-                  }}
-                />
-              )}
-
-              <span
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontWeight: 400,
-                  fontSize: "11px",
-                  color: "#C68B2F",
-                  lineHeight: 1,
-                  position: "relative",
-                  zIndex: 1,
-                }}
-              >
-                {step.number}
-              </span>
-              <h3
-                style={{
-                  fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  color: "#ffffff",
-                  margin: 0,
-                }}
-              >
-                {step.title}
-              </h3>
-              <p
-                style={{
-                  fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-                  fontWeight: 400,
-                  fontSize: "14px",
-                  color: "#94a3b8",
-                  lineHeight: 1.6,
-                  margin: 0,
-                }}
-              >
-                {step.description}
-              </p>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "10px", fontWeight: 500, letterSpacing: "0.10em", color: "#C68B2F" }}>{step.num}</span>
+              <div style={{ height: "1px", backgroundColor: "rgba(198,139,47,0.2)", margin: "10px 0 16px" }} />
+              <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "13px", color: "#0f172a", margin: "0 0 6px" }}>{step.title}</h3>
+              <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>{step.body}</p>
             </motion.div>
           ))}
         </div>

@@ -5,18 +5,20 @@
  * - Fade-up ONLY (opacity + translateY)
  * - Duration 0.4s, ease-out
  * - No bounce, no spring, no scale, no rotation
- * - Stagger max 0.08s between siblings
- * - type: "tween" always, never "spring"
+ * - Stagger max 0.08s between siblings, never exceed 0.32s total
+ * - viewport once: true — fires once, never re-triggers
  */
 
 export const fadeUp = {
-  initial: { opacity: 0, y: 12 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.4, ease: "easeOut" as const },
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0 },
 };
 
-export const stagger = (index: number) => ({
-  ...fadeUp,
-  transition: { ...fadeUp.transition, delay: index * 0.08 },
-});
+export const fadeUpTransition = {
+  duration: 0.4,
+  ease: "easeOut" as const,
+};
+
+export function staggerDelay(index: number) {
+  return { ...fadeUpTransition, delay: index * 0.08 };
+}

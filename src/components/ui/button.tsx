@@ -24,7 +24,7 @@ const VARIANTS: Record<ButtonVariant, React.CSSProperties> = {
   navy: {
     backgroundColor: "#0f172a",
     color: "#C68B2F",
-    border: "0.5px solid rgba(198,139,47,0.3)",
+    border: "0.5px solid rgba(198,139,47,0.4)",
   },
   outline: {
     backgroundColor: "transparent",
@@ -45,16 +45,18 @@ const HOVER_STYLES: Partial<Record<ButtonVariant, { backgroundColor?: string; bo
   outline: { borderColor: "#0f172a" },
 };
 
-const SIZES: Record<ButtonSize, { height: string; padding: string; fontSize: string }> = {
-  sm: { height: "32px", padding: "0 16px", fontSize: "13px" },
-  md: { height: "40px", padding: "0 20px", fontSize: "14px" },
-  lg: { height: "48px", padding: "0 28px", fontSize: "14px" },
+const SIZES: Record<ButtonSize, { height: string; padding: string }> = {
+  sm: { height: "32px", padding: "0 16px" },
+  md: { height: "36px", padding: "0 20px" },
+  lg: { height: "40px", padding: "0 24px" },
 };
 
 const BASE_STYLE: React.CSSProperties = {
-  fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
+  fontFamily: "var(--font-sans)",
   fontWeight: 500,
-  letterSpacing: "0.05em",
+  fontSize: "11px",
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
   borderRadius: "3px",
   cursor: "pointer",
   transition: "background-color 150ms ease, border-color 150ms ease, opacity 150ms ease",

@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { AnnouncementStrip } from "@/components/sections/announcement-strip";
 import { Hero } from "@/components/sections/hero";
 import { TrustBar } from "@/components/sections/trust-bar";
 import { Problem } from "@/components/sections/problem";
@@ -8,14 +7,12 @@ import { ApprovalChain } from "@/components/sections/approval-chain";
 import { SolutionRow } from "@/components/sections/solution-row";
 import { FeaturesGrid } from "@/components/sections/features-grid";
 import { HowItWorks } from "@/components/sections/how-it-works";
-import { StatsBar } from "@/components/sections/stats-bar";
 import { QuoteBand } from "@/components/sections/quote-band";
 import { CtaBanner } from "@/components/sections/cta-banner";
 
 export default function Home() {
   return (
     <>
-      <AnnouncementStrip />
       <Navbar />
       <main>
         <Hero />
@@ -23,46 +20,45 @@ export default function Home() {
         <Problem />
         <ApprovalChain />
 
-        <SolutionRow
-          label="PAYMENT VOUCHERS"
-          headline="Structure every payment decision before money moves."
-          body="Every payment voucher raised in AVRENTIS travels a defined path — from the staff member who raises it, through HOD review, finance validation, and MD sanction. No shortcuts. No WhatsApp. Every step on record."
-          features={[
-            "Sequential approval chain — Staff → HOD → Finance → MD",
-            "Permanent record of every action and timestamp",
-            "Audit-ready before any query arises",
-          ]}
-          bg="#FDF8EF"
-        />
+        <section style={{ backgroundColor: "#ffffff", padding: "100px 40px" }}>
+          <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+            <span
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "10px",
+                letterSpacing: "0.10em",
+                textTransform: "uppercase",
+                color: "#C68B2F",
+                display: "block",
+                marginBottom: "16px",
+              }}
+            >
+              THE PLATFORM
+            </span>
+            <h2
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "22px",
+                color: "#0f172a",
+                lineHeight: 1.3,
+                margin: "0 0 48px",
+              }}
+            >
+              Two document types. One structured decision chain.
+            </h2>
 
-        <SolutionRow
-          label="PURCHASE ORDERS"
-          headline="Raise, review, and record every purchase order."
-          body="From vendor selection to MD approval, every purchase order in AVRENTIS is traceable. Vendor details, amounts, cost centres — all structured, all on record."
-          features={[
-            "Registered vendor database with bank details",
-            "Full approval chain with role-based authority",
-            "Reference numbers in IBM Plex Mono for every document",
-          ]}
-          bg="#ffffff"
-          reversed
-        />
+            <SolutionRow type="pv" />
 
-        <SolutionRow
-          label="AUDIT TRAIL"
-          headline="An immutable record of everything."
-          body="Every financial decision across your organisation — who raised it, who reviewed it, who sanctioned it — permanently on record. The structure of your organisation, written in every action."
-          features={[
-            "Every action timestamped and attributed",
-            "Exportable for regulatory review",
-            "NDPR-compliant data handling",
-          ]}
-          bg="#FDF8EF"
-        />
+            <div style={{ borderTop: "0.5px solid #e2e8f0", paddingTop: "48px", marginTop: "48px" }} />
+
+            <SolutionRow type="po" />
+          </div>
+        </section>
 
         <FeaturesGrid />
         <HowItWorks />
-        <StatsBar />
         <QuoteBand />
         <CtaBanner />
       </main>

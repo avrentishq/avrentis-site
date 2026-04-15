@@ -37,7 +37,7 @@ function SubmitMockup() {
         border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: "12px",
         padding: "24px",
-        boxShadow: "0 0 40px rgba(245,166,35,0.06), 0 16px 40px rgba(0,0,0,0.3)",
+        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 16px 40px rgba(0,0,0,0.3)",
       }}
     >
       <span
@@ -55,7 +55,7 @@ function SubmitMockup() {
 
       {/* Document Type */}
       <div style={{ marginBottom: "14px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#5A6B7F", display: "block", marginBottom: "6px" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
           Document Type
         </span>
         <div
@@ -76,7 +76,7 @@ function SubmitMockup() {
 
       {/* Vendor */}
       <div style={{ marginBottom: "14px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#5A6B7F", display: "block", marginBottom: "6px" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
           Vendor
         </span>
         <div
@@ -87,20 +87,20 @@ function SubmitMockup() {
             padding: "10px 12px",
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
-            color: "#8492A6",
+            color: "#64748b",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
           <span>Select vendor&hellip;</span>
-          <span style={{ fontSize: "10px", color: "#5A6B7F" }}>&#9662;</span>
+          <span style={{ fontSize: "10px", color: "#475569" }}>&#9662;</span>
         </div>
       </div>
 
       {/* Amount */}
       <div style={{ marginBottom: "14px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#5A6B7F", display: "block", marginBottom: "6px" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
           Amount
         </span>
         <div
@@ -111,7 +111,7 @@ function SubmitMockup() {
             padding: "10px 12px",
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
-            color: "#8492A6",
+            color: "#64748b",
           }}
         >
           &#x20A6; 0.00
@@ -120,7 +120,7 @@ function SubmitMockup() {
 
       {/* Purpose */}
       <div style={{ marginBottom: "20px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#5A6B7F", display: "block", marginBottom: "6px" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
           Purpose
         </span>
         <div
@@ -131,7 +131,7 @@ function SubmitMockup() {
             padding: "10px 12px",
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
-            color: "#8492A6",
+            color: "#64748b",
             minHeight: "40px",
           }}
         >
@@ -142,8 +142,8 @@ function SubmitMockup() {
       {/* Submit button */}
       <div
         style={{
-          backgroundColor: "#F5A623",
-          color: "#0A2540",
+          backgroundColor: "#C68B2F",
+          color: "#0f172a",
           fontFamily: "var(--font-sans)",
           fontWeight: 600,
           fontSize: "13px",
@@ -169,15 +169,15 @@ function ApproveMockup() {
         border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: "12px",
         padding: "24px",
-        boxShadow: "0 0 40px rgba(245,166,35,0.06), 0 16px 40px rgba(0,0,0,0.3)",
+        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 16px 40px rgba(0,0,0,0.3)",
       }}
     >
       {/* Notification badge */}
       <div
         style={{
           display: "inline-block",
-          backgroundColor: "rgba(245,166,35,0.1)",
-          border: "1px solid rgba(245,166,35,0.2)",
+          backgroundColor: "rgba(198,139,47,0.1)",
+          border: "1px solid rgba(198,139,47,0.2)",
           borderRadius: "4px",
           padding: "5px 10px",
           marginBottom: "20px",
@@ -190,7 +190,7 @@ function ApproveMockup() {
             fontSize: "11px",
             letterSpacing: "0.06em",
             textTransform: "uppercase",
-            color: "#F5A623",
+            color: "#C68B2F",
           }}
         >
           New Approval Request
@@ -200,15 +200,15 @@ function ApproveMockup() {
       {/* Details */}
       <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#5A6B7F" }}>Reference</span>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Reference</span>
           <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 600 }}>PV-2026-0041</span>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#5A6B7F" }}>Amount</span>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Amount</span>
           <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 600 }}>&#x20A6;850,000</span>
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#5A6B7F" }}>Vendor</span>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Vendor</span>
           <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 500 }}>Brightpath Technologies</span>
         </div>
       </div>
@@ -266,7 +266,7 @@ function RecordMockup() {
         border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: "12px",
         padding: "24px",
-        boxShadow: "0 0 40px rgba(245,166,35,0.06), 0 16px 40px rgba(0,0,0,0.3)",
+        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 16px 40px rgba(0,0,0,0.3)",
       }}
     >
       <span
@@ -306,7 +306,7 @@ function RecordMockup() {
               <span style={{ color: "#34C759", fontSize: "11px", lineHeight: 1 }}>&#10003;</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flex: 1 }}>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#5A6B7F" }}>{item.role}</span>
+              <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>{item.role}</span>
               <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 500 }}>{item.person}</span>
             </div>
           </div>
@@ -324,8 +324,8 @@ function RecordMockup() {
           alignItems: "center",
         }}
       >
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#5A6B7F" }}>Completed</span>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#8492A6", fontWeight: 500 }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Completed</span>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#64748b", fontWeight: 500 }}>
           15 Apr 2026, 14:32 WAT
         </span>
       </div>
@@ -362,7 +362,7 @@ export function HowItWorks() {
   const ActiveMockup = MOCKUPS[active];
 
   return (
-    <section id="how-it-works" style={{ backgroundColor: "#0A2540", padding: "120px 40px" }}>
+    <section id="how-it-works" style={{ backgroundColor: "#0f172a", padding: "120px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* ── Header ──────────────────────────────────── */}
         <motion.span
@@ -377,7 +377,7 @@ export function HowItWorks() {
             fontSize: "12px",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#F5A623",
+            color: "#C68B2F",
             display: "block",
             marginBottom: "16px",
           }}
@@ -415,7 +415,7 @@ export function HowItWorks() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#8492A6",
+            color: "#64748b",
             lineHeight: 1.7,
             margin: "0 0 56px",
             maxWidth: "600px",
@@ -458,7 +458,7 @@ export function HowItWorks() {
                     left: "50%",
                     right: "-50%",
                     height: "2px",
-                    backgroundColor: i < active ? "#F5A623" : "rgba(132,146,166,0.25)",
+                    backgroundColor: i < active ? "#C68B2F" : "rgba(132,146,166,0.25)",
                     zIndex: 0,
                     transition: "background-color 0.3s ease",
                   }}
@@ -471,8 +471,8 @@ export function HowItWorks() {
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
-                  backgroundColor: i === active ? "#F5A623" : "transparent",
-                  border: i === active ? "2px solid #F5A623" : "2px solid rgba(132,146,166,0.4)",
+                  backgroundColor: i === active ? "#C68B2F" : "transparent",
+                  border: i === active ? "2px solid #C68B2F" : "2px solid rgba(132,146,166,0.4)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -486,7 +486,7 @@ export function HowItWorks() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "13px",
-                    color: i === active ? "#0A2540" : "#8492A6",
+                    color: i === active ? "#0f172a" : "#64748b",
                     transition: "color 0.3s ease",
                   }}
                 >
@@ -500,7 +500,7 @@ export function HowItWorks() {
                   fontFamily: "var(--font-sans)",
                   fontWeight: i === active ? 600 : 500,
                   fontSize: "14px",
-                  color: i === active ? "#FFFFFF" : "#8492A6",
+                  color: i === active ? "#FFFFFF" : "#64748b",
                   marginTop: "10px",
                   transition: "color 0.3s ease",
                 }}
@@ -515,12 +515,11 @@ export function HowItWorks() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "48px",
             alignItems: "center",
             marginBottom: "64px",
           }}
-          className="lg:grid-cols-2"
+          className="grid-cols-1 lg:grid-cols-2"
         >
           {/* Left — Text */}
           <AnimatePresence mode="wait">
@@ -536,7 +535,7 @@ export function HowItWorks() {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 400,
                   fontSize: "15px",
-                  color: "#8492A6",
+                  color: "#64748b",
                   lineHeight: 1.7,
                   margin: 0,
                   maxWidth: "480px",
@@ -571,14 +570,13 @@ export function HowItWorks() {
           viewport={{ once: true, margin: "-40px" }}
           transition={staggerDelay(4)}
           style={{
-            backgroundColor: "#0D2D4E",
+            backgroundColor: "#1e293b",
             borderRadius: "10px",
             padding: "20px 32px",
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "16px",
           }}
-          className="lg:grid-cols-4"
+          className="grid-cols-2 lg:grid-cols-4"
         >
           {FEATURES.map((feat) => {
             const Icon = feat.icon;
@@ -591,13 +589,13 @@ export function HowItWorks() {
                   gap: "10px",
                 }}
               >
-                <Icon size={16} strokeWidth={1.8} color="#F5A623" aria-hidden="true" />
+                <Icon size={16} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
                 <span
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontWeight: 500,
                     fontSize: "13px",
-                    color: "#8492A6",
+                    color: "#64748b",
                   }}
                 >
                   {feat.label}

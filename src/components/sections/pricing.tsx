@@ -90,7 +90,7 @@ export function Pricing() {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
 
   return (
-    <section style={{ backgroundColor: "#F7F9FC", padding: "100px 40px" }}>
+    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Eyebrow */}
         <motion.span
@@ -105,7 +105,7 @@ export function Pricing() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#F5A623",
+            color: "#C68B2F",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -125,7 +125,7 @@ export function Pricing() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0A2540",
+            color: "#0f172a",
             lineHeight: 1.3,
             margin: "0 auto 12px",
             textAlign: "center",
@@ -146,7 +146,7 @@ export function Pricing() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#8492A6",
+            color: "#64748b",
             lineHeight: 1.7,
             margin: "0 auto 32px",
             textAlign: "center",
@@ -173,7 +173,7 @@ export function Pricing() {
           <div
             style={{
               display: "inline-flex",
-              border: "1px solid #E8ECF0",
+              border: "1px solid #e2e8f0",
               borderRadius: "8px",
               padding: "4px",
             }}
@@ -191,8 +191,8 @@ export function Pricing() {
                 border: "none",
                 transition: "all 150ms ease",
                 backgroundColor:
-                  billing === "monthly" ? "#0A2540" : "transparent",
-                color: billing === "monthly" ? "#FFFFFF" : "#8492A6",
+                  billing === "monthly" ? "#0f172a" : "transparent",
+                color: billing === "monthly" ? "#FFFFFF" : "#64748b",
               }}
             >
               Monthly
@@ -210,8 +210,8 @@ export function Pricing() {
                 border: "none",
                 transition: "all 150ms ease",
                 backgroundColor:
-                  billing === "annual" ? "#F5A623" : "transparent",
-                color: billing === "annual" ? "#0A2540" : "#8492A6",
+                  billing === "annual" ? "#C68B2F" : "transparent",
+                color: billing === "annual" ? "#0f172a" : "#64748b",
               }}
             >
               Annual (Save 15%)
@@ -223,10 +223,9 @@ export function Pricing() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "20px",
           }}
-          className="md:grid-cols-2 lg:grid-cols-4"
+          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
         >
           {PLANS.map((plan, i) => {
             const isFeatured = plan.featured === true;
@@ -243,10 +242,10 @@ export function Pricing() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 4)}
                 style={{
-                  backgroundColor: isFeatured ? "#0A2540" : "#FFFFFF",
+                  backgroundColor: isFeatured ? "#0f172a" : "#FFFFFF",
                   border: isFeatured
-                    ? "1px solid rgba(245,166,35,0.3)"
-                    : "1px solid #E8ECF0",
+                    ? "1px solid rgba(198,139,47,0.3)"
+                    : "1px solid #e2e8f0",
                   borderRadius: "12px",
                   padding: "32px",
                   display: "flex",
@@ -258,8 +257,8 @@ export function Pricing() {
                   <span
                     style={{
                       display: "inline-block",
-                      backgroundColor: "#F5A623",
-                      color: "#0A2540",
+                      backgroundColor: "#C68B2F",
+                      color: "#0f172a",
                       fontSize: "11px",
                       fontWeight: 600,
                       fontFamily: "var(--font-sans)",
@@ -280,7 +279,7 @@ export function Pricing() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "20px",
-                    color: isFeatured ? "#FFFFFF" : "#0A2540",
+                    color: isFeatured ? "#FFFFFF" : "#0f172a",
                     margin: "0 0 6px",
                   }}
                 >
@@ -293,7 +292,7 @@ export function Pricing() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: "#8492A6",
+                    color: "#64748b",
                     lineHeight: 1.5,
                     margin: "0 0 20px",
                   }}
@@ -310,7 +309,7 @@ export function Pricing() {
                           fontFamily: "var(--font-sans)",
                           fontWeight: 700,
                           fontSize: "36px",
-                          color: isFeatured ? "#FFFFFF" : "#0A2540",
+                          color: isFeatured ? "#FFFFFF" : "#0f172a",
                         }}
                       >
                         Custom
@@ -321,7 +320,7 @@ export function Pricing() {
                           fontFamily: "var(--font-sans)",
                           fontWeight: 400,
                           fontSize: "14px",
-                          color: "#8492A6",
+                          color: "#64748b",
                           marginTop: "4px",
                         }}
                       >
@@ -335,7 +334,7 @@ export function Pricing() {
                           fontFamily: "var(--font-sans)",
                           fontWeight: 700,
                           fontSize: "36px",
-                          color: isFeatured ? "#FFFFFF" : "#0A2540",
+                          color: isFeatured ? "#FFFFFF" : "#0f172a",
                         }}
                       >
                         {formatPrice(price as number)}
@@ -345,7 +344,7 @@ export function Pricing() {
                           fontFamily: "var(--font-sans)",
                           fontWeight: 400,
                           fontSize: "14px",
-                          color: "#8492A6",
+                          color: "#64748b",
                         }}
                       >
                         /month
@@ -370,7 +369,7 @@ export function Pricing() {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "13px",
-                        color: "#8492A6",
+                        color: "#64748b",
                         lineHeight: 1.5,
                         marginBottom: "10px",
                         display: "flex",
@@ -380,7 +379,7 @@ export function Pricing() {
                     >
                       <span
                         style={{
-                          color: isFeatured ? "#F5A623" : "#27AE60",
+                          color: isFeatured ? "#C68B2F" : "#27AE60",
                           fontWeight: 600,
                           flexShrink: 0,
                         }}
@@ -409,28 +408,28 @@ export function Pricing() {
                     transition: "all 150ms ease",
                     ...(isFeatured
                       ? {
-                          backgroundColor: "#F5A623",
-                          color: "#0A2540",
+                          backgroundColor: "#C68B2F",
+                          color: "#0f172a",
                           border: "none",
                         }
                       : {
                           backgroundColor: "transparent",
-                          color: "#0A2540",
-                          border: "1px solid #E8ECF0",
+                          color: "#0f172a",
+                          border: "1px solid #e2e8f0",
                         }),
                   }}
                   onMouseEnter={(e) => {
                     if (isFeatured) {
-                      e.currentTarget.style.backgroundColor = "#D4891E";
+                      e.currentTarget.style.backgroundColor = "#A87425";
                     } else {
-                      e.currentTarget.style.borderColor = "#0A2540";
+                      e.currentTarget.style.borderColor = "#0f172a";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (isFeatured) {
-                      e.currentTarget.style.backgroundColor = "#F5A623";
+                      e.currentTarget.style.backgroundColor = "#C68B2F";
                     } else {
-                      e.currentTarget.style.borderColor = "#E8ECF0";
+                      e.currentTarget.style.borderColor = "#e2e8f0";
                     }
                   }}
                 >
@@ -452,7 +451,7 @@ export function Pricing() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "13px",
-            color: "#8492A6",
+            color: "#64748b",
             textAlign: "center",
             marginTop: "40px",
           }}

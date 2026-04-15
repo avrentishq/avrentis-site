@@ -16,7 +16,7 @@ export function CtaBanner() {
   return (
     <section
       style={{
-        backgroundColor: "#0A2540",
+        backgroundColor: "#0f172a",
         padding: "120px 40px",
         textAlign: "center",
         backgroundImage:
@@ -65,7 +65,7 @@ export function CtaBanner() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#8492A6",
+            color: "#64748b",
             lineHeight: 1.7,
             margin: "0 0 32px",
           }}
@@ -94,8 +94,8 @@ export function CtaBanner() {
               fontFamily: "var(--font-sans)",
               fontWeight: 600,
               fontSize: "16px",
-              backgroundColor: "#F5A623",
-              color: "#0A2540",
+              backgroundColor: "#C68B2F",
+              color: "#0f172a",
               border: "none",
               borderRadius: "6px",
               height: "52px",
@@ -108,10 +108,10 @@ export function CtaBanner() {
               transition: "background-color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#D4891E";
+              e.currentTarget.style.backgroundColor = "#A87425";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#F5A623";
+              e.currentTarget.style.backgroundColor = "#C68B2F";
             }}
           >
             Start for free — no credit card required
@@ -157,7 +157,7 @@ export function CtaBanner() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "13px",
-            color: "#5A6B7F",
+            color: "#475569",
             marginTop: "20px",
           }}
         >
@@ -189,10 +189,10 @@ export function CtaBanner() {
                 gap: "6px",
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
-                color: "#8492A6",
+                color: "#64748b",
               }}
             >
-              <Icon size={14} color="#F5A623" strokeWidth={2} />
+              <Icon size={14} color="#C68B2F" strokeWidth={2} />
               {label}
             </span>
           ))}

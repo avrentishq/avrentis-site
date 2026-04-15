@@ -26,8 +26,8 @@ export function Navbar() {
           left: 0,
           right: 0,
           height: "56px",
-          backgroundColor: "#0A2540",
-          borderBottom: "0.5px solid rgba(245,166,35,0.2)",
+          backgroundColor: "#0f172a",
+          borderBottom: "0.5px solid rgba(198,139,47,0.2)",
           zIndex: 50,
         }}
       >
@@ -60,12 +60,12 @@ export function Navbar() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: active ? "#F5A623" : "#ffffff",
+                    color: active ? "#C68B2F" : "#ffffff",
                     textDecoration: "none",
                     transition: "color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    if (!active) e.currentTarget.style.color = "#F5A623";
+                    if (!active) e.currentTarget.style.color = "#C68B2F";
                   }}
                   onMouseLeave={(e) => {
                     if (!active) e.currentTarget.style.color = "#ffffff";
@@ -87,8 +87,8 @@ export function Navbar() {
               letterSpacing: "0.06em",
               textTransform: "uppercase",
               lineHeight: 1,
-              backgroundColor: "#F5A623",
-              color: "#0A2540",
+              backgroundColor: "#C68B2F",
+              color: "#0f172a",
               border: "none",
               borderRadius: "3px",
               height: "32px",
@@ -101,10 +101,10 @@ export function Navbar() {
               transition: "background-color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#D4891E";
+              e.currentTarget.style.backgroundColor = "#A87425";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#F5A623";
+              e.currentTarget.style.backgroundColor = "#C68B2F";
             }}
           >
             START FOR FREE
@@ -121,7 +121,7 @@ export function Navbar() {
               padding: "8px",
             }}
           >
-            <Menu size={18} color="#8492A6" strokeWidth={1.5} />
+            <Menu size={18} color="#64748b" strokeWidth={1.5} />
           </button>
         </div>
       </nav>

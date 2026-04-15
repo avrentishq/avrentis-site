@@ -4,11 +4,10 @@ import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
 
 const PLATFORM_LINKS = [
-  { label: "Payment Vouchers", href: "/product" },
-  { label: "Purchase Orders", href: "/product" },
-  { label: "Audit record", href: "/product" },
-  { label: "Approval chain", href: "/product" },
-  { label: "Delegation", href: "/product" },
+  { label: "Avrentis Pay", href: "/product" },
+  { label: "Avrentis Procure", href: "/product" },
+  { label: "Avrentis Vault", href: "/product" },
+  { label: "Avrentis Audit", href: "/product" },
 ];
 
 const COMPANY_LINKS = [
@@ -18,7 +17,8 @@ const COMPANY_LINKS = [
 ];
 
 const START_LINKS = [
-  { label: "Request demo", href: "/contact" },
+  { label: "Start for free", href: "/contact" },
+  { label: "Book a demo", href: "/contact" },
   { label: "Log in", href: "https://app.avrentis.com/login" },
 ];
 
@@ -26,7 +26,7 @@ const linkStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontWeight: 400,
   fontSize: "12px",
-  color: "#475569",
+  color: "#8492A6",
   textDecoration: "none",
   display: "block",
   marginBottom: "8px",
@@ -39,7 +39,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: "10px",
   letterSpacing: "0.10em",
   textTransform: "uppercase",
-  color: "#C68B2F",
+  color: "#F5A623",
   marginBottom: "14px",
 };
 
@@ -52,8 +52,8 @@ function FooterColumn({ label, links }: { label: string; links: { label: string;
           key={link.label}
           href={link.href}
           style={linkStyle}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "#C68B2F"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "#475569"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#F5A623"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#8492A6"; }}
         >
           {link.label}
         </Link>
@@ -66,9 +66,9 @@ export function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: "#020617",
+        backgroundColor: "#061B2E",
         padding: "64px 40px 32px",
-        borderTop: "0.5px solid rgba(198,139,47,0.1)",
+        borderTop: "0.5px solid rgba(245,166,35,0.1)",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -90,12 +90,12 @@ export function Footer() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "12px",
-                color: "#475569",
+                color: "#8492A6",
                 lineHeight: 1.6,
                 maxWidth: "200px",
               }}
             >
-              Financial decision infrastructure for Nigerian business.
+              Operational authority platform for organisations worldwide.
             </span>
           </div>
 
@@ -121,7 +121,7 @@ export function Footer() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "11px",
-              color: "#334155",
+              color: "#1A3A5C",
             }}
           >
             &copy; 2026 AVRENTIS. All rights reserved.
@@ -134,7 +134,7 @@ export function Footer() {
               fontSize: "9px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "#F5A623",
             }}
           >
             POWERED BY AVRENTIS

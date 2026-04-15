@@ -9,8 +9,8 @@ import { MobileMenu } from "@/components/layout/mobile-menu";
 
 const NAV_LINKS = [
   { label: "Product", href: "/product" },
-  { label: "How it works", href: "/how-it-works" },
   { label: "Pricing", href: "/pricing" },
+  { label: "About", href: "/about" },
 ];
 
 export function Navbar() {
@@ -26,8 +26,8 @@ export function Navbar() {
           left: 0,
           right: 0,
           height: "56px",
-          backgroundColor: "#0f172a",
-          borderBottom: "0.5px solid rgba(198,139,47,0.2)",
+          backgroundColor: "#0A2540",
+          borderBottom: "0.5px solid rgba(245,166,35,0.2)",
           zIndex: 50,
         }}
       >
@@ -43,10 +43,13 @@ export function Navbar() {
           }}
         >
           <Link href="/" aria-label="AVRENTIS home">
-            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
+            <AvrentisLogo variant="primary" size={36} wordmarkColor="#ffffff" />
           </Link>
 
-          <div className="hidden md:flex" style={{ gap: "32px", alignItems: "center" }}>
+          <div
+            className="hidden md:flex"
+            style={{ gap: "64px", alignItems: "center" }}
+          >
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href;
               return (
@@ -56,16 +59,16 @@ export function Navbar() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "12px",
-                    color: active ? "#ffffff" : "#94a3b8",
+                    fontSize: "14px",
+                    color: active ? "#F5A623" : "#ffffff",
                     textDecoration: "none",
                     transition: "color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    if (!active) e.currentTarget.style.color = "#ffffff";
+                    if (!active) e.currentTarget.style.color = "#F5A623";
                   }}
                   onMouseLeave={(e) => {
-                    if (!active) e.currentTarget.style.color = "#94a3b8";
+                    if (!active) e.currentTarget.style.color = "#ffffff";
                   }}
                 >
                   {link.label}
@@ -84,8 +87,8 @@ export function Navbar() {
               letterSpacing: "0.06em",
               textTransform: "uppercase",
               lineHeight: 1,
-              backgroundColor: "#C68B2F",
-              color: "#0f172a",
+              backgroundColor: "#F5A623",
+              color: "#0A2540",
               border: "none",
               borderRadius: "3px",
               height: "32px",
@@ -97,19 +100,28 @@ export function Navbar() {
               cursor: "pointer",
               transition: "background-color 150ms ease",
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#A87425"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#C68B2F"; }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#D4891E";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "#F5A623";
+            }}
           >
-            REQUEST DEMO
+            START FOR FREE
           </a>
 
           <button
             className="md:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "8px" }}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "8px",
+            }}
           >
-            <Menu size={18} color="#94a3b8" strokeWidth={1.5} />
+            <Menu size={18} color="#8492A6" strokeWidth={1.5} />
           </button>
         </div>
       </nav>

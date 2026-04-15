@@ -17,32 +17,32 @@ interface ButtonProps {
 
 const VARIANTS: Record<ButtonVariant, React.CSSProperties> = {
   primary: {
-    backgroundColor: "#C68B2F",
-    color: "#0f172a",
+    backgroundColor: "#F5A623",
+    color: "#0A2540",
     border: "none",
   },
   navy: {
-    backgroundColor: "#0f172a",
-    color: "#C68B2F",
-    border: "0.5px solid rgba(198,139,47,0.4)",
+    backgroundColor: "#0A2540",
+    color: "#F5A623",
+    border: "0.5px solid rgba(245,166,35,0.4)",
   },
   outline: {
     backgroundColor: "transparent",
-    color: "#0f172a",
-    border: "0.5px solid #94a3b8",
+    color: "#0A2540",
+    border: "0.5px solid #8492A6",
   },
   ghost: {
     backgroundColor: "transparent",
-    color: "#C68B2F",
+    color: "#F5A623",
     border: "none",
     padding: "0",
   },
 };
 
 const HOVER_STYLES: Partial<Record<ButtonVariant, { backgroundColor?: string; borderColor?: string; opacity?: number }>> = {
-  primary: { backgroundColor: "#A87425" },
-  navy: { backgroundColor: "#1e293b" },
-  outline: { borderColor: "#0f172a" },
+  primary: { backgroundColor: "#D4891E" },
+  navy: { backgroundColor: "#0D2D4E" },
+  outline: { borderColor: "#0A2540" },
 };
 
 const SIZES: Record<ButtonSize, { height: string; padding: string }> = {
@@ -103,7 +103,7 @@ export function Button({
       const el = e.currentTarget as HTMLElement;
       el.style.backgroundColor = (VARIANTS[variant].backgroundColor as string) ?? "transparent";
       if (variant === "outline") {
-        el.style.borderColor = "#94a3b8";
+        el.style.borderColor = "#8492A6";
       }
       if (variant === "ghost") {
         el.style.opacity = "1";

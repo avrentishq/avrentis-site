@@ -78,13 +78,13 @@ const BADGE_STYLES: Record<
   coming_soon: {
     label: "Coming soon",
     bg: "rgba(13,115,119,0.1)",
-    color: "#0D7377",
+    color: "#64748b",
     border: "1px solid rgba(13,115,119,0.2)",
   },
   roadmap: {
     label: "On the roadmap",
     bg: "rgba(132,146,166,0.1)",
-    color: "#8492A6",
+    color: "#64748b",
     border: "1px solid rgba(132,146,166,0.2)",
   },
 };
@@ -105,7 +105,7 @@ export function FeaturesGrid() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#F5A623",
+            color: "#C68B2F",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -124,7 +124,7 @@ export function FeaturesGrid() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0A2540",
+            color: "#0f172a",
             lineHeight: 1.3,
             margin: "0 auto 12px",
             textAlign: "center",
@@ -144,7 +144,7 @@ export function FeaturesGrid() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#8492A6",
+            color: "#64748b",
             lineHeight: 1.7,
             margin: "0 auto 40px",
             textAlign: "center",
@@ -159,10 +159,9 @@ export function FeaturesGrid() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "20px",
           }}
-          className="md:grid-cols-2 lg:grid-cols-3"
+          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
         >
           {MODULES.map((mod, i) => {
             const Icon = mod.icon;
@@ -177,7 +176,7 @@ export function FeaturesGrid() {
                 transition={staggerDelay(i + 3)}
                 style={{
                   backgroundColor: "#FFFFFF",
-                  border: "1px solid #E8ECF0",
+                  border: "1px solid #e2e8f0",
                   borderRadius: "8px",
                   padding: "24px",
                   transition:
@@ -187,11 +186,11 @@ export function FeaturesGrid() {
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow =
                     "0 8px 24px rgba(0,0,0,0.08)";
-                  e.currentTarget.style.borderLeft = "3px solid #F5A623";
+                  e.currentTarget.style.borderLeft = "3px solid #C68B2F";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderLeft = "1px solid #E8ECF0";
+                  e.currentTarget.style.borderLeft = "1px solid #e2e8f0";
                 }}
               >
                 <div
@@ -199,7 +198,7 @@ export function FeaturesGrid() {
                     width: "36px",
                     height: "36px",
                     borderRadius: "8px",
-                    backgroundColor: "#0A2540",
+                    backgroundColor: "#0f172a",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -209,7 +208,7 @@ export function FeaturesGrid() {
                   <Icon
                     size={18}
                     strokeWidth={1.5}
-                    color="#F5A623"
+                    color="#C68B2F"
                     aria-hidden="true"
                   />
                 </div>
@@ -218,7 +217,7 @@ export function FeaturesGrid() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "16px",
-                    color: "#0A2540",
+                    color: "#0f172a",
                     margin: "0 0 4px",
                   }}
                 >
@@ -231,7 +230,7 @@ export function FeaturesGrid() {
                     fontSize: "12px",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "#0D7377",
+                    color: "#64748b",
                     display: "block",
                     marginBottom: "10px",
                   }}
@@ -243,7 +242,7 @@ export function FeaturesGrid() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: "#8492A6",
+                    color: "#64748b",
                     lineHeight: 1.6,
                     margin: 0,
                   }}

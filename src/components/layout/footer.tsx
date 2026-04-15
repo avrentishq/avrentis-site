@@ -26,7 +26,7 @@ const linkStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontWeight: 400,
   fontSize: "12px",
-  color: "#8492A6",
+  color: "#64748b",
   textDecoration: "none",
   display: "block",
   marginBottom: "8px",
@@ -39,7 +39,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: "10px",
   letterSpacing: "0.10em",
   textTransform: "uppercase",
-  color: "#F5A623",
+  color: "#C68B2F",
   marginBottom: "14px",
 };
 
@@ -52,8 +52,8 @@ function FooterColumn({ label, links }: { label: string; links: { label: string;
           key={link.label}
           href={link.href}
           style={linkStyle}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "#F5A623"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "#8492A6"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#C68B2F"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#64748b"; }}
         >
           {link.label}
         </Link>
@@ -66,9 +66,9 @@ export function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: "#061B2E",
+        backgroundColor: "#020617",
         padding: "64px 40px 32px",
-        borderTop: "0.5px solid rgba(245,166,35,0.1)",
+        borderTop: "0.5px solid rgba(198,139,47,0.1)",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -76,11 +76,10 @@ export function Footer() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "40px",
             marginBottom: "40px",
           }}
-          className="md:grid-cols-[1.5fr_1fr_1fr_1fr]"
+          className="grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr]"
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -90,7 +89,7 @@ export function Footer() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "12px",
-                color: "#8492A6",
+                color: "#64748b",
                 lineHeight: 1.6,
                 maxWidth: "200px",
               }}
@@ -121,7 +120,7 @@ export function Footer() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "11px",
-              color: "#1A3A5C",
+              color: "#334155",
             }}
           >
             &copy; 2026 AVRENTIS. All rights reserved.
@@ -134,7 +133,7 @@ export function Footer() {
               fontSize: "9px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#F5A623",
+              color: "#C68B2F",
             }}
           >
             POWERED BY AVRENTIS

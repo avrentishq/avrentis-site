@@ -12,7 +12,7 @@ export function Hero() {
   return (
     <section
       style={{
-        backgroundColor: "#0A2540",
+        backgroundColor: "#0f172a",
         padding: "140px 40px 120px",
         position: "relative",
         overflow: "hidden",
@@ -36,12 +36,11 @@ export function Hero() {
           maxWidth: "1200px",
           margin: "0 auto",
           display: "grid",
-          gridTemplateColumns: "1fr",
           gap: "48px",
           alignItems: "center",
           position: "relative",
         }}
-        className="lg:grid-cols-2"
+        className="grid-cols-1 lg:grid-cols-2"
       >
         {/* Left — Copy */}
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -57,7 +56,7 @@ export function Hero() {
               fontSize: "13px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#F5A623",
+              color: "#C68B2F",
               marginBottom: "20px",
             }}
           >
@@ -95,7 +94,7 @@ export function Hero() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "18px",
-              color: "#8492A6",
+              color: "#64748b",
               lineHeight: 1.7,
               margin: "0 0 36px",
               maxWidth: "520px",
@@ -122,8 +121,8 @@ export function Hero() {
                 fontWeight: 600,
                 fontSize: "16px",
                 lineHeight: 1,
-                backgroundColor: "#F5A623",
-                color: "#0A2540",
+                backgroundColor: "#C68B2F",
+                color: "#0f172a",
                 border: "none",
                 borderRadius: "6px",
                 height: "48px",
@@ -136,10 +135,10 @@ export function Hero() {
                 transition: "background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#D4891E";
+                e.currentTarget.style.backgroundColor = "#A87425";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#F5A623";
+                e.currentTarget.style.backgroundColor = "#C68B2F";
               }}
             >
               Start for free
@@ -185,7 +184,7 @@ export function Hero() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "13px",
-              color: "#5A6B7F",
+              color: "#475569",
               marginTop: "24px",
               lineHeight: 1.5,
             }}
@@ -215,10 +214,10 @@ export function Hero() {
               borderRadius: "36px",
               border: "2px solid rgba(255,255,255,0.12)",
               background:
-                "linear-gradient(145deg, #0F2E4E 0%, #0A2540 50%, #081D33 100%)",
+                "linear-gradient(145deg, #1e293b 0%, #0f172a 50%, #020617 100%)",
               padding: "16px",
               boxShadow:
-                "0 0 60px rgba(245,166,35,0.08), 0 25px 50px rgba(0,0,0,0.4)",
+                "0 0 60px rgba(198,139,47,0.08), 0 25px 50px rgba(0,0,0,0.4)",
               position: "relative",
             }}
           >
@@ -227,7 +226,7 @@ export function Hero() {
               style={{
                 width: "120px",
                 height: "28px",
-                backgroundColor: "#0A2540",
+                backgroundColor: "#0f172a",
                 borderRadius: "0 0 16px 16px",
                 margin: "0 auto 12px",
                 border: "1px solid rgba(255,255,255,0.06)",
@@ -238,7 +237,7 @@ export function Hero() {
             {/* Phone inner screen */}
             <div
               style={{
-                backgroundColor: "#0D1F33",
+                backgroundColor: "#020617",
                 borderRadius: "20px",
                 overflow: "hidden",
               }}
@@ -269,8 +268,8 @@ export function Hero() {
                     width: "8px",
                     height: "8px",
                     borderRadius: "50%",
-                    backgroundColor: "#F5A623",
-                    boxShadow: "0 0 6px rgba(245,166,35,0.5)",
+                    backgroundColor: "#C68B2F",
+                    boxShadow: "0 0 6px rgba(198,139,47,0.5)",
                   }}
                 />
               </div>
@@ -284,8 +283,8 @@ export function Hero() {
                     fontSize: "11px",
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
-                    color: "#F5A623",
-                    backgroundColor: "rgba(245,166,35,0.1)",
+                    color: "#C68B2F",
+                    backgroundColor: "rgba(198,139,47,0.1)",
                     padding: "5px 10px",
                     borderRadius: "4px",
                   }}
@@ -312,7 +311,7 @@ export function Hero() {
                       fontSize: "11px",
                       letterSpacing: "0.06em",
                       textTransform: "uppercase",
-                      color: "#8492A6",
+                      color: "#64748b",
                       display: "block",
                       marginBottom: "12px",
                     }}
@@ -369,7 +368,7 @@ export function Hero() {
                         style={{
                           fontFamily: "var(--font-sans)",
                           fontSize: "12px",
-                          color: "#5A6B7F",
+                          color: "#475569",
                         }}
                       >
                         Purpose
@@ -378,7 +377,7 @@ export function Hero() {
                         style={{
                           fontFamily: "var(--font-sans)",
                           fontSize: "12px",
-                          color: "#8492A6",
+                          color: "#64748b",
                           fontWeight: 500,
                         }}
                       >
@@ -396,7 +395,7 @@ export function Hero() {
                         style={{
                           fontFamily: "var(--font-sans)",
                           fontSize: "12px",
-                          color: "#5A6B7F",
+                          color: "#475569",
                         }}
                       >
                         Submitted by
@@ -405,7 +404,7 @@ export function Hero() {
                         style={{
                           fontFamily: "var(--font-sans)",
                           fontSize: "12px",
-                          color: "#8492A6",
+                          color: "#64748b",
                           fontWeight: 500,
                         }}
                       >

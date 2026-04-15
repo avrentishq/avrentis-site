@@ -25,7 +25,7 @@ const STATS = [
 
 export function SocialProof() {
   return (
-    <section style={{ backgroundColor: "#F7F9FC", padding: "100px 40px" }}>
+    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Eyebrow */}
         <motion.span
@@ -40,7 +40,7 @@ export function SocialProof() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#F5A623",
+            color: "#C68B2F",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -60,7 +60,7 @@ export function SocialProof() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0A2540",
+            color: "#0f172a",
             lineHeight: 1.3,
             margin: "0 auto 12px",
             textAlign: "center",
@@ -81,7 +81,7 @@ export function SocialProof() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#8492A6",
+            color: "#64748b",
             lineHeight: 1.7,
             margin: "0 auto 40px",
             maxWidth: "600px",
@@ -101,7 +101,7 @@ export function SocialProof() {
           transition={staggerDelay(3)}
           style={{
             backgroundColor: "#FFFFFF",
-            borderLeft: "4px solid #F5A623",
+            borderLeft: "4px solid #C68B2F",
             borderRadius: "8px",
             padding: "32px",
             boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
@@ -113,7 +113,7 @@ export function SocialProof() {
             style={{
               fontFamily: "Georgia, serif",
               fontSize: "48px",
-              color: "#F5A623",
+              color: "#C68B2F",
               lineHeight: 1,
               display: "block",
               marginBottom: "8px",
@@ -128,7 +128,7 @@ export function SocialProof() {
               fontWeight: 400,
               fontStyle: "italic",
               fontSize: "18px",
-              color: "#0A2540",
+              color: "#0f172a",
               lineHeight: 1.7,
               margin: "0 0 20px",
             }}
@@ -143,12 +143,12 @@ export function SocialProof() {
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
               fontSize: "14px",
-              color: "#0A2540",
+              color: "#0f172a",
               margin: 0,
             }}
           >
             &mdash; Operations Director,{" "}
-            <span style={{ fontWeight: 400, color: "#8492A6" }}>
+            <span style={{ fontWeight: 400, color: "#64748b" }}>
               Energy Sector
             </span>
           </p>
@@ -158,11 +158,10 @@ export function SocialProof() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "20px",
             marginBottom: "40px",
           }}
-          className="md:grid-cols-2"
+          className="grid-cols-1 md:grid-cols-2"
         >
           {SECONDARY_TESTIMONIALS.map((testimonial, i) => (
             <motion.div
@@ -183,7 +182,7 @@ export function SocialProof() {
                 style={{
                   fontFamily: "Georgia, serif",
                   fontSize: "32px",
-                  color: "#F5A623",
+                  color: "#C68B2F",
                   lineHeight: 1,
                   display: "block",
                   marginBottom: "8px",
@@ -198,7 +197,7 @@ export function SocialProof() {
                   fontWeight: 400,
                   fontStyle: "italic",
                   fontSize: "15px",
-                  color: "#0A2540",
+                  color: "#0f172a",
                   lineHeight: 1.6,
                   margin: "0 0 16px",
                 }}
@@ -210,12 +209,12 @@ export function SocialProof() {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 700,
                   fontSize: "13px",
-                  color: "#0A2540",
+                  color: "#0f172a",
                   margin: 0,
                 }}
               >
                 {testimonial.attribution.split(",")[0]},{" "}
-                <span style={{ fontWeight: 400, color: "#8492A6" }}>
+                <span style={{ fontWeight: 400, color: "#64748b" }}>
                   {testimonial.attribution.split(",").slice(1).join(",").trim()}
                 </span>
               </p>
@@ -231,14 +230,13 @@ export function SocialProof() {
           viewport={{ once: true, margin: "-40px" }}
           transition={staggerDelay(6)}
           style={{
-            backgroundColor: "#0A2540",
+            backgroundColor: "#0f172a",
             borderRadius: "10px",
             padding: "32px",
             display: "grid",
-            gridTemplateColumns: "repeat(2, 1fr)",
             gap: "24px",
           }}
-          className="md:!grid-cols-4"
+          className="grid-cols-2 md:grid-cols-4"
         >
           {STATS.map((stat) => (
             <div
@@ -261,7 +259,7 @@ export function SocialProof() {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 400,
                   fontSize: "13px",
-                  color: "#8492A6",
+                  color: "#64748b",
                   margin: 0,
                 }}
               >

@@ -47,7 +47,7 @@ const CARDS: { icon: LucideIcon; title: string; body: string }[] = [
 
 export function Problem() {
   return (
-    <section style={{ backgroundColor: "#F7F9FC", padding: "100px 40px" }}>
+    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <motion.span
           variants={fadeUp}
@@ -61,7 +61,7 @@ export function Problem() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#F5A623",
+            color: "#C68B2F",
             display: "block",
             marginBottom: "16px",
           }}
@@ -79,7 +79,7 @@ export function Problem() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0A2540",
+            color: "#0f172a",
             lineHeight: 1.3,
             margin: "0 0 12px",
             maxWidth: "600px",
@@ -99,7 +99,7 @@ export function Problem() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#8492A6",
+            color: "#64748b",
             lineHeight: 1.7,
             margin: "0 0 40px",
             maxWidth: "580px",
@@ -112,10 +112,9 @@ export function Problem() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
             gap: "20px",
           }}
-          className="md:grid-cols-2 lg:grid-cols-3"
+          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
         >
           {CARDS.map((card, i) => {
             const Icon = card.icon;
@@ -129,7 +128,7 @@ export function Problem() {
                 transition={staggerDelay(i + 3)}
                 style={{
                   backgroundColor: "#FFFFFF",
-                  border: "1px solid #E8ECF0",
+                  border: "1px solid #e2e8f0",
                   borderRadius: "8px",
                   padding: "24px",
                   boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
@@ -140,8 +139,8 @@ export function Problem() {
                     width: "32px",
                     height: "32px",
                     borderRadius: "6px",
-                    backgroundColor: "rgba(245,166,35,0.08)",
-                    border: "1px solid rgba(245,166,35,0.2)",
+                    backgroundColor: "rgba(198,139,47,0.08)",
+                    border: "1px solid rgba(198,139,47,0.2)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -151,7 +150,7 @@ export function Problem() {
                   <Icon
                     size={16}
                     strokeWidth={1.5}
-                    color="#F5A623"
+                    color="#C68B2F"
                     aria-hidden="true"
                   />
                 </div>
@@ -160,7 +159,7 @@ export function Problem() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 500,
                     fontSize: "14px",
-                    color: "#0A2540",
+                    color: "#0f172a",
                     margin: "0 0 6px",
                   }}
                 >
@@ -171,7 +170,7 @@ export function Problem() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: "#8492A6",
+                    color: "#64748b",
                     lineHeight: 1.6,
                     margin: 0,
                   }}
@@ -193,7 +192,7 @@ export function Problem() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "18px",
-            color: "#0A2540",
+            color: "#0f172a",
             textAlign: "center",
             marginTop: "48px",
             marginBottom: 0,

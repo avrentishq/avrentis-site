@@ -4,90 +4,93 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import Link from "next/link";
+import type {
+  PricingData,
+  Plan,
+  PricingCurrency,
+} from "@/lib/pricing";
+import {
+  formatBytes,
+  formatRetention,
+  formatCurrencyAmount,
+} from "@/lib/pricing";
 
 type BillingCycle = "monthly" | "annual";
 
-interface Plan {
-  name: string;
-  description: string;
-  monthlyPrice: number | null;
-  annualPrice: number | null;
-  cta: string;
-  features: string[];
-  featured?: boolean;
+const FEATURED_PLAN = "business";
+
+/* ── Helpers ─────────────────────────────────────────────────── */
+
+function getPriceForCurrency(
+  plan: Plan,
+  currencyCode: string,
+): PricingCurrency | undefined {
+  return plan.pricing.find((p) => p.currency === currencyCode);
 }
 
-const PLANS: Plan[] = [
-  {
-    name: "Free",
-    description: "For organisations exploring structured approvals",
-    monthlyPrice: 0,
-    annualPrice: 0,
-    cta: "Start today",
-    features: [
-      "Up to 5 users",
-      "10 documents/month",
-      "Basic approval chain",
-      "Email notifications",
-    ],
-  },
-  {
-    name: "Starter",
-    description: "For small teams ready to go paperless",
-    monthlyPrice: 100000,
-    annualPrice: 85000,
-    cta: "Get started",
-    features: [
-      "Up to 15 users",
-      "Unlimited documents",
-      "Full approval chain",
-      "WhatsApp & email notifications",
-      "Document PDF generation",
-    ],
-  },
-  {
-    name: "Business",
-    description:
-      "For growing organisations that need full operational structure",
-    monthlyPrice: 250000,
-    annualPrice: 212500,
-    cta: "Get started",
-    featured: true,
-    features: [
-      "Up to 50 users",
-      "Unlimited documents",
-      "Full approval chain",
-      "All notification channels",
-      "Document PDF generation",
-      "Audit trail & compliance",
-      "Priority support",
-    ],
-  },
-  {
-    name: "Enterprise",
-    description:
-      "For large organisations with complex operational requirements",
-    monthlyPrice: null,
-    annualPrice: null,
-    cta: "Contact us",
-    features: [
-      "Unlimited users",
-      "Unlimited documents",
-      "Custom workflows",
-      "Full API access",
-      "Dedicated support",
-      "Custom integrations",
-      "SLA guarantee",
-    ],
-  },
-];
-
-function formatPrice(amount: number): string {
-  return `₦${amount.toLocaleString()}`;
+function getAvailableCurrencies(data: PricingData): string[] {
+  const first = data.plans[0];
+  if (!first) return ["USD"];
+  return first.pricing.map((p) => p.currency);
 }
 
-export function Pricing() {
+function buildFeatureList(plan: Plan, featureLabels: Record<string, string>): string[] {
+  const items: string[] = [];
+
+  // Users
+  const maxUsers = plan.limits.maxUsers;
+  items.push(maxUsers === -1 || maxUsers >= 9999 ? "Unlimited users" : `Up to ${maxUsers} users`);
+
+  // Documents
+  const maxDocs = plan.limits.maxDocumentsPerMonth;
+  items.push(maxDocs === null || maxDocs === -1 ? "Unlimited documents" : `${maxDocs} documents/month`);
+
+  // Multi-level approvals (on all plans)
+  if (plan.features.approvalChain) {
+    items.push("Multi-level approval workflow");
+  }
+
+  // Features from the features map
+  for (const [key, enabled] of Object.entries(plan.features)) {
+    if (!enabled || key === "approvalChain") continue;
+    const label = featureLabels[key];
+    if (label) items.push(label);
+  }
+
+  // Modules
+  if (plan.modules.length > 0) {
+    const moduleNames = plan.modules.map((m) => m.name.replace("Avrentis ", ""));
+    if (moduleNames.length >= 6) {
+      items.push("All modules included");
+    }
+  }
+
+  // Storage
+  items.push(`${formatBytes(plan.limits.maxStorageBytes)} storage`);
+
+  // Retention
+  items.push(`${formatRetention(plan.limits.documentRetentionDays)} document retention`);
+
+  return items;
+}
+
+/* ── Component ───────────────────────────────────────────────── */
+
+interface PricingProps {
+  data: PricingData;
+}
+
+export function Pricing({ data }: PricingProps) {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
+
+  const currencies = getAvailableCurrencies(data);
+  const [currency, setCurrency] = useState<string>(
+    currencies.includes("USD") ? "USD" : currencies[0],
+  );
+
+  const orderedPlans = data.planOrder
+    .map((key) => data.plans.find((p) => p.key === key))
+    .filter(Boolean) as Plan[];
 
   return (
     <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
@@ -157,7 +160,7 @@ export function Pricing() {
           surprises.
         </motion.p>
 
-        {/* Toggle */}
+        {/* Controls row */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -167,9 +170,13 @@ export function Pricing() {
           style={{
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
+            gap: "16px",
             marginBottom: "48px",
+            flexWrap: "wrap",
           }}
         >
+          {/* Billing toggle */}
           <div
             style={{
               display: "inline-flex",
@@ -217,25 +224,75 @@ export function Pricing() {
               Annual (Save 15%)
             </button>
           </div>
+
+          {/* Currency toggle */}
+          {currencies.length > 1 && (
+            <div
+              style={{
+                display: "inline-flex",
+                border: "1px solid #e2e8f0",
+                borderRadius: "8px",
+                padding: "4px",
+              }}
+            >
+              {currencies.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCurrency(c)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    fontFamily: "var(--font-sans)",
+                    cursor: "pointer",
+                    border: "none",
+                    transition: "all 150ms ease",
+                    backgroundColor:
+                      currency === c ? "#0f172a" : "transparent",
+                    color: currency === c ? "#FFFFFF" : "#64748b",
+                  }}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
         </motion.div>
 
         {/* Plan Cards */}
         <div
-          style={{
-            display: "grid",
-            gap: "20px",
-          }}
+          style={{ display: "grid", gap: "20px" }}
           className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
         >
-          {PLANS.map((plan, i) => {
-            const isFeatured = plan.featured === true;
-            const isEnterprise = plan.monthlyPrice === null;
-            const price =
-              billing === "annual" ? plan.annualPrice : plan.monthlyPrice;
+          {orderedPlans.map((plan, i) => {
+            const isFeatured = plan.key === FEATURED_PLAN;
+            const priceData = getPriceForCurrency(plan, currency);
+            const isFree = plan.key === "free";
+            const isEnterprise = plan.key === "enterprise";
+
+            const displayAmount =
+              billing === "annual" && priceData?.annualPerMonth != null
+                ? priceData.annualPerMonth
+                : priceData?.monthly ?? 0;
+
+            const displayLabel =
+              isFree && priceData?.monthlyLabel
+                ? priceData.monthlyLabel
+                : null;
+
+            const features = buildFeatureList(plan, data.featureLabels);
+
+            const moduleNames = plan.modules
+              .map((m) => m.name.replace("Avrentis ", ""))
+              .join(" + ");
+            const moduleLabel =
+              plan.modules.length >= 6 ? "All 6 modules" : moduleNames;
 
             return (
               <motion.div
-                key={plan.name}
+                key={plan.key}
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
@@ -301,34 +358,32 @@ export function Pricing() {
                 </p>
 
                 {/* Price */}
-                <div style={{ marginBottom: "24px" }}>
-                  {isEnterprise ? (
-                    <>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-sans)",
-                          fontWeight: 700,
-                          fontSize: "36px",
-                          color: isFeatured ? "#FFFFFF" : "#0f172a",
-                        }}
-                      >
-                        Custom
-                      </span>
-                      <span
-                        style={{
-                          display: "block",
-                          fontFamily: "var(--font-sans)",
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          color: "#64748b",
-                          marginTop: "4px",
-                        }}
-                      >
-                        Contact for pricing
-                      </span>
-                    </>
+                <div style={{ marginBottom: "6px" }}>
+                  {displayLabel ? (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 700,
+                        fontSize: "36px",
+                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                      }}
+                    >
+                      {displayLabel}
+                    </span>
                   ) : (
                     <>
+                      {isEnterprise && (
+                        <span
+                          style={{
+                            fontFamily: "var(--font-sans)",
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            color: "#64748b",
+                          }}
+                        >
+                          From{" "}
+                        </span>
+                      )}
                       <span
                         style={{
                           fontFamily: "var(--font-sans)",
@@ -337,7 +392,7 @@ export function Pricing() {
                           color: isFeatured ? "#FFFFFF" : "#0f172a",
                         }}
                       >
-                        {formatPrice(price as number)}
+                        {formatCurrencyAmount(displayAmount, currency)}
                       </span>
                       <span
                         style={{
@@ -353,6 +408,47 @@ export function Pricing() {
                   )}
                 </div>
 
+                {/* Billing note */}
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "12px",
+                    color: "#94a3b8",
+                    margin: "0 0 20px",
+                    minHeight: "16px",
+                  }}
+                >
+                  {isFree
+                    ? "Free forever"
+                    : billing === "annual"
+                      ? "Billed annually"
+                      : "Cancel anytime"}
+                </p>
+
+                {/* Modules badge */}
+                {moduleLabel && (
+                  <div
+                    style={{
+                      display: "inline-block",
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      fontFamily: "var(--font-sans)",
+                      padding: "4px 10px",
+                      borderRadius: "4px",
+                      backgroundColor: isFeatured
+                        ? "rgba(198,139,47,0.15)"
+                        : "rgba(198,139,47,0.08)",
+                      color: "#C68B2F",
+                      border: "1px solid rgba(198,139,47,0.2)",
+                      marginBottom: "16px",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {moduleLabel}
+                  </div>
+                )}
+
                 {/* Features */}
                 <ul
                   style={{
@@ -362,7 +458,7 @@ export function Pricing() {
                     flex: 1,
                   }}
                 >
-                  {plan.features.map((feature) => (
+                  {features.map((feature) => (
                     <li
                       key={feature}
                       style={{
@@ -433,7 +529,7 @@ export function Pricing() {
                     }
                   }}
                 >
-                  {plan.cta}
+                  {isEnterprise ? "Contact us" : isFree ? "Start today" : "Get started"}
                 </Link>
               </motion.div>
             );
@@ -456,8 +552,8 @@ export function Pricing() {
             marginTop: "40px",
           }}
         >
-          All plans include: 99.9% uptime &middot; Nigerian data residency
-          &middot; NDPR compliant &middot; Cancel anytime
+          All plans include: Multi-level approvals &middot; 99.9% uptime
+          &middot; Enterprise-grade security &middot; Data protection compliant
         </motion.p>
       </div>
     </section>

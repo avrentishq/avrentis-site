@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-type BadgeStatus = "available" | "coming_soon" | "roadmap";
+type BadgeStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
 const MODULES: {
   icon: LucideIcon;
@@ -38,16 +38,16 @@ const MODULES: {
   {
     icon: Archive,
     name: "Avrentis Vault",
-    subtitle: "Document Management",
+    subtitle: "Institutional Memory",
     body: "Replace physical and scattered digital filing with a centralised, searchable, role-controlled document system. Every approved record — instantly retrievable, permanently preserved.",
     status: "coming_soon",
   },
   {
     icon: ClipboardCheck,
     name: "Avrentis Audit",
-    subtitle: "Compliance & Audit Trail",
+    subtitle: "Compliance & Accountability",
     body: "A complete, tamper-proof log of every action across your organisation. Meet compliance requirements and face every audit with confidence — not scrambling.",
-    status: "coming_soon",
+    status: "available",
   },
   {
     icon: Users,
@@ -59,9 +59,9 @@ const MODULES: {
   {
     icon: Link2,
     name: "Avrentis Connect",
-    subtitle: "Integrations & API",
+    subtitle: "External Systems",
     body: "Connect Avrentis to the systems your organisation already uses. Your structured operational data flowing where it needs to go — without manual intervention.",
-    status: "roadmap",
+    status: "partial",
   },
 ];
 
@@ -77,9 +77,15 @@ const BADGE_STYLES: Record<
   },
   coming_soon: {
     label: "Coming soon",
-    bg: "rgba(13,115,119,0.1)",
+    bg: "rgba(100,116,139,0.1)",
     color: "#64748b",
-    border: "1px solid rgba(13,115,119,0.2)",
+    border: "1px solid rgba(100,116,139,0.2)",
+  },
+  partial: {
+    label: "Partially available",
+    bg: "rgba(198,139,47,0.1)",
+    color: "#C68B2F",
+    border: "1px solid rgba(198,139,47,0.2)",
   },
   roadmap: {
     label: "On the roadmap",

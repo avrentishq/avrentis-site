@@ -7,8 +7,11 @@ import { SocialProof } from "@/components/sections/social-proof";
 import { FeaturesGrid } from "@/components/sections/features-grid";
 import { Pricing } from "@/components/sections/pricing";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { fetchPricingData } from "@/lib/pricing";
 
-export default function Home() {
+export default async function Home() {
+  const pricingData = await fetchPricingData();
+
   return (
     <>
       <Navbar />
@@ -18,7 +21,7 @@ export default function Home() {
         <HowItWorks />
         <SocialProof />
         <FeaturesGrid />
-        <Pricing />
+        {pricingData && <Pricing data={pricingData} />}
         <CtaBanner />
       </main>
       <Footer />

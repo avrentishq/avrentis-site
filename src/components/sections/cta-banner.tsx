@@ -6,10 +6,10 @@ import { Lock, Check, Zap, Globe } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const trustSignals = [
-  { icon: Lock, label: "Nigerian data residency" },
-  { icon: Check, label: "NDPR compliant" },
+  { icon: Globe, label: "Pan-African platform" },
+  { icon: Lock, label: "Enterprise-grade security" },
   { icon: Zap, label: "99.9% uptime SLA" },
-  { icon: Globe, label: "Built for West Africa" },
+  { icon: Check, label: "Data protection compliant" },
 ];
 
 export function CtaBanner() {
@@ -70,7 +70,7 @@ export function CtaBanner() {
             margin: "0 0 32px",
           }}
         >
-          Join the organisations across West Africa that have replaced paper,
+          Join the organisations across Africa that have replaced paper,
           email, and assumption with structure, authority, and permanent record.
         </motion.p>
 

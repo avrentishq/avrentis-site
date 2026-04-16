@@ -326,7 +326,7 @@ function RecordMockup() {
       >
         <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Completed</span>
         <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#64748b", fontWeight: 500 }}>
-          15 Apr 2026, 14:32 WAT
+          15 Apr 2026, 14:32 UTC
         </span>
       </div>
 

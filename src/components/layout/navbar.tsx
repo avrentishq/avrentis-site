@@ -1,11 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu } from "lucide-react";
+import {
+  CreditCard,
+  ShoppingCart,
+  Archive,
+  ClipboardCheck,
+  Users,
+  Link2,
+  ChevronDown,
+  Menu,
+} from "lucide-react";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
+
+/* ── Data ─────────────────────────────────────────────────────────────────── */
 
 const NAV_LINKS = [
   { label: "Product", href: "/product" },
@@ -13,9 +24,111 @@ const NAV_LINKS = [
   { label: "About", href: "/about" },
 ];
 
+const MODULES = [
+  {
+    name: "Avrentis Pay",
+    desc: "Structured payment approvals",
+    href: "/product/pay",
+    icon: CreditCard,
+  },
+  {
+    name: "Avrentis Procure",
+    desc: "Procurement on record",
+    href: "/product/procure",
+    icon: ShoppingCart,
+  },
+  {
+    name: "Avrentis Vault",
+    desc: "Institutional memory",
+    href: "/product/vault",
+    icon: Archive,
+  },
+  {
+    name: "Avrentis Audit",
+    desc: "Compliance & accountability",
+    href: "/product/audit",
+    icon: ClipboardCheck,
+  },
+  {
+    name: "Avrentis People",
+    desc: "Workforce structure",
+    href: "/product/people",
+    icon: Users,
+  },
+  {
+    name: "Avrentis Connect",
+    desc: "External systems",
+    href: "/product/connect",
+    icon: Link2,
+  },
+];
+
+const PLATFORM = [
+  { name: "How it works", href: "/product/how-it-works" },
+  { name: "Security", href: "/product/security" },
+  { name: "Integrations", href: "/product/integrations" },
+];
+
+/* ── Navbar ───────────────────────────────────────────────────────────────── */
+
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const pathname = usePathname();
+
+  const dropdownTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  /* scroll detection */
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
+  }, []);
+
+  /* dropdown helpers */
+  const openDropdown = useCallback(() => {
+    if (dropdownTimeout.current) {
+      clearTimeout(dropdownTimeout.current);
+      dropdownTimeout.current = null;
+    }
+    setDropdownOpen(true);
+  }, []);
+
+  const closeDropdown = useCallback(() => {
+    dropdownTimeout.current = setTimeout(() => {
+      setDropdownOpen(false);
+    }, 150);
+  }, []);
+
+  const closeDropdownImmediate = useCallback(() => {
+    if (dropdownTimeout.current) {
+      clearTimeout(dropdownTimeout.current);
+      dropdownTimeout.current = null;
+    }
+    setDropdownOpen(false);
+  }, []);
+
+  /* active link helper */
+  const isActive = (href: string) => {
+    if (href === "/product") return pathname.startsWith("/product");
+    return pathname === href;
+  };
+
+  const activeLinkStyle = (href: string): React.CSSProperties => {
+    const active = isActive(href);
+    return {
+      fontFamily: "var(--font-sans)",
+      fontWeight: 400,
+      fontSize: "14px",
+      color: active ? "#C68B2F" : "#ffffff",
+      textDecoration: "none",
+      transition: "color 150ms ease",
+      borderBottom: active ? "2px solid #C68B2F" : "2px solid transparent",
+      paddingBottom: "2px",
+    };
+  };
 
   return (
     <>
@@ -25,10 +138,12 @@ export function Navbar() {
           top: 0,
           left: 0,
           right: 0,
-          height: "56px",
+          height: "64px",
           backgroundColor: "#0f172a",
           borderBottom: "0.5px solid rgba(198,139,47,0.2)",
+          boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.15)" : "none",
           zIndex: 50,
+          transition: "box-shadow 300ms ease",
         }}
       >
         <div
@@ -42,74 +157,306 @@ export function Navbar() {
             justifyContent: "space-between",
           }}
         >
+          {/* ── Logo ──────────────────────────────────────────────── */}
           <Link href="/" aria-label="AVRENTIS home">
             <AvrentisLogo variant="primary" size={36} wordmarkColor="#ffffff" />
           </Link>
 
+          {/* ── Center nav links ──────────────────────────────────── */}
           <div
             className="hidden md:flex"
-            style={{ gap: "64px", alignItems: "center" }}
+            style={{ gap: "48px", alignItems: "center" }}
           >
-            {NAV_LINKS.map((link) => {
-              const active = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
+            {/* Product (with dropdown) */}
+            <div
+              ref={dropdownRef}
+              onMouseEnter={openDropdown}
+              onMouseLeave={closeDropdown}
+              style={{ position: "relative" }}
+            >
+              <Link
+                href="/product"
+                style={{
+                  ...activeLinkStyle("/product"),
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive("/product"))
+                    e.currentTarget.style.color = "#C68B2F";
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive("/product"))
+                    e.currentTarget.style.color = "#ffffff";
+                }}
+              >
+                Product
+                <ChevronDown
+                  size={12}
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontWeight: 400,
-                    fontSize: "14px",
-                    color: active ? "#C68B2F" : "#ffffff",
-                    textDecoration: "none",
-                    transition: "color 150ms ease",
+                    transition: "transform 200ms ease",
+                    transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                   }}
-                  onMouseEnter={(e) => {
-                    if (!active) e.currentTarget.style.color = "#C68B2F";
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!active) e.currentTarget.style.color = "#ffffff";
+                />
+              </Link>
+
+              {/* ── Mega dropdown ─────────────────────────────────── */}
+              {dropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "calc(100% + 12px)",
+                    left: "-16px",
+                    width: "520px",
+                    backgroundColor: "#0f172a",
+                    border: "1px solid rgba(198,139,47,0.15)",
+                    borderRadius: "8px",
+                    padding: "24px",
+                    boxShadow: "0 16px 40px rgba(0,0,0,0.3)",
+                    display: "flex",
+                    gap: "24px",
+                    zIndex: 100,
                   }}
                 >
-                  {link.label}
-                </Link>
-              );
-            })}
+                  {/* Left column — Modules */}
+                  <div style={{ flex: "0 0 60%" }}>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 600,
+                        fontSize: "10px",
+                        color: "#C68B2F",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.10em",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      Modules
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "2px",
+                      }}
+                    >
+                      {MODULES.map((mod) => {
+                        const Icon = mod.icon;
+                        return (
+                          <Link
+                            key={mod.href}
+                            href={mod.href}
+                            onClick={closeDropdownImmediate}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "12px",
+                              padding: "8px",
+                              borderRadius: "6px",
+                              textDecoration: "none",
+                              transition: "background-color 150ms ease",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                "rgba(198,139,47,0.06)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.backgroundColor =
+                                "transparent";
+                            }}
+                          >
+                            <div
+                              style={{
+                                width: "32px",
+                                height: "32px",
+                                borderRadius: "50%",
+                                backgroundColor: "rgba(198,139,47,0.08)",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                              }}
+                            >
+                              <Icon size={16} color="#C68B2F" />
+                            </div>
+                            <div>
+                              <div
+                                style={{
+                                  fontFamily: "var(--font-sans)",
+                                  fontWeight: 500,
+                                  fontSize: "14px",
+                                  color: "#ffffff",
+                                  lineHeight: 1.3,
+                                }}
+                              >
+                                {mod.name}
+                              </div>
+                              <div
+                                style={{
+                                  fontFamily: "var(--font-sans)",
+                                  fontWeight: 400,
+                                  fontSize: "12px",
+                                  color: "#64748b",
+                                  lineHeight: 1.3,
+                                }}
+                              >
+                                {mod.desc}
+                              </div>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Right column — Platform */}
+                  <div style={{ flex: "0 0 35%" }}>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 600,
+                        fontSize: "10px",
+                        color: "#C68B2F",
+                        textTransform: "uppercase",
+                        letterSpacing: "0.10em",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      Platform
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "2px",
+                      }}
+                    >
+                      {PLATFORM.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={closeDropdownImmediate}
+                          style={{
+                            fontFamily: "var(--font-sans)",
+                            fontWeight: 400,
+                            fontSize: "14px",
+                            color: "#ffffff",
+                            textDecoration: "none",
+                            padding: "8px",
+                            borderRadius: "6px",
+                            transition: "background-color 150ms ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor =
+                              "rgba(198,139,47,0.06)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor =
+                              "transparent";
+                          }}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Pricing */}
+            <Link
+              href="/pricing"
+              style={activeLinkStyle("/pricing")}
+              onMouseEnter={(e) => {
+                if (!isActive("/pricing"))
+                  e.currentTarget.style.color = "#C68B2F";
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive("/pricing"))
+                  e.currentTarget.style.color = "#ffffff";
+              }}
+            >
+              Pricing
+            </Link>
+
+            {/* About */}
+            <Link
+              href="/about"
+              style={activeLinkStyle("/about")}
+              onMouseEnter={(e) => {
+                if (!isActive("/about"))
+                  e.currentTarget.style.color = "#C68B2F";
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive("/about"))
+                  e.currentTarget.style.color = "#ffffff";
+              }}
+            >
+              About
+            </Link>
           </div>
 
-          <a
-            href="/contact"
-            className="hidden md:inline-flex"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "11px",
-              letterSpacing: "0.06em",
-              textTransform: "uppercase",
-              lineHeight: 1,
-              backgroundColor: "#C68B2F",
-              color: "#0f172a",
-              border: "none",
-              borderRadius: "3px",
-              height: "32px",
-              padding: "0 16px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "background-color 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#A87425";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#C68B2F";
-            }}
+          {/* ── Right-side actions ─────────────────────────────────── */}
+          <div
+            className="hidden md:flex"
+            style={{ alignItems: "center", gap: "24px" }}
           >
-            START FOR FREE
-          </a>
+            <a
+              href="https://app.avrentis.com/login"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "14px",
+                color: "#94a3b8",
+                textDecoration: "none",
+                transition: "color 150ms ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#ffffff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "#94a3b8";
+              }}
+            >
+              Login
+            </a>
 
+            <a
+              href="/contact"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "11px",
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                lineHeight: 1,
+                backgroundColor: "#C68B2F",
+                color: "#0f172a",
+                border: "none",
+                borderRadius: "3px",
+                height: "32px",
+                padding: "0 16px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                cursor: "pointer",
+                transition: "background-color 150ms ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#A87425";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#C68B2F";
+              }}
+            >
+              START FREE &rarr;
+            </a>
+          </div>
+
+          {/* ── Mobile hamburger ──────────────────────────────────── */}
           <button
             className="md:hidden"
             onClick={() => setMobileOpen(true)}
@@ -126,8 +473,10 @@ export function Navbar() {
         </div>
       </nav>
 
-      <div style={{ height: "56px" }} />
+      {/* Spacer to prevent content from sliding behind fixed nav */}
+      <div style={{ height: "64px" }} />
 
+      {/* ── Mobile menu ─────────────────────────────────────────── */}
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}

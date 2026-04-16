@@ -88,7 +88,7 @@ export function SocialProof() {
             textAlign: "center",
           }}
         >
-          From energy operators to professional services firms — Avrentis brings
+          From fast-growing startups to established enterprises — Avrentis brings
           the same operational authority to every organisation that needs it.
         </motion.p>
 
@@ -149,7 +149,7 @@ export function SocialProof() {
           >
             &mdash; Operations Director,{" "}
             <span style={{ fontWeight: 400, color: "#64748b" }}>
-              Energy Sector
+              Enterprise Client
             </span>
           </p>
         </motion.div>

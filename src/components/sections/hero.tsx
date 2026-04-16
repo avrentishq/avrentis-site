@@ -79,9 +79,9 @@ export function Hero() {
             }}
             className="lg:!text-[56px]"
           >
-            Every organisation runs on decisions.
+            Every action. On record.
             <br />
-            Avrentis makes sure they stick.
+            Permanently.
           </motion.h1>
 
           <motion.p
@@ -100,10 +100,10 @@ export function Hero() {
               maxWidth: "520px",
             }}
           >
-            Replace scattered emails, paper trails, and manual processes with a
-            single platform that brings structure, authority, and permanent
-            record to every operation — regardless of your industry, size, or
-            location.
+            Most organisations run on scattered emails, informal approvals, and
+            undocumented decisions. Avrentis brings structure, visibility, and
+            accountability to every process your organisation runs —
+            permanently.
           </motion.p>
 
           <motion.div
@@ -189,8 +189,8 @@ export function Hero() {
               lineHeight: 1.5,
             }}
           >
-            No credit card required &middot; Setup in minutes &middot; Used by
-            organisations across multiple industries worldwide
+            No credit card required &middot; Setup in minutes &middot;
+            Organisations across Africa and beyond
           </motion.p>
         </div>
 

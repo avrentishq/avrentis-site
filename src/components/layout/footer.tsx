@@ -3,23 +3,29 @@
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
 
+const PRODUCT_LINKS = [
+  { label: "Avrentis Pay", href: "/product/pay" },
+  { label: "Avrentis Procure", href: "/product/procure" },
+  { label: "Avrentis Vault", href: "/product/vault" },
+  { label: "Avrentis Audit", href: "/product/audit" },
+];
+
 const PLATFORM_LINKS = [
-  { label: "Avrentis Pay", href: "/product" },
-  { label: "Avrentis Procure", href: "/product" },
-  { label: "Avrentis Vault", href: "/product" },
-  { label: "Avrentis Audit", href: "/product" },
+  { label: "How it works", href: "/product/how-it-works" },
+  { label: "Security", href: "/product/security" },
+  { label: "Integrations", href: "/product/integrations" },
+  { label: "Pricing", href: "/pricing" },
 ];
 
 const COMPANY_LINKS = [
   { label: "About", href: "/about" },
-  { label: "Contact", href: "/contact" },
   { label: "Privacy policy", href: "/privacy" },
+  { label: "Terms of service", href: "/terms" },
 ];
 
 const START_LINKS = [
   { label: "Start for free", href: "/contact" },
-  { label: "Book a demo", href: "/contact" },
-  { label: "Log in", href: "https://app.avrentis.com/login" },
+  { label: "Login", href: "https://app.avrentis.com/login" },
 ];
 
 const linkStyle: React.CSSProperties = {
@@ -79,7 +85,7 @@ export function Footer() {
             gap: "40px",
             marginBottom: "40px",
           }}
-          className="grid-cols-1 md:grid-cols-[1.5fr_1fr_1fr_1fr]"
+          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]"
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -94,10 +100,11 @@ export function Footer() {
                 maxWidth: "200px",
               }}
             >
-              Operational authority platform for organisations worldwide.
+              Operational authority platform for organisations across Africa and beyond.
             </span>
           </div>
 
+          <FooterColumn label="PRODUCT" links={PRODUCT_LINKS} />
           <FooterColumn label="PLATFORM" links={PLATFORM_LINKS} />
           <FooterColumn label="COMPANY" links={COMPANY_LINKS} />
           <FooterColumn label="GET STARTED" links={START_LINKS} />

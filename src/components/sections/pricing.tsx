@@ -9,11 +9,7 @@ import type {
   Plan,
   PricingCurrency,
 } from "@/lib/pricing";
-import {
-  formatBytes,
-  formatRetention,
-  formatCurrencyAmount,
-} from "@/lib/pricing";
+import { formatCurrencyAmount } from "@/lib/pricing";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -34,45 +30,23 @@ function getAvailableCurrencies(data: PricingData): string[] {
   return first.pricing.map((p) => p.currency);
 }
 
-function buildFeatureList(plan: Plan, featureLabels: Record<string, string>): string[] {
-  const items: string[] = [];
-
-  // Users
-  const maxUsers = plan.limits.maxUsers;
-  items.push(maxUsers === -1 || maxUsers >= 9999 ? "Unlimited users" : `Up to ${maxUsers} users`);
-
-  // Documents
-  const maxDocs = plan.limits.maxDocumentsPerMonth;
-  items.push(maxDocs === null || maxDocs === -1 ? "Unlimited documents" : `${maxDocs} documents/month`);
-
-  // Multi-level approvals (on all plans)
-  if (plan.features.approvalChain) {
-    items.push("Multi-level approval workflow");
-  }
-
-  // Features from the features map
-  for (const [key, enabled] of Object.entries(plan.features)) {
-    if (!enabled || key === "approvalChain") continue;
-    const label = featureLabels[key];
-    if (label) items.push(label);
-  }
-
-  // Modules
-  if (plan.modules.length > 0) {
-    const moduleNames = plan.modules.map((m) => m.name.replace("Avrentis ", ""));
-    if (moduleNames.length >= 6) {
-      items.push("All modules included");
-    }
-  }
-
-  // Storage
-  items.push(`${formatBytes(plan.limits.maxStorageBytes)} storage`);
-
-  // Retention
-  items.push(`${formatRetention(plan.limits.documentRetentionDays)} document retention`);
-
-  return items;
+function getHighlights(plan: Plan): string[] {
+  return plan.highlights ?? [];
 }
+
+/**
+ * The Trial card is rendered client-side, not fetched from the API.
+ * It's a marketing construct — the server's truth is `subscriptionStatus === "trial"`
+ * on a tenant whose plan key is "business".
+ */
+const TRIAL_HIGHLIGHTS: string[] = [
+  "Full Business tier for 14 days",
+  "Up to 10 users",
+  "Pay + Procure + Vault + Audit (real data)",
+  "Bank-ready PDF exports (trial watermark)",
+  "1 GB storage during trial",
+  "30-day read-only grace after trial",
+];
 
 /* ── Component ───────────────────────────────────────────────── */
 
@@ -266,10 +240,67 @@ export function Pricing({ data }: PricingProps) {
           style={{ display: "grid", gap: "20px" }}
           className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
         >
+          {/* Trial card — marketing-only, not a real plan */}
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(4)}
+            style={{
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #e2e8f0",
+              borderRadius: "12px",
+              padding: "32px",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "20px", color: "#0f172a", margin: "0 0 6px" }}>
+              Try Avrentis
+            </h3>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b", lineHeight: 1.5, margin: "0 0 20px" }}>
+              Evaluate the full Business tier on your own data for 14 days.
+            </p>
+            <div style={{ marginBottom: "6px" }}>
+              <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "36px", color: "#0f172a" }}>$0</span>
+              <span style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b" }}>
+                {" "}/ 14 days
+              </span>
+            </div>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#94a3b8", margin: "0 0 20px", minHeight: "16px" }}>
+              No credit card required
+            </p>
+            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(198,139,47,0.08)", color: "#C68B2F", border: "1px solid rgba(198,139,47,0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
+              Pay + Procure + Vault + Audit
+            </div>
+            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
+              {TRIAL_HIGHLIGHTS.map((feature) => (
+                <li
+                  key={feature}
+                  style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "13px", color: "#64748b", lineHeight: 1.5, marginBottom: "10px", display: "flex", alignItems: "flex-start", gap: "8px" }}
+                >
+                  <span style={{ color: "#27AE60", fontWeight: 600, flexShrink: 0 }}>✓</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/signup?trial=business"
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "44px", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-sans)", textDecoration: "none", transition: "all 150ms ease", backgroundColor: "transparent", color: "#0f172a", border: "1px solid #e2e8f0" }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f172a"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; }}
+            >
+              Start your 14-day trial
+            </Link>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#94a3b8", lineHeight: 1.5, margin: "12px 0 0" }}>
+              Exports carry an Avrentis Trial watermark until you upgrade. Data is preserved for 30 days after your trial ends.
+            </p>
+          </motion.div>
+
           {orderedPlans.map((plan, i) => {
             const isFeatured = plan.key === FEATURED_PLAN;
             const priceData = getPriceForCurrency(plan, currency);
-            const isFree = plan.key === "free";
             const isEnterprise = plan.key === "enterprise";
 
             const displayAmount =
@@ -277,12 +308,7 @@ export function Pricing({ data }: PricingProps) {
                 ? priceData.annualPerMonth
                 : priceData?.monthly ?? 0;
 
-            const displayLabel =
-              isFree && priceData?.monthlyLabel
-                ? priceData.monthlyLabel
-                : null;
-
-            const features = buildFeatureList(plan, data.featureLabels);
+            const features = getHighlights(plan);
 
             const moduleNames = plan.modules
               .map((m) => m.name.replace("Avrentis ", ""))
@@ -359,53 +385,38 @@ export function Pricing({ data }: PricingProps) {
 
                 {/* Price */}
                 <div style={{ marginBottom: "6px" }}>
-                  {displayLabel ? (
+                  {isEnterprise && (
                     <span
                       style={{
                         fontFamily: "var(--font-sans)",
-                        fontWeight: 700,
-                        fontSize: "36px",
-                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        color: "#64748b",
                       }}
                     >
-                      {displayLabel}
+                      From{" "}
                     </span>
-                  ) : (
-                    <>
-                      {isEnterprise && (
-                        <span
-                          style={{
-                            fontFamily: "var(--font-sans)",
-                            fontWeight: 400,
-                            fontSize: "16px",
-                            color: "#64748b",
-                          }}
-                        >
-                          From{" "}
-                        </span>
-                      )}
-                      <span
-                        style={{
-                          fontFamily: "var(--font-sans)",
-                          fontWeight: 700,
-                          fontSize: "36px",
-                          color: isFeatured ? "#FFFFFF" : "#0f172a",
-                        }}
-                      >
-                        {formatCurrencyAmount(displayAmount, currency)}
-                      </span>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-sans)",
-                          fontWeight: 400,
-                          fontSize: "14px",
-                          color: "#64748b",
-                        }}
-                      >
-                        /month
-                      </span>
-                    </>
                   )}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 700,
+                      fontSize: "36px",
+                      color: isFeatured ? "#FFFFFF" : "#0f172a",
+                    }}
+                  >
+                    {formatCurrencyAmount(displayAmount, currency)}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 400,
+                      fontSize: "14px",
+                      color: "#64748b",
+                    }}
+                  >
+                    /month
+                  </span>
                 </div>
 
                 {/* Billing note */}
@@ -419,11 +430,7 @@ export function Pricing({ data }: PricingProps) {
                     minHeight: "16px",
                   }}
                 >
-                  {isFree
-                    ? "Free forever"
-                    : billing === "annual"
-                      ? "Billed annually"
-                      : "Cancel anytime"}
+                  {billing === "annual" ? "Billed annually" : "Cancel anytime"}
                 </p>
 
                 {/* Modules badge */}
@@ -529,7 +536,7 @@ export function Pricing({ data }: PricingProps) {
                     }
                   }}
                 >
-                  {isEnterprise ? "Contact us" : isFree ? "Start today" : "Get started"}
+                  {isEnterprise ? "Contact us" : "Get started"}
                 </Link>
               </motion.div>
             );

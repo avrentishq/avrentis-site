@@ -1,0 +1,561 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import Link from "next/link";
+import type {
+  PricingData,
+  Plan,
+  PricingCurrency,
+} from "@/lib/pricing";
+import {
+  formatBytes,
+  formatRetention,
+  formatCurrencyAmount,
+} from "@/lib/pricing";
+
+type BillingCycle = "monthly" | "annual";
+
+const FEATURED_PLAN = "business";
+
+/* ── Helpers ─────────────────────────────────────────────────── */
+
+function getPriceForCurrency(
+  plan: Plan,
+  currencyCode: string,
+): PricingCurrency | undefined {
+  return plan.pricing.find((p) => p.currency === currencyCode);
+}
+
+function getAvailableCurrencies(data: PricingData): string[] {
+  const first = data.plans[0];
+  if (!first) return ["USD"];
+  return first.pricing.map((p) => p.currency);
+}
+
+function buildFeatureList(plan: Plan, featureLabels: Record<string, string>): string[] {
+  const items: string[] = [];
+
+  // Users
+  const maxUsers = plan.limits.maxUsers;
+  items.push(maxUsers === -1 || maxUsers >= 9999 ? "Unlimited users" : `Up to ${maxUsers} users`);
+
+  // Documents
+  const maxDocs = plan.limits.maxDocumentsPerMonth;
+  items.push(maxDocs === null || maxDocs === -1 ? "Unlimited documents" : `${maxDocs} documents/month`);
+
+  // Multi-level approvals (on all plans)
+  if (plan.features.approvalChain) {
+    items.push("Multi-level approval workflow");
+  }
+
+  // Features from the features map
+  for (const [key, enabled] of Object.entries(plan.features)) {
+    if (!enabled || key === "approvalChain") continue;
+    const label = featureLabels[key];
+    if (label) items.push(label);
+  }
+
+  // Modules
+  if (plan.modules.length > 0) {
+    const moduleNames = plan.modules.map((m) => m.name.replace("Avrentis ", ""));
+    if (moduleNames.length >= 6) {
+      items.push("All modules included");
+    }
+  }
+
+  // Storage
+  items.push(`${formatBytes(plan.limits.maxStorageBytes)} storage`);
+
+  // Retention
+  items.push(`${formatRetention(plan.limits.documentRetentionDays)} document retention`);
+
+  return items;
+}
+
+/* ── Component ───────────────────────────────────────────────── */
+
+interface PricingProps {
+  data: PricingData;
+}
+
+export function Pricing({ data }: PricingProps) {
+  const [billing, setBilling] = useState<BillingCycle>("monthly");
+
+  const currencies = getAvailableCurrencies(data);
+  const [currency, setCurrency] = useState<string>(
+    currencies.includes("USD") ? "USD" : currencies[0],
+  );
+
+  const orderedPlans = data.planOrder
+    .map((key) => data.plans.find((p) => p.key === key))
+    .filter(Boolean) as Plan[];
+
+  return (
+    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        {/* Eyebrow */}
+        <motion.span
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={fadeUpTransition}
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 600,
+            fontSize: "12px",
+            letterSpacing: "0.10em",
+            textTransform: "uppercase",
+            color: "#C68B2F",
+            display: "block",
+            textAlign: "center",
+            marginBottom: "16px",
+          }}
+        >
+          PRICING
+        </motion.span>
+
+        {/* Headline */}
+        <motion.h2
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(1)}
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: "36px",
+            color: "#0f172a",
+            lineHeight: 1.3,
+            margin: "0 auto 12px",
+            textAlign: "center",
+          }}
+          className="lg:!text-[42px]"
+        >
+          Structured pricing for every stage of growth.
+        </motion.h2>
+
+        {/* Subheadline */}
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(2)}
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: "16px",
+            color: "#64748b",
+            lineHeight: 1.7,
+            margin: "0 auto 32px",
+            textAlign: "center",
+            maxWidth: "500px",
+          }}
+        >
+          Start free. Scale as your organisation grows. No hidden fees. No
+          surprises.
+        </motion.p>
+
+        {/* Controls row */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(3)}
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "16px",
+            marginBottom: "48px",
+            flexWrap: "wrap",
+          }}
+        >
+          {/* Billing toggle */}
+          <div
+            style={{
+              display: "inline-flex",
+              border: "1px solid #e2e8f0",
+              borderRadius: "8px",
+              padding: "4px",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setBilling("monthly")}
+              style={{
+                padding: "8px 20px",
+                borderRadius: "6px",
+                fontSize: "14px",
+                fontWeight: 500,
+                fontFamily: "var(--font-sans)",
+                cursor: "pointer",
+                border: "none",
+                transition: "all 150ms ease",
+                backgroundColor:
+                  billing === "monthly" ? "#0f172a" : "transparent",
+                color: billing === "monthly" ? "#FFFFFF" : "#64748b",
+              }}
+            >
+              Monthly
+            </button>
+            <button
+              type="button"
+              onClick={() => setBilling("annual")}
+              style={{
+                padding: "8px 20px",
+                borderRadius: "6px",
+                fontSize: "14px",
+                fontWeight: 500,
+                fontFamily: "var(--font-sans)",
+                cursor: "pointer",
+                border: "none",
+                transition: "all 150ms ease",
+                backgroundColor:
+                  billing === "annual" ? "#C68B2F" : "transparent",
+                color: billing === "annual" ? "#0f172a" : "#64748b",
+              }}
+            >
+              Annual (Save 15%)
+            </button>
+          </div>
+
+          {/* Currency toggle */}
+          {currencies.length > 1 && (
+            <div
+              style={{
+                display: "inline-flex",
+                border: "1px solid #e2e8f0",
+                borderRadius: "8px",
+                padding: "4px",
+              }}
+            >
+              {currencies.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setCurrency(c)}
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: "6px",
+                    fontSize: "14px",
+                    fontWeight: 500,
+                    fontFamily: "var(--font-sans)",
+                    cursor: "pointer",
+                    border: "none",
+                    transition: "all 150ms ease",
+                    backgroundColor:
+                      currency === c ? "#0f172a" : "transparent",
+                    color: currency === c ? "#FFFFFF" : "#64748b",
+                  }}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Plan Cards */}
+        <div
+          style={{ display: "grid", gap: "20px" }}
+          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
+        >
+          {orderedPlans.map((plan, i) => {
+            const isFeatured = plan.key === FEATURED_PLAN;
+            const priceData = getPriceForCurrency(plan, currency);
+            const isFree = plan.key === "free";
+            const isEnterprise = plan.key === "enterprise";
+
+            const displayAmount =
+              billing === "annual" && priceData?.annualPerMonth != null
+                ? priceData.annualPerMonth
+                : priceData?.monthly ?? 0;
+
+            const displayLabel =
+              isFree && priceData?.monthlyLabel
+                ? priceData.monthlyLabel
+                : null;
+
+            const features = buildFeatureList(plan, data.featureLabels);
+
+            const moduleNames = plan.modules
+              .map((m) => m.name.replace("Avrentis ", ""))
+              .join(" + ");
+            const moduleLabel =
+              plan.modules.length >= 6 ? "All 6 modules" : moduleNames;
+
+            return (
+              <motion.div
+                key={plan.key}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                transition={staggerDelay(i + 4)}
+                style={{
+                  backgroundColor: isFeatured ? "#0f172a" : "#FFFFFF",
+                  border: isFeatured
+                    ? "1px solid rgba(198,139,47,0.3)"
+                    : "1px solid #e2e8f0",
+                  borderRadius: "12px",
+                  padding: "32px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                {/* MOST POPULAR badge */}
+                {isFeatured && (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      backgroundColor: "#C68B2F",
+                      color: "#0f172a",
+                      fontSize: "11px",
+                      fontWeight: 600,
+                      fontFamily: "var(--font-sans)",
+                      textTransform: "uppercase",
+                      padding: "6px 14px",
+                      borderRadius: "4px",
+                      marginBottom: "8px",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    MOST POPULAR
+                  </span>
+                )}
+
+                {/* Plan name */}
+                <h3
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 600,
+                    fontSize: "20px",
+                    color: isFeatured ? "#FFFFFF" : "#0f172a",
+                    margin: "0 0 6px",
+                  }}
+                >
+                  {plan.name}
+                </h3>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    color: "#64748b",
+                    lineHeight: 1.5,
+                    margin: "0 0 20px",
+                  }}
+                >
+                  {plan.description}
+                </p>
+
+                {/* Price */}
+                <div style={{ marginBottom: "6px" }}>
+                  {displayLabel ? (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 700,
+                        fontSize: "36px",
+                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                      }}
+                    >
+                      {displayLabel}
+                    </span>
+                  ) : (
+                    <>
+                      {isEnterprise && (
+                        <span
+                          style={{
+                            fontFamily: "var(--font-sans)",
+                            fontWeight: 400,
+                            fontSize: "16px",
+                            color: "#64748b",
+                          }}
+                        >
+                          From{" "}
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          fontFamily: "var(--font-sans)",
+                          fontWeight: 700,
+                          fontSize: "36px",
+                          color: isFeatured ? "#FFFFFF" : "#0f172a",
+                        }}
+                      >
+                        {formatCurrencyAmount(displayAmount, currency)}
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "var(--font-sans)",
+                          fontWeight: 400,
+                          fontSize: "14px",
+                          color: "#64748b",
+                        }}
+                      >
+                        /month
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {/* Billing note */}
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "12px",
+                    color: "#94a3b8",
+                    margin: "0 0 20px",
+                    minHeight: "16px",
+                  }}
+                >
+                  {isFree
+                    ? "Free forever"
+                    : billing === "annual"
+                      ? "Billed annually"
+                      : "Cancel anytime"}
+                </p>
+
+                {/* Modules badge */}
+                {moduleLabel && (
+                  <div
+                    style={{
+                      display: "inline-block",
+                      fontSize: "11px",
+                      fontWeight: 500,
+                      fontFamily: "var(--font-sans)",
+                      padding: "4px 10px",
+                      borderRadius: "4px",
+                      backgroundColor: isFeatured
+                        ? "rgba(198,139,47,0.15)"
+                        : "rgba(198,139,47,0.08)",
+                      color: "#C68B2F",
+                      border: "1px solid rgba(198,139,47,0.2)",
+                      marginBottom: "16px",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {moduleLabel}
+                  </div>
+                )}
+
+                {/* Features */}
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: "0 0 24px",
+                    flex: 1,
+                  }}
+                >
+                  {features.map((feature) => (
+                    <li
+                      key={feature}
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 400,
+                        fontSize: "13px",
+                        color: "#64748b",
+                        lineHeight: 1.5,
+                        marginBottom: "10px",
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "8px",
+                      }}
+                    >
+                      <span
+                        style={{
+                          color: isFeatured ? "#C68B2F" : "#27AE60",
+                          fontWeight: 600,
+                          flexShrink: 0,
+                        }}
+                      >
+                        ✓
+                      </span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* CTA */}
+                <Link
+                  href="/contact"
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "100%",
+                    height: "44px",
+                    borderRadius: "8px",
+                    fontSize: "14px",
+                    fontWeight: 600,
+                    fontFamily: "var(--font-sans)",
+                    textDecoration: "none",
+                    transition: "all 150ms ease",
+                    ...(isFeatured
+                      ? {
+                          backgroundColor: "#C68B2F",
+                          color: "#0f172a",
+                          border: "none",
+                        }
+                      : {
+                          backgroundColor: "transparent",
+                          color: "#0f172a",
+                          border: "1px solid #e2e8f0",
+                        }),
+                  }}
+                  onMouseEnter={(e) => {
+                    if (isFeatured) {
+                      e.currentTarget.style.backgroundColor = "#A87425";
+                    } else {
+                      e.currentTarget.style.borderColor = "#0f172a";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (isFeatured) {
+                      e.currentTarget.style.backgroundColor = "#C68B2F";
+                    } else {
+                      e.currentTarget.style.borderColor = "#e2e8f0";
+                    }
+                  }}
+                >
+                  {isEnterprise ? "Contact us" : isFree ? "Start today" : "Get started"}
+                </Link>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Reassurance strip */}
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(8)}
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: "13px",
+            color: "#64748b",
+            textAlign: "center",
+            marginTop: "40px",
+          }}
+        >
+          All plans include: Multi-level approvals &middot; 99.9% uptime
+          &middot; Enterprise-grade security &middot; Data protection compliant
+        </motion.p>
+      </div>
+    </section>
+  );
+}

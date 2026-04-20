@@ -29,7 +29,7 @@ const VARIANTS: Record<ButtonVariant, React.CSSProperties> = {
   outline: {
     backgroundColor: "transparent",
     color: "#0f172a",
-    border: "0.5px solid #94a3b8",
+    border: "0.5px solid #64748b",
   },
   ghost: {
     backgroundColor: "transparent",
@@ -103,7 +103,7 @@ export function Button({
       const el = e.currentTarget as HTMLElement;
       el.style.backgroundColor = (VARIANTS[variant].backgroundColor as string) ?? "transparent";
       if (variant === "outline") {
-        el.style.borderColor = "#94a3b8";
+        el.style.borderColor = "#64748b";
       }
       if (variant === "ghost") {
         el.style.opacity = "1";

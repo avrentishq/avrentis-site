@@ -1,0 +1,105 @@
+{
+  "planOrder": ["starter", "business", "enterprise"],
+  "moduleOrder": ["pay", "procure", "vault", "audit", "people", "connect"],
+  "addOns": [],
+  "modules": {
+    "pay": { "name": "Avrentis Pay", "description": "Structured payment approvals" },
+    "procure": { "name": "Avrentis Procure", "description": "Procurement on record" },
+    "vault": { "name": "Avrentis Vault", "description": "Institutional memory" },
+    "audit": { "name": "Avrentis Audit", "description": "Compliance & accountability" },
+    "people": { "name": "Avrentis People", "description": "Workforce structure" },
+    "connect": { "name": "Avrentis Connect", "description": "External systems" }
+  },
+  "featureLabels": {
+    "approvalChain": "Multi-level approval workflow",
+    "pdfExport": "Export approved documents as PDF",
+    "emailNotifications": "Email alerts",
+    "whatsappNotifications": "WhatsApp alerts",
+    "smsNotifications": "SMS alerts",
+    "auditLog": "Complete compliance visibility",
+    "auditorRole": "Auditor & Company Board roles",
+    "customWorkflows": "Custom workflows",
+    "apiAccess": "Full API access",
+    "dedicatedSupport": "Dedicated support",
+    "externalIntegrations": "Connect external systems via API",
+    "prioritySupport": "Priority support"
+  },
+  "plans": [
+    {
+      "key": "starter",
+      "name": "Starter",
+      "description": "For small teams ready to go paperless",
+      "pricing": [
+        { "currency": "USD", "monthly": 99, "monthlyLabel": null, "annualPerMonth": 79, "annualTotal": 948, "annualLabel": null, "taxRate": null, "taxLabel": null },
+        { "currency": "NGN", "monthly": 150000, "monthlyLabel": null, "annualPerMonth": 127500, "annualTotal": 1530000, "annualLabel": null, "taxRate": null, "taxLabel": null }
+      ],
+      "limits": { "maxUsers": 10, "maxDocumentsPerMonth": null, "maxStorageBytes": 10737418240, "documentRetentionDays": 365 },
+      "modules": [
+        { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
+        { "key": "procure", "name": "Avrentis Procure", "description": "Procurement on record" }
+      ],
+      "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": false },
+      "highlights": [
+        "Up to 10 users",
+        "Unlimited documents",
+        "Pay + Procure modules",
+        "Bank-ready PDF exports",
+        "WhatsApp & email alerts",
+        "10 GB storage · 1 year retention"
+      ]
+    },
+    {
+      "key": "business",
+      "name": "Business",
+      "description": "For growing organisations that need full operational structure",
+      "pricing": [
+        { "currency": "USD", "monthly": 249, "monthlyLabel": null, "annualPerMonth": 199, "annualTotal": 2388, "annualLabel": null, "taxRate": null, "taxLabel": null },
+        { "currency": "NGN", "monthly": 380000, "monthlyLabel": null, "annualPerMonth": 323000, "annualTotal": 3876000, "annualLabel": null, "taxRate": null, "taxLabel": null }
+      ],
+      "limits": { "maxUsers": 50, "maxDocumentsPerMonth": null, "maxStorageBytes": 107374182400, "documentRetentionDays": 1095 },
+      "modules": [
+        { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
+        { "key": "procure", "name": "Avrentis Procure", "description": "Procurement on record" },
+        { "key": "vault", "name": "Avrentis Vault", "description": "Institutional memory" },
+        { "key": "audit", "name": "Avrentis Audit", "description": "Compliance & accountability" }
+      ],
+      "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "prioritySupport": true },
+      "highlights": [
+        "Up to 50 users",
+        "Pay + Procure + Vault + Audit",
+        "Full compliance audit trail",
+        "Custom approval chains & branding",
+        "Analytics, recurring templates, delegation",
+        "100 GB storage · 3 year retention",
+        "Priority support"
+      ]
+    },
+    {
+      "key": "enterprise",
+      "name": "Enterprise",
+      "description": "For large organisations with complex operational requirements",
+      "pricing": [
+        { "currency": "USD", "monthly": 499, "monthlyLabel": null, "annualPerMonth": 424, "annualTotal": 5088, "annualLabel": null, "taxRate": null, "taxLabel": null },
+        { "currency": "NGN", "monthly": 750000, "monthlyLabel": null, "annualPerMonth": 637500, "annualTotal": 7650000, "annualLabel": null, "taxRate": null, "taxLabel": null }
+      ],
+      "limits": { "maxUsers": 9999, "maxDocumentsPerMonth": null, "maxStorageBytes": null, "documentRetentionDays": null },
+      "modules": [
+        { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
+        { "key": "procure", "name": "Avrentis Procure", "description": "Procurement on record" },
+        { "key": "vault", "name": "Avrentis Vault", "description": "Institutional memory" },
+        { "key": "audit", "name": "Avrentis Audit", "description": "Compliance & accountability" },
+        { "key": "people", "name": "Avrentis People", "description": "Workforce structure" },
+        { "key": "connect", "name": "Avrentis Connect", "description": "External systems" }
+      ],
+      "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "customWorkflows": true, "apiAccess": true, "dedicatedSupport": true, "externalIntegrations": true },
+      "highlights": [
+        "Unlimited users & companies",
+        "Unlimited storage & retention",
+        "All 6 modules included",
+        "Multi-company group & admin dashboard",
+        "API access for custom integrations",
+        "Dedicated onboarding & priority support"
+      ]
+    }
+  ]
+}

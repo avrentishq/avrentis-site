@@ -21,7 +21,7 @@ export default async function Home() {
         <HowItWorks />
         <SocialProof />
         <FeaturesGrid />
-        {pricingData && <Pricing data={pricingData} />}
+        <Pricing data={pricingData} />
         <CtaBanner />
       </main>
       <Footer />

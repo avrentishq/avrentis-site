@@ -24,22 +24,22 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "AVRENTIS — Financial decision infrastructure for Nigerian business",
+  title: "AVRENTIS — Operational Authority Platform",
   description:
-    "AVRENTIS structures the financial decisions that authorise money to move. Every Payment Voucher and Purchase Order follows a defined approval chain — permanently on record. Built for Nigerian business.",
+    "Avrentis replaces scattered emails, paper trails, and manual processes with a single platform that structures how your organisation makes decisions, enforces authority, and builds a permanent operational record.",
   openGraph: {
-    title: "AVRENTIS — Every decision, structured. Every approval, on record.",
+    title: "AVRENTIS — Every organisation runs on decisions. Avrentis makes sure they stick.",
     description:
-      "Financial decision infrastructure for any Nigerian organisation where financial decisions require structured authority.",
+      "Replace scattered approvals with structured authority. One platform for decisions, approvals, and permanent operational records.",
     url: "https://avrentis.com",
     siteName: "AVRENTIS",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVRENTIS — Every decision, structured. Every approval, on record.",
+    title: "AVRENTIS — Every organisation runs on decisions. Avrentis makes sure they stick.",
     description:
-      "Financial decision infrastructure for any Nigerian organisation where financial decisions require structured authority.",
+      "Replace scattered approvals with structured authority. One platform for decisions, approvals, and permanent operational records.",
   },
   icons: {
     icon: "/favicon.ico",
@@ -52,8 +52,8 @@ const orgSchema = {
   "@type": "Organization",
   name: "AVRENTIS",
   url: "https://avrentis.com",
-  description: "Financial decision infrastructure for Nigerian business.",
-  slogan: "Every decision, structured. Every approval, on record.",
+  description: "Operational authority platform for organisations worldwide.",
+  slogan: "Every organisation runs on decisions. Avrentis makes sure they stick.",
 };
 
 export default function RootLayout({

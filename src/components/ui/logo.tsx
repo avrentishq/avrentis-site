@@ -289,7 +289,7 @@ export function AvrentisLogo({
           style={{
             fontFamily: "var(--font-wordmark)",
             fontWeight: 700,
-            fontSize: size * 0.46,
+            fontSize: size * 0.52,
             letterSpacing: "0.15em",
             color: wColor,
             lineHeight: 1,

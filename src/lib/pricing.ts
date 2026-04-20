@@ -28,6 +28,9 @@ export interface Plan {
   key: string;
   name: string;
   description: string;
+  /** Curated, short marketing bullets from the product API. Prefer these over
+   *  composing features + limits — the product API is the single source of truth. */
+  highlights: string[];
   pricing: PricingCurrency[];
   limits: PlanLimits;
   modules: PlanModule[];
@@ -50,17 +53,22 @@ export interface PricingData {
 
 const PRICING_API = "https://app.avrentis.com/api/v1/public/pricing";
 
-export async function fetchPricingData(): Promise<PricingData | null> {
+import fallback from "@/data/pricing-fallback.json";
+
+export async function fetchPricingData(): Promise<PricingData> {
   try {
     const res = await fetch(PRICING_API, {
       next: { revalidate: 3600 },
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) return fallback as unknown as PricingData;
 
-    return (await res.json()) as PricingData;
+    const data = await res.json();
+    if (!data?.plans?.length) return fallback as unknown as PricingData;
+
+    return data as PricingData;
   } catch {
-    return null;
+    return fallback as unknown as PricingData;
   }
 }
 

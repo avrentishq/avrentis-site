@@ -83,7 +83,7 @@ const SECTIONS: LegalSection[] = [
           <li>Upload malware, transmit spam, or conduct fraud.</li>
           <li>
             Probe, scan, or test the vulnerability of the Service other than through our responsible-disclosure
-            programme at <a href="mailto:security@avrentis.com">security@avrentis.com</a>.
+            programme via <Link href="/contact?intent=disclosure">our responsible-disclosure form</Link>.
           </li>
           <li>Attempt to bypass tenant isolation, rate limits, or authentication.</li>
           <li>Reverse-engineer the Service, except to the extent that applicable law prohibits such a restriction.</li>
@@ -270,7 +270,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Legal questions, requests for a signed agreement, or notices under these Terms should be sent to{" "}
-        <a href="mailto:legal@avrentis.com">legal@avrentis.com</a>.
+        <Link href="/contact?intent=legal">our legal enquiry form</Link>.
       </p>
     ),
   },
@@ -288,10 +288,10 @@ export default function TermsPage() {
         <>
           <strong>Note.</strong> These standard Terms apply to self-serve customers. Enterprise customers typically
           operate under a negotiated order form that takes precedence over any conflicting provision here. To
-          request that form, write to{" "}
-          <a href="mailto:legal@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-            legal@avrentis.com
-          </a>
+          request that form, send a note through{" "}
+          <Link href="/contact?intent=legal" style={{ color: "#C68B2F", textDecoration: "none" }}>
+            our legal enquiry form
+          </Link>
           .
         </>
       }

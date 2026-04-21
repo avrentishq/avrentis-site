@@ -62,8 +62,10 @@ const LOOKING_FOR = [
 ];
 
 /** When real openings land, populate this array — the page renders the
- *  roles section automatically once it has entries. */
-const OPEN_ROLES: { title: string; location: string; summary: string; applyEmail: string }[] = [];
+ *  roles section automatically once it has entries. `applyHref` accepts
+ *  any URL, but should route through /contact?intent=careers (or a
+ *  per-role variant) so applications go through a single funnel. */
+const OPEN_ROLES: { title: string; location: string; summary: string; applyHref: string }[] = [];
 
 export function CareersProductPage() {
   const heroRef = useRef<HTMLElement>(null);
@@ -459,8 +461,8 @@ export function CareersProductPage() {
                       {role.summary}
                     </p>
                   </div>
-                  <a
-                    href={`mailto:${role.applyEmail}`}
+                  <Link
+                    href={role.applyHref}
                     style={{
                       fontFamily: sans,
                       fontSize: "13px",
@@ -476,7 +478,7 @@ export function CareersProductPage() {
                     }}
                   >
                     Apply
-                  </a>
+                  </Link>
                 </div>
               ))}
             </motion.div>
@@ -533,10 +535,10 @@ export function CareersProductPage() {
               maxWidth: "600px",
             }}
           >
-            Send a short note to{" "}
-            <a href="mailto:careers@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-              careers@avrentis.com
-            </a>{" "}
+            Send a short note through our{" "}
+            <Link href="/contact?intent=careers" style={{ color: "#C68B2F", textDecoration: "none" }}>
+              register-interest form
+            </Link>{" "}
             telling us what you&rsquo;re drawn to, a link to something
             you&rsquo;re proud of, and what kind of work you&rsquo;d want to own
             here. We read every message.
@@ -549,8 +551,8 @@ export function CareersProductPage() {
             transition={staggerDelay(2)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <a
-              href="mailto:careers@avrentis.com?subject=Register%20interest%20—%20Avrentis%20careers"
+            <Link
+              href="/contact?intent=careers"
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -567,8 +569,8 @@ export function CareersProductPage() {
               }}
             >
               <Mail size={16} strokeWidth={1.8} aria-hidden="true" />
-              careers@avrentis.com
-            </a>
+              Register my interest
+            </Link>
             <Link
               href="/about"
               style={{

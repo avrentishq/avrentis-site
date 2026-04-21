@@ -19,6 +19,7 @@ const PLATFORM_LINKS = [
 
 const COMPANY_LINKS = [
   { label: "About", href: "/about" },
+  { label: "Trust centre", href: "/trust" },
   { label: "Privacy policy", href: "/privacy" },
   { label: "Terms of service", href: "/terms" },
 ];

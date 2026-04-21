@@ -1,0 +1,975 @@
+"use client";
+
+/**
+ * SecurityProductPage — the full /product/security deep-dive.
+ *
+ * Not a module page — security is cross-cutting. Uses the same visual
+ * language and motion spec as /product/how-it-works (dark hero, light
+ * stack rows with browser-framed mockups, honest framing).
+ *
+ * Content is grounded in the platform's actual implementation: RLS,
+ * RBAC/ABAC, Redis-backed session revocation, MFA, IP allowlist, SCIM,
+ * immutable audit trail. No certification claims — controls-aligned
+ * framing only, per the stated trust posture.
+ */
+
+import { useRef } from "react";
+import Link from "next/link";
+import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  Database,
+  ShieldCheck,
+  KeyRound,
+  FileSearch,
+  UserCog,
+  Lock,
+  Check,
+  Mail,
+} from "lucide-react";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { CtaBanner } from "@/components/sections/cta-banner";
+import {
+  IsolationMockup,
+  AuthorityMockup,
+  SessionMockup,
+  AuditMockup,
+  LifecycleMockup,
+  InfraMockup,
+} from "./security-mockups";
+
+const PILLARS = [
+  {
+    icon: Database,
+    title: "Tenant isolation at the database",
+    body:
+      "PostgreSQL row-level security enforces tenant boundaries at the engine, not the application. A query without a tenant context is rejected by the database itself.",
+  },
+  {
+    icon: UserCog,
+    title: "Role-based authority, not role-shaped UI",
+    body:
+      "54 permissions across 10 roles, layered with attribute-based checks for separation of duties, department scope, and amount thresholds. Authority is evaluated on every action, not just at login.",
+  },
+  {
+    icon: FileSearch,
+    title: "Immutable audit trail",
+    body:
+      "Every submission, approval, query, and role change is written to an append-only log. Database triggers block UPDATE and DELETE on audit rows. Not even a platform administrator can edit history.",
+  },
+  {
+    icon: KeyRound,
+    title: "Lifecycle-bound access",
+    body:
+      "SCIM provisioning from your identity provider, time-bound auditor and board access with proactive revocation, Redis-backed session kill when a role changes or a user leaves.",
+  },
+];
+
+const STACK = [
+  {
+    number: "01",
+    key: "isolation",
+    title: "Isolation",
+    subtitle: "Your tenant's data is unreachable from any other tenant's session — by the database, not the app.",
+    body:
+      "Every tenant-scoped query runs inside a transactional context that sets a Postgres session variable. Row-level security policies on every table match on that variable before returning a row. The bypass path requires a per-process randomized secret, so a developer can't accidentally hit cross-tenant data from a forgotten `db.query()`.",
+    icon: Database,
+    bullets: [
+      "Postgres RLS policies applied to every tenant-scoped table",
+      "`withTenantContext(tenantId, fn)` — the only way to run tenant-scoped SQL",
+      "`withBypassRLS` requires a randomized per-request token (no static secret)",
+      "Drizzle migrations are gated by a safety check that blocks policy drops",
+    ],
+    Mockup: IsolationMockup,
+    previewUrl: "postgres · session-scoped RLS",
+  },
+  {
+    number: "02",
+    key: "authority",
+    title: "Authority",
+    subtitle: "Two layers: who you are (RBAC) and what's allowed for this specific request (ABAC).",
+    body:
+      "RBAC determines the set of capabilities a role can exercise — 54 permissions across 10 roles, split into administrative and operational groups with no cross-group inheritance. ABAC then evaluates the specific request: can the submitter approve their own document, is the HOD acting within their department, does the amount exceed their threshold.",
+    icon: UserCog,
+    bullets: [
+      "10 roles · 54 permissions · no inheritance across administrative vs operational",
+      "Separation of duties — submitters cannot approve their own requests",
+      "Department scope — HODs only see and act on their own department",
+      "Amount thresholds — high-value requests auto-escalate to the MD",
+    ],
+    Mockup: AuthorityMockup,
+    previewUrl: "permissions.ts · abac.ts",
+  },
+  {
+    number: "03",
+    key: "session",
+    title: "Session integrity",
+    subtitle: "When a role changes or a user leaves, their active sessions are invalid within seconds.",
+    body:
+      "JWTs are backed by a Redis-stored revocation timestamp. The auth layer checks it on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation all flip the timestamp and force re-auth on the next request. MFA is TOTP with bcrypt-hashed recovery codes. Per-tenant IP allowlisting (CIDR, IPv4 + IPv6) is available as a hard gate.",
+    icon: ShieldCheck,
+    bullets: [
+      "Redis-backed JWT revocation (Upstash, 7-day TTL per user)",
+      "TOTP MFA · 10 bcrypt-hashed recovery codes · enforced for platform admins",
+      "Per-tenant IP allowlist — CIDR rules, IPv4 + IPv6, 60s cache",
+      "SSO support · SAML + OIDC · AES-256-GCM encryption of client secrets at rest",
+    ],
+    Mockup: SessionMockup,
+    previewUrl: "session-revocation.ts",
+  },
+  {
+    number: "04",
+    key: "audit",
+    title: "Audit trail",
+    subtitle: "Every action, permanent. Every export, regulator-ready.",
+    body:
+      "The audit log records actor, role, action, entity, IP, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated immutable trails. Database triggers block UPDATE and DELETE on audit rows — the only way to remove them would be to drop the table, which requires DDL that is not granted to the application user.",
+    icon: FileSearch,
+    bullets: [
+      "`audit_logs` with DB-level triggers blocking UPDATE and DELETE",
+      "Dedicated role-change trail with elevation / reduction direction",
+      "Board-access lifecycle — provisioning, approval, expiry, renewal, revocation",
+      "One-click regulator-ready export for any period",
+    ],
+    Mockup: AuditMockup,
+    previewUrl: "audit_logs · permission_audit",
+  },
+  {
+    number: "05",
+    key: "lifecycle",
+    title: "Access lifecycle",
+    subtitle: "From provisioning to offboarding — bounded, observable, automatic.",
+    body:
+      "SCIM 2.0 provisions users from your identity provider (Okta, Entra, Google Workspace) with per-tenant bearer tokens. Auditor and provisional board access are time-bound with a hard expiry; a daily job proactively deactivates expired users and revokes their sessions. Document retention is enforced per plan, with audit logs exempt from purge as a compliance requirement.",
+    icon: KeyRound,
+    bullets: [
+      "SCIM 2.0 for enterprise identity (Okta · Microsoft Entra · Google Workspace)",
+      "Time-bound auditor & provisional board access with auto-revoke",
+      "Per-plan document retention · audit logs never purged",
+      "R2 object storage with short-lived presigned URLs (5-minute TTL)",
+    ],
+    Mockup: LifecycleMockup,
+    previewUrl: "scim · access-expiry",
+  },
+  {
+    number: "06",
+    key: "infra",
+    title: "Encryption & infrastructure",
+    subtitle: "TLS end-to-end. Managed Postgres. Application-layer encryption for sensitive secrets.",
+    body:
+      "All traffic is TLS 1.3. The database is Neon-managed PostgreSQL with encryption at rest and daily automated snapshots. Sensitive application secrets — MFA seeds, SSO client secrets — are additionally encrypted at the application layer with AES-256-GCM before being written. Object storage is Cloudflare R2 with short-lived presigned URLs scoped to the uploading user's session.",
+    icon: Lock,
+    bullets: [
+      "TLS 1.3 in transit · HSTS · strict CSP",
+      "Neon-managed Postgres · encryption at rest · daily snapshots",
+      "Application-layer AES-256-GCM for MFA + SSO secrets",
+      "Cloudflare R2 blob storage with short-lived (5-min) presigned URLs",
+    ],
+    Mockup: InfraMockup,
+    previewUrl: "encryption.ts · infra",
+  },
+];
+
+const COMPLIANCE = [
+  {
+    framework: "SOC 2",
+    status: "Controls aligned",
+    body:
+      "The platform's access, audit, change-management, and encryption controls are designed to meet SOC 2 Type II criteria. A formal audit has not been completed yet.",
+  },
+  {
+    framework: "ISO 27001",
+    status: "Controls aligned",
+    body:
+      "Information-security management practices follow the ISO 27001 Annex A control families relevant to a SaaS operator. Formal certification is not in place today.",
+  },
+  {
+    framework: "GDPR & NDPR",
+    status: "Designed-for",
+    body:
+      "Data-subject rights (access, rectification, deletion, export) are supported through the audit-log export and admin tooling. A DPA is available for signature on request.",
+  },
+];
+
+const FAQS = [
+  {
+    q: "Who at Avrentis can access our data?",
+    a: "No Avrentis engineer can read customer data by default. Platform administrators can be granted time-bound, audit-logged access to a specific tenant for support purposes — every action is written to the same immutable audit trail the customer sees.",
+  },
+  {
+    q: "What happens when someone leaves our organisation?",
+    a: "Deactivation revokes active JWTs via Redis within seconds. If deprovisioned over SCIM, this happens automatically when your IdP marks the user inactive. Their historical actions remain in the audit trail — the record is preserved, not deleted.",
+  },
+  {
+    q: "Can we export everything — for an auditor, regulator, or migration?",
+    a: "Yes. The audit-trail export bundles every approval, signature, query, and role change for any period into a regulator-ready file. Document PDFs and attachments are exported alongside. You own your data; we don't hold it hostage.",
+  },
+  {
+    q: "Do you support SSO and SCIM?",
+    a: "Yes — SAML 2.0 and OIDC for SSO, SCIM 2.0 for provisioning. Tested against Okta, Microsoft Entra, and Google Workspace. Client secrets and tokens are encrypted with AES-256-GCM at rest.",
+  },
+  {
+    q: "Where is our data hosted and can it stay in a specific region?",
+    a: "Today, the platform runs on infrastructure primarily in the EU (Neon) and Cloudflare's global edge. Dedicated in-country or in-region hosting is available on request as part of an enterprise engagement.",
+  },
+  {
+    q: "Can we sign a Data Processing Agreement?",
+    a: "Yes. A DPA is available on request for any enterprise engagement. Contact us and we'll send the current version.",
+  },
+  {
+    q: "Do you have a responsible disclosure policy?",
+    a: "Yes. Security researchers can report vulnerabilities to security@avrentis.com. We triage within two business days and do not pursue legal action against good-faith researchers following standard responsible-disclosure practice.",
+  },
+];
+
+function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: number }) {
+  const reverse = index % 2 === 1;
+  const Mockup = stage.Mockup;
+  const Icon = stage.icon;
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      transition={fadeUpTransition}
+      style={{ display: "grid", gap: "56px", alignItems: "center" }}
+      className={`grid-cols-1 lg:grid-cols-2 ${reverse ? "lg:[direction:rtl] [&>*]:[direction:ltr]" : ""}`}
+    >
+      {/* Copy */}
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "16px" }}>
+          <div
+            style={{
+              width: "44px",
+              height: "44px",
+              borderRadius: "8px",
+              backgroundColor: "rgba(198,139,47,0.12)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexShrink: 0,
+            }}
+          >
+            <Icon size={20} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <span
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#C68B2F",
+                letterSpacing: "0.06em",
+              }}
+            >
+              LAYER {stage.number}
+            </span>
+            <h2
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "28px",
+                color: "#0f172a",
+                margin: 0,
+                letterSpacing: "0.01em",
+                lineHeight: 1.2,
+              }}
+              className="lg:!text-[36px]"
+            >
+              {stage.title}
+            </h2>
+          </div>
+        </div>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "17px",
+            fontWeight: 500,
+            color: "#0f172a",
+            lineHeight: 1.5,
+            margin: "0 0 14px",
+          }}
+        >
+          {stage.subtitle}
+        </p>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "15px",
+            color: "#64748b",
+            lineHeight: 1.75,
+            margin: "0 0 20px",
+          }}
+        >
+          {stage.body}
+        </p>
+        <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
+          {stage.bullets.map((b) => (
+            <li
+              key={b}
+              style={{
+                display: "flex",
+                gap: "10px",
+                alignItems: "flex-start",
+                fontFamily: "var(--font-sans)",
+                fontSize: "14px",
+                color: "#334155",
+                lineHeight: 1.6,
+              }}
+            >
+              <Check size={16} strokeWidth={2} color="#C68B2F" style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
+              <span>{b}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Mockup */}
+      <div
+        style={{
+          borderRadius: "10px",
+          border: "1px solid #e2e8f0",
+          backgroundColor: "#F8FAFC",
+          boxShadow: "0 20px 50px rgba(15,23,42,0.08), 0 4px 10px rgba(15,23,42,0.04)",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#0f172a",
+            padding: "10px 14px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
+          <div style={{ display: "flex", gap: "6px" }}>
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                style={{
+                  width: "10px",
+                  height: "10px",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                }}
+              />
+            ))}
+          </div>
+          <div
+            style={{
+              flex: 1,
+              backgroundColor: "rgba(255,255,255,0.06)",
+              borderRadius: "5px",
+              padding: "4px 10px",
+              fontFamily: "var(--font-sans)",
+              fontSize: "11px",
+              color: "#94a3b8",
+              textAlign: "center",
+            }}
+          >
+            {stage.previewUrl}
+          </div>
+        </div>
+        <Mockup />
+      </div>
+    </motion.div>
+  );
+}
+
+export function SecurityProductPage() {
+  const heroRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+
+  return (
+    <>
+      <Navbar />
+
+      {/* ── HERO ───────────────────────────────────────────── */}
+      <section
+        ref={heroRef}
+        style={{
+          backgroundColor: "#0f172a",
+          padding: "120px 40px 96px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
+        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
+        <motion.div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.05,
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+            pointerEvents: "none",
+            y: gridY,
+            zIndex: 1,
+          }}
+        />
+
+        <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#C68B2F",
+              display: "inline-block",
+              marginBottom: "20px",
+            }}
+          >
+            SECURITY
+          </motion.span>
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 700,
+              fontSize: "36px",
+              color: "#FFFFFF",
+              lineHeight: 1.15,
+              margin: "0 0 24px",
+            }}
+            className="lg:!text-[56px]"
+          >
+            Authority at every layer.
+            <br />
+            By design.
+          </motion.h1>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "17px",
+              color: "#94a3b8",
+              lineHeight: 1.7,
+              margin: "0 auto 32px",
+              maxWidth: "640px",
+            }}
+          >
+            Avrentis is built for organisations where every approval carries
+            weight. Security is not a feature bolted on later — it is the
+            structural premise of the platform. Here is exactly what that
+            means, layer by layer.
+          </motion.p>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(3)}
+            style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
+          >
+            <Link
+              href="/contact?intent=security"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                fontSize: "14px",
+                backgroundColor: "#C68B2F",
+                color: "#0f172a",
+                borderRadius: "6px",
+                padding: "0 22px",
+                height: "44px",
+                display: "inline-flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+            >
+              Book a security review
+            </Link>
+            <a
+              href="#stack"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "14px",
+                color: "#FFFFFF",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "6px",
+                padding: "0 22px",
+                height: "44px",
+                display: "inline-flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+            >
+              Read the stack →
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── PILLARS ────────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.10em",
+              textTransform: "uppercase",
+              color: "#C68B2F",
+              display: "block",
+              marginBottom: "12px",
+            }}
+          >
+            TRUST POSTURE
+          </motion.span>
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              fontSize: "32px",
+              color: "#0f172a",
+              lineHeight: 1.2,
+              margin: "0 0 48px",
+              maxWidth: "620px",
+              letterSpacing: "0.01em",
+            }}
+            className="lg:!text-[38px]"
+          >
+            Four foundations. Each enforced at the engine, not the interface.
+          </motion.h2>
+
+          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
+            {PILLARS.map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <motion.div
+                  key={p.title}
+                  variants={fadeUp}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={staggerDelay(i + 2)}
+                  style={{
+                    backgroundColor: "#F8FAFC",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "10px",
+                    padding: "28px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "6px",
+                      backgroundColor: "rgba(198,139,47,0.12)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                  </div>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 600,
+                      fontSize: "18px",
+                      color: "#0f172a",
+                      margin: "4px 0 0",
+                    }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "14px",
+                      color: "#64748b",
+                      lineHeight: 1.65,
+                      margin: 0,
+                    }}
+                  >
+                    {p.body}
+                  </p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── STACK ──────────────────────────────────────────── */}
+      <section id="stack" style={{ backgroundColor: "#FFFFFF", padding: "120px 40px", scrollMarginTop: "80px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
+          {STACK.map((s, i) => (
+            <StackRow key={s.key} stage={s} index={i} />
+          ))}
+        </div>
+      </section>
+
+      {/* ── COMPLIANCE POSTURE ─────────────────────────────── */}
+      <section
+        style={{
+          backgroundColor: "#0f172a",
+          padding: "120px 40px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <AmbientGlow top="20%" left="-120px" size={460} intensity={0.15} duration={34} />
+        <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
+
+        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#C68B2F",
+              display: "block",
+              marginBottom: "16px",
+            }}
+          >
+            COMPLIANCE POSTURE
+          </motion.span>
+
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              fontSize: "32px",
+              color: "#FFFFFF",
+              lineHeight: 1.2,
+              margin: "0 0 16px",
+              maxWidth: "640px",
+              letterSpacing: "0.01em",
+            }}
+            className="lg:!text-[38px]"
+          >
+            Honest about what we are — and what we&rsquo;re working toward.
+          </motion.h2>
+
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "15px",
+              color: "#94a3b8",
+              lineHeight: 1.7,
+              margin: "0 0 48px",
+              maxWidth: "680px",
+            }}
+          >
+            Avrentis does not hold formal SOC 2 or ISO 27001 certifications
+            today. The platform is built with the controls that those frameworks
+            measure — access, audit, encryption, change-management — and we can
+            walk you through each one on a security review.
+          </motion.p>
+
+          <div
+            style={{ display: "grid", gap: "16px" }}
+            className="grid-cols-1 md:grid-cols-3"
+          >
+            {COMPLIANCE.map((c, i) => (
+              <motion.div
+                key={c.framework}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                transition={staggerDelay(i + 3)}
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.10)",
+                  borderRadius: "10px",
+                  padding: "24px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 600,
+                      fontSize: "15px",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    {c.framework}
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "'IBM Plex Mono', monospace",
+                      fontSize: "10px",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: "#C68B2F",
+                      backgroundColor: "rgba(198,139,47,0.12)",
+                      border: "1px solid rgba(198,139,47,0.28)",
+                      borderRadius: "3px",
+                      padding: "3px 8px",
+                    }}
+                  >
+                    {c.status}
+                  </span>
+                </div>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "13px",
+                    color: "#94a3b8",
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  {c.body}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(6)}
+            style={{
+              marginTop: "40px",
+              padding: "22px 26px",
+              backgroundColor: "rgba(255,255,255,0.03)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: "10px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: "10px",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#C68B2F",
+              }}
+            >
+              RESPONSIBLE DISCLOSURE
+            </span>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#e2e8f0", margin: 0, lineHeight: 1.7 }}>
+              Found a vulnerability? Email{" "}
+              <a href="mailto:security@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
+                security@avrentis.com
+              </a>
+              . We triage within two business days and welcome good-faith
+              research. A DPA and sub-processor list are available on request.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── FAQ ────────────────────────────────────────────── */}
+      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
+        <div style={{ maxWidth: "980px", margin: "0 auto" }}>
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.10em",
+              textTransform: "uppercase",
+              color: "#C68B2F",
+              display: "block",
+              marginBottom: "12px",
+            }}
+          >
+            QUESTIONS YOUR SECURITY TEAM WILL ASK
+          </motion.span>
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              fontSize: "32px",
+              color: "#0f172a",
+              lineHeight: 1.2,
+              margin: "0 0 40px",
+              maxWidth: "620px",
+              letterSpacing: "0.01em",
+            }}
+            className="lg:!text-[38px]"
+          >
+            Direct answers — the kind you&rsquo;ll want to forward to your CISO.
+          </motion.h2>
+
+          <div
+            style={{
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              overflow: "hidden",
+            }}
+          >
+            {FAQS.map((f, i) => (
+              <motion.details
+                key={f.q}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                transition={staggerDelay(i + 2)}
+                style={{
+                  borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+                  padding: "18px 22px",
+                }}
+              >
+                <summary
+                  style={{
+                    cursor: "pointer",
+                    listStyle: "none",
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "15px",
+                    fontWeight: 500,
+                    color: "#0f172a",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "12px",
+                  }}
+                >
+                  {f.q}
+                  <span style={{ color: "#C68B2F", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "14px",
+                    color: "#64748b",
+                    lineHeight: 1.7,
+                    margin: "12px 0 0",
+                  }}
+                >
+                  {f.a}
+                </p>
+              </motion.details>
+            ))}
+          </div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(FAQS.length + 2)}
+            style={{
+              marginTop: "32px",
+              padding: "22px 26px",
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "16px",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <Mail size={18} color="#C68B2F" strokeWidth={1.8} aria-hidden="true" />
+              <div>
+                <div style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 600, color: "#0f172a" }}>
+                  Got a question we haven&rsquo;t answered?
+                </div>
+                <div style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#64748b" }}>
+                  Talk directly with our team — we respond within one business day.
+                </div>
+              </div>
+            </div>
+            <Link
+              href="/contact?intent=security"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                fontSize: "13px",
+                backgroundColor: "#C68B2F",
+                color: "#0f172a",
+                borderRadius: "6px",
+                padding: "0 18px",
+                height: "40px",
+                display: "inline-flex",
+                alignItems: "center",
+                textDecoration: "none",
+              }}
+            >
+              Book a security review
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      <CtaBanner />
+      <Footer />
+    </>
+  );
+}

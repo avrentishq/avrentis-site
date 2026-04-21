@@ -17,8 +17,16 @@ const PLATFORM_LINKS = [
   { label: "Pricing", href: "/pricing" },
 ];
 
+const RESOURCES_LINKS = [
+  { label: "Documentation", href: "/docs" },
+  { label: "Changelog", href: "/changelog" },
+  { label: "Status", href: "/status" },
+  { label: "Customers", href: "/customers" },
+];
+
 const COMPANY_LINKS = [
   { label: "About", href: "/about" },
+  { label: "Careers", href: "/careers" },
   { label: "Trust centre", href: "/trust" },
   { label: "Privacy policy", href: "/privacy" },
   { label: "Terms of service", href: "/terms" },
@@ -87,7 +95,7 @@ export function Footer() {
             gap: "40px",
             marginBottom: "40px",
           }}
-          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1fr]"
+          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr_1fr]"
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
@@ -108,6 +116,7 @@ export function Footer() {
 
           <FooterColumn label="PRODUCT" links={PRODUCT_LINKS} />
           <FooterColumn label="PLATFORM" links={PLATFORM_LINKS} />
+          <FooterColumn label="RESOURCES" links={RESOURCES_LINKS} />
           <FooterColumn label="COMPANY" links={COMPANY_LINKS} />
           <FooterColumn label="GET STARTED" links={START_LINKS} />
         </div>

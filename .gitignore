@@ -40,7 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# planning and internal docs
-docs/
-guides/
+# planning and internal docs (top-level only — do not ignore src/app/docs
+# or src/components/docs which are the public /docs route)
+/docs/
+/guides/
 .claude/

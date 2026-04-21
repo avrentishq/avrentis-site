@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
 
@@ -583,13 +584,44 @@ export function HowItWorks() {
     setAutoAdvance(false);
   }
 
+  // Scroll-linked parallax on the grid overlay; travels up ~80px over the
+  // section's full scroll range.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const gridY = useTransform(scrollYProgress, [0, 1], [40, -80]);
+
   return (
     <section
       id="how-it-works"
       ref={sectionRef}
-      style={{ backgroundColor: "#0f172a", padding: "120px 40px" }}
+      style={{
+        backgroundColor: "#0f172a",
+        padding: "120px 40px",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      {/* Ambient background layers */}
+      <AmbientGlow top="10%" left="-150px" size={520} intensity={0.18} duration={34} />
+      <AmbientGlow bottom="-80px" right="-120px" size={460} intensity={0.15} duration={40} delay={0.5} />
+      <motion.div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.04,
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+          pointerEvents: "none",
+          y: gridY,
+          zIndex: 1,
+        }}
+      />
+
+      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
         {/* ── Header ──────────────────────────────────── */}
         <motion.span
           variants={fadeUp}

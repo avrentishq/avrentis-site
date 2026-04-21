@@ -27,135 +27,201 @@ const FEATURES = [
   { icon: Globe, label: "Works across any location" },
 ];
 
-/* ── Mockup components ─────────────────────────────────── */
+/* ── Mockup components — mirror the real platform UI ───────────────── */
 
-function SubmitMockup() {
+/**
+ * Shared shell for every mockup: a light browser-framed card on the dark
+ * section background, matching how the real Avrentis dashboard renders.
+ */
+function MockupShell({ url, children }: { url: string; children: React.ReactNode }) {
   return (
     <div
       style={{
-        backgroundColor: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: "12px",
-        padding: "24px",
-        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 16px 40px rgba(0,0,0,0.3)",
+        borderRadius: "10px",
+        border: "1px solid rgba(255,255,255,0.10)",
+        backgroundColor: "#F8FAFC",
+        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 20px 50px rgba(0,0,0,0.4)",
+        overflow: "hidden",
       }}
     >
-      <span
-        style={{
-          fontFamily: "var(--font-sans)",
-          fontWeight: 600,
-          fontSize: "14px",
-          color: "#FFFFFF",
-          display: "block",
-          marginBottom: "20px",
-        }}
-      >
-        New Request
-      </span>
-
-      {/* Document Type */}
-      <div style={{ marginBottom: "14px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
-          Document Type
-        </span>
-        <div
-          style={{
-            backgroundColor: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "6px",
-            padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            color: "#FFFFFF",
-            fontWeight: 500,
-          }}
-        >
-          Payment Voucher
-        </div>
-      </div>
-
-      {/* Vendor */}
-      <div style={{ marginBottom: "14px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
-          Vendor
-        </span>
-        <div
-          style={{
-            backgroundColor: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "6px",
-            padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            color: "#64748b",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span>Select vendor&hellip;</span>
-          <span style={{ fontSize: "10px", color: "#475569" }}>&#9662;</span>
-        </div>
-      </div>
-
-      {/* Amount */}
-      <div style={{ marginBottom: "14px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
-          Amount
-        </span>
-        <div
-          style={{
-            backgroundColor: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "6px",
-            padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            color: "#64748b",
-          }}
-        >
-          &#x20A6; 0.00
-        </div>
-      </div>
-
-      {/* Purpose */}
-      <div style={{ marginBottom: "20px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#475569", display: "block", marginBottom: "6px" }}>
-          Purpose
-        </span>
-        <div
-          style={{
-            backgroundColor: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "6px",
-            padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            color: "#64748b",
-            minHeight: "40px",
-          }}
-        >
-          Describe purpose&hellip;
-        </div>
-      </div>
-
-      {/* Submit button */}
+      {/* Browser chrome */}
       <div
         style={{
-          backgroundColor: "#C68B2F",
-          color: "#0f172a",
-          fontFamily: "var(--font-sans)",
-          fontWeight: 600,
-          fontSize: "13px",
-          borderRadius: "6px",
-          height: "40px",
+          backgroundColor: "#0f172a",
+          padding: "8px 12px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
-          letterSpacing: "0.02em",
+          gap: "10px",
+          borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
       >
-        Submit Request
+        <div style={{ display: "flex", gap: "5px" }}>
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              style={{
+                width: "9px",
+                height: "9px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(255,255,255,0.15)",
+              }}
+            />
+          ))}
+        </div>
+        <div
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(255,255,255,0.06)",
+            borderRadius: "4px",
+            padding: "3px 10px",
+            fontFamily: "var(--font-sans)",
+            fontSize: "10px",
+            color: "#94a3b8",
+            textAlign: "center",
+          }}
+        >
+          {url}
+        </div>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function SubmitMockup() {
+  return (
+    <MockupShell url="app.avrentis.com / vouchers / new">
+      <div style={{ padding: "20px 22px" }}>
+        {/* Page heading */}
+        <h3
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: "18px",
+            color: "#0f172a",
+            margin: "0 0 4px",
+            letterSpacing: "0.01em",
+          }}
+        >
+          New payment voucher
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "12px",
+            color: "#64748b",
+            margin: "0 0 18px",
+          }}
+        >
+          Step 1 of 4 &middot; Payee details
+        </p>
+
+        {/* Step dots */}
+        <div style={{ display: "flex", gap: "6px", marginBottom: "20px" }}>
+          {[0, 1, 2, 3].map((i) => (
+            <div
+              key={i}
+              style={{
+                flex: 1,
+                height: "3px",
+                borderRadius: "2px",
+                backgroundColor: i === 0 ? "#C68B2F" : "#e2e8f0",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Fields */}
+        <MockupField label="Payee name" value="Brightpath Technologies" filled />
+        <MockupField label="Bank" value="Guaranty Trust Bank" filled />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+          <MockupField label="Account number" value="0123456789" filled />
+          <MockupField label="Account name" value="Brightpath Technologies Ltd." filled compact />
+        </div>
+
+        {/* Buttons */}
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "18px" }}>
+          <button
+            type="button"
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "12px",
+              backgroundColor: "#FFFFFF",
+              color: "#0f172a",
+              border: "1px solid #e2e8f0",
+              borderRadius: "3px",
+              padding: "8px 16px",
+              cursor: "default",
+            }}
+          >
+            Save draft
+          </button>
+          <button
+            type="button"
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "12px",
+              backgroundColor: "#0f172a",
+              color: "#FFFFFF",
+              border: "none",
+              borderRadius: "3px",
+              padding: "8px 18px",
+              cursor: "default",
+            }}
+          >
+            Continue &rarr;
+          </button>
+        </div>
+      </div>
+    </MockupShell>
+  );
+}
+
+function MockupField({
+  label,
+  value,
+  filled,
+  compact,
+}: {
+  label: string;
+  value: string;
+  filled?: boolean;
+  compact?: boolean;
+}) {
+  return (
+    <div style={{ marginBottom: "12px" }}>
+      <label
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: "10px",
+          fontWeight: 500,
+          color: "#64748b",
+          letterSpacing: "0.04em",
+          textTransform: "uppercase",
+          display: "block",
+          marginBottom: "5px",
+        }}
+      >
+        {label}
+      </label>
+      <div
+        style={{
+          backgroundColor: "#FFFFFF",
+          border: "1px solid #e2e8f0",
+          borderRadius: "3px",
+          padding: compact ? "7px 10px" : "8px 10px",
+          fontFamily: "var(--font-sans)",
+          fontSize: compact ? "11px" : "12px",
+          color: filled ? "#0f172a" : "#94a3b8",
+          fontWeight: filled ? 500 : 400,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {value}
       </div>
     </div>
   );
@@ -163,193 +229,326 @@ function SubmitMockup() {
 
 function ApproveMockup() {
   return (
-    <div
-      style={{
-        backgroundColor: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: "12px",
-        padding: "24px",
-        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 16px 40px rgba(0,0,0,0.3)",
-      }}
-    >
-      {/* Notification badge */}
-      <div
-        style={{
-          display: "inline-block",
-          backgroundColor: "rgba(198,139,47,0.1)",
-          border: "1px solid rgba(198,139,47,0.2)",
-          borderRadius: "4px",
-          padding: "5px 10px",
-          marginBottom: "20px",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "11px",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            color: "#C68B2F",
-          }}
-        >
-          New Approval Request
-        </span>
-      </div>
-
-      {/* Details */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Reference</span>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 600 }}>PV-2026-0041</span>
+    <MockupShell url="app.avrentis.com / vouchers / PV-2026-0041">
+      <div style={{ padding: "20px 22px" }}>
+        {/* Reference + type + status */}
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontFeatureSettings: '"tnum" 1',
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#0f172a",
+            }}
+          >
+            PV-2026-0041
+          </span>
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "10px",
+              fontWeight: 500,
+              backgroundColor: "#0f172a",
+              color: "#C68B2F",
+              borderRadius: "3px",
+              padding: "1px 5px",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+            }}
+          >
+            PV
+          </span>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "4px",
+              fontFamily: "var(--font-sans)",
+              fontSize: "10px",
+              fontWeight: 500,
+              backgroundColor: "rgba(198,139,47,0.08)",
+              color: "#92400e",
+              borderRadius: "3px",
+              padding: "2px 6px",
+            }}
+          >
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#C68B2F", display: "inline-block" }} />
+            Under review
+          </span>
         </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Amount</span>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 600 }}>&#x20A6;850,000</span>
-        </div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Vendor</span>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 500 }}>Brightpath Technologies</span>
-        </div>
-      </div>
 
-      <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "20px" }} />
-
-      {/* Action buttons */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+        {/* Summary block */}
         <div
           style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "13px",
-            backgroundColor: "rgba(52,199,89,0.15)",
-            color: "#34C759",
-            border: "1px solid rgba(52,199,89,0.3)",
-            borderRadius: "8px",
-            height: "42px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            letterSpacing: "0.02em",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #e2e8f0",
+            borderRadius: "4px",
+            padding: "14px 16px",
+            marginBottom: "14px",
           }}
         >
-          Approve
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a", margin: "0 0 2px" }}>
+            Brightpath Technologies
+          </p>
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontFeatureSettings: '"tnum" 1',
+              fontSize: "20px",
+              fontWeight: 500,
+              color: "#0f172a",
+              margin: "0 0 10px",
+            }}
+          >
+            ₦850,000
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "80px 1fr", rowGap: "4px", fontFamily: "var(--font-sans)", fontSize: "11px" }}>
+            <span style={{ color: "#64748b" }}>Purpose</span>
+            <span style={{ color: "#0f172a" }}>Diesel supply — November</span>
+            <span style={{ color: "#64748b" }}>Submitted</span>
+            <span style={{ color: "#0f172a" }}>Fatima Abubakar · 2h ago</span>
+            <span style={{ color: "#64748b" }}>Department</span>
+            <span style={{ color: "#0f172a" }}>Operations</span>
+          </div>
         </div>
+
+        {/* Approval actions panel */}
         <div
           style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "13px",
-            backgroundColor: "transparent",
-            color: "#FF3B30",
-            border: "1px solid rgba(255,59,48,0.3)",
-            borderRadius: "8px",
-            height: "42px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            letterSpacing: "0.02em",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #e2e8f0",
+            borderRadius: "4px",
+            padding: "14px 16px",
           }}
         >
-          Reject
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "10px",
+              fontWeight: 500,
+              color: "#64748b",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              margin: "0 0 10px",
+            }}
+          >
+            Your action
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+            <button
+              type="button"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "12px",
+                backgroundColor: "#0f172a",
+                color: "#FFFFFF",
+                border: "none",
+                borderRadius: "3px",
+                padding: "8px 0",
+                cursor: "default",
+              }}
+            >
+              Approve
+            </button>
+            <button
+              type="button"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "12px",
+                backgroundColor: "#FFFFFF",
+                color: "#0f172a",
+                border: "1px solid #e2e8f0",
+                borderRadius: "3px",
+                padding: "8px 0",
+                cursor: "default",
+              }}
+            >
+              Query
+            </button>
+            <button
+              type="button"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "12px",
+                backgroundColor: "#FFFFFF",
+                color: "#b91c1c",
+                border: "1px solid rgba(185,28,28,0.3)",
+                borderRadius: "3px",
+                padding: "8px 0",
+                cursor: "default",
+              }}
+            >
+              Return
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </MockupShell>
   );
 }
 
 function RecordMockup() {
+  const stages = [
+    { role: "Submitted", actor: "Fatima Abubakar · Staff", when: "15 Apr, 09:14" },
+    { role: "Reviewed", actor: "Chinedu Okafor · Finance", when: "15 Apr, 11:02" },
+    { role: "Sanctioned", actor: "Aisha Danjuma · MD", when: "15 Apr, 14:32" },
+  ];
   return (
-    <div
-      style={{
-        backgroundColor: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        borderRadius: "12px",
-        padding: "24px",
-        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 16px 40px rgba(0,0,0,0.3)",
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "var(--font-sans)",
-          fontWeight: 600,
-          fontSize: "14px",
-          color: "#FFFFFF",
-          display: "block",
-          marginBottom: "20px",
-        }}
-      >
-        Completed Record
-      </span>
+    <MockupShell url="app.avrentis.com / vouchers / PV-2026-0041">
+      <div style={{ padding: "20px 22px" }}>
+        {/* Status strip */}
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "14px" }}>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a" }}>
+            PV-2026-0041
+          </span>
+          <span
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "4px",
+              fontFamily: "var(--font-sans)",
+              fontSize: "10px",
+              fontWeight: 500,
+              backgroundColor: "rgba(4,120,87,0.08)",
+              color: "#047857",
+              borderRadius: "3px",
+              padding: "2px 6px",
+            }}
+          >
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#047857" }} />
+            Approved
+          </span>
+          <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "#64748b" }}>
+            Permanently on record
+          </span>
+        </div>
 
-      {/* Approval chain */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px", marginBottom: "20px" }}>
-        {[
-          { role: "Submitted by", person: "Staff" },
-          { role: "Approved by", person: "Finance" },
-          { role: "Sanctioned by", person: "MD" },
-        ].map((item) => (
-          <div key={item.role} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        {/* Approval timeline card */}
+        <div
+          style={{
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #e2e8f0",
+            borderRadius: "4px",
+            padding: "14px 16px",
+            marginBottom: "12px",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "10px",
+              fontWeight: 500,
+              color: "#64748b",
+              letterSpacing: "0.04em",
+              textTransform: "uppercase",
+              margin: "0 0 12px",
+            }}
+          >
+            Approval timeline
+          </p>
+          <div style={{ position: "relative" }}>
+            {/* Vertical rail */}
             <div
               style={{
-                width: "20px",
-                height: "20px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(52,199,89,0.15)",
-                border: "1px solid rgba(52,199,89,0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
+                position: "absolute",
+                left: "9px",
+                top: "10px",
+                bottom: "10px",
+                width: "1px",
+                backgroundColor: "#e2e8f0",
               }}
-            >
-              <span style={{ color: "#34C759", fontSize: "11px", lineHeight: 1 }}>&#10003;</span>
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flex: 1 }}>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>{item.role}</span>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#FFFFFF", fontWeight: 500 }}>{item.person}</span>
-            </div>
+            />
+            {stages.map((s) => (
+              <div
+                key={s.role}
+                style={{
+                  position: "relative",
+                  display: "flex",
+                  alignItems: "flex-start",
+                  gap: "12px",
+                  padding: "6px 0",
+                }}
+              >
+                <span
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    borderRadius: "50%",
+                    backgroundColor: "#FFFFFF",
+                    border: "1.5px solid #047857",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0,
+                    zIndex: 1,
+                  }}
+                >
+                  <span style={{ color: "#047857", fontSize: "10px", lineHeight: 1 }}>✓</span>
+                </span>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "12px",
+                      fontWeight: 500,
+                      color: "#0f172a",
+                      margin: 0,
+                    }}
+                  >
+                    {s.role} <span style={{ color: "#64748b", fontWeight: 400 }}>— {s.actor}</span>
+                  </p>
+                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: "2px 0 0" }}>
+                    {s.when}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
 
-      {/* Timestamp */}
-      <div
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          paddingTop: "14px",
-          marginBottom: "20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#475569" }}>Completed</span>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#64748b", fontWeight: 500 }}>
-          15 Apr 2026, 14:32 UTC
-        </span>
+        {/* Export row */}
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button
+            type="button"
+            style={{
+              flex: 1,
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "12px",
+              backgroundColor: "#FFFFFF",
+              color: "#0f172a",
+              border: "1px solid #e2e8f0",
+              borderRadius: "3px",
+              padding: "8px 0",
+              cursor: "default",
+            }}
+          >
+            Download PDF
+          </button>
+          <button
+            type="button"
+            style={{
+              flex: 1,
+              fontFamily: "var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "12px",
+              backgroundColor: "#FFFFFF",
+              color: "#0f172a",
+              border: "1px solid #e2e8f0",
+              borderRadius: "3px",
+              padding: "8px 0",
+              cursor: "default",
+            }}
+          >
+            Bank instruction
+          </button>
+        </div>
       </div>
-
-      {/* Download button */}
-      <div
-        style={{
-          backgroundColor: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          color: "#FFFFFF",
-          fontFamily: "var(--font-sans)",
-          fontWeight: 600,
-          fontSize: "13px",
-          borderRadius: "6px",
-          height: "40px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          letterSpacing: "0.02em",
-        }}
-      >
-        Download PDF
-      </div>
-    </div>
+    </MockupShell>
   );
 }
 

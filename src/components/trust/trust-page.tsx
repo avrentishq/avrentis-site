@@ -67,7 +67,7 @@ const FRAMEWORKS = [
 ];
 
 const SUBPROCESSORS = [
-  { name: "Neon", purpose: "Managed PostgreSQL for application data", region: "EU (Frankfurt)", dpa: true },
+  { name: "Neon", purpose: "Managed PostgreSQL for application data", region: "EU", dpa: true },
   { name: "Vercel", purpose: "Application hosting and edge compute", region: "Global edge", dpa: true },
   { name: "Cloudflare", purpose: "CDN and R2 object storage for document attachments", region: "Global", dpa: true },
   { name: "Upstash", purpose: "Managed Redis for sessions and rate-limiting", region: "EU / US (configurable)", dpa: true },
@@ -105,7 +105,7 @@ const DOCUMENTS = [
     icon: AlertOctagon,
     title: "Responsible disclosure",
     body: "Report security issues to security@avrentis.com. We triage within two business days.",
-    cta: { label: "Email security", href: "mailto:security@avrentis.com" },
+    cta: { label: "Report a vulnerability", href: "/contact?intent=disclosure" },
   },
   {
     icon: MapPin,
@@ -520,10 +520,10 @@ export function TrustProductPage() {
               margin: "20px 0 0",
             }}
           >
-            Subscribe to sub-processor change notifications by emailing{" "}
-            <a href="mailto:privacy@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-              privacy@avrentis.com
-            </a>
+            Subscribe to sub-processor change notifications through our{" "}
+            <Link href="/contact?intent=subscribe" style={{ color: "#C68B2F", textDecoration: "none" }}>
+              update subscription form
+            </Link>
             .
           </motion.p>
         </div>

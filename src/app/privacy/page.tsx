@@ -31,7 +31,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           For privacy questions, contact{" "}
-          <a href="mailto:privacy@avrentis.com">privacy@avrentis.com</a>.
+          <Link href="/contact?intent=privacy">our privacy enquiry form</Link>.
         </p>
       </>
     ),
@@ -215,7 +215,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           Where Avrentis processes your data on behalf of your employer (most features of the platform), we will
           forward your request to the relevant administrator and assist with its fulfilment. For direct requests,
-          email <a href="mailto:privacy@avrentis.com">privacy@avrentis.com</a>.
+          email <Link href="/contact?intent=privacy">our privacy enquiry form</Link>.
         </p>
       </>
     ),
@@ -232,7 +232,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           No system is perfectly secure; we operate a responsible-disclosure programme and welcome good-faith
-          reports at <a href="mailto:security@avrentis.com">security@avrentis.com</a>.
+          reports through our <Link href="/contact?intent=disclosure">responsible-disclosure form</Link>.
         </p>
       </>
     ),
@@ -264,7 +264,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         For any question about this policy, or to exercise a right listed above, write to{" "}
-        <a href="mailto:privacy@avrentis.com">privacy@avrentis.com</a>. We respond within one business day for
+        <Link href="/contact?intent=privacy">our privacy enquiry form</Link>. We respond within one business day for
         enterprise customers and otherwise within a reasonable time not exceeding the statutory deadline applicable
         to your jurisdiction.
       </p>
@@ -284,10 +284,10 @@ export default function PrivacyPage() {
         <>
           <strong>Note.</strong> This policy reflects our current practices. It is not legal advice. Organisations
           with bespoke compliance requirements (regulated industries, specific residency mandates, additional
-          controller-processor clauses) should reach out to{" "}
-          <a href="mailto:privacy@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-            privacy@avrentis.com
-          </a>{" "}
+          controller-processor clauses) should reach out through{" "}
+          <Link href="/contact?intent=privacy" style={{ color: "#C68B2F", textDecoration: "none" }}>
+            our privacy enquiry form
+          </Link>{" "}
           for a tailored Data Processing Agreement.
         </>
       }

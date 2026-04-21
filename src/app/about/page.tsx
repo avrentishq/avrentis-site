@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
@@ -255,8 +256,8 @@ export default function AboutPage() {
               software that solves real operational problems, we want to hear
               from you.
             </p>
-            <a
-              href="mailto:careers@avrentis.com"
+            <Link
+              href="/contact?intent=careers"
               style={{
                 display: "inline-block",
                 border: "1px solid #C68B2F",
@@ -272,7 +273,7 @@ export default function AboutPage() {
               }}
             >
               GET IN TOUCH
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -312,10 +313,10 @@ export default function AboutPage() {
               Whether you have questions about Avrentis, want to discuss how it
               can work for your organisation, or need support — we are here.
             </p>
-            <a
-              href="mailto:hello@avrentis.com"
+            <Link
+              href="/contact"
               style={{
-                display: "block",
+                display: "inline-block",
                 color: "#C68B2F",
                 fontSize: 16,
                 fontWeight: 500,
@@ -323,8 +324,8 @@ export default function AboutPage() {
                 textDecoration: "none",
               }}
             >
-              hello@avrentis.com
-            </a>
+              Start a conversation &rarr;
+            </Link>
             <p
               style={{
                 color: "#475569",

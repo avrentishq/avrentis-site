@@ -462,7 +462,7 @@ export function Hero() {
             style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}
           >
             <a
-              href="/contact"
+              href="/contact?intent=trial"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
@@ -488,7 +488,7 @@ export function Hero() {
                 e.currentTarget.style.backgroundColor = "#C68B2F";
               }}
             >
-              Start for free
+              Start your 14-day trial
             </a>
             <a
               href="#how-it-works"

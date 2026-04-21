@@ -395,8 +395,8 @@ export function ChangelogProductPage() {
                 </p>
               </div>
             </div>
-            <a
-              href="mailto:updates@avrentis.com?subject=Subscribe%20to%20changelog"
+            <Link
+              href="/contact?intent=subscribe"
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -412,7 +412,7 @@ export function ChangelogProductPage() {
               }}
             >
               Subscribe
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>

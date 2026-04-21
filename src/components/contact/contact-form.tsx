@@ -51,6 +51,48 @@ const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
       "We'll walk your CISO or security team through the stack — isolation, authority, audit, access lifecycle, encryption — and answer anything the page hasn't.",
     cta: "Book a security review",
   },
+  disclosure: {
+    eyebrow: "RESPONSIBLE DISCLOSURE",
+    headline: "Report a security vulnerability.",
+    lede:
+      "Thank you for looking. Describe what you found, how to reproduce it, and what impact you think it has. We triage security reports within two business days and do not pursue legal action against good-faith research.",
+    cta: "Submit report",
+  },
+  privacy: {
+    eyebrow: "DATA-PROTECTION ENQUIRY",
+    headline: "Privacy, data-subject rights, or a DPA.",
+    lede:
+      "Whether you're exercising a right under GDPR / NDPR / CCPA, requesting our DPA, or asking a privacy-policy question — describe what you need and we'll route it to the right person.",
+    cta: "Send privacy enquiry",
+  },
+  legal: {
+    eyebrow: "LEGAL ENQUIRY",
+    headline: "Notices, agreements, and legal questions.",
+    lede:
+      "Contract redlines, notices under our Terms of Service, vendor onboarding paperwork — send it here and our team will respond promptly.",
+    cta: "Send legal enquiry",
+  },
+  careers: {
+    eyebrow: "REGISTER YOUR INTEREST",
+    headline: "Tell us what you\u2019d like to own.",
+    lede:
+      "We hire deliberately. Share a short note about what draws you to Avrentis, a link to something you're proud of, and the kind of work you want to do. We read every message.",
+    cta: "Register my interest",
+  },
+  feedback: {
+    eyebrow: "DOCS FEEDBACK",
+    headline: "What guide would have helped?",
+    lede:
+      "Tell us what you were looking for, what you couldn't find, and what you'd expect it to cover. We write docs that customers actually ask for.",
+    cta: "Send feedback",
+  },
+  subscribe: {
+    eyebrow: "SUBSCRIBE TO UPDATES",
+    headline: "Get notable changes in your inbox.",
+    lede:
+      "We send a short email when something material ships — release notes, security updates, and service-impacting incidents. No promotional material.",
+    cta: "Subscribe me",
+  },
   notify: {
     eyebrow: "LAUNCH NOTIFICATION",
     headline: "Be the first to know when this launches.",
@@ -359,10 +401,12 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
           noValidate
         >
           <input type="hidden" name="intent" value={intent} />
-          {/* Honeypot — hidden field that real users never fill in */}
+          {/* Honeypot — hidden field that real users never fill in. Field
+              name is chosen to look plausible to naive form crawlers while
+              being unusual enough that browsers won't autofill it. */}
           <input
             type="text"
-            name="website"
+            name="fax_number"
             tabIndex={-1}
             autoComplete="off"
             aria-hidden="true"
@@ -519,14 +563,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             </div>
           )}
 
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
             <SubmitButton label={copy.cta} />
-            <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#94a3b8" }}>
-              Prefer email?{" "}
-              <a href="mailto:hello@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-                hello@avrentis.com
-              </a>
-            </span>
           </div>
         </motion.form>
       </div>

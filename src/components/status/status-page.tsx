@@ -171,11 +171,10 @@ export function StatusProductPage() {
               </h2>
               <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", margin: 0, lineHeight: 1.55 }}>
                 Current snapshot. Enterprise customers receive incident
-                notifications directly under their order form — subscribe to
-                general updates at{" "}
-                <a href="mailto:status@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-                  status@avrentis.com
-                </a>
+                notifications directly under their order form —{" "}
+                <Link href="/contact?intent=subscribe" style={{ color: "#C68B2F", textDecoration: "none" }}>
+                  subscribe to general status updates
+                </Link>
                 .
               </p>
             </div>

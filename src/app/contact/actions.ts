@@ -13,12 +13,32 @@ export type ContactIntent =
   | "trial"
   | "demo"
   | "security"
+  | "disclosure"
+  | "privacy"
+  | "legal"
+  | "careers"
+  | "feedback"
+  | "subscribe"
   | "notify"
   | "beta"
   | "roadmap"
   | "general";
 
-const VALID_INTENTS: ContactIntent[] = ["trial", "demo", "security", "notify", "beta", "roadmap", "general"];
+const VALID_INTENTS: ContactIntent[] = [
+  "trial",
+  "demo",
+  "security",
+  "disclosure",
+  "privacy",
+  "legal",
+  "careers",
+  "feedback",
+  "subscribe",
+  "notify",
+  "beta",
+  "roadmap",
+  "general",
+];
 
 export interface ContactFormState {
   status: "idle" | "success" | "error";
@@ -59,6 +79,18 @@ function intentLabel(intent: ContactIntent): string {
       return "Personalised demo";
     case "security":
       return "Security review";
+    case "disclosure":
+      return "Responsible disclosure";
+    case "privacy":
+      return "Data-protection enquiry";
+    case "legal":
+      return "Legal enquiry";
+    case "careers":
+      return "Careers — register interest";
+    case "feedback":
+      return "Docs feedback";
+    case "subscribe":
+      return "Subscribe to updates";
     case "notify":
       return "Launch notification";
     case "beta":
@@ -75,7 +107,8 @@ export async function submitContact(
   formData: FormData,
 ): Promise<ContactFormState> {
   // Honeypot — bots fill every field they can see. If this is set, silently succeed.
-  const honeypot = formData.get("website");
+  // Field name is deliberately non-obvious so naive form crawlers fill it anyway.
+  const honeypot = formData.get("fax_number");
   if (typeof honeypot === "string" && honeypot.trim() !== "") {
     return { status: "success", message: "Thanks — we'll be in touch shortly." };
   }

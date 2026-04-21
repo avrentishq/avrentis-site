@@ -474,8 +474,8 @@ export function DocsHubPage() {
             >
               Start here
             </a>
-            <a
-              href="mailto:docs@avrentis.com?subject=Docs%20feedback"
+            <Link
+              href="/contact?intent=feedback"
               style={{
                 fontFamily: sans,
                 fontWeight: 500,
@@ -493,7 +493,7 @@ export function DocsHubPage() {
             >
               <Mail size={14} strokeWidth={1.8} aria-hidden="true" />
               Request a guide
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -590,8 +590,8 @@ export function DocsHubPage() {
                 actually ask for, not what marketing thinks we should publish.
               </p>
             </div>
-            <a
-              href="mailto:docs@avrentis.com?subject=Missing%20guide"
+            <Link
+              href="/contact?intent=feedback"
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -607,7 +607,7 @@ export function DocsHubPage() {
               }}
             >
               Request a guide
-            </a>
+            </Link>
           </motion.div>
         </div>
       </section>

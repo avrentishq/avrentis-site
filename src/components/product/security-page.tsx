@@ -83,7 +83,7 @@ const STACK = [
       "Drizzle migrations are gated by a safety check that blocks policy drops",
     ],
     Mockup: IsolationMockup,
-    previewUrl: "postgres · session-scoped RLS",
+    previewUrl: "tenant isolation · database layer",
   },
   {
     number: "02",
@@ -100,7 +100,7 @@ const STACK = [
       "Amount thresholds — high-value requests auto-escalate to the MD",
     ],
     Mockup: AuthorityMockup,
-    previewUrl: "permissions.ts · abac.ts",
+    previewUrl: "role-based authority · attribute overlays",
   },
   {
     number: "03",
@@ -117,7 +117,7 @@ const STACK = [
       "SSO support · SAML + OIDC · AES-256-GCM encryption of client secrets at rest",
     ],
     Mockup: SessionMockup,
-    previewUrl: "session-revocation.ts",
+    previewUrl: "session revocation · identity controls",
   },
   {
     number: "04",
@@ -134,7 +134,7 @@ const STACK = [
       "One-click regulator-ready export for any period",
     ],
     Mockup: AuditMockup,
-    previewUrl: "audit_logs · permission_audit",
+    previewUrl: "immutable audit trail · role-change log",
   },
   {
     number: "05",
@@ -151,7 +151,7 @@ const STACK = [
       "R2 object storage with short-lived presigned URLs (5-minute TTL)",
     ],
     Mockup: LifecycleMockup,
-    previewUrl: "scim · access-expiry",
+    previewUrl: "access lifecycle · SCIM provisioning",
   },
   {
     number: "06",
@@ -168,7 +168,7 @@ const STACK = [
       "Cloudflare R2 blob storage with short-lived (5-min) presigned URLs",
     ],
     Mockup: InfraMockup,
-    previewUrl: "encryption.ts · infra",
+    previewUrl: "encryption · platform infrastructure",
   },
 ];
 
@@ -807,10 +807,13 @@ export function SecurityProductPage() {
               RESPONSIBLE DISCLOSURE
             </span>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#e2e8f0", margin: 0, lineHeight: 1.7 }}>
-              Found a vulnerability? Email{" "}
-              <a href="mailto:security@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
-                security@avrentis.com
-              </a>
+              Found a vulnerability?{" "}
+              <Link
+                href="/contact?intent=disclosure"
+                style={{ color: "#C68B2F", textDecoration: "none" }}
+              >
+                Submit a responsible-disclosure report
+              </Link>
               . We triage within two business days and welcome good-faith
               research. A DPA and sub-processor list are available on request.
             </p>

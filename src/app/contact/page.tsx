@@ -1,51 +1,49 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Button } from "@/components/ui/button";
-import { AvrentisMark } from "@/components/ui/logo";
+import { ContactForm } from "@/components/contact/contact-form";
+import type { ContactIntent } from "./actions";
 
-export default function ContactPage() {
+export const metadata: Metadata = {
+  title: "Contact — Avrentis",
+  description:
+    "Talk to Avrentis. Start a trial, book a personalised demo, request a security review, or share a use case. A real person replies within one business day.",
+  openGraph: {
+    title: "Contact Avrentis",
+    description:
+      "Start a trial, book a demo, or talk to our team. Real humans, one-business-day reply.",
+    url: "https://avrentis.com/contact",
+    type: "website",
+  },
+};
+
+const VALID_INTENTS: ContactIntent[] = ["trial", "demo", "security", "notify", "beta", "roadmap", "general"];
+
+function resolveIntent(raw: string | string[] | undefined): ContactIntent {
+  if (typeof raw !== "string") return "general";
+  return (VALID_INTENTS as string[]).includes(raw) ? (raw as ContactIntent) : "general";
+}
+
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ intent?: string | string[] }>;
+}) {
+  const { intent: rawIntent } = await searchParams;
+  const intent = resolveIntent(rawIntent);
+
   return (
     <>
       <Navbar />
       <main
         style={{
-          minHeight: "60vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "96px 24px",
-          gap: "16px",
+          backgroundColor: "#f1f5f9",
+          padding: "120px 40px",
+          minHeight: "70vh",
         }}
       >
-        <AvrentisMark size={48} variant="transparent-navy" />
-        <h1
-          style={{
-            fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-            fontWeight: 400,
-            fontSize: "32px",
-            color: "#0f172a",
-            margin: 0,
-          }}
-        >
-          Get in touch
-        </h1>
-        <p
-          style={{
-            fontFamily: "'IBM Plex Sans', system-ui, sans-serif",
-            fontWeight: 400,
-            fontSize: "16px",
-            color: "#475569",
-            margin: 0,
-            textAlign: "center",
-          }}
-        >
-          This page is on its way. In the meantime, request access to AVRENTIS.
-        </p>
-        <div style={{ marginTop: "8px" }}>
-          <Button variant="navy" href="/contact">
-            Request access
-          </Button>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <ContactForm intent={intent} />
         </div>
       </main>
       <Footer />

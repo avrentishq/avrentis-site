@@ -63,7 +63,7 @@ const SUBSYSTEMS: Subsystem[] = [
   { name: "Approval engine", description: "Workflow state machine + audit trail", status: "operational" },
   { name: "Notifications", description: "Email, WhatsApp, SMS dispatch", status: "operational" },
   { name: "Document storage", description: "Attachments + bank-ready PDF generation", status: "operational" },
-  { name: "Database", description: "Managed Postgres (Neon)", status: "operational" },
+  { name: "Database", description: "Managed Postgres", status: "operational" },
   { name: "Background jobs", description: "Scheduled tasks — cron, retention, reports", status: "operational" },
 ];
 

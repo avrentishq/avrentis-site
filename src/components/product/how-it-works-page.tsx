@@ -587,7 +587,7 @@ export function HowItWorksProductPage() {
             and permanently on record. Authority at every stage.
           </motion.p>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "48px" }} className="lg:grid-cols-2">
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="md:!gap-[32px] lg:!gap-[48px]">
             <div>
               <motion.h3
                 variants={fadeUp}
@@ -607,7 +607,7 @@ export function HowItWorksProductPage() {
               >
                 Payment Voucher Chain
               </motion.h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px" }} className="sm:grid-cols-3">
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PV_CHAIN.map((node, i) => (
                   <ChainCard key={node.stage} node={node} index={i} baseDelay={4} active={i === 1} />
                 ))}
@@ -633,7 +633,7 @@ export function HowItWorksProductPage() {
               >
                 Purchase Order Chain
               </motion.h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "12px" }} className="sm:grid-cols-3">
+              <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PO_CHAIN.map((node, i) => (
                   <ChainCard key={node.stage} node={node} index={i} baseDelay={7} active={i === 1} />
                 ))}

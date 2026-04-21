@@ -1,7 +1,7 @@
 /**
  * PeoplePreview — browser-frame for /product/people. Shows a leave
  * request review screen: employee info, leave window, reason, manager
- * approval panel. Mirrors how an HR approval will surface once People ships.
+ * approval panel. Mirrors how an HR approval will surface once HR ships.
  */
 
 export function PeoplePreview() {

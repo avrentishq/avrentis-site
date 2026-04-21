@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Avrentis platform — six modules, one system of record",
     description:
-      "Six modules share one approval engine and one permanent record. Pay, Procure, Vault, Audit, People, Connect.",
+      "Six modules share one approval engine and one permanent record. Pay, Procurement, Records, Audit, HR, Integrations.",
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -49,7 +49,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "procure",
-    name: "Avrentis Procure",
+    name: "Avrentis Procurement",
     subtitle: "Purchase orders on record",
     body:
       "Structured purchase order workflow with vendor management, line-item tracking, and role-based approval chains. Procurement without the paperwork gap.",
@@ -58,7 +58,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "vault",
-    name: "Avrentis Vault",
+    name: "Avrentis Records",
     subtitle: "Institutional memory",
     body:
       "Every approved document centrally stored, tagged, and instantly retrievable. Replace scattered drives and physical files with one searchable repository.",
@@ -76,7 +76,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "people",
-    name: "Avrentis People",
+    name: "Avrentis HR",
     subtitle: "Workforce & HR approvals",
     body:
       "Extend structured approvals to leave requests, onboarding, and policy acknowledgements. The same approval engine, shaped for people processes.",
@@ -85,7 +85,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "connect",
-    name: "Avrentis Connect",
+    name: "Avrentis Integrations",
     subtitle: "External systems & integrations",
     body:
       "Push Avrentis events into your accounting, HR, or data-warehouse stack via webhooks and a typed API. Your operational record flowing where it needs to go.",

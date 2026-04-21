@@ -32,13 +32,13 @@ const MODULES = [
     icon: CreditCard,
   },
   {
-    name: "Avrentis Procure",
+    name: "Avrentis Procurement",
     desc: "Procurement on record",
     href: "/product/procure",
     icon: ShoppingCart,
   },
   {
-    name: "Avrentis Vault",
+    name: "Avrentis Records",
     desc: "Institutional memory",
     href: "/product/vault",
     icon: Archive,
@@ -50,13 +50,13 @@ const MODULES = [
     icon: ClipboardCheck,
   },
   {
-    name: "Avrentis People",
+    name: "Avrentis HR",
     desc: "Workforce structure",
     href: "/product/people",
     icon: Users,
   },
   {
-    name: "Avrentis Connect",
+    name: "Avrentis Integrations",
     desc: "External systems",
     href: "/product/connect",
     icon: Link2,

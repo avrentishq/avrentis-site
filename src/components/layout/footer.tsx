@@ -5,8 +5,8 @@ import { AvrentisLogo } from "@/components/ui/logo";
 
 const PRODUCT_LINKS = [
   { label: "Avrentis Pay", href: "/product/pay" },
-  { label: "Avrentis Procure", href: "/product/procure" },
-  { label: "Avrentis Vault", href: "/product/vault" },
+  { label: "Avrentis Procurement", href: "/product/procure" },
+  { label: "Avrentis Records", href: "/product/vault" },
   { label: "Avrentis Audit", href: "/product/audit" },
 ];
 

@@ -80,9 +80,9 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { slug: "procure", name: "Avrentis Procure", desc: "Purchase orders on the same approval rails" },
+    { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders on the same approval rails" },
     { slug: "audit", name: "Avrentis Audit", desc: "The full compliance trail across every payment" },
-    { slug: "connect", name: "Avrentis Connect", desc: "Push payment events into your accounting system" },
+    { slug: "connect", name: "Avrentis Integrations", desc: "Push payment events into your accounting system" },
   ],
 };
 

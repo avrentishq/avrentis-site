@@ -50,7 +50,7 @@ const config: ModuleConfig = {
     {
       title: "Contracts never fall through the cracks",
       body:
-        "Upload contracts with renewal dates. Vault surfaces expiring contracts 60 days ahead so legal and procurement can act before lapse, not after.",
+        "Upload contracts with renewal dates. Records surfaces expiring contracts 60 days ahead so legal and procurement can act before lapse, not after.",
     },
     {
       title: "Find it in seconds, not hours",
@@ -73,8 +73,8 @@ const config: ModuleConfig = {
 
   relatedModules: [
     { slug: "audit", name: "Avrentis Audit", desc: "Every vault access + download logged to the audit trail" },
-    { slug: "pay", name: "Avrentis Pay", desc: "Every approved voucher lands in Vault automatically" },
-    { slug: "procure", name: "Avrentis Procure", desc: "POs, vendor quotes, and delivery notes stored together" },
+    { slug: "pay", name: "Avrentis Pay", desc: "Every approved voucher lands in Records automatically" },
+    { slug: "procure", name: "Avrentis Procurement", desc: "POs, vendor quotes, and delivery notes stored together" },
   ],
 };
 

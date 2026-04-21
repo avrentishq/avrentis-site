@@ -1,6 +1,6 @@
 /**
  * VaultPreview — browser-frame for /product/vault. Shows a searchable
- * document list with categories and tags, matching how the real Vault
+ * document list with categories and tags, matching how the real Records
  * module will surface documents once it ships.
  */
 

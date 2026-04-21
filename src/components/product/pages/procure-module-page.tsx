@@ -74,7 +74,7 @@ const config: ModuleConfig = {
   relatedModules: [
     { slug: "pay", name: "Avrentis Pay", desc: "Turn sanctioned POs into paid invoices on the same rails" },
     { slug: "audit", name: "Avrentis Audit", desc: "Every PO, every signature — permanently on record" },
-    { slug: "vault", name: "Avrentis Vault", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
+    { slug: "vault", name: "Avrentis Records", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
   ],
 };
 

@@ -73,8 +73,8 @@ const config: ModuleConfig = {
 
   relatedModules: [
     { slug: "audit", name: "Avrentis Audit", desc: "HR events flow into the same immutable trail" },
-    { slug: "vault", name: "Avrentis Vault", desc: "Employee documents and signed acknowledgements stored together" },
-    { slug: "connect", name: "Avrentis Connect", desc: "Push HR events into your payroll or HRIS system" },
+    { slug: "vault", name: "Avrentis Records", desc: "Employee documents and signed acknowledgements stored together" },
+    { slug: "connect", name: "Avrentis Integrations", desc: "Push HR events into your payroll or HRIS system" },
   ],
 };
 

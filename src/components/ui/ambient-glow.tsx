@@ -18,8 +18,8 @@
  * the glow is clipped to the section bounds.
  */
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 
 interface AmbientGlowProps {
   /** Pixel size of the square glow. Defaults to 480. */
@@ -54,16 +54,7 @@ export function AmbientGlow({
   duration = 26,
   delay = 0,
 }: AmbientGlowProps) {
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-    if (!mq) return;
-    setReducedMotion(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener?.("change", handler);
-    return () => mq.removeEventListener?.("change", handler);
-  }, []);
+  const reducedMotion = useReducedMotion();
 
   const background = `radial-gradient(closest-side, ${color} 0%, transparent 70%)`;
 

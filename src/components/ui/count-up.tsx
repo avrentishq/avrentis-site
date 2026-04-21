@@ -18,6 +18,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView, useMotionValue, animate } from "framer-motion";
+import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 
 interface CountUpProps {
   value: string;
@@ -59,24 +60,40 @@ function formatNumber(n: number, decimals: number): string {
 }
 
 export function CountUp({ value, duration = 0.9, className, style }: CountUpProps) {
+  const reducedMotion = useReducedMotion();
+
+  // Non-numeric values render verbatim; reduced-motion users see the final
+  // value immediately with no animation. Both cases skip the stateful path.
+  const parsed = parseValue(value);
+  if (!parsed || reducedMotion) {
+    return (
+      <span className={className} style={style}>
+        {value}
+      </span>
+    );
+  }
+
+  return <CountUpAnimator parsed={parsed} value={value} duration={duration} className={className} style={style} />;
+}
+
+interface AnimatorProps {
+  parsed: Parsed;
+  value: string;
+  duration: number;
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+function CountUpAnimator({ parsed, duration, className, style }: AnimatorProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const parsed = parseValue(value);
   const motionValue = useMotionValue(0);
-  const [display, setDisplay] = useState<string>(parsed ? `${parsed.prefix}0${parsed.suffix}` : value);
+  const [display, setDisplay] = useState<string>(`${parsed.prefix}0${parsed.suffix}`);
 
   useEffect(() => {
-    if (!parsed || !inView) return;
-
-    // Respect reduced-motion preferences — skip the interpolation.
-    const reducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) {
-      setDisplay(value);
-      return;
-    }
-
+    if (!inView) return;
+    // `animate().onUpdate` is a framer-motion subscription callback, not a
+    // synchronous effect-body setState — setDisplay here is allowed.
     const controls = animate(motionValue, parsed.number, {
       duration,
       ease: "easeOut",
@@ -85,7 +102,7 @@ export function CountUp({ value, duration = 0.9, className, style }: CountUpProp
       },
     });
     return () => controls.stop();
-  }, [inView, parsed, duration, motionValue, value]);
+  }, [inView, parsed, duration, motionValue]);
 
   return (
     <span ref={ref} className={className} style={style}>

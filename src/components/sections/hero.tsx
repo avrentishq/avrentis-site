@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -323,8 +324,18 @@ function ApprovalRow({
 }
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  // Scroll-linked parallax on the grid texture — drifts up by 60px across
+  // the section's full scroll, giving a subtle depth cue.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+
   return (
     <section
+      ref={sectionRef}
       style={{
         backgroundColor: "#0f172a",
         padding: "140px 40px 120px",
@@ -332,8 +343,13 @@ export function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Subtle grid texture overlay */}
-      <div
+      {/* Ambient glow layers — sit behind everything, non-interactive */}
+      <AmbientGlow top="-120px" left="-120px" size={520} intensity={0.22} duration={32} />
+      <AmbientGlow bottom="-140px" right="-100px" size={560} intensity={0.18} duration={38} delay={0.5} />
+
+      {/* Subtle grid texture overlay with scroll-linked parallax */}
+      <motion.div
+        aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
@@ -342,6 +358,8 @@ export function Hero() {
             "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
+          y: gridY,
+          zIndex: 1,
         }}
       />
 
@@ -353,6 +371,7 @@ export function Hero() {
           gap: "48px",
           alignItems: "center",
           position: "relative",
+          zIndex: 2,
         }}
         className="grid-cols-1 lg:grid-cols-2"
       >

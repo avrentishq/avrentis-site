@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Lock, Check, Zap, Globe } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
@@ -22,8 +23,15 @@ export function CtaBanner() {
         backgroundImage:
           "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
         backgroundSize: "60px 60px",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Ambient glow frames the CTA from behind. Two offset glows keep the
+          motion asymmetric so the cycle never looks mechanical. */}
+      <AmbientGlow top="-80px" left="20%" size={520} intensity={0.22} duration={38} />
+      <AmbientGlow bottom="-60px" right="15%" size={480} intensity={0.18} duration={44} delay={0.5} />
+
       <div
         style={{
           maxWidth: "640px",
@@ -31,6 +39,8 @@ export function CtaBanner() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          position: "relative",
+          zIndex: 2,
         }}
       >
         {/* Headline */}

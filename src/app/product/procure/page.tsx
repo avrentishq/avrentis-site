@@ -1,87 +1,19 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import type { Metadata } from "next";
+import { ProcureModulePage } from "@/components/product/pages/procure-module-page";
+
+export const metadata: Metadata = {
+  title: "Avrentis Procure — Procurement on record",
+  description:
+    "Every purchase order submitted, approved, and issued through a structured vendor and approval system. Line items, vendor directory, and a permanent record for every procurement decision.",
+  openGraph: {
+    title: "Avrentis Procure — Procurement on record",
+    description:
+      "Submit, approve, and issue purchase orders through a single system of record. Vendor directory + line items + approval chain.",
+    url: "https://avrentis.com/product/procure",
+    type: "website",
+  },
+};
 
 export default function ProductProcurePage() {
-  return (
-    <>
-      <Navbar />
-      <main
-        style={{
-          minHeight: "70vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "96px 24px",
-          gap: "20px",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "11px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "#C68B2F",
-          }}
-        >
-          AVRENTIS PROCURE
-        </span>
-        <h1
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "36px",
-            color: "#0f172a",
-            margin: 0,
-            textAlign: "center",
-            maxWidth: "600px",
-          }}
-        >
-          Purchase orders without the chaos.
-        </h1>
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "16px",
-            color: "#64748b",
-            margin: 0,
-            textAlign: "center",
-            maxWidth: "480px",
-            lineHeight: 1.7,
-          }}
-        >
-          Every purchase order — raised correctly, approved on record, tracked
-          to completion. Structured procurement for every organisation.
-        </p>
-        <a
-          href="/contact"
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "11px",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            lineHeight: 1,
-            backgroundColor: "#C68B2F",
-            color: "#0f172a",
-            border: "none",
-            borderRadius: "3px",
-            height: "36px",
-            padding: "0 20px",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textDecoration: "none",
-            marginTop: "8px",
-          }}
-        >
-          START FOR FREE
-        </a>
-      </main>
-      <Footer />
-    </>
-  );
+  return <ProcureModulePage />;
 }

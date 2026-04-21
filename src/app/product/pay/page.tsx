@@ -1,87 +1,19 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
+import type { Metadata } from "next";
+import { PayModulePage } from "@/components/product/pages/pay-module-page";
+
+export const metadata: Metadata = {
+  title: "Avrentis Pay — Structured payment approvals",
+  description:
+    "Every payment voucher submitted, reviewed, and sanctioned through a defined approval chain — with a bank-ready PDF and permanent record at the end. Replace the email trail with structured authority.",
+  openGraph: {
+    title: "Avrentis Pay — Structured payment approvals",
+    description:
+      "Submit, approve, and authorise every payment through a defined chain. Bank-ready exports and a permanent record, without the paper.",
+    url: "https://avrentis.com/product/pay",
+    type: "website",
+  },
+};
 
 export default function ProductPayPage() {
-  return (
-    <>
-      <Navbar />
-      <main
-        style={{
-          minHeight: "70vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "96px 24px",
-          gap: "20px",
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "11px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "#C68B2F",
-          }}
-        >
-          AVRENTIS PAY
-        </span>
-        <h1
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "36px",
-            color: "#0f172a",
-            margin: 0,
-            textAlign: "center",
-            maxWidth: "600px",
-          }}
-        >
-          Payment approvals without the paper.
-        </h1>
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "16px",
-            color: "#64748b",
-            margin: 0,
-            textAlign: "center",
-            maxWidth: "480px",
-            lineHeight: 1.7,
-          }}
-        >
-          From submission to final authorisation — structured, tracked, and
-          permanently on record. No printing, no chasing, no paper.
-        </p>
-        <a
-          href="/contact"
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "11px",
-            letterSpacing: "0.06em",
-            textTransform: "uppercase",
-            lineHeight: 1,
-            backgroundColor: "#C68B2F",
-            color: "#0f172a",
-            border: "none",
-            borderRadius: "3px",
-            height: "36px",
-            padding: "0 20px",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            textDecoration: "none",
-            marginTop: "8px",
-          }}
-        >
-          START FOR FREE
-        </a>
-      </main>
-      <Footer />
-    </>
-  );
+  return <PayModulePage />;
 }

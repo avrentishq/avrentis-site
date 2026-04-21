@@ -1,7 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { AmbientGlow } from "@/components/ui/ambient-glow";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -25,6 +27,132 @@ interface ApprovalRowProps {
   amount: string;
   department: string;
   hideDivider?: boolean;
+}
+
+// Status presets mirroring STATUS_CONFIG in the real platform
+const STATUS = {
+  underReview: { label: "Under review", bg: "rgba(198,139,47,0.08)", text: "#92400e", dot: "#C68B2F" },
+  submitted: { label: "Submitted", bg: "rgba(180,83,9,0.08)", text: "#78350f", dot: "#b45309" },
+  queried: { label: "Queried", bg: "rgba(91,33,182,0.08)", text: "#3B0764", dot: "#5B21B6" },
+  approved: { label: "Approved", bg: "rgba(4,120,87,0.08)", text: "#047857", dot: "#047857" },
+} as const;
+
+// Candidate rows the middle slot rotates through
+const MIDDLE_POOL: Omit<ApprovalRowProps, "hideDivider">[] = [
+  {
+    reference: "PO-2026-0091",
+    type: "PO",
+    status: STATUS.submitted,
+    label: "Greenfields Logistics Ltd.",
+    submittedBy: "Tunde Okafor",
+    submittedWhen: "4h ago",
+    amount: "₦1,240,000",
+    department: "Supply Chain",
+  },
+  {
+    reference: "PV-2026-0182",
+    type: "PV",
+    status: STATUS.underReview,
+    label: "Summit Office Supplies",
+    submittedBy: "Ifeoma Nwachukwu",
+    submittedWhen: "6h ago",
+    amount: "₦215,000",
+    department: "Administration",
+  },
+  {
+    reference: "PO-2026-0090",
+    type: "PO",
+    status: STATUS.submitted,
+    label: "Horizon Facility Services",
+    submittedBy: "Adewale Bankole",
+    submittedWhen: "Yesterday",
+    amount: "₦680,000",
+    department: "Facilities",
+  },
+];
+
+function LiveInbox() {
+  // Top-row status cycles between under-review and approved to create
+  // subtle ambient activity without rearranging the layout.
+  const [topStatus, setTopStatus] = useState<ApprovalRowStatus>(STATUS.underReview);
+  // Middle slot rotates through MIDDLE_POOL entries one at a time.
+  const [middleIndex, setMiddleIndex] = useState(0);
+
+  useEffect(() => {
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
+
+    // Cycle the top-row status on a ~4.5s interval. Stays "Approved" for
+    // 2s so the state change is legible, then resets.
+    const statusTimer = setInterval(() => {
+      setTopStatus(STATUS.approved);
+      setTimeout(() => setTopStatus(STATUS.underReview), 2000);
+    }, 4500);
+
+    // Rotate the middle row every ~5s — slightly offset from the status
+    // timer so the two events rarely overlap.
+    const middleTimer = setInterval(() => {
+      setMiddleIndex((i) => (i + 1) % MIDDLE_POOL.length);
+    }, 5000);
+
+    return () => {
+      clearInterval(statusTimer);
+      clearInterval(middleTimer);
+    };
+  }, []);
+
+  const middle = MIDDLE_POOL[middleIndex]!;
+
+  return (
+    <div
+      style={{
+        backgroundColor: "#FFFFFF",
+        borderTopLeftRadius: "6px",
+        border: "1px solid #e2e8f0",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+      }}
+    >
+      {/* Row 1 — static row, animated status */}
+      <ApprovalRow
+        reference="PV-2026-0184"
+        type="PV"
+        status={topStatus}
+        label="Brightpath Technologies"
+        submittedBy="Fatima Abubakar"
+        submittedWhen="2h ago"
+        amount="₦850,000"
+        department="Operations"
+      />
+
+      {/* Row 2 — rotates through MIDDLE_POOL with an AnimatePresence fade */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={middle.reference}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+          <ApprovalRow {...middle} />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Row 3 — static */}
+      <ApprovalRow
+        reference="PV-2026-0183"
+        type="PV"
+        status={STATUS.queried}
+        label="Sahara Engineering Services"
+        submittedBy="Chinelo Adeyemi"
+        submittedWhen="Yesterday"
+        amount="₦420,000"
+        department="Facilities"
+        hideDivider
+      />
+    </div>
+  );
 }
 
 /**
@@ -102,32 +230,39 @@ function ApprovalRow({
           >
             {type}
           </span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              backgroundColor: status.bg,
-              color: status.text,
-              borderRadius: "3px",
-              padding: "2px 6px",
-              letterSpacing: "0.02em",
-            }}
-          >
-            <span
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={status.label}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
               style={{
-                width: "5px",
-                height: "5px",
-                borderRadius: "50%",
-                backgroundColor: status.dot,
-                display: "inline-block",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "4px",
+                fontFamily: "var(--font-sans)",
+                fontSize: "10px",
+                fontWeight: 500,
+                backgroundColor: status.bg,
+                color: status.text,
+                borderRadius: "3px",
+                padding: "2px 6px",
+                letterSpacing: "0.02em",
               }}
-            />
-            {status.label}
-          </span>
+            >
+              <span
+                style={{
+                  width: "5px",
+                  height: "5px",
+                  borderRadius: "50%",
+                  backgroundColor: status.dot,
+                  display: "inline-block",
+                }}
+              />
+              {status.label}
+            </motion.span>
+          </AnimatePresence>
         </div>
 
         {/* Label */}
@@ -189,8 +324,18 @@ function ApprovalRow({
 }
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  // Scroll-linked parallax on the grid texture — drifts up by 60px across
+  // the section's full scroll, giving a subtle depth cue.
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+
   return (
     <section
+      ref={sectionRef}
       style={{
         backgroundColor: "#0f172a",
         padding: "140px 40px 120px",
@@ -198,8 +343,13 @@ export function Hero() {
         overflow: "hidden",
       }}
     >
-      {/* Subtle grid texture overlay */}
-      <div
+      {/* Ambient glow layers — sit behind everything, non-interactive */}
+      <AmbientGlow top="-120px" left="-120px" size={520} intensity={0.22} duration={32} />
+      <AmbientGlow bottom="-140px" right="-100px" size={560} intensity={0.18} duration={38} delay={0.5} />
+
+      {/* Subtle grid texture overlay with scroll-linked parallax */}
+      <motion.div
+        aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
@@ -208,6 +358,8 @@ export function Hero() {
             "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
+          y: gridY,
+          zIndex: 1,
         }}
       />
 
@@ -219,6 +371,7 @@ export function Hero() {
           gap: "48px",
           alignItems: "center",
           position: "relative",
+          zIndex: 2,
         }}
         className="grid-cols-1 lg:grid-cols-2"
       >
@@ -244,11 +397,10 @@ export function Hero() {
           </motion.span>
 
           <motion.h1
-            variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
@@ -259,9 +411,24 @@ export function Hero() {
             }}
             className="lg:!text-[56px]"
           >
-            Every action. On record.
+            {["Every", "action.", "On", "record."].map((word, i) => (
+              <motion.span
+                key={`top-${i}`}
+                variants={fadeUp}
+                transition={fadeUpTransition}
+                style={{ display: "inline-block", marginRight: "0.3em" }}
+              >
+                {word}
+              </motion.span>
+            ))}
             <br />
-            Permanently.
+            <motion.span
+              variants={fadeUp}
+              transition={fadeUpTransition}
+              style={{ display: "inline-block" }}
+            >
+              Permanently.
+            </motion.span>
           </motion.h1>
 
           <motion.p
@@ -504,47 +671,12 @@ export function Hero() {
                 </span>
               </div>
 
-              {/* Inbox list — white card with divide-y rows */}
-              <div
-                style={{
-                  backgroundColor: "#FFFFFF",
-                  borderTopLeftRadius: "6px",
-                  border: "1px solid #e2e8f0",
-                  boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
-                }}
-              >
-                <ApprovalRow
-                  reference="PV-2026-0184"
-                  type="PV"
-                  status={{ label: "Under review", bg: "rgba(198,139,47,0.08)", text: "#92400e", dot: "#C68B2F" }}
-                  label="Brightpath Technologies"
-                  submittedBy="Fatima Abubakar"
-                  submittedWhen="2h ago"
-                  amount="₦850,000"
-                  department="Operations"
-                />
-                <ApprovalRow
-                  reference="PO-2026-0091"
-                  type="PO"
-                  status={{ label: "Submitted", bg: "rgba(180,83,9,0.08)", text: "#78350f", dot: "#b45309" }}
-                  label="Greenfields Logistics Ltd."
-                  submittedBy="Tunde Okafor"
-                  submittedWhen="4h ago"
-                  amount="₦1,240,000"
-                  department="Supply Chain"
-                />
-                <ApprovalRow
-                  reference="PV-2026-0183"
-                  type="PV"
-                  status={{ label: "Queried", bg: "rgba(91,33,182,0.08)", text: "#3B0764", dot: "#5B21B6" }}
-                  label="Sahara Engineering Services"
-                  submittedBy="Chinelo Adeyemi"
-                  submittedWhen="Yesterday"
-                  amount="₦420,000"
-                  department="Facilities"
-                  hideDivider
-                />
-              </div>
+              {/* Inbox list — white card with divide-y rows. The top row
+                  cycles its status badge between "Under review" → "Approved"
+                  to create subtle ambient activity; the middle row rotates
+                  through a small pool of realistic entries every few seconds. */}
+              <LiveInbox />
+
 
               {/* Footer hint */}
               <p

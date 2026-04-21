@@ -1,0 +1,535 @@
+"use client";
+
+/**
+ * ContactForm — the interactive half of /contact. Uses `useActionState`
+ * to call the server action, shows per-field validation errors, and
+ * swaps into a success state without a full page navigation.
+ *
+ * The form is intent-aware — `?intent=trial` from the product pages sets
+ * the intent field and adjusts the headline micro-copy.
+ */
+
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Check, ArrowLeft } from "lucide-react";
+import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import {
+  submitContact,
+  INITIAL_STATE,
+  type ContactFormState,
+  type ContactIntent,
+} from "@/app/contact/actions";
+
+interface IntentCopy {
+  eyebrow: string;
+  headline: string;
+  lede: string;
+  cta: string;
+}
+
+const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
+  trial: {
+    eyebrow: "14-DAY TRIAL",
+    headline: "Start a structured trial of Avrentis.",
+    lede:
+      "Tell us about your organisation and the approvals you want to move off email. We'll provision your workspace and walk your team through it.",
+    cta: "Start my trial",
+  },
+  demo: {
+    eyebrow: "BOOK A DEMO",
+    headline: "See Avrentis with your own workflows in the room.",
+    lede:
+      "A member of the team will reach out to schedule a 30-minute walk-through tailored to your organisation's approval structure.",
+    cta: "Book a demo",
+  },
+  security: {
+    eyebrow: "SECURITY REVIEW",
+    headline: "Talk to us about the security posture.",
+    lede:
+      "We'll walk your CISO or security team through the stack — isolation, authority, audit, access lifecycle, encryption — and answer anything the page hasn't.",
+    cta: "Book a security review",
+  },
+  notify: {
+    eyebrow: "LAUNCH NOTIFICATION",
+    headline: "Be the first to know when this launches.",
+    lede:
+      "Drop your details and we'll reach out as soon as this module is generally available — plus a chance to join an early-access cohort.",
+    cta: "Notify me at launch",
+  },
+  beta: {
+    eyebrow: "BETA ACCESS",
+    headline: "Join the beta.",
+    lede:
+      "Early-access users get hands-on support, a shorter feedback loop with our product team, and pricing locked at launch terms.",
+    cta: "Request beta access",
+  },
+  roadmap: {
+    eyebrow: "SHARE YOUR USE CASE",
+    headline: "Shape what we build next.",
+    lede:
+      "Tell us the approval or record-keeping problem you're trying to solve. We'll share where it sits on our roadmap and, where it fits, loop you in early.",
+    cta: "Share my use case",
+  },
+  general: {
+    eyebrow: "GET IN TOUCH",
+    headline: "Let's talk.",
+    lede:
+      "Whether you're evaluating Avrentis, have a question our product pages didn't answer, or want to partner — we read every message and reply within one business day.",
+    cta: "Send enquiry",
+  },
+};
+
+const SIZES = [
+  "1–10 employees",
+  "11–50 employees",
+  "51–200 employees",
+  "201–1,000 employees",
+  "1,000+ employees",
+];
+
+/* ── Styling primitives ──────────────────────────────────────────── */
+
+const labelStyle: React.CSSProperties = {
+  fontFamily: "var(--font-sans)",
+  fontSize: "12px",
+  fontWeight: 500,
+  color: "#0f172a",
+  letterSpacing: "0.02em",
+  display: "block",
+  marginBottom: "6px",
+};
+
+const inputStyle: React.CSSProperties = {
+  fontFamily: "var(--font-sans)",
+  fontSize: "14px",
+  color: "#0f172a",
+  width: "100%",
+  height: "42px",
+  border: "1px solid #e2e8f0",
+  borderRadius: "6px",
+  padding: "0 14px",
+  backgroundColor: "#FFFFFF",
+  outline: "none",
+  transition: "border-color 150ms ease, box-shadow 150ms ease",
+};
+
+const textareaStyle: React.CSSProperties = {
+  ...inputStyle,
+  height: "auto",
+  minHeight: "120px",
+  padding: "12px 14px",
+  lineHeight: 1.6,
+  resize: "vertical",
+};
+
+const errorStyle: React.CSSProperties = {
+  fontFamily: "var(--font-sans)",
+  fontSize: "12px",
+  color: "#b91c1c",
+  marginTop: "6px",
+  display: "block",
+};
+
+function SubmitButton({ label }: { label: string }) {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      style={{
+        fontFamily: "var(--font-sans)",
+        fontWeight: 600,
+        fontSize: "14px",
+        backgroundColor: pending ? "#A87425" : "#C68B2F",
+        color: "#0f172a",
+        border: "none",
+        borderRadius: "6px",
+        padding: "0 22px",
+        height: "44px",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        cursor: pending ? "not-allowed" : "pointer",
+        transition: "background-color 150ms ease",
+      }}
+    >
+      {pending ? "Sending…" : label}
+    </button>
+  );
+}
+
+/* ── Main component ──────────────────────────────────────────────── */
+
+export function ContactForm({ intent }: { intent: ContactIntent }) {
+  const copy = INTENT_COPY[intent];
+  const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+
+  if (state.status === "success") {
+    return (
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={fadeUpTransition}
+        style={{
+          backgroundColor: "#FFFFFF",
+          border: "1px solid #e2e8f0",
+          borderRadius: "10px",
+          padding: "48px 40px",
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "16px",
+        }}
+      >
+        <div
+          style={{
+            width: "56px",
+            height: "56px",
+            borderRadius: "50%",
+            backgroundColor: "rgba(4,120,87,0.12)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Check size={26} strokeWidth={2} color="#047857" aria-hidden="true" />
+        </div>
+        <h2
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 500,
+            fontSize: "22px",
+            color: "#0f172a",
+            margin: 0,
+          }}
+        >
+          Enquiry received.
+        </h2>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "15px",
+            color: "#64748b",
+            lineHeight: 1.65,
+            margin: 0,
+            maxWidth: "420px",
+          }}
+        >
+          {state.message ?? "Thanks — we'll reply within one business day."}
+        </p>
+        <Link
+          href="/"
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "13px",
+            fontWeight: 500,
+            color: "#C68B2F",
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            marginTop: "8px",
+          }}
+        >
+          <ArrowLeft size={14} strokeWidth={1.8} aria-hidden="true" />
+          Back to home
+        </Link>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-40px" }}
+      transition={fadeUpTransition}
+    >
+      <div
+        style={{
+          display: "grid",
+          gap: "48px",
+          alignItems: "start",
+        }}
+        className="grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_1.2fr]"
+      >
+        {/* Left: intent copy */}
+        <div>
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "#C68B2F",
+              display: "block",
+              marginBottom: "16px",
+            }}
+          >
+            {copy.eyebrow}
+          </motion.span>
+          <motion.h1
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontWeight: 400,
+              fontSize: "32px",
+              color: "#0f172a",
+              lineHeight: 1.2,
+              margin: "0 0 16px",
+              letterSpacing: "0.01em",
+            }}
+            className="lg:!text-[40px]"
+          >
+            {copy.headline}
+          </motion.h1>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "15px",
+              color: "#64748b",
+              lineHeight: 1.75,
+              margin: "0 0 24px",
+              maxWidth: "440px",
+            }}
+          >
+            {copy.lede}
+          </motion.p>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(3)}
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "13px",
+              color: "#64748b",
+              lineHeight: 1.7,
+              borderLeft: "2px solid rgba(198,139,47,0.28)",
+              paddingLeft: "14px",
+            }}
+          >
+            <div style={{ marginBottom: "6px", color: "#0f172a", fontWeight: 500 }}>What happens next</div>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
+              <li>A real person reads every enquiry — no routing bots.</li>
+              <li>We reply within one business day.</li>
+              <li>For enterprise enquiries, we can sign an NDA before the first call.</li>
+            </ul>
+          </motion.div>
+        </div>
+
+        {/* Right: form */}
+        <motion.form
+          action={action}
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(2)}
+          style={{
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #e2e8f0",
+            borderRadius: "10px",
+            padding: "32px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "18px",
+          }}
+          noValidate
+        >
+          <input type="hidden" name="intent" value={intent} />
+          {/* Honeypot — hidden field that real users never fill in */}
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+          />
+
+          <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
+            <div>
+              <label htmlFor="name" style={labelStyle}>
+                Full name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                required
+                autoComplete="name"
+                style={{
+                  ...inputStyle,
+                  borderColor: state.fieldErrors?.name ? "#b91c1c" : "#e2e8f0",
+                }}
+              />
+              {state.fieldErrors?.name && <span style={errorStyle}>{state.fieldErrors.name}</span>}
+            </div>
+            <div>
+              <label htmlFor="email" style={labelStyle}>
+                Work email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                autoComplete="email"
+                style={{
+                  ...inputStyle,
+                  borderColor: state.fieldErrors?.email ? "#b91c1c" : "#e2e8f0",
+                }}
+              />
+              {state.fieldErrors?.email && <span style={errorStyle}>{state.fieldErrors.email}</span>}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
+            <div>
+              <label htmlFor="organisation" style={labelStyle}>
+                Organisation
+              </label>
+              <input
+                id="organisation"
+                name="organisation"
+                type="text"
+                required
+                autoComplete="organization"
+                style={{
+                  ...inputStyle,
+                  borderColor: state.fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
+                }}
+              />
+              {state.fieldErrors?.organisation && <span style={errorStyle}>{state.fieldErrors.organisation}</span>}
+            </div>
+            <div>
+              <label htmlFor="size" style={labelStyle}>
+                Organisation size
+              </label>
+              <select id="size" name="size" style={{ ...inputStyle, padding: "0 12px", appearance: "auto" }}>
+                <option value="">Prefer not to say</option>
+                {SIZES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="country" style={labelStyle}>
+              Country (optional)
+            </label>
+            <input
+              id="country"
+              name="country"
+              type="text"
+              autoComplete="country-name"
+              placeholder="Helps if data residency matters to you"
+              style={inputStyle}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="message" style={labelStyle}>
+              Tell us about your use case
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              minLength={10}
+              style={{
+                ...textareaStyle,
+                borderColor: state.fieldErrors?.message ? "#b91c1c" : "#e2e8f0",
+              }}
+              placeholder="What approvals or records are you trying to structure? How many people, how often?"
+            />
+            {state.fieldErrors?.message && <span style={errorStyle}>{state.fieldErrors.message}</span>}
+          </div>
+
+          <div>
+            <label
+              htmlFor="consent"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "13px",
+                color: "#334155",
+                display: "flex",
+                alignItems: "flex-start",
+                gap: "10px",
+                cursor: "pointer",
+                lineHeight: 1.55,
+              }}
+            >
+              <input
+                id="consent"
+                name="consent"
+                type="checkbox"
+                required
+                style={{ marginTop: "3px", accentColor: "#C68B2F", width: "16px", height: "16px" }}
+              />
+              <span>
+                I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
+                <Link href="/privacy" style={{ color: "#C68B2F", textDecoration: "none" }}>
+                  privacy policy
+                </Link>
+                .
+              </span>
+            </label>
+            {state.fieldErrors?.consent && <span style={errorStyle}>{state.fieldErrors.consent}</span>}
+          </div>
+
+          {state.status === "error" && state.message && !state.fieldErrors && (
+            <div
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "13px",
+                color: "#b91c1c",
+                backgroundColor: "rgba(185,28,28,0.06)",
+                border: "1px solid rgba(185,28,28,0.2)",
+                borderRadius: "6px",
+                padding: "10px 12px",
+              }}
+            >
+              {state.message}
+            </div>
+          )}
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+            <SubmitButton label={copy.cta} />
+            <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#94a3b8" }}>
+              Prefer email?{" "}
+              <a href="mailto:hello@avrentis.com" style={{ color: "#C68B2F", textDecoration: "none" }}>
+                hello@avrentis.com
+              </a>
+            </span>
+          </div>
+        </motion.form>
+      </div>
+    </motion.div>
+  );
+}

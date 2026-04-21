@@ -2,7 +2,7 @@
 
 /**
  * ProductModuleLayout — shared template for every Avrentis module product
- * page (Pay / Procure / Vault / Audit / People / Connect). Each page passes
+ * page (Pay / Procurement / Records / Audit / HR / Integrations). Each page passes
  * a `ModuleConfig` and the layout handles hero, pillars, platform preview,
  * use cases, plan availability, and related modules in a consistent shell.
  *

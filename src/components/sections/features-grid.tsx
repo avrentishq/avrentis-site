@@ -30,14 +30,14 @@ const MODULES: {
   },
   {
     icon: ShoppingCart,
-    name: "Avrentis Procure",
+    name: "Avrentis Procurement",
     subtitle: "Purchase Order Management",
     body: "Bring structure and visibility to every procurement action. Generate, approve, and track purchase orders without email chains, manual paperwork, or process gaps.",
     status: "available",
   },
   {
     icon: Archive,
-    name: "Avrentis Vault",
+    name: "Avrentis Records",
     subtitle: "Institutional Memory",
     body: "Replace physical and scattered digital filing with a centralised, searchable, role-controlled document system. Every approved record — instantly retrievable, permanently preserved.",
     status: "coming_soon",
@@ -51,14 +51,14 @@ const MODULES: {
   },
   {
     icon: Users,
-    name: "Avrentis People",
+    name: "Avrentis HR",
     subtitle: "HR Approvals & Workforce Management",
     body: "Extend operational structure to your workforce processes. Leave approvals, onboarding, policy acknowledgements — all structured, tracked, and on record.",
     status: "roadmap",
   },
   {
     icon: Link2,
-    name: "Avrentis Connect",
+    name: "Avrentis Integrations",
     subtitle: "External Systems",
     body: "Connect Avrentis to the systems your organisation already uses. Your structured operational data flowing where it needs to go — without manual intervention.",
     status: "partial",

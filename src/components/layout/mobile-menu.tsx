@@ -15,11 +15,11 @@ interface MobileMenuProps {
 
 const PRODUCT_MODULES = [
   { name: "Avrentis Pay", href: "/product/pay" },
-  { name: "Avrentis Procure", href: "/product/procure" },
-  { name: "Avrentis Vault", href: "/product/vault" },
+  { name: "Avrentis Procurement", href: "/product/procure" },
+  { name: "Avrentis Records", href: "/product/vault" },
   { name: "Avrentis Audit", href: "/product/audit" },
-  { name: "Avrentis People", href: "/product/people" },
-  { name: "Avrentis Connect", href: "/product/connect" },
+  { name: "Avrentis HR", href: "/product/people" },
+  { name: "Avrentis Integrations", href: "/product/connect" },
 ];
 
 const PRODUCT_PLATFORM = [

@@ -25,7 +25,8 @@ const PRODUCT_MODULES = [
 const PRODUCT_PLATFORM = [
   { name: "How it works", href: "/product/how-it-works" },
   { name: "Security", href: "/product/security" },
-  { name: "Integrations", href: "/product/integrations" },
+  { name: "Trust centre", href: "/trust" },
+  { name: "Integrations catalogue", href: "/product/integrations" },
 ];
 
 const FONT = "'IBM Plex Sans', system-ui, sans-serif";
@@ -159,7 +160,7 @@ export function MobileMenu({
               </div>
             </div>
 
-            {/* Pricing & About */}
+            {/* Top-level links other than Product (Product is expanded above) */}
             {navLinks
               .filter((link) => link.label !== "Product")
               .map((link) => (
@@ -205,7 +206,29 @@ export function MobileMenu({
               Login
             </a>
             <Link
-              href="/contact"
+              href="/contact?intent=demo"
+              onClick={onClose}
+              style={{
+                fontFamily: FONT,
+                fontWeight: 500,
+                fontSize: "14px",
+                letterSpacing: "0.04em",
+                backgroundColor: "transparent",
+                color: "#FFFFFF",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "6px",
+                height: "44px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                width: "100%",
+              }}
+            >
+              Book demo
+            </Link>
+            <Link
+              href="/contact?intent=trial"
               onClick={onClose}
               style={{
                 fontFamily: FONT,
@@ -223,7 +246,7 @@ export function MobileMenu({
                 width: "100%",
               }}
             >
-              Start free &rarr;
+              Start trial &rarr;
             </Link>
           </div>
         </motion.div>

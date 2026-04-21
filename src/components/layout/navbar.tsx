@@ -20,8 +20,8 @@ import { MobileMenu } from "@/components/layout/mobile-menu";
 
 const NAV_LINKS = [
   { label: "Product", href: "/product" },
+  { label: "Customers", href: "/customers" },
   { label: "Pricing", href: "/pricing" },
-  { label: "About", href: "/about" },
 ];
 
 const MODULES = [
@@ -66,7 +66,8 @@ const MODULES = [
 const PLATFORM = [
   { name: "How it works", href: "/product/how-it-works" },
   { name: "Security", href: "/product/security" },
-  { name: "Integrations", href: "/product/integrations" },
+  { name: "Trust centre", href: "/trust" },
+  { name: "Integrations catalogue", href: "/product/integrations" },
 ];
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
@@ -365,6 +366,22 @@ export function Navbar() {
               )}
             </div>
 
+            {/* Customers */}
+            <Link
+              href="/customers"
+              style={activeLinkStyle("/customers")}
+              onMouseEnter={(e) => {
+                if (!isActive("/customers"))
+                  e.currentTarget.style.color = "#C68B2F";
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive("/customers"))
+                  e.currentTarget.style.color = "#ffffff";
+              }}
+            >
+              Customers
+            </Link>
+
             {/* Pricing */}
             <Link
               href="/pricing"
@@ -379,22 +396,6 @@ export function Navbar() {
               }}
             >
               Pricing
-            </Link>
-
-            {/* About */}
-            <Link
-              href="/about"
-              style={activeLinkStyle("/about")}
-              onMouseEnter={(e) => {
-                if (!isActive("/about"))
-                  e.currentTarget.style.color = "#C68B2F";
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive("/about"))
-                  e.currentTarget.style.color = "#ffffff";
-              }}
-            >
-              About
             </Link>
           </div>
 
@@ -424,7 +425,41 @@ export function Navbar() {
             </a>
 
             <a
-              href="/contact"
+              href="/contact?intent=demo"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 500,
+                fontSize: "11px",
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                lineHeight: 1,
+                backgroundColor: "transparent",
+                color: "#e2e8f0",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: "3px",
+                height: "32px",
+                padding: "0 14px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textDecoration: "none",
+                cursor: "pointer",
+                transition: "border-color 150ms ease, color 150ms ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.45)";
+                e.currentTarget.style.color = "#FFFFFF";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                e.currentTarget.style.color = "#e2e8f0";
+              }}
+            >
+              Book demo
+            </a>
+
+            <a
+              href="/contact?intent=trial"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
@@ -452,7 +487,7 @@ export function Navbar() {
                 e.currentTarget.style.backgroundColor = "#C68B2F";
               }}
             >
-              START FREE &rarr;
+              Start trial &rarr;
             </a>
           </div>
 

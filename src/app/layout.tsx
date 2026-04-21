@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, Hanken_Grotesk } from "next/font/google";
+import { ScrollProgress } from "@/components/ui/scroll-progress";
 import "./globals.css";
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -73,6 +74,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
+        <ScrollProgress />
         {children}
       </body>
     </html>

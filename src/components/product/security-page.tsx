@@ -43,27 +43,27 @@ import {
 const PILLARS = [
   {
     icon: Database,
-    title: "Tenant isolation at the database",
+    title: "Your data is yours — always",
     body:
-      "PostgreSQL row-level security enforces tenant boundaries at the engine, not the application. A query without a tenant context is rejected by the database itself.",
+      "Each customer's workspace is walled off from every other, directly inside the database. Not a rule we enforce with the app — a rule enforced by the database engine itself. There is no path from one customer's session to another's.",
   },
   {
     icon: UserCog,
-    title: "Role-based authority, not role-shaped UI",
+    title: "Real authority, not just a role label",
     body:
-      "54 permissions across 10 roles, layered with attribute-based checks for separation of duties, department scope, and amount thresholds. Authority is evaluated on every action, not just at login.",
+      "Roles don't just hide buttons — they decide what every single action is allowed to do. Plus a second layer of rules on top: who can approve what, within which department, up to what amount. Checked on every click.",
   },
   {
     icon: FileSearch,
-    title: "Immutable audit trail",
+    title: "Every action is permanent",
     body:
-      "Every submission, approval, query, and role change is written to an append-only log. Database triggers block UPDATE and DELETE on audit rows. Not even a platform administrator can edit history.",
+      "Every submission, approval, question, and role change is recorded. Nobody can edit the record after the fact — not us, not your administrator, not even the database's top-level user. The history is the history.",
   },
   {
     icon: KeyRound,
-    title: "Lifecycle-bound access",
+    title: "Access that keeps up with your people",
     body:
-      "SCIM provisioning from your identity provider, time-bound auditor and board access with proactive revocation, Redis-backed session kill when a role changes or a user leaves.",
+      "When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends within seconds. Auditors and board-level guests get a clear start date and expiry.",
   },
 ];
 
@@ -72,7 +72,7 @@ const STACK = [
     number: "01",
     key: "isolation",
     title: "Isolation",
-    subtitle: "Your tenant's data is unreachable from any other tenant's session — by the database, not the app.",
+    subtitle: "Your data is yours — no other customer can ever see it. Enforced by the database itself, not just by the app.",
     body:
       "Every tenant-scoped query runs inside a transactional context that sets a Postgres session variable. Row-level security policies on every table match on that variable before returning a row. The bypass path requires a per-process randomized secret, so a developer can't accidentally hit cross-tenant data from a forgotten `db.query()`.",
     icon: Database,
@@ -89,7 +89,7 @@ const STACK = [
     number: "02",
     key: "authority",
     title: "Authority",
-    subtitle: "Two layers: who you are (RBAC) and what's allowed for this specific request (ABAC).",
+    subtitle: "Two layers of control: what your role lets you do in general, and what's allowed for this specific request — in this specific department, at this specific amount.",
     body:
       "RBAC determines the set of capabilities a role can exercise — 54 permissions across 10 roles, split into administrative and operational groups with no cross-group inheritance. ABAC then evaluates the specific request: can the submitter approve their own document, is the HOD acting within their department, does the amount exceed their threshold.",
     icon: UserCog,
@@ -140,7 +140,7 @@ const STACK = [
     number: "05",
     key: "lifecycle",
     title: "Access lifecycle",
-    subtitle: "From provisioning to offboarding — bounded, observable, automatic.",
+    subtitle: "People come and go — access keeps up. Joiners get what they need; leavers lose access within seconds.",
     body:
       "SCIM 2.0 provisions users from your identity provider (Okta, Entra, Google Workspace) with per-tenant bearer tokens. Auditor and provisional board access are time-bound with a hard expiry; a daily job proactively deactivates expired users and revokes their sessions. Document retention is enforced per plan, with audit logs exempt from purge as a compliance requirement.",
     icon: KeyRound,
@@ -157,7 +157,7 @@ const STACK = [
     number: "06",
     key: "infra",
     title: "Encryption & infrastructure",
-    subtitle: "TLS end-to-end. Managed Postgres. Application-layer encryption for sensitive secrets.",
+    subtitle: "Encrypted from your browser all the way to our database — and again on top of that, for the most sensitive pieces like two-factor codes and single sign-on tokens.",
     body:
       "All traffic is TLS 1.3. The database is Neon-managed PostgreSQL with encryption at rest and daily automated snapshots. Sensitive application secrets — MFA seeds, SSO client secrets — are additionally encrypted at the application layer with AES-256-GCM before being written. Object storage is Cloudflare R2 with short-lived presigned URLs scoped to the uploading user's session.",
     icon: Lock,
@@ -567,7 +567,7 @@ export function SecurityProductPage() {
             }}
             className="lg:!text-[38px]"
           >
-            Four foundations. Each enforced at the engine, not the interface.
+            Four foundations. Each built in at the deepest level — not just something the app tries to do.
           </motion.h2>
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">

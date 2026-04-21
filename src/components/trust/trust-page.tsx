@@ -38,31 +38,31 @@ const FRAMEWORKS = [
     name: "SOC 2 (Type II)",
     status: "Controls aligned · audit not yet completed",
     body:
-      "Access management, change management, logical security, availability monitoring, and incident response are designed to meet SOC 2 Type II criteria. We can walk your team through each control on a review call.",
+      "The way we handle access, change management, security, uptime, and incident response is designed to meet SOC 2 Type II standards. We can walk your team through each of those areas on a review call.",
   },
   {
     name: "ISO 27001",
     status: "Controls aligned · certification not in place",
     body:
-      "Information-security management follows Annex A control families relevant to a SaaS operator — access control, asset management, cryptography, operations, supplier relationships, compliance.",
+      "The way we run information security follows the areas ISO 27001 cares about — who can access what, how we protect assets, how we encrypt things, how we run operations, and how we manage the suppliers we use.",
   },
   {
     name: "GDPR & UK GDPR",
     status: "Designed-for · DPA available",
     body:
-      "Data-subject rights (access, rectification, erasure, portability) are supported in-product. A Data Processing Agreement is available for signature on request.",
+      "The rights your users have under GDPR — to see their data, correct it, delete it, and take it with them — are all supported directly in the product. A Data Processing Agreement is available to sign on request.",
   },
   {
     name: "NDPR (Nigeria)",
     status: "Designed-for",
     body:
-      "The platform's controls reflect the Nigeria Data Protection Regulation's expectations around lawful basis, data minimisation, security, and breach response.",
+      "The way the platform handles personal data follows what Nigeria's data protection regulation asks for — lawful reason for collecting it, keeping only what's needed, protecting it, and responding quickly if something goes wrong.",
   },
   {
     name: "CCPA / CPRA",
     status: "Designed-for",
     body:
-      "Consumer rights to know, delete, and opt-out of sale are supported. Avrentis does not sell personal data under any definition of the term.",
+      "If you operate in California, your customers' rights to know what you hold about them, delete it, and opt out of sale are supported. Avrentis does not sell personal data — full stop.",
   },
 ];
 
@@ -203,10 +203,11 @@ export function TrustProductPage() {
               maxWidth: "640px",
             }}
           >
-            Everything a security, legal, or procurement reviewer typically asks
-            for — frameworks we align to, who processes data on our behalf,
-            where it lives, how to get a signed DPA, and how to report a
-            vulnerability. One page, honest.
+            Everything your security, legal, or procurement team usually asks for,
+            on one page: the standards we hold ourselves to, the companies we
+            work with to run the service, where your data lives, how to sign
+            a data-protection agreement, and how to report a vulnerability.
+            Honest and straight to the point.
           </motion.p>
           <motion.div
             variants={fadeUp}

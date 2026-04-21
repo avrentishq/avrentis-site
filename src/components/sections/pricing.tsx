@@ -42,7 +42,7 @@ function getHighlights(plan: Plan): string[] {
 const TRIAL_HIGHLIGHTS: string[] = [
   "Full Business tier for 14 days",
   "Up to 10 users",
-  "Pay + Procure + Vault + Audit (real data)",
+  "Pay + Procurement + Records + Audit (real data)",
   "Bank-ready PDF exports (trial watermark)",
   "1 GB storage during trial",
   "30-day read-only grace after trial",
@@ -272,7 +272,7 @@ export function Pricing({ data }: PricingProps) {
               No credit card required
             </p>
             <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(198,139,47,0.08)", color: "#C68B2F", border: "1px solid rgba(198,139,47,0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
-              Pay + Procure + Vault + Audit
+              Pay + Procurement + Records + Audit
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
               {TRIAL_HIGHLIGHTS.map((feature) => (

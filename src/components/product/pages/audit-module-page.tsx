@@ -73,8 +73,8 @@ const config: ModuleConfig = {
 
   relatedModules: [
     { slug: "pay", name: "Avrentis Pay", desc: "Every payment event lands in the audit trail automatically" },
-    { slug: "procure", name: "Avrentis Procure", desc: "PO lifecycle events — from submission to issue — all tracked" },
-    { slug: "vault", name: "Avrentis Vault", desc: "Document access and download events logged to Audit" },
+    { slug: "procure", name: "Avrentis Procurement", desc: "PO lifecycle events — from submission to issue — all tracked" },
+    { slug: "vault", name: "Avrentis Records", desc: "Document access and download events logged to Audit" },
   ],
 };
 

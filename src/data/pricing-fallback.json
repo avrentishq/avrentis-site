@@ -4,11 +4,11 @@
   "addOns": [],
   "modules": {
     "pay": { "name": "Avrentis Pay", "description": "Structured payment approvals" },
-    "procure": { "name": "Avrentis Procure", "description": "Procurement on record" },
-    "vault": { "name": "Avrentis Vault", "description": "Institutional memory" },
+    "procure": { "name": "Avrentis Procurement", "description": "Procurement on record" },
+    "vault": { "name": "Avrentis Records", "description": "Institutional memory" },
     "audit": { "name": "Avrentis Audit", "description": "Compliance & accountability" },
-    "people": { "name": "Avrentis People", "description": "Workforce structure" },
-    "connect": { "name": "Avrentis Connect", "description": "External systems" }
+    "people": { "name": "Avrentis HR", "description": "Workforce structure" },
+    "connect": { "name": "Avrentis Integrations", "description": "External systems" }
   },
   "featureLabels": {
     "approvalChain": "Multi-level approval workflow",
@@ -36,13 +36,13 @@
       "limits": { "maxUsers": 10, "maxDocumentsPerMonth": null, "maxStorageBytes": 10737418240, "documentRetentionDays": 365 },
       "modules": [
         { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
-        { "key": "procure", "name": "Avrentis Procure", "description": "Procurement on record" }
+        { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" }
       ],
       "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": false },
       "highlights": [
         "Up to 10 users",
         "Unlimited documents",
-        "Pay + Procure modules",
+        "Pay + Procurement modules",
         "Bank-ready PDF exports",
         "WhatsApp & email alerts",
         "10 GB storage · 1 year retention"
@@ -59,14 +59,14 @@
       "limits": { "maxUsers": 50, "maxDocumentsPerMonth": null, "maxStorageBytes": 107374182400, "documentRetentionDays": 1095 },
       "modules": [
         { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
-        { "key": "procure", "name": "Avrentis Procure", "description": "Procurement on record" },
-        { "key": "vault", "name": "Avrentis Vault", "description": "Institutional memory" },
+        { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" },
+        { "key": "vault", "name": "Avrentis Records", "description": "Institutional memory" },
         { "key": "audit", "name": "Avrentis Audit", "description": "Compliance & accountability" }
       ],
       "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "prioritySupport": true },
       "highlights": [
         "Up to 50 users",
-        "Pay + Procure + Vault + Audit",
+        "Pay + Procurement + Records + Audit",
         "Full compliance audit trail",
         "Custom approval chains & branding",
         "Analytics, recurring templates, delegation",
@@ -85,11 +85,11 @@
       "limits": { "maxUsers": 9999, "maxDocumentsPerMonth": null, "maxStorageBytes": null, "documentRetentionDays": null },
       "modules": [
         { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
-        { "key": "procure", "name": "Avrentis Procure", "description": "Procurement on record" },
-        { "key": "vault", "name": "Avrentis Vault", "description": "Institutional memory" },
+        { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" },
+        { "key": "vault", "name": "Avrentis Records", "description": "Institutional memory" },
         { "key": "audit", "name": "Avrentis Audit", "description": "Compliance & accountability" },
-        { "key": "people", "name": "Avrentis People", "description": "Workforce structure" },
-        { "key": "connect", "name": "Avrentis Connect", "description": "External systems" }
+        { "key": "people", "name": "Avrentis HR", "description": "Workforce structure" },
+        { "key": "connect", "name": "Avrentis Integrations", "description": "External systems" }
       ],
       "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "customWorkflows": true, "apiAccess": true, "dedicatedSupport": true, "externalIntegrations": true },
       "highlights": [

@@ -45,7 +45,7 @@ const config: ModuleConfig = {
     {
       title: "Reconcile Avrentis payments into your accounting system automatically",
       body:
-        "When the MD sanctions a voucher, Connect posts it to QuickBooks as an approved bill — with vendor, amount, reference, and department pre-mapped. No double-entry, no month-end reconciliation gap.",
+        "When the MD sanctions a voucher, the Integrations module posts it to QuickBooks as an approved bill — with vendor, amount, reference, and department pre-mapped. No double-entry, no month-end reconciliation gap.",
     },
     {
       title: "Sync Avrentis roles into your identity provider",
@@ -73,7 +73,7 @@ const config: ModuleConfig = {
 
   relatedModules: [
     { slug: "pay", name: "Avrentis Pay", desc: "Push sanctioned payments straight into accounting" },
-    { slug: "procure", name: "Avrentis Procure", desc: "Sync issued POs into ERP and vendor portals" },
+    { slug: "procure", name: "Avrentis Procurement", desc: "Sync issued POs into ERP and vendor portals" },
     { slug: "audit", name: "Avrentis Audit", desc: "Stream audit events to your SIEM or log aggregator" },
   ],
 };

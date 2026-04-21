@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { fadeUp, staggerDelay } from "@/lib/animations";
+import { CountUp } from "@/components/ui/count-up";
 
 const METRICS = [
   { value: "100%", label: "Approval chain compliance" },
@@ -46,7 +47,8 @@ export function StatsBar() {
               borderRight: i < METRICS.length - 1 ? "0.5px solid #e2e8f0" : "none",
             }}
           >
-            <span
+            <CountUp
+              value={metric.value}
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontWeight: 500,
@@ -54,10 +56,10 @@ export function StatsBar() {
                 color: "#0f172a",
                 letterSpacing: "0.01em",
                 lineHeight: 1,
+                fontFeatureSettings: '"tnum" 1',
               }}
-            >
-              {metric.value}
-            </span>
+            />
+
             <span
               style={{
                 fontFamily: "'IBM Plex Sans', system-ui, sans-serif",

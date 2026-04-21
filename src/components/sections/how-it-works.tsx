@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
@@ -558,10 +558,37 @@ const MOCKUPS = [SubmitMockup, ApproveMockup, RecordMockup];
 
 export function HowItWorks() {
   const [active, setActive] = useState(0);
+  const [autoAdvance, setAutoAdvance] = useState(true);
+  const sectionRef = useRef<HTMLElement>(null);
   const ActiveMockup = MOCKUPS[active];
 
+  // Auto-advance through steps every 6s. Pauses permanently once the user
+  // clicks a step number (so the page doesn't fight their intent). Also
+  // respects `prefers-reduced-motion`.
+  useEffect(() => {
+    if (!autoAdvance) return;
+    const reducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) return;
+
+    const timer = setInterval(() => {
+      setActive((i) => (i + 1) % STEPS.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, [autoAdvance]);
+
+  function selectStep(i: number) {
+    setActive(i);
+    setAutoAdvance(false);
+  }
+
   return (
-    <section id="how-it-works" style={{ backgroundColor: "#0f172a", padding: "120px 40px" }}>
+    <section
+      id="how-it-works"
+      ref={sectionRef}
+      style={{ backgroundColor: "#0f172a", padding: "120px 40px" }}
+    >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* ── Header ──────────────────────────────────── */}
         <motion.span
@@ -642,11 +669,11 @@ export function HowItWorks() {
             <div
               key={step.title}
               style={{ display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer", position: "relative", flex: 1, maxWidth: "200px" }}
-              onClick={() => setActive(i)}
+              onClick={() => selectStep(i)}
               role="button"
               tabIndex={0}
               aria-label={`Step ${i + 1}: ${step.title}`}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectStep(i); } }}
             >
               {/* Connecting line — between circles */}
               {i < STEPS.length - 1 && (

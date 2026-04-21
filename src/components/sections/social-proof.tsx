@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { CountUp } from "@/components/ui/count-up";
 
 const SECONDARY_TESTIMONIALS = [
   {
@@ -250,9 +251,10 @@ export function SocialProof() {
                   fontSize: "28px",
                   color: "#FFFFFF",
                   margin: "0 0 4px",
+                  fontFeatureSettings: '"tnum" 1',
                 }}
               >
-                {stat.value}
+                <CountUp value={stat.value} />
               </p>
               <p
                 style={{

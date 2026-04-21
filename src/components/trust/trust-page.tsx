@@ -657,6 +657,153 @@ export function TrustProductPage() {
         </div>
       </section>
 
+      {/* ── DATA RESIDENCY ─────────────────────────────────── */}
+      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
+        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+          <motion.span
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={fadeUpTransition}
+            style={{
+              fontFamily: sans,
+              fontWeight: 600,
+              fontSize: "12px",
+              letterSpacing: "0.10em",
+              textTransform: "uppercase",
+              color: "#C68B2F",
+              display: "block",
+              marginBottom: "12px",
+            }}
+          >
+            DATA RESIDENCY
+          </motion.span>
+          <motion.h2
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(1)}
+            style={{
+              fontFamily: sans,
+              fontWeight: 400,
+              fontSize: "32px",
+              color: "#0f172a",
+              lineHeight: 1.2,
+              margin: "0 0 14px",
+              maxWidth: "640px",
+              letterSpacing: "0.01em",
+            }}
+            className="lg:!text-[38px]"
+          >
+            Where your data lives — today and on the roadmap.
+          </motion.h2>
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(2)}
+            style={{
+              fontFamily: sans,
+              fontSize: "15px",
+              color: "#64748b",
+              lineHeight: 1.7,
+              margin: "0 0 40px",
+              maxWidth: "680px",
+            }}
+          >
+            Residency matters for regulated organisations and for customers
+            whose policies require data to stay in a specific jurisdiction.
+            Here is the honest picture.
+          </motion.p>
+
+          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {[
+              {
+                label: "Today · default",
+                title: "European Union",
+                body:
+                  "Primary application database (Neon Postgres) and backups are hosted in the EU. Document attachments flow through Cloudflare R2 at the region configured for our infrastructure tier. The marketing site and edge compute run on Vercel's global edge.",
+              },
+              {
+                label: "Enterprise · on request",
+                title: "In-region / in-country hosting",
+                body:
+                  "We can provision a dedicated infrastructure tier in another region as part of an enterprise engagement — useful when your policy, regulator, or customer contract mandates data remain in a specific jurisdiction.",
+              },
+              {
+                label: "Roadmap",
+                title: "Multi-region failover",
+                body:
+                  "Active-passive replication across regions with Customer-selectable primary and documented RPO/RTO. In scoping now; enterprise partners are helping us shape the requirements.",
+              },
+            ].map((r, i) => (
+              <motion.div
+                key={r.title}
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-40px" }}
+                transition={staggerDelay(i + 3)}
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: "10px",
+                  padding: "24px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: mono,
+                    fontSize: "10px",
+                    letterSpacing: "0.06em",
+                    textTransform: "uppercase",
+                    color: "#C68B2F",
+                  }}
+                >
+                  {r.label}
+                </span>
+                <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "#0f172a", margin: "2px 0 0" }}>
+                  {r.title}
+                </h3>
+                <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                  {r.body}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(6)}
+            style={{
+              marginTop: "28px",
+              padding: "20px 24px",
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              fontFamily: sans,
+              fontSize: "13px",
+              color: "#475569",
+              lineHeight: 1.7,
+            }}
+          >
+            <strong style={{ color: "#0f172a" }}>Cross-border transfers.</strong>{" "}
+            Where personal data moves between regions, we rely on Standard
+            Contractual Clauses (SCCs) and equivalent mechanisms recognised
+            under applicable law. Our DPA sets out these terms in full.
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── STATUS + CONTACT ───────────────────────────────── */}
       <section
         style={{
@@ -706,7 +853,7 @@ export function TrustProductPage() {
             }}
             className="lg:!text-[36px]"
           >
-            A public status page is on the way.
+            All systems operational.
           </motion.h2>
           <motion.p
             variants={fadeUp}
@@ -723,10 +870,10 @@ export function TrustProductPage() {
               maxWidth: "600px",
             }}
           >
-            Real-time uptime, incident history, and scheduled maintenance will
-            live at a dedicated status domain. Enterprise customers receive
-            incident notifications under their order form today; email us to
-            be added to the general notification list.
+            Current subsystem status is published on the status page, with
+            incident history as it accrues. Enterprise customers receive
+            incident notifications under their order form; email to be added
+            to the general notification list.
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -736,8 +883,8 @@ export function TrustProductPage() {
             transition={staggerDelay(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <a
-              href="mailto:status@avrentis.com"
+            <Link
+              href="/status"
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -752,8 +899,8 @@ export function TrustProductPage() {
                 textDecoration: "none",
               }}
             >
-              Subscribe to status notifications
-            </a>
+              Open the status page
+            </Link>
             <Link
               href="/contact?intent=security"
               style={{

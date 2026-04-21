@@ -130,8 +130,8 @@ export function Pricing({ data }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Start free. Scale as your organisation grows. No hidden fees. No
-          surprises.
+          Every plan starts with a 14-day trial &mdash; no credit card
+          required. Scale as your organisation grows. No hidden fees.
         </motion.p>
 
         {/* Controls row */}
@@ -496,7 +496,7 @@ export function Pricing({ data }: PricingProps) {
 
                 {/* CTA */}
                 <Link
-                  href="/contact"
+                  href="/contact?intent=trial"
                   style={{
                     display: "flex",
                     alignItems: "center",

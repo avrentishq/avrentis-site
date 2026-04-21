@@ -99,7 +99,7 @@ export function CtaBanner() {
           }}
         >
           <Link
-            href="/contact"
+            href="/contact?intent=trial"
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 600,
@@ -124,10 +124,10 @@ export function CtaBanner() {
               e.currentTarget.style.backgroundColor = "#C68B2F";
             }}
           >
-            Start for free — no credit card required
+            Start your 14-day trial
           </Link>
           <Link
-            href="/contact"
+            href="/contact?intent=demo"
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
@@ -171,8 +171,8 @@ export function CtaBanner() {
             marginTop: "20px",
           }}
         >
-          Setup takes less than 10 minutes. Your first approval can happen
-          today.
+          14 days. No credit card required. Setup takes less than 10
+          minutes &mdash; your first approval can happen today.
         </motion.p>
 
         {/* Trust signals */}

@@ -124,32 +124,23 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           We engage trusted infrastructure providers to operate the platform. Each is bound by a data-processing
-          agreement. A live list with roles and regions is maintained at{" "}
-          <Link href="/trust">/trust</Link>. Today, our primary sub-processors are:
+          agreement. The categories of provider we rely on today are:
         </p>
         <ul>
-          <li>
-            <strong>Neon</strong> — managed PostgreSQL hosting for application data.
-          </li>
-          <li>
-            <strong>Cloudflare</strong> — content delivery and R2 object storage for document attachments.
-          </li>
-          <li>
-            <strong>Vercel</strong> — application hosting and edge compute.
-          </li>
-          <li>
-            <strong>Upstash</strong> — managed Redis for session state and rate-limiting.
-          </li>
-          <li>
-            <strong>Resend</strong> — transactional email delivery.
-          </li>
-          <li>
-            <strong>Termii</strong> — SMS notification delivery, where enabled.
-          </li>
-          <li>
-            <strong>Sentry</strong> — error and performance monitoring.
-          </li>
+          <li>Managed PostgreSQL for application data (EU).</li>
+          <li>Application hosting and edge compute (global edge).</li>
+          <li>Content delivery and object storage for document attachments (global).</li>
+          <li>Managed Redis for session state and rate-limiting (EU / US).</li>
+          <li>Transactional email delivery (US).</li>
+          <li>SMS notification delivery, where enabled (Africa / international).</li>
+          <li>Error and performance monitoring (EU).</li>
         </ul>
+        <p>
+          The specific named providers in each category — along with their DPA status — are shared with prospective
+          customers through <Link href="/contact?intent=privacy">our privacy enquiry form</Link>, typically alongside a
+          Data Processing Agreement. An overview of the categories is also maintained at{" "}
+          <Link href="/trust">/trust</Link>.
+        </p>
       </>
     ),
   },
@@ -159,9 +150,10 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Primary application data is stored in the European Union on Neon-managed PostgreSQL. Document attachments
-          are stored in Cloudflare R2 at the region our infrastructure tier is configured for. Backups are taken
-          daily and retained for a rolling window consistent with our recovery objectives.
+          Primary application data is stored in the European Union on a managed PostgreSQL service. Document
+          attachments are stored in an encrypted object-storage provider at the region our infrastructure tier is
+          configured for. Backups are taken daily and retained for a rolling window consistent with our recovery
+          objectives.
         </p>
         <p>
           Dedicated in-country or in-region hosting is available as part of an enterprise engagement. Contact us if

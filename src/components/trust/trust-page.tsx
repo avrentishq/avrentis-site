@@ -66,14 +66,14 @@ const FRAMEWORKS = [
   },
 ];
 
-const SUBPROCESSORS = [
-  { name: "Neon", purpose: "Managed PostgreSQL for application data", region: "EU", dpa: true },
-  { name: "Vercel", purpose: "Application hosting and edge compute", region: "Global edge", dpa: true },
-  { name: "Cloudflare", purpose: "CDN and R2 object storage for document attachments", region: "Global", dpa: true },
-  { name: "Upstash", purpose: "Managed Redis for sessions and rate-limiting", region: "EU / US (configurable)", dpa: true },
-  { name: "Resend", purpose: "Transactional email delivery", region: "US", dpa: true },
-  { name: "Termii", purpose: "SMS notification delivery (where enabled)", region: "Nigeria", dpa: true },
-  { name: "Sentry", purpose: "Error and performance monitoring", region: "EU", dpa: true },
+const SUBPROCESSOR_CATEGORIES = [
+  { purpose: "Managed PostgreSQL for application data", region: "EU", dpa: true },
+  { purpose: "Application hosting and edge compute", region: "Global edge", dpa: true },
+  { purpose: "CDN and object storage for document attachments", region: "Global", dpa: true },
+  { purpose: "Managed Redis for sessions and rate-limiting", region: "EU / US", dpa: true },
+  { purpose: "Transactional email delivery", region: "US", dpa: true },
+  { purpose: "SMS notification delivery (where enabled)", region: "Africa / international", dpa: true },
+  { purpose: "Error and performance monitoring", region: "EU", dpa: true },
 ];
 
 const DOCUMENTS = [
@@ -441,14 +441,14 @@ export function TrustProductPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1.2fr 2.2fr 1.3fr 0.8fr",
+                gridTemplateColumns: "2.8fr 1.3fr 0.8fr",
                 padding: "14px 20px",
                 backgroundColor: "#F8FAFC",
                 borderBottom: "1px solid #e2e8f0",
                 gap: "14px",
               }}
             >
-              {["Provider", "Purpose", "Region", "DPA"].map((h) => (
+              {["Category", "Region", "DPA"].map((h) => (
                 <span
                   key={h}
                   style={{
@@ -463,22 +463,19 @@ export function TrustProductPage() {
                 </span>
               ))}
             </div>
-            {SUBPROCESSORS.map((sp, i) => (
+            {SUBPROCESSOR_CATEGORIES.map((sp, i) => (
               <div
-                key={sp.name}
+                key={sp.purpose}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "1.2fr 2.2fr 1.3fr 0.8fr",
+                  gridTemplateColumns: "2.8fr 1.3fr 0.8fr",
                   padding: "14px 20px",
                   borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
                   gap: "14px",
                   alignItems: "center",
                 }}
               >
-                <span style={{ fontFamily: sans, fontSize: "13px", fontWeight: 600, color: "#0f172a" }}>
-                  {sp.name}
-                </span>
-                <span style={{ fontFamily: sans, fontSize: "13px", color: "#475569", lineHeight: 1.5 }}>
+                <span style={{ fontFamily: sans, fontSize: "13px", color: "#0f172a", lineHeight: 1.5 }}>
                   {sp.purpose}
                 </span>
                 <span style={{ fontFamily: sans, fontSize: "13px", color: "#64748b" }}>{sp.region}</span>
@@ -507,18 +504,68 @@ export function TrustProductPage() {
             ))}
           </motion.div>
 
-          <motion.p
+          <motion.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
             transition={staggerDelay(4)}
             style={{
+              marginTop: "24px",
+              padding: "22px 26px",
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #e2e8f0",
+              borderRadius: "10px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "16px",
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <div style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "#0f172a", marginBottom: "4px" }}>
+                Need the named vendor list?
+              </div>
+              <div style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.6 }}>
+                The specific providers in each category — with their DPA status
+                and any changes — are shared with prospective customers on
+                request, typically alongside a Data Processing Agreement.
+              </div>
+            </div>
+            <Link
+              href="/contact?intent=privacy"
+              style={{
+                fontFamily: sans,
+                fontWeight: 600,
+                fontSize: "13px",
+                backgroundColor: "#C68B2F",
+                color: "#0f172a",
+                borderRadius: "6px",
+                padding: "0 18px",
+                height: "40px",
+                display: "inline-flex",
+                alignItems: "center",
+                textDecoration: "none",
+                flexShrink: 0,
+              }}
+            >
+              Request the list
+            </Link>
+          </motion.div>
+
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(5)}
+            style={{
               fontFamily: sans,
               fontSize: "13px",
               color: "#64748b",
               lineHeight: 1.7,
-              margin: "20px 0 0",
+              margin: "16px 0 0",
             }}
           >
             Subscribe to sub-processor change notifications through our{" "}
@@ -726,7 +773,7 @@ export function TrustProductPage() {
                 label: "Today · default",
                 title: "European Union",
                 body:
-                  "Primary application database (Neon Postgres) and backups are hosted in the EU. Document attachments flow through Cloudflare R2 at the region configured for our infrastructure tier. The marketing site and edge compute run on Vercel's global edge.",
+                  "Primary application data and its backups are hosted in the EU. Document attachments flow through an encrypted object-storage provider at the region configured for our infrastructure tier. The marketing site and edge compute run on a global edge network.",
               },
               {
                 label: "Enterprise · on request",

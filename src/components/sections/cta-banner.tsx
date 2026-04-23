@@ -99,7 +99,7 @@ export function CtaBanner() {
           }}
         >
           <Link
-            href="/contact?intent=trial"
+            href="/trial"
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 600,

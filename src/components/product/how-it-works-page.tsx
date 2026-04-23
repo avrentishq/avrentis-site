@@ -462,7 +462,7 @@ export function HowItWorksProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=trial"
+              href="/trial"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,

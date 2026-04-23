@@ -10,7 +10,6 @@
 import { sendContactEmail } from "@/lib/email";
 
 export type ContactIntent =
-  | "trial"
   | "demo"
   | "security"
   | "disclosure"
@@ -25,7 +24,6 @@ export type ContactIntent =
   | "general";
 
 const VALID_INTENTS: ContactIntent[] = [
-  "trial",
   "demo",
   "security",
   "disclosure",
@@ -73,8 +71,6 @@ function escape(s: string): string {
 
 function intentLabel(intent: ContactIntent): string {
   switch (intent) {
-    case "trial":
-      return "14-day trial";
     case "demo":
       return "Personalised demo";
     case "security":

@@ -137,7 +137,7 @@ function resolveCtas(config: ModuleConfig): {
   switch (config.status) {
     case "available":
       return {
-        primary: config.primaryCta ?? { label: "Start your 14-day trial", href: "/contact?intent=trial" },
+        primary: config.primaryCta ?? { label: "Start your 14-day trial", href: "/trial" },
         secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
       };
     case "coming_soon":

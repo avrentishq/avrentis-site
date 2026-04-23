@@ -286,7 +286,7 @@ export function Pricing({ data }: PricingProps) {
               ))}
             </ul>
             <Link
-              href="/signup?trial=business"
+              href="/trial"
               style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "44px", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-sans)", textDecoration: "none", transition: "all 150ms ease", backgroundColor: "transparent", color: "#0f172a", border: "1px solid #e2e8f0" }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f172a"; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; }}
@@ -496,7 +496,7 @@ export function Pricing({ data }: PricingProps) {
 
                 {/* CTA */}
                 <Link
-                  href="/contact?intent=trial"
+                  href={isEnterprise ? "/contact?intent=demo" : "/trial"}
                   style={{
                     display: "flex",
                     alignItems: "center",

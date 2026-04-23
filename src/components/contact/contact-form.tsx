@@ -5,8 +5,10 @@
  * to call the server action, shows per-field validation errors, and
  * swaps into a success state without a full page navigation.
  *
- * The form is intent-aware — `?intent=trial` from the product pages sets
- * the intent field and adjusts the headline micro-copy.
+ * The form is intent-aware — `?intent=<kind>` query parameters set the
+ * intent field and adjust the headline micro-copy. Trial requests live
+ * on the dedicated /trial page; this form handles sales, security,
+ * legal, privacy, disclosure, careers, feedback, subscribe, and roadmap.
  */
 
 import { useActionState } from "react";
@@ -30,13 +32,6 @@ interface IntentCopy {
 }
 
 const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
-  trial: {
-    eyebrow: "14-DAY TRIAL",
-    headline: "Start a structured trial of Avrentis.",
-    lede:
-      "Tell us about your organisation and the approvals you want to move off email. We'll provision your workspace and walk your team through it.",
-    cta: "Start my trial",
-  },
   demo: {
     eyebrow: "BOOK A DEMO",
     headline: "See Avrentis with your own workflows in the room.",

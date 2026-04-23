@@ -228,7 +228,7 @@ export function MobileMenu({
               Book demo
             </Link>
             <Link
-              href="/contact?intent=trial"
+              href="/trial"
               onClick={onClose}
               style={{
                 fontFamily: FONT,

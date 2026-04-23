@@ -33,7 +33,7 @@ const COMPANY_LINKS = [
 ];
 
 const START_LINKS = [
-  { label: "Start trial", href: "/contact?intent=trial" },
+  { label: "Start trial", href: "/trial" },
   { label: "Book demo", href: "/contact?intent=demo" },
   { label: "Login", href: "https://app.avrentis.com/login" },
 ];

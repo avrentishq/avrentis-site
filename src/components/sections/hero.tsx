@@ -462,7 +462,7 @@ export function Hero() {
             style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}
           >
             <a
-              href="/contact?intent=trial"
+              href="/trial"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,

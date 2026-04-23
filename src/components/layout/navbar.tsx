@@ -459,7 +459,7 @@ export function Navbar() {
             </a>
 
             <a
-              href="/contact?intent=trial"
+              href="/trial"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,

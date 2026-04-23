@@ -29,7 +29,7 @@ import { Footer } from "@/components/layout/footer";
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
 
-type Availability = "available" | "beta" | "coming" | "request";
+type Availability = "available" | "request";
 
 interface Integration {
   name: string;
@@ -61,7 +61,7 @@ const CATEGORIES: Category[] = [
       { name: "Okta", summary: "Pre-configured SAML + OIDC flows.", availability: "available" },
       { name: "Microsoft Entra ID", summary: "SAML app gallery entry + OIDC setup.", availability: "available" },
       { name: "Google Workspace", summary: "SAML federation with Workspace directory.", availability: "available" },
-      { name: "Apple Business Manager", summary: "OIDC sign-in for Apple-managed workforces.", availability: "coming" },
+      { name: "Apple Business Manager", summary: "OIDC sign-in for Apple-managed workforces.", availability: "request" },
     ],
   },
   {
@@ -88,12 +88,12 @@ const CATEGORIES: Category[] = [
     lede:
       "Every stage of the approval lifecycle can dispatch to the channels your approvers actually check. Multi-channel by default, all tracked to the audit trail.",
     integrations: [
-      { name: "Email (transactional)", summary: "Approval-quality emails with deep links — powered by Resend.", availability: "available" },
+      { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider.", availability: "available" },
       { name: "WhatsApp", summary: "Approval cards with one-tap review, on Starter and above.", availability: "available" },
-      { name: "SMS", summary: "Critical alerts to Nigerian and international numbers via Termii.", availability: "available" },
+      { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
       { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
-      { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "coming" },
-      { name: "Microsoft Teams", summary: "Adaptive cards for approvals in Teams chat.", availability: "coming" },
+      { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "request" },
+      { name: "Microsoft Teams", summary: "Adaptive cards for approvals in Teams chat.", availability: "request" },
     ],
   },
   {
@@ -105,8 +105,8 @@ const CATEGORIES: Category[] = [
       "Avrentis owns the approval chain. The final record can flow into the ledger or ERP of your choice through native connectors or CSV / API exchange.",
     integrations: [
       { name: "CSV export", summary: "Period-bounded exports with full approval trail per line.", availability: "available" },
-      { name: "QuickBooks Online", summary: "Voucher + PO sync with account mapping.", availability: "coming" },
-      { name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks.", availability: "coming" },
+      { name: "QuickBooks Online", summary: "Voucher + PO sync with account mapping.", availability: "request" },
+      { name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks.", availability: "request" },
       { name: "Sage Intacct", summary: "API bridge for mid-market finance teams.", availability: "request" },
       { name: "SAP Business One", summary: "Certified connector for SAP-led procurement.", availability: "request" },
       { name: "Oracle NetSuite", summary: "PO and voucher synchronisation.", availability: "request" },
@@ -121,7 +121,7 @@ const CATEGORIES: Category[] = [
       "Every sanctioned voucher produces a formally formatted bank letter with the MD's signature, accepted by commercial banks across the region. Native banking APIs are on the roadmap.",
     integrations: [
       { name: "Bank-ready PDF letter", summary: "Per-voucher letter with MD signature + letterhead.", availability: "available" },
-      { name: "SWIFT-format payment batches", summary: "Batched export for treasury teams.", availability: "coming" },
+      { name: "SWIFT-format payment batches", summary: "Batched export for treasury teams.", availability: "request" },
       {
         name: "Nigerian bank connectors (GTBank, Zenith, Access)",
         summary: "Direct payment initiation for Nigeria-based tenants.",
@@ -146,7 +146,7 @@ const CATEGORIES: Category[] = [
       { name: "REST API (v1)", summary: "Documents, approvals, users, audit events, reports.", availability: "available" },
       { name: "Webhooks", summary: "Per-tenant event subscriptions with retries + signing.", availability: "available" },
       { name: "Audit export (signed)", summary: "Regulator-ready bundles, signed and downloadable.", availability: "available" },
-      { name: "Zapier", summary: "No-code workflow bridge into 6,000+ apps.", availability: "coming" },
+      { name: "Zapier", summary: "No-code workflow bridge into 6,000+ apps.", availability: "request" },
       { name: "n8n / Make", summary: "Trigger-node integration for ops teams.", availability: "request" },
     ],
   },
@@ -159,23 +159,11 @@ const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: st
     bg: "rgba(4,120,87,0.10)",
     border: "rgba(4,120,87,0.28)",
   },
-  beta: {
-    label: "In beta",
-    color: "#C68B2F",
-    bg: "rgba(198,139,47,0.10)",
-    border: "rgba(198,139,47,0.28)",
-  },
-  coming: {
-    label: "Coming 2026",
-    color: "#C68B2F",
-    bg: "rgba(198,139,47,0.10)",
-    border: "rgba(198,139,47,0.28)",
-  },
   request: {
-    label: "On request",
-    color: "#64748b",
-    bg: "rgba(100,116,139,0.10)",
-    border: "rgba(100,116,139,0.22)",
+    label: "Talk to us",
+    color: "#C68B2F",
+    bg: "rgba(198,139,47,0.10)",
+    border: "rgba(198,139,47,0.28)",
   },
 };
 
@@ -401,7 +389,7 @@ export function IntegrationsCataloguePage() {
           >
             Identity, provisioning, notifications, accounting, banking, and a
             first-class developer platform. Each integration labelled honestly —
-            available, coming 2026, or built for you on request.
+            available today or delivered on request as part of a conversation.
           </motion.p>
           <motion.div
             variants={fadeUp}

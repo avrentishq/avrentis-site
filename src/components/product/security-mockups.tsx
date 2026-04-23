@@ -142,7 +142,7 @@ export function AuthorityMockup() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
         <Label>PERMISSION MATRIX · EXCERPT</Label>
         <span style={{ fontFamily: mono, fontSize: "10px", color: "#64748b", letterSpacing: "0.04em" }}>
-          54 permissions · 10 roles
+          Fine-grained permissions · multi-role
         </span>
       </div>
       <div
@@ -539,11 +539,11 @@ export function LifecycleMockup() {
 /* ── 06. Encryption & infra ─────────────────────────────────────── */
 
 const STACK_LAYERS = [
-  { label: "Browser", detail: "TLS 1.3 · HSTS · strict CSP" },
-  { label: "Edge / app", detail: "Fluid Compute · SameSite cookies · BotID" },
-  { label: "Database", detail: "Neon Postgres · encrypted at rest · daily snapshots" },
-  { label: "Secrets", detail: "AES-256-GCM at application layer (MFA, SSO)" },
-  { label: "Object storage", detail: "Cloudflare R2 · short-lived presigned URLs" },
+  { label: "Browser", detail: "Modern TLS · strict browser-side policies" },
+  { label: "Edge / app", detail: "Autoscaling compute · secure session cookies · bot protection" },
+  { label: "Database", detail: "Managed Postgres · encrypted at rest · daily snapshots" },
+  { label: "Secrets", detail: "Application-layer AES-256-GCM for 2FA and SSO" },
+  { label: "Object storage", detail: "Encrypted · short-lived per-upload delivery URLs" },
 ];
 
 export function InfraMockup() {

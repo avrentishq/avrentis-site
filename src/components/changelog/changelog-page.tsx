@@ -75,12 +75,12 @@ const ENTRIES: Entry[] = [
     tag: "feature",
     title: "Board views — for your company and for ours.",
     body:
-      "Two new dashboards built for the people who run things. A Company Board gives your MD and non-executive directors the health-of-the-organisation view. A Platform Board gives the Avrentis team the operational view we use to run the service well. Numbers refresh every fifteen minutes.",
+      "Two new dashboards built for the people who run things. A Company Board gives your MD and non-executive directors the health-of-the-organisation view. A Platform Board gives the Avrentis team the operational view we use to run the service well. Numbers refresh regularly through the day.",
     bullets: [
       "A Company Board for your MD and directors to see organisational health at a glance",
       "Operational metrics for the Avrentis team to run the service well",
       "Board access is granted carefully — one person provisions, another approves",
-      "Key numbers refresh every fifteen minutes",
+      "Key numbers refresh regularly through the day",
     ],
   },
   {
@@ -106,7 +106,7 @@ const ENTRIES: Entry[] = [
       "The controls every serious customer asks about: tenant-to-tenant isolation at the database itself, roles that actually enforce what they say, sessions that end the moment someone changes role or leaves, two-factor sign-in, and a record of every action that nobody can edit.",
     bullets: [
       "Each customer's data is walled off inside the database itself — not just the app",
-      "Ten roles with fifty-four specific permissions, plus rules that stop people acting outside their remit",
+      "A fine-grained permission system across multiple roles, plus rules that stop people acting outside their remit",
       "Automated user provisioning from Okta, Microsoft Entra, and Google Workspace",
       "Two-factor sign-in with recovery codes, required for platform admins",
       "Once an action is recorded, no one can edit or delete it — not even us",
@@ -161,7 +161,7 @@ const ENTRIES: Entry[] = [
       "The starting point every later capability builds on. Each customer's workspace is cleanly separated from every other, a role system enforces who can do what, and the admin tools to get an organisation set up cleanly.",
     bullets: [
       "Each customer's workspace isolated from every other at the database layer",
-      "Role hierarchy with configurable permissions (later expanded to ten roles)",
+      "Role hierarchy with configurable permissions",
       "Enterprise-grade sign-in with session management",
       "Admin tools for setting up new organisations cleanly",
     ],

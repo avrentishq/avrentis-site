@@ -95,7 +95,7 @@ const CATEGORIES: DocsCategory[] = [
     items: [
       {
         title: "Roles, permissions, and ABAC",
-        body: "54 permissions across 10 roles with attribute-based overlays.",
+        body: "A fine-grained permission system with attribute-based overlays for department scope and amount thresholds.",
         href: "/product/security",
         status: "live",
       },
@@ -168,7 +168,7 @@ const CATEGORIES: DocsCategory[] = [
       },
       {
         title: "MFA enforcement",
-        body: "TOTP and bcrypt-hashed recovery codes.",
+        body: "Two-factor sign-in with secured recovery codes.",
         href: "/product/security",
         status: "live",
       },
@@ -189,7 +189,7 @@ const CATEGORIES: DocsCategory[] = [
       },
       { title: "Email notifications", body: "Configuring sender domains and templates.", href: "/contact?intent=demo", status: "wip" },
       { title: "WhatsApp notifications", body: "Setting up business-account routing.", href: "/contact?intent=demo", status: "wip" },
-      { title: "SMS via Termii", body: "Adding sender IDs and international routing.", href: "/contact?intent=demo", status: "wip" },
+      { title: "SMS notifications", body: "Adding sender IDs and international routing.", href: "/contact?intent=demo", status: "wip" },
     ],
   },
   {

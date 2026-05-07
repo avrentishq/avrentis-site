@@ -11,7 +11,7 @@
  * legal, privacy, disclosure, careers, feedback, subscribe, and roadmap.
  */
 
-import { useActionState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -169,17 +169,18 @@ const errorStyle: React.CSSProperties = {
   display: "block",
 };
 
-function SubmitButton({ label }: { label: string }) {
+function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
   const { pending } = useFormStatus();
+  const disabled = pending || !isValid;
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={disabled}
       style={{
         fontFamily: "var(--font-sans)",
         fontWeight: 600,
         fontSize: "14px",
-        backgroundColor: pending ? "#A87425" : "#C68B2F",
+        backgroundColor: disabled ? "#A87425" : "#C68B2F",
         color: "#0f172a",
         border: "none",
         borderRadius: "6px",
@@ -188,7 +189,8 @@ function SubmitButton({ label }: { label: string }) {
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
-        cursor: pending ? "not-allowed" : "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.6 : 1,
         transition: "background-color 150ms ease",
       }}
     >
@@ -202,6 +204,24 @@ function SubmitButton({ label }: { label: string }) {
 export function ContactForm({ intent }: { intent: ContactIntent }) {
   const copy = INTENT_COPY[intent];
   const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+
+  // ── Controlled field state for validity computation ─────────────────
+  const [nameValue, setNameValue] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [organisationValue, setOrganisationValue] = useState("");
+  const [messageValue, setMessageValue] = useState("");
+  const [consentValue, setConsentValue] = useState(false);
+
+  // ── Validity derivation ─────────────────────────────────────────────
+  const isValid = useMemo(
+    () =>
+      nameValue.trim().length > 0 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue) &&
+      organisationValue.trim().length > 0 &&
+      messageValue.trim().length >= 10 &&
+      consentValue === true,
+    [nameValue, emailValue, organisationValue, messageValue, consentValue],
+  );
 
   if (state.status === "success") {
     return (
@@ -412,6 +432,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             <div>
               <label htmlFor="name" style={labelStyle}>
                 Full name
+                <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
               </label>
               <input
                 id="name"
@@ -419,6 +440,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 type="text"
                 required
                 autoComplete="name"
+                value={nameValue}
+                onChange={(e) => setNameValue(e.target.value)}
                 style={{
                   ...inputStyle,
                   borderColor: state.fieldErrors?.name ? "#b91c1c" : "#e2e8f0",
@@ -429,6 +452,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             <div>
               <label htmlFor="email" style={labelStyle}>
                 Work email
+                <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
               </label>
               <input
                 id="email"
@@ -436,6 +460,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 type="email"
                 required
                 autoComplete="email"
+                value={emailValue}
+                onChange={(e) => setEmailValue(e.target.value)}
                 style={{
                   ...inputStyle,
                   borderColor: state.fieldErrors?.email ? "#b91c1c" : "#e2e8f0",
@@ -449,6 +475,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             <div>
               <label htmlFor="organisation" style={labelStyle}>
                 Organisation
+                <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
               </label>
               <input
                 id="organisation"
@@ -456,6 +483,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 type="text"
                 required
                 autoComplete="organization"
+                value={organisationValue}
+                onChange={(e) => setOrganisationValue(e.target.value)}
                 style={{
                   ...inputStyle,
                   borderColor: state.fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
@@ -495,12 +524,15 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
           <div>
             <label htmlFor="message" style={labelStyle}>
               Tell us about your use case
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <textarea
               id="message"
               name="message"
               required
               minLength={10}
+              value={messageValue}
+              onChange={(e) => setMessageValue(e.target.value)}
               style={{
                 ...textareaStyle,
                 borderColor: state.fieldErrors?.message ? "#b91c1c" : "#e2e8f0",
@@ -529,6 +561,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 name="consent"
                 type="checkbox"
                 required
+                checked={consentValue}
+                onChange={(e) => setConsentValue(e.target.checked)}
                 style={{ marginTop: "3px", accentColor: "#C68B2F", width: "16px", height: "16px" }}
               />
               <span>
@@ -536,7 +570,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 <Link href="/privacy" style={{ color: "#C68B2F", textDecoration: "none" }}>
                   privacy policy
                 </Link>
-                .
+                .{" "}
+                <span style={{ color: "#dc2626" }} aria-hidden="true">*</span>
               </span>
             </label>
             {state.fieldErrors?.consent && <span style={errorStyle}>{state.fieldErrors.consent}</span>}
@@ -559,7 +594,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
           )}
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
-            <SubmitButton label={copy.cta} />
+            <SubmitButton label={copy.cta} isValid={isValid} />
           </div>
         </motion.form>
       </div>

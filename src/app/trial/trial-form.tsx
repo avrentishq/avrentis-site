@@ -13,7 +13,7 @@
  * Navbar + Footer wrapper, soft slate-50 main, card-styled form.
  */
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -152,17 +152,18 @@ const hintStyle: React.CSSProperties = {
   display: "block",
 };
 
-function SubmitButton() {
+function SubmitButton({ isValid }: { isValid: boolean }) {
   const { pending } = useFormStatus();
+  const disabled = pending || !isValid;
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={disabled}
       style={{
         fontFamily: sans,
         fontWeight: 600,
         fontSize: "14px",
-        backgroundColor: pending ? "#A87425" : "#C68B2F",
+        backgroundColor: disabled ? "#A87425" : "#C68B2F",
         color: "#0f172a",
         border: "none",
         borderRadius: "6px",
@@ -170,7 +171,8 @@ function SubmitButton() {
         height: "44px",
         display: "inline-flex",
         alignItems: "center",
-        cursor: pending ? "not-allowed" : "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.6 : 1,
       }}
     >
       {pending ? "Sending…" : "Start my trial →"}
@@ -191,8 +193,30 @@ export function TrialForm() {
     setRecentSubmission(readRecentSubmission());
   }, []);
 
-  // ── Email field state (controlled for free-email hint + dupe check) ──
+  // ── Controlled field state ──────────────────────────────────────────
+  // Email: controlled for free-email hint + dupe check.
   const [emailValue, setEmailValue] = useState("");
+  // Remaining required fields lifted to state for validity computation.
+  const [nameValue, setNameValue] = useState("");
+  const [organisationValue, setOrganisationValue] = useState("");
+  const [roleValue, setRoleValue] = useState("");
+  const [orgSizeValue, setOrgSizeValue] = useState("");
+  // country defaults to "NG" which is a valid selection.
+  const [countryValue, setCountryValue] = useState("NG");
+  const [consentValue, setConsentValue] = useState(false);
+
+  // ── Validity derivation ─────────────────────────────────────────────
+  const isValid = useMemo(
+    () =>
+      nameValue.trim().length > 0 &&
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue) &&
+      organisationValue.trim().length > 0 &&
+      roleValue !== "" &&
+      orgSizeValue !== "" &&
+      countryValue !== "" &&
+      consentValue === true,
+    [nameValue, emailValue, organisationValue, roleValue, orgSizeValue, countryValue, consentValue],
+  );
 
   // ── Persist to localStorage when a successful submission completes ──
   useEffect(() => {
@@ -364,6 +388,7 @@ export function TrialForm() {
           <div>
             <label htmlFor="name" style={labelStyle}>
               Full name
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <input
               id="name"
@@ -371,6 +396,8 @@ export function TrialForm() {
               type="text"
               required
               autoComplete="name"
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
               style={{
                 ...inputStyle,
                 borderColor: fieldErrors?.name ? "#b91c1c" : "#e2e8f0",
@@ -381,6 +408,7 @@ export function TrialForm() {
           <div>
             <label htmlFor="email" style={labelStyle}>
               Work email
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <input
               id="email"
@@ -409,6 +437,7 @@ export function TrialForm() {
         <div>
           <label htmlFor="organisation" style={labelStyle}>
             Organisation
+            <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
           </label>
           <input
             id="organisation"
@@ -416,6 +445,8 @@ export function TrialForm() {
             type="text"
             required
             autoComplete="organization"
+            value={organisationValue}
+            onChange={(e) => setOrganisationValue(e.target.value)}
             style={{
               ...inputStyle,
               borderColor: fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
@@ -430,12 +461,14 @@ export function TrialForm() {
           <div>
             <label htmlFor="role" style={labelStyle}>
               Your role
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <select
               id="role"
               name="role"
               required
-              defaultValue=""
+              value={roleValue}
+              onChange={(e) => setRoleValue(e.target.value)}
               style={{ ...inputStyle, padding: "0 12px" }}
             >
               <option value="" disabled>
@@ -452,12 +485,14 @@ export function TrialForm() {
           <div>
             <label htmlFor="orgSize" style={labelStyle}>
               Organisation size
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <select
               id="orgSize"
               name="orgSize"
               required
-              defaultValue=""
+              value={orgSizeValue}
+              onChange={(e) => setOrgSizeValue(e.target.value)}
               style={{ ...inputStyle, padding: "0 12px" }}
             >
               <option value="" disabled>
@@ -476,12 +511,14 @@ export function TrialForm() {
         <div>
           <label htmlFor="country" style={labelStyle}>
             Country
+            <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
           </label>
           <select
             id="country"
             name="country"
             required
-            defaultValue="NG"
+            value={countryValue}
+            onChange={(e) => setCountryValue(e.target.value)}
             style={{ ...inputStyle, padding: "0 12px" }}
           >
             {COUNTRIES.map((c) => (
@@ -525,6 +562,8 @@ export function TrialForm() {
               name="consent"
               type="checkbox"
               required
+              checked={consentValue}
+              onChange={(e) => setConsentValue(e.target.checked)}
               style={{ marginTop: "3px", accentColor: "#C68B2F", width: "16px", height: "16px" }}
             />
             <span>
@@ -533,7 +572,8 @@ export function TrialForm() {
               <Link href="/privacy" style={{ color: "#C68B2F", textDecoration: "none" }}>
                 privacy policy
               </Link>
-              .
+              .{" "}
+              <span style={{ color: "#dc2626" }} aria-hidden="true">*</span>
             </span>
           </label>
           {fieldErrors?.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
@@ -594,7 +634,7 @@ export function TrialForm() {
         )}
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-          <SubmitButton />
+          <SubmitButton isValid={isValid} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8" }}>
             No credit card required · 14-day trial · Data preserved for 30 days after trial end.
           </span>

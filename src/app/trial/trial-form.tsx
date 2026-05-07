@@ -19,7 +19,8 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { submitTrialRequest, INITIAL_STATE, type TrialFormState } from "./actions";
+import { submitTrialRequest } from "./actions";
+import { INITIAL_STATE, type TrialFormState } from "./state";
 
 const ROLES = [
   "CFO",

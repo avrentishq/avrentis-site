@@ -9,35 +9,14 @@
  * magic-link dispatch. This module is a thin adapter that keeps the
  * platform URL out of the client bundle and normalises the response
  * shape.
+ *
+ * `"use server"` modules can only export async functions in Next.js 16
+ * — the form-state type + INITIAL_STATE live in `./state` so the
+ * client form and this module can share them without tripping the
+ * compiler check.
  */
 
-export type TrialFormState =
-  | { status: "idle" }
-  | {
-      status: "verification_sent";
-      message: string;
-      email: string;
-    }
-  | {
-      status: "queued_for_review";
-      message: string;
-    }
-  | {
-      status: "hard_blocked";
-      message: string;
-    }
-  | {
-      status: "error";
-      message: string;
-      fieldErrors?: Partial<
-        Record<
-          "name" | "email" | "organisation" | "role" | "orgSize" | "country" | "consent",
-          string
-        >
-      >;
-    };
-
-export const INITIAL_STATE: TrialFormState = { status: "idle" };
+import type { TrialFormState } from "./state";
 
 const PLATFORM_ORIGIN = process.env.PLATFORM_API_URL ?? "https://app.avrentis.com";
 

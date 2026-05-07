@@ -17,12 +17,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { submitContact } from "@/app/contact/actions";
 import {
-  submitContact,
   INITIAL_STATE,
   type ContactFormState,
   type ContactIntent,
-} from "@/app/contact/actions";
+} from "@/app/contact/state";
 
 interface IntentCopy {
   eyebrow: string;

@@ -5,46 +5,18 @@
  * inputs, dispatches an inbound notification via Resend, and returns a
  * serialisable state object for `useActionState`. No data is persisted;
  * the email is the record.
+ *
+ * `"use server"` modules can only export async functions in Next.js 16
+ * — the form-state shape, INITIAL_STATE, and the ContactIntent enum
+ * live in `./state` so the client form and this module can share them.
  */
 
 import { sendContactEmail } from "@/lib/email";
-
-export type ContactIntent =
-  | "demo"
-  | "security"
-  | "disclosure"
-  | "privacy"
-  | "legal"
-  | "careers"
-  | "feedback"
-  | "subscribe"
-  | "notify"
-  | "beta"
-  | "roadmap"
-  | "general";
-
-const VALID_INTENTS: ContactIntent[] = [
-  "demo",
-  "security",
-  "disclosure",
-  "privacy",
-  "legal",
-  "careers",
-  "feedback",
-  "subscribe",
-  "notify",
-  "beta",
-  "roadmap",
-  "general",
-];
-
-export interface ContactFormState {
-  status: "idle" | "success" | "error";
-  message?: string;
-  fieldErrors?: Partial<Record<"name" | "email" | "organisation" | "message" | "consent", string>>;
-}
-
-export const INITIAL_STATE: ContactFormState = { status: "idle" };
+import {
+  type ContactFormState,
+  type ContactIntent,
+  VALID_INTENTS,
+} from "./state";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

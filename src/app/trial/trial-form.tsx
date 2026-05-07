@@ -13,7 +13,7 @@
  * Navbar + Footer wrapper, soft slate-50 main, card-styled form.
  */
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -21,6 +21,67 @@ import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
+
+// ────────────────────────────────────────────────────────────────────
+// Free-email domain list — Option B: nudge, not block.
+// Keep in sync with avrentis-app's free-email guard if it grows.
+// ────────────────────────────────────────────────────────────────────
+const FREE_EMAIL_DOMAINS = new Set([
+  "gmail.com",
+  "googlemail.com",
+  "yahoo.com",
+  "yahoo.co.uk",
+  "hotmail.com",
+  "outlook.com",
+  "live.com",
+  "icloud.com",
+  "me.com",
+  "mac.com",
+  "aol.com",
+  "protonmail.com",
+  "proton.me",
+  "mail.com",
+  "gmx.com",
+  "gmx.de",
+  "yandex.com",
+  "yandex.ru",
+]);
+
+/** 15-minute window in milliseconds for duplicate-submission detection. */
+const RECENT_SUBMISSION_TTL = 15 * 60 * 1000;
+
+interface RecentSubmission {
+  email: string;
+  submittedAt: number;
+}
+
+const RECENT_SUBMISSION_KEY = "avrentis-recent-trial";
+
+function readRecentSubmission(): RecentSubmission | null {
+  try {
+    const raw = localStorage.getItem(RECENT_SUBMISSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as RecentSubmission;
+    if (Date.now() - parsed.submittedAt > RECENT_SUBMISSION_TTL) {
+      localStorage.removeItem(RECENT_SUBMISSION_KEY);
+      return null;
+    }
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+function persistSubmission(email: string) {
+  try {
+    localStorage.setItem(
+      RECENT_SUBMISSION_KEY,
+      JSON.stringify({ email, submittedAt: Date.now() }),
+    );
+  } catch {
+    // localStorage unavailable — silently skip.
+  }
+}
 
 const ROLES = [
   "CFO",
@@ -82,6 +143,15 @@ const errorStyle: React.CSSProperties = {
   display: "block",
 };
 
+/** Muted hint below a field — not a validation error. */
+const hintStyle: React.CSSProperties = {
+  fontFamily: sans,
+  fontSize: "12px",
+  color: "#64748b",
+  marginTop: "5px",
+  display: "block",
+};
+
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -114,19 +184,54 @@ export function TrialForm() {
     INITIAL_STATE,
   );
 
+  // ── Duplicate-submission detection ──────────────────────────────
+  const [recentSubmission, setRecentSubmission] = useState<RecentSubmission | null>(null);
+  // Read from localStorage once on mount (browser-only API).
+  useEffect(() => {
+    setRecentSubmission(readRecentSubmission());
+  }, []);
+
+  // ── Email field state (controlled for free-email hint + dupe check) ──
+  const [emailValue, setEmailValue] = useState("");
+
+  // ── Persist to localStorage when a successful submission completes ──
+  useEffect(() => {
+    if (
+      state.status === "verification_sent" ||
+      state.status === "queued_for_review"
+    ) {
+      const submittedEmail =
+        state.status === "verification_sent" ? state.email : emailValue;
+      if (submittedEmail) {
+        persistSubmission(submittedEmail);
+        setRecentSubmission({ email: submittedEmail, submittedAt: Date.now() });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.status]);
+
   if (state.status === "verification_sent") {
     return <VerificationSentCard email={state.email} message={state.message} />;
   }
 
   if (state.status === "queued_for_review") {
-    return <QueuedCard message={state.message} />;
+    return <QueuedCard message={state.message} email={emailValue || undefined} />;
   }
 
-  if (state.status === "hard_blocked") {
+  if (state.status === "hard_blocked" || state.status === "auto_rejected") {
     return <HardBlockedCard message={state.message} />;
   }
 
   const fieldErrors = state.status === "error" ? state.fieldErrors : undefined;
+
+  // ── Free-email hint ─────────────────────────────────────────────
+  const emailDomain = emailValue.includes("@")
+    ? emailValue.split("@").pop()?.toLowerCase() ?? ""
+    : "";
+  const showFreeEmailHint = emailDomain !== "" && FREE_EMAIL_DOMAINS.has(emailDomain);
+
+  // ── Duplicate-submission warning ────────────────────────────────
+  const showDuplicateWarning = recentSubmission !== null;
 
   return (
     <motion.div
@@ -283,12 +388,21 @@ export function TrialForm() {
               type="email"
               required
               autoComplete="email"
+              value={emailValue}
+              onChange={(e) => setEmailValue(e.target.value)}
               style={{
                 ...inputStyle,
                 borderColor: fieldErrors?.email ? "#b91c1c" : "#e2e8f0",
               }}
             />
             {fieldErrors?.email && <span style={errorStyle}>{fieldErrors.email}</span>}
+            {/* Free-email nudge — shown when domain matches a personal provider.
+                Not a block; the submit button remains enabled. */}
+            {showFreeEmailHint && !fieldErrors?.email && (
+              <span style={hintStyle}>
+                Tip: work emails get the fastest setup. Personal emails work too.
+              </span>
+            )}
           </div>
         </div>
 
@@ -446,6 +560,39 @@ export function TrialForm() {
           </div>
         )}
 
+        {/* Duplicate-submission warning — informational, not blocking. */}
+        {showDuplicateWarning && (
+          <div
+            role="status"
+            aria-live="polite"
+            style={{
+              fontFamily: sans,
+              fontSize: "13px",
+              color: "#92400e",
+              backgroundColor: "rgba(217,119,6,0.07)",
+              border: "1px solid rgba(217,119,6,0.25)",
+              borderRadius: "6px",
+              padding: "10px 12px",
+              display: "flex",
+              gap: "8px",
+              alignItems: "flex-start",
+            }}
+          >
+            <AlertCircle
+              size={14}
+              strokeWidth={2}
+              color="#b45309"
+              style={{ marginTop: "2px", flexShrink: 0 }}
+              aria-hidden="true"
+            />
+            <span>
+              We already received a request from this browser at{" "}
+              <strong style={{ color: "#78350f" }}>{recentSubmission!.email}</strong> a few minutes
+              ago. Check that inbox first — the verification link expires in 30 minutes.
+            </span>
+          </div>
+        )}
+
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8" }}>
@@ -512,10 +659,21 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
           maxWidth: "420px",
         }}
       >
-        {message}
+        We sent a verification link to{" "}
+        <strong style={{ color: "#0f172a" }}>{email}</strong>. Check your inbox —
+        it expires in 30 minutes.
       </p>
-      <p style={{ fontFamily: sans, fontSize: "13px", color: "#94a3b8" }}>
-        We sent a verification link to <strong style={{ color: "#0f172a" }}>{email}</strong>.
+      <p
+        style={{
+          fontFamily: sans,
+          fontSize: "14px",
+          color: "#475569",
+          lineHeight: 1.65,
+          margin: 0,
+          maxWidth: "420px",
+        }}
+      >
+        {message}
       </p>
       <p style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8", marginTop: "12px" }}>
         <Clock
@@ -524,14 +682,14 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
           style={{ display: "inline", verticalAlign: "middle", marginRight: "4px" }}
           aria-hidden="true"
         />
-        Link expires in 30 minutes. If it expires, the page you land on will let you request a new
+        If the link expires, the page you land on will let you request a new
         one — no need to fill in the form again.
       </p>
     </div>
   );
 }
 
-function QueuedCard({ message }: { message: string }) {
+function QueuedCard({ message, email }: { message: string; email?: string }) {
   return (
     <div
       style={{
@@ -572,6 +730,21 @@ function QueuedCard({ message }: { message: string }) {
       >
         Request received.
       </h2>
+      {email && (
+        <p
+          style={{
+            fontFamily: sans,
+            fontSize: "14px",
+            color: "#475569",
+            lineHeight: 1.65,
+            margin: 0,
+            maxWidth: "440px",
+          }}
+        >
+          We&rsquo;ll be in touch at{" "}
+          <strong style={{ color: "#0f172a" }}>{email}</strong>.
+        </p>
+      )}
       <p
         style={{
           fontFamily: sans,

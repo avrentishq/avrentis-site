@@ -18,6 +18,9 @@ interface PageProps {
 interface VerifyResponse {
   status?: string;
   message?: string;
+  /** Preferred field from app PR feat/trial-auto-policy onwards. */
+  inviteUrl?: string;
+  /** Legacy field — kept for backward-compat during the deploy window. */
   loginUrl?: string;
   tenantSlug?: string;
 }
@@ -40,10 +43,11 @@ export default async function VerifyPage({ params }: PageProps) {
   }
 
   // Success — the platform has provisioned (or found an existing) tenant.
-  // Redirect straight to the login URL; the invite email with the
-  // password-setup link is already in the user's inbox.
-  if (response?.ok && payload.status === "provisioned" && payload.loginUrl) {
-    redirect(payload.loginUrl);
+  // Prefer inviteUrl (set by app PR feat/trial-auto-policy); fall back to
+  // loginUrl for the short deploy window before that app PR lands.
+  const successUrl = payload.inviteUrl ?? payload.loginUrl;
+  if (response?.ok && payload.status === "provisioned" && successUrl) {
+    redirect(successUrl);
   }
 
   return (

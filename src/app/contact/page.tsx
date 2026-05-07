@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/contact/contact-form";
-import type { ContactIntent } from "./actions";
+import type { ContactIntent } from "./state";
 
 export const metadata: Metadata = {
   title: "Contact — Avrentis",

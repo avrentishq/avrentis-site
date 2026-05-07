@@ -481,6 +481,11 @@ export function TrialForm() {
               ))}
             </select>
             {fieldErrors?.role && <span style={errorStyle}>{fieldErrors.role}</span>}
+            {!fieldErrors?.role && (
+              <span style={hintStyle}>
+                Helps us tailor your demo. You&apos;ll set up team roles after signing in.
+              </span>
+            )}
           </div>
           <div>
             <label htmlFor="orgSize" style={labelStyle}>

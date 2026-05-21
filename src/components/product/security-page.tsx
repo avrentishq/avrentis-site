@@ -78,8 +78,8 @@ const STACK = [
     icon: Database,
     bullets: [
       "Postgres RLS policies applied to every tenant-scoped table",
-      "`withTenantContext(tenantId, fn)` — the only way to run tenant-scoped SQL",
-      "`withBypassRLS` requires a randomized per-request token (no static secret)",
+      "Tenant-scoped SQL is routed through a context wrapper — bare queries fail RLS by design",
+      "The bypass path uses a randomized per-request token, not a static secret",
       "Drizzle migrations are gated by a safety check that blocks policy drops",
     ],
     Mockup: IsolationMockup,

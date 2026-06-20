@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 
 const STEPS = [
   {
@@ -41,7 +42,7 @@ function MockupShell({ url, children }: { url: string; children: React.ReactNode
         borderRadius: "10px",
         border: "1px solid rgba(255,255,255,0.10)",
         backgroundColor: "#F8FAFC",
-        boxShadow: "0 0 40px rgba(198,139,47,0.06), 0 20px 50px rgba(0,0,0,0.4)",
+        boxShadow: "0 0 40px rgba(var(--color-gold-rgb), 0.06), 0 20px 50px rgba(0,0,0,0.4)",
         overflow: "hidden",
       }}
     >
@@ -126,7 +127,7 @@ function SubmitMockup() {
                 flex: 1,
                 height: "3px",
                 borderRadius: "2px",
-                backgroundColor: i === 0 ? "#C68B2F" : "#e2e8f0",
+                backgroundColor: i === 0 ? "var(--color-gold)" : "#e2e8f0",
               }}
             />
           ))}
@@ -251,7 +252,7 @@ function ApproveMockup() {
               fontSize: "10px",
               fontWeight: 500,
               backgroundColor: "#0f172a",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               borderRadius: "3px",
               padding: "1px 5px",
               letterSpacing: "0.04em",
@@ -268,13 +269,13 @@ function ApproveMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
               fontWeight: 500,
-              backgroundColor: "rgba(198,139,47,0.08)",
+              backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
               color: "#92400e",
               borderRadius: "3px",
               padding: "2px 6px",
             }}
           >
-            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#C68B2F", display: "inline-block" }} />
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)", display: "inline-block" }} />
             Under review
           </span>
         </div>
@@ -635,7 +636,7 @@ export function HowItWorks() {
             fontSize: "12px",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             display: "block",
             marginBottom: "16px",
           }}
@@ -716,7 +717,7 @@ export function HowItWorks() {
                     left: "50%",
                     right: "-50%",
                     height: "2px",
-                    backgroundColor: i < active ? "#C68B2F" : "rgba(132,146,166,0.25)",
+                    backgroundColor: i < active ? "var(--color-gold)" : "rgba(132,146,166,0.25)",
                     zIndex: 0,
                     transition: "background-color 0.3s ease",
                   }}
@@ -729,8 +730,8 @@ export function HowItWorks() {
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
-                  backgroundColor: i === active ? "#C68B2F" : "transparent",
-                  border: i === active ? "2px solid #C68B2F" : "2px solid rgba(132,146,166,0.4)",
+                  backgroundColor: i === active ? "var(--color-gold)" : "transparent",
+                  border: i === active ? "2px solid var(--color-gold)" : "2px solid rgba(132,146,166,0.4)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -847,7 +848,7 @@ export function HowItWorks() {
                   gap: "10px",
                 }}
               >
-                <Icon size={16} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                <Icon size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                 <span
                   style={{
                     fontFamily: "var(--font-sans)",

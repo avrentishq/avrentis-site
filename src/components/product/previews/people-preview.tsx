@@ -18,7 +18,7 @@ export function PeoplePreview() {
             fontSize: "10px",
             fontWeight: 500,
             backgroundColor: "#0f172a",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
             letterSpacing: "0.04em",
@@ -35,13 +35,13 @@ export function PeoplePreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "rgba(198,139,47,0.08)",
+            backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
             color: "#92400e",
             borderRadius: "3px",
             padding: "2px 6px",
           }}
         >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#C68B2F" }} />
+          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)" }} />
           Pending approval
         </span>
       </div>

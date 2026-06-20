@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
+import { BRAND, MODULES } from "@/lib/brand";
 
 const PRODUCT_LINKS = [
-  { label: "Avrentis Pay", href: "/product/pay" },
-  { label: "Avrentis Procurement", href: "/product/procure" },
-  { label: "Avrentis Records", href: "/product/vault" },
-  { label: "Avrentis Audit", href: "/product/audit" },
+  { label: MODULES.pay.name, href: `/product/${MODULES.pay.slug}` },
+  { label: MODULES.procure.name, href: `/product/${MODULES.procure.slug}` },
+  { label: MODULES.vault.name, href: `/product/${MODULES.vault.slug}` },
+  { label: MODULES.audit.name, href: `/product/${MODULES.audit.slug}` },
 ];
 
 const PLATFORM_LINKS = [
@@ -55,7 +56,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: "10px",
   letterSpacing: "0.10em",
   textTransform: "uppercase",
-  color: "#C68B2F",
+  color: "var(--color-gold)",
   marginBottom: "14px",
 };
 
@@ -68,7 +69,7 @@ function FooterColumn({ label, links }: { label: string; links: { label: string;
           key={link.label}
           href={link.href}
           style={linkStyle}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "#C68B2F"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "var(--color-gold)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.color = "#64748b"; }}
         >
           {link.label}
@@ -84,7 +85,7 @@ export function Footer() {
       style={{
         backgroundColor: "#020617",
         padding: "64px 40px 32px",
-        borderTop: "0.5px solid rgba(198,139,47,0.1)",
+        borderTop: "0.5px solid rgba(var(--color-gold-rgb), 0.1)",
       }}
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
@@ -102,6 +103,18 @@ export function Footer() {
             <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
             <span
               style={{
+                fontFamily: "var(--font-mono)",
+                fontWeight: 500,
+                fontSize: "10px",
+                letterSpacing: "0.10em",
+                textTransform: "uppercase",
+                color: "var(--color-gold)",
+              }}
+            >
+              {BRAND.tagline}
+            </span>
+            <span
+              style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "12px",
@@ -110,7 +123,7 @@ export function Footer() {
                 maxWidth: "200px",
               }}
             >
-              Operational authority platform for organisations across Africa and beyond.
+              {BRAND.positioningStatement} for organisations across Africa and beyond.
             </span>
           </div>
 
@@ -141,7 +154,7 @@ export function Footer() {
               color: "#334155",
             }}
           >
-            &copy; 2026 AVRENTIS. All rights reserved.
+            &copy; 2026 {BRAND.legalEntity} All rights reserved.
           </span>
 
           <span
@@ -151,10 +164,10 @@ export function Footer() {
               fontSize: "9px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
             }}
           >
-            POWERED BY AVRENTIS
+            {BRAND.poweredBy}
           </span>
         </div>
       </div>

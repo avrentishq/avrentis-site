@@ -31,7 +31,7 @@ interface ApprovalRowProps {
 
 // Status presets mirroring STATUS_CONFIG in the real platform
 const STATUS = {
-  underReview: { label: "Under review", bg: "rgba(198,139,47,0.08)", text: "#92400e", dot: "#C68B2F" },
+  underReview: { label: "Under review", bg: "rgba(var(--color-gold-rgb), 0.08)", text: "#92400e", dot: "var(--color-gold)" },
   submitted: { label: "Submitted", bg: "rgba(180,83,9,0.08)", text: "#78350f", dot: "#b45309" },
   queried: { label: "Queried", bg: "rgba(91,33,182,0.08)", text: "#3B0764", dot: "#5B21B6" },
   approved: { label: "Approved", bg: "rgba(4,120,87,0.08)", text: "#047857", dot: "#047857" },
@@ -187,7 +187,7 @@ function ApprovalRow({
           width: "4px",
           height: "36px",
           borderRadius: "2px",
-          backgroundColor: "#C68B2F",
+          backgroundColor: "var(--color-gold)",
           flexShrink: 0,
         }}
       />
@@ -221,7 +221,7 @@ function ApprovalRow({
               fontSize: "10px",
               fontWeight: 500,
               backgroundColor: "#0f172a",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               borderRadius: "3px",
               padding: "1px 5px",
               letterSpacing: "0.04em",
@@ -389,7 +389,7 @@ export function Hero() {
               fontSize: "13px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               marginBottom: "20px",
             }}
           >
@@ -468,7 +468,7 @@ export function Hero() {
                 fontWeight: 600,
                 fontSize: "16px",
                 lineHeight: 1,
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 border: "none",
                 borderRadius: "6px",
@@ -482,10 +482,10 @@ export function Hero() {
                 transition: "background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#A87425";
+                e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#C68B2F";
+                e.currentTarget.style.backgroundColor = "var(--color-gold)";
               }}
             >
               Start your 14-day trial
@@ -563,7 +563,7 @@ export function Hero() {
               border: "1px solid rgba(255,255,255,0.10)",
               backgroundColor: "#F8FAFC",
               boxShadow:
-                "0 0 60px rgba(198,139,47,0.06), 0 30px 60px rgba(0,0,0,0.45)",
+                "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(0,0,0,0.45)",
               overflow: "hidden",
             }}
           >
@@ -660,9 +660,9 @@ export function Hero() {
                     fontFamily: "var(--font-sans)",
                     fontSize: "11px",
                     fontWeight: 500,
-                    color: "#C68B2F",
-                    backgroundColor: "rgba(198,139,47,0.08)",
-                    border: "1px solid rgba(198,139,47,0.2)",
+                    color: "var(--color-gold)",
+                    backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+                    border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                     borderRadius: "3px",
                     padding: "3px 8px",
                   }}

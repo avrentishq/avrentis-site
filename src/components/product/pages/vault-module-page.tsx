@@ -2,11 +2,12 @@
 
 import { Archive, Search, Tag, Share2 } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { MODULES } from "@/lib/brand";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
 
 const config: ModuleConfig = {
   slug: "vault",
-  eyebrow: "AVRENTIS VAULT",
+  eyebrow: MODULES.vault.name,
   headline: "Institutional memory, searchable.",
   description:
     "Every approved voucher, signed contract, audit report, and vendor onboarding document lives in one tagged, searchable repository. Replace the shared drive, the filing cabinet, and the \"who has the latest version?\" Slack thread with one source of truth.",
@@ -72,8 +73,8 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Audit", desc: "Every vault access + download logged to the audit trail" },
-    { slug: "pay", name: "Avrentis Pay", desc: "Every approved voucher lands in Records automatically" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Every vault access + download logged to the audit trail" },
+    { slug: "pay", name: "Avrentis Payables", desc: "Every approved voucher lands in Documents automatically" },
     { slug: "procure", name: "Avrentis Procurement", desc: "POs, vendor quotes, and delivery notes stored together" },
   ],
 };

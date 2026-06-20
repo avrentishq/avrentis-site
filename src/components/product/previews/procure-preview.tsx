@@ -24,7 +24,7 @@ export function ProcurePreview() {
             fontSize: "10px",
             fontWeight: 500,
             backgroundColor: "#0f172a",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
             letterSpacing: "0.04em",

@@ -10,11 +10,12 @@
 
 import { FileCheck, Workflow, Banknote, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { MODULES } from "@/lib/brand";
 import { PayPreview } from "@/components/product/previews/pay-preview";
 
 const config: ModuleConfig = {
   slug: "pay",
-  eyebrow: "AVRENTIS PAY",
+  eyebrow: MODULES.pay.name,
   headline: "Every payment, on record. End-to-end.",
   description:
     "From submission through finance validation to MD sanction, every payment voucher travels a defined approval chain. No email threads, no lost approvals — and a bank-ready PDF the moment the MD signs.",
@@ -81,7 +82,7 @@ const config: ModuleConfig = {
 
   relatedModules: [
     { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders on the same approval rails" },
-    { slug: "audit", name: "Avrentis Audit", desc: "The full compliance trail across every payment" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "The full compliance trail across every payment" },
     { slug: "connect", name: "Avrentis Integrations", desc: "Push payment events into your accounting system" },
   ],
 };

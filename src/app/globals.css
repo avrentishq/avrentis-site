@@ -7,12 +7,13 @@
   --color-navy-mid: #1e293b;
   --color-navy-light: #334155;
 
-  /* Gold */
-  --color-gold: #C68B2F;
-  --color-gold-hover: #A87425;
-  --color-gold-surface: #FDF8EF;
-  --color-gold-divider: rgba(198, 139, 47, 0.2);
-  --color-gold-ghost: rgba(198, 139, 47, 0.07);
+  /* Gold — canonical accent (matches avrentis-app BRAND_COLORS.gold). */
+  --color-gold: #c68b2f;
+  --color-gold-rgb: 198, 139, 47;
+  --color-gold-hover: #a87425;
+  --color-gold-surface: #fdf8ef;
+  --color-gold-divider: rgba(var(--color-gold-rgb), 0.2);
+  --color-gold-ghost: rgba(var(--color-gold-rgb), 0.07);
 
   /* Surfaces */
   --color-white: #ffffff;

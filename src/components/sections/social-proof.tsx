@@ -41,7 +41,7 @@ export function SocialProof() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -102,7 +102,7 @@ export function SocialProof() {
           transition={staggerDelay(3)}
           style={{
             backgroundColor: "#FFFFFF",
-            borderLeft: "4px solid #C68B2F",
+            borderLeft: "4px solid var(--color-gold)",
             borderRadius: "8px",
             padding: "32px",
             boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
@@ -114,7 +114,7 @@ export function SocialProof() {
             style={{
               fontFamily: "Georgia, serif",
               fontSize: "48px",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               lineHeight: 1,
               display: "block",
               marginBottom: "8px",
@@ -183,7 +183,7 @@ export function SocialProof() {
                 style={{
                   fontFamily: "Georgia, serif",
                   fontSize: "32px",
-                  color: "#C68B2F",
+                  color: "var(--color-gold)",
                   lineHeight: 1,
                   display: "block",
                   marginBottom: "8px",

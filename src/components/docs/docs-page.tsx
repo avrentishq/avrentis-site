@@ -13,6 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -120,10 +121,10 @@ const CATEGORIES: DocsCategory[] = [
     lede:
       "Deep-dive pages for every module — capabilities, use cases, plan availability, pairs-well-with.",
     items: [
-      { title: "Avrentis Pay", body: "Structured payment approvals.", href: "/product/pay", status: "live" },
+      { title: "Avrentis Payables", body: "Structured payment approvals.", href: "/product/pay", status: "live" },
       { title: "Avrentis Procurement", body: "Procurement on record.", href: "/product/procure", status: "live" },
-      { title: "Avrentis Records", body: "Institutional memory.", href: "/product/vault", status: "live" },
-      { title: "Avrentis Audit", body: "Compliance & accountability.", href: "/product/audit", status: "live" },
+      { title: "Avrentis Documents", body: "Institutional memory.", href: "/product/vault", status: "live" },
+      { title: "Avrentis Compliance", body: "Compliance & accountability.", href: "/product/audit", status: "live" },
       { title: "Avrentis HR", body: "Workforce structure.", href: "/product/people", status: "live" },
       { title: "Avrentis Integrations", body: "External systems.", href: "/product/connect", status: "live" },
     ],
@@ -237,9 +238,9 @@ function StatusPill({ status }: { status: ItemStatus }) {
         fontSize: "9px",
         letterSpacing: "0.08em",
         textTransform: "uppercase",
-        color: "#C68B2F",
-        backgroundColor: "rgba(198,139,47,0.10)",
-        border: "1px solid rgba(198,139,47,0.22)",
+        color: "var(--color-gold)",
+        backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
+        border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
         borderRadius: "3px",
         padding: "2px 6px",
         display: "inline-flex",
@@ -274,15 +275,15 @@ function Category({ category, index }: { category: DocsCategory; index: number }
                 width: "40px",
                 height: "40px",
                 borderRadius: "8px",
-                backgroundColor: "rgba(198,139,47,0.12)",
+                backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+              <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
             </div>
-            <span style={{ fontFamily: mono, fontSize: "11px", color: "#C68B2F", letterSpacing: "0.08em" }}>
+            <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold)", letterSpacing: "0.08em" }}>
               {String(index + 1).padStart(2, "0")} · {category.eyebrow}
             </span>
           </div>
@@ -328,7 +329,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
                     {item.body}
                   </p>
                 </div>
-                <ArrowRight size={14} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" style={{ flexShrink: 0 }} />
+                <ArrowRight size={14} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" style={{ flexShrink: 0 }} />
               </>
             );
             const style: React.CSSProperties = {
@@ -406,7 +407,7 @@ export function DocsHubPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
@@ -462,7 +463,7 @@ export function DocsHubPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -596,7 +597,7 @@ export function DocsHubPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "13px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 18px",

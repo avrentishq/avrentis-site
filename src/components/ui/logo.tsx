@@ -10,12 +10,12 @@
 //                    use: any dark surface (#0f172a, #020617, dark photography)
 //
 // transparent-navy → no container, navy mark
-//                    use: any light surface (#ffffff, #f1f5f9, #FDF8EF)
+//                    use: any light surface (#ffffff, #f1f5f9, var(--color-gold-surface))
 //
 // WORDMARK COLOURS
 //   on dark:  #ffffff (white)
 //   on light: #0f172a (navy)
-//   never:    gold (#C68B2F) on white navbar surface
+//   never:    gold (var(--color-gold)) on white navbar surface
 //
 // SIZES
 //   favicon:         16px  (document slot suppresses automatically)
@@ -114,15 +114,15 @@ function getColors(variant: MarkVariant) {
     case "primary":
       return {
         container: "#0f172a",
-        stroke: "#C68B2F",
-        slot: "#C68B2F",
+        stroke: "var(--color-gold)",
+        slot: "var(--color-gold)",
         slotOpacity: 0.35,
-        border: "rgba(198,139,47,0.2)",
+        border: "rgba(var(--color-gold-rgb), 0.2)",
         transparent: false,
       };
     case "reversed":
       return {
-        container: "#C68B2F",
+        container: "var(--color-gold)",
         stroke: "#0f172a",
         slot: "#0f172a",
         slotOpacity: 0.35,
@@ -132,8 +132,8 @@ function getColors(variant: MarkVariant) {
     case "transparent-gold":
       return {
         container: "none",
-        stroke: "#C68B2F",
-        slot: "#C68B2F",
+        stroke: "var(--color-gold)",
+        slot: "var(--color-gold)",
         slotOpacity: 0.35,
         border: "none",
         transparent: true,
@@ -170,7 +170,7 @@ export function AvrentisMark({
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="AVRENTIS"
+      aria-label="Avrentis"
       role="img"
     >
       {c.container !== "none" && (
@@ -238,7 +238,7 @@ interface AvrentisWordmarkProps {
 
 export function AvrentisWordmark({
   size = 15,
-  color = "#C68B2F",
+  color = "var(--color-gold)",
   className,
 }: AvrentisWordmarkProps) {
   return (
@@ -255,7 +255,7 @@ export function AvrentisWordmark({
         display: "inline-block",
       }}
     >
-      AVRENTIS
+      Avrentis
     </span>
   );
 }
@@ -296,7 +296,7 @@ export function AvrentisLogo({
             textTransform: "uppercase" as const,
           }}
         >
-          AVRENTIS
+          Avrentis
         </span>
       )}
     </div>

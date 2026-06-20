@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, Hanken_Grotesk } from "next/font/google";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { BRAND } from "@/lib/brand";
 import "./globals.css";
+
+const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
+const OG_DESCRIPTION =
+  "Replace scattered approvals with structured authority. One platform for decisions, approvals, and permanent operational records.";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -25,22 +30,20 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "AVRENTIS — Operational Authority Platform",
+  title: `${BRAND.name} — ${BRAND.positioningStatement}`,
   description:
     "Avrentis replaces scattered emails, paper trails, and manual processes with a single platform that structures how your organisation makes decisions, enforces authority, and builds a permanent operational record.",
   openGraph: {
-    title: "AVRENTIS — Every organisation runs on decisions. Avrentis makes sure they stick.",
-    description:
-      "Replace scattered approvals with structured authority. One platform for decisions, approvals, and permanent operational records.",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
     url: "https://avrentis.com",
-    siteName: "AVRENTIS",
+    siteName: BRAND.name,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "AVRENTIS — Every organisation runs on decisions. Avrentis makes sure they stick.",
-    description:
-      "Replace scattered approvals with structured authority. One platform for decisions, approvals, and permanent operational records.",
+    title: OG_TITLE,
+    description: OG_DESCRIPTION,
   },
   icons: {
     icon: "/favicon.ico",
@@ -51,9 +54,9 @@ export const metadata: Metadata = {
 const orgSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "AVRENTIS",
+  name: BRAND.name,
   url: "https://avrentis.com",
-  description: "Operational authority platform for organisations worldwide.",
+  description: `${BRAND.positioningStatement} for organisations worldwide.`,
   slogan: "Every organisation runs on decisions. Avrentis makes sure they stick.",
 };
 

@@ -15,6 +15,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { reissueTrialToken } from "../../actions";
 
 const sans = "var(--font-sans)";
@@ -35,7 +36,7 @@ export function VerifyResult({ status, message, token }: Props) {
     return (
       <Card
         variant="success"
-        icon={<Mail size={26} color="#C68B2F" strokeWidth={1.8} />}
+        icon={<Mail size={26} color={BRAND_COLORS.gold} strokeWidth={1.8} />}
         title="A new link is on its way."
         message={reissueState.message ?? "Check your inbox in the next minute."}
       />
@@ -46,7 +47,7 @@ export function VerifyResult({ status, message, token }: Props) {
     return (
       <Card
         variant="warning"
-        icon={<Clock size={26} color="#C68B2F" strokeWidth={1.8} />}
+        icon={<Clock size={26} color={BRAND_COLORS.gold} strokeWidth={1.8} />}
         title="This link has expired."
         message={message}
       >
@@ -85,7 +86,7 @@ export function VerifyResult({ status, message, token }: Props) {
             fontFamily: sans,
             fontSize: "13px",
             fontWeight: 600,
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             textDecoration: "none",
           }}
         >
@@ -110,7 +111,7 @@ export function VerifyResult({ status, message, token }: Props) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 600,
-          color: "#C68B2F",
+          color: "var(--color-gold)",
           textDecoration: "none",
         }}
       >
@@ -130,7 +131,7 @@ function ReissueButton() {
         fontFamily: sans,
         fontWeight: 600,
         fontSize: "13px",
-        backgroundColor: pending ? "#A87425" : "#C68B2F",
+        backgroundColor: pending ? "var(--color-gold-hover)" : "var(--color-gold)",
         color: "#0f172a",
         border: "none",
         borderRadius: "6px",
@@ -165,7 +166,7 @@ function Card({
     variant === "success"
       ? "rgba(4,120,87,0.10)"
       : variant === "warning"
-        ? "rgba(198,139,47,0.12)"
+        ? "rgba(var(--color-gold-rgb), 0.12)"
         : "rgba(185,28,28,0.10)";
   return (
     <div

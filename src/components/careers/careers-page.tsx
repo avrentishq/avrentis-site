@@ -19,6 +19,7 @@ import {
   Mail,
   ArrowRight,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -117,7 +118,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
@@ -170,7 +171,7 @@ export function CareersProductPage() {
               fontFamily: sans,
               fontWeight: 600,
               fontSize: "14px",
-              backgroundColor: "#C68B2F",
+              backgroundColor: "var(--color-gold)",
               color: "#0f172a",
               borderRadius: "6px",
               padding: "0 22px",
@@ -200,7 +201,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -254,13 +255,13 @@ export function CareersProductPage() {
                       width: "36px",
                       height: "36px",
                       borderRadius: "6px",
-                      backgroundColor: "rgba(198,139,47,0.12)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
                   <h3
                     style={{
@@ -298,7 +299,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -351,7 +352,7 @@ export function CareersProductPage() {
                   paddingLeft: "20px",
                   position: "relative",
                 }}
-                dangerouslySetInnerHTML={{ __html: `<span style="position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:#C68B2F;"></span>${line}` }}
+                dangerouslySetInnerHTML={{ __html: `<span style="position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:var(--color-gold);"></span>${line}` }}
               />
             ))}
           </ul>
@@ -373,7 +374,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -454,7 +455,7 @@ export function CareersProductPage() {
                     >
                       {role.title}
                     </h3>
-                    <p style={{ fontFamily: mono, fontSize: "11px", color: "#C68B2F", margin: "0 0 8px" }}>
+                    <p style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold)", margin: "0 0 8px" }}>
                       {role.location}
                     </p>
                     <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
@@ -467,7 +468,7 @@ export function CareersProductPage() {
                       fontFamily: sans,
                       fontSize: "13px",
                       fontWeight: 600,
-                      backgroundColor: "#C68B2F",
+                      backgroundColor: "var(--color-gold)",
                       color: "#0f172a",
                       borderRadius: "6px",
                       padding: "0 18px",
@@ -536,7 +537,7 @@ export function CareersProductPage() {
             }}
           >
             Send a short note through our{" "}
-            <Link href="/contact?intent=careers" style={{ color: "#C68B2F", textDecoration: "none" }}>
+            <Link href="/contact?intent=careers" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
               register-interest form
             </Link>{" "}
             telling us what you&rsquo;re drawn to, a link to something
@@ -557,7 +558,7 @@ export function CareersProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",

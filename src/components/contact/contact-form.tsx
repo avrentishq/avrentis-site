@@ -180,7 +180,7 @@ function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
         fontFamily: "var(--font-sans)",
         fontWeight: 600,
         fontSize: "14px",
-        backgroundColor: disabled ? "#A87425" : "#C68B2F",
+        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
         color: "#0f172a",
         border: "none",
         borderRadius: "6px",
@@ -284,7 +284,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
             fontWeight: 500,
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             textDecoration: "none",
             display: "inline-flex",
             alignItems: "center",
@@ -329,7 +329,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -383,7 +383,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
               fontSize: "13px",
               color: "#64748b",
               lineHeight: 1.7,
-              borderLeft: "2px solid rgba(198,139,47,0.28)",
+              borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
               paddingLeft: "14px",
             }}
           >
@@ -563,11 +563,11 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 required
                 checked={consentValue}
                 onChange={(e) => setConsentValue(e.target.checked)}
-                style={{ marginTop: "3px", accentColor: "#C68B2F", width: "16px", height: "16px" }}
+                style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
               />
               <span>
                 I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
-                <Link href="/privacy" style={{ color: "#C68B2F", textDecoration: "none" }}>
+                <Link href="/privacy" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
                 .{" "}

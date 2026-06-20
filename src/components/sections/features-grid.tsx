@@ -10,6 +10,7 @@ import {
   Users,
   Link2,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 
 type BadgeStatus = "available" | "coming_soon" | "partial" | "roadmap";
@@ -23,7 +24,7 @@ const MODULES: {
 }[] = [
   {
     icon: CreditCard,
-    name: "Avrentis Pay",
+    name: "Avrentis Payables",
     subtitle: "Payment & Approval Management",
     body: "Structure every payment decision your organisation makes. From submission through defined approval levels to final authorisation — tracked, documented, and permanently on record.",
     status: "available",
@@ -37,14 +38,14 @@ const MODULES: {
   },
   {
     icon: Archive,
-    name: "Avrentis Records",
+    name: "Avrentis Documents",
     subtitle: "Institutional Memory",
     body: "Replace physical and scattered digital filing with a centralised, searchable, role-controlled document system. Every approved record — instantly retrievable, permanently preserved.",
     status: "coming_soon",
   },
   {
     icon: ClipboardCheck,
-    name: "Avrentis Audit",
+    name: "Avrentis Compliance",
     subtitle: "Compliance & Accountability",
     body: "A complete, tamper-proof log of every action across your organisation. Meet compliance requirements and face every audit with confidence — not scrambling.",
     status: "available",
@@ -83,9 +84,9 @@ const BADGE_STYLES: Record<
   },
   partial: {
     label: "Partially available",
-    bg: "rgba(198,139,47,0.1)",
-    color: "#C68B2F",
-    border: "1px solid rgba(198,139,47,0.2)",
+    bg: "rgba(var(--color-gold-rgb), 0.1)",
+    color: "var(--color-gold)",
+    border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
   },
   roadmap: {
     label: "On the roadmap",
@@ -111,7 +112,7 @@ export function FeaturesGrid() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -192,7 +193,7 @@ export function FeaturesGrid() {
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow =
                     "0 8px 24px rgba(0,0,0,0.08)";
-                  e.currentTarget.style.borderLeft = "3px solid #C68B2F";
+                  e.currentTarget.style.borderLeft = "3px solid var(--color-gold)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.boxShadow = "none";
@@ -214,7 +215,7 @@ export function FeaturesGrid() {
                   <Icon
                     size={18}
                     strokeWidth={1.5}
-                    color="#C68B2F"
+                    color={BRAND_COLORS.gold}
                     aria-hidden="true"
                   />
                 </div>

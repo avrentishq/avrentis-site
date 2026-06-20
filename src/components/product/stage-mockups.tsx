@@ -26,7 +26,7 @@ export function SubmitStageMockup() {
               flex: 1,
               height: "3px",
               borderRadius: "2px",
-              backgroundColor: i <= 1 ? "#C68B2F" : "#e2e8f0",
+              backgroundColor: i <= 1 ? "var(--color-gold)" : "#e2e8f0",
             }}
           />
         ))}
@@ -217,7 +217,7 @@ export function ReviewStageMockup() {
             fontSize: "10px",
             fontWeight: 500,
             backgroundColor: "#0f172a",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
             letterSpacing: "0.04em",
@@ -234,13 +234,13 @@ export function ReviewStageMockup() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "rgba(198,139,47,0.08)",
+            backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
             color: "#92400e",
             borderRadius: "3px",
             padding: "2px 6px",
           }}
         >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#C68B2F" }} />
+          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)" }} />
           Under review
         </span>
         <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "#64748b" }}>
@@ -364,7 +364,7 @@ export function ReviewStageMockup() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#C68B2F",
+              backgroundColor: "var(--color-gold)",
               color: "#0f172a",
               border: "none",
               borderRadius: "3px",
@@ -412,7 +412,7 @@ export function SanctionStageMockup() {
             fontSize: "10px",
             fontWeight: 500,
             backgroundColor: "#0f172a",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
             letterSpacing: "0.04em",
@@ -429,13 +429,13 @@ export function SanctionStageMockup() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "rgba(198,139,47,0.08)",
+            backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
             color: "#92400e",
             borderRadius: "3px",
             padding: "2px 6px",
           }}
         >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#C68B2F" }} />
+          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)" }} />
           MD sanction pending
         </span>
       </div>
@@ -547,7 +547,7 @@ export function SanctionStageMockup() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "11px",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               fontWeight: 500,
             }}
           >

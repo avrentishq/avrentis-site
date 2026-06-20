@@ -31,7 +31,7 @@ function ChainCard({ node, index, baseDelay }: { node: ChainNode; index: number;
         flexDirection: "column",
         gap: "8px",
         background: "#1e293b",
-        border: node.active ? "0.5px solid rgba(198,139,47,0.4)" : "0.5px solid rgba(198,139,47,0.15)",
+        border: node.active ? "0.5px solid rgba(var(--color-gold-rgb), 0.4)" : "0.5px solid rgba(var(--color-gold-rgb), 0.15)",
         borderRadius: "8px",
         padding: "20px 16px",
       }}
@@ -53,7 +53,7 @@ export function ApprovalChain() {
         <motion.span
           variants={fadeUp} initial="hidden" whileInView="visible"
           viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
-          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.10em", textTransform: "uppercase", color: "#C68B2F", display: "block", marginBottom: "16px" }}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.10em", textTransform: "uppercase", color: "var(--color-gold)", display: "block", marginBottom: "16px" }}
         >
           THE STRUCTURE
         </motion.span>
@@ -81,7 +81,7 @@ export function ApprovalChain() {
             <motion.h3
               variants={fadeUp} initial="hidden" whileInView="visible"
               viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(3)}
-              style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#C68B2F", marginBottom: "16px" }}
+              style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-gold)", marginBottom: "16px" }}
             >
               Payment Voucher Chain
             </motion.h3>
@@ -97,7 +97,7 @@ export function ApprovalChain() {
             <motion.h3
               variants={fadeUp} initial="hidden" whileInView="visible"
               viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(3)}
-              style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "#C68B2F", marginBottom: "16px" }}
+              style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-gold)", marginBottom: "16px" }}
             >
               Purchase Order Chain
             </motion.h3>

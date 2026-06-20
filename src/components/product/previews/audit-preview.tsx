@@ -19,7 +19,7 @@ export function AuditPreview() {
       actor: "Chinedu Okafor · Finance",
       entity: "PV-2026-0184",
       when: "11:02",
-      actionBg: "rgba(198,139,47,0.08)",
+      actionBg: "rgba(var(--color-gold-rgb), 0.08)",
       actionColor: "#92400e",
     },
     {

@@ -2,11 +2,12 @@
 
 import { Webhook, KeyRound, Network, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { MODULES } from "@/lib/brand";
 import { ConnectPreview } from "@/components/product/previews/connect-preview";
 
 const config: ModuleConfig = {
   slug: "connect",
-  eyebrow: "AVRENTIS CONNECT",
+  eyebrow: MODULES.connect.name,
   headline: "Avrentis in your existing stack.",
   description:
     "The operational record Avrentis builds doesn't have to stay inside Avrentis. Push sanctioned vouchers into your accounting system, issued POs into your ERP, or role-changes into your HRIS — using typed webhooks, scoped API keys, and pre-built integrations.",
@@ -72,9 +73,9 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Pay", desc: "Push sanctioned payments straight into accounting" },
+    { slug: "pay", name: "Avrentis Payables", desc: "Push sanctioned payments straight into accounting" },
     { slug: "procure", name: "Avrentis Procurement", desc: "Sync issued POs into ERP and vendor portals" },
-    { slug: "audit", name: "Avrentis Audit", desc: "Stream audit events to your SIEM or log aggregator" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Stream audit events to your SIEM or log aggregator" },
   ],
 };
 

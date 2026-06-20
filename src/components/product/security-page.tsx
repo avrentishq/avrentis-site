@@ -26,6 +26,7 @@ import {
   Check,
   Mail,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -246,14 +247,14 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
               width: "44px",
               height: "44px",
               borderRadius: "8px",
-              backgroundColor: "rgba(198,139,47,0.12)",
+              backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Icon size={20} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+            <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <span
@@ -261,7 +262,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "12px",
                 fontWeight: 500,
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 letterSpacing: "0.06em",
               }}
             >
@@ -320,7 +321,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 lineHeight: 1.6,
               }}
             >
-              <Check size={16} strokeWidth={2} color="#C68B2F" style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
+              <Check size={16} strokeWidth={2} color={BRAND_COLORS.gold} style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
               <span>{b}</span>
             </li>
           ))}
@@ -432,7 +433,7 @@ export function SecurityProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
@@ -493,7 +494,7 @@ export function SecurityProductPage() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -542,7 +543,7 @@ export function SecurityProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -596,13 +597,13 @@ export function SecurityProductPage() {
                       width: "36px",
                       height: "36px",
                       borderRadius: "6px",
-                      backgroundColor: "rgba(198,139,47,0.12)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
                   <h3
                     style={{
@@ -667,7 +668,7 @@ export function SecurityProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -753,9 +754,9 @@ export function SecurityProductPage() {
                       fontSize: "10px",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      color: "#C68B2F",
-                      backgroundColor: "rgba(198,139,47,0.12)",
-                      border: "1px solid rgba(198,139,47,0.28)",
+                      color: "var(--color-gold)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      border: "1px solid rgba(var(--color-gold-rgb), 0.28)",
                       borderRadius: "3px",
                       padding: "3px 8px",
                     }}
@@ -801,7 +802,7 @@ export function SecurityProductPage() {
                 fontSize: "10px",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
               }}
             >
               RESPONSIBLE DISCLOSURE
@@ -810,7 +811,7 @@ export function SecurityProductPage() {
               Found a vulnerability?{" "}
               <Link
                 href="/contact?intent=disclosure"
-                style={{ color: "#C68B2F", textDecoration: "none" }}
+                style={{ color: "var(--color-gold)", textDecoration: "none" }}
               >
                 Submit a responsible-disclosure report
               </Link>
@@ -836,7 +837,7 @@ export function SecurityProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -900,7 +901,7 @@ export function SecurityProductPage() {
                   }}
                 >
                   {f.q}
-                  <span style={{ color: "#C68B2F", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
+                  <span style={{ color: "var(--color-gold)", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
                     +
                   </span>
                 </summary>
@@ -939,7 +940,7 @@ export function SecurityProductPage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <Mail size={18} color="#C68B2F" strokeWidth={1.8} aria-hidden="true" />
+              <Mail size={18} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
               <div>
                 <div style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 600, color: "#0f172a" }}>
                   Got a question we haven&rsquo;t answered?
@@ -955,7 +956,7 @@ export function SecurityProductPage() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
                 fontSize: "13px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 18px",

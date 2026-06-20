@@ -24,6 +24,7 @@ import {
   Check,
   Sparkles,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -166,7 +167,7 @@ export function CustomersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
@@ -222,7 +223,7 @@ export function CustomersProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -271,7 +272,7 @@ export function CustomersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -344,13 +345,13 @@ export function CustomersProductPage() {
                       width: "36px",
                       height: "36px",
                       borderRadius: "6px",
-                      backgroundColor: "rgba(198,139,47,0.12)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
                   <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "#0f172a", margin: "4px 0 0" }}>
                     {ind.title}
@@ -380,7 +381,7 @@ export function CustomersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -503,7 +504,7 @@ export function CustomersProductPage() {
                   fontSize: "12px",
                   letterSpacing: "0.10em",
                   textTransform: "uppercase",
-                  color: "#C68B2F",
+                  color: "var(--color-gold)",
                   display: "block",
                   marginBottom: "12px",
                 }}
@@ -545,7 +546,7 @@ export function CustomersProductPage() {
                   color: "#64748b",
                   lineHeight: 1.7,
                   margin: "0 0 24px",
-                  borderLeft: "2px solid rgba(198,139,47,0.28)",
+                  borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
                   paddingLeft: "14px",
                 }}
               >
@@ -560,7 +561,7 @@ export function CustomersProductPage() {
                   fontFamily: sans,
                   fontWeight: 600,
                   fontSize: "14px",
-                  backgroundColor: "#C68B2F",
+                  backgroundColor: "var(--color-gold)",
                   color: "#0f172a",
                   borderRadius: "6px",
                   padding: "0 22px",
@@ -607,7 +608,7 @@ export function CustomersProductPage() {
                       width: "28px",
                       height: "28px",
                       borderRadius: "50%",
-                      backgroundColor: "rgba(198,139,47,0.12)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -615,7 +616,7 @@ export function CustomersProductPage() {
                       marginTop: "2px",
                     }}
                   >
-                    <Check size={14} color="#C68B2F" strokeWidth={2.5} aria-hidden="true" />
+                    <Check size={14} color={BRAND_COLORS.gold} strokeWidth={2.5} aria-hidden="true" />
                   </div>
                   <div>
                     <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "15px", color: "#0f172a", margin: "0 0 4px" }}>
@@ -650,9 +651,9 @@ export function CustomersProductPage() {
               fontWeight: 600,
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
-              backgroundColor: "rgba(198,139,47,0.10)",
-              border: "1px solid rgba(198,139,47,0.22)",
+              color: "var(--color-gold)",
+              backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
+              border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
               borderRadius: "20px",
               padding: "6px 14px",
               marginBottom: "20px",
@@ -713,7 +714,7 @@ export function CustomersProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -768,7 +769,7 @@ export function CustomersProductPage() {
               alignItems: "flex-start",
             }}
           >
-            <Users size={20} color="#C68B2F" strokeWidth={1.8} aria-hidden="true" style={{ flexShrink: 0, marginTop: "4px" }} />
+            <Users size={20} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" style={{ flexShrink: 0, marginTop: "4px" }} />
             <div>
               <h3
                 style={{
@@ -792,7 +793,7 @@ export function CustomersProductPage() {
                   fontFamily: sans,
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "#C68B2F",
+                  color: "var(--color-gold)",
                   textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",

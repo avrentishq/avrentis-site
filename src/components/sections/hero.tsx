@@ -660,7 +660,7 @@ export function Hero() {
                     fontFamily: "var(--font-sans)",
                     fontSize: "11px",
                     fontWeight: 500,
-                    color: "var(--color-gold)",
+                    color: "var(--color-gold-on-light)",
                     backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
                     border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                     borderRadius: "3px",

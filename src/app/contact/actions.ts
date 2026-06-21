@@ -109,6 +109,15 @@ export async function submitContact(
   }
   if (!consent) fieldErrors.consent = "We need your consent to process this enquiry.";
 
+  // Length bounds — fields are HTML-escaped below, but cap them so the email
+  // payload can't be inflated with megabytes of input.
+  if (name.length > 200) fieldErrors.name = "That name is too long (200 character max).";
+  if (email.length > 320) fieldErrors.email = "That email is too long.";
+  if (organisation.length > 200)
+    fieldErrors.organisation = "That organisation name is too long (200 character max).";
+  if (message.length > 5000)
+    fieldErrors.message = "That message is too long (5000 character max).";
+
   if (Object.keys(fieldErrors).length > 0) {
     return { status: "error", fieldErrors, message: "Please fix the highlighted fields." };
   }

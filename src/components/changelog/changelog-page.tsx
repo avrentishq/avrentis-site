@@ -31,7 +31,7 @@ interface Entry {
 }
 
 const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border: string }> = {
-  feature: { label: "FEATURE", color: "var(--color-gold)", bg: "rgba(var(--color-gold-rgb), 0.10)", border: "rgba(var(--color-gold-rgb), 0.28)" },
+  feature: { label: "FEATURE", color: "var(--color-gold-on-light)", bg: "rgba(var(--color-gold-rgb), 0.10)", border: "rgba(var(--color-gold-rgb), 0.28)" },
   improvement: {
     label: "IMPROVEMENT",
     color: "#0369a1",
@@ -210,7 +210,7 @@ export function ChangelogProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -343,7 +343,7 @@ export function ChangelogProductPage() {
                     fontFamily: sans,
                     fontSize: "13px",
                     fontWeight: 600,
-                    color: "var(--color-gold)",
+                    color: "var(--color-gold-on-light)",
                     textDecoration: "none",
                     display: "inline-flex",
                     alignItems: "center",

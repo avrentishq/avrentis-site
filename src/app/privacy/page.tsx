@@ -277,7 +277,7 @@ export default function PrivacyPage() {
           <strong>Note.</strong> This policy reflects our current practices. It is not legal advice. Organisations
           with bespoke compliance requirements (regulated industries, specific residency mandates, additional
           controller-processor clauses) should reach out through{" "}
-          <Link href="/contact?intent=privacy" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+          <Link href="/contact?intent=privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
             our privacy enquiry form
           </Link>{" "}
           for a tailored Data Processing Agreement.

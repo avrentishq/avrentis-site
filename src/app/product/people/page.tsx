@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { PeopleModulePage } from "@/components/product/pages/people-module-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Avrentis HR — HR approvals on the same rails",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function ProductPeoplePage() {
+  if (isLaunchHidden("/product/people")) notFound();
   return <PeopleModulePage />;
 }

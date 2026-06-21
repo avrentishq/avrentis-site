@@ -9,7 +9,7 @@ import {
   Link2,
   type LucideIcon,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, isModulePublic, type ModuleKey } from "@/lib/brand";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -17,13 +17,13 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import type { ModuleStatus } from "@/components/product/module-layout";
 
 export const metadata: Metadata = {
-  title: "The Avrentis platform — six modules, one system of record",
+  title: "The Avrentis platform — five modules, one system of record",
   description:
-    "Avrentis structures how your organisation makes decisions across payments, procurement, documents, compliance, people, and integrations. Six modules, one approval engine, one permanent record.",
+    "Avrentis structures how your organisation makes decisions across payments, procurement, documents, compliance, and integrations. Five modules, one approval engine, one permanent record.",
   openGraph: {
-    title: "The Avrentis platform — six modules, one system of record",
+    title: "The Avrentis platform — five modules, one system of record",
     description:
-      "Six modules share one approval engine and one permanent record. Payables, Procurement, Documents, Compliance, HR, Integrations.",
+      "Five modules share one approval engine and one permanent record. Payables, Procurement, Documents, Compliance, Integrations.",
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -64,7 +64,7 @@ const MODULES: Module[] = [
     body:
       "Every approved document centrally stored, tagged, and instantly retrievable. Replace scattered drives and physical files with one searchable repository.",
     icon: Archive,
-    status: "coming_soon",
+    status: "available",
   },
   {
     slug: "audit",
@@ -91,7 +91,7 @@ const MODULES: Module[] = [
     body:
       "Push Avrentis events into your accounting, HR, or data-warehouse stack via webhooks and a typed API. Your operational record flowing where it needs to go.",
     icon: Link2,
-    status: "partial",
+    status: "available",
   },
 ];
 
@@ -100,8 +100,8 @@ const STATUS_BADGE: Record<
   { label: string; bg: string; color: string }
 > = {
   available: { label: "Available", bg: "rgba(39,174,96,0.12)", color: "#047857" },
-  coming_soon: { label: "Coming soon", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold)" },
-  partial: { label: "In beta", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold)" },
+  coming_soon: { label: "Coming soon", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
+  partial: { label: "In beta", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
   roadmap: { label: "Roadmap", bg: "rgba(148,163,184,0.12)", color: "#64748b" },
 };
 
@@ -169,7 +169,7 @@ export default function ProductOverviewPage() {
             }}
             className="lg:!text-[52px]"
           >
-            Six modules. One approval engine. One permanent record.
+            Five modules. One approval engine. One permanent record.
           </h1>
           <p
             style={{
@@ -237,7 +237,7 @@ export default function ProductOverviewPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -264,7 +264,7 @@ export default function ProductOverviewPage() {
             style={{ display: "grid", gap: "20px" }}
             className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
           >
-            {MODULES.map((mod) => {
+            {MODULES.filter((mod) => isModulePublic(mod.slug as ModuleKey)).map((mod) => {
               const Icon = mod.icon;
               const badge = STATUS_BADGE[mod.status];
               return (
@@ -331,7 +331,7 @@ export default function ProductOverviewPage() {
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontSize: "12px",
-                        color: "var(--color-gold)",
+                        color: "var(--color-gold-on-light)",
                         margin: 0,
                         fontWeight: 500,
                       }}
@@ -381,7 +381,7 @@ export default function ProductOverviewPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -444,7 +444,7 @@ export default function ProductOverviewPage() {
                     fontSize: "12px",
                     fontWeight: 600,
                     letterSpacing: "0.08em",
-                    color: "var(--color-gold)",
+                    color: "var(--color-gold-on-light)",
                   }}
                 >
                   {s.step}

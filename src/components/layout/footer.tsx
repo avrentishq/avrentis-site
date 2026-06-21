@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND, MODULES } from "@/lib/brand";
+import { BRAND, MODULES, moduleName, publicModuleKeys } from "@/lib/brand";
+import { isLaunchVisible } from "@/lib/launch";
 
-const PRODUCT_LINKS = [
-  { label: MODULES.pay.name, href: `/product/${MODULES.pay.slug}` },
-  { label: MODULES.procure.name, href: `/product/${MODULES.procure.slug}` },
-  { label: MODULES.vault.name, href: `/product/${MODULES.vault.slug}` },
-  { label: MODULES.audit.name, href: `/product/${MODULES.audit.slug}` },
-];
+// Derived from the brand SSOT — excludes internal modules (HR) automatically.
+const PRODUCT_LINKS = publicModuleKeys().map((key) => ({
+  label: moduleName(key),
+  href: `/product/${MODULES[key].slug}`,
+}));
 
 const PLATFORM_LINKS = [
   { label: "How it works", href: "/product/how-it-works" },
@@ -38,6 +38,17 @@ const START_LINKS = [
   { label: "Book demo", href: "/contact?intent=demo" },
   { label: "Login", href: "https://app.avrentis.com/login" },
 ];
+
+// Hidden-at-launch links are filtered out; fully-empty columns are dropped.
+const FOOTER_COLUMNS = [
+  { label: "PRODUCT", links: PRODUCT_LINKS },
+  { label: "PLATFORM", links: PLATFORM_LINKS },
+  { label: "RESOURCES", links: RESOURCES_LINKS },
+  { label: "COMPANY", links: COMPANY_LINKS },
+  { label: "GET STARTED", links: START_LINKS },
+]
+  .map((col) => ({ ...col, links: col.links.filter((link) => isLaunchVisible(link.href)) }))
+  .filter((col) => col.links.length > 0);
 
 const linkStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
@@ -127,11 +138,9 @@ export function Footer() {
             </span>
           </div>
 
-          <FooterColumn label="PRODUCT" links={PRODUCT_LINKS} />
-          <FooterColumn label="PLATFORM" links={PLATFORM_LINKS} />
-          <FooterColumn label="RESOURCES" links={RESOURCES_LINKS} />
-          <FooterColumn label="COMPANY" links={COMPANY_LINKS} />
-          <FooterColumn label="GET STARTED" links={START_LINKS} />
+          {FOOTER_COLUMNS.map((col) => (
+            <FooterColumn key={col.label} label={col.label} links={col.links} />
+          ))}
         </div>
 
         {/* Bottom bar */}

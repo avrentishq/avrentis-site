@@ -1,13 +1,12 @@
 {
   "planOrder": ["starter", "business", "enterprise"],
-  "moduleOrder": ["pay", "procure", "vault", "audit", "people", "connect"],
+  "moduleOrder": ["pay", "procure", "vault", "audit", "connect"],
   "addOns": [],
   "modules": {
-    "pay": { "name": "Avrentis Pay", "description": "Structured payment approvals" },
+    "pay": { "name": "Avrentis Payables", "description": "Structured payment approvals" },
     "procure": { "name": "Avrentis Procurement", "description": "Procurement on record" },
-    "vault": { "name": "Avrentis Records", "description": "Institutional memory" },
-    "audit": { "name": "Avrentis Audit", "description": "Compliance & accountability" },
-    "people": { "name": "Avrentis HR", "description": "Workforce structure" },
+    "vault": { "name": "Avrentis Documents", "description": "Institutional memory" },
+    "audit": { "name": "Avrentis Compliance", "description": "Compliance & accountability" },
     "connect": { "name": "Avrentis Integrations", "description": "External systems" }
   },
   "featureLabels": {
@@ -30,19 +29,19 @@
       "name": "Starter",
       "description": "For small teams ready to go paperless",
       "pricing": [
-        { "currency": "USD", "monthly": 99, "monthlyLabel": null, "annualPerMonth": 79, "annualTotal": 948, "annualLabel": null, "taxRate": null, "taxLabel": null },
-        { "currency": "NGN", "monthly": 150000, "monthlyLabel": null, "annualPerMonth": 127500, "annualTotal": 1530000, "annualLabel": null, "taxRate": null, "taxLabel": null }
+        { "currency": "NGN", "monthly": 300000, "monthlyLabel": "₦300,000/month", "annualPerMonth": 250000, "annualTotal": 3000000, "annualLabel": "₦3,000,000/year", "taxRate": null, "taxLabel": null },
+        { "currency": "USD", "monthly": 215, "monthlyLabel": "$215/month", "annualPerMonth": 179, "annualTotal": 2150, "annualLabel": "$2,150/year", "taxRate": null, "taxLabel": null }
       ],
       "limits": { "maxUsers": 10, "maxDocumentsPerMonth": null, "maxStorageBytes": 10737418240, "documentRetentionDays": 365 },
       "modules": [
-        { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
+        { "key": "pay", "name": "Avrentis Payables", "description": "Structured payment approvals" },
         { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" }
       ],
       "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": false },
       "highlights": [
         "Up to 10 users",
         "Unlimited documents",
-        "Pay + Procurement modules",
+        "Payables + Procurement modules",
         "Bank-ready PDF exports",
         "WhatsApp & email alerts",
         "10 GB storage · 1 year retention"
@@ -53,20 +52,20 @@
       "name": "Business",
       "description": "For growing organisations that need full operational structure",
       "pricing": [
-        { "currency": "USD", "monthly": 249, "monthlyLabel": null, "annualPerMonth": 199, "annualTotal": 2388, "annualLabel": null, "taxRate": null, "taxLabel": null },
-        { "currency": "NGN", "monthly": 380000, "monthlyLabel": null, "annualPerMonth": 323000, "annualTotal": 3876000, "annualLabel": null, "taxRate": null, "taxLabel": null }
+        { "currency": "NGN", "monthly": 700000, "monthlyLabel": "₦700,000/month", "annualPerMonth": 583333, "annualTotal": 7000000, "annualLabel": "₦7,000,000/year", "taxRate": null, "taxLabel": null },
+        { "currency": "USD", "monthly": 499, "monthlyLabel": "$499/month", "annualPerMonth": 416, "annualTotal": 4990, "annualLabel": "$4,990/year", "taxRate": null, "taxLabel": null }
       ],
       "limits": { "maxUsers": 50, "maxDocumentsPerMonth": null, "maxStorageBytes": 107374182400, "documentRetentionDays": 1095 },
       "modules": [
-        { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
+        { "key": "pay", "name": "Avrentis Payables", "description": "Structured payment approvals" },
         { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" },
-        { "key": "vault", "name": "Avrentis Records", "description": "Institutional memory" },
-        { "key": "audit", "name": "Avrentis Audit", "description": "Compliance & accountability" }
+        { "key": "vault", "name": "Avrentis Documents", "description": "Institutional memory" },
+        { "key": "audit", "name": "Avrentis Compliance", "description": "Compliance & accountability" }
       ],
       "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "prioritySupport": true },
       "highlights": [
         "Up to 50 users",
-        "Pay + Procurement + Records + Audit",
+        "Payables + Procurement + Documents + Compliance",
         "Full compliance audit trail",
         "Custom approval chains & branding",
         "Analytics, recurring templates, delegation",
@@ -79,23 +78,22 @@
       "name": "Enterprise",
       "description": "For large organisations with complex operational requirements",
       "pricing": [
-        { "currency": "USD", "monthly": 499, "monthlyLabel": null, "annualPerMonth": 424, "annualTotal": 5088, "annualLabel": null, "taxRate": null, "taxLabel": null },
-        { "currency": "NGN", "monthly": 750000, "monthlyLabel": null, "annualPerMonth": 637500, "annualTotal": 7650000, "annualLabel": null, "taxRate": null, "taxLabel": null }
+        { "currency": "NGN", "monthly": 1500000, "monthlyLabel": "From ₦1,500,000/month", "annualPerMonth": null, "annualTotal": null, "annualLabel": null, "taxRate": null, "taxLabel": null },
+        { "currency": "USD", "monthly": 1075, "monthlyLabel": "From $1,075/month", "annualPerMonth": null, "annualTotal": null, "annualLabel": null, "taxRate": null, "taxLabel": null }
       ],
       "limits": { "maxUsers": 9999, "maxDocumentsPerMonth": null, "maxStorageBytes": null, "documentRetentionDays": null },
       "modules": [
-        { "key": "pay", "name": "Avrentis Pay", "description": "Structured payment approvals" },
+        { "key": "pay", "name": "Avrentis Payables", "description": "Structured payment approvals" },
         { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" },
-        { "key": "vault", "name": "Avrentis Records", "description": "Institutional memory" },
-        { "key": "audit", "name": "Avrentis Audit", "description": "Compliance & accountability" },
-        { "key": "people", "name": "Avrentis HR", "description": "Workforce structure" },
+        { "key": "vault", "name": "Avrentis Documents", "description": "Institutional memory" },
+        { "key": "audit", "name": "Avrentis Compliance", "description": "Compliance & accountability" },
         { "key": "connect", "name": "Avrentis Integrations", "description": "External systems" }
       ],
       "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "customWorkflows": true, "apiAccess": true, "dedicatedSupport": true, "externalIntegrations": true },
       "highlights": [
         "Unlimited users & companies",
         "Unlimited storage & retention",
-        "All 6 modules included",
+        "All 5 modules included",
         "Multi-company group & admin dashboard",
         "API access for custom integrations",
         "Dedicated onboarding & priority support"

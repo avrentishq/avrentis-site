@@ -488,6 +488,8 @@ export function Navbar() {
             className="md:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
+            aria-expanded={mobileOpen}
+            aria-haspopup="dialog"
             style={{
               background: "none",
               border: "none",

@@ -379,7 +379,7 @@ export function Pricing({ data }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: "#64748b",
+                    color: isFeatured ? "#94a3b8" : "#64748b",
                     lineHeight: 1.5,
                     margin: "0 0 20px",
                   }}
@@ -417,7 +417,7 @@ export function Pricing({ data }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "14px",
-                        color: "#64748b",
+                        color: isFeatured ? "#94a3b8" : "#64748b",
                       }}
                     >
                       /month
@@ -513,7 +513,7 @@ export function Pricing({ data }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "13px",
-                        color: "#64748b",
+                        color: isFeatured ? "#94a3b8" : "#64748b",
                         lineHeight: 1.5,
                         marginBottom: "10px",
                         display: "flex",

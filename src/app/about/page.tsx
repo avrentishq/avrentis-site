@@ -114,7 +114,7 @@ export default function AboutPage() {
 
             <p
               style={{
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 fontSize: 10,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -152,7 +152,7 @@ export default function AboutPage() {
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <p
               style={{
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -220,7 +220,7 @@ export default function AboutPage() {
           >
             <p
               style={{
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -261,7 +261,7 @@ export default function AboutPage() {
               style={{
                 display: "inline-block",
                 border: "1px solid var(--color-gold)",
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 backgroundColor: "transparent",
                 padding: "10px 24px",
                 fontSize: 13,

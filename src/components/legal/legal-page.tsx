@@ -52,7 +52,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -132,7 +132,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 fontSize: "11px",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 display: "block",
                 marginBottom: "12px",
               }}
@@ -202,7 +202,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                       fontFamily: "'IBM Plex Mono', monospace",
                       fontSize: "12px",
                       letterSpacing: "0.06em",
-                      color: "var(--color-gold)",
+                      color: "var(--color-gold-on-light)",
                       fontWeight: 500,
                     }}
                   >
@@ -256,7 +256,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
           .legal-prose p:last-child { margin-bottom: 0; }
           .legal-prose ul { margin: 0 0 14px; padding-left: 20px; list-style: disc; }
           .legal-prose ul li { margin-bottom: 6px; }
-          .legal-prose a { color: var(--color-gold); text-decoration: none; }
+          .legal-prose a { color: var(--color-gold-on-light); text-decoration: none; }
           .legal-prose a:hover { text-decoration: underline; }
           .legal-prose strong { color: #0f172a; font-weight: 600; }
           .legal-prose code {

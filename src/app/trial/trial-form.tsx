@@ -265,7 +265,7 @@ export function TrialForm() {
             fontSize: "12px",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             display: "block",
             marginBottom: "16px",
           }}
@@ -560,7 +560,7 @@ export function TrialForm() {
             <span>
               I agree that Avrentis may use the details above to provision and run my trial
               workspace, in line with the{" "}
-              <Link href="/privacy" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+              <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                 privacy policy
               </Link>
               .{" "}
@@ -794,7 +794,7 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 500,
-          color: "var(--color-gold)",
+          color: "var(--color-gold-on-light)",
           textDecoration: "none",
           display: "inline-flex",
           alignItems: "center",
@@ -868,7 +868,7 @@ function HardBlockedCard({ message }: { message: string }) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 600,
-          color: "var(--color-gold)",
+          color: "var(--color-gold-on-light)",
           textDecoration: "none",
         }}
       >

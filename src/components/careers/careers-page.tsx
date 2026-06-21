@@ -201,7 +201,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -299,7 +299,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -374,7 +374,7 @@ export function CareersProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -455,7 +455,7 @@ export function CareersProductPage() {
                     >
                       {role.title}
                     </h3>
-                    <p style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold)", margin: "0 0 8px" }}>
+                    <p style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold-on-light)", margin: "0 0 8px" }}>
                       {role.location}
                     </p>
                     <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>

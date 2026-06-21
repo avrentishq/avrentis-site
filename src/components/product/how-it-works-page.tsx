@@ -184,7 +184,7 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "12px",
                 fontWeight: 500,
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
               }}
             >
@@ -659,7 +659,7 @@ export function HowItWorksProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -768,7 +768,7 @@ export function HowItWorksProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "14px",
             }}

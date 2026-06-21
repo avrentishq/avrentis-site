@@ -10,8 +10,8 @@ const config: ModuleConfig = {
   eyebrow: MODULES.connect.name,
   headline: "Avrentis in your existing stack.",
   description:
-    "The operational record Avrentis builds doesn't have to stay inside Avrentis. Push sanctioned vouchers into your accounting system, issued POs into your ERP, or role-changes into your HRIS — using typed webhooks, scoped API keys, and pre-built integrations.",
-  status: "partial",
+    "The operational record Avrentis builds doesn't have to stay inside Avrentis. Push sanctioned vouchers into your accounting system, issued POs into your ERP, or role-changes into your HRIS — using typed webhooks, scoped API keys, and a documented REST API.",
+  status: "available",
   previewUrl: "app.avrentis.com / settings / integrations",
   preview: <ConnectPreview />,
 
@@ -20,7 +20,7 @@ const config: ModuleConfig = {
       icon: Webhook,
       title: "Typed webhooks for every lifecycle event",
       body:
-        "Subscribe to voucher.sanctioned, po.issued, user.role_changed, and 20+ other events. Each payload is versioned and typed; deliveries are signed with HMAC and retried on failure with exponential backoff.",
+        "Subscribe to voucher.sanctioned, po.issued, user.role_changed, and more lifecycle events. Each payload is versioned and typed; deliveries are signed with HMAC and retried on failure with exponential backoff.",
     },
     {
       icon: KeyRound,
@@ -30,9 +30,9 @@ const config: ModuleConfig = {
     },
     {
       icon: Network,
-      title: "Pre-built integrations where it matters",
+      title: "Build any integration on a typed API",
       body:
-        "QuickBooks, Xero, SAP B1, and Oracle NetSuite adapters for accounting. Sage HRMS and BambooHR for HR. Slack and Microsoft Teams for approvals. More ship with each quarterly release.",
+        "A documented REST API and typed webhooks let you connect Avrentis to your accounting system, ERP, or HRIS. SSO via SAML / OIDC and automated user provisioning via SCIM are built in.",
     },
     {
       icon: ShieldCheck,
@@ -46,7 +46,7 @@ const config: ModuleConfig = {
     {
       title: "Reconcile Avrentis payments into your accounting system automatically",
       body:
-        "When the MD sanctions a voucher, the Integrations module posts it to QuickBooks as an approved bill — with vendor, amount, reference, and department pre-mapped. No double-entry, no month-end reconciliation gap.",
+        "When the MD sanctions a voucher, the Integrations module posts it to your accounting system as an approved bill via webhook — with vendor, amount, reference, and department pre-mapped. No double-entry, no month-end reconciliation gap.",
     },
     {
       title: "Sync Avrentis roles into your identity provider",

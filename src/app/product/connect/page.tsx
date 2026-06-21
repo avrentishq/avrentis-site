@@ -4,11 +4,11 @@ import { ConnectModulePage } from "@/components/product/pages/connect-module-pag
 export const metadata: Metadata = {
   title: "Avrentis Integrations — Avrentis in your existing stack",
   description:
-    "Webhooks, scoped API keys, and pre-built integrations with QuickBooks, SAP, Okta, and more. Push Avrentis events into the systems your organisation already runs.",
+    "Typed webhooks, scoped API keys, a documented REST API, and SSO/SCIM. Push Avrentis events into the systems your organisation already runs.",
   openGraph: {
     title: "Avrentis Integrations — Avrentis in your existing stack",
     description:
-      "Typed webhooks, HMAC-signed delivery, pre-built adapters for accounting and HR. Your operational record flowing where it needs to go.",
+      "Typed webhooks, HMAC-signed delivery, scoped API keys, and SSO/SCIM. Your operational record flowing where it needs to go.",
     url: "https://avrentis.com/product/connect",
     type: "website",
   },

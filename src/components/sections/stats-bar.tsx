@@ -4,11 +4,12 @@ import { motion } from "framer-motion";
 import { fadeUp, staggerDelay } from "@/lib/animations";
 import { CountUp } from "@/components/ui/count-up";
 
+// Verifiable architectural facts — not fabricated customer metrics.
 const METRICS = [
-  { value: "100%", label: "Approval chain compliance" },
-  { value: "0", label: "Lost approvals since launch" },
-  { value: "< 2 min", label: "Average approval notification time" },
-  { value: "100%", label: "Audit trail completeness" },
+  { value: "100%", label: "Of actions on the immutable record" },
+  { value: "10", label: "Roles in the access-control matrix" },
+  { value: "4", label: "Currencies for local & international payables" },
+  { value: "256-bit", label: "Encryption at rest" },
 ];
 
 export function StatsBar() {

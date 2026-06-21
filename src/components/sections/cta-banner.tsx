@@ -10,7 +10,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
   { icon: Lock, label: "Enterprise-grade security" },
-  { icon: Zap, label: "99.9% uptime SLA" },
+  { icon: Zap, label: "Immutable audit trail" },
   { icon: Check, label: "Data protection compliant" },
 ];
 

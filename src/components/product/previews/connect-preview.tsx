@@ -5,9 +5,9 @@
 
 export function ConnectPreview() {
   const apiKeys = [
-    { name: "SAP integration (prod)", status: "Active", bg: "rgba(4,120,87,0.08)", color: "#047857", used: "2m ago" },
-    { name: "QuickBooks sync", status: "Active", bg: "rgba(4,120,87,0.08)", color: "#047857", used: "18m ago" },
-    { name: "Legacy Oracle bridge", status: "Rotated", bg: "rgba(148,163,184,0.12)", color: "#64748b", used: "Never" },
+    { name: "Accounting sync (prod)", status: "Active", bg: "rgba(4,120,87,0.08)", color: "#047857", used: "2m ago" },
+    { name: "Data warehouse export", status: "Active", bg: "rgba(4,120,87,0.08)", color: "#047857", used: "18m ago" },
+    { name: "Legacy bridge", status: "Rotated", bg: "rgba(148,163,184,0.12)", color: "#64748b", used: "Never" },
   ];
 
   const webhooks = [

@@ -10,59 +10,63 @@ import {
   Users,
   Link2,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, moduleName, isModulePublic, type ModuleKey } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 
 type BadgeStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
-const MODULES: {
+// Marketing content per module. The customer-facing NAME is sourced from the
+// brand SSOT (`moduleName`); availability is driven by `isModulePublic` so a
+// module held at internal maturity in the app (HR) never renders here.
+const MODULE_CARDS: {
+  key: ModuleKey;
   icon: LucideIcon;
-  name: string;
   subtitle: string;
   body: string;
   status: BadgeStatus;
 }[] = [
   {
+    key: "pay",
     icon: CreditCard,
-    name: "Avrentis Payables",
     subtitle: "Payment & Approval Management",
     body: "Structure every payment decision your organisation makes. From submission through defined approval levels to final authorisation — tracked, documented, and permanently on record.",
     status: "available",
   },
   {
+    key: "procure",
     icon: ShoppingCart,
-    name: "Avrentis Procurement",
     subtitle: "Purchase Order Management",
     body: "Bring structure and visibility to every procurement action. Generate, approve, and track purchase orders without email chains, manual paperwork, or process gaps.",
     status: "available",
   },
   {
+    key: "vault",
     icon: Archive,
-    name: "Avrentis Documents",
     subtitle: "Institutional Memory",
     body: "Replace physical and scattered digital filing with a centralised, searchable, role-controlled document system. Every approved record — instantly retrievable, permanently preserved.",
-    status: "coming_soon",
+    status: "available",
   },
   {
+    key: "audit",
     icon: ClipboardCheck,
-    name: "Avrentis Compliance",
     subtitle: "Compliance & Accountability",
     body: "A complete, tamper-proof log of every action across your organisation. Meet compliance requirements and face every audit with confidence — not scrambling.",
     status: "available",
   },
   {
+    // HR is held at internal maturity in the app → filtered out by isModulePublic.
+    key: "people",
     icon: Users,
-    name: "Avrentis HR",
     subtitle: "HR Approvals & Workforce Management",
     body: "Extend operational structure to your workforce processes. Leave approvals, onboarding, policy acknowledgements — all structured, tracked, and on record.",
-    status: "roadmap",
+    status: "available",
   },
   {
+    key: "connect",
     icon: Link2,
-    name: "Avrentis Integrations",
     subtitle: "External Systems",
     body: "Connect Avrentis to the systems your organisation already uses. Your structured operational data flowing where it needs to go — without manual intervention.",
-    status: "partial",
+    status: "available",
   },
 ];
 
@@ -170,12 +174,12 @@ export function FeaturesGrid() {
           }}
           className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
         >
-          {MODULES.map((mod, i) => {
+          {MODULE_CARDS.filter((mod) => isModulePublic(mod.key)).map((mod, i) => {
             const Icon = mod.icon;
             const badge = BADGE_STYLES[mod.status];
             return (
               <motion.div
-                key={mod.name}
+                key={mod.key}
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
@@ -228,7 +232,7 @@ export function FeaturesGrid() {
                     margin: "0 0 4px",
                   }}
                 >
-                  {mod.name}
+                  {moduleName(mod.key)}
                 </h3>
                 <span
                   style={{

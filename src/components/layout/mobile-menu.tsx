@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, moduleName, publicModuleKeys, MODULES } from "@/lib/brand";
 import { AvrentisLogo } from "@/components/ui/logo";
 
 interface MobileMenuProps {
@@ -14,20 +14,16 @@ interface MobileMenuProps {
   pathname: string;
 }
 
-const PRODUCT_MODULES = [
-  { name: "Avrentis Payables", href: "/product/pay" },
-  { name: "Avrentis Procurement", href: "/product/procure" },
-  { name: "Avrentis Documents", href: "/product/vault" },
-  { name: "Avrentis Compliance", href: "/product/audit" },
-  { name: "Avrentis HR", href: "/product/people" },
-  { name: "Avrentis Integrations", href: "/product/connect" },
-];
+// Derived from the brand SSOT — excludes internal modules (HR) automatically.
+const PRODUCT_MODULES = publicModuleKeys().map((key) => ({
+  name: moduleName(key),
+  href: `/product/${MODULES[key].slug}`,
+}));
 
 const PRODUCT_PLATFORM = [
   { name: "How it works", href: "/product/how-it-works" },
   { name: "Security", href: "/product/security" },
   { name: "Trust centre", href: "/trust" },
-  { name: "Integrations catalogue", href: "/product/integrations" },
 ];
 
 const FONT = "'IBM Plex Sans', system-ui, sans-serif";

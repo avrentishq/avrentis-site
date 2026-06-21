@@ -493,6 +493,19 @@ export function Pricing({ data }: PricingProps) {
                     flex: 1,
                   }}
                 >
+                  {isEnterprise && (
+                    <li
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 600,
+                        fontSize: "13px",
+                        color: "#0f172a",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      Everything in Business, plus &mdash;
+                    </li>
+                  )}
                   {features.map((feature) => (
                     <li
                       key={feature}

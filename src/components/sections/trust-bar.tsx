@@ -6,7 +6,7 @@ import { fadeUp, fadeUpTransition } from "@/lib/animations";
 const ITEMS = [
   "BUILT FOR NIGERIAN BUSINESS",
   "SEQUENTIAL APPROVAL CHAIN",
-  "WHATSAPP & EMAIL NOTIFICATION",
+  "EMAIL & SMS NOTIFICATIONS",
   "AUDIT-READY AT ALL TIMES",
   "NDPR COMPLIANT",
 ];

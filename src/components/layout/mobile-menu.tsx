@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
@@ -36,6 +37,16 @@ export function MobileMenu({
   pathname,
 }: MobileMenuProps) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
+
+  // Close on Escape while the menu is open (keyboard accessibility).
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
 
   return (
     <AnimatePresence>

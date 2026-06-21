@@ -30,24 +30,40 @@ export default async function VerifyPage({ params }: PageProps) {
 
   let response: Response | null = null;
   let payload: VerifyResponse = {};
-  try {
-    response = await fetch(`${PLATFORM_ORIGIN}/api/v1/public/trial/verify`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token }),
-      cache: "no-store",
-    });
-    payload = (await response.json().catch(() => ({}))) as VerifyResponse;
-  } catch {
-    // Network failure — fall through to the error card.
+  // Guard against absurd token input before forwarding to the platform.
+  if (token && token.length <= 512) {
+    try {
+      response = await fetch(`${PLATFORM_ORIGIN}/api/v1/public/trial/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token }),
+        cache: "no-store",
+      });
+      payload = (await response.json().catch(() => ({}))) as VerifyResponse;
+    } catch {
+      // Network failure — fall through to the error card.
+    }
   }
 
   // Success — the platform has provisioned (or found an existing) tenant.
   // Prefer inviteUrl (set by app PR feat/trial-auto-policy); fall back to
   // loginUrl for the short deploy window before that app PR lands.
+  // SECURITY (open-redirect guard): this is a token-bearing flow, so only ever
+  // redirect to the trusted platform origin — never to an arbitrary URL echoed
+  // back in the response.
   const successUrl = payload.inviteUrl ?? payload.loginUrl;
   if (response?.ok && payload.status === "provisioned" && successUrl) {
-    redirect(successUrl);
+    const appOrigin = new URL(PLATFORM_ORIGIN).origin;
+    let target: URL | null = null;
+    try {
+      target = new URL(successUrl);
+    } catch {
+      target = null;
+    }
+    if (target && target.origin === appOrigin) {
+      redirect(target.toString());
+    }
+    // Untrusted or malformed target — fall through to the error card.
   }
 
   return (

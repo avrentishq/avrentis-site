@@ -68,6 +68,13 @@ export async function submitTrialRequest(
   if (!country) fieldErrors.country = "Please select your country.";
   if (!consent) fieldErrors.consent = "We need your consent to process this request.";
 
+  // Length bounds — mirror the platform's Zod limits so we fail fast and never
+  // forward unbounded input into the request body.
+  if (name.length > 200) fieldErrors.name = "That name is too long (200 character max).";
+  if (email.length > 320) fieldErrors.email = "That email is too long.";
+  if (organisation.length > 200)
+    fieldErrors.organisation = "That organisation name is too long (200 character max).";
+
   if (Object.keys(fieldErrors).length > 0) {
     return { status: "error", message: "Please fix the highlighted fields.", fieldErrors };
   }
@@ -84,7 +91,7 @@ export async function submitTrialRequest(
         role,
         orgSize,
         country: country.toUpperCase(),
-        source: source || undefined,
+        source: source ? source.slice(0, 200) : undefined,
         consent: true,
       }),
     });

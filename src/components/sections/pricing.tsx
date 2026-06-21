@@ -401,25 +401,27 @@ export function Pricing({ data }: PricingProps) {
                       From{" "}
                     </span>
                   )}
-                  <span
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontWeight: 700,
-                      fontSize: "36px",
-                      color: isFeatured ? "#FFFFFF" : "#0f172a",
-                    }}
-                  >
-                    {formatCurrencyAmount(displayAmount, currency)}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontWeight: 400,
-                      fontSize: "14px",
-                      color: "#64748b",
-                    }}
-                  >
-                    /month
+                  <span style={{ whiteSpace: "nowrap" }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 700,
+                        fontSize: "34px",
+                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                      }}
+                    >
+                      {formatCurrencyAmount(displayAmount, currency)}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 400,
+                        fontSize: "14px",
+                        color: "#64748b",
+                      }}
+                    >
+                      /month
+                    </span>
                   </span>
                 </div>
 
@@ -428,17 +430,35 @@ export function Pricing({ data }: PricingProps) {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "12px",
-                    color: "#94a3b8",
+                    fontSize: "13px",
+                    color: isFeatured ? "#cbd5e1" : "#64748b",
                     margin: "0 0 20px",
-                    minHeight: "16px",
+                    minHeight: "18px",
+                    lineHeight: 1.5,
                   }}
                 >
-                  {billing === "annual"
-                    ? priceData?.annualTotal != null
-                      ? `Monthly equivalent · ${formatCurrencyAmount(priceData.annualTotal, currency)} billed annually`
-                      : "Billed annually"
-                    : "Cancel anytime"}
+                  {isEnterprise ? (
+                    "Custom pricing — tailored to your organisation"
+                  ) : billing === "annual" ? (
+                    priceData?.annualTotal != null ? (
+                      <>
+                        Monthly equivalent ·{" "}
+                        <strong
+                          style={{
+                            fontWeight: 600,
+                            color: isFeatured ? "#FFFFFF" : "#0f172a",
+                          }}
+                        >
+                          {formatCurrencyAmount(priceData.annualTotal, currency)} billed
+                          annually
+                        </strong>
+                      </>
+                    ) : (
+                      "Billed annually"
+                    )
+                  ) : (
+                    "Cancel anytime"
+                  )}
                 </p>
 
                 {/* Modules badge */}

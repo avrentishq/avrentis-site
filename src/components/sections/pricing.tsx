@@ -26,7 +26,7 @@ function getPriceForCurrency(
 
 function getAvailableCurrencies(data: PricingData): string[] {
   const first = data.plans[0];
-  if (!first) return ["USD"];
+  if (!first) return ["NGN"];
   return first.pricing.map((p) => p.currency);
 }
 
@@ -58,8 +58,9 @@ export function Pricing({ data }: PricingProps) {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
 
   const currencies = getAvailableCurrencies(data);
+  // Nigeria-first market — lead with Naira; fall back to whatever the API offers.
   const [currency, setCurrency] = useState<string>(
-    currencies.includes("USD") ? "USD" : currencies[0],
+    currencies.includes("NGN") ? "NGN" : currencies[0],
   );
 
   const orderedPlans = data.planOrder
@@ -559,8 +560,8 @@ export function Pricing({ data }: PricingProps) {
             marginTop: "40px",
           }}
         >
-          All plans include: Multi-level approvals &middot; 99.9% uptime
-          &middot; Enterprise-grade security &middot; Data protection compliant
+          All plans include: Multi-level approvals &middot; Enterprise-grade
+          security &middot; Data protection compliant
         </motion.p>
       </div>
     </section>

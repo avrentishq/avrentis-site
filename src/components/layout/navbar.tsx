@@ -181,10 +181,20 @@ export function Navbar() {
               ref={dropdownRef}
               onMouseEnter={openDropdown}
               onMouseLeave={closeDropdown}
+              onFocus={openDropdown}
+              onBlur={(e) => {
+                // Close when focus leaves the whole dropdown (keyboard tab-out).
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) closeDropdown();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") closeDropdownImmediate();
+              }}
               style={{ position: "relative" }}
             >
               <Link
                 href="/product"
+                aria-expanded={dropdownOpen}
+                aria-haspopup="true"
                 style={{
                   ...activeLinkStyle("/product"),
                   display: "inline-flex",

@@ -284,7 +284,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
             fontWeight: 500,
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             textDecoration: "none",
             display: "inline-flex",
             alignItems: "center",
@@ -329,7 +329,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -567,7 +567,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
               />
               <span>
                 I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
-                <Link href="/privacy" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+                <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
                 .{" "}

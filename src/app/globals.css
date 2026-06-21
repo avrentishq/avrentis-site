@@ -11,6 +11,11 @@
   --color-gold: #c68b2f;
   --color-gold-rgb: 198, 139, 47;
   --color-gold-hover: #a87425;
+  /* Accessible gold for TEXT on light backgrounds — bright gold (#c68b2f)
+     fails WCAG AA on white. Use this for gold text/labels on white or light
+     surfaces; keep --color-gold for text on dark/navy backgrounds, and for
+     borders, icons, and fills (non-text, 3:1 bar). */
+  --color-gold-on-light: #a87425;
   --color-gold-surface: #fdf8ef;
   --color-gold-divider: rgba(var(--color-gold-rgb), 0.2);
   --color-gold-ghost: rgba(var(--color-gold-rgb), 0.07);
@@ -51,4 +56,18 @@ body {
 @keyframes avrentis-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
+}
+
+/* Respect the OS "reduce motion" setting — neutralise CSS animations
+   (e.g. the ambient-glow pulse) and transitions. Framer Motion is handled
+   separately via <MotionProvider reducedMotion="user">. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

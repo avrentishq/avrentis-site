@@ -162,7 +162,7 @@ const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: st
   },
   request: {
     label: "Talk to us",
-    color: "var(--color-gold)",
+    color: "var(--color-gold-on-light)",
     bg: "rgba(var(--color-gold-rgb), 0.10)",
     border: "rgba(var(--color-gold-rgb), 0.28)",
   },
@@ -235,7 +235,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
               style={{
                 fontFamily: mono,
                 fontSize: "11px",
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 letterSpacing: "0.08em",
               }}
             >
@@ -511,7 +511,7 @@ export function IntegrationsCataloguePage() {
                   fontSize: "12px",
                   letterSpacing: "0.10em",
                   textTransform: "uppercase",
-                  color: "var(--color-gold)",
+                  color: "var(--color-gold-on-light)",
                   display: "block",
                   marginBottom: "12px",
                 }}
@@ -548,7 +548,7 @@ export function IntegrationsCataloguePage() {
                   fontFamily: sans,
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "var(--color-gold)",
+                  color: "var(--color-gold-on-light)",
                   textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",

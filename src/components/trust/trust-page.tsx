@@ -272,7 +272,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -350,7 +350,7 @@ export function TrustProductPage() {
                     fontSize: "10px",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "var(--color-gold)",
+                    color: "var(--color-gold-on-light)",
                   }}
                 >
                   {f.status}
@@ -379,7 +379,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -570,7 +570,7 @@ export function TrustProductPage() {
             }}
           >
             Subscribe to sub-processor change notifications through our{" "}
-            <Link href="/contact?intent=subscribe" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+            <Link href="/contact?intent=subscribe" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
               update subscription form
             </Link>
             .
@@ -593,7 +593,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -669,7 +669,7 @@ export function TrustProductPage() {
                         fontFamily: sans,
                         fontSize: "13px",
                         fontWeight: 600,
-                        color: "var(--color-gold)",
+                        color: "var(--color-gold-on-light)",
                         textDecoration: "none",
                         display: "inline-flex",
                         alignItems: "center",
@@ -687,7 +687,7 @@ export function TrustProductPage() {
                         fontFamily: sans,
                         fontSize: "13px",
                         fontWeight: 600,
-                        color: "var(--color-gold)",
+                        color: "var(--color-gold-on-light)",
                         textDecoration: "none",
                         display: "inline-flex",
                         alignItems: "center",
@@ -721,7 +721,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -812,7 +812,7 @@ export function TrustProductPage() {
                     fontSize: "10px",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "var(--color-gold)",
+                    color: "var(--color-gold-on-light)",
                   }}
                 >
                   {r.label}

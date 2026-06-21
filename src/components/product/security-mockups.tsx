@@ -342,7 +342,7 @@ export function AuditMockup() {
     <div style={{ padding: "22px", backgroundColor: "#F8FAFC" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
         <Label>AUDIT TRAIL · PV-2026-0184</Label>
-        <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold)", letterSpacing: "0.06em" }}>
+        <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold-on-light)", letterSpacing: "0.06em" }}>
           IMMUTABLE
         </span>
       </div>
@@ -375,7 +375,7 @@ export function AuditMockup() {
                   style={{
                     fontFamily: mono,
                     fontSize: "10px",
-                    color: "var(--color-gold)",
+                    color: "var(--color-gold-on-light)",
                     letterSpacing: "0.04em",
                     textTransform: "uppercase",
                   }}
@@ -577,7 +577,7 @@ export function InfraMockup() {
               style={{
                 fontFamily: mono,
                 fontSize: "11px",
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
                 minWidth: "110px",

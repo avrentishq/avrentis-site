@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
-import { BRAND, BRAND_COLORS, MODULES as PRODUCT_MODULES } from "@/lib/brand";
+import { BRAND, BRAND_COLORS, MODULES as PRODUCT_MODULES, isModulePublic } from "@/lib/brand";
+import { isLaunchVisible } from "@/lib/launch";
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 
@@ -27,36 +28,42 @@ const NAV_LINKS = [
 
 const MODULES = [
   {
+    key: PRODUCT_MODULES.pay.key,
     name: PRODUCT_MODULES.pay.name,
     desc: "Structured payment approvals",
     href: `/product/${PRODUCT_MODULES.pay.slug}`,
     icon: CreditCard,
   },
   {
+    key: PRODUCT_MODULES.procure.key,
     name: PRODUCT_MODULES.procure.name,
     desc: "Procurement on record",
     href: `/product/${PRODUCT_MODULES.procure.slug}`,
     icon: ShoppingCart,
   },
   {
+    key: PRODUCT_MODULES.vault.key,
     name: PRODUCT_MODULES.vault.name,
     desc: "Institutional memory",
     href: `/product/${PRODUCT_MODULES.vault.slug}`,
     icon: Archive,
   },
   {
+    key: PRODUCT_MODULES.audit.key,
     name: PRODUCT_MODULES.audit.name,
     desc: "Compliance & accountability",
     href: `/product/${PRODUCT_MODULES.audit.slug}`,
     icon: ClipboardCheck,
   },
   {
+    key: PRODUCT_MODULES.people.key,
     name: PRODUCT_MODULES.people.name,
     desc: "Workforce structure",
     href: `/product/${PRODUCT_MODULES.people.slug}`,
     icon: Users,
   },
   {
+    key: PRODUCT_MODULES.connect.key,
     name: PRODUCT_MODULES.connect.name,
     desc: "External systems",
     href: `/product/${PRODUCT_MODULES.connect.slug}`,
@@ -174,10 +181,20 @@ export function Navbar() {
               ref={dropdownRef}
               onMouseEnter={openDropdown}
               onMouseLeave={closeDropdown}
+              onFocus={openDropdown}
+              onBlur={(e) => {
+                // Close when focus leaves the whole dropdown (keyboard tab-out).
+                if (!e.currentTarget.contains(e.relatedTarget as Node)) closeDropdown();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") closeDropdownImmediate();
+              }}
               style={{ position: "relative" }}
             >
               <Link
                 href="/product"
+                aria-expanded={dropdownOpen}
+                aria-haspopup="true"
                 style={{
                   ...activeLinkStyle("/product"),
                   display: "inline-flex",
@@ -243,7 +260,7 @@ export function Navbar() {
                         gap: "2px",
                       }}
                     >
-                      {MODULES.map((mod) => {
+                      {MODULES.filter((mod) => isModulePublic(mod.key)).map((mod) => {
                         const Icon = mod.icon;
                         return (
                           <Link
@@ -334,7 +351,7 @@ export function Navbar() {
                         gap: "2px",
                       }}
                     >
-                      {PLATFORM.map((item) => (
+                      {PLATFORM.filter((item) => isLaunchVisible(item.href)).map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
@@ -366,22 +383,6 @@ export function Navbar() {
                 </div>
               )}
             </div>
-
-            {/* Customers */}
-            <Link
-              href="/customers"
-              style={activeLinkStyle("/customers")}
-              onMouseEnter={(e) => {
-                if (!isActive("/customers"))
-                  e.currentTarget.style.color = "var(--color-gold)";
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive("/customers"))
-                  e.currentTarget.style.color = "#ffffff";
-              }}
-            >
-              Customers
-            </Link>
 
             {/* Pricing */}
             <Link
@@ -497,6 +498,8 @@ export function Navbar() {
             className="md:hidden"
             onClick={() => setMobileOpen(true)}
             aria-label="Open menu"
+            aria-expanded={mobileOpen}
+            aria-haspopup="dialog"
             style={{
               background: "none",
               border: "none",
@@ -516,7 +519,7 @@ export function Navbar() {
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        navLinks={NAV_LINKS}
+        navLinks={NAV_LINKS.filter((link) => isLaunchVisible(link.href))}
         signinUrl="https://app.avrentis.com/login"
         pathname={pathname}
       />

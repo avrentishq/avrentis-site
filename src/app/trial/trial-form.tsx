@@ -22,6 +22,7 @@ import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
+import { COUNTRIES } from "@/data/countries";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
@@ -94,22 +95,6 @@ const ROLES = [
 ];
 
 const SIZES = ["1–20", "21–50", "51–200", "200+"];
-
-const COUNTRIES = [
-  { code: "NG", name: "Nigeria" },
-  { code: "GH", name: "Ghana" },
-  { code: "KE", name: "Kenya" },
-  { code: "ZA", name: "South Africa" },
-  { code: "EG", name: "Egypt" },
-  { code: "UG", name: "Uganda" },
-  { code: "TZ", name: "Tanzania" },
-  { code: "RW", name: "Rwanda" },
-  { code: "ET", name: "Ethiopia" },
-  { code: "US", name: "United States" },
-  { code: "GB", name: "United Kingdom" },
-  { code: "CA", name: "Canada" },
-  { code: "OTHER", name: "Other" },
-];
 
 const sans = "var(--font-sans)";
 
@@ -280,7 +265,7 @@ export function TrialForm() {
             fontSize: "12px",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             display: "block",
             marginBottom: "16px",
           }}
@@ -575,7 +560,7 @@ export function TrialForm() {
             <span>
               I agree that Avrentis may use the details above to provision and run my trial
               workspace, in line with the{" "}
-              <Link href="/privacy" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+              <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                 privacy policy
               </Link>
               .{" "}
@@ -809,7 +794,7 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 500,
-          color: "var(--color-gold)",
+          color: "var(--color-gold-on-light)",
           textDecoration: "none",
           display: "inline-flex",
           alignItems: "center",
@@ -883,7 +868,7 @@ function HardBlockedCard({ message }: { message: string }) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 600,
-          color: "var(--color-gold)",
+          color: "var(--color-gold-on-light)",
           textDecoration: "none",
         }}
       >

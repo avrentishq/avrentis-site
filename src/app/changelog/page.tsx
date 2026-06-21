@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { ChangelogProductPage } from "@/components/changelog/changelog-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Changelog — Avrentis",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function ChangelogPage() {
+  if (isLaunchHidden("/changelog")) notFound();
   return <ChangelogProductPage />;
 }

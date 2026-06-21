@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { CareersProductPage } from "@/components/careers/careers-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Careers — Avrentis",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function CareersPage() {
+  if (isLaunchHidden("/careers")) notFound();
   return <CareersProductPage />;
 }

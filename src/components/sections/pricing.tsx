@@ -10,6 +10,7 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/pricing";
+import { PUBLIC_MODULE_COUNT } from "@/lib/brand";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -26,7 +27,7 @@ function getPriceForCurrency(
 
 function getAvailableCurrencies(data: PricingData): string[] {
   const first = data.plans[0];
-  if (!first) return ["USD"];
+  if (!first) return ["NGN"];
   return first.pricing.map((p) => p.currency);
 }
 
@@ -58,8 +59,9 @@ export function Pricing({ data }: PricingProps) {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
 
   const currencies = getAvailableCurrencies(data);
+  // Nigeria-first market — lead with Naira; fall back to whatever the API offers.
   const [currency, setCurrency] = useState<string>(
-    currencies.includes("USD") ? "USD" : currencies[0],
+    currencies.includes("NGN") ? "NGN" : currencies[0],
   );
 
   const orderedPlans = data.planOrder
@@ -82,7 +84,7 @@ export function Pricing({ data }: PricingProps) {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -195,7 +197,7 @@ export function Pricing({ data }: PricingProps) {
                 color: billing === "annual" ? "#0f172a" : "#64748b",
               }}
             >
-              Annual (Save 15%)
+              Annual · 2 months free
             </button>
           </div>
 
@@ -271,7 +273,7 @@ export function Pricing({ data }: PricingProps) {
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#94a3b8", margin: "0 0 20px", minHeight: "16px" }}>
               No credit card required
             </p>
-            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
+            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
               Payables + Procurement + Documents + Compliance
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
@@ -314,7 +316,9 @@ export function Pricing({ data }: PricingProps) {
               .map((m) => m.name.replace("Avrentis ", ""))
               .join(" + ");
             const moduleLabel =
-              plan.modules.length >= 6 ? "All 6 modules" : moduleNames;
+              plan.modules.length >= PUBLIC_MODULE_COUNT
+                ? `All ${PUBLIC_MODULE_COUNT} modules`
+                : moduleNames;
 
             return (
               <motion.div
@@ -375,7 +379,7 @@ export function Pricing({ data }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: "#64748b",
+                    color: isFeatured ? "#94a3b8" : "#64748b",
                     lineHeight: 1.5,
                     margin: "0 0 20px",
                   }}
@@ -397,25 +401,27 @@ export function Pricing({ data }: PricingProps) {
                       From{" "}
                     </span>
                   )}
-                  <span
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontWeight: 700,
-                      fontSize: "36px",
-                      color: isFeatured ? "#FFFFFF" : "#0f172a",
-                    }}
-                  >
-                    {formatCurrencyAmount(displayAmount, currency)}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontWeight: 400,
-                      fontSize: "14px",
-                      color: "#64748b",
-                    }}
-                  >
-                    /month
+                  <span style={{ whiteSpace: "nowrap" }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 700,
+                        fontSize: "34px",
+                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                      }}
+                    >
+                      {formatCurrencyAmount(displayAmount, currency)}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 400,
+                        fontSize: "14px",
+                        color: isFeatured ? "#94a3b8" : "#64748b",
+                      }}
+                    >
+                      /month
+                    </span>
                   </span>
                 </div>
 
@@ -424,13 +430,35 @@ export function Pricing({ data }: PricingProps) {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "12px",
-                    color: "#94a3b8",
+                    fontSize: "13px",
+                    color: isFeatured ? "#cbd5e1" : "#64748b",
                     margin: "0 0 20px",
-                    minHeight: "16px",
+                    minHeight: "18px",
+                    lineHeight: 1.5,
                   }}
                 >
-                  {billing === "annual" ? "Billed annually" : "Cancel anytime"}
+                  {isEnterprise ? (
+                    "Custom pricing — tailored to your organisation"
+                  ) : billing === "annual" ? (
+                    priceData?.annualTotal != null ? (
+                      <>
+                        Monthly equivalent ·{" "}
+                        <strong
+                          style={{
+                            fontWeight: 600,
+                            color: isFeatured ? "#FFFFFF" : "#0f172a",
+                          }}
+                        >
+                          {formatCurrencyAmount(priceData.annualTotal, currency)} billed
+                          annually
+                        </strong>
+                      </>
+                    ) : (
+                      "Billed annually"
+                    )
+                  ) : (
+                    "Cancel anytime"
+                  )}
                 </p>
 
                 {/* Modules badge */}
@@ -446,7 +474,7 @@ export function Pricing({ data }: PricingProps) {
                       backgroundColor: isFeatured
                         ? "rgba(var(--color-gold-rgb), 0.15)"
                         : "rgba(var(--color-gold-rgb), 0.08)",
-                      color: "var(--color-gold)",
+                      color: isFeatured ? "var(--color-gold)" : "var(--color-gold-on-light)",
                       border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                       marginBottom: "16px",
                       alignSelf: "flex-start",
@@ -465,6 +493,19 @@ export function Pricing({ data }: PricingProps) {
                     flex: 1,
                   }}
                 >
+                  {isEnterprise && (
+                    <li
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 600,
+                        fontSize: "13px",
+                        color: "#0f172a",
+                        marginBottom: "12px",
+                      }}
+                    >
+                      Everything in Business, plus &mdash;
+                    </li>
+                  )}
                   {features.map((feature) => (
                     <li
                       key={feature}
@@ -472,7 +513,7 @@ export function Pricing({ data }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "13px",
-                        color: "#64748b",
+                        color: isFeatured ? "#94a3b8" : "#64748b",
                         lineHeight: 1.5,
                         marginBottom: "10px",
                         display: "flex",
@@ -559,8 +600,8 @@ export function Pricing({ data }: PricingProps) {
             marginTop: "40px",
           }}
         >
-          All plans include: Multi-level approvals &middot; 99.9% uptime
-          &middot; Enterprise-grade security &middot; Data protection compliant
+          All plans include: Multi-level approvals &middot; Enterprise-grade
+          security &middot; Data protection compliant
         </motion.p>
       </div>
     </section>

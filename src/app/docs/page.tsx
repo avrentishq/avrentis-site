@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { DocsHubPage } from "@/components/docs/docs-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Documentation — Avrentis",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function DocsPage() {
+  if (isLaunchHidden("/docs")) notFound();
   return <DocsHubPage />;
 }

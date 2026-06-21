@@ -238,7 +238,7 @@ function StatusPill({ status }: { status: ItemStatus }) {
         fontSize: "9px",
         letterSpacing: "0.08em",
         textTransform: "uppercase",
-        color: "var(--color-gold)",
+        color: "var(--color-gold-on-light)",
         backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
         border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
         borderRadius: "3px",
@@ -283,7 +283,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
             >
               <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
             </div>
-            <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold)", letterSpacing: "0.08em" }}>
+            <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold-on-light)", letterSpacing: "0.08em" }}>
               {String(index + 1).padStart(2, "0")} · {category.eyebrow}
             </span>
           </div>

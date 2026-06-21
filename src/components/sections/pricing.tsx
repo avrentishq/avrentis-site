@@ -10,6 +10,7 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/pricing";
+import { PUBLIC_MODULE_COUNT } from "@/lib/brand";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -196,7 +197,7 @@ export function Pricing({ data }: PricingProps) {
                 color: billing === "annual" ? "#0f172a" : "#64748b",
               }}
             >
-              Annual (Save 15%)
+              Annual · 2 months free
             </button>
           </div>
 
@@ -315,7 +316,9 @@ export function Pricing({ data }: PricingProps) {
               .map((m) => m.name.replace("Avrentis ", ""))
               .join(" + ");
             const moduleLabel =
-              plan.modules.length >= 6 ? "All 6 modules" : moduleNames;
+              plan.modules.length >= PUBLIC_MODULE_COUNT
+                ? `All ${PUBLIC_MODULE_COUNT} modules`
+                : moduleNames;
 
             return (
               <motion.div
@@ -431,7 +434,11 @@ export function Pricing({ data }: PricingProps) {
                     minHeight: "16px",
                   }}
                 >
-                  {billing === "annual" ? "Billed annually" : "Cancel anytime"}
+                  {billing === "annual"
+                    ? priceData?.annualTotal != null
+                      ? `Monthly equivalent · ${formatCurrencyAmount(priceData.annualTotal, currency)} billed annually`
+                      : "Billed annually"
+                    : "Cancel anytime"}
                 </p>
 
                 {/* Modules badge */}

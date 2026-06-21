@@ -1,68 +1,97 @@
 {
-  "planOrder": ["starter", "business", "enterprise"],
-  "moduleOrder": ["pay", "procure", "vault", "audit", "connect"],
-  "addOns": [],
-  "modules": {
-    "pay": { "name": "Avrentis Payables", "description": "Structured payment approvals" },
-    "procure": { "name": "Avrentis Procurement", "description": "Procurement on record" },
-    "vault": { "name": "Avrentis Documents", "description": "Institutional memory" },
-    "audit": { "name": "Avrentis Compliance", "description": "Compliance & accountability" },
-    "connect": { "name": "Avrentis Integrations", "description": "External systems" }
-  },
-  "featureLabels": {
-    "approvalChain": "Multi-level approval workflow",
-    "pdfExport": "Export approved documents as PDF",
-    "emailNotifications": "Email alerts",
-    "whatsappNotifications": "WhatsApp alerts",
-    "smsNotifications": "SMS alerts",
-    "auditLog": "Complete compliance visibility",
-    "auditorRole": "Auditor & Company Board roles",
-    "customWorkflows": "Custom workflows",
-    "apiAccess": "Full API access",
-    "dedicatedSupport": "Dedicated support",
-    "externalIntegrations": "Connect external systems via API",
-    "prioritySupport": "Priority support"
-  },
   "plans": [
     {
       "key": "starter",
       "name": "Starter",
-      "description": "For small teams ready to go paperless",
-      "pricing": [
-        { "currency": "NGN", "monthly": 300000, "monthlyLabel": "₦300,000/month", "annualPerMonth": 250000, "annualTotal": 3000000, "annualLabel": "₦3,000,000/year", "taxRate": null, "taxLabel": null },
-        { "currency": "USD", "monthly": 215, "monthlyLabel": "$215/month", "annualPerMonth": 179, "annualTotal": 2150, "annualLabel": "$2,150/year", "taxRate": null, "taxLabel": null }
-      ],
-      "limits": { "maxUsers": 10, "maxDocumentsPerMonth": null, "maxStorageBytes": 10737418240, "documentRetentionDays": 365 },
-      "modules": [
-        { "key": "pay", "name": "Avrentis Payables", "description": "Structured payment approvals" },
-        { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" }
-      ],
-      "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": false },
+      "description": "Payments and procurement for growing teams — up to 10 users",
       "highlights": [
         "Up to 10 users",
         "Unlimited documents",
         "Payables + Procurement modules",
-        "Bank-ready PDF exports",
+        "Bank-ready exports (PDF & spreadsheet)",
         "WhatsApp & email alerts",
         "10 GB storage · 1 year retention"
-      ]
+      ],
+      "pricing": [
+        {
+          "currency": "NGN",
+          "monthly": 300000,
+          "monthlyLabel": "₦300,000/month",
+          "annualPerMonth": 250000,
+          "annualTotal": 3000000,
+          "annualLabel": "₦3,000,000/year",
+          "taxRate": 0.075,
+          "taxLabel": "VAT 7.5%"
+        },
+        {
+          "currency": "USD",
+          "monthly": 215,
+          "monthlyLabel": "$215/month",
+          "annualPerMonth": 179,
+          "annualTotal": 2150,
+          "annualLabel": "$2,150/year",
+          "taxRate": null,
+          "taxLabel": null
+        }
+      ],
+      "limits": {
+        "maxUsers": 10,
+        "maxDocumentsPerMonth": 0,
+        "maxStorageBytes": 10737418240,
+        "documentRetentionDays": 365,
+        "maxUsersLabel": "Up to 10 users",
+        "maxDocumentsPerMonthLabel": "Unlimited documents",
+        "maxStorageBytesLabel": "10 GB storage",
+        "documentRetentionDaysLabel": "1 year retention"
+      },
+      "modules": [
+        {
+          "key": "pay",
+          "name": "Avrentis Payables",
+          "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank."
+        },
+        {
+          "key": "procure",
+          "name": "Avrentis Procurement",
+          "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking"
+        }
+      ],
+      "features": {
+        "approvalChain": true,
+        "whatsappNotifications": true,
+        "emailNotifications": true,
+        "pdfExport": true,
+        "watermarkedExports": false,
+        "auditTrail": true,
+        "fullAuditTrail": false,
+        "csvExport": true,
+        "documentAttachments": true,
+        "analytics": false,
+        "recurringTemplates": false,
+        "delegation": false,
+        "mfaPolicy": false,
+        "slaTracking": false,
+        "budgetCodes": false,
+        "bankLetterGeneration": false,
+        "bankExport": true,
+        "bulkBankExport": false,
+        "fullAuditExport": false,
+        "multiCompanyGroup": false,
+        "groupAdminDashboard": false,
+        "customApprovalChains": false,
+        "dedicatedOnboarding": false,
+        "prioritySupport": false,
+        "multiLevelApprovals": true,
+        "customBranding": false,
+        "apiAccess": false,
+        "ipAllowlist": false,
+        "sso": false
+      }
     },
     {
       "key": "business",
       "name": "Business",
-      "description": "For growing organisations that need full operational structure",
-      "pricing": [
-        { "currency": "NGN", "monthly": 700000, "monthlyLabel": "₦700,000/month", "annualPerMonth": 583333, "annualTotal": 7000000, "annualLabel": "₦7,000,000/year", "taxRate": null, "taxLabel": null },
-        { "currency": "USD", "monthly": 499, "monthlyLabel": "$499/month", "annualPerMonth": 416, "annualTotal": 4990, "annualLabel": "$4,990/year", "taxRate": null, "taxLabel": null }
-      ],
-      "limits": { "maxUsers": 50, "maxDocumentsPerMonth": null, "maxStorageBytes": 107374182400, "documentRetentionDays": 1095 },
-      "modules": [
-        { "key": "pay", "name": "Avrentis Payables", "description": "Structured payment approvals" },
-        { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" },
-        { "key": "vault", "name": "Avrentis Documents", "description": "Institutional memory" },
-        { "key": "audit", "name": "Avrentis Compliance", "description": "Compliance & accountability" }
-      ],
-      "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "prioritySupport": true },
+      "description": "Complete operations with compliance and analytics — up to 50 users",
       "highlights": [
         "Up to 50 users",
         "Payables + Procurement + Documents + Compliance",
@@ -71,33 +100,344 @@
         "Analytics, recurring templates, delegation",
         "100 GB storage · 3 year retention",
         "Priority support"
-      ]
+      ],
+      "pricing": [
+        {
+          "currency": "NGN",
+          "monthly": 700000,
+          "monthlyLabel": "₦700,000/month",
+          "annualPerMonth": 583333,
+          "annualTotal": 7000000,
+          "annualLabel": "₦7,000,000/year",
+          "taxRate": 0.075,
+          "taxLabel": "VAT 7.5%"
+        },
+        {
+          "currency": "USD",
+          "monthly": 499,
+          "monthlyLabel": "$499/month",
+          "annualPerMonth": 416,
+          "annualTotal": 4990,
+          "annualLabel": "$4,990/year",
+          "taxRate": null,
+          "taxLabel": null
+        }
+      ],
+      "limits": {
+        "maxUsers": 50,
+        "maxDocumentsPerMonth": 0,
+        "maxStorageBytes": 107374182400,
+        "documentRetentionDays": 1095,
+        "maxUsersLabel": "Up to 50 users",
+        "maxDocumentsPerMonthLabel": "Unlimited documents",
+        "maxStorageBytesLabel": "100 GB storage",
+        "documentRetentionDaysLabel": "3 years retention"
+      },
+      "modules": [
+        {
+          "key": "pay",
+          "name": "Avrentis Payables",
+          "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank."
+        },
+        {
+          "key": "procure",
+          "name": "Avrentis Procurement",
+          "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking"
+        },
+        {
+          "key": "vault",
+          "name": "Avrentis Documents",
+          "description": "Centralised document storage, searchable archive, document versioning, tagging, role-based access control"
+        },
+        {
+          "key": "audit",
+          "name": "Avrentis Compliance",
+          "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+        }
+      ],
+      "features": {
+        "approvalChain": true,
+        "whatsappNotifications": true,
+        "emailNotifications": true,
+        "pdfExport": true,
+        "watermarkedExports": false,
+        "auditTrail": true,
+        "fullAuditTrail": true,
+        "csvExport": true,
+        "documentAttachments": true,
+        "analytics": true,
+        "recurringTemplates": true,
+        "delegation": true,
+        "mfaPolicy": true,
+        "slaTracking": true,
+        "budgetCodes": true,
+        "bankLetterGeneration": true,
+        "bankExport": true,
+        "bulkBankExport": true,
+        "fullAuditExport": true,
+        "multiCompanyGroup": false,
+        "groupAdminDashboard": false,
+        "customApprovalChains": true,
+        "dedicatedOnboarding": true,
+        "prioritySupport": true,
+        "multiLevelApprovals": true,
+        "customBranding": true,
+        "apiAccess": false,
+        "ipAllowlist": true,
+        "sso": false
+      }
     },
     {
       "key": "enterprise",
       "name": "Enterprise",
-      "description": "For large organisations with complex operational requirements",
-      "pricing": [
-        { "currency": "NGN", "monthly": 1500000, "monthlyLabel": "From ₦1,500,000/month", "annualPerMonth": null, "annualTotal": null, "annualLabel": null, "taxRate": null, "taxLabel": null },
-        { "currency": "USD", "monthly": 1075, "monthlyLabel": "From $1,075/month", "annualPerMonth": null, "annualTotal": null, "annualLabel": null, "taxRate": null, "taxLabel": null }
-      ],
-      "limits": { "maxUsers": 9999, "maxDocumentsPerMonth": null, "maxStorageBytes": null, "documentRetentionDays": null },
-      "modules": [
-        { "key": "pay", "name": "Avrentis Payables", "description": "Structured payment approvals" },
-        { "key": "procure", "name": "Avrentis Procurement", "description": "Procurement on record" },
-        { "key": "vault", "name": "Avrentis Documents", "description": "Institutional memory" },
-        { "key": "audit", "name": "Avrentis Compliance", "description": "Compliance & accountability" },
-        { "key": "connect", "name": "Avrentis Integrations", "description": "External systems" }
-      ],
-      "features": { "approvalChain": true, "pdfExport": true, "emailNotifications": true, "whatsappNotifications": true, "smsNotifications": true, "auditLog": true, "auditorRole": true, "customWorkflows": true, "apiAccess": true, "dedicatedSupport": true, "externalIntegrations": true },
+      "description": "Unlimited scale, dedicated support, and full platform access",
       "highlights": [
         "Unlimited users & companies",
         "Unlimited storage & retention",
-        "All 5 modules included",
+        "All modules included",
         "Multi-company group & admin dashboard",
         "API access for custom integrations",
         "Dedicated onboarding & priority support"
+      ],
+      "pricing": [
+        {
+          "currency": "NGN",
+          "monthly": 1500000,
+          "monthlyLabel": "From ₦1,500,000/month",
+          "annualPerMonth": null,
+          "annualTotal": null,
+          "annualLabel": null,
+          "taxRate": 0.075,
+          "taxLabel": "VAT 7.5%"
+        },
+        {
+          "currency": "USD",
+          "monthly": 1075,
+          "monthlyLabel": "From $1,075/month",
+          "annualPerMonth": null,
+          "annualTotal": null,
+          "annualLabel": null,
+          "taxRate": null,
+          "taxLabel": null
+        }
+      ],
+      "limits": {
+        "maxUsers": 0,
+        "maxDocumentsPerMonth": 0,
+        "maxStorageBytes": 0,
+        "documentRetentionDays": 0,
+        "maxUsersLabel": "Unlimited users",
+        "maxDocumentsPerMonthLabel": "Unlimited documents",
+        "maxStorageBytesLabel": "Unlimited storage",
+        "documentRetentionDaysLabel": "Unlimited retention"
+      },
+      "modules": [
+        {
+          "key": "pay",
+          "name": "Avrentis Payables",
+          "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank."
+        },
+        {
+          "key": "procure",
+          "name": "Avrentis Procurement",
+          "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking"
+        },
+        {
+          "key": "vault",
+          "name": "Avrentis Documents",
+          "description": "Centralised document storage, searchable archive, document versioning, tagging, role-based access control"
+        },
+        {
+          "key": "audit",
+          "name": "Avrentis Compliance",
+          "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+        },
+        {
+          "key": "connect",
+          "name": "Avrentis Integrations",
+          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations"
+        }
+      ],
+      "features": {
+        "approvalChain": true,
+        "whatsappNotifications": true,
+        "emailNotifications": true,
+        "pdfExport": true,
+        "watermarkedExports": false,
+        "auditTrail": true,
+        "fullAuditTrail": true,
+        "csvExport": true,
+        "documentAttachments": true,
+        "analytics": true,
+        "recurringTemplates": true,
+        "delegation": true,
+        "mfaPolicy": true,
+        "slaTracking": true,
+        "budgetCodes": true,
+        "bankLetterGeneration": true,
+        "bankExport": true,
+        "bulkBankExport": true,
+        "fullAuditExport": true,
+        "multiCompanyGroup": true,
+        "groupAdminDashboard": true,
+        "customApprovalChains": true,
+        "dedicatedOnboarding": true,
+        "prioritySupport": true,
+        "multiLevelApprovals": true,
+        "customBranding": true,
+        "apiAccess": true,
+        "ipAllowlist": true,
+        "sso": true
+      }
+    }
+  ],
+  "planOrder": [
+    "starter",
+    "business",
+    "enterprise"
+  ],
+  "addOns": [
+    {
+      "key": "additional_subsidiary",
+      "name": "Additional subsidiary",
+      "description": "Add another company to your group",
+      "minPlan": "enterprise",
+      "pricing": [
+        {
+          "currency": "NGN",
+          "monthly": 40000,
+          "monthlyLabel": "₦40,000/month",
+          "annualPerMonth": null,
+          "annualTotal": null,
+          "annualLabel": null,
+          "taxRate": 0.075,
+          "taxLabel": "VAT 7.5%"
+        }
+      ]
+    },
+    {
+      "key": "group_admin_access",
+      "name": "Group admin access",
+      "description": "Cross-company visibility and group-level reporting",
+      "minPlan": "enterprise",
+      "pricing": [
+        {
+          "currency": "NGN",
+          "monthly": 30000,
+          "monthlyLabel": "₦30,000/month",
+          "annualPerMonth": null,
+          "annualTotal": null,
+          "annualLabel": null,
+          "taxRate": 0.075,
+          "taxLabel": "VAT 7.5%"
+        }
+      ]
+    },
+    {
+      "key": "extra_storage",
+      "name": "Extra storage (10GB)",
+      "description": "Additional document and attachment storage",
+      "minPlan": "business",
+      "pricing": [
+        {
+          "currency": "NGN",
+          "monthly": 5000,
+          "monthlyLabel": "₦5,000/month per 10GB",
+          "annualPerMonth": null,
+          "annualTotal": null,
+          "annualLabel": null,
+          "taxRate": 0.075,
+          "taxLabel": "VAT 7.5%"
+        }
       ]
     }
-  ]
+  ],
+  "featureLabels": {
+    "approvalChain": "Structured approval workflow",
+    "whatsappNotifications": "WhatsApp alerts for your team",
+    "emailNotifications": "Email alerts for your team",
+    "pdfExport": "Export approved documents as PDF",
+    "watermarkedExports": "Watermarked document exports",
+    "auditTrail": "Track every document action",
+    "fullAuditTrail": "Complete compliance visibility",
+    "csvExport": "Download data as spreadsheets",
+    "documentAttachments": "Attach supporting documents",
+    "analytics": "Understand your spending patterns",
+    "recurringTemplates": "Automate recurring payments",
+    "delegation": "Delegate approvals while away",
+    "slaTracking": "Monitor approval speed",
+    "budgetCodes": "Tag spending by budget category",
+    "bankLetterGeneration": "Generate formatted bank-letter PDFs",
+    "bankExport": "Export bank-ready payment files",
+    "bulkBankExport": "Export payments in bulk",
+    "fullAuditExport": "Export full compliance records",
+    "multiCompanyGroup": "Manage multiple companies together",
+    "groupAdminDashboard": "Oversee all subsidiaries from one view",
+    "customApprovalChains": "Design your own approval process",
+    "dedicatedOnboarding": "Guided setup with a dedicated specialist",
+    "prioritySupport": "Priority access to support",
+    "multiLevelApprovals": "Route approvals through multiple reviewers",
+    "customBranding": "Brand your exported documents",
+    "apiAccess": "Connect external systems via API",
+    "ipAllowlist": "Restrict access by IP address",
+    "mfaPolicy": "Enforce multi-factor authentication",
+    "sso": "Single sign-on (SSO) and SCIM provisioning"
+  },
+  "moduleOrder": [
+    "pay",
+    "procure",
+    "vault",
+    "audit",
+    "connect"
+  ],
+  "modules": {
+    "pay": {
+      "name": "Avrentis Payables",
+      "sidebarLabel": "Payables",
+      "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank.",
+      "features": [
+        "approvalChain",
+        "pdfExport",
+        "bankExport",
+        "bulkBankExport",
+        "bankLetterGeneration",
+        "watermarkedExports"
+      ]
+    },
+    "procure": {
+      "name": "Avrentis Procurement",
+      "sidebarLabel": "Procurement",
+      "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking",
+      "features": [
+        "approvalChain",
+        "documentAttachments"
+      ]
+    },
+    "vault": {
+      "name": "Avrentis Documents",
+      "sidebarLabel": "Documents",
+      "description": "Centralised document storage, searchable archive, document versioning, tagging, role-based access control",
+      "features": [
+        "documentAttachments",
+        "csvExport"
+      ]
+    },
+    "audit": {
+      "name": "Avrentis Compliance",
+      "sidebarLabel": "Compliance",
+      "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces",
+      "features": [
+        "fullAuditTrail",
+        "fullAuditExport"
+      ]
+    },
+    "connect": {
+      "name": "Avrentis Integrations",
+      "sidebarLabel": "Integrations",
+      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations",
+      "features": [
+        "apiAccess"
+      ]
+    }
+  }
 }

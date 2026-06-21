@@ -5,6 +5,7 @@
  */
 
 import { FileText, Search } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 
 export function VaultPreview() {
   const documents = [
@@ -39,8 +40,8 @@ export function VaultPreview() {
       name: "PO-2026-0091 · Diesel supply.pdf",
       category: "Purchase Order",
       tag: "Issued",
-      tagColor: "#C68B2F",
-      tagBg: "rgba(198,139,47,0.08)",
+      tagColor: "var(--color-gold)",
+      tagBg: "rgba(var(--color-gold-rgb), 0.08)",
       size: "304 KB",
       added: "3 days ago",
     },
@@ -112,14 +113,14 @@ export function VaultPreview() {
                 width: "28px",
                 height: "28px",
                 borderRadius: "4px",
-                backgroundColor: "rgba(198,139,47,0.08)",
+                backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 flexShrink: 0,
               }}
             >
-              <FileText size={14} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+              <FileText size={14} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <p

@@ -17,10 +17,10 @@ const STATUS_CONFIG: Record<DocumentStatus, { label: string; dot: string; text: 
   },
   under_review: {
     label: "Under review",
-    dot: "#C68B2F",
+    dot: "var(--color-gold)",
     text: "#92400e",
-    bg: "rgba(198,139,47,0.08)",
-    border: "rgba(198,139,47,0.4)",
+    bg: "rgba(var(--color-gold-rgb), 0.08)",
+    border: "rgba(var(--color-gold-rgb), 0.4)",
   },
   approved: {
     label: "Approved",

@@ -11,6 +11,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -30,7 +31,7 @@ interface Entry {
 }
 
 const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border: string }> = {
-  feature: { label: "FEATURE", color: "#C68B2F", bg: "rgba(198,139,47,0.10)", border: "rgba(198,139,47,0.28)" },
+  feature: { label: "FEATURE", color: "var(--color-gold)", bg: "rgba(var(--color-gold-rgb), 0.10)", border: "rgba(var(--color-gold-rgb), 0.28)" },
   improvement: {
     label: "IMPROVEMENT",
     color: "#0369a1",
@@ -59,12 +60,13 @@ const ENTRIES: Entry[] = [
   {
     date: "April 2026",
     tag: "improvement",
-    title: "Module names made clearer.",
+    title: "Module names aligned across the platform.",
     body:
-      "Renamed the six product modules to labels that match how operators actually describe them. Avrentis Procure → Procurement, Vault → Records, People → HR, Connect → Integrations.",
+      "The six product modules now carry one name everywhere — the marketing site, the product, and your invoices all say the same thing. Pay → Payables, Vault → Documents, Audit → Compliance, People → HR, Connect → Integrations.",
     bullets: [
-      "Procure → Procurement",
-      "Vault → Records",
+      "Pay → Payables",
+      "Vault → Documents",
+      "Audit → Compliance",
       "People → HR",
       "Connect → Integrations",
     ],
@@ -208,7 +210,7 @@ export function ChangelogProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -327,7 +329,7 @@ export function ChangelogProductPage() {
                         width: "4px",
                         height: "4px",
                         borderRadius: "50%",
-                        backgroundColor: "#C68B2F",
+                        backgroundColor: "var(--color-gold)",
                       }}
                     />
                     {b}
@@ -341,7 +343,7 @@ export function ChangelogProductPage() {
                     fontFamily: sans,
                     fontSize: "13px",
                     fontWeight: 600,
-                    color: "#C68B2F",
+                    color: "var(--color-gold)",
                     textDecoration: "none",
                     display: "inline-flex",
                     alignItems: "center",
@@ -376,7 +378,7 @@ export function ChangelogProductPage() {
             }}
           >
             <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-              <Sparkles size={20} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" style={{ marginTop: "3px", flexShrink: 0 }} />
+              <Sparkles size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
                 <h3
                   style={{
@@ -401,7 +403,7 @@ export function ChangelogProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "13px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 18px",

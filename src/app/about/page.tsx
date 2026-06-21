@@ -42,7 +42,7 @@ export default function AboutPage() {
           >
             <p
               style={{
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -50,7 +50,7 @@ export default function AboutPage() {
                 margin: "0 0 16px",
               }}
             >
-              ABOUT AVRENTIS
+              About Avrentis
             </p>
             <h1
               style={{
@@ -114,7 +114,7 @@ export default function AboutPage() {
 
             <p
               style={{
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 fontSize: 10,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -152,7 +152,7 @@ export default function AboutPage() {
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <p
               style={{
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -220,7 +220,7 @@ export default function AboutPage() {
           >
             <p
               style={{
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 fontSize: 12,
                 fontWeight: 600,
                 textTransform: "uppercase",
@@ -260,8 +260,8 @@ export default function AboutPage() {
               href="/contact?intent=careers"
               style={{
                 display: "inline-block",
-                border: "1px solid #C68B2F",
-                color: "#C68B2F",
+                border: "1px solid var(--color-gold)",
+                color: "var(--color-gold)",
                 backgroundColor: "transparent",
                 padding: "10px 24px",
                 fontSize: 13,
@@ -317,7 +317,7 @@ export default function AboutPage() {
               href="/contact"
               style={{
                 display: "inline-block",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 fontSize: 16,
                 fontWeight: 500,
                 marginTop: 20,

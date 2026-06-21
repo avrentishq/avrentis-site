@@ -42,7 +42,7 @@ function getHighlights(plan: Plan): string[] {
 const TRIAL_HIGHLIGHTS: string[] = [
   "Full Business tier for 14 days",
   "Up to 10 users",
-  "Pay + Procurement + Records + Audit (real data)",
+  "Payables + Procurement + Documents + Compliance (real data)",
   "Bank-ready PDF exports (trial watermark)",
   "1 GB storage during trial",
   "30-day read-only grace after trial",
@@ -82,7 +82,7 @@ export function Pricing({ data }: PricingProps) {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -191,7 +191,7 @@ export function Pricing({ data }: PricingProps) {
                 border: "none",
                 transition: "all 150ms ease",
                 backgroundColor:
-                  billing === "annual" ? "#C68B2F" : "transparent",
+                  billing === "annual" ? "var(--color-gold)" : "transparent",
                 color: billing === "annual" ? "#0f172a" : "#64748b",
               }}
             >
@@ -271,8 +271,8 @@ export function Pricing({ data }: PricingProps) {
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#94a3b8", margin: "0 0 20px", minHeight: "16px" }}>
               No credit card required
             </p>
-            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(198,139,47,0.08)", color: "#C68B2F", border: "1px solid rgba(198,139,47,0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
-              Pay + Procurement + Records + Audit
+            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
+              Payables + Procurement + Documents + Compliance
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
               {TRIAL_HIGHLIGHTS.map((feature) => (
@@ -327,7 +327,7 @@ export function Pricing({ data }: PricingProps) {
                 style={{
                   backgroundColor: isFeatured ? "#0f172a" : "#FFFFFF",
                   border: isFeatured
-                    ? "1px solid rgba(198,139,47,0.3)"
+                    ? "1px solid rgba(var(--color-gold-rgb), 0.3)"
                     : "1px solid #e2e8f0",
                   borderRadius: "12px",
                   padding: "32px",
@@ -340,7 +340,7 @@ export function Pricing({ data }: PricingProps) {
                   <span
                     style={{
                       display: "inline-block",
-                      backgroundColor: "#C68B2F",
+                      backgroundColor: "var(--color-gold)",
                       color: "#0f172a",
                       fontSize: "11px",
                       fontWeight: 600,
@@ -444,10 +444,10 @@ export function Pricing({ data }: PricingProps) {
                       padding: "4px 10px",
                       borderRadius: "4px",
                       backgroundColor: isFeatured
-                        ? "rgba(198,139,47,0.15)"
-                        : "rgba(198,139,47,0.08)",
-                      color: "#C68B2F",
-                      border: "1px solid rgba(198,139,47,0.2)",
+                        ? "rgba(var(--color-gold-rgb), 0.15)"
+                        : "rgba(var(--color-gold-rgb), 0.08)",
+                      color: "var(--color-gold)",
+                      border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                       marginBottom: "16px",
                       alignSelf: "flex-start",
                     }}
@@ -482,7 +482,7 @@ export function Pricing({ data }: PricingProps) {
                     >
                       <span
                         style={{
-                          color: isFeatured ? "#C68B2F" : "#27AE60",
+                          color: isFeatured ? "var(--color-gold)" : "#27AE60",
                           fontWeight: 600,
                           flexShrink: 0,
                         }}
@@ -511,7 +511,7 @@ export function Pricing({ data }: PricingProps) {
                     transition: "all 150ms ease",
                     ...(isFeatured
                       ? {
-                          backgroundColor: "#C68B2F",
+                          backgroundColor: "var(--color-gold)",
                           color: "#0f172a",
                           border: "none",
                         }
@@ -523,14 +523,14 @@ export function Pricing({ data }: PricingProps) {
                   }}
                   onMouseEnter={(e) => {
                     if (isFeatured) {
-                      e.currentTarget.style.backgroundColor = "#A87425";
+                      e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
                     } else {
                       e.currentTarget.style.borderColor = "#0f172a";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (isFeatured) {
-                      e.currentTarget.style.backgroundColor = "#C68B2F";
+                      e.currentTarget.style.backgroundColor = "var(--color-gold)";
                     } else {
                       e.currentTarget.style.borderColor = "#e2e8f0";
                     }

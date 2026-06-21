@@ -8,6 +8,7 @@
  */
 
 import { Check, X, AlertTriangle, ShieldCheck, Clock } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 
 const mono = "'IBM Plex Mono', monospace";
 const sans = "var(--font-sans)";
@@ -49,12 +50,12 @@ export function IsolationMockup() {
       >
         <div style={{ color: "#64748b" }}>-- every tenant-scoped query runs inside this wrap</div>
         <div style={{ color: "#e2e8f0" }}>
-          <span style={{ color: "#C68B2F" }}>withTenantContext</span>(<span style={{ color: "#94D2BD" }}>tenantId</span>,{" "}
+          <span style={{ color: "var(--color-gold)" }}>withTenantContext</span>(<span style={{ color: "#94D2BD" }}>tenantId</span>,{" "}
           <span style={{ color: "#94D2BD" }}>async</span> () =&gt; {"{"}
         </div>
         <div style={{ color: "#e2e8f0", paddingLeft: "16px" }}>
           <span style={{ color: "#94D2BD" }}>SET LOCAL</span> app.tenant_id ={" "}
-          <span style={{ color: "#C68B2F" }}>&apos;{"{tenantId}"}&apos;</span>;
+          <span style={{ color: "var(--color-gold)" }}>&apos;{"{tenantId}"}&apos;</span>;
         </div>
         <div style={{ color: "#e2e8f0", paddingLeft: "16px" }}>
           <span style={{ color: "#94D2BD" }}>SELECT</span> * <span style={{ color: "#94D2BD" }}>FROM</span> vouchers;{" "}
@@ -110,13 +111,13 @@ export function IsolationMockup() {
           fontFamily: sans,
           fontSize: "12px",
           color: "#475569",
-          backgroundColor: "rgba(198,139,47,0.08)",
-          border: "1px solid rgba(198,139,47,0.22)",
+          backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+          border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
           borderRadius: "6px",
           padding: "10px 12px",
         }}
       >
-        <ShieldCheck size={14} color="#C68B2F" strokeWidth={2} aria-hidden="true" />
+        <ShieldCheck size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" />
         <span>
           A bare <code style={{ fontFamily: mono }}>db.query()</code> without tenant context is blocked at the database.
         </span>
@@ -212,15 +213,15 @@ export function AuthorityMockup() {
           fontFamily: sans,
           fontSize: "12px",
           color: "#475569",
-          backgroundColor: "rgba(198,139,47,0.08)",
-          border: "1px solid rgba(198,139,47,0.22)",
+          backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+          border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
           borderRadius: "6px",
           padding: "10px 12px",
           marginTop: "12px",
           lineHeight: 1.55,
         }}
       >
-        <AlertTriangle size={14} color="#C68B2F" strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
+        <AlertTriangle size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
         <span>
           <b>Separation of duties</b> — the submitter of a voucher cannot also approve it. Enforced in the state
           machine, not at the UI.
@@ -254,7 +255,7 @@ export function SessionMockup() {
                 width: "8px",
                 height: "8px",
                 borderRadius: "50%",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
               }}
             />
             <span style={{ fontFamily: sans, fontSize: "13px", fontWeight: 600, color: "#0f172a" }}>
@@ -319,7 +320,7 @@ export function SessionMockup() {
           "Tenant-wide revocation",
         ].map((t) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Check size={12} color="#C68B2F" strokeWidth={2.5} aria-hidden="true" />
+            <Check size={12} color={BRAND_COLORS.gold} strokeWidth={2.5} aria-hidden="true" />
             <span style={{ fontFamily: sans, fontSize: "12px", color: "#334155" }}>{t}</span>
           </div>
         ))}
@@ -341,7 +342,7 @@ export function AuditMockup() {
     <div style={{ padding: "22px", backgroundColor: "#F8FAFC" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
         <Label>AUDIT TRAIL · PV-2026-0184</Label>
-        <span style={{ fontFamily: mono, fontSize: "10px", color: "#C68B2F", letterSpacing: "0.06em" }}>
+        <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold)", letterSpacing: "0.06em" }}>
           IMMUTABLE
         </span>
       </div>
@@ -374,7 +375,7 @@ export function AuditMockup() {
                   style={{
                     fontFamily: mono,
                     fontSize: "10px",
-                    color: "#C68B2F",
+                    color: "var(--color-gold)",
                     letterSpacing: "0.04em",
                     textTransform: "uppercase",
                   }}
@@ -409,15 +410,15 @@ export function AuditMockup() {
           fontFamily: sans,
           fontSize: "12px",
           color: "#475569",
-          backgroundColor: "rgba(198,139,47,0.08)",
-          border: "1px solid rgba(198,139,47,0.22)",
+          backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+          border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
           borderRadius: "6px",
           padding: "10px 12px",
           marginTop: "12px",
           lineHeight: 1.55,
         }}
       >
-        <ShieldCheck size={14} color="#C68B2F" strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
+        <ShieldCheck size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
         <span>
           Database triggers block <b>UPDATE</b> and <b>DELETE</b> on audit rows. Not even a platform administrator can
           edit history.
@@ -471,8 +472,8 @@ export function LifecycleMockup() {
           </div>
           <div
             style={{
-              backgroundColor: "rgba(198,139,47,0.10)",
-              border: "1px solid rgba(198,139,47,0.22)",
+              backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
+              border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
               borderRadius: "6px",
               padding: "10px 12px",
               display: "flex",
@@ -494,7 +495,7 @@ export function LifecycleMockup() {
                 gap: "6px",
               }}
             >
-              <Clock size={12} color="#C68B2F" strokeWidth={2} aria-hidden="true" />
+              <Clock size={12} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" />
               2026-05-15 · auto-revoke
             </div>
           </div>
@@ -576,7 +577,7 @@ export function InfraMockup() {
               style={{
                 fontFamily: mono,
                 fontSize: "11px",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
                 minWidth: "110px",

@@ -9,6 +9,7 @@ import {
   Link2,
   type LucideIcon,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Avrentis platform — six modules, one system of record",
     description:
-      "Six modules share one approval engine and one permanent record. Pay, Procurement, Records, Audit, HR, Integrations.",
+      "Six modules share one approval engine and one permanent record. Payables, Procurement, Documents, Compliance, HR, Integrations.",
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -40,7 +41,7 @@ interface Module {
 const MODULES: Module[] = [
   {
     slug: "pay",
-    name: "Avrentis Pay",
+    name: "Avrentis Payables",
     subtitle: "Payment approvals & authorisation",
     body:
       "Every payment voucher submitted, reviewed, and sanctioned through a defined approval chain. Bank-ready PDFs the moment the MD signs.",
@@ -58,7 +59,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "vault",
-    name: "Avrentis Records",
+    name: "Avrentis Documents",
     subtitle: "Institutional memory",
     body:
       "Every approved document centrally stored, tagged, and instantly retrievable. Replace scattered drives and physical files with one searchable repository.",
@@ -67,7 +68,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "audit",
-    name: "Avrentis Audit",
+    name: "Avrentis Compliance",
     subtitle: "Compliance & accountability",
     body:
       "A tamper-proof log of every action — submissions, approvals, queries, signatures. Meet SOC2 + internal audits without the manual scramble.",
@@ -99,8 +100,8 @@ const STATUS_BADGE: Record<
   { label: string; bg: string; color: string }
 > = {
   available: { label: "Available", bg: "rgba(39,174,96,0.12)", color: "#047857" },
-  coming_soon: { label: "Coming soon", bg: "rgba(198,139,47,0.12)", color: "#C68B2F" },
-  partial: { label: "In beta", bg: "rgba(198,139,47,0.12)", color: "#C68B2F" },
+  coming_soon: { label: "Coming soon", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold)" },
+  partial: { label: "In beta", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold)" },
   roadmap: { label: "Roadmap", bg: "rgba(148,163,184,0.12)", color: "#64748b" },
 };
 
@@ -150,12 +151,12 @@ export default function ProductOverviewPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
           >
-            THE AVRENTIS PLATFORM
+            The Avrentis Platform
           </span>
           <h1
             style={{
@@ -192,7 +193,7 @@ export default function ProductOverviewPage() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -236,7 +237,7 @@ export default function ProductOverviewPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -281,7 +282,7 @@ export default function ProductOverviewPage() {
                     textDecoration: "none",
                     transition: "border-color 200ms ease, transform 200ms ease",
                   }}
-                  className="hover:!border-[#C68B2F]/40"
+                  className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                     <div
@@ -289,13 +290,13 @@ export default function ProductOverviewPage() {
                         width: "40px",
                         height: "40px",
                         borderRadius: "6px",
-                        backgroundColor: "rgba(198,139,47,0.12)",
+                        backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
                       }}
                     >
-                      <Icon size={20} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                      <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                     </div>
                     <span
                       style={{
@@ -330,7 +331,7 @@ export default function ProductOverviewPage() {
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontSize: "12px",
-                        color: "#C68B2F",
+                        color: "var(--color-gold)",
                         margin: 0,
                         fontWeight: 500,
                       }}
@@ -380,7 +381,7 @@ export default function ProductOverviewPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -443,7 +444,7 @@ export default function ProductOverviewPage() {
                     fontSize: "12px",
                     fontWeight: 600,
                     letterSpacing: "0.08em",
-                    color: "#C68B2F",
+                    color: "var(--color-gold)",
                   }}
                 >
                   {s.step}

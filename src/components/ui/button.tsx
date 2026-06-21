@@ -17,14 +17,14 @@ interface ButtonProps {
 
 const VARIANTS: Record<ButtonVariant, React.CSSProperties> = {
   primary: {
-    backgroundColor: "#C68B2F",
+    backgroundColor: "var(--color-gold)",
     color: "#0f172a",
     border: "none",
   },
   navy: {
     backgroundColor: "#0f172a",
-    color: "#C68B2F",
-    border: "0.5px solid rgba(198,139,47,0.4)",
+    color: "var(--color-gold)",
+    border: "0.5px solid rgba(var(--color-gold-rgb), 0.4)",
   },
   outline: {
     backgroundColor: "transparent",
@@ -33,14 +33,14 @@ const VARIANTS: Record<ButtonVariant, React.CSSProperties> = {
   },
   ghost: {
     backgroundColor: "transparent",
-    color: "#C68B2F",
+    color: "var(--color-gold)",
     border: "none",
     padding: "0",
   },
 };
 
 const HOVER_STYLES: Partial<Record<ButtonVariant, { backgroundColor?: string; borderColor?: string; opacity?: number }>> = {
-  primary: { backgroundColor: "#A87425" },
+  primary: { backgroundColor: "var(--color-gold-hover)" },
   navy: { backgroundColor: "#1e293b" },
   outline: { borderColor: "#0f172a" },
 };

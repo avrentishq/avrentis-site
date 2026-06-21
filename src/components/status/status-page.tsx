@@ -32,8 +32,8 @@ const STATUS_STYLES: Record<Status, { label: string; color: string; bg: string; 
   },
   degraded: {
     label: "Degraded",
-    color: "#C68B2F",
-    bg: "rgba(198,139,47,0.10)",
+    color: "var(--color-gold)",
+    bg: "rgba(var(--color-gold-rgb), 0.10)",
     icon: CircleAlert,
   },
   outage: {
@@ -99,7 +99,7 @@ export function StatusProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "16px",
             }}
@@ -172,7 +172,7 @@ export function StatusProductPage() {
               <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", margin: 0, lineHeight: 1.55 }}>
                 Current snapshot. Enterprise customers receive incident
                 notifications directly under their order form —{" "}
-                <Link href="/contact?intent=subscribe" style={{ color: "#C68B2F", textDecoration: "none" }}>
+                <Link href="/contact?intent=subscribe" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
                   subscribe to general status updates
                 </Link>
                 .
@@ -345,7 +345,7 @@ export function StatusProductPage() {
             Live uptime monitoring and a dedicated status subdomain are on the
             way. Until then this page is hand-curated and updated as conditions
             change. See the{" "}
-            <Link href="/trust" style={{ color: "#C68B2F", textDecoration: "none" }}>
+            <Link href="/trust" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
               trust centre
             </Link>{" "}
             for the controls behind the platform.

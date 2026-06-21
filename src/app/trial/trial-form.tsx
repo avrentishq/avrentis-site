@@ -18,6 +18,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
@@ -163,7 +164,7 @@ function SubmitButton({ isValid }: { isValid: boolean }) {
         fontFamily: sans,
         fontWeight: 600,
         fontSize: "14px",
-        backgroundColor: disabled ? "#A87425" : "#C68B2F",
+        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
         color: "#0f172a",
         border: "none",
         borderRadius: "6px",
@@ -279,7 +280,7 @@ export function TrialForm() {
             fontSize: "12px",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             display: "block",
             marginBottom: "16px",
           }}
@@ -355,7 +356,7 @@ export function TrialForm() {
             >
               <Check
                 size={14}
-                color="#C68B2F"
+                color={BRAND_COLORS.gold}
                 strokeWidth={2.5}
                 style={{ marginTop: "3px", flexShrink: 0 }}
                 aria-hidden="true"
@@ -569,12 +570,12 @@ export function TrialForm() {
               required
               checked={consentValue}
               onChange={(e) => setConsentValue(e.target.checked)}
-              style={{ marginTop: "3px", accentColor: "#C68B2F", width: "16px", height: "16px" }}
+              style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
             />
             <span>
               I agree that Avrentis may use the details above to provision and run my trial
               workspace, in line with the{" "}
-              <Link href="/privacy" style={{ color: "#C68B2F", textDecoration: "none" }}>
+              <Link href="/privacy" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
                 privacy policy
               </Link>
               .{" "}
@@ -675,13 +676,13 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
           width: "56px",
           height: "56px",
           borderRadius: "50%",
-          backgroundColor: "rgba(198,139,47,0.12)",
+          backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Mail size={26} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+        <Mail size={26} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
       </div>
       <h2
         style={{
@@ -808,7 +809,7 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 500,
-          color: "#C68B2F",
+          color: "var(--color-gold)",
           textDecoration: "none",
           display: "inline-flex",
           alignItems: "center",
@@ -882,7 +883,7 @@ function HardBlockedCard({ message }: { message: string }) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 600,
-          color: "#C68B2F",
+          color: "var(--color-gold)",
           textDecoration: "none",
         }}
       >

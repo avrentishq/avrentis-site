@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Lock, Check, Zap, Globe } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 
@@ -104,7 +105,7 @@ export function CtaBanner() {
               fontFamily: "var(--font-sans)",
               fontWeight: 600,
               fontSize: "16px",
-              backgroundColor: "#C68B2F",
+              backgroundColor: "var(--color-gold)",
               color: "#0f172a",
               border: "none",
               borderRadius: "6px",
@@ -118,10 +119,10 @@ export function CtaBanner() {
               transition: "background-color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#A87425";
+              e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#C68B2F";
+              e.currentTarget.style.backgroundColor = "var(--color-gold)";
             }}
           >
             Start your 14-day trial
@@ -202,7 +203,7 @@ export function CtaBanner() {
                 color: "#64748b",
               }}
             >
-              <Icon size={14} color="#C68B2F" strokeWidth={2} />
+              <Icon size={14} color={BRAND_COLORS.gold} strokeWidth={2} />
               {label}
             </span>
           ))}

@@ -44,7 +44,7 @@ interface AmbientGlowProps {
 
 export function AmbientGlow({
   size = 480,
-  color = "#C68B2F",
+  color = "var(--color-gold)",
   intensity = 0.35,
   top,
   left,

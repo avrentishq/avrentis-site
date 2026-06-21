@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
+import { BRAND, BRAND_COLORS, MODULES as PRODUCT_MODULES } from "@/lib/brand";
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 
@@ -26,39 +27,39 @@ const NAV_LINKS = [
 
 const MODULES = [
   {
-    name: "Avrentis Pay",
+    name: PRODUCT_MODULES.pay.name,
     desc: "Structured payment approvals",
-    href: "/product/pay",
+    href: `/product/${PRODUCT_MODULES.pay.slug}`,
     icon: CreditCard,
   },
   {
-    name: "Avrentis Procurement",
+    name: PRODUCT_MODULES.procure.name,
     desc: "Procurement on record",
-    href: "/product/procure",
+    href: `/product/${PRODUCT_MODULES.procure.slug}`,
     icon: ShoppingCart,
   },
   {
-    name: "Avrentis Records",
+    name: PRODUCT_MODULES.vault.name,
     desc: "Institutional memory",
-    href: "/product/vault",
+    href: `/product/${PRODUCT_MODULES.vault.slug}`,
     icon: Archive,
   },
   {
-    name: "Avrentis Audit",
+    name: PRODUCT_MODULES.audit.name,
     desc: "Compliance & accountability",
-    href: "/product/audit",
+    href: `/product/${PRODUCT_MODULES.audit.slug}`,
     icon: ClipboardCheck,
   },
   {
-    name: "Avrentis HR",
+    name: PRODUCT_MODULES.people.name,
     desc: "Workforce structure",
-    href: "/product/people",
+    href: `/product/${PRODUCT_MODULES.people.slug}`,
     icon: Users,
   },
   {
-    name: "Avrentis Integrations",
+    name: PRODUCT_MODULES.connect.name,
     desc: "External systems",
-    href: "/product/connect",
+    href: `/product/${PRODUCT_MODULES.connect.slug}`,
     icon: Link2,
   },
 ];
@@ -123,10 +124,10 @@ export function Navbar() {
       fontFamily: "var(--font-sans)",
       fontWeight: 400,
       fontSize: "14px",
-      color: active ? "#C68B2F" : "#ffffff",
+      color: active ? "var(--color-gold)" : "#ffffff",
       textDecoration: "none",
       transition: "color 150ms ease",
-      borderBottom: active ? "2px solid #C68B2F" : "2px solid transparent",
+      borderBottom: active ? "2px solid var(--color-gold)" : "2px solid transparent",
       paddingBottom: "2px",
     };
   };
@@ -141,7 +142,7 @@ export function Navbar() {
           right: 0,
           height: "64px",
           backgroundColor: "#0f172a",
-          borderBottom: "0.5px solid rgba(198,139,47,0.2)",
+          borderBottom: "0.5px solid rgba(var(--color-gold-rgb), 0.2)",
           boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.15)" : "none",
           zIndex: 50,
           transition: "box-shadow 300ms ease",
@@ -159,7 +160,7 @@ export function Navbar() {
           }}
         >
           {/* ── Logo ──────────────────────────────────────────────── */}
-          <Link href="/" aria-label="AVRENTIS home">
+          <Link href="/" aria-label={`${BRAND.name} home`}>
             <AvrentisLogo variant="primary" size={36} wordmarkColor="#ffffff" />
           </Link>
 
@@ -185,7 +186,7 @@ export function Navbar() {
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = "#C68B2F";
+                    e.currentTarget.style.color = "var(--color-gold)";
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive("/product"))
@@ -211,7 +212,7 @@ export function Navbar() {
                     left: "-16px",
                     width: "520px",
                     backgroundColor: "#0f172a",
-                    border: "1px solid rgba(198,139,47,0.15)",
+                    border: "1px solid rgba(var(--color-gold-rgb), 0.15)",
                     borderRadius: "8px",
                     padding: "24px",
                     boxShadow: "0 16px 40px rgba(0,0,0,0.3)",
@@ -227,7 +228,7 @@ export function Navbar() {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "10px",
-                        color: "#C68B2F",
+                        color: "var(--color-gold)",
                         textTransform: "uppercase",
                         letterSpacing: "0.10em",
                         marginBottom: "12px",
@@ -260,7 +261,7 @@ export function Navbar() {
                             }}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.backgroundColor =
-                                "rgba(198,139,47,0.06)";
+                                "rgba(var(--color-gold-rgb), 0.06)";
                             }}
                             onMouseLeave={(e) => {
                               e.currentTarget.style.backgroundColor =
@@ -272,14 +273,14 @@ export function Navbar() {
                                 width: "32px",
                                 height: "32px",
                                 borderRadius: "50%",
-                                backgroundColor: "rgba(198,139,47,0.08)",
+                                backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 flexShrink: 0,
                               }}
                             >
-                              <Icon size={16} color="#C68B2F" />
+                              <Icon size={16} color={BRAND_COLORS.gold} />
                             </div>
                             <div>
                               <div
@@ -318,7 +319,7 @@ export function Navbar() {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "10px",
-                        color: "#C68B2F",
+                        color: "var(--color-gold)",
                         textTransform: "uppercase",
                         letterSpacing: "0.10em",
                         marginBottom: "12px",
@@ -350,7 +351,7 @@ export function Navbar() {
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor =
-                              "rgba(198,139,47,0.06)";
+                              "rgba(var(--color-gold-rgb), 0.06)";
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor =
@@ -372,7 +373,7 @@ export function Navbar() {
               style={activeLinkStyle("/customers")}
               onMouseEnter={(e) => {
                 if (!isActive("/customers"))
-                  e.currentTarget.style.color = "#C68B2F";
+                  e.currentTarget.style.color = "var(--color-gold)";
               }}
               onMouseLeave={(e) => {
                 if (!isActive("/customers"))
@@ -388,7 +389,7 @@ export function Navbar() {
               style={activeLinkStyle("/pricing")}
               onMouseEnter={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = "#C68B2F";
+                  e.currentTarget.style.color = "var(--color-gold)";
               }}
               onMouseLeave={(e) => {
                 if (!isActive("/pricing"))
@@ -467,7 +468,7 @@ export function Navbar() {
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
                 lineHeight: 1,
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 border: "none",
                 borderRadius: "3px",
@@ -481,10 +482,10 @@ export function Navbar() {
                 transition: "background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#A87425";
+                e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#C68B2F";
+                e.currentTarget.style.backgroundColor = "var(--color-gold)";
               }}
             >
               Start trial &rarr;

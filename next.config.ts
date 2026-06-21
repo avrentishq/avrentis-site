@@ -1,8 +1,53 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV !== "production";
+
+/**
+ * Content-Security-Policy. The site renders heavy inline `style={{}}` objects and
+ * a small inline JSON-LD `<script>`, so `style-src`/`script-src` must allow
+ * `'unsafe-inline'`. Fonts are self-hosted via `next/font`, so no external font
+ * origin is needed. In development, Turbopack + React Refresh need `'unsafe-eval'`
+ * and a websocket connection for HMR — both added only when not in production.
+ *
+ * Future hardening: move to a nonce-based `script-src` (requires per-request
+ * rendering) to drop `'unsafe-inline'` on scripts.
+ */
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "frame-ancestors 'none'",
+  "img-src 'self' data: blob:",
+  "font-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `connect-src 'self' https://app.avrentis.com${isDev ? " ws:" : ""}`,
+  "form-action 'self'",
+].join("; ");
+
+const securityHeaders = [
+  { key: "Content-Security-Policy", value: contentSecurityPolicy },
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+  },
+];
+
 const config: NextConfig = {
+  // Don't disclose the framework/version.
+  poweredByHeader: false,
   turbopack: {
     root: __dirname,
+  },
+  async headers() {
+    return [{ source: "/:path*", headers: securityHeaders }];
   },
   async redirects() {
     return [

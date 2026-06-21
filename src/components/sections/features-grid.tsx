@@ -89,7 +89,7 @@ const BADGE_STYLES: Record<
   partial: {
     label: "Partially available",
     bg: "rgba(var(--color-gold-rgb), 0.1)",
-    color: "var(--color-gold)",
+    color: "var(--color-gold-on-light)",
     border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
   },
   roadmap: {
@@ -116,7 +116,7 @@ export function FeaturesGrid() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",

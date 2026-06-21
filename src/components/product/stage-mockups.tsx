@@ -547,7 +547,7 @@ export function SanctionStageMockup() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "11px",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               fontWeight: 500,
             }}
           >

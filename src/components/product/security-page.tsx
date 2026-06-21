@@ -262,7 +262,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "12px",
                 fontWeight: 500,
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
               }}
             >
@@ -543,7 +543,7 @@ export function SecurityProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -837,7 +837,7 @@ export function SecurityProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -901,7 +901,7 @@ export function SecurityProductPage() {
                   }}
                 >
                   {f.q}
-                  <span style={{ color: "var(--color-gold)", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
+                  <span style={{ color: "var(--color-gold-on-light)", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
                     +
                   </span>
                 </summary>

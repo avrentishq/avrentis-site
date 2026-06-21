@@ -86,7 +86,7 @@ export function VerifyResult({ status, message, token }: Props) {
             fontFamily: sans,
             fontSize: "13px",
             fontWeight: 600,
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             textDecoration: "none",
           }}
         >
@@ -111,7 +111,7 @@ export function VerifyResult({ status, message, token }: Props) {
           fontFamily: sans,
           fontSize: "13px",
           fontWeight: 600,
-          color: "var(--color-gold)",
+          color: "var(--color-gold-on-light)",
           textDecoration: "none",
         }}
       >

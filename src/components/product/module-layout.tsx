@@ -403,7 +403,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -512,7 +512,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "var(--color-gold)",
+              color: "var(--color-gold-on-light)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -605,7 +605,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontSize: "12px",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 display: "block",
                 marginBottom: "12px",
               }}
@@ -693,7 +693,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
                 fontWeight: 500,
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 textDecoration: "none",
                 marginTop: "16px",
                 display: "inline-flex",
@@ -720,7 +720,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontSize: "12px",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
-                color: "var(--color-gold)",
+                color: "var(--color-gold-on-light)",
                 display: "block",
                 marginBottom: "12px",
               }}

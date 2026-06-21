@@ -62,7 +62,7 @@ export function Problem() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             display: "block",
             marginBottom: "16px",
           }}

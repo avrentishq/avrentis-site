@@ -83,7 +83,7 @@ export function Pricing({ data }: PricingProps) {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-gold)",
+            color: "var(--color-gold-on-light)",
             display: "block",
             textAlign: "center",
             marginBottom: "16px",
@@ -272,7 +272,7 @@ export function Pricing({ data }: PricingProps) {
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#94a3b8", margin: "0 0 20px", minHeight: "16px" }}>
               No credit card required
             </p>
-            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
+            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
               Payables + Procurement + Documents + Compliance
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
@@ -447,7 +447,7 @@ export function Pricing({ data }: PricingProps) {
                       backgroundColor: isFeatured
                         ? "rgba(var(--color-gold-rgb), 0.15)"
                         : "rgba(var(--color-gold-rgb), 0.08)",
-                      color: "var(--color-gold)",
+                      color: isFeatured ? "var(--color-gold)" : "var(--color-gold-on-light)",
                       border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                       marginBottom: "16px",
                       alignSelf: "flex-start",

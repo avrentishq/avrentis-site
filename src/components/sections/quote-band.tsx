@@ -2,15 +2,16 @@
 
 import { motion } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { BRAND } from "@/lib/brand";
 
 export function QuoteBand() {
   return (
-    <section style={{ backgroundColor: "#0f172a", padding: "64px 40px", textAlign: "center", borderTop: "0.5px solid rgba(198,139,47,0.1)", borderBottom: "0.5px solid rgba(198,139,47,0.1)" }}>
+    <section style={{ backgroundColor: "#0f172a", padding: "64px 40px", textAlign: "center", borderTop: "0.5px solid rgba(var(--color-gold-rgb), 0.1)", borderBottom: "0.5px solid rgba(var(--color-gold-rgb), 0.1)" }}>
       <div style={{ maxWidth: "560px", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center" }}>
         <motion.span
           variants={fadeUp} initial="hidden" whileInView="visible"
           viewport={{ once: true, margin: "-40px" }} transition={fadeUpTransition}
-          style={{ fontFamily: "Georgia, serif", fontSize: "32px", color: "rgba(198,139,47,0.3)", marginBottom: "16px", lineHeight: 1 }}
+          style={{ fontFamily: "Georgia, serif", fontSize: "32px", color: "rgba(var(--color-gold-rgb), 0.3)", marginBottom: "16px", lineHeight: 1 }}
         >
           &ldquo;
         </motion.span>
@@ -28,7 +29,7 @@ export function QuoteBand() {
           viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(2)}
           style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.10em", textTransform: "uppercase", color: "#475569" }}
         >
-          AVRENTIS — FINANCIAL DECISION INFRASTRUCTURE
+          {BRAND.name} — {BRAND.positioningStatement}
         </motion.span>
       </div>
     </section>

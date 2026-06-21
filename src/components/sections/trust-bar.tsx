@@ -21,7 +21,7 @@ export function TrustBar() {
       <div style={{ maxWidth: "1200px", margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: "40px", flexWrap: "wrap" }}>
         {ITEMS.map((item) => (
           <span key={item} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "rgba(198,139,47,0.4)", flexShrink: 0 }} />
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "rgba(var(--color-gold-rgb), 0.4)", flexShrink: 0 }} />
             <span style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "11px", letterSpacing: "0.06em", textTransform: "uppercase", color: "#94a3b8" }}>
               {item}
             </span>

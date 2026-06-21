@@ -2,11 +2,12 @@
 
 import { Workflow, Package, FileCheck, Truck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { MODULES } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
 
 const config: ModuleConfig = {
   slug: "procure",
-  eyebrow: "AVRENTIS PROCURE",
+  eyebrow: MODULES.procure.name,
   headline: "Procurement on record. Vendor to issue.",
   description:
     "Every purchase order submitted, reviewed by the department head, sanctioned by the MD, and issued to the vendor through a single system of record. Line items, vendors, and delivery terms — all structured, all traceable.",
@@ -60,7 +61,7 @@ const config: ModuleConfig = {
     {
       title: "From PO to invoice to payment — one system",
       body:
-        "A PO sanctioned here becomes the vendor's reference. When the invoice arrives, Avrentis Pay references the same PO number. Full traceability from request to bank instruction.",
+        "A PO sanctioned here becomes the vendor's reference. When the invoice arrives, Avrentis Payables references the same PO number. Full traceability from request to bank instruction.",
     },
   ],
 
@@ -72,9 +73,9 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Pay", desc: "Turn sanctioned POs into paid invoices on the same rails" },
-    { slug: "audit", name: "Avrentis Audit", desc: "Every PO, every signature — permanently on record" },
-    { slug: "vault", name: "Avrentis Records", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
+    { slug: "pay", name: "Avrentis Payables", desc: "Turn sanctioned POs into paid invoices on the same rails" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Every PO, every signature — permanently on record" },
+    { slug: "vault", name: "Avrentis Documents", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
   ],
 };
 

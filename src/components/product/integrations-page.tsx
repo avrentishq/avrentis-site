@@ -11,6 +11,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -161,9 +162,9 @@ const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: st
   },
   request: {
     label: "Talk to us",
-    color: "#C68B2F",
-    bg: "rgba(198,139,47,0.10)",
-    border: "rgba(198,139,47,0.28)",
+    color: "var(--color-gold)",
+    bg: "rgba(var(--color-gold-rgb), 0.10)",
+    border: "rgba(var(--color-gold-rgb), 0.28)",
   },
 };
 
@@ -222,19 +223,19 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
                 width: "40px",
                 height: "40px",
                 borderRadius: "8px",
-                backgroundColor: "rgba(198,139,47,0.12)",
+                backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+              <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
             </div>
             <span
               style={{
                 fontFamily: mono,
                 fontSize: "11px",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 letterSpacing: "0.08em",
               }}
             >
@@ -349,7 +350,7 @@ export function IntegrationsCataloguePage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
@@ -404,7 +405,7 @@ export function IntegrationsCataloguePage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -510,7 +511,7 @@ export function IntegrationsCataloguePage() {
                   fontSize: "12px",
                   letterSpacing: "0.10em",
                   textTransform: "uppercase",
-                  color: "#C68B2F",
+                  color: "var(--color-gold)",
                   display: "block",
                   marginBottom: "12px",
                 }}
@@ -547,7 +548,7 @@ export function IntegrationsCataloguePage() {
                   fontFamily: sans,
                   fontSize: "13px",
                   fontWeight: 600,
-                  color: "#C68B2F",
+                  color: "var(--color-gold)",
                   textDecoration: "none",
                   display: "inline-flex",
                   alignItems: "center",
@@ -645,9 +646,9 @@ export function IntegrationsCataloguePage() {
               fontWeight: 600,
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
-              backgroundColor: "rgba(198,139,47,0.10)",
-              border: "1px solid rgba(198,139,47,0.28)",
+              color: "var(--color-gold)",
+              backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
+              border: "1px solid rgba(var(--color-gold-rgb), 0.28)",
               borderRadius: "20px",
               padding: "6px 14px",
               marginBottom: "20px",
@@ -709,7 +710,7 @@ export function IntegrationsCataloguePage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",

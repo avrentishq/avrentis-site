@@ -16,7 +16,7 @@ export function StatsBar() {
     <section
       style={{
         backgroundColor: "#ffffff",
-        borderTop: "2px solid #C68B2F",
+        borderTop: "2px solid var(--color-gold)",
         padding: "60px 24px",
       }}
     >

@@ -289,7 +289,7 @@ export default function TermsPage() {
           <strong>Note.</strong> These standard Terms apply to self-serve customers. Enterprise customers typically
           operate under a negotiated order form that takes precedence over any conflicting provision here. To
           request that form, send a note through{" "}
-          <Link href="/contact?intent=legal" style={{ color: "#C68B2F", textDecoration: "none" }}>
+          <Link href="/contact?intent=legal" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
             our legal enquiry form
           </Link>
           .

@@ -2,11 +2,12 @@
 
 import { Users, CalendarCheck, UserPlus, BadgeCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { MODULES } from "@/lib/brand";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
 
 const config: ModuleConfig = {
   slug: "people",
-  eyebrow: "AVRENTIS PEOPLE",
+  eyebrow: MODULES.people.name,
   headline: "HR approvals, on the same rails.",
   description:
     "The approvals your organisation already runs for money — same engine, shaped for people decisions. Leave requests, onboarding, policy acknowledgements, and performance sign-offs — all structured, routed, and permanently on record.",
@@ -72,8 +73,8 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Audit", desc: "HR events flow into the same immutable trail" },
-    { slug: "vault", name: "Avrentis Records", desc: "Employee documents and signed acknowledgements stored together" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "HR events flow into the same immutable trail" },
+    { slug: "vault", name: "Avrentis Documents", desc: "Employee documents and signed acknowledgements stored together" },
     { slug: "connect", name: "Avrentis Integrations", desc: "Push HR events into your payroll or HRIS system" },
   ],
 };

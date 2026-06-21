@@ -25,6 +25,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -165,7 +166,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "20px",
             }}
@@ -222,7 +223,7 @@ export function TrustProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",
@@ -271,7 +272,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -341,7 +342,7 @@ export function TrustProductPage() {
                   <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "#0f172a", margin: 0 }}>
                     {f.name}
                   </h3>
-                  <CheckCircle2 size={16} color="#C68B2F" strokeWidth={1.8} aria-hidden="true" />
+                  <CheckCircle2 size={16} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
                 </div>
                 <span
                   style={{
@@ -349,7 +350,7 @@ export function TrustProductPage() {
                     fontSize: "10px",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "#C68B2F",
+                    color: "var(--color-gold)",
                   }}
                 >
                   {f.status}
@@ -378,7 +379,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -539,7 +540,7 @@ export function TrustProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "13px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 18px",
@@ -569,7 +570,7 @@ export function TrustProductPage() {
             }}
           >
             Subscribe to sub-processor change notifications through our{" "}
-            <Link href="/contact?intent=subscribe" style={{ color: "#C68B2F", textDecoration: "none" }}>
+            <Link href="/contact?intent=subscribe" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
               update subscription form
             </Link>
             .
@@ -592,7 +593,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -647,13 +648,13 @@ export function TrustProductPage() {
                       width: "36px",
                       height: "36px",
                       borderRadius: "6px",
-                      backgroundColor: "rgba(198,139,47,0.12)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
                   <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "#0f172a", margin: "4px 0 0" }}>
                     {d.title}
@@ -668,7 +669,7 @@ export function TrustProductPage() {
                         fontFamily: sans,
                         fontSize: "13px",
                         fontWeight: 600,
-                        color: "#C68B2F",
+                        color: "var(--color-gold)",
                         textDecoration: "none",
                         display: "inline-flex",
                         alignItems: "center",
@@ -686,7 +687,7 @@ export function TrustProductPage() {
                         fontFamily: sans,
                         fontSize: "13px",
                         fontWeight: 600,
-                        color: "#C68B2F",
+                        color: "var(--color-gold)",
                         textDecoration: "none",
                         display: "inline-flex",
                         alignItems: "center",
@@ -720,7 +721,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -811,7 +812,7 @@ export function TrustProductPage() {
                     fontSize: "10px",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "#C68B2F",
+                    color: "var(--color-gold)",
                   }}
                 >
                   {r.label}
@@ -877,7 +878,7 @@ export function TrustProductPage() {
               fontSize: "12px",
               letterSpacing: "0.12em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "inline-block",
               marginBottom: "16px",
             }}
@@ -937,7 +938,7 @@ export function TrustProductPage() {
                 fontFamily: sans,
                 fontWeight: 600,
                 fontSize: "14px",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 padding: "0 22px",

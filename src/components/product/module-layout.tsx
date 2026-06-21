@@ -2,7 +2,7 @@
 
 /**
  * ProductModuleLayout — shared template for every Avrentis module product
- * page (Pay / Procurement / Records / Audit / HR / Integrations). Each page passes
+ * page (Payables / Procurement / Documents / Compliance / HR / Integrations). Each page passes
  * a `ModuleConfig` and the layout handles hero, pillars, platform preview,
  * use cases, plan availability, and related modules in a consistent shell.
  *
@@ -15,6 +15,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -77,15 +78,15 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
     },
     coming_soon: {
       label: "Coming soon",
-      bg: "rgba(198,139,47,0.12)",
-      color: "#C68B2F",
-      border: "1px solid rgba(198,139,47,0.3)",
+      bg: "rgba(var(--color-gold-rgb), 0.12)",
+      color: "var(--color-gold)",
+      border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
     },
     partial: {
       label: "Currently in beta",
-      bg: "rgba(198,139,47,0.12)",
-      color: "#C68B2F",
-      border: "1px solid rgba(198,139,47,0.3)",
+      bg: "rgba(var(--color-gold-rgb), 0.12)",
+      color: "var(--color-gold)",
+      border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
     },
     roadmap: {
       label: "On the roadmap",
@@ -225,7 +226,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontSize: "12px",
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
               }}
             >
               {config.eyebrow}
@@ -293,7 +294,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 600,
                   fontSize: "14px",
-                  backgroundColor: "#C68B2F",
+                  backgroundColor: "var(--color-gold)",
                   color: "#0f172a",
                   borderRadius: "6px",
                   padding: "0 22px",
@@ -338,7 +339,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 borderRadius: "10px",
                 border: "1px solid rgba(255,255,255,0.10)",
                 backgroundColor: "#F8FAFC",
-                boxShadow: "0 0 60px rgba(198,139,47,0.06), 0 30px 60px rgba(0,0,0,0.45)",
+                boxShadow: "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(0,0,0,0.45)",
                 overflow: "hidden",
               }}
             >
@@ -402,7 +403,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -459,13 +460,13 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       width: "36px",
                       height: "36px",
                       borderRadius: "6px",
-                      backgroundColor: "rgba(198,139,47,0.12)",
+                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
                   <h3
                     style={{
@@ -511,7 +512,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               fontSize: "12px",
               letterSpacing: "0.10em",
               textTransform: "uppercase",
-              color: "#C68B2F",
+              color: "var(--color-gold)",
               display: "block",
               marginBottom: "12px",
             }}
@@ -604,7 +605,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontSize: "12px",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 display: "block",
                 marginBottom: "12px",
               }}
@@ -692,7 +693,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
                 fontWeight: 500,
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 textDecoration: "none",
                 marginTop: "16px",
                 display: "inline-flex",
@@ -719,7 +720,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontSize: "12px",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
-                color: "#C68B2F",
+                color: "var(--color-gold)",
                 display: "block",
                 marginBottom: "12px",
               }}
@@ -778,7 +779,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       {rm.desc}
                     </p>
                   </div>
-                  <ArrowRight size={16} strokeWidth={1.8} color="#C68B2F" aria-hidden="true" />
+                  <ArrowRight size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                 </Link>
               ))}
             </div>

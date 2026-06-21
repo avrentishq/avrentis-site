@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const PV_DATA = {
-  tag: { label: "PAYMENT VOUCHER", bg: "rgba(198,139,47,0.08)", color: "#92400e", border: "rgba(198,139,47,0.3)" },
+  tag: { label: "PAYMENT VOUCHER", bg: "rgba(var(--color-gold-rgb), 0.08)", color: "#92400e", border: "rgba(var(--color-gold-rgb), 0.3)" },
   headline: "Every payment sanctioned before it moves.",
   body: "A Payment Voucher is raised by Staff, reviewed by Finance, and sanctioned by the MD — with every action timestamped and permanently on record.",
   link: "See Payment Voucher chain →",
@@ -69,7 +69,7 @@ export function SolutionRow({ type }: SolutionRowProps) {
           variants={fadeUp} initial="hidden" whileInView="visible"
           viewport={{ once: true, margin: "-40px" }} transition={staggerDelay(3)}
           href="#the-structure"
-          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1, backgroundColor: "transparent", color: "#C68B2F", border: "0.5px solid rgba(198,139,47,0.4)", borderRadius: "3px", height: "32px", padding: "0 16px", display: "inline-flex", alignItems: "center", textDecoration: "none" }}
+          style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "10px", letterSpacing: "0.06em", textTransform: "uppercase", lineHeight: 1, backgroundColor: "transparent", color: "var(--color-gold)", border: "0.5px solid rgba(var(--color-gold-rgb), 0.4)", borderRadius: "3px", height: "32px", padding: "0 16px", display: "inline-flex", alignItems: "center", textDecoration: "none" }}
         >
           {data.link}
         </motion.a>
@@ -89,7 +89,7 @@ export function SolutionRow({ type }: SolutionRowProps) {
         {data.rows.map((row, i) => (
           <div key={row.ref} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "10px 0", borderBottom: i < data.rows.length - 1 ? "0.5px solid #f1f5f9" : "none" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", fontWeight: 500, color: "#C68B2F" }}>{row.ref}</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "11px", fontWeight: 500, color: "var(--color-gold)" }}>{row.ref}</span>
               <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#64748b" }}>{row.desc}</span>
             </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "2px" }}>

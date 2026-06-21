@@ -10,6 +10,7 @@ import {
   ShieldOff,
   BarChart3,
 } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 
 const CARDS: { icon: LucideIcon; title: string; body: string }[] = [
@@ -61,7 +62,7 @@ export function Problem() {
             fontSize: "12px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#C68B2F",
+            color: "var(--color-gold)",
             display: "block",
             marginBottom: "16px",
           }}
@@ -139,8 +140,8 @@ export function Problem() {
                     width: "32px",
                     height: "32px",
                     borderRadius: "6px",
-                    backgroundColor: "rgba(198,139,47,0.08)",
-                    border: "1px solid rgba(198,139,47,0.2)",
+                    backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+                    border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -150,7 +151,7 @@ export function Problem() {
                   <Icon
                     size={16}
                     strokeWidth={1.5}
-                    color="#C68B2F"
+                    color={BRAND_COLORS.gold}
                     aria-hidden="true"
                   />
                 </div>

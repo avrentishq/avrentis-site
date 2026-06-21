@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { BRAND_COLORS } from "@/lib/brand";
 import { AvrentisLogo } from "@/components/ui/logo";
 
 interface MobileMenuProps {
@@ -14,10 +15,10 @@ interface MobileMenuProps {
 }
 
 const PRODUCT_MODULES = [
-  { name: "Avrentis Pay", href: "/product/pay" },
+  { name: "Avrentis Payables", href: "/product/pay" },
   { name: "Avrentis Procurement", href: "/product/procure" },
-  { name: "Avrentis Records", href: "/product/vault" },
-  { name: "Avrentis Audit", href: "/product/audit" },
+  { name: "Avrentis Documents", href: "/product/vault" },
+  { name: "Avrentis Compliance", href: "/product/audit" },
   { name: "Avrentis HR", href: "/product/people" },
   { name: "Avrentis Integrations", href: "/product/connect" },
 ];
@@ -79,7 +80,7 @@ export function MobileMenu({
                 padding: "4px",
               }}
             >
-              <X size={24} color="#C68B2F" />
+              <X size={24} color={BRAND_COLORS.gold} />
             </button>
           </div>
 
@@ -101,7 +102,7 @@ export function MobileMenu({
                   fontFamily: FONT,
                   fontWeight: 600,
                   fontSize: "10px",
-                  color: "#C68B2F",
+                  color: "var(--color-gold)",
                   textTransform: "uppercase",
                   letterSpacing: "0.10em",
                   marginBottom: "16px",
@@ -121,7 +122,7 @@ export function MobileMenu({
                       fontFamily: FONT,
                       fontWeight: 400,
                       fontSize: "16px",
-                      color: isActive(mod.href) ? "#C68B2F" : "#ffffff",
+                      color: isActive(mod.href) ? "var(--color-gold)" : "#ffffff",
                       textDecoration: "none",
                     }}
                   >
@@ -134,7 +135,7 @@ export function MobileMenu({
               <div
                 style={{
                   height: "1px",
-                  backgroundColor: "rgba(198,139,47,0.15)",
+                  backgroundColor: "rgba(var(--color-gold-rgb), 0.15)",
                   margin: "8px 0",
                 }}
               />
@@ -150,7 +151,7 @@ export function MobileMenu({
                       fontFamily: FONT,
                       fontWeight: 400,
                       fontSize: "15px",
-                      color: isActive(item.href) ? "#C68B2F" : "#94a3b8",
+                      color: isActive(item.href) ? "var(--color-gold)" : "#94a3b8",
                       textDecoration: "none",
                     }}
                   >
@@ -172,7 +173,7 @@ export function MobileMenu({
                     fontFamily: FONT,
                     fontWeight: 400,
                     fontSize: "16px",
-                    color: isActive(link.href) ? "#C68B2F" : "#ffffff",
+                    color: isActive(link.href) ? "var(--color-gold)" : "#ffffff",
                     textDecoration: "none",
                   }}
                 >
@@ -189,7 +190,7 @@ export function MobileMenu({
               flexDirection: "column",
               gap: "12px",
               paddingTop: "24px",
-              borderTop: "1px solid rgba(198,139,47,0.15)",
+              borderTop: "1px solid rgba(var(--color-gold-rgb), 0.15)",
             }}
           >
             <a
@@ -235,7 +236,7 @@ export function MobileMenu({
                 fontWeight: 500,
                 fontSize: "14px",
                 letterSpacing: "0.04em",
-                backgroundColor: "#C68B2F",
+                backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 borderRadius: "6px",
                 height: "44px",

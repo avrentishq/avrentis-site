@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { StatusProductPage } from "@/components/status/status-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Status — Avrentis",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function StatusPage() {
+  if (isLaunchHidden("/status")) notFound();
   return <StatusProductPage />;
 }

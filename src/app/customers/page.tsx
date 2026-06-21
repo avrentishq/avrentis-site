@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { CustomersProductPage } from "@/components/customers/customers-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Customers — Avrentis",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function CustomersPage() {
+  if (isLaunchHidden("/customers")) notFound();
   return <CustomersProductPage />;
 }

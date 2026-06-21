@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { IntegrationsCataloguePage } from "@/components/product/integrations-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Integrations — Avrentis",
@@ -15,5 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default function IntegrationsPage() {
+  if (isLaunchHidden("/product/integrations")) notFound();
   return <IntegrationsCataloguePage />;
 }

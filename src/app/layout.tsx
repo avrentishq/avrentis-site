@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, IBM_Plex_Mono, Hanken_Grotesk } from "next/font/google";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { MotionProvider } from "@/components/providers/motion-provider";
 import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
@@ -30,6 +31,7 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://avrentis.com"),
   title: `${BRAND.name} — ${BRAND.positioningStatement}`,
   description:
     "Avrentis replaces scattered emails, paper trails, and manual processes with a single platform that structures how your organisation makes decisions, enforces authority, and builds a permanent operational record.",
@@ -77,8 +79,10 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
-        <ScrollProgress />
-        {children}
+        <MotionProvider>
+          <ScrollProgress />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );

@@ -16,12 +16,15 @@ export function canonical(path: string): string {
   return path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
 }
 
-/** Renders a JSON-LD script tag. Safe in server or client components. */
+/** Renders a JSON-LD script tag. Safe in server or client components.
+ *  `JSON.stringify` does not escape `<`, so we escape it to `<` — this
+ *  neutralises any `</script>` breakout if a string ever flows into a schema
+ *  field (e.g. from the external pricing API). Defence-in-depth at the sink. */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, "\\u003c") }}
     />
   );
 }

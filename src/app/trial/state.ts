@@ -24,10 +24,8 @@ export type TrialFormState =
     }
   | {
       /**
-       * Returned by avrentis-app's feat/trial-auto-policy when the
-       * submission is auto-rejected (sanctions hit, disposable domain,
-       * or missing-org check). The actions.ts adapter will map the
-       * platform's 403 / "auto_rejected" response to this variant.
+       * Set when the platform auto-rejects a submission. The adapter maps
+       * the platform's rejection response to this variant.
        *
        * The UI renders it as a clear inline rejection card — see
        * HardBlockedCard in trial-form.tsx (re-uses the same surface).

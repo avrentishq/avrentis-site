@@ -139,8 +139,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           The specific named providers in each category — along with their DPA status — are shared with prospective
           customers through <Link href="/contact?intent=privacy">our privacy enquiry form</Link>, typically alongside a
-          Data Processing Agreement. An overview of the categories is also maintained at{" "}
-          <Link href="/trust">/trust</Link>.
+          Data Processing Agreement.
         </p>
       </>
     ),

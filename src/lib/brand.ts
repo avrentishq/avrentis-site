@@ -1,17 +1,8 @@
 /**
  * Avrentis brand — single source of truth for the marketing site.
  *
- * This file MIRRORS the locked parent-brand contract in the product app
- * (`avrentis-app/src/lib/brand.ts`, guarded by `brand.lock.test.ts`) and
- * the locked module brand names (`avrentis-app/src/lib/modules.ts`,
- * guarded by `modules.lock.test.ts`). The marketing site and the product
- * must present IDENTICAL brand strings — a prospect who reads the site
- * then logs into the app must meet the same names, tagline, positioning,
- * legal entity, and contacts.
- *
- * Do NOT hardcode "Avrentis", the tagline, the positioning, a module
- * name, or a brand contact at any call site — import from here. When the
- * app's locked values change, update this file in lockstep.
+ * The site must present brand strings identical to the product app. Do
+ * not hardcode brand names/contacts at call sites — import from here.
  */
 
 export const BRAND = {
@@ -36,16 +27,8 @@ export const BRAND = {
   /**
    * Legal entity asserted in legal contexts (terms, privacy, contracts)
    * where the full entity name is required. NOT rendered in the footer
-   * copyright — that renders `name` ("Avrentis"), by design.
-   *
-   * PENDING INCORPORATION — the entity structure is being finalised with
-   * counsel: the customer-facing / contracting entity is planned as a Nigerian
-   * operating subsidiary (trading as "Avrentis"), held by a US parent
-   * ("Avrentis, Inc.") that owns the platform IP. These strings must be
-   * reconciled to the registered entities at incorporation, IN LOCKSTEP with
-   * `avrentis-app/src/lib/brand.ts` (which is lock-tested) — do not rename here
-   * alone. See the legal document set + claim-consistency matrix for the
-   * authoritative two-entity structure.
+   * copyright — that renders `name` ("Avrentis"), by design. Keep consistent
+   * with the product app.
    */
   legalEntity: "Avrentis Inc.",
 
@@ -90,8 +73,7 @@ export const BRAND_COLORS = {
 export type ModuleKey = "pay" | "procure" | "vault" | "audit" | "people" | "connect";
 
 /**
- * Module entitlement layer — MIRRORS `avrentis-app/src/lib/modules.ts`
- * (`classification` field, guarded by `modules.lock.test.ts`):
+ * Module entitlement layer:
  *   - `core`       — included on every plan tier (Payables, Procurement).
  *   - `substrate`  — always-on platform foundation (Compliance, Integrations).
  *   - `expansion`  — plan-gated upgrade (Documents = Business+, HR = Enterprise).
@@ -99,18 +81,15 @@ export type ModuleKey = "pay" | "procure" | "vault" | "audit" | "people" | "conn
 export type ModuleClassification = "core" | "substrate" | "expansion";
 
 /**
- * Module brand names — LOCKED to match `avrentis-app/src/lib/modules.ts`.
- * `key`/`slug` are the internal identifiers (decoupled from the brand name,
- * exactly as in the app); the URL slug stays the short key so existing
- * `/product/<slug>` links and SEO are preserved. The customer-facing
- * `name` is the only thing rendered.
+ * Module brand names — kept consistent with the product app.
+ * `key`/`slug` are the internal identifiers (decoupled from the brand name);
+ * the URL slug stays the short key so existing `/product/<slug>` links and SEO
+ * are preserved. The customer-facing `name` is the only thing rendered.
  *
- * `publiclyVisible` MIRRORS the app's maturity gate: a module held at
- * `internal` maturity in the app (currently HR/`people`) is invisible to
- * every tenant, so it must NOT appear anywhere on the marketing site.
- * Drive every module list/count off `publicModuleKeys()` so a held-back
- * module can never leak — and returns automatically when the app promotes
- * it to `ga` and this flag flips to `true`.
+ * `publiclyVisible` controls whether a module is shown publicly on the
+ * marketing site. A module that is not yet generally available (currently HR)
+ * is hidden everywhere — drive lists off `publicModuleKeys()` so a not-yet-public
+ * module never leaks, and it returns automatically when this flag flips to `true`.
  */
 export const MODULES: Record<
   ModuleKey,
@@ -126,15 +105,15 @@ export const MODULES: Record<
   procure: { key: "procure", name: "Avrentis Procurement", slug: "procure", classification: "core", publiclyVisible: true },
   vault: { key: "vault", name: "Avrentis Documents", slug: "vault", classification: "expansion", publiclyVisible: true },
   audit: { key: "audit", name: "Avrentis Compliance", slug: "audit", classification: "substrate", publiclyVisible: true },
-  // Held at `internal` maturity in the app → hidden from every customer.
+  // Not yet generally available → hidden from the marketing site.
   people: { key: "people", name: "Avrentis HR", slug: "people", classification: "expansion", publiclyVisible: false },
   connect: { key: "connect", name: "Avrentis Integrations", slug: "connect", classification: "substrate", publiclyVisible: true },
 } as const;
 
-/** Canonical module display order (mirrors the app's MODULE_ORDER). */
+/** Canonical module display order. */
 export const MODULE_ORDER: ModuleKey[] = ["pay", "procure", "vault", "audit", "people", "connect"];
 
-/** Module keys shown to customers, in display order — excludes internal modules (HR). */
+/** Module keys shown to customers, in display order — excludes not-yet-public modules (HR). */
 export function publicModuleKeys(): ModuleKey[] {
   return MODULE_ORDER.filter((key) => MODULES[key].publiclyVisible);
 }
@@ -144,7 +123,7 @@ export function isModulePublic(key: ModuleKey): boolean {
   return MODULES[key].publiclyVisible;
 }
 
-/** Count of customer-facing modules (currently 5 — HR is internal). */
+/** Count of customer-facing modules (currently 5; HR is not yet public). */
 export const PUBLIC_MODULE_COUNT = publicModuleKeys().length;
 
 /** Convenience accessor for a module's locked brand name. */

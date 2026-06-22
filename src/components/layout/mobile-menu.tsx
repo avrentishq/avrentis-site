@@ -6,6 +6,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { BRAND_COLORS, moduleName, publicModuleKeys, MODULES } from "@/lib/brand";
 import { AvrentisLogo } from "@/components/ui/logo";
+import { isLaunchVisible } from "@/lib/launch";
 
 interface MobileMenuProps {
   open: boolean;
@@ -15,7 +16,7 @@ interface MobileMenuProps {
   pathname: string;
 }
 
-// Derived from the brand SSOT — excludes internal modules (HR) automatically.
+// Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
 const PRODUCT_MODULES = publicModuleKeys().map((key) => ({
   name: moduleName(key),
   href: `/product/${MODULES[key].slug}`,
@@ -149,7 +150,7 @@ export function MobileMenu({
 
               {/* Platform links */}
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                {PRODUCT_PLATFORM.map((item) => (
+                {PRODUCT_PLATFORM.filter((item) => isLaunchVisible(item.href)).map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}

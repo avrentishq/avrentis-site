@@ -71,8 +71,6 @@ const SUBPROCESSOR_CATEGORIES = [
   { purpose: "Managed PostgreSQL for application data", region: "United Kingdom", dpa: true },
   { purpose: "Application hosting and edge compute", region: "Global edge", dpa: true },
   { purpose: "CDN and object storage for document attachments", region: "Global", dpa: true },
-  // NOTE: cache region pending operator confirmation (DPIA input) — show UK/US,
-  // aligned to primary UK infrastructure; reconcile when the region is confirmed.
   { purpose: "Managed Redis for sessions and rate-limiting", region: "UK / US", dpa: true },
   { purpose: "Transactional email delivery", region: "US", dpa: true },
   { purpose: "SMS notification delivery (where enabled)", region: "Africa / international", dpa: true },

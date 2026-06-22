@@ -26,7 +26,7 @@ import { COUNTRIES } from "@/data/countries";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
-// Keep in sync with avrentis-app's free-email guard if it grows.
+// Free-email provider list used for the soft nudge below.
 // ────────────────────────────────────────────────────────────────────
 const FREE_EMAIL_DOMAINS = new Set([
   "gmail.com",

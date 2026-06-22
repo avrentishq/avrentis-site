@@ -5,7 +5,7 @@ import { AvrentisLogo } from "@/components/ui/logo";
 import { BRAND, MODULES, moduleName, publicModuleKeys } from "@/lib/brand";
 import { isLaunchVisible } from "@/lib/launch";
 
-// Derived from the brand SSOT — excludes internal modules (HR) automatically.
+// Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
 const PRODUCT_LINKS = publicModuleKeys().map((key) => ({
   label: moduleName(key),
   href: `/product/${MODULES[key].slug}`,

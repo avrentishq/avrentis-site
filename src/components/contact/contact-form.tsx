@@ -206,8 +206,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
   const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
 
   // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
-  // Rendered only when NEXT_PUBLIC_TURNSTILE_SITE_KEY is set; the server action
-  // skips verification when the secret is absent, so the form works without it.
+  // Rendered only when NEXT_PUBLIC_TURNSTILE_SITE_KEY is set. Bot defence —
+  // verified when Turnstile is configured.
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileRendered = useRef(false);

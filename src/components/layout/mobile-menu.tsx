@@ -16,7 +16,7 @@ interface MobileMenuProps {
   pathname: string;
 }
 
-// Derived from the brand SSOT — excludes internal modules (HR) automatically.
+// Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
 const PRODUCT_MODULES = publicModuleKeys().map((key) => ({
   name: moduleName(key),
   href: `/product/${MODULES[key].slug}`,

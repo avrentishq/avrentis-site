@@ -1,0 +1,77 @@
+# Avrentis Marketing Site — Code Ownership Map
+#
+# Precedence: LAST matching pattern wins (GitHub CODEOWNERS evaluates bottom-up).
+# Broader patterns are placed earlier; specific overrides come later.
+#
+# Teams:
+#   @avrentishq/product    — Product Experience: marketing pages, design system, copy
+#   @avrentishq/platform   — Platform & Security: external service clients, platform API contracts
+#   @avrentishq/identity   — Identity & Compliance: legal copy, trust/security posture, disclosure controls
+#   @avrentishq/infra      — Infrastructure & DX: CI, deploy config, build tooling
+#   @avrentishq/founders   — Founder override for load-bearing public commitments
+#
+# Teams not represented here (@workflow, @data) have no surface in the marketing
+# site and are intentionally unassigned. Add them only if scope changes warrant.
+#
+# No catch-all default — new paths must claim ownership at create time.
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Product Experience — broad ownership of the marketing surface.
+# Specific carve-outs override these patterns below.
+# ─────────────────────────────────────────────────────────────────────────────
+
+src/                                    @avrentishq/product
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Platform & Security
+# Touches external service credentials and platform API contracts.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Resend client — RESEND_API_KEY handling
+src/lib/email.ts                        @avrentishq/platform
+
+# Trial flow — forwards to platform trial API + handles magic-link verify redirect
+src/app/trial/                          @avrentishq/product @avrentishq/platform
+
+# Contact form server action — dispatches mail via Resend
+src/app/contact/actions.ts              @avrentishq/product @avrentishq/platform
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Identity & Compliance
+# Public legal, trust, and security-disclosure surfaces. Co-owned with Product
+# so visual treatment changes still go through the design owner. Listed at
+# component level too because the same component renders multiple routes.
+# ─────────────────────────────────────────────────────────────────────────────
+
+src/app/privacy/                        @avrentishq/identity @avrentishq/product
+src/app/terms/                          @avrentishq/identity @avrentishq/product
+src/app/trust/                          @avrentishq/identity @avrentishq/product
+src/app/product/security/               @avrentishq/identity @avrentishq/product
+src/components/legal/                   @avrentishq/identity @avrentishq/product
+src/components/trust/                   @avrentishq/identity @avrentishq/product
+src/components/product/security-page.tsx     @avrentishq/identity @avrentishq/product
+src/components/product/security-mockups.tsx  @avrentishq/identity @avrentishq/product
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Infrastructure & DX
+# ─────────────────────────────────────────────────────────────────────────────
+
+/.github/                               @avrentishq/infra
+/package.json                           @avrentishq/infra
+/pnpm-lock.yaml                         @avrentishq/infra
+/tsconfig.json                          @avrentishq/infra
+/next.config.ts                         @avrentishq/infra
+/next-env.d.ts                          @avrentishq/infra
+/eslint.config.mjs                      @avrentishq/infra
+/postcss.config.mjs                     @avrentishq/infra
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Founder override — two-founder approval required for load-bearing public
+# commitments and ownership configuration itself.
+# Listed last so they take precedence over all team assignments above.
+# ─────────────────────────────────────────────────────────────────────────────
+
+/.github/CODEOWNERS                     @avrentishq/founders
+/.github/workflows/codeowners-review.yml @avrentishq/founders @avrentishq/infra
+/src/lib/pricing.ts                     @avrentishq/founders @avrentishq/product
+/src/data/pricing-fallback.json         @avrentishq/founders @avrentishq/product

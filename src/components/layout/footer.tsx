@@ -163,20 +163,7 @@ export function Footer() {
               color: "#334155",
             }}
           >
-            &copy; 2026 {BRAND.legalEntity} All rights reserved.
-          </span>
-
-          <span
-            style={{
-              fontFamily: "var(--font-mono)",
-              fontWeight: 500,
-              fontSize: "9px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-            }}
-          >
-            {BRAND.poweredBy}
+            &copy; 2026 {BRAND.name} All rights reserved.
           </span>
         </div>
       </div>

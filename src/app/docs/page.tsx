@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Documentation — Avrentis",
   description:
     "Avrentis documentation hub. Getting started, core concepts, modules, security, administration, integrations, API & webhooks, and governance.",
+  alternates: { canonical: "/docs" },
   openGraph: {
     title: "Avrentis documentation",
     description:

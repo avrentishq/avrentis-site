@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Integrations — Avrentis",
   description:
     "Identity (OIDC / SCIM, SAML on the roadmap), notifications (email / WhatsApp / SMS), accounting (QuickBooks / Xero / SAP), banking, and a first-class developer platform. Every integration labelled honestly — available today, or delivered on request.",
+  alternates: { canonical: "/product/integrations" },
   openGraph: {
     title: "Avrentis integrations catalogue",
     description:

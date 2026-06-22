@@ -1,6 +1,21 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+
+export const metadata: Metadata = {
+  title: "About — Avrentis",
+  description:
+    "Why we built Avrentis — the Operational Authority Platform for Nigerian and African organisations where decisions require defined authority, structured process, and a permanent record.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About Avrentis",
+    description:
+      "Why we built Avrentis — the Operational Authority Platform for Nigerian and African organisations where decisions require defined authority, structured process, and a permanent record.",
+    url: "https://avrentis.com/about",
+    type: "website",
+  },
+};
 
 const VALUES = [
   {

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
@@ -8,12 +9,20 @@ import { FeaturesGrid } from "@/components/sections/features-grid";
 import { Pricing } from "@/components/sections/pricing";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { fetchPricingData } from "@/lib/pricing";
+import { JsonLd, softwareApplicationSchema } from "@/lib/seo";
+
+// Title/description/OpenGraph are inherited from the root layout (the home
+// page's canonical metadata). Here we only declare the self-canonical.
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Home() {
   const pricingData = await fetchPricingData();
 
   return (
     <>
+      <JsonLd data={softwareApplicationSchema(pricingData)} />
       <Navbar />
       <main>
         <Hero />

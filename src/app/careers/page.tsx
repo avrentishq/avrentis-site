@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Careers — Avrentis",
   description:
     "Build the platform that runs African organisations. Small team, deliberate hiring, long-term horizon. Register your interest — it's how we hire.",
+  alternates: { canonical: "/careers" },
   openGraph: {
     title: "Careers at Avrentis",
     description:

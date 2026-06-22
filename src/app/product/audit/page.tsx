@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Avrentis Compliance — Compliance without the scramble",
   description:
     "An immutable, regulator-ready audit trail of every action in your organisation. Structured events, one-click exports, and SOC2-aligned controls baked into the platform.",
+  alternates: { canonical: "/product/audit" },
   openGraph: {
     title: "Avrentis Compliance — Compliance without the scramble",
     description:

@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Avrentis HR — HR approvals on the same rails",
   description:
     "Leave requests, onboarding, and policy acknowledgements structured through the same approval engine as your financial decisions. People operations with an audit trail.",
+  alternates: { canonical: "/product/people" },
   openGraph: {
     title: "Avrentis HR — HR approvals on the same rails",
     description:

@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Start your 14-day trial — Avrentis",
   description:
     "Provision an Avrentis workspace in under two minutes. Full Business tier, no credit card, your real organisational data.",
+  alternates: { canonical: "/trial" },
   openGraph: {
     title: "Start your 14-day Avrentis trial",
     description:

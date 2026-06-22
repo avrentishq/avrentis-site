@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Changelog — Avrentis",
   description:
     "Release notes for the Avrentis platform. Notable changes, new capabilities, and platform-level shifts, written for operators — not a commit log.",
+  alternates: { canonical: "/changelog" },
   openGraph: {
     title: "Avrentis changelog",
     description:

@@ -239,7 +239,7 @@ export function SocialProof() {
               Talk to us
             </Link>
             <Link
-              href="/trust"
+              href="/product/security"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
@@ -254,7 +254,7 @@ export function SocialProof() {
                 textDecoration: "none",
               }}
             >
-              See our trust centre →
+              See the security stack →
             </Link>
           </div>
         </motion.div>

@@ -17,6 +17,8 @@
  */
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
+  // Temporarily hidden pre-launch; re-enable by deleting this entry.
+  "/trust",
   "/customers",
   "/status",
   "/careers",

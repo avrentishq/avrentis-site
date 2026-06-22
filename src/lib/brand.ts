@@ -24,11 +24,19 @@ export const BRAND = {
   /** Category label used in eyebrows, investor materials, press. */
   positioningStatement: "Operational Authority Platform",
 
-  /** Mandatory, non-removable platform brand credit. */
+  /**
+   * Platform API brand credit — mirrors the app's mandatory, non-removable
+   * `X-Powered-By` / OpenAPI credit. It belongs to the PRODUCT's API surfaces;
+   * the marketing site deliberately does NOT self-credit (a "Powered by
+   * Avrentis" line on avrentis.com would credit the brand to its own visitors).
+   * Kept here only to preserve string-parity with the app contract.
+   */
   poweredBy: "Powered by Avrentis",
 
   /**
-   * Legal entity asserted in copyright/footer chrome.
+   * Legal entity asserted in legal contexts (terms, privacy, contracts)
+   * where the full entity name is required. NOT rendered in the footer
+   * copyright — that renders `name` ("Avrentis"), by design.
    *
    * PENDING INCORPORATION — the entity structure is being finalised with
    * counsel: the customer-facing / contracting entity is planned as a Nigerian
@@ -41,8 +49,8 @@ export const BRAND = {
    */
   legalEntity: "Avrentis Inc.",
 
-  /** Canonical footer copyright chrome — mirrors the app's standard footer. */
-  copyrightChrome: "© Avrentis Inc. · avrentis.com",
+  /** Canonical footer copyright chrome — mirrors the app's standard email footer. */
+  copyrightChrome: "© Avrentis · avrentis.com",
 
   // ── Brand-contract contacts (must match the app's locked inboxes) ──────────
   /** Customer support inbox. */

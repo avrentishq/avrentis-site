@@ -58,7 +58,7 @@ const PRINCIPLES = [
 const LOOKING_FOR = [
   "Engineers who want to own a domain end-to-end, from schema to CSS.",
   "Product-minded designers who care about interfaces decision-makers can trust.",
-  "Go-to-market operators who&rsquo;ve worked inside African finance, ops, or audit teams.",
+  "Go-to-market operators who’ve worked inside African finance, ops, or audit teams.",
   "Customer engineers who can walk an MD through an approval chain without a script.",
 ];
 
@@ -352,8 +352,21 @@ export function CareersProductPage() {
                   paddingLeft: "20px",
                   position: "relative",
                 }}
-                dangerouslySetInnerHTML={{ __html: `<span style="position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:var(--color-gold);"></span>${line}` }}
-              />
+              >
+                <span
+                  aria-hidden="true"
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: "12px",
+                    width: "5px",
+                    height: "5px",
+                    borderRadius: "50%",
+                    background: "var(--color-gold)",
+                  }}
+                />
+                {line}
+              </motion.li>
             ))}
           </ul>
         </div>

@@ -24,7 +24,16 @@ export async function verifyTurnstile(
   remoteIp?: string,
 ): Promise<TurnstileResult> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return { ok: true, skipped: true };
+  if (!secret) {
+    // Fail open by design (local/preview). Warn in production so a missing
+    // secret is observable rather than a silently-disabled bot gate.
+    if (process.env.NODE_ENV === "production") {
+      console.warn(
+        "[turnstile] TURNSTILE_SECRET_KEY is not set — contact-form bot verification is DISABLED.",
+      );
+    }
+    return { ok: true, skipped: true };
+  }
   if (!token) return { ok: false };
 
   try {

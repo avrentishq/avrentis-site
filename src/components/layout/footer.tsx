@@ -134,7 +134,7 @@ export function Footer() {
                 maxWidth: "200px",
               }}
             >
-              {BRAND.positioningStatement} for organisations across Africa and beyond.
+              {BRAND.positioningStatement} for organisations across Nigeria and Africa.
             </span>
           </div>
 

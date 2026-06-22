@@ -59,7 +59,7 @@ const config: ModuleConfig = {
         "Spend by department, spend by vendor, top-10 vendors by ticket — all queryable from the dashboard. Export to CSV in one click for board packs and budget reviews.",
     },
     {
-      title: "From PO to invoice to payment — one system",
+      title: "From PO to invoice to payment — one continuous chain of authority",
       body:
         "A PO sanctioned here becomes the vendor's reference. When the invoice arrives, Avrentis Payables references the same PO number. Full traceability from request to bank instruction.",
     },

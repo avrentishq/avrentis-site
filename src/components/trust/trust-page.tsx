@@ -68,13 +68,15 @@ const FRAMEWORKS = [
 ];
 
 const SUBPROCESSOR_CATEGORIES = [
-  { purpose: "Managed PostgreSQL for application data", region: "EU", dpa: true },
+  { purpose: "Managed PostgreSQL for application data", region: "United Kingdom", dpa: true },
   { purpose: "Application hosting and edge compute", region: "Global edge", dpa: true },
   { purpose: "CDN and object storage for document attachments", region: "Global", dpa: true },
-  { purpose: "Managed Redis for sessions and rate-limiting", region: "EU / US", dpa: true },
+  // NOTE: cache region pending operator confirmation (DPIA input) — show UK/US,
+  // aligned to primary UK infrastructure; reconcile when the region is confirmed.
+  { purpose: "Managed Redis for sessions and rate-limiting", region: "UK / US", dpa: true },
   { purpose: "Transactional email delivery", region: "US", dpa: true },
   { purpose: "SMS notification delivery (where enabled)", region: "Africa / international", dpa: true },
-  { purpose: "Error and performance monitoring", region: "EU", dpa: true },
+  { purpose: "Error and performance monitoring", region: "US", dpa: true },
 ];
 
 const DOCUMENTS = [
@@ -111,7 +113,7 @@ const DOCUMENTS = [
   {
     icon: MapPin,
     title: "Data residency",
-    body: "Primary data in the EU today. In-country/in-region hosting available as an enterprise engagement.",
+    body: "Primary data in the UK (London) today. In-country/in-region hosting available as an enterprise engagement.",
     cta: { label: "Talk to us about residency", href: "/contact?intent=security" },
   },
 ];
@@ -772,9 +774,9 @@ export function TrustProductPage() {
             {[
               {
                 label: "Today · default",
-                title: "European Union",
+                title: "United Kingdom (London)",
                 body:
-                  "Primary application data and its backups are hosted in the EU. Document attachments flow through an encrypted object-storage provider at the region configured for our infrastructure tier. The marketing site and edge compute run on a global edge network.",
+                  "Primary application data and its backups are hosted in the UK (London region). Document attachments flow through an encrypted object-storage provider at the region configured for our infrastructure tier. The marketing site and edge compute run on a global edge network.",
               },
               {
                 label: "Enterprise · on request",

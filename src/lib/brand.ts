@@ -27,7 +27,18 @@ export const BRAND = {
   /** Mandatory, non-removable platform brand credit. */
   poweredBy: "Powered by Avrentis",
 
-  /** Legal entity asserted in copyright/footer chrome. */
+  /**
+   * Legal entity asserted in copyright/footer chrome.
+   *
+   * PENDING INCORPORATION — the entity structure is being finalised with
+   * counsel: the customer-facing / contracting entity is planned as a Nigerian
+   * operating subsidiary (trading as "Avrentis"), held by a US parent
+   * ("Avrentis, Inc.") that owns the platform IP. These strings must be
+   * reconciled to the registered entities at incorporation, IN LOCKSTEP with
+   * `avrentis-app/src/lib/brand.ts` (which is lock-tested) — do not rename here
+   * alone. See the legal document set + claim-consistency matrix for the
+   * authoritative two-entity structure.
+   */
   legalEntity: "Avrentis Inc.",
 
   /** Canonical footer copyright chrome — mirrors the app's standard footer. */

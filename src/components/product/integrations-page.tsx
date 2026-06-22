@@ -57,11 +57,11 @@ const CATEGORIES: Category[] = [
     lede:
       "Avrentis speaks the standard identity protocols — no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace.",
     integrations: [
-      { name: "SAML 2.0", summary: "Federated sign-in for any SAML-compliant IdP.", availability: "available" },
+      { name: "SAML 2.0", summary: "Federated sign-in for any SAML-compliant IdP — on the enterprise roadmap.", availability: "request" },
       { name: "OpenID Connect (OIDC)", summary: "OIDC flow for modern identity providers.", availability: "available" },
-      { name: "Okta", summary: "Pre-configured SAML + OIDC flows.", availability: "available" },
-      { name: "Microsoft Entra ID", summary: "SAML app gallery entry + OIDC setup.", availability: "available" },
-      { name: "Google Workspace", summary: "SAML federation with Workspace directory.", availability: "available" },
+      { name: "Okta", summary: "Pre-configured OIDC flows (SAML on the roadmap).", availability: "available" },
+      { name: "Microsoft Entra ID", summary: "OIDC setup (SAML app-gallery entry on the roadmap).", availability: "available" },
+      { name: "Google Workspace", summary: "OIDC federation with Workspace directory.", availability: "available" },
       { name: "Apple Business Manager", summary: "OIDC sign-in for Apple-managed workforces.", availability: "request" },
     ],
   },

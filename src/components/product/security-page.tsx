@@ -75,12 +75,12 @@ const STACK = [
     title: "Isolation",
     subtitle: "Your data is yours — no other customer can ever see it. Enforced by the database itself, not just by the app.",
     body:
-      "Every tenant-scoped query runs inside a transactional context that sets a Postgres session variable. Row-level security policies on every table match on that variable before returning a row. The bypass path requires a per-process randomized secret, so a developer can't accidentally hit cross-tenant data from a forgotten `db.query()`.",
+      "Every tenant-scoped query runs inside a transactional context that sets a Postgres session variable. Row-level security policies on every table match on that variable before returning a row. Cross-tenant access is impossible by construction — a query that forgets the tenant context returns nothing rather than another tenant's rows.",
     icon: Database,
     bullets: [
       "Postgres RLS policies applied to every tenant-scoped table",
       "Tenant-scoped SQL is routed through a context wrapper — bare queries fail RLS by design",
-      "The bypass path uses a randomized per-request token, not a static secret",
+      "Queries fail closed: without an explicit tenant context, row-level security returns no rows",
       "Drizzle migrations are gated by a safety check that blocks policy drops",
     ],
     Mockup: IsolationMockup,
@@ -115,7 +115,7 @@ const STACK = [
       "Active sessions end within seconds of a role change, deactivation, or password change",
       "Two-factor sign-in with recovery codes; required for platform administrators",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
-      "Single sign-on via SAML and OpenID Connect, with sensitive tokens encrypted at rest",
+      "Single sign-on via OpenID Connect (OIDC); SAML 2.0 on the enterprise roadmap. Sensitive tokens encrypted at rest",
     ],
     Mockup: SessionMockup,
     previewUrl: "session revocation · identity controls",
@@ -209,7 +209,7 @@ const FAQS = [
   },
   {
     q: "Do you support SSO and SCIM?",
-    a: "Yes — SAML 2.0 and OIDC for SSO, SCIM 2.0 for provisioning. Tested against Okta, Microsoft Entra, and Google Workspace. Client secrets and tokens are encrypted with AES-256-GCM at rest.",
+    a: "Yes — OpenID Connect (OIDC) for SSO and SCIM 2.0 for provisioning, tested against Okta, Microsoft Entra, and Google Workspace. SAML 2.0 is on our enterprise roadmap. Client secrets and tokens are encrypted with AES-256-GCM at rest.",
   },
   {
     q: "Where is our data hosted and can it stay in a specific region?",

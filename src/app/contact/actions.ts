@@ -12,6 +12,7 @@
  */
 
 import { sendContactEmail } from "@/lib/email";
+import { verifyTurnstile } from "@/lib/turnstile";
 import {
   type ContactFormState,
   type ContactIntent,
@@ -122,7 +123,22 @@ export async function submitContact(
     return { status: "error", fieldErrors, message: "Please fix the highlighted fields." };
   }
 
-  const subject = `[Avrentis — ${intentLabel(intent)}] ${organisation} · ${name}`;
+  // Bot defence — verify the Cloudflare Turnstile token. This NO-OPS (passes)
+  // when TURNSTILE_SECRET_KEY is unset, so local/preview without the key still
+  // works; with the secret present it fails closed on a missing/invalid token.
+  const turnstile = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
+  if (!turnstile.ok) {
+    return {
+      status: "error",
+      message: "We couldn't verify that you're human. Please complete the challenge and try again.",
+    };
+  }
+
+  // Strip CR/LF from user values used in the subject so they can't inject extra
+  // email headers (defence-in-depth — the HTML body is already escaped below).
+  const safeOrg = organisation.replace(/[\r\n]+/g, " ");
+  const safeName = name.replace(/[\r\n]+/g, " ");
+  const subject = `[Avrentis — ${intentLabel(intent)}] ${safeOrg} · ${safeName}`;
   const html = `
     <table role="presentation" cellpadding="0" cellspacing="0" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#0f172a;max-width:640px;">
       <tr><td style="padding:0 0 16px;font-size:12px;color:#64748b;letter-spacing:0.08em;text-transform:uppercase;">Intent · ${escape(intentLabel(intent))}</td></tr>

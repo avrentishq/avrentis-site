@@ -123,9 +123,7 @@ export async function submitContact(
     return { status: "error", fieldErrors, message: "Please fix the highlighted fields." };
   }
 
-  // Bot defence — verify the Cloudflare Turnstile token. This NO-OPS (passes)
-  // when TURNSTILE_SECRET_KEY is unset, so local/preview without the key still
-  // works; with the secret present it fails closed on a missing/invalid token.
+  // Bot defence — verified when Turnstile is configured.
   const turnstile = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
   if (!turnstile.ok) {
     return {

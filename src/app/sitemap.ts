@@ -6,7 +6,7 @@ const BASE_URL = "https://avrentis.com";
 
 /**
  * Sitemap of publicly-reachable routes. Launch-hidden routes (filtered via the
- * launch gate) and internal modules (HR — excluded by `publicModuleKeys`) are
+ * launch gate) and not-yet-public modules (HR — excluded by `publicModuleKeys`) are
  * left out so search engines only index what a visitor can actually open.
  */
 export default function sitemap(): MetadataRoute.Sitemap {

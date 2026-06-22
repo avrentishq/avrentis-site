@@ -18,9 +18,9 @@ interface PageProps {
 interface VerifyResponse {
   status?: string;
   message?: string;
-  /** Preferred field from app PR feat/trial-auto-policy onwards. */
+  /** Preferred field returned by the current platform API. */
   inviteUrl?: string;
-  /** Legacy field — kept for backward-compat during the deploy window. */
+  /** Legacy field — kept for backward compatibility. */
   loginUrl?: string;
   tenantSlug?: string;
 }
@@ -46,8 +46,7 @@ export default async function VerifyPage({ params }: PageProps) {
   }
 
   // Success — the platform has provisioned (or found an existing) tenant.
-  // Prefer inviteUrl (set by app PR feat/trial-auto-policy); fall back to
-  // loginUrl for the short deploy window before that app PR lands.
+  // Prefer inviteUrl; fall back to loginUrl when it is absent.
   // SECURITY (open-redirect guard): this is a token-bearing flow, so only ever
   // redirect to the trusted platform origin — never to an arbitrary URL echoed
   // back in the response.

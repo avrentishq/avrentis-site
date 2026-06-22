@@ -12,9 +12,6 @@ const isDev = process.env.NODE_ENV !== "production";
  * Cloudflare Turnstile (bot defence on the public contact form) loads a script
  * from, renders an iframe from, and posts back to `challenges.cloudflare.com`,
  * so that origin is allowed in `script-src` / `frame-src` / `connect-src`.
- *
- * Future hardening: move to a nonce-based `script-src` (requires per-request
- * rendering) to drop `'unsafe-inline'` on scripts.
  */
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 

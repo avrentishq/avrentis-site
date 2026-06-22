@@ -17,7 +17,7 @@ type BadgeStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
 // Marketing content per module. The customer-facing NAME is sourced from the
 // brand SSOT (`moduleName`); availability is driven by `isModulePublic` so a
-// module held at internal maturity in the app (HR) never renders here.
+// non-public module (HR) never renders here.
 const MODULE_CARDS: {
   key: ModuleKey;
   icon: LucideIcon;
@@ -54,7 +54,7 @@ const MODULE_CARDS: {
     status: "available",
   },
   {
-    // HR is held at internal maturity in the app → filtered out by isModulePublic.
+    // HR is not yet public → filtered out by isModulePublic.
     key: "people",
     icon: Users,
     subtitle: "HR Approvals & Workforce Management",

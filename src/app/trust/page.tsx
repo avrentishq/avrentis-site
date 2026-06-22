@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { TrustProductPage } from "@/components/trust/trust-page";
+import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
   title: "Trust centre — Avrentis",
@@ -16,5 +18,7 @@ export const metadata: Metadata = {
 };
 
 export default function TrustPage() {
+  // Launch-gated (see src/lib/launch.ts) — re-enable by removing "/trust" from HIDDEN_AT_LAUNCH.
+  if (isLaunchHidden("/trust")) notFound();
   return <TrustProductPage />;
 }

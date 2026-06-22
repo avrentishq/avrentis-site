@@ -1,13 +1,6 @@
 /**
- * ISO 3166-1 alpha-2 country options for the trial form.
- *
- * The codes MIRROR avrentis-app's canonical `src/lib/geo/iso-3166.ts` — the set
- * the platform's trial endpoint validates against. The app fail-closes on any
- * non-ISO value (a free-text "OTHER" is rejected at the boundary), so every
- * option offered here must be a real alpha-2 code. Display names are derived at
- * module load via `Intl.DisplayNames`, so we don't hand-maintain 250 names.
- *
- * When the app's ISO set changes, update the code list here in lockstep.
+ * ISO 3166-1 alpha-2 country options for the trial form. Only valid alpha-2
+ * codes are offered; display names via Intl.DisplayNames.
  */
 
 const ISO_3166_ALPHA2_CODES = [

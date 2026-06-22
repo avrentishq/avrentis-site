@@ -142,7 +142,7 @@ export function FeaturesGrid() {
           }}
           className="lg:!text-[42px]"
         >
-          One platform. Every operational process.
+          One approval engine. Every operational process.
         </motion.h2>
 
         <motion.p
@@ -163,8 +163,8 @@ export function FeaturesGrid() {
           }}
         >
           Avrentis is built as a suite of interconnected modules — each solving a
-          distinct operational challenge, all working together inside a single
-          unified platform. For any organisation. In any industry.
+          distinct operational challenge, all working together on one shared
+          approval engine. For any organisation. In any industry.
         </motion.p>
 
         <div

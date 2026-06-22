@@ -11,9 +11,10 @@
  * legal, privacy, disclosure, careers, feedback, subscribe, and roadmap.
  */
 
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
+import Script from "next/script";
 import { motion } from "framer-motion";
 import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -148,7 +149,6 @@ const inputStyle: React.CSSProperties = {
   borderRadius: "6px",
   padding: "0 14px",
   backgroundColor: "#FFFFFF",
-  outline: "none",
   transition: "border-color 150ms ease, box-shadow 150ms ease",
 };
 
@@ -204,6 +204,31 @@ function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
 export function ContactForm({ intent }: { intent: ContactIntent }) {
   const copy = INTENT_COPY[intent];
   const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+
+  // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
+  // Rendered only when NEXT_PUBLIC_TURNSTILE_SITE_KEY is set; the server action
+  // skips verification when the secret is absent, so the form works without it.
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileRendered = useRef(false);
+
+  const renderTurnstile = useCallback(() => {
+    if (!turnstileSiteKey || turnstileRendered.current || !turnstileRef.current) return;
+    const turnstile = (
+      window as unknown as {
+        turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => void };
+      }
+    ).turnstile;
+    if (!turnstile) return;
+    turnstile.render(turnstileRef.current, { sitekey: turnstileSiteKey, theme: "light" });
+    turnstileRendered.current = true;
+  }, [turnstileSiteKey]);
+
+  // Re-render on mount (handles client-side nav where the script is already loaded
+  // and onReady won't fire again).
+  useEffect(() => {
+    renderTurnstile();
+  }, [renderTurnstile]);
 
   // ── Controlled field state for validity computation ─────────────────
   const [nameValue, setNameValue] = useState("");
@@ -591,6 +616,17 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             >
               {state.message}
             </div>
+          )}
+
+          {turnstileSiteKey && (
+            <>
+              <Script
+                src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+                strategy="afterInteractive"
+                onReady={renderTurnstile}
+              />
+              <div ref={turnstileRef} />
+            </>
           )}
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>

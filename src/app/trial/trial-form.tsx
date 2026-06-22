@@ -118,7 +118,6 @@ const inputStyle: React.CSSProperties = {
   borderRadius: "6px",
   padding: "0 14px",
   backgroundColor: "#FFFFFF",
-  outline: "none",
 };
 
 const errorStyle: React.CSSProperties = {

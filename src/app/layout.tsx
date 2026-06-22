@@ -7,7 +7,7 @@ import "./globals.css";
 
 const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
 const OG_DESCRIPTION =
-  "Replace scattered approvals with structured authority. One platform for decisions, approvals, and permanent operational records.";
+  "Replace scattered approvals with structured authority — a permanent operational record for every decision, approval, and process your organisation runs.";
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://avrentis.com"),
   title: `${BRAND.name} — ${BRAND.positioningStatement}`,
   description:
-    "Avrentis replaces scattered emails, paper trails, and manual processes with a single platform that structures how your organisation makes decisions, enforces authority, and builds a permanent operational record.",
+    "Avrentis replaces scattered emails, paper trails, and manual processes with structure, authority, and a permanent operational record for every decision your organisation makes.",
   openGraph: {
     title: OG_TITLE,
     description: OG_DESCRIPTION,
@@ -58,7 +58,7 @@ const orgSchema = {
   "@type": "Organization",
   name: BRAND.name,
   url: "https://avrentis.com",
-  description: `${BRAND.positioningStatement} for organisations worldwide.`,
+  description: `${BRAND.positioningStatement} for organisations across Nigeria and Africa.`,
   slogan: "Every organisation runs on decisions. Avrentis makes sure they stick.",
 };
 

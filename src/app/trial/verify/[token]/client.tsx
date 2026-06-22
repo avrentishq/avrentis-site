@@ -11,7 +11,7 @@
  *   error       — network / platform error; try again later
  */
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
@@ -123,15 +123,28 @@ export function VerifyResult({ status, message, token }: Props) {
 
 function ReissueButton() {
   const { pending } = useFormStatus();
+  // Cooldown guards against spam-clicking: each press disables the button
+  // for ~3s. Combined with `pending`, this debounces rapid re-issues.
+  const [cooldown, setCooldown] = useState(false);
+
+  useEffect(() => {
+    if (!cooldown) return;
+    const timer = setTimeout(() => setCooldown(false), 3000);
+    return () => clearTimeout(timer);
+  }, [cooldown]);
+
+  const disabled = pending || cooldown;
+
   return (
     <button
       type="submit"
-      disabled={pending}
+      disabled={disabled}
+      onClick={() => setCooldown(true)}
       style={{
         fontFamily: sans,
         fontWeight: 600,
         fontSize: "13px",
-        backgroundColor: pending ? "var(--color-gold-hover)" : "var(--color-gold)",
+        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
         color: "#0f172a",
         border: "none",
         borderRadius: "6px",
@@ -140,7 +153,8 @@ function ReissueButton() {
         display: "inline-flex",
         alignItems: "center",
         gap: "6px",
-        cursor: pending ? "not-allowed" : "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.6 : 1,
       }}
     >
       <RefreshCcw size={14} strokeWidth={2} aria-hidden="true" />

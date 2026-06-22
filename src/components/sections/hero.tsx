@@ -537,7 +537,7 @@ export function Hero() {
             }}
           >
             No credit card required &middot; Setup in minutes &middot;
-            Organisations across Africa and beyond
+            Organisations across Nigeria and Africa
           </motion.p>
         </div>
 

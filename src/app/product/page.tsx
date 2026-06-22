@@ -181,10 +181,10 @@ export default function ProductOverviewPage() {
               maxWidth: "640px",
             }}
           >
-            Avrentis is not a collection of unrelated tools — it is a single
-            platform where every financial decision, procurement action,
-            compliance event, and people process flows through the same
-            approval rails and lands on the same immutable record.
+            Avrentis is not a collection of unrelated tools — every financial
+            decision, procurement action, compliance event, and people process
+            flows through the same approval rails and lands on the same
+            immutable record.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
             <Link

@@ -32,7 +32,7 @@ const config: ModuleConfig = {
       icon: Network,
       title: "Build any integration on a typed API",
       body:
-        "A documented REST API and typed webhooks let you connect Avrentis to your accounting system, ERP, or HRIS. SSO via SAML / OIDC and automated user provisioning via SCIM are built in.",
+        "A documented REST API and typed webhooks let you connect Avrentis to your accounting system, ERP, or HRIS. SSO via OpenID Connect (OIDC) and automated user provisioning via SCIM are built in, with SAML 2.0 on the enterprise roadmap.",
     },
     {
       icon: ShieldCheck,

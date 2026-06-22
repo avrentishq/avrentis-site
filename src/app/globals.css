@@ -71,3 +71,14 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Visible keyboard-focus indicator (WCAG 2.4.7). Many interactive elements set
+   their own styling; this restores an accessible focus ring for keyboard users.
+   `:focus-visible` is pointer-aware, so mouse clicks don't show the ring.
+   Inline `outline: none` on an element overrides this — such elements set their
+   own `:focus-visible` styling at the call site instead. */
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 3px;
+}

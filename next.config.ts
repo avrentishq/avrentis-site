@@ -9,19 +9,26 @@ const isDev = process.env.NODE_ENV !== "production";
  * origin is needed. In development, Turbopack + React Refresh need `'unsafe-eval'`
  * and a websocket connection for HMR — both added only when not in production.
  *
+ * Cloudflare Turnstile (bot defence on the public contact form) loads a script
+ * from, renders an iframe from, and posts back to `challenges.cloudflare.com`,
+ * so that origin is allowed in `script-src` / `frame-src` / `connect-src`.
+ *
  * Future hardening: move to a nonce-based `script-src` (requires per-request
  * rendering) to drop `'unsafe-inline'` on scripts.
  */
+const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
   "object-src 'none'",
   "frame-ancestors 'none'",
+  `frame-src 'self' ${TURNSTILE_ORIGIN}`,
   "img-src 'self' data: blob:",
   "font-src 'self'",
   "style-src 'self' 'unsafe-inline'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
-  `connect-src 'self' https://app.avrentis.com${isDev ? " ws:" : ""}`,
+  `script-src 'self' 'unsafe-inline' ${TURNSTILE_ORIGIN}${isDev ? " 'unsafe-eval'" : ""}`,
+  `connect-src 'self' https://app.avrentis.com ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
   "form-action 'self'",
 ].join("; ");
 

@@ -69,7 +69,7 @@ const CATEGORIES: DocsCategory[] = [
       },
       {
         title: "Platform overview",
-        body: "The six modules and how they compose the unified approval engine.",
+        body: "The six modules and how they compose the shared approval engine.",
         href: "/product",
         status: "live",
       },
@@ -150,7 +150,7 @@ const CATEGORIES: DocsCategory[] = [
       "User provisioning, SSO configuration, IP allowlisting, MFA, custom domains. Written for admins and internal IT.",
     items: [
       {
-        title: "SSO configuration (SAML + OIDC)",
+        title: "SSO configuration (OIDC; SAML on the roadmap)",
         body: "Okta, Entra, Google Workspace setup walk-throughs.",
         href: "/product/integrations#identity",
         status: "wip",

@@ -109,7 +109,7 @@ export default function AboutPage() {
               }}
             >
               We built Avrentis to change that — for every organisation, across
-              Africa and beyond.
+              Nigeria and Africa.
             </p>
 
             <p

@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Contact — Avrentis",
   description:
     "Talk to Avrentis. Book a personalised demo, request a security review, or share a use case. A real person replies within one business day. To start a trial, use /trial.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact Avrentis",
     description:

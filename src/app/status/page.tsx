@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Status — Avrentis",
   description:
     "Current Avrentis platform status. Subsystem health, recent incidents, and how to subscribe to incident notifications.",
+  alternates: { canonical: "/status" },
   openGraph: {
     title: "Avrentis platform status",
     description:

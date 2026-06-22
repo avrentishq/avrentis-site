@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Avrentis Integrations — Avrentis in your existing stack",
   description:
     "Typed webhooks, scoped API keys, a documented REST API, and SSO/SCIM. Push Avrentis events into the systems your organisation already runs.",
+  alternates: { canonical: "/product/connect" },
   openGraph: {
     title: "Avrentis Integrations — Avrentis in your existing stack",
     description:

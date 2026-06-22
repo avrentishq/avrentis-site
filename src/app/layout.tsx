@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, IBM_Plex_Mono, Hanken_Grotesk } from "next/font/google";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { BRAND } from "@/lib/brand";
+import { JsonLd, organizationSchema } from "@/lib/seo";
 import "./globals.css";
 
 const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
@@ -53,15 +54,6 @@ export const metadata: Metadata = {
   },
 };
 
-const orgSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: BRAND.name,
-  url: "https://avrentis.com",
-  description: `${BRAND.positioningStatement} for organisations across Nigeria and Africa.`,
-  slogan: "Every organisation runs on decisions. Avrentis makes sure they stick.",
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -73,10 +65,7 @@ export default function RootLayout({
       className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${hankenGrotesk.variable}`}
     >
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
-        />
+        <JsonLd data={organizationSchema()} />
       </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
         <MotionProvider>

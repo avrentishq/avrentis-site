@@ -28,10 +28,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (key) => `/product/${MODULES[key].slug}`,
   );
 
+  const lastModified = new Date();
+
   return [...staticRoutes, ...moduleRoutes]
     .filter(isLaunchVisible)
     .map((path) => ({
       url: `${BASE_URL}${path === "/" ? "" : path}`,
+      lastModified,
       changeFrequency: "weekly" as const,
       priority: path === "/" ? 1 : 0.7,
     }));

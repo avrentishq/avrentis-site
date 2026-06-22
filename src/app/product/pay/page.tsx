@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Avrentis Payables — Structured payment approvals",
   description:
     "Every payment voucher submitted, reviewed, and sanctioned through a defined approval chain — with a bank-ready PDF and permanent record at the end. Replace the email trail with structured authority.",
+  alternates: { canonical: "/product/pay" },
   openGraph: {
     title: "Avrentis Payables — Structured payment approvals",
     description:

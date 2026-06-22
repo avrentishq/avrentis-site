@@ -20,6 +20,7 @@ export const metadata: Metadata = {
   title: "The Avrentis platform — five modules, one system of record",
   description:
     "Avrentis structures how your organisation makes decisions across payments, procurement, documents, compliance, and integrations. Five modules, one approval engine, one permanent record.",
+  alternates: { canonical: "/product" },
   openGraph: {
     title: "The Avrentis platform — five modules, one system of record",
     description:

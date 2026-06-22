@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Terms of service — Avrentis",
   description:
     "The terms that govern your organisation's use of Avrentis — service description, acceptable use, data ownership, fees, liability, and termination.",
+  alternates: { canonical: "/terms" },
   openGraph: {
     title: "Avrentis terms of service",
     description:

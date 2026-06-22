@@ -15,7 +15,8 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, MODULES, type ModuleKey } from "@/lib/brand";
+import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -167,9 +168,17 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const { primary, secondary } = resolveCtas(config);
+  const moduleName = MODULES[config.slug as ModuleKey]?.name ?? config.headline;
 
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: "Platform", path: "/product" },
+          { name: moduleName, path: `/product/${config.slug}` },
+        ])}
+      />
       <Navbar />
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}

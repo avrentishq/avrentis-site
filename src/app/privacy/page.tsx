@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
   description:
     "How Avrentis collects, uses, shares, and protects personal data. Plain-language summary of our practices under GDPR, NDPR, and equivalent data-protection laws.",
+  alternates: { canonical: "/privacy" },
   openGraph: {
     title: "Avrentis privacy policy",
     description:

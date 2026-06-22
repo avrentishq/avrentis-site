@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Customers — Avrentis",
   description:
     "Organisations that chose structure over speed. Who Avrentis is built for, the patterns we hear in every discovery call, and how the launch-partner programme works.",
+  alternates: { canonical: "/customers" },
   openGraph: {
     title: "Avrentis customers & launch partners",
     description:

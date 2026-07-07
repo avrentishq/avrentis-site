@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Claude Code worktree checkouts (gitignored; ESLint flat config does not read .gitignore).
+    ".claude/**",
   ]),
 ]);
 

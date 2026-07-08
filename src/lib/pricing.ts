@@ -64,7 +64,15 @@ export async function fetchPricingData(): Promise<PricingData> {
     if (!res.ok) return fallback as unknown as PricingData;
 
     const data = await res.json();
-    if (!data?.plans?.length) return fallback as unknown as PricingData;
+    // Guard the full shape the UI depends on — a structurally-partial but
+    // non-empty payload would otherwise pass and crash the render.
+    const valid =
+      Array.isArray(data?.plans) &&
+      data.plans.length > 0 &&
+      Array.isArray(data?.planOrder) &&
+      data.planOrder.length > 0 &&
+      data.plans.every((p: { pricing?: unknown }) => Array.isArray(p?.pricing));
+    if (!valid) return fallback as unknown as PricingData;
 
     return data as PricingData;
   } catch {

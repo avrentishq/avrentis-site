@@ -14,7 +14,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import {
   ShieldCheck,
   FileText,
@@ -127,6 +127,7 @@ export function TrustProductPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -140,7 +141,7 @@ export function TrustProductPage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -155,7 +156,7 @@ export function TrustProductPage() {
           }}
         />
         <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -172,8 +173,8 @@ export function TrustProductPage() {
             }}
           >
             TRUST CENTRE
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -189,8 +190,8 @@ export function TrustProductPage() {
             className="lg:!text-[56px]"
           >
             Where the controls live.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -209,8 +210,8 @@ export function TrustProductPage() {
             work with to run the service, where your data lives, how to sign
             a data-protection agreement, and how to report a vulnerability.
             Honest and straight to the point.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -253,14 +254,14 @@ export function TrustProductPage() {
             >
               Read the security stack →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── FRAMEWORKS ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -278,8 +279,8 @@ export function TrustProductPage() {
             }}
           >
             FRAMEWORKS WE ALIGN TO
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -298,8 +299,8 @@ export function TrustProductPage() {
             className="lg:!text-[38px]"
           >
             We don&rsquo;t hold certifications today. Here&rsquo;s what we do.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -317,11 +318,11 @@ export function TrustProductPage() {
             Avrentis has not yet completed a SOC 2 or ISO 27001 audit. The
             platform is built with the controls those frameworks measure and
             we&rsquo;re transparent about where we are in each journey.
-          </motion.p>
+          </m.p>
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {FRAMEWORKS.map((f, i) => (
-              <motion.div
+              <m.div
                 key={f.name}
                 variants={fadeUp}
                 initial="hidden"
@@ -358,7 +359,7 @@ export function TrustProductPage() {
                 <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
                   {f.body}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -367,7 +368,7 @@ export function TrustProductPage() {
       {/* ── SUB-PROCESSORS ─────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -385,8 +386,8 @@ export function TrustProductPage() {
             }}
           >
             SUB-PROCESSORS
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -405,8 +406,8 @@ export function TrustProductPage() {
             className="lg:!text-[38px]"
           >
             The providers that help us run the service.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -424,9 +425,9 @@ export function TrustProductPage() {
             Each provider has a data-processing agreement in place with
             Avrentis. We notify customers of new sub-processors before
             onboarding them where we have that obligation under your contract.
-          </motion.p>
+          </m.p>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -503,9 +504,9 @@ export function TrustProductPage() {
                 </span>
               </div>
             ))}
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -553,9 +554,9 @@ export function TrustProductPage() {
             >
               Request the list
             </Link>
-          </motion.div>
+          </m.div>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -574,14 +575,14 @@ export function TrustProductPage() {
               update subscription form
             </Link>
             .
-          </motion.p>
+          </m.p>
         </div>
       </section>
 
       {/* ── DOCUMENTS ──────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -599,8 +600,8 @@ export function TrustProductPage() {
             }}
           >
             DOCUMENTS &amp; DIRECT LINES
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -619,14 +620,14 @@ export function TrustProductPage() {
             className="lg:!text-[38px]"
           >
             What to read and who to email.
-          </motion.h2>
+          </m.h2>
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {DOCUMENTS.map((d, i) => {
               const Icon = d.icon;
               const isExternal = d.cta.href.startsWith("mailto:");
               return (
-                <motion.div
+                <m.div
                   key={d.title}
                   variants={fadeUp}
                   initial="hidden"
@@ -699,7 +700,7 @@ export function TrustProductPage() {
                       <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" />
                     </Link>
                   )}
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -709,7 +710,7 @@ export function TrustProductPage() {
       {/* ── DATA RESIDENCY ─────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -727,8 +728,8 @@ export function TrustProductPage() {
             }}
           >
             DATA RESIDENCY
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -747,8 +748,8 @@ export function TrustProductPage() {
             className="lg:!text-[38px]"
           >
             Where your data lives — today and on the roadmap.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -766,7 +767,7 @@ export function TrustProductPage() {
             Residency matters for regulated organisations and for customers
             whose policies require data to stay in a specific jurisdiction.
             Here is the honest picture.
-          </motion.p>
+          </m.p>
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {[
@@ -789,7 +790,7 @@ export function TrustProductPage() {
                   "Active-passive replication across regions with Customer-selectable primary and documented RPO/RTO. In scoping now; enterprise partners are helping us shape the requirements.",
               },
             ].map((r, i) => (
-              <motion.div
+              <m.div
                 key={r.title}
                 variants={fadeUp}
                 initial="hidden"
@@ -823,11 +824,11 @@ export function TrustProductPage() {
                 <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
                   {r.body}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -849,7 +850,7 @@ export function TrustProductPage() {
             Where personal data moves between regions, we rely on Standard
             Contractual Clauses (SCCs) and equivalent mechanisms recognised
             under applicable law. Our DPA sets out these terms in full.
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -866,7 +867,7 @@ export function TrustProductPage() {
         <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
 
         <div style={{ maxWidth: "880px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -884,8 +885,8 @@ export function TrustProductPage() {
             }}
           >
             OPERATIONAL TRANSPARENCY
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -903,8 +904,8 @@ export function TrustProductPage() {
             className="lg:!text-[36px]"
           >
             All systems operational.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -923,8 +924,8 @@ export function TrustProductPage() {
             incident history as it accrues. Enterprise customers receive
             incident notifications under their order form; email to be added
             to the general notification list.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -968,10 +969,11 @@ export function TrustProductPage() {
             >
               Talk to our team →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

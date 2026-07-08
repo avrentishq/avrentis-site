@@ -17,8 +17,11 @@
  */
 
 import type { TrialFormState } from "./state";
+import { ORG_SIZES as SIZES } from "@/lib/org-size";
+import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { verifyTurnstile } from "@/lib/turnstile";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
-const PLATFORM_ORIGIN = process.env.PLATFORM_API_URL ?? "https://app.avrentis.com";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -31,12 +34,23 @@ const ROLES = [
   "Other",
 ] as const;
 
-const SIZES = ["1–20", "21–50", "51–200", "200+"] as const;
-
 export async function submitTrialRequest(
   _previous: TrialFormState,
   formData: FormData,
 ): Promise<TrialFormState> {
+  // Honeypot — bots fill hidden fields. Silently mimic success without forwarding.
+  const honeypot = formData.get("fax_number");
+  if (typeof honeypot === "string" && honeypot.trim() !== "") {
+    return { status: "queued_for_review", message: "Thanks — we'll be in touch shortly." };
+  }
+
+  if (!rateLimit(`trial:${await clientIp()}`, 5, 10 * 60_000)) {
+    return {
+      status: "error",
+      message: "You've submitted a few requests in a short window. Please wait a moment and try again.",
+    };
+  }
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const organisation = String(formData.get("organisation") ?? "").trim();
@@ -44,6 +58,7 @@ export async function submitTrialRequest(
   const orgSize = String(formData.get("orgSize") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
   const source = String(formData.get("source") ?? "").trim();
+  const roleOther = String(formData.get("roleOther") ?? "").trim().slice(0, 120);
   const consent = formData.get("consent") === "on";
 
   // Light client-side validation so we fail fast before hitting the
@@ -79,6 +94,24 @@ export async function submitTrialRequest(
     return { status: "error", message: "Please fix the highlighted fields.", fieldErrors };
   }
 
+  // Bot defence — enforced only when Turnstile is fully configured.
+  const turnstile = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
+  if (!turnstile.ok) {
+    return {
+      status: "error",
+      message: "We couldn't verify that you're human. Please complete the challenge and try again.",
+    };
+  }
+
+  // A typed "Other" role rides along in `source` — the platform's `role` field
+  // is an allow-list, so the free-text detail can't go there directly.
+  const sourceOut =
+    role === "Other" && roleOther
+      ? source
+        ? `Role: ${roleOther} · ${source}`
+        : `Role: ${roleOther}`
+      : source;
+
   let response: Response;
   try {
     response = await fetch(`${PLATFORM_ORIGIN}/api/v1/public/trial/request`, {
@@ -91,7 +124,7 @@ export async function submitTrialRequest(
         role,
         orgSize,
         country: country.toUpperCase(),
-        source: source ? source.slice(0, 200) : undefined,
+        source: sourceOut ? sourceOut.slice(0, 200) : undefined,
         consent: true,
       }),
     });
@@ -130,20 +163,33 @@ export async function submitTrialRequest(
 
   if (response.status === 422) {
     const backend = payload.errors?.fieldErrors ?? {};
+    // Only map keys the form actually renders — otherwise the field-error
+    // banner is suppressed but nothing shows (a silent no-op).
+    const KNOWN = new Set([
+      "name",
+      "email",
+      "organisation",
+      "role",
+      "orgSize",
+      "country",
+      "consent",
+    ]);
     const mapped: FieldErrors = {};
     for (const [k, v] of Object.entries(backend)) {
-      if (v && v[0] && k in ({} as FieldErrors)) {
-        (mapped as Record<string, string>)[k] = v[0];
-      } else if (v && v[0]) {
-        // Permissive map for any field the backend reports; the client
-        // form will ignore unknown keys.
-        (mapped as Record<string, string>)[k] = v[0];
-      }
+      if (v && v[0] && KNOWN.has(k)) (mapped as Record<string, string>)[k] = v[0];
     }
+    if (Object.keys(mapped).length > 0) {
+      return {
+        status: "error",
+        message: payload.message ?? "Please fix the highlighted fields.",
+        fieldErrors: mapped,
+      };
+    }
+    // Backend rejected on a field the form doesn't render — surface a general
+    // message so the user always gets feedback.
     return {
       status: "error",
-      message: payload.message ?? "Please fix the highlighted fields.",
-      fieldErrors: mapped,
+      message: payload.message ?? "We couldn't process that. Please review your details and try again.",
     };
   }
 
@@ -172,7 +218,11 @@ export async function reissueTrialToken(
   formData: FormData,
 ): Promise<{ status: "idle" | "sent" | "error"; message?: string }> {
   const token = String(formData.get("token") ?? "").trim();
-  if (!token) return { status: "error", message: "Missing token." };
+  if (!token || token.length > 512) return { status: "error", message: "Missing or invalid token." };
+
+  if (!rateLimit(`reissue:${await clientIp()}`, 3, 10 * 60_000)) {
+    return { status: "error", message: "Please wait a moment before requesting another link." };
+  }
 
   let response: Response;
   try {

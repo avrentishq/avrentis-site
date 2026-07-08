@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Lock, Check, Zap, Globe } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -45,7 +45,7 @@ export function CtaBanner() {
         }}
       >
         {/* Headline */}
-        <motion.h2
+        <m.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -63,10 +63,10 @@ export function CtaBanner() {
         >
           Your organisation&rsquo;s decisions deserve better than an email
           thread.
-        </motion.h2>
+        </m.h2>
 
         {/* Subheadline */}
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -83,10 +83,10 @@ export function CtaBanner() {
         >
           Join the organisations across Africa that have replaced paper,
           email, and assumption with structure, authority, and permanent record.
-        </motion.p>
+        </m.p>
 
         {/* CTAs */}
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -108,7 +108,7 @@ export function CtaBanner() {
               backgroundColor: "var(--color-gold)",
               color: "#0f172a",
               border: "none",
-              borderRadius: "6px",
+              borderRadius: "9999px",
               height: "52px",
               padding: "0 32px",
               display: "inline-flex",
@@ -128,7 +128,7 @@ export function CtaBanner() {
             Start your 14-day trial
           </Link>
           <Link
-            href="/contact?intent=demo"
+            href="/contact"
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
@@ -136,7 +136,7 @@ export function CtaBanner() {
               backgroundColor: "transparent",
               color: "#ffffff",
               border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "6px",
+              borderRadius: "9999px",
               height: "48px",
               padding: "0 32px",
               display: "inline-flex",
@@ -153,12 +153,12 @@ export function CtaBanner() {
               e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
             }}
           >
-            Book a personalised demo &rarr;
+            Contact us &rarr;
           </Link>
-        </motion.div>
+        </m.div>
 
         {/* Micro copy */}
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -174,10 +174,10 @@ export function CtaBanner() {
         >
           14 days. No credit card required. Setup takes less than 10
           minutes &mdash; your first approval can happen today.
-        </motion.p>
+        </m.p>
 
         {/* Trust signals */}
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -207,7 +207,7 @@ export function CtaBanner() {
               {label}
             </span>
           ))}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

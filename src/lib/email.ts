@@ -16,7 +16,13 @@ interface SendParams {
   replyTo?: string;
 }
 
-export async function sendContactEmail({ subject, html, replyTo }: SendParams): Promise<void> {
+/** Low-level send. `to` defaults to the internal inbox. */
+export async function sendEmail({
+  to,
+  subject,
+  html,
+  replyTo,
+}: SendParams & { to?: string | string[] }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     throw new Error("RESEND_API_KEY is not configured");
@@ -25,7 +31,7 @@ export async function sendContactEmail({ subject, html, replyTo }: SendParams): 
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
     from: FROM,
-    to: INBOX,
+    to: to ?? INBOX,
     subject,
     html,
     replyTo,
@@ -34,4 +40,9 @@ export async function sendContactEmail({ subject, html, replyTo }: SendParams): 
   if (error) {
     throw new Error(`Resend failed: ${error.message}`);
   }
+}
+
+/** Sends an inbound notification to the internal inbox. */
+export async function sendContactEmail(params: SendParams): Promise<void> {
+  await sendEmail(params);
 }

@@ -15,7 +15,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import {
   Database,
   ShieldCheck,
@@ -202,7 +202,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
   const Mockup = stage.Mockup;
   const Icon = stage.icon;
   return (
-    <motion.div
+    <m.div
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
@@ -349,7 +349,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
         </div>
         <Mockup />
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -364,6 +364,7 @@ export function SecurityProductPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -377,7 +378,7 @@ export function SecurityProductPage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -393,7 +394,7 @@ export function SecurityProductPage() {
         />
 
         <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -411,8 +412,8 @@ export function SecurityProductPage() {
             }}
           >
             SECURITY
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -431,8 +432,8 @@ export function SecurityProductPage() {
             Authority at every layer.
             <br />
             By design.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -451,8 +452,8 @@ export function SecurityProductPage() {
             weight. Security is not a feature bolted on later — it is the
             structural premise of the platform. Here is exactly what that
             means, layer by layer.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -496,14 +497,14 @@ export function SecurityProductPage() {
             >
               Read the stack →
             </a>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── PILLARS ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -521,8 +522,8 @@ export function SecurityProductPage() {
             }}
           >
             TRUST POSTURE
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -541,13 +542,13 @@ export function SecurityProductPage() {
             className="lg:!text-[38px]"
           >
             Four foundations. Each built in at the deepest level — not just something the app tries to do.
-          </motion.h2>
+          </m.h2>
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
             {PILLARS.map((p, i) => {
               const Icon = p.icon;
               return (
-                <motion.div
+                <m.div
                   key={p.title}
                   variants={fadeUp}
                   initial="hidden"
@@ -599,7 +600,7 @@ export function SecurityProductPage() {
                   >
                     {p.body}
                   </p>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -628,7 +629,7 @@ export function SecurityProductPage() {
         <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -646,9 +647,9 @@ export function SecurityProductPage() {
             }}
           >
             COMPLIANCE POSTURE
-          </motion.span>
+          </m.span>
 
-          <motion.h2
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -667,9 +668,9 @@ export function SecurityProductPage() {
             className="lg:!text-[38px]"
           >
             Honest about what we are — and what we&rsquo;re working toward.
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -688,14 +689,14 @@ export function SecurityProductPage() {
             today. The platform is built with the controls that those frameworks
             measure — access, audit, encryption, change-management — and we can
             walk you through each one on a security review.
-          </motion.p>
+          </m.p>
 
           <div
             style={{ display: "grid", gap: "16px" }}
             className="grid-cols-1 md:grid-cols-3"
           >
             {COMPLIANCE.map((c, i) => (
-              <motion.div
+              <m.div
                 key={c.framework}
                 variants={fadeUp}
                 initial="hidden"
@@ -747,11 +748,11 @@ export function SecurityProductPage() {
                 >
                   {c.body}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -790,14 +791,14 @@ export function SecurityProductPage() {
               . We triage within two business days and welcome good-faith
               research. A DPA and sub-processor list are available on request.
             </p>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "980px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -815,8 +816,8 @@ export function SecurityProductPage() {
             }}
           >
             QUESTIONS YOUR SECURITY TEAM WILL ASK
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -835,7 +836,7 @@ export function SecurityProductPage() {
             className="lg:!text-[38px]"
           >
             Direct answers — the kind you&rsquo;ll want to forward to your CISO.
-          </motion.h2>
+          </m.h2>
 
           <div
             style={{
@@ -846,7 +847,7 @@ export function SecurityProductPage() {
             }}
           >
             {FAQS.map((f, i) => (
-              <motion.details
+              <m.details
                 key={f.q}
                 variants={fadeUp}
                 initial="hidden"
@@ -888,11 +889,11 @@ export function SecurityProductPage() {
                 >
                   {f.a}
                 </p>
-              </motion.details>
+              </m.details>
             ))}
           </div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -940,11 +941,12 @@ export function SecurityProductPage() {
             >
               Book a security review
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       <CtaBanner />
+      </main>
       <Footer />
     </>
   );

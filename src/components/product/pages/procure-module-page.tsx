@@ -12,7 +12,7 @@ const config: ModuleConfig = {
   description:
     "Every purchase order submitted, reviewed by the department head, sanctioned by the MD, and issued to the vendor through a single system of record. Line items, vendors, and delivery terms — all structured, all traceable.",
   status: "available",
-  previewUrl: "app.avrentis.com / purchase-orders / PO-2026-0091",
+  previewUrl: "Avrentis / purchase-orders / PO-2026-0091",
   preview: <ProcurePreview />,
 
   pillars: [

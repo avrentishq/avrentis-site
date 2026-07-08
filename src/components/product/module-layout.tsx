@@ -56,7 +56,7 @@ export interface ModuleConfig {
   headline: string;
   description: string;
   status: ModuleStatus;
-  /** Small caption above the preview frame, e.g. `app.avrentis.com / vouchers / PV-2026-0184`. */
+  /** Small caption above the preview frame, e.g. `Avrentis / vouchers / PV-2026-0184`. */
   previewUrl: string;
   /** React node for the browser-frame preview. Rendered inside a `MockupShell`-style container. */
   preview: React.ReactNode;

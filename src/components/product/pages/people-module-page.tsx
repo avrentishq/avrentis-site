@@ -12,7 +12,7 @@ const config: ModuleConfig = {
   description:
     "The approvals your organisation already runs for money — same engine, shaped for people decisions. Leave requests, onboarding, policy acknowledgements, and performance sign-offs — all structured, routed, and permanently on record.",
   status: "roadmap",
-  previewUrl: "app.avrentis.com / people / leave / LV-2026-0042",
+  previewUrl: "Avrentis / people / leave / LV-2026-0042",
   preview: <PeoplePreview />,
 
   pillars: [

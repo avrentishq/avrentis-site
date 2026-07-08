@@ -12,7 +12,7 @@ const config: ModuleConfig = {
   description:
     "The operational record Avrentis builds doesn't have to stay inside Avrentis. Push sanctioned vouchers into your accounting system, issued POs into your ERP, or role-changes into your HRIS — using typed webhooks, scoped API keys, and a documented REST API.",
   status: "available",
-  previewUrl: "app.avrentis.com / settings / integrations",
+  previewUrl: "Avrentis / settings / integrations",
   preview: <ConnectPreview />,
 
   pillars: [

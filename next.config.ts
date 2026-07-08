@@ -12,6 +12,14 @@ const isDev = process.env.NODE_ENV !== "production";
  * Cloudflare Turnstile (bot defence on the public contact form) loads a script
  * from, renders an iframe from, and posts back to `challenges.cloudflare.com`,
  * so that origin is allowed in `script-src` / `frame-src` / `connect-src`.
+ *
+ * SECURITY DECISION — `script-src 'unsafe-inline'` is an ACCEPTED residual, not
+ * an oversight. There is no user-controlled HTML sink anywhere on the site (the
+ * only inline script is trusted JSON-LD from brand constants; all email/HTML
+ * user input is escaped server-side), so inline-script CSP is defence-in-depth
+ * only. Removing it requires a per-request nonce via middleware, which also has
+ * to nonce Next's hydration scripts — a change that must be verified in a real
+ * browser (a broken nonce silently kills hydration). Revisit with that testing.
  */
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 

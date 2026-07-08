@@ -26,7 +26,7 @@ export default async function PricingPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main id="main">
         <Pricing data={pricingData} />
         <CtaBanner />
       </main>

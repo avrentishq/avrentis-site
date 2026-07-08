@@ -3,13 +3,13 @@ import { redirect } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { VerifyResult } from "./client";
+import { TrialStepper } from "../../stepper";
+import { PLATFORM_ORIGIN } from "@/lib/platform";
 
 export const metadata: Metadata = {
   title: "Verifying your Avrentis trial",
   robots: { index: false, follow: false },
 };
-
-const PLATFORM_ORIGIN = process.env.PLATFORM_API_URL ?? "https://app.avrentis.com";
 
 interface PageProps {
   params: Promise<{ token: string }>;
@@ -76,6 +76,7 @@ export default async function VerifyPage({ params }: PageProps) {
         }}
       >
         <div style={{ maxWidth: "560px", margin: "0 auto" }}>
+          <TrialStepper current={4} />
           <VerifyResult
             status={payload.status ?? "error"}
             message={payload.message ?? "We couldn't verify this link."}

@@ -15,10 +15,19 @@
      fails WCAG AA on white. Use this for gold text/labels on white or light
      surfaces; keep --color-gold for text on dark/navy backgrounds, and for
      borders, icons, and fills (non-text, 3:1 bar). */
-  --color-gold-on-light: #a87425;
+  --color-gold-on-light: #8a5f1e;
   --color-gold-surface: #fdf8ef;
   --color-gold-divider: rgba(var(--color-gold-rgb), 0.2);
   --color-gold-ghost: rgba(var(--color-gold-rgb), 0.07);
+
+  /* Logo tokens — mirror the platform app (source of truth) so the shared
+     AvrentisLogo component renders identically here. accent === gold,
+     primary-800/shell === navy; primary lockup = gold container + navy mark. */
+  --color-accent: #c68b2f;
+  --color-primary-800: #0f172a;
+  --color-shell: #0f172a;
+  --color-logo-container: var(--color-accent);
+  --color-logo-mark: var(--color-shell);
 
   /* Surfaces */
   --color-white: #ffffff;
@@ -81,4 +90,22 @@ body {
   outline: 2px solid var(--color-gold);
   outline-offset: 2px;
   border-radius: 3px;
+}
+
+/* Skip-to-content link — off-screen until focused (WCAG 2.4.1). */
+.skip-link {
+  position: absolute;
+  left: 8px;
+  top: -56px;
+  z-index: 100;
+  background: #0f172a;
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  transition: top 150ms ease;
+}
+.skip-link:focus {
+  top: 8px;
 }

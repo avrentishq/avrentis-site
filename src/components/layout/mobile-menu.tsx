@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { BRAND_COLORS, moduleName, publicModuleKeys, MODULES } from "@/lib/brand";
@@ -39,20 +39,55 @@ export function MobileMenu({
 }: MobileMenuProps) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
-  // Close on Escape while the menu is open (keyboard accessibility).
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+
+  // Modal dialog behaviour: Escape to close, focus trap, focus-in on open and
+  // restore on close, and a body-scroll lock while open.
   useEffect(() => {
     if (!open) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    closeBtnRef.current?.focus();
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      const focusables = overlayRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusables || focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+      previouslyFocused?.focus();
+    };
   }, [open, onClose]);
 
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
+          ref={overlayRef}
+          id="mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.98 }}
@@ -77,8 +112,9 @@ export function MobileMenu({
               flexShrink: 0,
             }}
           >
-            <AvrentisLogo size={28} variant="primary" wordmarkColor="#ffffff" />
+            <AvrentisLogo size={28} variant="transparent-gold" wordmarkColor="#ffffff" />
             <button
+              ref={closeBtnRef}
               onClick={onClose}
               aria-label="Close menu"
               style={{
@@ -215,7 +251,7 @@ export function MobileMenu({
               Login
             </a>
             <Link
-              href="/contact?intent=demo"
+              href="/contact"
               onClick={onClose}
               style={{
                 fontFamily: FONT,
@@ -234,7 +270,7 @@ export function MobileMenu({
                 width: "100%",
               }}
             >
-              Book demo
+              Contact us
             </Link>
             <Link
               href="/trial"
@@ -258,7 +294,7 @@ export function MobileMenu({
               Start trial &rarr;
             </Link>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

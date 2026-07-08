@@ -9,7 +9,7 @@
  */
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -195,11 +195,12 @@ export function ChangelogProductPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 32px 64px" }}>
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -216,8 +217,8 @@ export function ChangelogProductPage() {
             }}
           >
             CHANGELOG
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -234,8 +235,8 @@ export function ChangelogProductPage() {
             className="lg:!text-[44px]"
           >
             What we&rsquo;ve shipped.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -253,7 +254,7 @@ export function ChangelogProductPage() {
             written in the language an operator would actually use. Ordered
             newest first. Ask us for the full commit-level changelog if you
             need it.
-          </motion.p>
+          </m.p>
         </div>
       </section>
 
@@ -261,7 +262,7 @@ export function ChangelogProductPage() {
       <section style={{ backgroundColor: "#f8fafc", padding: "64px 32px 100px" }}>
         <div style={{ maxWidth: "820px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
           {ENTRIES.map((entry) => (
-            <motion.article
+            <m.article
               key={entry.title}
               variants={fadeUp}
               initial="hidden"
@@ -354,11 +355,11 @@ export function ChangelogProductPage() {
                   {entry.link.label} <ArrowRight size={13} strokeWidth={1.8} aria-hidden="true" />
                 </Link>
               )}
-            </motion.article>
+            </m.article>
           ))}
 
           {/* Subscribe footer */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -415,10 +416,11 @@ export function ChangelogProductPage() {
             >
               Subscribe
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

@@ -15,9 +15,13 @@ import { useActionState, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Script from "next/script";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { ChoiceGroup } from "@/components/ui/form/choice-group";
+import { SearchableSelect } from "@/components/ui/form/searchable-select";
+import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
+import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
 import {
   INITIAL_STATE,
@@ -34,11 +38,11 @@ interface IntentCopy {
 
 const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
   demo: {
-    eyebrow: "BOOK A DEMO",
-    headline: "See Avrentis with your own workflows in the room.",
+    eyebrow: "CONTACT US",
+    headline: "Talk to our team.",
     lede:
-      "A member of the team will reach out to schedule a 30-minute walk-through tailored to your organisation's approval structure.",
-    cta: "Book a demo",
+      "Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. A real person replies within one business day.",
+    cta: "Contact us",
   },
   security: {
     eyebrow: "SECURITY REVIEW",
@@ -111,21 +115,16 @@ const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
     cta: "Share my use case",
   },
   general: {
-    eyebrow: "GET IN TOUCH",
+    eyebrow: "CONTACT US",
     headline: "Let's talk.",
     lede:
       "Whether you're evaluating Avrentis, have a question our product pages didn't answer, or want to partner — we read every message and reply within one business day.",
-    cta: "Send enquiry",
+    cta: "Contact us",
   },
 };
 
-const SIZES = [
-  "1–10 employees",
-  "11–50 employees",
-  "51–200 employees",
-  "201–1,000 employees",
-  "1,000+ employees",
-];
+// Same bands as the trial (shared SSOT); prepend an opt-out for this optional field.
+const SIZE_OPTIONS = [{ value: "", label: "Prefer not to say" }, ...ORG_SIZE_OPTIONS];
 
 /* ── Styling primitives ──────────────────────────────────────────── */
 
@@ -183,8 +182,8 @@ function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
         backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
         color: "#0f172a",
         border: "none",
-        borderRadius: "6px",
-        padding: "0 22px",
+        borderRadius: "9999px",
+        padding: "0 24px",
         height: "44px",
         display: "inline-flex",
         alignItems: "center",
@@ -235,6 +234,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
   const [emailValue, setEmailValue] = useState("");
   const [organisationValue, setOrganisationValue] = useState("");
   const [messageValue, setMessageValue] = useState("");
+  const [sizeValue, setSizeValue] = useState("");
+  const [countryValue, setCountryValue] = useState("");
   const [consentValue, setConsentValue] = useState(false);
 
   // ── Validity derivation ─────────────────────────────────────────────
@@ -250,7 +251,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
 
   if (state.status === "success") {
     return (
-      <motion.div
+      <m.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
@@ -320,89 +321,79 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
           <ArrowLeft size={14} strokeWidth={1.8} aria-hidden="true" />
           Back to home
         </Link>
-      </motion.div>
+      </m.div>
     );
   }
 
   return (
-    <motion.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-      transition={fadeUpTransition}
-    >
+    <>
+      {/* Centered intro header — matches the trial layout */}
+      <m.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={fadeUpTransition}
+        style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
+      >
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 600,
+            fontSize: "12px",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            color: "var(--color-gold-on-light)",
+            display: "block",
+            marginBottom: "14px",
+          }}
+        >
+          {copy.eyebrow}
+        </span>
+        <h1
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 400,
+            fontSize: "32px",
+            color: "#0f172a",
+            lineHeight: 1.2,
+            margin: "0 0 12px",
+            letterSpacing: "0.01em",
+          }}
+          className="lg:!text-[40px]"
+        >
+          {copy.headline}
+        </h1>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "15px",
+            color: "#64748b",
+            lineHeight: 1.7,
+            margin: "0 auto",
+            maxWidth: "520px",
+          }}
+        >
+          {copy.lede}
+        </p>
+      </m.div>
+
       <div
         style={{
           display: "grid",
-          gap: "48px",
+          columnGap: "48px",
+          rowGap: "40px",
           alignItems: "start",
         }}
         className="grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_1.2fr]"
       >
-        {/* Left: intent copy */}
-        <div>
-          <motion.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            {copy.eyebrow}
-          </motion.span>
-          <motion.h1
+        {/* What happens next — after the form on mobile; left column on desktop */}
+        <div className="order-2 lg:order-none lg:col-start-1 lg:row-start-1">
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
             transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 400,
-              fontSize: "32px",
-              color: "#0f172a",
-              lineHeight: 1.2,
-              margin: "0 0 16px",
-              letterSpacing: "0.01em",
-            }}
-            className="lg:!text-[40px]"
-          >
-            {copy.headline}
-          </motion.h1>
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "15px",
-              color: "#64748b",
-              lineHeight: 1.75,
-              margin: "0 0 24px",
-              maxWidth: "440px",
-            }}
-          >
-            {copy.lede}
-          </motion.p>
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "13px",
@@ -418,12 +409,13 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
               <li>We reply within one business day.</li>
               <li>For enterprise enquiries, we can sign an NDA before the first call.</li>
             </ul>
-          </motion.div>
+          </m.div>
         </div>
 
-        {/* Right: form */}
-        <motion.form
+        {/* Form — first on mobile; right column on desktop */}
+        <m.form
           action={action}
+          className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -432,11 +424,12 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
           style={{
             backgroundColor: "#FFFFFF",
             border: "1px solid #e2e8f0",
-            borderRadius: "10px",
+            borderRadius: "14px",
             padding: "32px",
             display: "flex",
             flexDirection: "column",
             gap: "18px",
+            boxShadow: "0 1px 3px rgba(15,23,42,0.04), 0 18px 44px rgba(15,23,42,0.07)",
           }}
           noValidate
         >
@@ -467,12 +460,14 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 autoComplete="name"
                 value={nameValue}
                 onChange={(e) => setNameValue(e.target.value)}
+                aria-invalid={!!state.fieldErrors?.name}
+                aria-describedby={state.fieldErrors?.name ? "contact-name-error" : undefined}
                 style={{
                   ...inputStyle,
                   borderColor: state.fieldErrors?.name ? "#b91c1c" : "#e2e8f0",
                 }}
               />
-              {state.fieldErrors?.name && <span style={errorStyle}>{state.fieldErrors.name}</span>}
+              {state.fieldErrors?.name && <span id="contact-name-error" style={errorStyle}>{state.fieldErrors.name}</span>}
             </div>
             <div>
               <label htmlFor="email" style={labelStyle}>
@@ -487,62 +482,61 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
                 autoComplete="email"
                 value={emailValue}
                 onChange={(e) => setEmailValue(e.target.value)}
+                aria-invalid={!!state.fieldErrors?.email}
+                aria-describedby={state.fieldErrors?.email ? "contact-email-error" : undefined}
                 style={{
                   ...inputStyle,
                   borderColor: state.fieldErrors?.email ? "#b91c1c" : "#e2e8f0",
                 }}
               />
-              {state.fieldErrors?.email && <span style={errorStyle}>{state.fieldErrors.email}</span>}
-            </div>
-          </div>
-
-          <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
-            <div>
-              <label htmlFor="organisation" style={labelStyle}>
-                Organisation
-                <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
-              </label>
-              <input
-                id="organisation"
-                name="organisation"
-                type="text"
-                required
-                autoComplete="organization"
-                value={organisationValue}
-                onChange={(e) => setOrganisationValue(e.target.value)}
-                style={{
-                  ...inputStyle,
-                  borderColor: state.fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
-                }}
-              />
-              {state.fieldErrors?.organisation && <span style={errorStyle}>{state.fieldErrors.organisation}</span>}
-            </div>
-            <div>
-              <label htmlFor="size" style={labelStyle}>
-                Organisation size
-              </label>
-              <select id="size" name="size" style={{ ...inputStyle, padding: "0 12px", appearance: "auto" }}>
-                <option value="">Prefer not to say</option>
-                {SIZES.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
+              {state.fieldErrors?.email && <span id="contact-email-error" style={errorStyle}>{state.fieldErrors.email}</span>}
             </div>
           </div>
 
           <div>
-            <label htmlFor="country" style={labelStyle}>
-              Country (optional)
+            <label htmlFor="organisation" style={labelStyle}>
+              Organisation
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <input
-              id="country"
-              name="country"
+              id="organisation"
+              name="organisation"
               type="text"
-              autoComplete="country-name"
-              placeholder="Helps if data residency matters to you"
-              style={inputStyle}
+              required
+              autoComplete="organization"
+              value={organisationValue}
+              onChange={(e) => setOrganisationValue(e.target.value)}
+              aria-invalid={!!state.fieldErrors?.organisation}
+              aria-describedby={state.fieldErrors?.organisation ? "contact-org-error" : undefined}
+              style={{
+                ...inputStyle,
+                borderColor: state.fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
+              }}
+            />
+            {state.fieldErrors?.organisation && <span id="contact-org-error" style={errorStyle}>{state.fieldErrors.organisation}</span>}
+          </div>
+
+          <div>
+            <label style={labelStyle}>Organisation size</label>
+            <ChoiceGroup
+              name="size"
+              variant="chips"
+              value={sizeValue}
+              onChange={setSizeValue}
+              options={SIZE_OPTIONS}
+              ariaLabel="Organisation size"
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Country (optional)</label>
+            <SearchableSelect
+              name="country"
+              value={countryValue}
+              onChange={setCountryValue}
+              options={COUNTRIES.map((c) => ({ value: c.name, label: c.name }))}
+              ariaLabel="Country"
+              placeholder="Search your country…"
             />
           </div>
 
@@ -558,13 +552,15 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
               minLength={10}
               value={messageValue}
               onChange={(e) => setMessageValue(e.target.value)}
+              aria-invalid={!!state.fieldErrors?.message}
+              aria-describedby={state.fieldErrors?.message ? "contact-message-error" : undefined}
               style={{
                 ...textareaStyle,
                 borderColor: state.fieldErrors?.message ? "#b91c1c" : "#e2e8f0",
               }}
               placeholder="What approvals or records are you trying to structure? How many people, how often?"
             />
-            {state.fieldErrors?.message && <span style={errorStyle}>{state.fieldErrors.message}</span>}
+            {state.fieldErrors?.message && <span id="contact-message-error" style={errorStyle}>{state.fieldErrors.message}</span>}
           </div>
 
           <div>
@@ -604,6 +600,7 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
 
           {state.status === "error" && state.message && !state.fieldErrors && (
             <div
+              role="alert"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
@@ -632,8 +629,8 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
             <SubmitButton label={copy.cta} isValid={isValid} />
           </div>
-        </motion.form>
+        </m.form>
       </div>
-    </motion.div>
+    </>
   );
 }

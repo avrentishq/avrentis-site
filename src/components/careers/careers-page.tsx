@@ -10,7 +10,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import {
   Compass,
   ShieldCheck,
@@ -79,6 +79,7 @@ export function CareersProductPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -92,7 +93,7 @@ export function CareersProductPage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -107,7 +108,7 @@ export function CareersProductPage() {
           }}
         />
         <div style={{ maxWidth: "840px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -124,8 +125,8 @@ export function CareersProductPage() {
             }}
           >
             CAREERS
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -141,8 +142,8 @@ export function CareersProductPage() {
             className="lg:!text-[56px]"
           >
             Build the platform that runs African organisations.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -160,8 +161,8 @@ export function CareersProductPage() {
             you&rsquo;ve ever looked at how an African organisation handles
             approvals, procurement, or audit and thought &ldquo;this should
             work properly&rdquo; — we&rsquo;d like to hear from you.
-          </motion.p>
-          <motion.a
+          </m.p>
+          <m.a
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -182,14 +183,14 @@ export function CareersProductPage() {
             }}
           >
             Register your interest
-          </motion.a>
+          </m.a>
         </div>
       </section>
 
       {/* ── PRINCIPLES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -207,8 +208,8 @@ export function CareersProductPage() {
             }}
           >
             HOW WE WORK
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -227,13 +228,13 @@ export function CareersProductPage() {
             className="lg:!text-[38px]"
           >
             Four principles that shape every decision.
-          </motion.h2>
+          </m.h2>
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
             {PRINCIPLES.map((p, i) => {
               const Icon = p.icon;
               return (
-                <motion.div
+                <m.div
                   key={p.title}
                   variants={fadeUp}
                   initial="hidden"
@@ -277,7 +278,7 @@ export function CareersProductPage() {
                   <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
                     {p.body}
                   </p>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -287,7 +288,7 @@ export function CareersProductPage() {
       {/* ── WHO WE WANT ────────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -305,8 +306,8 @@ export function CareersProductPage() {
             }}
           >
             WHO WE WANT TO HEAR FROM
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -324,7 +325,7 @@ export function CareersProductPage() {
             className="lg:!text-[36px]"
           >
             We&rsquo;re deliberate about who joins — here&rsquo;s what we look for.
-          </motion.h2>
+          </m.h2>
 
           <ul
             style={{
@@ -337,7 +338,7 @@ export function CareersProductPage() {
             }}
           >
             {LOOKING_FOR.map((line, i) => (
-              <motion.li
+              <m.li
                 key={line}
                 variants={fadeUp}
                 initial="hidden"
@@ -366,7 +367,7 @@ export function CareersProductPage() {
                   }}
                 />
                 {line}
-              </motion.li>
+              </m.li>
             ))}
           </ul>
         </div>
@@ -375,7 +376,7 @@ export function CareersProductPage() {
       {/* ── OPEN ROLES / HONEST NO-ROLES STATE ─────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -393,10 +394,10 @@ export function CareersProductPage() {
             }}
           >
             OPEN ROLES
-          </motion.span>
+          </m.span>
 
           {OPEN_ROLES.length === 0 ? (
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -428,9 +429,9 @@ export function CareersProductPage() {
                 details below and we&rsquo;ll get in touch when something that
                 matches lands.
               </p>
-            </motion.div>
+            </m.div>
           ) : (
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -495,7 +496,7 @@ export function CareersProductPage() {
                   </Link>
                 </div>
               ))}
-            </motion.div>
+            </m.div>
           )}
         </div>
       </section>
@@ -515,7 +516,7 @@ export function CareersProductPage() {
         <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
 
         <div style={{ maxWidth: "780px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
-          <motion.h2
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -533,8 +534,8 @@ export function CareersProductPage() {
             className="lg:!text-[36px]"
           >
             Register your interest — it&rsquo;s how we hire.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -556,8 +557,8 @@ export function CareersProductPage() {
             telling us what you&rsquo;re drawn to, a link to something
             you&rsquo;re proud of, and what kind of work you&rsquo;d want to own
             here. We read every message.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -605,10 +606,11 @@ export function CareersProductPage() {
               About the team
               <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" />
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

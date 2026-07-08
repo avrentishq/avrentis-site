@@ -40,7 +40,7 @@ export default function AboutPage() {
   return (
     <>
       <Navbar />
-      <main>
+      <main id="main">
         {/* ── Hero ── */}
         <section
           style={{

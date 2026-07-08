@@ -12,7 +12,7 @@
  */
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { CheckCircle2, CircleAlert, CircleDashed } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
@@ -86,9 +86,9 @@ export function StatusProductPage() {
     <>
       <Navbar />
 
-      <main style={{ backgroundColor: "#f8fafc", padding: "100px 32px 100px", minHeight: "70vh" }}>
+      <main id="main" style={{ backgroundColor: "#f8fafc", padding: "100px 32px 100px", minHeight: "70vh" }}>
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -105,9 +105,9 @@ export function StatusProductPage() {
             }}
           >
             STATUS
-          </motion.span>
+          </m.span>
 
-          <motion.h1
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -124,10 +124,10 @@ export function StatusProductPage() {
             className="lg:!text-[44px]"
           >
             Avrentis platform status.
-          </motion.h1>
+          </m.h1>
 
           {/* ── Overall status band ────────────────────────── */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -178,10 +178,10 @@ export function StatusProductPage() {
                 .
               </p>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* ── Subsystems ─────────────────────────────────── */}
-          <motion.section
+          <m.section
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -274,10 +274,10 @@ export function StatusProductPage() {
                 </div>
               );
             })}
-          </motion.section>
+          </m.section>
 
           {/* ── Past incidents ─────────────────────────────── */}
-          <motion.section
+          <m.section
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -325,10 +325,10 @@ export function StatusProductPage() {
                 ))}
               </div>
             )}
-          </motion.section>
+          </m.section>
 
           {/* ── Footer note ────────────────────────────────── */}
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -349,7 +349,7 @@ export function StatusProductPage() {
               trust centre
             </Link>{" "}
             for the controls behind the platform.
-          </motion.p>
+          </m.p>
         </div>
       </main>
 

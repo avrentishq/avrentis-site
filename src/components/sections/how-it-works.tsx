@@ -92,7 +92,7 @@ function MockupShell({ url, children }: { url: string; children: React.ReactNode
 
 function SubmitMockup() {
   return (
-    <MockupShell url="app.avrentis.com / vouchers / new">
+    <MockupShell url="Avrentis / vouchers / new">
       <div style={{ padding: "20px 22px" }}>
         {/* Page heading */}
         <h3
@@ -231,7 +231,7 @@ function MockupField({
 
 function ApproveMockup() {
   return (
-    <MockupShell url="app.avrentis.com / vouchers / PV-2026-0041">
+    <MockupShell url="Avrentis / vouchers / PV-2026-0041">
       <div style={{ padding: "20px 22px" }}>
         {/* Reference + type + status */}
         <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
@@ -400,7 +400,7 @@ function RecordMockup() {
     { role: "Sanctioned", actor: "Aisha Danjuma · MD", when: "15 Apr, 14:32" },
   ];
   return (
-    <MockupShell url="app.avrentis.com / vouchers / PV-2026-0041">
+    <MockupShell url="Avrentis / vouchers / PV-2026-0041">
       <div style={{ padding: "20px 22px" }}>
         {/* Status strip */}
         <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "14px" }}>

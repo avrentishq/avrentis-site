@@ -20,7 +20,7 @@ const config: ModuleConfig = {
   description:
     "From submission through finance validation to MD sanction, every payment voucher travels a defined approval chain. No email threads, no lost approvals — and a bank-ready PDF the moment the MD signs.",
   status: "available",
-  previewUrl: "app.avrentis.com / vouchers / PV-2026-0184",
+  previewUrl: "Avrentis / vouchers / PV-2026-0184",
   preview: <PayPreview />,
 
   pillars: [

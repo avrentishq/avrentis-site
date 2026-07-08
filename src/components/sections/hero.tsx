@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import Image from "next/image";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -37,10 +38,42 @@ const STATUS = {
   submitted: { label: "Submitted", bg: "rgba(180,83,9,0.08)", text: "#78350f", dot: "#b45309" },
   queried: { label: "Queried", bg: "rgba(91,33,182,0.08)", text: "#3B0764", dot: "#5B21B6" },
   approved: { label: "Approved", bg: "rgba(4,120,87,0.08)", text: "#047857", dot: "#047857" },
+  recorded: { label: "Recorded", bg: "rgba(4,120,87,0.08)", text: "#047857", dot: "#047857" },
 } as const;
 
-// Candidate rows the middle slot rotates through
-const MIDDLE_POOL: Omit<ApprovalRowProps, "hideDivider">[] = [
+// The one-click CTA offered on a row depends on where it is in the flow, so
+// the demo shows a realistic mix (not just "Approve"). Whatever the verb, the
+// outcome is the same product promise: a permanent, audited record.
+const CTA_VERB: Record<string, string> = {
+  "Under review": "Approve",
+  Submitted: "Review",
+  Queried: "Respond",
+};
+
+// The full feed the list rotates through. First four are the default (and
+// reduced-motion) view; a mix of business and NGO / donor-funded flows so the
+// hero speaks to both — same approval authority and audit trail either way.
+const POOL: Omit<ApprovalRowProps, "hideDivider" | "action">[] = [
+  {
+    reference: "PV-2026-0184",
+    type: "PV",
+    status: STATUS.underReview,
+    label: "Brightpath Technologies",
+    submittedBy: "Fatima Abubakar",
+    submittedWhen: "2h ago",
+    amount: "₦850,000",
+    department: "Operations",
+  },
+  {
+    reference: "PV-2026-0181",
+    type: "PV",
+    status: STATUS.underReview,
+    label: "Kano field office — beneficiary stipends",
+    submittedBy: "Amina Bello",
+    submittedWhen: "3h ago",
+    amount: "₦1,450,000",
+    department: "Programmes",
+  },
   {
     reference: "PO-2026-0091",
     type: "PO",
@@ -50,6 +83,26 @@ const MIDDLE_POOL: Omit<ApprovalRowProps, "hideDivider">[] = [
     submittedWhen: "4h ago",
     amount: "₦1,240,000",
     department: "Supply Chain",
+  },
+  {
+    reference: "PV-2026-0183",
+    type: "PV",
+    status: STATUS.queried,
+    label: "Sahara Engineering Services",
+    submittedBy: "Chinelo Adeyemi",
+    submittedWhen: "Yesterday",
+    amount: "₦420,000",
+    department: "Facilities",
+  },
+  {
+    reference: "PV-2026-0175",
+    type: "PV",
+    status: STATUS.submitted,
+    label: "WASH project — Q2 grant expense",
+    submittedBy: "Grace Eze",
+    submittedWhen: "Yesterday",
+    amount: "₦2,310,000",
+    department: "Grants & Compliance",
   },
   {
     reference: "PV-2026-0182",
@@ -62,6 +115,16 @@ const MIDDLE_POOL: Omit<ApprovalRowProps, "hideDivider">[] = [
     department: "Administration",
   },
   {
+    reference: "PV-2026-0171",
+    type: "PV",
+    status: STATUS.underReview,
+    label: "Enugu outreach — medical supplies",
+    submittedBy: "Chidi Okonkwo",
+    submittedWhen: "1d ago",
+    amount: "₦1,180,000",
+    department: "Programmes",
+  },
+  {
     reference: "PO-2026-0090",
     type: "PO",
     status: STATUS.submitted,
@@ -70,6 +133,66 @@ const MIDDLE_POOL: Omit<ApprovalRowProps, "hideDivider">[] = [
     submittedWhen: "Yesterday",
     amount: "₦680,000",
     department: "Facilities",
+  },
+  {
+    reference: "PO-2026-0088",
+    type: "PO",
+    status: STATUS.submitted,
+    label: "Lagos clinic — vaccine cold-chain units",
+    submittedBy: "Ngozi Umeh",
+    submittedWhen: "5h ago",
+    amount: "₦3,120,000",
+    department: "Programmes",
+  },
+  {
+    reference: "PV-2026-0169",
+    type: "PV",
+    status: STATUS.underReview,
+    label: "Scholarship disbursement — 2026 cohort",
+    submittedBy: "Yusuf Aliyu",
+    submittedWhen: "1d ago",
+    amount: "₦4,750,000",
+    department: "Grants & Compliance",
+  },
+  {
+    reference: "PV-2026-0167",
+    type: "PV",
+    status: STATUS.submitted,
+    label: "Ikeja HQ — annual software renewal",
+    submittedBy: "Blessing Obi",
+    submittedWhen: "2d ago",
+    amount: "₦1,920,000",
+    department: "IT",
+  },
+  {
+    reference: "PV-2026-0164",
+    type: "PV",
+    status: STATUS.underReview,
+    label: "Farmers' co-op — input subsidy batch 3",
+    submittedBy: "Hauwa Sani",
+    submittedWhen: "2d ago",
+    amount: "₦2,680,000",
+    department: "Programmes",
+  },
+  {
+    reference: "PO-2026-0085",
+    type: "PO",
+    status: STATUS.submitted,
+    label: "Port Harcourt depot — fuel & logistics",
+    submittedBy: "Emeka Nwosu",
+    submittedWhen: "2d ago",
+    amount: "₦940,000",
+    department: "Operations",
+  },
+  {
+    reference: "PV-2026-0162",
+    type: "PV",
+    status: STATUS.queried,
+    label: "Staff medical retainer — Q3",
+    submittedBy: "Zainab Bello",
+    submittedWhen: "3d ago",
+    amount: "₦560,000",
+    department: "People",
   },
 ];
 
@@ -80,77 +203,96 @@ function LiveInbox({
   approved: boolean;
   onApprove: () => void;
 }) {
-  // Middle slot rotates through MIDDLE_POOL entries one at a time for ambient
-  // life; the top row is now visitor-driven via the Approve button.
-  const [middleIndex, setMiddleIndex] = useState(0);
+  // The whole list is a live feed: every few seconds all four visible slots
+  // advance one step through POOL, cross-fading in a staggered cascade so the
+  // list reads as continuously updating rather than one twitching row.
+  // Rotation freezes once the visitor approves the top row (their action is
+  // acknowledged) and is disabled entirely under reduced-motion.
+  const VISIBLE = 4;
+  const [tick, setTick] = useState(0);
+  // Which visible slot currently offers a one-click CTA. Starts at the top
+  // (deterministic, so SSR and first client render agree) then hops to a
+  // random row each tick — the button is never pinned to one row or action.
+  const [activeRow, setActiveRow] = useState(0);
+  // The slot the visitor acted on — frozen into a "Recorded" done-state.
+  const [engagedRow, setEngagedRow] = useState<number | null>(null);
 
   useEffect(() => {
     const reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
+    if (reducedMotion || approved) return;
 
-    const middleTimer = setInterval(() => {
-      setMiddleIndex((i) => (i + 1) % MIDDLE_POOL.length);
-    }, 5000);
+    const timer = setInterval(() => {
+      setTick((t) => (t + 1) % POOL.length);
+      setActiveRow(Math.floor(Math.random() * VISIBLE));
+    }, 4000);
 
-    return () => clearInterval(middleTimer);
-  }, []);
+    return () => clearInterval(timer);
+  }, [approved]);
 
-  const middle = MIDDLE_POOL[middleIndex]!;
-  const topStatus = approved ? STATUS.approved : STATUS.underReview;
+  const rows = Array.from(
+    { length: VISIBLE },
+    (_, i) => POOL[(tick + i) % POOL.length]!,
+  );
+
+  const handleEngage = (rowIndex: number) => {
+    setEngagedRow(rowIndex);
+    onApprove();
+  };
 
   return (
     <div
       style={{
-        backgroundColor: "#FFFFFF",
-        borderTopLeftRadius: "6px",
-        border: "1px solid #e2e8f0",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+        // Liquid glass: frosted translucent card so the light-trails refract
+        // through the list too. Kept light enough (compounds with the frosted
+        // window behind it) that the dark row text stays legible.
+        backgroundColor: "rgba(255,255,255,0.64)",
+        backdropFilter: "blur(22px) saturate(1.4)",
+        WebkitBackdropFilter: "blur(22px) saturate(1.4)",
+        borderRadius: "10px",
+        border: "1px solid rgba(255,255,255,0.55)",
+        boxShadow:
+          "inset 0 1px 0 rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.05)",
       }}
     >
-      {/* Row 1 — interactive: the visitor can approve it, no signup. */}
-      <ApprovalRow
-        reference="PV-2026-0184"
-        type="PV"
-        status={topStatus}
-        label="Brightpath Technologies"
-        submittedBy="Fatima Abubakar"
-        submittedWhen="2h ago"
-        amount="₦850,000"
-        department="Operations"
-        action={
-          approved ? undefined : (
-            <ApproveButton onApprove={onApprove} reference="PV-2026-0184" />
-          )
-        }
-      />
-
-      {/* Row 2 — rotates through MIDDLE_POOL with an AnimatePresence fade */}
-      <AnimatePresence mode="wait" initial={false}>
-        <m.div
-          key={middle.reference}
-          initial={{ opacity: 0, y: 6 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-          <ApprovalRow {...middle} />
-        </m.div>
-      </AnimatePresence>
-
-      {/* Row 3 — static */}
-      <ApprovalRow
-        reference="PV-2026-0183"
-        type="PV"
-        status={STATUS.queried}
-        label="Sahara Engineering Services"
-        submittedBy="Chinelo Adeyemi"
-        submittedWhen="Yesterday"
-        amount="₦420,000"
-        department="Facilities"
-        hideDivider
-      />
+      {rows.map((entry, i) => {
+        const isLast = i === VISIBLE - 1;
+        // The acted-on row freezes into a neutral "Recorded" state — whatever
+        // the verb was, the payoff is the same permanent, audited record.
+        const isDone = engagedRow === i;
+        const status = isDone ? STATUS.recorded : entry.status;
+        // One live CTA at a time, on a random slot; verb depends on the row's
+        // stage (Approve / Review / Respond). Any click freezes the feed and
+        // reveals the reciprocity nudge.
+        const showCta = !approved && i === activeRow;
+        return (
+          <AnimatePresence key={`slot-${i}`} mode="wait" initial={false}>
+            <m.div
+              key={entry.reference}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.4, ease: "easeOut", delay: i * 0.06 }}
+            >
+              <ApprovalRow
+                {...entry}
+                status={status}
+                hideDivider={isLast}
+                action={
+                  showCta ? (
+                    <ApproveButton
+                      onApprove={() => handleEngage(i)}
+                      reference={entry.reference}
+                      label={CTA_VERB[entry.status.label] ?? "Approve"}
+                    />
+                  ) : undefined
+                }
+              />
+            </m.div>
+          </AnimatePresence>
+        );
+      })}
     </div>
   );
 }
@@ -179,7 +321,7 @@ function ApprovalRow({
         alignItems: "center",
         gap: "12px",
         padding: "14px 16px",
-        borderBottom: hideDivider ? "none" : "1px solid #e2e8f0",
+        borderBottom: hideDivider ? "none" : "1px solid rgba(15,23,42,0.08)",
       }}
     >
       {/* Accent urgency bar */}
@@ -334,15 +476,17 @@ function ApprovalRow({
 function ApproveButton({
   onApprove,
   reference,
+  label = "Approve",
 }: {
   onApprove: () => void;
   reference: string;
+  label?: string;
 }) {
   return (
     <button
       type="button"
       onClick={onApprove}
-      aria-label={`Approve ${reference}`}
+      aria-label={`${label} ${reference}`}
       style={{
         fontFamily: "var(--font-sans)",
         fontWeight: 600,
@@ -366,7 +510,7 @@ function ApproveButton({
         e.currentTarget.style.backgroundColor = "var(--color-gold)";
       }}
     >
-      Approve
+      {label}
     </button>
   );
 }
@@ -393,6 +537,29 @@ export function Hero() {
         overflow: "hidden",
       }}
     >
+      {/* Backdrop — night light-trails: every action, captured and recorded.
+          Held well back with a navy scrim so the headline stays legible and
+          the warm trails read as navy/gold rather than red. */}
+      <Image
+        src="/hero/hero-trails.jpg"
+        alt=""
+        aria-hidden="true"
+        fill
+        priority
+        sizes="100vw"
+        style={{ objectFit: "cover", objectPosition: "center 45%", opacity: 0.62, zIndex: 0 }}
+      />
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 0,
+          background:
+            "linear-gradient(90deg, rgba(15,23,42,0.93) 0%, rgba(15,23,42,0.74) 42%, rgba(15,23,42,0.4) 100%), linear-gradient(180deg, rgba(15,23,42,0.32) 0%, rgba(15,23,42,0.68) 100%)",
+        }}
+      />
+
       {/* Ambient glow layers — sit behind everything, non-interactive */}
       <AmbientGlow top="-120px" left="-120px" size={520} intensity={0.22} duration={32} />
       <AmbientGlow bottom="-140px" right="-100px" size={560} intensity={0.18} duration={38} delay={0.5} />
@@ -547,9 +714,12 @@ export function Hero() {
                 fontWeight: 500,
                 fontSize: "16px",
                 lineHeight: 1,
-                backgroundColor: "transparent",
+                backgroundColor: "rgba(255,255,255,0.08)",
+                backdropFilter: "blur(12px) saturate(1.4)",
+                WebkitBackdropFilter: "blur(12px) saturate(1.4)",
                 color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                border: "1px solid rgba(255,255,255,0.22)",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
                 borderRadius: "9999px",
                 height: "48px",
                 padding: "0 28px",
@@ -558,13 +728,15 @@ export function Hero() {
                 justifyContent: "center",
                 textDecoration: "none",
                 cursor: "pointer",
-                transition: "border-color 150ms ease",
+                transition: "border-color 150ms ease, background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.14)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)";
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)";
               }}
             >
               See how it works &rarr;
@@ -604,16 +776,21 @@ export function Hero() {
             alignItems: "center",
           }}
         >
-          {/* Browser window frame */}
+          {/* Browser window frame — liquid glass: a frosted translucent
+              surface that refracts the light-trails behind it, with a
+              specular top edge. The inbox card inside stays opaque so the
+              product UI reads crisply. */}
           <div
             style={{
               width: "100%",
               maxWidth: "560px",
-              borderRadius: "10px",
-              border: "1px solid rgba(255,255,255,0.10)",
-              backgroundColor: "#F8FAFC",
+              borderRadius: "16px",
+              border: "1px solid rgba(255,255,255,0.45)",
+              backgroundColor: "rgba(248,250,252,0.72)",
+              backdropFilter: "blur(24px) saturate(1.4)",
+              WebkitBackdropFilter: "blur(24px) saturate(1.4)",
               boxShadow:
-                "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(0,0,0,0.45)",
+                "inset 0 1px 0 rgba(255,255,255,0.65), 0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(0,0,0,0.5)",
               overflow: "hidden",
             }}
           >
@@ -666,7 +843,7 @@ export function Hero() {
                   textAlign: "center",
                 }}
               >
-                app.avrentis.com / approvals
+                Avrentis / approvals
               </div>
             </div>
 
@@ -702,7 +879,7 @@ export function Hero() {
                       margin: "2px 0 0",
                     }}
                   >
-                    3 documents awaiting your review
+                    4 documents awaiting your review
                   </p>
                 </div>
                 <span
@@ -721,10 +898,10 @@ export function Hero() {
                 </span>
               </div>
 
-              {/* Inbox list — white card with divide-y rows. The top row
-                  cycles its status badge between "Under review" → "Approved"
-                  to create subtle ambient activity; the middle row rotates
-                  through a small pool of realistic entries every few seconds. */}
+              {/* Inbox list — a live feed of glass rows. All four slots rotate
+                  through the pool every few seconds; a single one-click CTA
+                  (Approve / Review / Respond) hops to a random row. Acting on
+                  any of them freezes the feed and reveals the nudge below. */}
               <LiveInbox approved={approved} onApprove={() => setApproved(true)} />
 
               {/* Post-approval nudge — the reciprocity payoff: they used the
@@ -756,7 +933,7 @@ export function Hero() {
                       lineHeight: 1.5,
                     }}
                   >
-                    Approved &mdash; and permanently recorded. That&rsquo;s the core loop.{" "}
+                    Recorded &mdash; permanently, with a full audit trail. That&rsquo;s the core loop.{" "}
                     <a
                       href="/trial"
                       style={{
@@ -779,7 +956,7 @@ export function Hero() {
                     textAlign: "right",
                   }}
                 >
-                  Showing 3 of 3 &middot; Approve one &mdash; it&rsquo;s permanently recorded
+                  Showing 4 of 4 &middot; Act on one &mdash; it&rsquo;s permanently recorded
                 </p>
               )}
             </div>

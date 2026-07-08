@@ -12,7 +12,7 @@ const config: ModuleConfig = {
   description:
     "Every approved voucher, signed contract, audit report, and vendor onboarding document lives in one tagged, searchable repository. Replace the shared drive, the filing cabinet, and the \"who has the latest version?\" Slack thread with one source of truth.",
   status: "coming_soon",
-  previewUrl: "app.avrentis.com / vault",
+  previewUrl: "Avrentis / vault",
   preview: <VaultPreview />,
 
   pillars: [

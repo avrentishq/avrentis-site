@@ -53,7 +53,7 @@ const STAGES = [
       "Flags possible duplicates by vendor and amount so you don't pay the same invoice twice",
     ],
     Mockup: SubmitStageMockup,
-    previewUrl: "app.avrentis.com / vouchers / new",
+    previewUrl: "Avrentis / vouchers / new",
   },
   {
     number: "02",
@@ -69,7 +69,7 @@ const STAGES = [
       "High-value items skip straight to the MD — no unnecessary stops",
     ],
     Mockup: ReviewStageMockup,
-    previewUrl: "app.avrentis.com / approvals",
+    previewUrl: "Avrentis / approvals",
   },
   {
     number: "03",
@@ -85,7 +85,7 @@ const STAGES = [
       "Approve from your phone, tablet, or laptop — never held up by where you are",
     ],
     Mockup: SanctionStageMockup,
-    previewUrl: "app.avrentis.com / vouchers / PV-2026-0184",
+    previewUrl: "Avrentis / vouchers / PV-2026-0184",
   },
   {
     number: "04",
@@ -101,7 +101,7 @@ const STAGES = [
       "Export any period as a regulator-ready bundle with one click",
     ],
     Mockup: RecordStageMockup,
-    previewUrl: "app.avrentis.com / vouchers / PV-2026-0184",
+    previewUrl: "Avrentis / vouchers / PV-2026-0184",
   },
 ];
 

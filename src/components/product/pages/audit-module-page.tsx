@@ -12,7 +12,7 @@ const config: ModuleConfig = {
   description:
     "Every submission, approval, query, signature, and access event — recorded to an immutable audit trail that no user, including superadmins, can modify. Export a regulator-ready bundle for any period, any entity, in one click.",
   status: "available",
-  previewUrl: "app.avrentis.com / audit",
+  previewUrl: "Avrentis / audit",
   preview: <AuditPreview />,
 
   pillars: [

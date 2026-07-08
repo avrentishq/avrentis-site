@@ -13,16 +13,22 @@
  * Navbar + Footer wrapper, soft slate-50 main, card-styled form.
  */
 
-import { useActionState, useEffect, useMemo, useState } from "react";
+import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import Script from "next/script";
+import { m } from "framer-motion";
 import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
+import { ChoiceGroup } from "@/components/ui/form/choice-group";
+import { SearchableSelect } from "@/components/ui/form/searchable-select";
+import { ORG_SIZE_OPTIONS, DEFAULT_ORG_SIZE } from "@/lib/org-size";
 import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
 import { COUNTRIES } from "@/data/countries";
+import { TrialStepper } from "./stepper";
+import { TrialTimeline } from "./timeline";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
@@ -85,16 +91,18 @@ function persistSubmission(email: string) {
   }
 }
 
-const ROLES = [
-  "CFO",
-  "Finance Director",
-  "MD",
-  "Finance Manager",
-  "Operations Manager",
-  "Other",
+// Role — tappable cards. Ordered likeliest-first, but NOT pre-selected and NOT
+// badged, so the qualifying signal stays honest (an explicit pick).
+const ROLE_OPTIONS = [
+  { value: "Finance Manager", label: "Finance Manager" },
+  { value: "Finance Director", label: "Finance Director" },
+  { value: "CFO", label: "CFO" },
+  { value: "Operations Manager", label: "Operations Manager" },
+  { value: "MD", label: "MD / CEO" },
+  { value: "Other", label: "Other" },
 ];
 
-const SIZES = ["1–20", "21–50", "51–200", "200+"];
+// Org-size options + default come from the shared SSOT (@/lib/org-size).
 
 const sans = "var(--font-sans)";
 
@@ -151,8 +159,8 @@ function SubmitButton({ isValid }: { isValid: boolean }) {
         backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
         color: "#0f172a",
         border: "none",
-        borderRadius: "6px",
-        padding: "0 22px",
+        borderRadius: "9999px",
+        padding: "0 24px",
         height: "44px",
         display: "inline-flex",
         alignItems: "center",
@@ -185,10 +193,41 @@ export function TrialForm() {
   const [nameValue, setNameValue] = useState("");
   const [organisationValue, setOrganisationValue] = useState("");
   const [roleValue, setRoleValue] = useState("");
-  const [orgSizeValue, setOrgSizeValue] = useState("");
+  const [roleOtherValue, setRoleOtherValue] = useState("");
+  const [orgSizeValue, setOrgSizeValue] = useState(DEFAULT_ORG_SIZE);
   // country defaults to "NG" which is a valid selection.
   const [countryValue, setCountryValue] = useState("NG");
   const [consentValue, setConsentValue] = useState(false);
+
+  // Two-step split: step 1 is the quick tappable setup (role/size/country,
+  // all defaulted except role), step 2 collects contact details. Leading with
+  // taps builds momentum before the commitment of typing (IKEA + goal-gradient).
+  const [step, setStep] = useState<1 | 2>(1);
+  // "Other" must be spelled out — otherwise the qualifying signal is lost.
+  const step1Valid =
+    roleValue !== "" &&
+    orgSizeValue !== "" &&
+    countryValue !== "" &&
+    (roleValue !== "Other" || roleOtherValue.trim().length > 0);
+
+  // ── Cloudflare Turnstile (bot defence) — same optional pattern as contact ──
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const turnstileRendered = useRef(false);
+  const renderTurnstile = useCallback(() => {
+    if (!turnstileSiteKey || turnstileRendered.current || !turnstileRef.current) return;
+    const turnstile = (
+      window as unknown as {
+        turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => void };
+      }
+    ).turnstile;
+    if (!turnstile) return;
+    turnstile.render(turnstileRef.current, { sitekey: turnstileSiteKey, theme: "light" });
+    turnstileRendered.current = true;
+  }, [turnstileSiteKey]);
+  useEffect(() => {
+    renderTurnstile();
+  }, [renderTurnstile]);
 
   // ── Validity derivation ─────────────────────────────────────────────
   const isValid = useMemo(
@@ -243,21 +282,17 @@ export function TrialForm() {
   const showDuplicateWarning = recentSubmission !== null;
 
   return (
-    <motion.div
-      variants={fadeUp}
-      initial="hidden"
-      animate="visible"
-      transition={fadeUpTransition}
-      style={{ display: "grid", gap: "48px", alignItems: "start" }}
-      className="grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_1.2fr]"
-    >
-      {/* Left — intent copy */}
-      <div>
-        <motion.span
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          transition={fadeUpTransition}
+    <>
+      {/* Page intro — centered header. The reassurance line sits as a
+          subheading under the H1. */}
+      <m.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={fadeUpTransition}
+        style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
+      >
+        <span
           style={{
             fontFamily: sans,
             fontWeight: 600,
@@ -266,94 +301,65 @@ export function TrialForm() {
             textTransform: "uppercase",
             color: "var(--color-gold-on-light)",
             display: "block",
-            marginBottom: "16px",
+            marginBottom: "14px",
           }}
         >
           14-DAY TRIAL
-        </motion.span>
-        <motion.h1
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          transition={staggerDelay(1)}
+        </span>
+        <h1
           style={{
             fontFamily: sans,
             fontWeight: 400,
             fontSize: "32px",
             color: "#0f172a",
             lineHeight: 1.2,
-            margin: "0 0 16px",
+            margin: "0 0 12px",
             letterSpacing: "0.01em",
           }}
           className="lg:!text-[40px]"
         >
-          Start your 14-day Avrentis trial.
-        </motion.h1>
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          transition={staggerDelay(2)}
+          Start your 14-day trial.
+        </h1>
+        <p
+          style={{
+            fontFamily: sans,
+            fontWeight: 400,
+            fontSize: "19px",
+            color: "#334155",
+            lineHeight: 1.45,
+            margin: "0 0 14px",
+          }}
+        >
+          No surprises. You&rsquo;ll always know what&rsquo;s next.
+        </p>
+        <p
           style={{
             fontFamily: sans,
             fontSize: "15px",
             color: "#64748b",
-            lineHeight: 1.75,
-            margin: "0 0 24px",
+            lineHeight: 1.7,
+            margin: "0 auto",
+            maxWidth: "560px",
           }}
         >
-          Full Business tier. No credit card. Your organisation&rsquo;s data, not
-          a demo environment. Most teams have their first sanction inside the
-          platform within fifteen minutes of submitting this form.
-        </motion.p>
-        <motion.ul
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          transition={staggerDelay(3)}
-          style={{
-            listStyle: "none",
-            padding: 0,
-            margin: 0,
-            display: "flex",
-            flexDirection: "column",
-            gap: "10px",
-          }}
-        >
-          {[
-            "You'll receive a verification email within 30 seconds.",
-            "Click the link and your workspace is provisioned in under a minute.",
-            "Your first approval is already waiting — sanction it to see the full loop.",
-            "Data is preserved for 30 days after trial end if you decide not to upgrade.",
-          ].map((line) => (
-            <li
-              key={line}
-              style={{
-                fontFamily: sans,
-                fontSize: "13px",
-                color: "#334155",
-                lineHeight: 1.6,
-                display: "flex",
-                gap: "8px",
-                alignItems: "flex-start",
-              }}
-            >
-              <Check
-                size={14}
-                color={BRAND_COLORS.gold}
-                strokeWidth={2.5}
-                style={{ marginTop: "3px", flexShrink: 0 }}
-                aria-hidden="true"
-              />
-              <span>{line}</span>
-            </li>
-          ))}
-        </motion.ul>
-      </div>
+          Full Business tier on your own data. No credit card. Most teams run
+          their first sanction within fifteen minutes.
+        </p>
+      </m.div>
 
-      {/* Right — form */}
-      <motion.form
+      <TrialStepper current={step + 1} />
+      <m.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={fadeUpTransition}
+        style={{ display: "grid", columnGap: "48px", rowGap: "40px", alignItems: "start" }}
+        className="grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_1.2fr]"
+      >
+      {/* Form — first on mobile; right column on desktop */}
+      <m.form
         action={action}
+        className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
         variants={fadeUp}
         initial="hidden"
         animate="visible"
@@ -361,14 +367,142 @@ export function TrialForm() {
         style={{
           backgroundColor: "#FFFFFF",
           border: "1px solid #e2e8f0",
-          borderRadius: "10px",
+          borderRadius: "14px",
           padding: "32px",
           display: "flex",
           flexDirection: "column",
           gap: "18px",
+          // Focal action card: lift it off the page and pin it beside the
+          // taller left-hand narrative as the visitor scrolls.
+          boxShadow: "0 1px 3px rgba(15,23,42,0.04), 0 18px 44px rgba(15,23,42,0.07)",
+          position: "sticky",
+          top: "88px",
+          alignSelf: "start",
         }}
         noValidate
       >
+        {/* Honeypot — hidden; real users never fill it in. */}
+        <input
+          type="text"
+          name="fax_number"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+        />
+        {/* Back to step 1 — the stepper above conveys the position. */}
+        {step === 2 && (
+          <button
+            type="button"
+            onClick={() => setStep(1)}
+            style={{ alignSelf: "flex-start", fontFamily: sans, fontSize: "13px", fontWeight: 500, color: "#64748b", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "2px" }}
+          >
+            ← Back
+          </button>
+        )}
+
+        {/* ── Step 1: setup — tappable, already defaulted ─────────────── */}
+        <div style={{ display: step === 1 ? "flex" : "none", flexDirection: "column", gap: "18px" }}>
+          <div>
+            <label style={labelStyle}>
+              Your role
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+            </label>
+            <ChoiceGroup
+              name="role"
+              variant="cards"
+              columns={2}
+              value={roleValue}
+              onChange={setRoleValue}
+              options={ROLE_OPTIONS}
+              ariaLabel="Your role"
+              invalid={!!fieldErrors?.role}
+            />
+            {fieldErrors?.role ? (
+              <span style={errorStyle}>{fieldErrors.role}</span>
+            ) : (
+              <span style={hintStyle}>
+                Helps us tailor your setup. You&apos;ll configure team roles after signing in.
+              </span>
+            )}
+            {roleValue === "Other" && (
+              <input
+                type="text"
+                name="roleOther"
+                value={roleOtherValue}
+                onChange={(e) => setRoleOtherValue(e.target.value)}
+                placeholder="Tell us your role"
+                aria-label="Your role"
+                style={{ ...inputStyle, marginTop: "10px" }}
+              />
+            )}
+          </div>
+
+          <div>
+            <label style={labelStyle}>
+              Organisation size
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+            </label>
+            <div style={{ marginTop: "8px" }}>
+              <ChoiceGroup
+                name="orgSize"
+                variant="chips"
+                value={orgSizeValue}
+                onChange={setOrgSizeValue}
+                options={ORG_SIZE_OPTIONS}
+                ariaLabel="Organisation size"
+                invalid={!!fieldErrors?.orgSize}
+              />
+            </div>
+            {fieldErrors?.orgSize && <span style={errorStyle}>{fieldErrors.orgSize}</span>}
+          </div>
+
+          <div>
+            <label style={labelStyle}>
+              Country
+              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+            </label>
+            <SearchableSelect
+              name="country"
+              value={countryValue}
+              onChange={setCountryValue}
+              options={COUNTRIES.map((c) => ({ value: c.code, label: c.name }))}
+              ariaLabel="Country"
+              placeholder="Search for your country…"
+              invalid={!!fieldErrors?.country}
+            />
+            {fieldErrors?.country && <span style={errorStyle}>{fieldErrors.country}</span>}
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => step1Valid && setStep(2)}
+              disabled={!step1Valid}
+              style={{
+                fontFamily: sans,
+                fontWeight: 600,
+                fontSize: "14px",
+                backgroundColor: step1Valid ? "var(--color-gold)" : "var(--color-gold-hover)",
+                color: "#0f172a",
+                border: "none",
+                borderRadius: "9999px",
+                padding: "0 24px",
+                height: "44px",
+                cursor: step1Valid ? "pointer" : "not-allowed",
+                opacity: step1Valid ? 1 : 0.6,
+              }}
+            >
+              Continue →
+            </button>
+            <span style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8" }}>
+              No card required · about a minute
+            </span>
+          </div>
+        </div>
+
+        {/* ── Step 2: your details ────────────────────────────────────── */}
+        <div style={{ display: step === 2 ? "flex" : "none", flexDirection: "column", gap: "18px" }}>
         <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
           <div>
             <label htmlFor="name" style={labelStyle}>
@@ -440,84 +574,6 @@ export function TrialForm() {
           {fieldErrors?.organisation && (
             <span style={errorStyle}>{fieldErrors.organisation}</span>
           )}
-        </div>
-
-        <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
-          <div>
-            <label htmlFor="role" style={labelStyle}>
-              Your role
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
-            </label>
-            <select
-              id="role"
-              name="role"
-              required
-              value={roleValue}
-              onChange={(e) => setRoleValue(e.target.value)}
-              style={{ ...inputStyle, padding: "0 12px" }}
-            >
-              <option value="" disabled>
-                Choose…
-              </option>
-              {ROLES.map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))}
-            </select>
-            {fieldErrors?.role && <span style={errorStyle}>{fieldErrors.role}</span>}
-            {!fieldErrors?.role && (
-              <span style={hintStyle}>
-                Helps us tailor your demo. You&apos;ll set up team roles after signing in.
-              </span>
-            )}
-          </div>
-          <div>
-            <label htmlFor="orgSize" style={labelStyle}>
-              Organisation size
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
-            </label>
-            <select
-              id="orgSize"
-              name="orgSize"
-              required
-              value={orgSizeValue}
-              onChange={(e) => setOrgSizeValue(e.target.value)}
-              style={{ ...inputStyle, padding: "0 12px" }}
-            >
-              <option value="" disabled>
-                Choose…
-              </option>
-              {SIZES.map((s) => (
-                <option key={s} value={s}>
-                  {s} employees
-                </option>
-              ))}
-            </select>
-            {fieldErrors?.orgSize && <span style={errorStyle}>{fieldErrors.orgSize}</span>}
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="country" style={labelStyle}>
-            Country
-            <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
-          </label>
-          <select
-            id="country"
-            name="country"
-            required
-            value={countryValue}
-            onChange={(e) => setCountryValue(e.target.value)}
-            style={{ ...inputStyle, padding: "0 12px" }}
-          >
-            {COUNTRIES.map((c) => (
-              <option key={c.code} value={c.code}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-          {fieldErrors?.country && <span style={errorStyle}>{fieldErrors.country}</span>}
         </div>
 
         <div>
@@ -623,14 +679,32 @@ export function TrialForm() {
           </div>
         )}
 
+        {turnstileSiteKey && (
+          <>
+            <Script
+              src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+              strategy="afterInteractive"
+              onReady={renderTurnstile}
+            />
+            <div ref={turnstileRef} />
+          </>
+        )}
+
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={isValid} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8" }}>
-            No credit card required · 14-day trial · Data preserved for 30 days after trial end.
+            No card on file — nothing to cancel · 14-day trial · Data preserved for 30 days after trial end.
           </span>
         </div>
-      </motion.form>
-    </motion.div>
+        </div>
+      </m.form>
+
+      {/* Timeline — after the form on mobile; left column on desktop */}
+      <div className="order-2 lg:order-none lg:col-start-1 lg:row-start-1">
+        <TrialTimeline />
+      </div>
+      </m.div>
+    </>
   );
 }
 
@@ -640,6 +714,8 @@ export function TrialForm() {
 
 function VerificationSentCard({ email, message }: { email: string; message: string }) {
   return (
+    <>
+      <TrialStepper current={4} />
     <div
       style={{
         maxWidth: "560px",
@@ -716,11 +792,14 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
         one — no need to fill in the form again.
       </p>
     </div>
+    </>
   );
 }
 
 function QueuedCard({ message, email }: { message: string; email?: string }) {
   return (
+    <>
+      <TrialStepper current={4} />
     <div
       style={{
         maxWidth: "560px",
@@ -805,6 +884,7 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
         Back to home
       </Link>
     </div>
+    </>
   );
 }
 

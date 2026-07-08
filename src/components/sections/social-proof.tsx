@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import { ShieldCheck, Database, Landmark, MapPin } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -38,7 +38,7 @@ export function SocialProof() {
     <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Eyebrow */}
-        <motion.span
+        <m.span
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -57,10 +57,10 @@ export function SocialProof() {
           }}
         >
           WHY TEAMS TRUST AVRENTIS
-        </motion.span>
+        </m.span>
 
         {/* Headline */}
-        <motion.h2
+        <m.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -78,10 +78,10 @@ export function SocialProof() {
           className="lg:!text-[42px]"
         >
           Authority you can verify — down to the database.
-        </motion.h2>
+        </m.h2>
 
         {/* Subheadline */}
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -101,7 +101,7 @@ export function SocialProof() {
           No fabricated metrics, no borrowed logos. Here is what actually protects
           your organisation&rsquo;s decisions — the things your security, finance,
           and audit teams can check for themselves.
-        </motion.p>
+        </m.p>
 
         {/* Trust pillars */}
         <div
@@ -111,7 +111,7 @@ export function SocialProof() {
           {TRUST_PILLARS.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
-              <motion.div
+              <m.div
                 key={pillar.title}
                 variants={fadeUp}
                 initial="hidden"
@@ -169,13 +169,13 @@ export function SocialProof() {
                     {pillar.body}
                   </p>
                 </div>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>
 
         {/* Founding-partner band — honest, in place of customer proof */}
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -257,7 +257,7 @@ export function SocialProof() {
               See the security stack →
             </Link>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

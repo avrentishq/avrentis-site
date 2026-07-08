@@ -22,9 +22,10 @@ export default function TrialPage() {
     <>
       <Navbar />
       <main
+        id="main"
         style={{
           backgroundColor: "#f1f5f9",
-          padding: "120px 40px",
+          padding: "56px 40px 96px",
           minHeight: "70vh",
         }}
       >

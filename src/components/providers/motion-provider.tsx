@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionConfig } from "framer-motion";
+import { MotionConfig, LazyMotion, domAnimation } from "framer-motion";
 
 /**
  * App-wide motion configuration. `reducedMotion="user"` makes every Framer
@@ -10,5 +10,12 @@ import { MotionConfig } from "framer-motion";
  * globals.css that neutralises CSS-driven animations/transitions.
  */
 export function MotionProvider({ children }: { children: React.ReactNode }) {
-  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+  // LazyMotion + `m` ships one small feature bundle (domAnimation: animations,
+  // variants, exit, in-view) instead of the full motion API in every component.
+  // `strict` makes any stray `motion.*` throw so the smaller `m.*` is enforced.
+  return (
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">{children}</MotionConfig>
+    </LazyMotion>
+  );
 }

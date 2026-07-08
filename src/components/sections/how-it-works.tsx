@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
@@ -607,7 +607,7 @@ export function HowItWorks() {
       {/* Ambient background layers */}
       <AmbientGlow top="10%" left="-150px" size={520} intensity={0.18} duration={34} />
       <AmbientGlow bottom="-80px" right="-120px" size={460} intensity={0.15} duration={40} delay={0.5} />
-      <motion.div
+      <m.div
         aria-hidden="true"
         style={{
           position: "absolute",
@@ -624,7 +624,7 @@ export function HowItWorks() {
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
         {/* ── Header ──────────────────────────────────── */}
-        <motion.span
+        <m.span
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -642,9 +642,9 @@ export function HowItWorks() {
           }}
         >
           HOW IT WORKS
-        </motion.span>
+        </m.span>
 
-        <motion.h2
+        <m.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -662,9 +662,9 @@ export function HowItWorks() {
           className="lg:!text-[42px]"
         >
           Three steps. Zero paper. Complete record.
-        </motion.h2>
+        </m.h2>
 
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -681,10 +681,10 @@ export function HowItWorks() {
           }}
         >
           Everything your organisation currently does manually — Avrentis structures, tracks, and permanently records automatically.
-        </motion.p>
+        </m.p>
 
         {/* ── Step Selector ───────────────────────────── */}
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -768,7 +768,7 @@ export function HowItWorks() {
               </span>
             </div>
           ))}
-        </motion.div>
+        </m.div>
 
         {/* ── Content Area ────────────────────────────── */}
         <div
@@ -782,7 +782,7 @@ export function HowItWorks() {
         >
           {/* Left — Text */}
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={`text-${active}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -802,12 +802,12 @@ export function HowItWorks() {
               >
                 {STEPS[active].body}
               </p>
-            </motion.div>
+            </m.div>
           </AnimatePresence>
 
           {/* Right — Mockup */}
           <AnimatePresence mode="wait">
-            <motion.div
+            <m.div
               key={`mockup-${active}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -817,12 +817,12 @@ export function HowItWorks() {
               className="lg:justify-self-end"
             >
               <ActiveMockup />
-            </motion.div>
+            </m.div>
           </AnimatePresence>
         </div>
 
         {/* ── Feature Callout Strip ───────────────────── */}
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -862,7 +862,7 @@ export function HowItWorks() {
               </div>
             );
           })}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

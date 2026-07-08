@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 
@@ -27,6 +27,8 @@ interface ApprovalRowProps {
   amount: string;
   department: string;
   hideDivider?: boolean;
+  /** Optional trailing control (e.g. the interactive Approve button on row 1). */
+  action?: React.ReactNode;
 }
 
 // Status presets mirroring STATUS_CONFIG in the real platform
@@ -71,11 +73,15 @@ const MIDDLE_POOL: Omit<ApprovalRowProps, "hideDivider">[] = [
   },
 ];
 
-function LiveInbox() {
-  // Top-row status cycles between under-review and approved to create
-  // subtle ambient activity without rearranging the layout.
-  const [topStatus, setTopStatus] = useState<ApprovalRowStatus>(STATUS.underReview);
-  // Middle slot rotates through MIDDLE_POOL entries one at a time.
+function LiveInbox({
+  approved,
+  onApprove,
+}: {
+  approved: boolean;
+  onApprove: () => void;
+}) {
+  // Middle slot rotates through MIDDLE_POOL entries one at a time for ambient
+  // life; the top row is now visitor-driven via the Approve button.
   const [middleIndex, setMiddleIndex] = useState(0);
 
   useEffect(() => {
@@ -84,26 +90,15 @@ function LiveInbox() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reducedMotion) return;
 
-    // Cycle the top-row status on a ~4.5s interval. Stays "Approved" for
-    // 2s so the state change is legible, then resets.
-    const statusTimer = setInterval(() => {
-      setTopStatus(STATUS.approved);
-      setTimeout(() => setTopStatus(STATUS.underReview), 2000);
-    }, 4500);
-
-    // Rotate the middle row every ~5s — slightly offset from the status
-    // timer so the two events rarely overlap.
     const middleTimer = setInterval(() => {
       setMiddleIndex((i) => (i + 1) % MIDDLE_POOL.length);
     }, 5000);
 
-    return () => {
-      clearInterval(statusTimer);
-      clearInterval(middleTimer);
-    };
+    return () => clearInterval(middleTimer);
   }, []);
 
   const middle = MIDDLE_POOL[middleIndex]!;
+  const topStatus = approved ? STATUS.approved : STATUS.underReview;
 
   return (
     <div
@@ -114,7 +109,7 @@ function LiveInbox() {
         boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
       }}
     >
-      {/* Row 1 — static row, animated status */}
+      {/* Row 1 — interactive: the visitor can approve it, no signup. */}
       <ApprovalRow
         reference="PV-2026-0184"
         type="PV"
@@ -124,11 +119,16 @@ function LiveInbox() {
         submittedWhen="2h ago"
         amount="₦850,000"
         department="Operations"
+        action={
+          approved ? undefined : (
+            <ApproveButton onApprove={onApprove} reference="PV-2026-0184" />
+          )
+        }
       />
 
       {/* Row 2 — rotates through MIDDLE_POOL with an AnimatePresence fade */}
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div
+        <m.div
           key={middle.reference}
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -136,7 +136,7 @@ function LiveInbox() {
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           <ApprovalRow {...middle} />
-        </motion.div>
+        </m.div>
       </AnimatePresence>
 
       {/* Row 3 — static */}
@@ -170,6 +170,7 @@ function ApprovalRow({
   amount,
   department,
   hideDivider = false,
+  action,
 }: ApprovalRowProps) {
   return (
     <div
@@ -231,7 +232,7 @@ function ApprovalRow({
             {type}
           </span>
           <AnimatePresence mode="wait" initial={false}>
-            <motion.span
+            <m.span
               key={status.label}
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
@@ -261,7 +262,7 @@ function ApprovalRow({
                 }}
               />
               {status.label}
-            </motion.span>
+            </m.span>
           </AnimatePresence>
         </div>
 
@@ -319,11 +320,60 @@ function ApprovalRow({
           {department}
         </p>
       </div>
+
+      {action}
     </div>
   );
 }
 
+/**
+ * ApproveButton — the one genuinely interactive control in the hero mock.
+ * Lets a visitor action the top approval with no signup (reciprocity: value
+ * before the ask). Motion stays within brand rules (opacity/colour only).
+ */
+function ApproveButton({
+  onApprove,
+  reference,
+}: {
+  onApprove: () => void;
+  reference: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onApprove}
+      aria-label={`Approve ${reference}`}
+      style={{
+        fontFamily: "var(--font-sans)",
+        fontWeight: 600,
+        fontSize: "12px",
+        lineHeight: 1,
+        backgroundColor: "var(--color-gold)",
+        color: "#0f172a",
+        border: "none",
+        borderRadius: "9999px",
+        height: "30px",
+        padding: "0 16px",
+        marginLeft: "4px",
+        cursor: "pointer",
+        flexShrink: 0,
+        transition: "background-color 150ms ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.backgroundColor = "var(--color-gold)";
+      }}
+    >
+      Approve
+    </button>
+  );
+}
+
 export function Hero() {
+  // Whether the visitor has approved the sample document in the hero mock.
+  const [approved, setApproved] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   // Scroll-linked parallax on the grid texture — drifts up by 60px across
   // the section's full scroll, giving a subtle depth cue.
@@ -348,7 +398,7 @@ export function Hero() {
       <AmbientGlow bottom="-140px" right="-100px" size={560} intensity={0.18} duration={38} delay={0.5} />
 
       {/* Subtle grid texture overlay with scroll-linked parallax */}
-      <motion.div
+      <m.div
         aria-hidden="true"
         style={{
           position: "absolute",
@@ -377,7 +427,7 @@ export function Hero() {
       >
         {/* Left — Copy */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -394,9 +444,9 @@ export function Hero() {
             }}
           >
             OPERATIONAL AUTHORITY PLATFORM
-          </motion.span>
+          </m.span>
 
-          <motion.h1
+          <m.h1
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-40px" }}
@@ -412,26 +462,26 @@ export function Hero() {
             className="lg:!text-[56px]"
           >
             {["Every", "action.", "On", "record."].map((word, i) => (
-              <motion.span
+              <m.span
                 key={`top-${i}`}
                 variants={fadeUp}
                 transition={fadeUpTransition}
                 style={{ display: "inline-block", marginRight: "0.3em" }}
               >
                 {word}
-              </motion.span>
+              </m.span>
             ))}
             <br />
-            <motion.span
+            <m.span
               variants={fadeUp}
               transition={fadeUpTransition}
               style={{ display: "inline-block" }}
             >
               Permanently.
-            </motion.span>
-          </motion.h1>
+            </m.span>
+          </m.h1>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -451,9 +501,9 @@ export function Hero() {
             undocumented decisions. Avrentis brings structure, visibility, and
             accountability to every process your organisation runs —
             permanently.
-          </motion.p>
+          </m.p>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -471,7 +521,7 @@ export function Hero() {
                 backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 border: "none",
-                borderRadius: "6px",
+                borderRadius: "9999px",
                 height: "48px",
                 padding: "0 28px",
                 display: "inline-flex",
@@ -500,7 +550,7 @@ export function Hero() {
                 backgroundColor: "transparent",
                 color: "#FFFFFF",
                 border: "1px solid rgba(255,255,255,0.2)",
-                borderRadius: "6px",
+                borderRadius: "9999px",
                 height: "48px",
                 padding: "0 28px",
                 display: "inline-flex",
@@ -519,9 +569,9 @@ export function Hero() {
             >
               See how it works &rarr;
             </a>
-          </motion.div>
+          </m.div>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -538,11 +588,11 @@ export function Hero() {
           >
             No credit card required &middot; Setup in minutes &middot;
             Organisations across Nigeria and Africa
-          </motion.p>
+          </m.p>
         </div>
 
         {/* Right — Desktop approval inbox preview (mirrors the real platform UI) */}
-        <motion.div
+        <m.div
           variants={slideInFromRight}
           initial="hidden"
           whileInView="visible"
@@ -675,24 +725,66 @@ export function Hero() {
                   cycles its status badge between "Under review" → "Approved"
                   to create subtle ambient activity; the middle row rotates
                   through a small pool of realistic entries every few seconds. */}
-              <LiveInbox />
+              <LiveInbox approved={approved} onApprove={() => setApproved(true)} />
 
-
-              {/* Footer hint */}
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "11px",
-                  color: "#94a3b8",
-                  margin: "14px 0 0",
-                  textAlign: "right",
-                }}
-              >
-                Showing 3 of 3 &middot; Every action is permanently recorded
-              </p>
+              {/* Post-approval nudge — the reciprocity payoff: they used the
+                  loop, now the ask. */}
+              {approved ? (
+                <m.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    margin: "14px 0 0",
+                    padding: "10px 12px",
+                    backgroundColor: "rgba(4,120,87,0.07)",
+                    border: "1px solid rgba(4,120,87,0.20)",
+                    borderRadius: "8px",
+                  }}
+                >
+                  <span aria-hidden="true" style={{ color: "#047857", fontWeight: 700, flexShrink: 0 }}>
+                    ✓
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "12px",
+                      color: "#334155",
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    Approved &mdash; and permanently recorded. That&rsquo;s the core loop.{" "}
+                    <a
+                      href="/trial"
+                      style={{
+                        color: "var(--color-gold-on-light)",
+                        fontWeight: 600,
+                        textDecoration: "none",
+                      }}
+                    >
+                      Run it on your own approvals &rarr;
+                    </a>
+                  </span>
+                </m.div>
+              ) : (
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "11px",
+                    color: "#94a3b8",
+                    margin: "14px 0 0",
+                    textAlign: "right",
+                  }}
+                >
+                  Showing 3 of 3 &middot; Approve one &mdash; it&rsquo;s permanently recorded
+                </p>
+              )}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

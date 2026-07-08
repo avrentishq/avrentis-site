@@ -1,38 +1,23 @@
-// AVRENTIS Logo — variant usage guide
-//
-// primary          → navy container + gold mark
-//                    use: sidebar, topbar, dark section backgrounds
-//
-// reversed         → gold container + navy mark
-//                    use: gold CTA surfaces only
-//
-// transparent-gold → no container, gold mark
-//                    use: any dark surface (#0f172a, #020617, dark photography)
-//
-// transparent-navy → no container, navy mark
-//                    use: any light surface (#ffffff, #f1f5f9, var(--color-gold-surface))
-//
-// WORDMARK COLOURS
-//   on dark:  #ffffff (white)
-//   on light: #0f172a (navy)
-//   never:    gold (var(--color-gold)) on white navbar surface
-//
-// SIZES
-//   favicon:         16px  (document slot suppresses automatically)
-//   sidebar/navbar:  36–40px
-//   marketing:       48–64px
-//   hero/display:    80–120px
-//
-// LOCKUP GAP
-//   Always: size × 0.10 — never a fixed pixel value
+/**
+ * AVRENTIS Gate Mark — architectural two-post gate with beam, ledger,
+ * document slot, and full-bleed ledger line.
+ *
+ * Four variants:
+ *   primary          — the default lockup: FIXED navy mark on gold container in
+ *                      BOTH themes (navbars, sidebars, auth panels). Its surfaces
+ *                      are always navy chrome, so the gold lockup must not invert.
+ *                      Driven by the theme-invariant --color-logo-* tokens.
+ *   reversed         — navy mark on gold container (fixed, both themes)
+ *   transparent-gold — gold mark, no background (dark surfaces)
+ *   transparent-navy — navy mark, no background (light surfaces)
+ *
+ * All proportions derived from a single base unit: U = size × 0.10
+ */
 
+import { BRAND } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
-type MarkVariant =
-  | "primary"
-  | "reversed"
-  | "transparent-gold"
-  | "transparent-navy";
+type MarkVariant = "primary" | "reversed" | "transparent-gold" | "transparent-navy";
 
 interface AvrentisMarkProps {
   size?: number;
@@ -77,10 +62,13 @@ function getProps(size: number) {
   const slotH = Math.max(2, size * 0.004);
 
   const ledgerY = postY + postH;
-  const ledgerXContained = 0;
-  const ledgerWContained = size;
-  const ledgerXTransparent = padH;
-  const ledgerWTransparent = markW;
+
+  // The ledger is ALWAYS full-bleed — edge-to-edge across the mark's box (0 → size)
+  // in every variant, contained AND transparent. The wide base is the Gate Mark's
+  // signature; the beam still spans only the posts, so the silhouette stays
+  // narrow-top / wide-base. Ledger thickness === beam thickness (both size × 0.05).
+  const ledgerX = 0;
+  const ledgerW = size;
 
   return {
     rx,
@@ -100,10 +88,8 @@ function getProps(size: number) {
     slotH,
     ledgerY,
     ledgerH,
-    ledgerXContained,
-    ledgerWContained,
-    ledgerXTransparent,
-    ledgerWTransparent,
+    ledgerX,
+    ledgerW,
   };
 }
 
@@ -112,19 +98,23 @@ function getProps(size: number) {
 function getColors(variant: MarkVariant) {
   switch (variant) {
     case "primary":
+      // FIXED navy-on-gold lockup in both themes (gold container + navy gate),
+      // via the theme-invariant --color-logo-* tokens (globals.css). The mark
+      // only sits on always-navy chrome, so it must NOT invert per theme.
+      // CSS-driven so it works in server components without a JS theme read.
       return {
-        container: "#0f172a",
-        stroke: "var(--color-gold)",
-        slot: "var(--color-gold)",
+        container: "var(--color-logo-container)",
+        stroke: "var(--color-logo-mark)",
+        slot: "var(--color-logo-mark)",
         slotOpacity: 0.35,
-        border: "rgba(var(--color-gold-rgb), 0.2)",
+        border: "color-mix(in srgb, var(--color-logo-mark) 20%, transparent)",
         transparent: false,
       };
     case "reversed":
       return {
-        container: "var(--color-gold)",
-        stroke: "#0f172a",
-        slot: "#0f172a",
+        container: "var(--color-accent)",
+        stroke: "var(--color-primary-800)",
+        slot: "var(--color-primary-800)",
         slotOpacity: 0.35,
         border: "none",
         transparent: false,
@@ -132,8 +122,8 @@ function getColors(variant: MarkVariant) {
     case "transparent-gold":
       return {
         container: "none",
-        stroke: "var(--color-gold)",
-        slot: "var(--color-gold)",
+        stroke: "var(--color-accent)",
+        slot: "var(--color-accent)",
         slotOpacity: 0.35,
         border: "none",
         transparent: true,
@@ -141,8 +131,8 @@ function getColors(variant: MarkVariant) {
     case "transparent-navy":
       return {
         container: "none",
-        stroke: "#0f172a",
-        slot: "#0f172a",
+        stroke: "var(--color-primary-800)",
+        slot: "var(--color-primary-800)",
         slotOpacity: 0.35,
         border: "none",
         transparent: true,
@@ -150,18 +140,11 @@ function getColors(variant: MarkVariant) {
   }
 }
 
-// ── Mark ──────────────────────────────────────────────────────────────────────
+// ── Mark component ────────────────────────────────────────────────────────────
 
-export function AvrentisMark({
-  size = 40,
-  variant = "primary",
-  className,
-}: AvrentisMarkProps) {
+export function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMarkProps) {
   const p = getProps(size);
   const c = getColors(variant);
-
-  const ledgerX = c.transparent ? p.ledgerXTransparent : p.ledgerXContained;
-  const ledgerW = c.transparent ? p.ledgerWTransparent : p.ledgerWContained;
 
   return (
     <svg
@@ -170,9 +153,10 @@ export function AvrentisMark({
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="Avrentis"
+      aria-label="AVRENTIS"
       role="img"
     >
+      {/* Container */}
       {c.container !== "none" && (
         <rect
           width={size}
@@ -184,28 +168,16 @@ export function AvrentisMark({
         />
       )}
 
-      <rect
-        x={p.beamX}
-        y={p.beamY}
-        width={p.beamW}
-        height={p.beamH}
-        fill={c.stroke}
-      />
-      <rect
-        x={p.leftPostX}
-        y={p.postY}
-        width={p.leftPostW}
-        height={p.postH}
-        fill={c.stroke}
-      />
-      <rect
-        x={p.rightPostX}
-        y={p.postY}
-        width={p.rightPostW}
-        height={p.postH}
-        fill={c.stroke}
-      />
+      {/* Beam */}
+      <rect x={p.beamX} y={p.beamY} width={p.beamW} height={p.beamH} fill={c.stroke} />
 
+      {/* Left post */}
+      <rect x={p.leftPostX} y={p.postY} width={p.leftPostW} height={p.postH} fill={c.stroke} />
+
+      {/* Right post — optically narrower */}
+      <rect x={p.rightPostX} y={p.postY} width={p.rightPostW} height={p.postH} fill={c.stroke} />
+
+      {/* Document slot — golden ratio position, suppressed below 48px */}
       {size >= 48 && (
         <rect
           x={p.slotX}
@@ -217,86 +189,41 @@ export function AvrentisMark({
         />
       )}
 
-      <rect
-        x={ledgerX}
-        y={p.ledgerY}
-        width={ledgerW}
-        height={p.ledgerH}
-        fill={c.stroke}
-      />
+      {/* Ledger — ALWAYS full-bleed (edge-to-edge), every variant */}
+      <rect x={p.ledgerX} y={p.ledgerY} width={p.ledgerW} height={p.ledgerH} fill={c.stroke} />
     </svg>
   );
 }
 
-// ── Wordmark only ─────────────────────────────────────────────────────────────
-
-interface AvrentisWordmarkProps {
-  size?: number;
-  color?: string;
-  className?: string;
-}
-
-export function AvrentisWordmark({
-  size = 15,
-  color = "var(--color-gold)",
-  className,
-}: AvrentisWordmarkProps) {
-  return (
-    <span
-      className={className}
-      style={{
-        fontFamily: "var(--font-wordmark)",
-        fontWeight: 600,
-        fontSize: size,
-        letterSpacing: "0.10em",
-        color,
-        lineHeight: 1,
-        textTransform: "uppercase",
-        display: "inline-block",
-      }}
-    >
-      Avrentis
-    </span>
-  );
-}
-
-// ── Full lockup (mark + wordmark) ─────────────────────────────────────────────
+// ── Logo (mark + wordmark) ────────────────────────────────────────────────────
 
 export function AvrentisLogo({
-  size = 40,
+  size = 44,
   variant = "primary",
   showWordmark = true,
   wordmarkColor,
   className,
 }: AvrentisLogoProps) {
   const defaultWordmarkColor =
-    variant === "transparent-navy"
-      ? "#0f172a"
-      : variant === "reversed"
-        ? "#0f172a"
-        : "#ffffff";
-
+    variant === "transparent-navy" ? "var(--color-primary-800)" : "#ffffff";
   const wColor = wordmarkColor ?? defaultWordmarkColor;
 
   return (
-    <div
-      className={cn("flex items-center", className)}
-      style={{ gap: Math.round(size * 0.25) }}
-    >
+    <div className={cn("flex items-center", className)} style={{ gap: Math.round(size * 0.25) }}>
       <AvrentisMark size={size} variant={variant} />
       {showWordmark && (
         <span
           style={{
-            fontFamily: "var(--font-wordmark)",
+            fontFamily: 'var(--font-wordmark, "Helvetica Neue"), Helvetica, Arial, sans-serif',
             fontWeight: 700,
-            fontSize: size * 0.52,
+            fontSize: size * 0.46,
             letterSpacing: "0.15em",
             color: wColor,
             lineHeight: 1,
             textTransform: "uppercase" as const,
           }}
         >
-          Avrentis
+          {BRAND.name}
         </span>
       )}
     </div>

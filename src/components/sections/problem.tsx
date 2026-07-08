@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import {
   Mail,
@@ -50,7 +50,7 @@ export function Problem() {
   return (
     <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <motion.span
+        <m.span
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -68,9 +68,9 @@ export function Problem() {
           }}
         >
           SOUND FAMILIAR?
-        </motion.span>
+        </m.span>
 
-        <motion.h2
+        <m.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -88,9 +88,9 @@ export function Problem() {
           className="lg:!text-[42px]"
         >
           This is how most organisations still operate.
-        </motion.h2>
+        </m.h2>
 
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -108,7 +108,7 @@ export function Problem() {
         >
           Across industries, geographies, and organisation sizes — the same
           operational problems keep showing up.
-        </motion.p>
+        </m.p>
 
         <div
           style={{
@@ -120,7 +120,7 @@ export function Problem() {
           {CARDS.map((card, i) => {
             const Icon = card.icon;
             return (
-              <motion.div
+              <m.div
                 key={card.title}
                 variants={fadeUp}
                 initial="hidden"
@@ -178,12 +178,12 @@ export function Problem() {
                 >
                   {card.body}
                 </p>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>
 
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -201,7 +201,7 @@ export function Problem() {
         >
           Avrentis was built to solve all of this — for every organisation, in
           every industry.
-        </motion.p>
+        </m.p>
       </div>
     </section>
   );

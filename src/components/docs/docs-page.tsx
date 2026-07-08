@@ -14,7 +14,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
   Compass,
@@ -258,7 +258,7 @@ function StatusPill({ status }: { status: ItemStatus }) {
 function Category({ category, index }: { category: DocsCategory; index: number }) {
   const Icon = category.icon;
   return (
-    <motion.section
+    <m.section
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
@@ -353,7 +353,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
           })}
         </div>
       </div>
-    </motion.section>
+    </m.section>
   );
 }
 
@@ -368,6 +368,7 @@ export function DocsHubPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -381,7 +382,7 @@ export function DocsHubPage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -396,7 +397,7 @@ export function DocsHubPage() {
           }}
         />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -413,8 +414,8 @@ export function DocsHubPage() {
             }}
           >
             DOCUMENTATION
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -430,8 +431,8 @@ export function DocsHubPage() {
             className="lg:!text-[52px]"
           >
             Everything you need to run Avrentis — in one place.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -449,8 +450,8 @@ export function DocsHubPage() {
             deep-dive pages we already publish, and honest signals for the
             guides we&rsquo;re still writing — with a direct line to a human
             where a guide would have lived.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -495,7 +496,7 @@ export function DocsHubPage() {
               <Mail size={14} strokeWidth={1.8} aria-hidden="true" />
               Request a guide
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -556,7 +557,7 @@ export function DocsHubPage() {
       {/* ── FEEDBACK FOOTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "80px 32px" }}>
         <div style={{ maxWidth: "820px", margin: "0 auto" }}>
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -609,10 +610,11 @@ export function DocsHubPage() {
             >
               Request a guide
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

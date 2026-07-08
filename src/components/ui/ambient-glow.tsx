@@ -18,7 +18,7 @@
  * the glow is clipped to the section bounds.
  */
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 
 interface AmbientGlowProps {
@@ -59,7 +59,7 @@ export function AmbientGlow({
   const background = `radial-gradient(closest-side, ${color} 0%, transparent 70%)`;
 
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       initial={{ x: 0, y: 0 }}
       animate={

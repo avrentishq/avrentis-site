@@ -13,10 +13,15 @@ import {
   ChevronDown,
   Menu,
 } from "lucide-react";
-import { AvrentisLogo } from "@/components/ui/logo";
 import { MobileMenu } from "@/components/layout/mobile-menu";
-import { BRAND, BRAND_COLORS, MODULES as PRODUCT_MODULES, isModulePublic } from "@/lib/brand";
+import {
+  BRAND,
+  BRAND_COLORS,
+  MODULES as PRODUCT_MODULES,
+  isModulePublic,
+} from "@/lib/brand";
 import { isLaunchVisible } from "@/lib/launch";
+import { LOGIN_URL } from "@/lib/platform";
 
 /* ── Data ─────────────────────────────────────────────────────────────────── */
 
@@ -131,10 +136,12 @@ export function Navbar() {
       fontFamily: "var(--font-sans)",
       fontWeight: 400,
       fontSize: "14px",
-      color: active ? "var(--color-gold)" : "#ffffff",
+      color: active ? "var(--color-gold)" : scrolled ? "#0f172a" : "#ffffff",
       textDecoration: "none",
       transition: "color 150ms ease",
-      borderBottom: active ? "2px solid var(--color-gold)" : "2px solid transparent",
+      borderBottom: active
+        ? "2px solid var(--color-gold)"
+        : "2px solid transparent",
       paddingBottom: "2px",
     };
   };
@@ -148,27 +155,89 @@ export function Navbar() {
           left: 0,
           right: 0,
           height: "64px",
-          backgroundColor: "#0f172a",
-          borderBottom: "0.5px solid rgba(var(--color-gold-rgb), 0.2)",
-          boxShadow: scrolled ? "0 2px 12px rgba(0,0,0,0.15)" : "none",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          // Transparent when scrolled so the inner container reads as a floating
+          // pill; solid navy at the top so it stays legible over any page.
+          backgroundColor: scrolled ? "transparent" : "#0f172a",
+          borderBottom: scrolled
+            ? "0.5px solid transparent"
+            : "0.5px solid rgba(var(--color-gold-rgb), 0.2)",
           zIndex: 50,
-          transition: "box-shadow 300ms ease",
+          transition: "background-color 300ms ease, border-color 300ms ease",
         }}
       >
         <div
           style={{
-            maxWidth: "1200px",
+            // On scroll this container morphs into a centered frosted pill.
+            width: "100%",
+            maxWidth: scrolled ? "920px" : "1200px",
             margin: "0 auto",
-            padding: "0 40px",
-            height: "100%",
+            padding: scrolled ? "0 24px" : "0 40px",
+            height: scrolled ? "48px" : "64px",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            backgroundColor: scrolled
+              ? "rgba(247, 246, 242, 0.9)"
+              : "transparent",
+            backdropFilter: scrolled ? "blur(12px)" : "none",
+            WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+            borderRadius: scrolled ? "9999px" : "0",
+            border: scrolled
+              ? "1px solid rgba(15, 23, 42, 0.08)"
+              : "1px solid transparent",
+            boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.28)" : "none",
+            transition:
+              "max-width 300ms ease, height 300ms ease, padding 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, border-radius 300ms ease",
           }}
         >
           {/* ── Logo ──────────────────────────────────────────────── */}
           <Link href="/" aria-label={`${BRAND.name} home`}>
-            <AvrentisLogo variant="primary" size={36} wordmarkColor="#ffffff" />
+            {/* Dark bar: reversed mark (gold badge, navy gate) + white
+                wordmark. Off-white pill: bare navy gate (no box) + navy
+                wordmark. Both assets live in /public/logos; the Link carries
+                the accessible name, so the images are decorative. */}
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: scrolled ? "7px" : "9px",
+                transition: "gap 300ms ease",
+              }}
+            >
+              <img
+                src={
+                  scrolled
+                    ? "/logos/mark-transparent-navy-256.svg"
+                    : "/logos/mark-reversed-256.svg"
+                }
+                alt=""
+                aria-hidden="true"
+                style={{
+                  height: scrolled ? "30px" : "36px",
+                  width: "auto",
+                  display: "block",
+                  transition: "height 300ms ease",
+                }}
+              />
+              <img
+                src={
+                  scrolled
+                    ? "/logos/wordmark-navy.svg"
+                    : "/logos/wordmark-white.svg"
+                }
+                alt=""
+                aria-hidden="true"
+                style={{
+                  height: scrolled ? "18px" : "24px",
+                  width: "auto",
+                  display: "block",
+                  transition: "height 300ms ease",
+                }}
+              />
+            </span>
           </Link>
 
           {/* ── Center nav links ──────────────────────────────────── */}
@@ -184,7 +253,8 @@ export function Navbar() {
               onFocus={openDropdown}
               onBlur={(e) => {
                 // Close when focus leaves the whole dropdown (keyboard tab-out).
-                if (!e.currentTarget.contains(e.relatedTarget as Node)) closeDropdown();
+                if (!e.currentTarget.contains(e.relatedTarget as Node))
+                  closeDropdown();
               }}
               onKeyDown={(e) => {
                 if (e.key === "Escape") closeDropdownImmediate();
@@ -207,7 +277,9 @@ export function Navbar() {
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = "#ffffff";
+                    e.currentTarget.style.color = scrolled
+                      ? "#0f172a"
+                      : "#ffffff";
                 }}
               >
                 Product
@@ -260,72 +332,75 @@ export function Navbar() {
                         gap: "2px",
                       }}
                     >
-                      {MODULES.filter((mod) => isModulePublic(mod.key)).map((mod) => {
-                        const Icon = mod.icon;
-                        return (
-                          <Link
-                            key={mod.href}
-                            href={mod.href}
-                            onClick={closeDropdownImmediate}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "12px",
-                              padding: "8px",
-                              borderRadius: "6px",
-                              textDecoration: "none",
-                              transition: "background-color 150ms ease",
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor =
-                                "rgba(var(--color-gold-rgb), 0.06)";
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor =
-                                "transparent";
-                            }}
-                          >
-                            <div
+                      {MODULES.filter((mod) => isModulePublic(mod.key)).map(
+                        (mod) => {
+                          const Icon = mod.icon;
+                          return (
+                            <Link
+                              key={mod.href}
+                              href={mod.href}
+                              onClick={closeDropdownImmediate}
                               style={{
-                                width: "32px",
-                                height: "32px",
-                                borderRadius: "50%",
-                                backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
                                 display: "flex",
                                 alignItems: "center",
-                                justifyContent: "center",
-                                flexShrink: 0,
+                                gap: "12px",
+                                padding: "8px",
+                                borderRadius: "6px",
+                                textDecoration: "none",
+                                transition: "background-color 150ms ease",
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  "rgba(var(--color-gold-rgb), 0.06)";
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor =
+                                  "transparent";
                               }}
                             >
-                              <Icon size={16} color={BRAND_COLORS.gold} />
-                            </div>
-                            <div>
                               <div
                                 style={{
-                                  fontFamily: "var(--font-sans)",
-                                  fontWeight: 500,
-                                  fontSize: "14px",
-                                  color: "#ffffff",
-                                  lineHeight: 1.3,
+                                  width: "32px",
+                                  height: "32px",
+                                  borderRadius: "50%",
+                                  backgroundColor:
+                                    "rgba(var(--color-gold-rgb), 0.08)",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexShrink: 0,
                                 }}
                               >
-                                {mod.name}
+                                <Icon size={16} color={BRAND_COLORS.gold} />
                               </div>
-                              <div
-                                style={{
-                                  fontFamily: "var(--font-sans)",
-                                  fontWeight: 400,
-                                  fontSize: "12px",
-                                  color: "#64748b",
-                                  lineHeight: 1.3,
-                                }}
-                              >
-                                {mod.desc}
+                              <div>
+                                <div
+                                  style={{
+                                    fontFamily: "var(--font-sans)",
+                                    fontWeight: 500,
+                                    fontSize: "14px",
+                                    color: "#ffffff",
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {mod.name}
+                                </div>
+                                <div
+                                  style={{
+                                    fontFamily: "var(--font-sans)",
+                                    fontWeight: 400,
+                                    fontSize: "12px",
+                                    color: "#64748b",
+                                    lineHeight: 1.3,
+                                  }}
+                                >
+                                  {mod.desc}
+                                </div>
                               </div>
-                            </div>
-                          </Link>
-                        );
-                      })}
+                            </Link>
+                          );
+                        },
+                      )}
                     </div>
                   </div>
 
@@ -351,7 +426,9 @@ export function Navbar() {
                         gap: "2px",
                       }}
                     >
-                      {PLATFORM.filter((item) => isLaunchVisible(item.href)).map((item) => (
+                      {PLATFORM.filter((item) =>
+                        isLaunchVisible(item.href),
+                      ).map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
@@ -394,7 +471,9 @@ export function Navbar() {
               }}
               onMouseLeave={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = "#ffffff";
+                  e.currentTarget.style.color = scrolled
+                    ? "#0f172a"
+                    : "#ffffff";
               }}
             >
               Pricing
@@ -406,59 +485,30 @@ export function Navbar() {
             className="hidden md:flex"
             style={{ alignItems: "center", gap: "24px" }}
           >
-            <a
-              href="https://app.avrentis.com/login"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 400,
-                fontSize: "14px",
-                color: "#94a3b8",
-                textDecoration: "none",
-                transition: "color 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = "#ffffff";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = "#94a3b8";
-              }}
-            >
-              Login
-            </a>
-
-            <a
-              href="/contact?intent=demo"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "11px",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                lineHeight: 1,
-                backgroundColor: "transparent",
-                color: "#e2e8f0",
-                border: "1px solid rgba(255,255,255,0.2)",
-                borderRadius: "3px",
-                height: "32px",
-                padding: "0 14px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                cursor: "pointer",
-                transition: "border-color 150ms ease, color 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.45)";
-                e.currentTarget.style.color = "#FFFFFF";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
-                e.currentTarget.style.color = "#e2e8f0";
-              }}
-            >
-              Book demo
-            </a>
+            {/* Collapse to a single CTA once the bar morphs into the pill. */}
+            {!scrolled && (
+              <>
+                <a
+                  href={LOGIN_URL}
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "14px",
+                    color: "#94a3b8",
+                    textDecoration: "none",
+                    transition: "color 150ms ease",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = "#ffffff";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "#94a3b8";
+                  }}
+                >
+                  Login
+                </a>
+              </>
+            )}
 
             <a
               href="/trial"
@@ -472,7 +522,7 @@ export function Navbar() {
                 backgroundColor: "var(--color-gold)",
                 color: "#0f172a",
                 border: "none",
-                borderRadius: "3px",
+                borderRadius: "9999px",
                 height: "32px",
                 padding: "0 16px",
                 display: "inline-flex",
@@ -483,7 +533,8 @@ export function Navbar() {
                 transition: "background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-gold-hover)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "var(--color-gold)";
@@ -500,6 +551,7 @@ export function Navbar() {
             aria-label="Open menu"
             aria-expanded={mobileOpen}
             aria-haspopup="dialog"
+            aria-controls="mobile-menu"
             style={{
               background: "none",
               border: "none",
@@ -520,7 +572,7 @@ export function Navbar() {
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
         navLinks={NAV_LINKS.filter((link) => isLaunchVisible(link.href))}
-        signinUrl="https://app.avrentis.com/login"
+        signinUrl={LOGIN_URL}
         pathname={pathname}
       />
     </>

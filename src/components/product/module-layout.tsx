@@ -18,7 +18,7 @@ import type { LucideIcon } from "lucide-react";
 import { BRAND_COLORS, MODULES, type ModuleKey } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -180,6 +180,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
         ])}
       />
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
@@ -194,7 +195,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
 
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -223,7 +224,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
         >
           {/* Left: copy */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <motion.span
+            <m.span
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -239,9 +240,9 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               }}
             >
               {config.eyebrow}
-            </motion.span>
+            </m.span>
 
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -249,9 +250,9 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               transition={staggerDelay(1)}
             >
               <StatusRibbon status={config.status} />
-            </motion.div>
+            </m.div>
 
-            <motion.h1
+            <m.h1
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -268,9 +269,9 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               className="lg:!text-[48px]"
             >
               {config.headline}
-            </motion.h1>
+            </m.h1>
 
-            <motion.p
+            <m.p
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -287,9 +288,9 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               }}
             >
               {config.description}
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -333,11 +334,11 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               >
                 {secondary.label} →
               </Link>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* Right: preview */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-40px" }}
@@ -393,14 +394,14 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               </div>
               <div>{config.preview}</div>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -418,8 +419,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             }}
           >
             CAPABILITIES
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -438,7 +439,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             className="lg:!text-[38px]"
           >
             What this module does for your organisation.
-          </motion.h2>
+          </m.h2>
 
           <div
             style={{ display: "grid", gap: "20px" }}
@@ -447,7 +448,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             {config.pillars.map((pillar, i) => {
               const Icon = pillar.icon;
               return (
-                <motion.div
+                <m.div
                   key={pillar.title}
                   variants={fadeUp}
                   initial="hidden"
@@ -499,7 +500,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   >
                     {pillar.body}
                   </p>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -509,7 +510,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       {/* ── USE CASES ────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -527,8 +528,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             }}
           >
             OUTCOMES
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -547,11 +548,11 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             className="lg:!text-[38px]"
           >
             What changes operationally.
-          </motion.h2>
+          </m.h2>
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2">
             {config.useCases.map((uc, i) => (
-              <motion.div
+              <m.div
                 key={uc.title}
                 variants={fadeUp}
                 initial="hidden"
@@ -587,7 +588,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 >
                   {uc.body}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>
@@ -600,7 +601,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
           className="grid-cols-1 lg:grid-cols-2"
         >
           {/* Plans */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -712,10 +713,10 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             >
               See full pricing <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" />
             </Link>
-          </motion.div>
+          </m.div>
 
           {/* Related modules */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -792,11 +793,12 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 </Link>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       <CtaBanner />
+      </main>
       <Footer />
     </>
   );

@@ -24,7 +24,7 @@ export default async function Home() {
     <>
       <JsonLd data={softwareApplicationSchema(pricingData)} />
       <Navbar />
-      <main>
+      <main id="main">
         <Hero />
         <Problem />
         <HowItWorks />

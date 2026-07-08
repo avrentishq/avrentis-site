@@ -9,7 +9,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import {
@@ -206,7 +206,7 @@ function Badge({ availability }: { availability: Availability }) {
 function CategoryBlock({ category, index }: { category: Category; index: number }) {
   const Icon = category.icon;
   return (
-    <motion.section
+    <m.section
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
@@ -296,7 +296,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
           ))}
         </div>
       </div>
-    </motion.section>
+    </m.section>
   );
 }
 
@@ -311,6 +311,7 @@ export function IntegrationsCataloguePage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -324,7 +325,7 @@ export function IntegrationsCataloguePage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -339,7 +340,7 @@ export function IntegrationsCataloguePage() {
           }}
         />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -356,8 +357,8 @@ export function IntegrationsCataloguePage() {
             }}
           >
             INTEGRATIONS
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -373,8 +374,8 @@ export function IntegrationsCataloguePage() {
             className="lg:!text-[56px]"
           >
             Avrentis plugs into the stack you already run.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -391,8 +392,8 @@ export function IntegrationsCataloguePage() {
             Identity, provisioning, notifications, accounting, banking, and a
             first-class developer platform. Each integration labelled honestly —
             available today or delivered on request as part of a conversation.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -435,7 +436,7 @@ export function IntegrationsCataloguePage() {
             >
               Request a custom connector →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -497,7 +498,7 @@ export function IntegrationsCataloguePage() {
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-2">
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -557,9 +558,9 @@ export function IntegrationsCataloguePage() {
               >
                 Request API access <ArrowRight size={13} strokeWidth={1.8} aria-hidden="true" />
               </Link>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -613,7 +614,7 @@ export function IntegrationsCataloguePage() {
   "signature": "sha256=8f3d…"
 }`}
               </pre>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -631,7 +632,7 @@ export function IntegrationsCataloguePage() {
         <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
 
         <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -656,8 +657,8 @@ export function IntegrationsCataloguePage() {
           >
             <Sparkles size={14} strokeWidth={1.8} aria-hidden="true" />
             Built for your stack
-          </motion.div>
-          <motion.h2
+          </m.div>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -675,8 +676,8 @@ export function IntegrationsCataloguePage() {
             className="lg:!text-[36px]"
           >
             Need something specific? We&rsquo;ll build it.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -695,8 +696,8 @@ export function IntegrationsCataloguePage() {
             already in production at their organisation — banking rails,
             regional HRIS, in-house document stores. Tell us what you run; we
             scope, build, and ship.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -740,10 +741,11 @@ export function IntegrationsCataloguePage() {
             >
               How we secure integrations →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

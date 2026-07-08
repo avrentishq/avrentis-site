@@ -12,7 +12,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import {
-  motion,
+  m,
   useScroll,
   useTransform,
 } from "framer-motion";
@@ -148,7 +148,7 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
   const Mockup = stage.Mockup;
   const Icon = stage.icon;
   return (
-    <motion.div
+    <m.div
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
@@ -299,7 +299,7 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
         </div>
         <Mockup />
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -317,7 +317,7 @@ function ChainCard({
   active?: boolean;
 }) {
   return (
-    <motion.div
+    <m.div
       variants={fadeUp}
       initial="hidden"
       whileInView="visible"
@@ -351,7 +351,7 @@ function ChainCard({
       <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#94a3b8", lineHeight: 1.5, margin: 0 }}>
         {node.body}
       </p>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -366,6 +366,7 @@ export function HowItWorksProductPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -379,7 +380,7 @@ export function HowItWorksProductPage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -395,7 +396,7 @@ export function HowItWorksProductPage() {
         />
 
         <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -413,8 +414,8 @@ export function HowItWorksProductPage() {
             }}
           >
             How Avrentis works
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -433,8 +434,8 @@ export function HowItWorksProductPage() {
             From request to permanent record —
             <br />
             the complete lifecycle.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -453,8 +454,8 @@ export function HowItWorksProductPage() {
             same four-stage lifecycle. Structured at submission, routed by
             role, sanctioned by authority, recorded permanently. No email
             threads. No lost approvals. No guessing what changed.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -498,7 +499,7 @@ export function HowItWorksProductPage() {
             >
               See the lifecycle →
             </a>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -527,7 +528,7 @@ export function HowItWorksProductPage() {
         <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -545,9 +546,9 @@ export function HowItWorksProductPage() {
             }}
           >
             ROLE-ENFORCED AUTHORITY
-          </motion.span>
+          </m.span>
 
-          <motion.h2
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -566,9 +567,9 @@ export function HowItWorksProductPage() {
             className="lg:!text-[38px]"
           >
             Two document types. Two defined chains.
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -586,11 +587,11 @@ export function HowItWorksProductPage() {
             Payment vouchers follow one authority chain. Purchase orders follow
             another. Each chain is role-enforced, separation-of-duties-safe,
             and permanently on record. Authority at every stage.
-          </motion.p>
+          </m.p>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="md:!gap-[32px] lg:!gap-[48px]">
             <div>
-              <motion.h3
+              <m.h3
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
@@ -607,7 +608,7 @@ export function HowItWorksProductPage() {
                 }}
               >
                 Payment Voucher Chain
-              </motion.h3>
+              </m.h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PV_CHAIN.map((node, i) => (
                   <ChainCard key={node.stage} node={node} index={i} baseDelay={4} active={i === 1} />
@@ -616,7 +617,7 @@ export function HowItWorksProductPage() {
             </div>
 
             <div>
-              <motion.h3
+              <m.h3
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
@@ -633,7 +634,7 @@ export function HowItWorksProductPage() {
                 }}
               >
                 Purchase Order Chain
-              </motion.h3>
+              </m.h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PO_CHAIN.map((node, i) => (
                   <ChainCard key={node.stage} node={node} index={i} baseDelay={7} active={i === 1} />
@@ -647,7 +648,7 @@ export function HowItWorksProductPage() {
       {/* ── NOTIFICATIONS ──────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -665,8 +666,8 @@ export function HowItWorksProductPage() {
             }}
           >
             NOTIFICATION CHOREOGRAPHY
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -685,8 +686,8 @@ export function HowItWorksProductPage() {
             className="lg:!text-[38px]"
           >
             Approvers hear about requests wherever they are.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -704,13 +705,13 @@ export function HowItWorksProductPage() {
             Every stage of the lifecycle dispatches notifications through the
             channels your approvers actually check. Decision makers are never
             a bottleneck because they are never out of reach.
-          </motion.p>
+          </m.p>
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {NOTIFICATIONS.map((n, i) => {
               const Icon = n.icon;
               return (
-                <motion.div
+                <m.div
                   key={n.channel}
                   variants={fadeUp}
                   initial="hidden"
@@ -746,7 +747,7 @@ export function HowItWorksProductPage() {
                   <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
                     {n.desc}
                   </p>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -756,7 +757,7 @@ export function HowItWorksProductPage() {
       {/* ── BEFORE vs AFTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -774,8 +775,8 @@ export function HowItWorksProductPage() {
             }}
           >
             THE CONTRAST
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -794,7 +795,7 @@ export function HowItWorksProductPage() {
             className="lg:!text-[38px]"
           >
             What actually changes day-to-day.
-          </motion.h2>
+          </m.h2>
 
           <div
             style={{
@@ -859,7 +860,7 @@ export function HowItWorksProductPage() {
 
             {COMPARISON.map((row, i) => (
               <div key={row.avrentis} style={{ display: "contents" }}>
-                <motion.div
+                <m.div
                   variants={fadeUp}
                   initial="hidden"
                   whileInView="visible"
@@ -876,8 +877,8 @@ export function HowItWorksProductPage() {
                   }}
                 >
                   {row.old}
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   variants={fadeUp}
                   initial="hidden"
                   whileInView="visible"
@@ -894,7 +895,7 @@ export function HowItWorksProductPage() {
                   }}
                 >
                   {row.avrentis}
-                </motion.div>
+                </m.div>
               </div>
             ))}
           </div>
@@ -902,6 +903,7 @@ export function HowItWorksProductPage() {
       </section>
 
       <CtaBanner />
+      </main>
       <Footer />
     </>
   );

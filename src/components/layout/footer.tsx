@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { BRAND, MODULES, moduleName, publicModuleKeys } from "@/lib/brand";
 import { isLaunchVisible } from "@/lib/launch";
+import { LOGIN_URL } from "@/lib/platform";
 
 // Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
 const PRODUCT_LINKS = publicModuleKeys().map((key) => ({
@@ -35,8 +36,8 @@ const COMPANY_LINKS = [
 
 const START_LINKS = [
   { label: "Start trial", href: "/trial" },
-  { label: "Book demo", href: "/contact?intent=demo" },
-  { label: "Login", href: "https://app.avrentis.com/login" },
+  { label: "Contact us", href: "/contact" },
+  { label: "Login", href: LOGIN_URL },
 ];
 
 // Hidden-at-launch links are filtered out; fully-empty columns are dropped.
@@ -106,12 +107,14 @@ export function Footer() {
             display: "grid",
             gap: "40px",
             marginBottom: "40px",
+            // auto-fit fills the full width with however many columns are live
+            // (launch-hidden columns collapse instead of leaving a gap).
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
           }}
-          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1fr_1fr]"
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
+            <AvrentisLogo variant="transparent-gold" size={28} wordmarkColor="var(--color-gold)" />
             <span
               style={{
                 fontFamily: "var(--font-mono)",

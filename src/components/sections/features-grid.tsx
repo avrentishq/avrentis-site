@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import {
   CreditCard,
@@ -104,7 +104,7 @@ export function FeaturesGrid() {
   return (
     <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <motion.span
+        <m.span
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -123,9 +123,9 @@ export function FeaturesGrid() {
           }}
         >
           THE PLATFORM
-        </motion.span>
+        </m.span>
 
-        <motion.h2
+        <m.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -143,9 +143,9 @@ export function FeaturesGrid() {
           className="lg:!text-[42px]"
         >
           One approval engine. Every operational process.
-        </motion.h2>
+        </m.h2>
 
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -165,7 +165,7 @@ export function FeaturesGrid() {
           Avrentis is built as a suite of interconnected modules — each solving a
           distinct operational challenge, all working together on one shared
           approval engine. For any organisation. In any industry.
-        </motion.p>
+        </m.p>
 
         <div
           style={{
@@ -178,7 +178,7 @@ export function FeaturesGrid() {
             const Icon = mod.icon;
             const badge = BADGE_STYLES[mod.status];
             return (
-              <motion.div
+              <m.div
                 key={mod.key}
                 variants={fadeUp}
                 initial="hidden"
@@ -276,7 +276,7 @@ export function FeaturesGrid() {
                 >
                   {badge.label}
                 </span>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>

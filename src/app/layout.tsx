@@ -68,6 +68,9 @@ export default function RootLayout({
         <JsonLd data={organizationSchema()} />
       </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
+        <a href="#main" className="skip-link">
+          Skip to content
+        </a>
         <MotionProvider>
           <ScrollProgress />
           {children}

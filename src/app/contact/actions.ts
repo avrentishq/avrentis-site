@@ -13,6 +13,7 @@
 
 import { sendContactEmail } from "@/lib/email";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 import {
   type ContactFormState,
   type ContactIntent,
@@ -20,18 +21,6 @@ import {
 } from "./state";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-const FREE_EMAIL_DOMAINS = new Set([
-  "gmail.com",
-  "yahoo.com",
-  "hotmail.com",
-  "outlook.com",
-  "icloud.com",
-  "live.com",
-  "aol.com",
-  "proton.me",
-  "protonmail.com",
-]);
 
 function escape(s: string): string {
   return s
@@ -82,6 +71,10 @@ export async function submitContact(
     return { status: "success", message: "Thanks — we'll be in touch shortly." };
   }
 
+  if (!rateLimit(`contact:${await clientIp()}`, 5, 10 * 60_000)) {
+    return { status: "error", message: "Too many messages — please try again in a few minutes." };
+  }
+
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const organisation = String(formData.get("organisation") ?? "").trim();
@@ -96,14 +89,10 @@ export async function submitContact(
 
   const fieldErrors: ContactFormState["fieldErrors"] = {};
   if (!name) fieldErrors.name = "Please share your name.";
-  if (!email) fieldErrors.email = "Please share your work email.";
+  if (!email) fieldErrors.email = "Please share your email.";
   else if (!EMAIL_RE.test(email)) fieldErrors.email = "That doesn't look like a valid email.";
-  else {
-    const domain = email.split("@")[1]?.toLowerCase();
-    if (domain && FREE_EMAIL_DOMAINS.has(domain)) {
-      fieldErrors.email = "Please use your work email — we reply faster to verified domains.";
-    }
-  }
+  // Personal email is accepted on every intent — disclosure, careers, and
+  // general enquiries legitimately come from non-corporate addresses.
   if (!organisation) fieldErrors.organisation = "Please share your organisation.";
   if (!message || message.length < 10) {
     fieldErrors.message = "A sentence or two about your use case helps us prepare.";

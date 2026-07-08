@@ -11,7 +11,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import {
   Landmark,
   Building2,
@@ -128,6 +128,7 @@ export function CustomersProductPage() {
   return (
     <>
       <Navbar />
+      <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
@@ -141,7 +142,7 @@ export function CustomersProductPage() {
       >
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <motion.div
+        <m.div
           aria-hidden="true"
           style={{
             position: "absolute",
@@ -156,7 +157,7 @@ export function CustomersProductPage() {
           }}
         />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -173,8 +174,8 @@ export function CustomersProductPage() {
             }}
           >
             CUSTOMERS
-          </motion.span>
-          <motion.h1
+          </m.span>
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -190,8 +191,8 @@ export function CustomersProductPage() {
             className="lg:!text-[56px]"
           >
             Organisations that chose structure over speed.
-          </motion.h1>
-          <motion.p
+          </m.h1>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -209,8 +210,8 @@ export function CustomersProductPage() {
             haven&rsquo;t yet earned, here&rsquo;s an honest picture of who
             we&rsquo;re built for, the patterns we hear in every discovery
             call, and how our launch-partner programme works.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -218,7 +219,7 @@ export function CustomersProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=demo"
+              href="/contact"
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -233,7 +234,7 @@ export function CustomersProductPage() {
                 textDecoration: "none",
               }}
             >
-              Book a demo
+              Contact us
             </Link>
             <Link
               href="#launch-partners"
@@ -253,14 +254,14 @@ export function CustomersProductPage() {
             >
               About the launch programme →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
       {/* ── INDUSTRIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -278,8 +279,8 @@ export function CustomersProductPage() {
             }}
           >
             WHO WE BUILT THIS FOR
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -298,8 +299,8 @@ export function CustomersProductPage() {
             className="lg:!text-[38px]"
           >
             Six organisation types. One common problem.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -317,13 +318,13 @@ export function CustomersProductPage() {
             Avrentis is deliberately narrow. We serve organisations where
             approval chains matter, audit trails are non-negotiable, and
             authority cannot be left to email.
-          </motion.p>
+          </m.p>
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {INDUSTRIES.map((ind, i) => {
               const Icon = ind.icon;
               return (
-                <motion.div
+                <m.div
                   key={ind.title}
                   variants={fadeUp}
                   initial="hidden"
@@ -359,7 +360,7 @@ export function CustomersProductPage() {
                   <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
                     {ind.body}
                   </p>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>
@@ -369,7 +370,7 @@ export function CustomersProductPage() {
       {/* ── COMMON PATTERNS ────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -387,8 +388,8 @@ export function CustomersProductPage() {
             }}
           >
             WHAT WE HEAR, OVER AND OVER
-          </motion.span>
-          <motion.h2
+          </m.span>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -407,8 +408,8 @@ export function CustomersProductPage() {
             className="lg:!text-[38px]"
           >
             The same four problems, in every discovery call.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -426,11 +427,11 @@ export function CustomersProductPage() {
             We&rsquo;ve sat through dozens of conversations with finance leads,
             HODs, MDs, and internal auditors. The details change; the shape of
             the problem does not.
-          </motion.p>
+          </m.p>
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2">
             {PATTERNS.map((p, i) => (
-              <motion.div
+              <m.div
                 key={p.title}
                 variants={fadeUp}
                 initial="hidden"
@@ -453,11 +454,11 @@ export function CustomersProductPage() {
                 <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
                   {p.body}
                 </p>
-              </motion.div>
+              </m.div>
             ))}
           </div>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -475,7 +476,7 @@ export function CustomersProductPage() {
             These are not quotes. They&rsquo;re the composite of patterns we
             hear in discovery calls. Real customer stories, with names, will
             live on this page as our launch partners publish them.
-          </motion.p>
+          </m.p>
         </div>
       </section>
 
@@ -490,7 +491,7 @@ export function CustomersProductPage() {
       >
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-2">
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -575,9 +576,9 @@ export function CustomersProductPage() {
                 Apply to the launch cohort
                 <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
               </Link>
-            </motion.div>
+            </m.div>
 
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -586,7 +587,7 @@ export function CustomersProductPage() {
               style={{ display: "flex", flexDirection: "column", gap: "14px" }}
             >
               {PARTNER_BENEFITS.map((b, i) => (
-                <motion.div
+                <m.div
                   key={b.title}
                   variants={fadeUp}
                   initial="hidden"
@@ -626,9 +627,9 @@ export function CustomersProductPage() {
                       {b.body}
                     </p>
                   </div>
-                </motion.div>
+                </m.div>
               ))}
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </section>
@@ -636,7 +637,7 @@ export function CustomersProductPage() {
       {/* ── COMING SOON: STORIES ───────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -661,8 +662,8 @@ export function CustomersProductPage() {
           >
             <Sparkles size={14} strokeWidth={1.8} aria-hidden="true" />
             Partner stories — in progress
-          </motion.div>
-          <motion.h2
+          </m.div>
+          <m.h2
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -680,8 +681,8 @@ export function CustomersProductPage() {
             className="lg:!text-[32px]"
           >
             Real numbers. Real names. Soon.
-          </motion.h2>
-          <motion.p
+          </m.h2>
+          <m.p
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -699,8 +700,8 @@ export function CustomersProductPage() {
             Our earliest partners are onboarding now. The case studies we
             publish here will be signed off by real operators — with the
             metrics that matter to them — not marketing boilerplate.
-          </motion.p>
-          <motion.div
+          </m.p>
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -744,7 +745,7 @@ export function CustomersProductPage() {
             >
               See how Avrentis works →
             </Link>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -757,7 +758,7 @@ export function CustomersProductPage() {
         }}
       >
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -803,10 +804,11 @@ export function CustomersProductPage() {
                 Request the review pack <ArrowRight size={13} strokeWidth={1.8} aria-hidden="true" />
               </Link>
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
+      </main>
       <Footer />
     </>
   );

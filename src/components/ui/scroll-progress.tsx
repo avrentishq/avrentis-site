@@ -9,7 +9,7 @@
  * left→right rather than scaling from the centre.
  */
 
-import { motion, useScroll, useSpring } from "framer-motion";
+import { m, useScroll, useSpring } from "framer-motion";
 
 export function ScrollProgress() {
   const { scrollYProgress } = useScroll();
@@ -22,7 +22,7 @@ export function ScrollProgress() {
   });
 
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       style={{
         position: "fixed",

@@ -7,12 +7,12 @@ import type { ContactIntent } from "./state";
 export const metadata: Metadata = {
   title: "Contact — Avrentis",
   description:
-    "Talk to Avrentis. Book a personalised demo, request a security review, or share a use case. A real person replies within one business day. To start a trial, use /trial.",
+    "Talk to Avrentis. Contact us for a walkthrough, request a security review, or share a use case. A real person replies within one business day. To start a trial, use /trial.",
   alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact Avrentis",
     description:
-      "Book a demo or talk to our team. Real humans, one-business-day reply.",
+      "Contact us or talk to our team. Real humans, one-business-day reply.",
     url: "https://avrentis.com/contact",
     type: "website",
   },
@@ -50,9 +50,10 @@ export default async function ContactPage({
     <>
       <Navbar />
       <main
+        id="main"
         style={{
           backgroundColor: "#f1f5f9",
-          padding: "120px 40px",
+          padding: "56px 40px 96px",
           minHeight: "70vh",
         }}
       >

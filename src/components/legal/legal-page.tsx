@@ -7,7 +7,7 @@
  * treatment used elsewhere on the site.
  */
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -41,7 +41,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
         }}
       >
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <motion.span
+          <m.span
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -58,9 +58,9 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             }}
           >
             {eyebrow}
-          </motion.span>
+          </m.span>
 
-          <motion.h1
+          <m.h1
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -77,9 +77,9 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             className="lg:!text-[44px]"
           >
             {title}
-          </motion.h1>
+          </m.h1>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -93,9 +93,9 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             }}
           >
             {lede}
-          </motion.p>
+          </m.p>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -108,10 +108,10 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             }}
           >
             Effective {effectiveDate}
-          </motion.p>
+          </m.p>
 
           {/* Section anchor nav */}
-          <motion.nav
+          <m.nav
             variants={fadeUp}
             initial="hidden"
             animate="visible"
@@ -171,11 +171,11 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 </li>
               ))}
             </ol>
-          </motion.nav>
+          </m.nav>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "48px" }}>
             {sections.map((s, i) => (
-              <motion.section
+              <m.section
                 key={s.id}
                 id={s.id}
                 variants={fadeUp}
@@ -221,12 +221,12 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 >
                   {s.body}
                 </div>
-              </motion.section>
+              </m.section>
             ))}
           </div>
 
           {footerNote && (
-            <motion.div
+            <m.div
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -245,7 +245,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
               }}
             >
               {footerNote}
-            </motion.div>
+            </m.div>
           )}
         </div>
 

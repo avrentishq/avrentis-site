@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import Link from "next/link";
 import type {
@@ -41,12 +41,12 @@ function getHighlights(plan: Plan): string[] {
  * on a tenant whose plan key is "business".
  */
 const TRIAL_HIGHLIGHTS: string[] = [
-  "Full Business tier for 14 days",
-  "Up to 10 users",
-  "Payables + Procurement + Documents + Compliance (real data)",
+  "Full Business tier — switched on, not a sandbox",
+  "Up to 10 users, ready to invite",
+  "Payables + Procurement + Documents + Compliance on your real data",
   "Bank-ready PDF exports (trial watermark)",
   "1 GB storage during trial",
-  "30-day read-only grace after trial",
+  "30-day read-only grace after trial — nothing deleted in a hurry",
 ];
 
 /* ── Component ───────────────────────────────────────────────── */
@@ -56,7 +56,10 @@ interface PricingProps {
 }
 
 export function Pricing({ data }: PricingProps) {
-  const [billing, setBilling] = useState<BillingCycle>("monthly");
+  // Default to annual — the higher-value cycle we already frame as "2 months
+  // free". The card keeps the monthly-equivalent and annual total visible so
+  // the default informs rather than tricks.
+  const [billing, setBilling] = useState<BillingCycle>("annual");
 
   const currencies = getAvailableCurrencies(data);
   // Nigeria-first market — lead with Naira; fall back to whatever the API offers.
@@ -64,15 +67,24 @@ export function Pricing({ data }: PricingProps) {
     currencies.includes("NGN") ? "NGN" : currencies[0],
   );
 
-  const orderedPlans = data.planOrder
-    .map((key) => data.plans.find((p) => p.key === key))
-    .filter(Boolean) as Plan[];
+  // Contrast / anchoring: render plans in ascending price so the premium tier
+  // (Enterprise) sits to the right of the featured plan and anchors it — the
+  // standard, honest three-tier layout. Deterministic regardless of API order.
+  const orderedPlans = (
+    data.planOrder
+      .map((key) => data.plans.find((p) => p.key === key))
+      .filter(Boolean) as Plan[]
+  ).sort((a, b) => {
+    const pa = getPriceForCurrency(a, currency)?.monthly ?? Infinity;
+    const pb = getPriceForCurrency(b, currency)?.monthly ?? Infinity;
+    return pa - pb;
+  });
 
   return (
     <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         {/* Eyebrow */}
-        <motion.span
+        <m.span
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -91,10 +103,10 @@ export function Pricing({ data }: PricingProps) {
           }}
         >
           PRICING
-        </motion.span>
+        </m.span>
 
         {/* Headline */}
-        <motion.h2
+        <m.h2
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -112,10 +124,10 @@ export function Pricing({ data }: PricingProps) {
           className="lg:!text-[42px]"
         >
           Structured pricing for every stage of growth.
-        </motion.h2>
+        </m.h2>
 
         {/* Subheadline */}
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -132,12 +144,12 @@ export function Pricing({ data }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Every plan starts with a 14-day trial &mdash; no credit card
-          required. Scale as your organisation grows. No hidden fees.
-        </motion.p>
+          Every plan starts with a 14-day trial &mdash; no card on file,
+          nothing to cancel. Scale as your organisation grows. No hidden fees.
+        </m.p>
 
         {/* Controls row */}
-        <motion.div
+        <m.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -235,7 +247,7 @@ export function Pricing({ data }: PricingProps) {
               ))}
             </div>
           )}
-        </motion.div>
+        </m.div>
 
         {/* Plan Cards */}
         <div
@@ -243,7 +255,7 @@ export function Pricing({ data }: PricingProps) {
           className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
         >
           {/* Trial card — marketing-only, not a real plan */}
-          <motion.div
+          <m.div
             variants={fadeUp}
             initial="hidden"
             whileInView="visible"
@@ -262,7 +274,8 @@ export function Pricing({ data }: PricingProps) {
               Try Avrentis
             </h3>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b", lineHeight: 1.5, margin: "0 0 20px" }}>
-              Evaluate the full Business tier on your own data for 14 days.
+              The full Business tier, switched on for your own data the moment
+              you verify — not a demo environment.
             </p>
             <div style={{ marginBottom: "6px" }}>
               <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "36px", color: "#0f172a" }}>$0</span>
@@ -289,7 +302,7 @@ export function Pricing({ data }: PricingProps) {
             </ul>
             <Link
               href="/trial"
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "44px", borderRadius: "8px", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-sans)", textDecoration: "none", transition: "all 150ms ease", backgroundColor: "transparent", color: "#0f172a", border: "1px solid #e2e8f0" }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "44px", borderRadius: "9999px", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-sans)", textDecoration: "none", transition: "all 150ms ease", backgroundColor: "transparent", color: "#0f172a", border: "1px solid #e2e8f0" }}
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f172a"; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; }}
             >
@@ -298,7 +311,7 @@ export function Pricing({ data }: PricingProps) {
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#94a3b8", lineHeight: 1.5, margin: "12px 0 0" }}>
               Exports carry an Avrentis Trial watermark until you upgrade. Data is preserved for 30 days after your trial ends.
             </p>
-          </motion.div>
+          </m.div>
 
           {orderedPlans.map((plan, i) => {
             const isFeatured = plan.key === FEATURED_PLAN;
@@ -309,6 +322,18 @@ export function Pricing({ data }: PricingProps) {
               billing === "annual" && priceData?.annualPerMonth != null
                 ? priceData.annualPerMonth
                 : priceData?.monthly ?? 0;
+
+            // Honest contrast: on annual, show the real monthly struck through
+            // and the genuine yearly saving — a true discount, not a fake anchor.
+            const showStrike =
+              !isEnterprise &&
+              billing === "annual" &&
+              priceData?.annualPerMonth != null &&
+              priceData.monthly > priceData.annualPerMonth;
+            const annualSaving =
+              !isEnterprise && billing === "annual" && priceData?.annualTotal != null
+                ? priceData.monthly * 12 - priceData.annualTotal
+                : 0;
 
             const features = getHighlights(plan);
 
@@ -321,7 +346,7 @@ export function Pricing({ data }: PricingProps) {
                 : moduleNames;
 
             return (
-              <motion.div
+              <m.div
                 key={plan.key}
                 variants={fadeUp}
                 initial="hidden"
@@ -388,7 +413,7 @@ export function Pricing({ data }: PricingProps) {
                 </p>
 
                 {/* Price */}
-                <div style={{ marginBottom: "6px" }}>
+                <div style={{ marginBottom: "6px", display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}>
                   {isEnterprise && (
                     <span
                       style={{
@@ -398,7 +423,20 @@ export function Pricing({ data }: PricingProps) {
                         color: "#64748b",
                       }}
                     >
-                      From{" "}
+                      From
+                    </span>
+                  )}
+                  {showStrike && priceData && (
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 500,
+                        fontSize: "18px",
+                        textDecoration: "line-through",
+                        color: isFeatured ? "#64748b" : "#94a3b8",
+                      }}
+                    >
+                      {formatCurrencyAmount(priceData.monthly, currency)}
                     </span>
                   )}
                   <span style={{ whiteSpace: "nowrap" }}>
@@ -424,6 +462,21 @@ export function Pricing({ data }: PricingProps) {
                     </span>
                   </span>
                 </div>
+
+                {/* Real yearly saving on annual — honest contrast */}
+                {annualSaving > 0 && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      color: isFeatured ? "var(--color-gold)" : "var(--color-gold-on-light)",
+                      margin: "0 0 8px",
+                    }}
+                  >
+                    Save {formatCurrencyAmount(annualSaving, currency)} a year
+                  </p>
+                )}
 
                 {/* Billing note */}
                 <p
@@ -544,7 +597,7 @@ export function Pricing({ data }: PricingProps) {
                     justifyContent: "center",
                     width: "100%",
                     height: "44px",
-                    borderRadius: "8px",
+                    borderRadius: "9999px",
                     fontSize: "14px",
                     fontWeight: 600,
                     fontFamily: "var(--font-sans)",
@@ -577,15 +630,15 @@ export function Pricing({ data }: PricingProps) {
                     }
                   }}
                 >
-                  {isEnterprise ? "Contact us" : "Get started"}
+                  {isEnterprise ? "Talk to us" : "Start my trial"}
                 </Link>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>
 
         {/* Reassurance strip */}
-        <motion.p
+        <m.p
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -602,7 +655,32 @@ export function Pricing({ data }: PricingProps) {
         >
           All plans include: Multi-level approvals &middot; Enterprise-grade
           security &middot; Data protection compliant
-        </motion.p>
+        </m.p>
+
+        <m.p
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          transition={staggerDelay(9)}
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "13px",
+            textAlign: "center",
+            marginTop: "12px",
+          }}
+        >
+          <Link
+            href="/tools/savings"
+            style={{
+              color: "var(--color-gold-on-light)",
+              textDecoration: "none",
+              fontWeight: 500,
+            }}
+          >
+            Not sure yet? Estimate what you&rsquo;d save &rarr;
+          </Link>
+        </m.p>
       </div>
     </section>
   );

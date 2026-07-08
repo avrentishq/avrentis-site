@@ -23,12 +23,18 @@ export async function verifyTurnstile(
   remoteIp?: string,
 ): Promise<TurnstileResult> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) {
-    // No key configured (local/preview). Warn in production so a missing
-    // secret is observable rather than a silently-disabled bot gate.
+  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  // Enforce ONLY when both keys are present, so the client widget and the
+  // server check are always in the same state. A half-configured deployment
+  // (one key set, the other not) skips verification instead of either failing
+  // open silently or bricking every form with an un-satisfiable challenge —
+  // and logs loudly in production so the misconfig is caught. When both are
+  // set, a missing/invalid/unverifiable token is rejected (fail closed).
+  if (!secret || !siteKey) {
     if (process.env.NODE_ENV === "production") {
-      console.warn(
-        "[turnstile] TURNSTILE_SECRET_KEY is not set — contact-form bot verification is DISABLED.",
+      console.error(
+        "[turnstile] Not fully configured (need both TURNSTILE_SECRET_KEY and NEXT_PUBLIC_TURNSTILE_SITE_KEY) — bot verification SKIPPED.",
       );
     }
     return { ok: true, skipped: true };

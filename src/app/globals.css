@@ -43,9 +43,9 @@
   --color-text-faint: #334155;
 
   /* Typography */
-  --font-sans: var(--font-ibm-plex-sans), system-ui, sans-serif;
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
   --font-mono: var(--font-ibm-plex-mono), "Courier New", monospace;
-  --font-wordmark: var(--font-hanken-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-wordmark: var(--font-cabinet-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
 
   /* Radii */
   --radius-xs: 3px;
@@ -60,6 +60,15 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Wordmark lockup baseline — trims the wordmark's line box to cap-height →
+   alphabetic baseline so its visual bottom (the caps) sits flush on the gate
+   mark's ledger; AvrentisLogo lifts the trimmed span by size × 0.19 against an
+   items-end row (see src/components/ui/logo.tsx). */
+.av-wordmark {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
 }
 
 @keyframes avrentis-pulse {

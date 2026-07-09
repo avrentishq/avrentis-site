@@ -1,74 +1,16 @@
 /**
- * Avrentis brand — single source of truth for the marketing site.
+ * Avrentis brand — the parent-brand identity (BRAND constants, colours, fonts,
+ * white-label resolvers, gate-mark geometry) is sourced from the SSOT
+ * @avrentishq/core/brand, lifted so the app, marketing site, and admin console
+ * can't diverge. This file re-exports it, and additionally owns the
+ * marketing-site MODULE CATALOG below (the public product names/slugs shown on
+ * avrentis.com) — which is site-specific and not part of the parent-brand SSOT.
  *
- * The site must present brand strings identical to the product app. Do
- * not hardcode brand names/contacts at call sites — import from here.
+ * DO NOT add parent-brand values here — add them in core, release, bump the pin.
  */
+export * from "@avrentishq/core/brand";
 
-export const BRAND = {
-  /** Parent brand name. Mixed case is canonical; uppercase only via CSS styling. */
-  name: "Avrentis",
-
-  /** Locked tagline — Operational Authority Platform positioning. */
-  tagline: "Authority. Automated.",
-
-  /** Category label used in eyebrows, investor materials, press. */
-  positioningStatement: "Operational Authority Platform",
-
-  /**
-   * Platform API brand credit — mirrors the app's mandatory, non-removable
-   * `X-Powered-By` / OpenAPI credit. It belongs to the PRODUCT's API surfaces;
-   * the marketing site deliberately does NOT self-credit (a "Powered by
-   * Avrentis" line on avrentis.com would credit the brand to its own visitors).
-   * Kept here only to preserve string-parity with the app contract.
-   */
-  poweredBy: "Powered by Avrentis",
-
-  /**
-   * Legal entity asserted in legal contexts (terms, privacy, contracts)
-   * where the full entity name is required. NOT rendered in the footer
-   * copyright — that renders `name` ("Avrentis"), by design. Keep consistent
-   * with the product app.
-   */
-  legalEntity: "Avrentis Inc.",
-
-  /** Canonical footer copyright chrome — mirrors the app's standard email footer. */
-  copyrightChrome: "© Avrentis · avrentis.com",
-
-  // ── Brand-contract contacts (must match the app's locked inboxes) ──────────
-  /** Customer support inbox. */
-  supportEmail: "support@avrentis.com",
-  /** Security disclosure inbox. */
-  securityEmail: "security@avrentis.com",
-  /** Trial-flow sender/contact inbox. */
-  trialsEmail: "trials@avrentis.com",
-
-  // ── Site-specific operational inboxes (not part of the app brand contract) ─
-  /** General marketing enquiries. */
-  contactEmail: "hello@avrentis.com",
-  /** Status-page incident subscriptions. */
-  statusEmail: "status@avrentis.com",
-
-  /** Canonical public origin of the product app. */
-  appUrl: "https://app.avrentis.com",
-} as const;
-
-export type BrandKey = keyof typeof BRAND;
-
-/**
- * Literal brand colors for contexts where the `--color-*` CSS custom
- * properties don't resolve — email HTML and any JS prop that becomes an
- * SVG/HTML presentation attribute (e.g. lucide-react's `color` prop,
- * which renders to `stroke="…"` where `var()` is invalid). In CSS `style`
- * objects and className tokens, prefer `var(--color-gold)` /
- * `rgba(var(--color-gold-rgb), α)` instead of these literals.
- */
-export const BRAND_COLORS = {
-  /** primary navy used for shells and brand chrome. */
-  navy: "#0f172a",
-  /** the Avrentis accent gold (canonical lowercase, matches the app). */
-  gold: "#c68b2f",
-} as const;
+// ── Marketing module catalog (site-specific) ─────────────────────────────────
 
 export type ModuleKey = "pay" | "procure" | "vault" | "audit" | "people" | "connect";
 

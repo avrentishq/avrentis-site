@@ -211,7 +211,7 @@ export function Navbar() {
                 src={
                   scrolled
                     ? "/logos/mark-transparent-navy-256.svg"
-                    : "/logos/mark-reversed-256.svg"
+                    : "/logos/mark-transparent-gold-256.svg"
                 }
                 alt=""
                 aria-hidden="true"
@@ -226,7 +226,7 @@ export function Navbar() {
                 src={
                   scrolled
                     ? "/logos/wordmark-navy.svg"
-                    : "/logos/wordmark-white.svg"
+                    : "/logos/wordmark-gold.svg"
                 }
                 alt=""
                 aria-hidden="true"

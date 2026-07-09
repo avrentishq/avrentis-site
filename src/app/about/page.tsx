@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 
 export const metadata: Metadata = {
   title: "About — Avrentis",
@@ -46,8 +47,12 @@ export default function AboutPage() {
           style={{
             backgroundColor: "#0f172a",
             padding: "120px 40px 80px",
+            position: "relative",
+            overflow: "hidden",
+            isolation: "isolate",
           }}
         >
+          <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
           <div
             style={{
               maxWidth: 800,
@@ -96,8 +101,12 @@ export default function AboutPage() {
           style={{
             backgroundColor: "#ffffff",
             padding: "80px 40px",
+            position: "relative",
+            overflow: "hidden",
+            isolation: "isolate",
           }}
         >
+          <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <p
               style={{
@@ -162,8 +171,12 @@ export default function AboutPage() {
           style={{
             backgroundColor: "#f1f5f9",
             padding: "80px 40px",
+            position: "relative",
+            overflow: "hidden",
+            isolation: "isolate",
           }}
         >
+          <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <p
               style={{
@@ -224,8 +237,12 @@ export default function AboutPage() {
           style={{
             backgroundColor: "#ffffff",
             padding: "80px 40px",
+            position: "relative",
+            overflow: "hidden",
+            isolation: "isolate",
           }}
         >
+          <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
           <div
             style={{
               maxWidth: 640,
@@ -297,8 +314,12 @@ export default function AboutPage() {
           style={{
             backgroundColor: "#0f172a",
             padding: "80px 40px",
+            position: "relative",
+            overflow: "hidden",
+            isolation: "isolate",
           }}
         >
+          <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
           <div
             style={{
               maxWidth: 640,

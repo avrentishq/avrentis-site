@@ -2,6 +2,7 @@
 
 import { m } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import {
   CreditCard,
   ShoppingCart,
@@ -102,8 +103,9 @@ const BADGE_STYLES: Record<
 
 export function FeaturesGrid() {
   return (
-    <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+    <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <SectionBackdrop src="/sections/features-grid.jpg" scrim="light" />
+      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <m.span
           variants={fadeUp}
           initial="hidden"

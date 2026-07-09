@@ -6,6 +6,7 @@ import { Lock, Check, Zap, Globe } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
@@ -26,8 +27,10 @@ export function CtaBanner() {
         backgroundSize: "60px 60px",
         position: "relative",
         overflow: "hidden",
+        isolation: "isolate",
       }}
     >
+      <SectionBackdrop src="/sections/cta-banner.jpg" scrim="dark" />
       {/* Ambient glow frames the CTA from behind. Two offset glows keep the
           motion asymmetric so the cycle never looks mechanical. */}
       <AmbientGlow top="-80px" left="20%" size={520} intensity={0.22} duration={38} />

@@ -34,11 +34,36 @@ interface ApprovalRowProps {
 
 // Status presets mirroring STATUS_CONFIG in the real platform
 const STATUS = {
-  underReview: { label: "Under review", bg: "rgba(var(--color-gold-rgb), 0.08)", text: "#92400e", dot: "var(--color-gold)" },
-  submitted: { label: "Submitted", bg: "rgba(180,83,9,0.08)", text: "#78350f", dot: "#b45309" },
-  queried: { label: "Queried", bg: "rgba(91,33,182,0.08)", text: "#3B0764", dot: "#5B21B6" },
-  approved: { label: "Approved", bg: "rgba(4,120,87,0.08)", text: "#047857", dot: "#047857" },
-  recorded: { label: "Recorded", bg: "rgba(4,120,87,0.08)", text: "#047857", dot: "#047857" },
+  underReview: {
+    label: "Under review",
+    bg: "rgba(var(--color-gold-rgb), 0.08)",
+    text: "#92400e",
+    dot: "var(--color-gold)",
+  },
+  submitted: {
+    label: "Submitted",
+    bg: "rgba(180,83,9,0.08)",
+    text: "#78350f",
+    dot: "#b45309",
+  },
+  queried: {
+    label: "Queried",
+    bg: "rgba(91,33,182,0.08)",
+    text: "#3B0764",
+    dot: "#5B21B6",
+  },
+  approved: {
+    label: "Approved",
+    bg: "rgba(4,120,87,0.08)",
+    text: "#047857",
+    dot: "#047857",
+  },
+  recorded: {
+    label: "Recorded",
+    bg: "rgba(4,120,87,0.08)",
+    text: "#047857",
+    dot: "#047857",
+  },
 } as const;
 
 // The one-click CTA offered on a row depends on where it is in the flow, so
@@ -541,13 +566,18 @@ export function Hero() {
           Held well back with a navy scrim so the headline stays legible and
           the warm trails read as navy/gold rather than red. */}
       <Image
-        src="/hero/hero-trails.jpg"
+        src="/hero/hero-trails-6.jpg"
         alt=""
         aria-hidden="true"
         fill
         priority
         sizes="100vw"
-        style={{ objectFit: "cover", objectPosition: "center 45%", opacity: 0.62, zIndex: 0 }}
+        style={{
+          objectFit: "cover",
+          objectPosition: "center 45%",
+          opacity: 0.62,
+          zIndex: 0,
+        }}
       />
       <div
         aria-hidden="true"
@@ -561,8 +591,21 @@ export function Hero() {
       />
 
       {/* Ambient glow layers — sit behind everything, non-interactive */}
-      <AmbientGlow top="-120px" left="-120px" size={520} intensity={0.22} duration={32} />
-      <AmbientGlow bottom="-140px" right="-100px" size={560} intensity={0.18} duration={38} delay={0.5} />
+      <AmbientGlow
+        top="-120px"
+        left="-120px"
+        size={520}
+        intensity={0.22}
+        duration={32}
+      />
+      <AmbientGlow
+        bottom="-140px"
+        right="-100px"
+        size={560}
+        intensity={0.18}
+        duration={38}
+        delay={0.5}
+      />
 
       {/* Subtle grid texture overlay with scroll-linked parallax */}
       <m.div
@@ -699,7 +742,8 @@ export function Hero() {
                 transition: "background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
+                e.currentTarget.style.backgroundColor =
+                  "var(--color-gold-hover)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = "var(--color-gold)";
@@ -728,15 +772,18 @@ export function Hero() {
                 justifyContent: "center",
                 textDecoration: "none",
                 cursor: "pointer",
-                transition: "border-color 150ms ease, background-color 150ms ease",
+                transition:
+                  "border-color 150ms ease, background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
-                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.14)";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(255,255,255,0.14)";
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)";
-                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.08)";
+                e.currentTarget.style.backgroundColor =
+                  "rgba(255,255,255,0.08)";
               }}
             >
               See how it works &rarr;
@@ -902,7 +949,10 @@ export function Hero() {
                   through the pool every few seconds; a single one-click CTA
                   (Approve / Review / Respond) hops to a random row. Acting on
                   any of them freezes the feed and reveals the nudge below. */}
-              <LiveInbox approved={approved} onApprove={() => setApproved(true)} />
+              <LiveInbox
+                approved={approved}
+                onApprove={() => setApproved(true)}
+              />
 
               {/* Post-approval nudge — the reciprocity payoff: they used the
                   loop, now the ask. */}
@@ -922,7 +972,10 @@ export function Hero() {
                     borderRadius: "8px",
                   }}
                 >
-                  <span aria-hidden="true" style={{ color: "#047857", fontWeight: 700, flexShrink: 0 }}>
+                  <span
+                    aria-hidden="true"
+                    style={{ color: "#047857", fontWeight: 700, flexShrink: 0 }}
+                  >
                     ✓
                   </span>
                   <span
@@ -933,7 +986,8 @@ export function Hero() {
                       lineHeight: 1.5,
                     }}
                   >
-                    Recorded &mdash; permanently, with a full audit trail. That&rsquo;s the core loop.{" "}
+                    Recorded &mdash; permanently, with a full audit trail.
+                    That&rsquo;s the core loop.{" "}
                     <a
                       href="/trial"
                       style={{
@@ -956,7 +1010,8 @@ export function Hero() {
                     textAlign: "right",
                   }}
                 >
-                  Showing 4 of 4 &middot; Act on one &mdash; it&rsquo;s permanently recorded
+                  Showing 4 of 4 &middot; Act on one &mdash; it&rsquo;s
+                  permanently recorded
                 </p>
               )}
             </div>

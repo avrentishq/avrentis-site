@@ -3,16 +3,15 @@
 Generated, portable brand assets for use **inside the app and on external services**
 (favicon generators, social/OG cards, email, Slack, app stores, partner sites).
 
-All files here are produced by [`generate-logos.mjs`](./generate-logos.mjs) — the single
-source of truth. Do not hand-edit the SVG/PNG files; change the generator and regenerate.
+All files here are generated from the brand SSOT, **`@avrentishq/core/brand`** (the
+gate-mark geometry, wordmark spec, variant colours, and the **Cabinet Grotesk Extrabold**
+wordmark font). Do not hand-edit the SVG/PNG files.
 
-```bash
-pnpm generate:logos        # or: node public/logos/generate-logos.mjs
-```
-
-The generator downloads **Hanken Grotesk 700** (the brand wordmark face, matching
-`next/font/google` in `src/app/layout.tsx`) on first run and caches it under
-`node_modules/.cache/avrentis-fonts/` — the font binary is never committed.
+They are produced by the shared logo generator (which lives in the product app, where the
+`opentype.js` / `@resvg/resvg-js` build deps are present) and committed here — so the
+marketing site carries no image-toolchain dependency. When the brand changes in core,
+regenerate in the app and copy the assets across; the output is byte-identical everywhere
+because both consume the same core geometry + font.
 
 ## Families
 

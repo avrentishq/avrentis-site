@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, IBM_Plex_Mono, Hanken_Grotesk } from "next/font/google";
+import { Archivo, IBM_Plex_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { BRAND } from "@/lib/brand";
@@ -10,10 +11,10 @@ const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAN
 const OG_DESCRIPTION =
   "Replace scattered approvals with structured authority — a permanent operational record for every decision, approval, and process your organisation runs.";
 
-const ibmPlexSans = IBM_Plex_Sans({
+const archivo = Archivo({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-ibm-plex-sans",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-archivo",
   display: "swap",
 });
 
@@ -24,10 +25,12 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const hankenGrotesk = Hanken_Grotesk({
-  subsets: ["latin"],
-  weight: ["600"],
-  variable: "--font-hanken-grotesk",
+// Wordmark font — self-hosted from the brand SSOT (@avrentishq/core/brand/fonts),
+// so the file lives in exactly one place across app / site / admin.
+const cabinetGrotesk = localFont({
+  src: "../../node_modules/@avrentishq/core/src/brand/fonts/CabinetGrotesk-Extrabold.woff2",
+  weight: "800",
+  variable: "--font-cabinet-grotesk",
   display: "swap",
 });
 
@@ -62,7 +65,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable} ${hankenGrotesk.variable}`}
+      className={`${archivo.variable} ${ibmPlexMono.variable} ${cabinetGrotesk.variable}`}
     >
       <head>
         <JsonLd data={organizationSchema()} />

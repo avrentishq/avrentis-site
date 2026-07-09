@@ -533,7 +533,7 @@ export function SanctionStageMockup() {
             </p>
             <p
               style={{
-                fontFamily: "'Dancing Script', 'Hanken Grotesk', cursive",
+                fontFamily: "'Dancing Script', cursive",
                 fontSize: "22px",
                 color: "#0f172a",
                 margin: 0,

@@ -12,6 +12,7 @@
  */
 
 import { m } from "framer-motion";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 
 const sans = "var(--font-sans)";
@@ -51,7 +52,8 @@ const MILESTONES: Milestone[] = [
 
 export function TrialTimeline() {
   return (
-    <section>
+    <section style={{ position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
       <m.span
         variants={fadeUp}
         initial="hidden"

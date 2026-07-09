@@ -55,6 +55,8 @@ const securityHeaders = [
 const config: NextConfig = {
   // Don't disclose the framework/version.
   poweredByHeader: false,
+  // @avrentishq/core ships raw TypeScript (brand SSOT, etc.) — transpile it here.
+  transpilePackages: ["@avrentishq/core"],
   turbopack: {
     root: __dirname,
   },

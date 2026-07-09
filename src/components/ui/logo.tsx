@@ -16,8 +16,12 @@
 
 import { BRAND } from "@/lib/brand";
 import { cn } from "@/lib/utils";
+import { type MarkVariant, getProps, WORDMARK_SPEC } from "@avrentishq/core/brand";
 
-type MarkVariant = "primary" | "reversed" | "transparent-gold" | "transparent-navy";
+// The gate-mark geometry (getProps), the wordmark spec, and the variant type
+// come from the brand SSOT. The standalone SVG-string serializer is re-exported
+// so existing `@/components/ui/logo` importers keep working.
+export { avrentisMarkSvgString } from "@avrentishq/core/brand";
 
 interface AvrentisMarkProps {
   size?: number;
@@ -30,70 +34,8 @@ interface AvrentisLogoProps extends AvrentisMarkProps {
   wordmarkColor?: string;
 }
 
-// ── Proportion engine ─────────────────────────────────────────────────────────
-
-function getProps(size: number) {
-  const postH = size * 0.52;
-  const passageW = size * 0.321;
-  const leftPostW = size * 0.09;
-  const rightPostW = size * 0.086;
-  const beamH = size * 0.05;
-  const ledgerH = size * 0.05;
-  const overhang = size * 0.016;
-  const rx = size * 0.16;
-
-  const markW = overhang + leftPostW + passageW + rightPostW + overhang;
-  const markH = beamH + postH + ledgerH;
-
-  const padH = (size - markW) / 2;
-  const padV = (size - markH) / 2;
-
-  const beamX = padH;
-  const beamY = padV;
-  const beamW = markW;
-
-  const leftPostX = padH + overhang;
-  const rightPostX = padH + overhang + leftPostW + passageW;
-  const postY = padV + beamH;
-
-  const slotX = leftPostX + leftPostW;
-  const slotY = postY + postH * 0.618;
-  const slotW = passageW;
-  const slotH = Math.max(2, size * 0.004);
-
-  const ledgerY = postY + postH;
-
-  // The ledger is ALWAYS full-bleed — edge-to-edge across the mark's box (0 → size)
-  // in every variant, contained AND transparent. The wide base is the Gate Mark's
-  // signature; the beam still spans only the posts, so the silhouette stays
-  // narrow-top / wide-base. Ledger thickness === beam thickness (both size × 0.05).
-  const ledgerX = 0;
-  const ledgerW = size;
-
-  return {
-    rx,
-    beamX,
-    beamY,
-    beamW,
-    beamH,
-    leftPostX,
-    rightPostX,
-    postY,
-    leftPostW,
-    rightPostW,
-    postH,
-    slotX,
-    slotY,
-    slotW,
-    slotH,
-    ledgerY,
-    ledgerH,
-    ledgerX,
-    ledgerW,
-  };
-}
-
 // ── Colour engine ─────────────────────────────────────────────────────────────
+// (Proportion engine `getProps` lives in @avrentishq/core/brand — imported above.)
 
 function getColors(variant: MarkVariant) {
   switch (variant) {
@@ -209,18 +151,25 @@ export function AvrentisLogo({
   const wColor = wordmarkColor ?? defaultWordmarkColor;
 
   return (
-    <div className={cn("flex items-center", className)} style={{ gap: Math.round(size * 0.25) }}>
+    <div
+      className={cn("flex items-end", className)}
+      style={{ gap: Math.round(size * WORDMARK_SPEC.gapFactor) }}
+    >
       <AvrentisMark size={size} variant={variant} />
       {showWordmark && (
         <span
+          className="av-wordmark"
           style={{
             fontFamily: 'var(--font-wordmark, "Helvetica Neue"), Helvetica, Arial, sans-serif',
-            fontWeight: 700,
-            fontSize: size * 0.46,
-            letterSpacing: "0.15em",
+            fontWeight: WORDMARK_SPEC.weight,
+            fontSize: size * WORDMARK_SPEC.sizeFactor,
+            letterSpacing: `${WORDMARK_SPEC.tracking}em`,
             color: wColor,
             lineHeight: 1,
             textTransform: "uppercase" as const,
+            // Lift the cap-trimmed wordmark so its baseline lands on the gate
+            // mark's ledger bottom (lift === size × WORDMARK_SPEC.baselineLiftFactor).
+            marginBottom: size * WORDMARK_SPEC.baselineLiftFactor,
           }}
         >
           {BRAND.name}

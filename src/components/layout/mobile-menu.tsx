@@ -28,7 +28,7 @@ const PRODUCT_PLATFORM = [
   { name: "Trust centre", href: "/trust" },
 ];
 
-const FONT = "'IBM Plex Sans', system-ui, sans-serif";
+const FONT = "var(--font-sans)";
 
 export function MobileMenu({
   open,

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
@@ -602,8 +603,10 @@ export function HowItWorks() {
         padding: "120px 40px",
         position: "relative",
         overflow: "hidden",
+        isolation: "isolate",
       }}
     >
+      <SectionBackdrop src="/sections/how-it-works.jpg" scrim="dark" />
       {/* Ambient background layers */}
       <AmbientGlow top="10%" left="-150px" size={520} intensity={0.18} duration={34} />
       <AmbientGlow bottom="-80px" right="-120px" size={460} intensity={0.15} duration={40} delay={0.5} />

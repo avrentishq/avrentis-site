@@ -17,6 +17,7 @@ import { CheckCircle2, CircleAlert, CircleDashed } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -193,8 +194,11 @@ export function StatusProductPage() {
               borderRadius: "10px",
               overflow: "hidden",
               marginBottom: "40px",
+              position: "relative",
+              isolation: "isolate",
             }}
           >
+            <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
             <div
               style={{
                 padding: "14px 20px",
@@ -288,8 +292,12 @@ export function StatusProductPage() {
               border: "1px solid #e2e8f0",
               borderRadius: "10px",
               padding: "24px 28px",
+              position: "relative",
+              overflow: "hidden",
+              isolation: "isolate",
             }}
           >
+            <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
             <h3
               style={{
                 fontFamily: sans,

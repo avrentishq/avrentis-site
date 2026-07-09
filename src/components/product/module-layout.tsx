@@ -24,6 +24,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 
 export type ModuleStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
@@ -190,8 +191,10 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
+          isolation: "isolate",
         }}
       >
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
 
@@ -399,7 +402,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       </section>
 
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -508,7 +512,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       </section>
 
       {/* ── USE CASES ────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -595,7 +600,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       </section>
 
       {/* ── PLAN AVAILABILITY + RELATED MODULES ──────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div
           style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gap: "48px" }}
           className="grid-cols-1 lg:grid-cols-2"

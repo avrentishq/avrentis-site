@@ -30,6 +30,7 @@ import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { SECURITY_FAQS } from "@/lib/security-faqs";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -374,8 +375,10 @@ export function SecurityProductPage() {
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
+          isolation: "isolate",
         }}
       >
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -502,7 +505,8 @@ export function SecurityProductPage() {
       </section>
 
       {/* ── PILLARS ────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -608,7 +612,8 @@ export function SecurityProductPage() {
       </section>
 
       {/* ── STACK ──────────────────────────────────────────── */}
-      <section id="stack" style={{ backgroundColor: "#FFFFFF", padding: "120px 40px", scrollMarginTop: "80px" }}>
+      <section id="stack" style={{ backgroundColor: "#FFFFFF", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
             <StackRow key={s.key} stage={s} index={i} />
@@ -623,8 +628,10 @@ export function SecurityProductPage() {
           padding: "120px 40px",
           position: "relative",
           overflow: "hidden",
+          isolation: "isolate",
         }}
       >
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
         <AmbientGlow top="20%" left="-120px" size={460} intensity={0.15} duration={34} />
         <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
 
@@ -796,7 +803,8 @@ export function SecurityProductPage() {
       </section>
 
       {/* ── FAQ ────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "980px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}

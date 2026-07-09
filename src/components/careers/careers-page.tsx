@@ -22,6 +22,7 @@ import {
 import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
@@ -89,8 +90,10 @@ export function CareersProductPage() {
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
+          isolation: "isolate",
         }}
       >
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -188,7 +191,8 @@ export function CareersProductPage() {
       </section>
 
       {/* ── PRINCIPLES ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -286,7 +290,8 @@ export function CareersProductPage() {
       </section>
 
       {/* ── WHO WE WANT ────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -374,7 +379,8 @@ export function CareersProductPage() {
       </section>
 
       {/* ── OPEN ROLES / HONEST NO-ROLES STATE ─────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -510,8 +516,10 @@ export function CareersProductPage() {
           scrollMarginTop: "80px",
           position: "relative",
           overflow: "hidden",
+          isolation: "isolate",
         }}
       >
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
         <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
         <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
 

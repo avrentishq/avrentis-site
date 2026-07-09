@@ -15,6 +15,7 @@ import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -198,7 +199,8 @@ export function ChangelogProductPage() {
       <main id="main">
 
       {/* ── HERO ───────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 32px 64px" }}>
+      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 32px 64px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -259,7 +261,8 @@ export function ChangelogProductPage() {
       </section>
 
       {/* ── TIMELINE ───────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f8fafc", padding: "64px 32px 100px" }}>
+      <section style={{ backgroundColor: "#f8fafc", padding: "64px 32px 100px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
         <div style={{ maxWidth: "820px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
           {ENTRIES.map((entry) => (
             <m.article

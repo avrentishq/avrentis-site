@@ -28,6 +28,7 @@ import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 
@@ -142,7 +143,7 @@ export function CustomersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -263,7 +264,7 @@ export function CustomersProductPage() {
 
       {/* ── INDUSTRIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -373,7 +374,7 @@ export function CustomersProductPage() {
 
       {/* ── COMMON PATTERNS ────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -497,7 +498,7 @@ export function CustomersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div
@@ -645,7 +646,7 @@ export function CustomersProductPage() {
 
       {/* ── COMING SOON: STORIES ───────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
           <m.div
             variants={fadeUp}
@@ -770,7 +771,7 @@ export function CustomersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <m.div
             variants={fadeUp}

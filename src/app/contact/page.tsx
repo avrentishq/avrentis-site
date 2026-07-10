@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/contact/contact-form";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ContactIntent } from "./state";
 
 export const metadata: Metadata = {
@@ -55,9 +57,13 @@ export default async function ContactPage({
           backgroundColor: "#f1f5f9",
           padding: "56px 40px 96px",
           minHeight: "70vh",
+          position: "relative",
+          overflow: "hidden",
+          isolation: "isolate",
         }}
       >
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <ContactForm intent={intent} />
         </div>
       </main>

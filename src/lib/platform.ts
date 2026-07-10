@@ -1,13 +1,21 @@
 import { BRAND } from "@/lib/brand";
 
 /**
- * Product-app (platform) origin — single source of truth. Read from
- * PLATFORM_API_URL, falling back to the brand's app URL. Server code
- * (trial actions, verify) gets the env value; client components inline the
- * fallback at build (non-public env vars aren't exposed to the browser), so
- * keep PLATFORM_API_URL aligned with BRAND.appUrl in production.
+ * Product-app origin for BROWSER-FACING links (login in navbar/footer). MUST be
+ * a NEXT_PUBLIC_ var (or the constant fallback) so it inlines identically into
+ * the server and client bundles — a server-only env var here renders one host
+ * during SSR and another after hydration, causing a hydration mismatch.
  */
-export const PLATFORM_ORIGIN = process.env.PLATFORM_API_URL ?? BRAND.appUrl;
+export const BROWSER_PLATFORM_ORIGIN =
+  process.env.NEXT_PUBLIC_PLATFORM_URL ?? BRAND.appUrl;
 
-/** Canonical login URL for the product app. */
-export const LOGIN_URL = `${PLATFORM_ORIGIN}/login`;
+/**
+ * Product-app (platform) origin for SERVER-SIDE calls — trial request/verify
+ * fetches. Reads PLATFORM_API_URL (server-only; may point at a demo/preview
+ * backend), falling back to the browser origin above.
+ */
+export const PLATFORM_ORIGIN =
+  process.env.PLATFORM_API_URL ?? BROWSER_PLATFORM_ORIGIN;
+
+/** Canonical login URL for the product app (browser-facing). */
+export const LOGIN_URL = `${BROWSER_PLATFORM_ORIGIN}/login`;

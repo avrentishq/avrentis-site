@@ -36,14 +36,21 @@ const FEATURES = [
  * Shared shell for every mockup: a light browser-framed card on the dark
  * section background, matching how the real Avrentis dashboard renders.
  */
-function MockupShell({ url, children }: { url: string; children: React.ReactNode }) {
+function MockupShell({
+  url,
+  children,
+}: {
+  url: string;
+  children: React.ReactNode;
+}) {
   return (
     <div
       style={{
         borderRadius: "10px",
         border: "1px solid rgba(255,255,255,0.10)",
         backgroundColor: "#F8FAFC",
-        boxShadow: "0 0 40px rgba(var(--color-gold-rgb), 0.06), 0 20px 50px rgba(0,0,0,0.4)",
+        boxShadow:
+          "0 0 40px rgba(var(--color-gold-rgb), 0.06), 0 20px 50px rgba(0,0,0,0.4)",
         overflow: "hidden",
       }}
     >
@@ -135,15 +142,36 @@ function SubmitMockup() {
         </div>
 
         {/* Fields */}
-        <MockupField label="Payee name" value="Brightpath Technologies" filled />
+        <MockupField
+          label="Payee name"
+          value="Brightpath Technologies"
+          filled
+        />
         <MockupField label="Bank" value="Guaranty Trust Bank" filled />
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "10px",
+          }}
+        >
           <MockupField label="Account number" value="0123456789" filled />
-          <MockupField label="Account name" value="Brightpath Technologies Ltd." filled compact />
+          <MockupField
+            label="Account name"
+            value="Brightpath Technologies Ltd."
+            filled
+            compact
+          />
         </div>
 
         {/* Buttons */}
-        <div style={{ display: "flex", justifyContent: "space-between", marginTop: "18px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "18px",
+          }}
+        >
           <button
             type="button"
             style={{
@@ -235,7 +263,15 @@ function ApproveMockup() {
     <MockupShell url="Avrentis / vouchers / PV-2026-0041">
       <div style={{ padding: "20px 22px" }}>
         {/* Reference + type + status */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            flexWrap: "wrap",
+            marginBottom: "8px",
+          }}
+        >
           <span
             style={{
               fontFamily: "var(--font-sans)",
@@ -276,7 +312,15 @@ function ApproveMockup() {
               padding: "2px 6px",
             }}
           >
-            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)", display: "inline-block" }} />
+            <span
+              style={{
+                width: "5px",
+                height: "5px",
+                borderRadius: "50%",
+                backgroundColor: "var(--color-gold)",
+                display: "inline-block",
+              }}
+            />
             Under review
           </span>
         </div>
@@ -291,7 +335,15 @@ function ApproveMockup() {
             marginBottom: "14px",
           }}
         >
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a", margin: "0 0 2px" }}>
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#0f172a",
+              margin: "0 0 2px",
+            }}
+          >
             Brightpath Technologies
           </p>
           <p
@@ -306,7 +358,15 @@ function ApproveMockup() {
           >
             ₦850,000
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "80px 1fr", rowGap: "4px", fontFamily: "var(--font-sans)", fontSize: "11px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "80px 1fr",
+              rowGap: "4px",
+              fontFamily: "var(--font-sans)",
+              fontSize: "11px",
+            }}
+          >
             <span style={{ color: "#64748b" }}>Purpose</span>
             <span style={{ color: "#0f172a" }}>Diesel supply — November</span>
             <span style={{ color: "#64748b" }}>Submitted</span>
@@ -338,7 +398,13 @@ function ApproveMockup() {
           >
             Your action
           </p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: "8px",
+            }}
+          >
             <button
               type="button"
               style={{
@@ -396,16 +462,38 @@ function ApproveMockup() {
 
 function RecordMockup() {
   const stages = [
-    { role: "Submitted", actor: "Fatima Abubakar · Staff", when: "15 Apr, 09:14" },
-    { role: "Reviewed", actor: "Chinedu Okafor · Finance", when: "15 Apr, 11:02" },
+    {
+      role: "Submitted",
+      actor: "Fatima Abubakar · Staff",
+      when: "15 Apr, 09:14",
+    },
+    {
+      role: "Reviewed",
+      actor: "Chinedu Okafor · Finance",
+      when: "15 Apr, 11:02",
+    },
     { role: "Sanctioned", actor: "Aisha Danjuma · MD", when: "15 Apr, 14:32" },
   ];
   return (
     <MockupShell url="Avrentis / vouchers / PV-2026-0041">
       <div style={{ padding: "20px 22px" }}>
         {/* Status strip */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "14px" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            marginBottom: "14px",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#0f172a",
+            }}
+          >
             PV-2026-0041
           </span>
           <span
@@ -422,10 +510,24 @@ function RecordMockup() {
               padding: "2px 6px",
             }}
           >
-            <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#047857" }} />
+            <span
+              style={{
+                width: "5px",
+                height: "5px",
+                borderRadius: "50%",
+                backgroundColor: "#047857",
+              }}
+            />
             Approved
           </span>
-          <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "#64748b" }}>
+          <span
+            style={{
+              marginLeft: "auto",
+              fontFamily: "var(--font-sans)",
+              fontSize: "10px",
+              color: "#64748b",
+            }}
+          >
             Permanently on record
           </span>
         </div>
@@ -490,7 +592,15 @@ function RecordMockup() {
                     zIndex: 1,
                   }}
                 >
-                  <span style={{ color: "#047857", fontSize: "10px", lineHeight: 1 }}>✓</span>
+                  <span
+                    style={{
+                      color: "#047857",
+                      fontSize: "10px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    ✓
+                  </span>
                 </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <p
@@ -502,9 +612,19 @@ function RecordMockup() {
                       margin: 0,
                     }}
                   >
-                    {s.role} <span style={{ color: "#64748b", fontWeight: 400 }}>— {s.actor}</span>
+                    {s.role}{" "}
+                    <span style={{ color: "#64748b", fontWeight: 400 }}>
+                      — {s.actor}
+                    </span>
                   </p>
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: "2px 0 0" }}>
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "11px",
+                      color: "#64748b",
+                      margin: "2px 0 0",
+                    }}
+                  >
                     {s.when}
                   </p>
                 </div>
@@ -606,10 +726,24 @@ export function HowItWorks() {
         isolation: "isolate",
       }}
     >
+      {/* <SectionBackdrop src="/sections/how-it-works.jpg" scrim="dark" /> */}
       <SectionBackdrop src="/sections/how-it-works.jpg" scrim="dark" />
       {/* Ambient background layers */}
-      <AmbientGlow top="10%" left="-150px" size={520} intensity={0.18} duration={34} />
-      <AmbientGlow bottom="-80px" right="-120px" size={460} intensity={0.15} duration={40} delay={0.5} />
+      <AmbientGlow
+        top="10%"
+        left="-150px"
+        size={520}
+        intensity={0.18}
+        duration={34}
+      />
+      <AmbientGlow
+        bottom="-80px"
+        right="-120px"
+        size={460}
+        intensity={0.15}
+        duration={40}
+        delay={0.5}
+      />
       <m.div
         aria-hidden="true"
         style={{
@@ -625,7 +759,14 @@ export function HowItWorks() {
         }}
       />
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 2,
+        }}
+      >
         {/* ── Header ──────────────────────────────────── */}
         <m.span
           variants={fadeUp}
@@ -683,7 +824,8 @@ export function HowItWorks() {
             maxWidth: "600px",
           }}
         >
-          Everything your organisation currently does manually — Avrentis structures, tracks, and permanently records automatically.
+          Everything your organisation currently does manually — Avrentis
+          structures, tracks, and permanently records automatically.
         </m.p>
 
         {/* ── Step Selector ───────────────────────────── */}
@@ -704,12 +846,25 @@ export function HowItWorks() {
           {STEPS.map((step, i) => (
             <div
               key={step.title}
-              style={{ display: "flex", flexDirection: "column", alignItems: "center", cursor: "pointer", position: "relative", flex: 1, maxWidth: "200px" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                cursor: "pointer",
+                position: "relative",
+                flex: 1,
+                maxWidth: "200px",
+              }}
               onClick={() => selectStep(i)}
               role="button"
               tabIndex={0}
               aria-label={`Step ${i + 1}: ${step.title}`}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectStep(i); } }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  selectStep(i);
+                }
+              }}
             >
               {/* Connecting line — between circles */}
               {i < STEPS.length - 1 && (
@@ -720,7 +875,10 @@ export function HowItWorks() {
                     left: "50%",
                     right: "-50%",
                     height: "2px",
-                    backgroundColor: i < active ? "var(--color-gold)" : "rgba(132,146,166,0.25)",
+                    backgroundColor:
+                      i < active
+                        ? "var(--color-gold)"
+                        : "rgba(132,146,166,0.25)",
                     zIndex: 0,
                     transition: "background-color 0.3s ease",
                   }}
@@ -733,8 +891,12 @@ export function HowItWorks() {
                   width: "32px",
                   height: "32px",
                   borderRadius: "50%",
-                  backgroundColor: i === active ? "var(--color-gold)" : "transparent",
-                  border: i === active ? "2px solid var(--color-gold)" : "2px solid rgba(132,146,166,0.4)",
+                  backgroundColor:
+                    i === active ? "var(--color-gold)" : "transparent",
+                  border:
+                    i === active
+                      ? "2px solid var(--color-gold)"
+                      : "2px solid rgba(132,146,166,0.4)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -851,7 +1013,12 @@ export function HowItWorks() {
                   gap: "10px",
                 }}
               >
-                <Icon size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                <Icon
+                  size={16}
+                  strokeWidth={1.8}
+                  color={BRAND_COLORS.gold}
+                  aria-hidden="true"
+                />
                 <span
                   style={{
                     fontFamily: "var(--font-sans)",

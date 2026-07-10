@@ -62,7 +62,7 @@ export default async function ContactPage({
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.contactForm} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <ContactForm intent={intent} />
         </div>

@@ -53,7 +53,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+          <SectionBackdrop src={SECTION_BACKDROPS.aboutHero} scrim="dark" />
           <div
             style={{
               maxWidth: 800,
@@ -107,7 +107,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+          <SectionBackdrop src={SECTION_BACKDROPS.aboutMission} scrim="light" />
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <p
               style={{
@@ -177,7 +177,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+          <SectionBackdrop src={SECTION_BACKDROPS.aboutValues} scrim="light" />
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <p
               style={{
@@ -243,7 +243,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+          <SectionBackdrop src={SECTION_BACKDROPS.aboutJoinUs} scrim="light" />
           <div
             style={{
               maxWidth: 640,
@@ -320,7 +320,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+          <SectionBackdrop src={SECTION_BACKDROPS.aboutContact} scrim="dark" />
           <div
             style={{
               maxWidth: 640,

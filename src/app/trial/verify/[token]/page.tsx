@@ -80,7 +80,7 @@ export default async function VerifyPage({ params }: PageProps) {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trialVerify} scrim="light" />
         <div style={{ maxWidth: "560px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <TrialStepper current={4} />
           <VerifyResult

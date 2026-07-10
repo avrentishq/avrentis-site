@@ -381,7 +381,7 @@ export function HowItWorksProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.hiwHero} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -512,7 +512,7 @@ export function HowItWorksProductPage() {
         id="lifecycle"
         style={{ backgroundColor: "#FFFFFF", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.hiwLifecycle} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STAGES.map((stage, i) => (
             <StageRow key={stage.key} stage={stage} index={i} />
@@ -530,7 +530,7 @@ export function HowItWorksProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.hiwApprovalChains} scrim="dark" />
         <AmbientGlow top="20%" left="-120px" size={460} intensity={0.15} duration={34} />
         <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
 
@@ -654,7 +654,7 @@ export function HowItWorksProductPage() {
 
       {/* ── NOTIFICATIONS ──────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.hiwNotifications} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -764,7 +764,7 @@ export function HowItWorksProductPage() {
 
       {/* ── BEFORE vs AFTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.hiwBeforeAfter} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}

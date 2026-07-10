@@ -1,4 +1,5 @@
 import Image, { type StaticImageData } from "next/image";
+import type { SectionBackdropSource } from "@/lib/section-backdrops";
 
 /**
  * SectionBackdrop — full-bleed image backdrop + legibility scrim for a landing
@@ -15,20 +16,45 @@ import Image, { type StaticImageData } from "next/image";
  * that keeps that section's text legible: "light" for pale sections (dark body
  * text), "dark" for navy sections (white text).
  */
-const SCRIM: Record<"dark" | "light", string> = {
+const SCRIM: Record<"dark" | "light" | "hero", string> = {
   dark: "linear-gradient(180deg, rgba(15,23,42,0.80) 0%, rgba(15,23,42,0.90) 100%)",
   light:
     "linear-gradient(180deg, rgba(241,245,249,0.88) 0%, rgba(241,245,249,0.94) 100%)",
+  // Directional navy scrim: heaviest on the left so the hero's left-aligned
+  // copy stays legible over the light-trails, easing to near-clear on the
+  // right where the product mock sits.
+  hero: "linear-gradient(90deg, rgba(15,23,42,0.93) 0%, rgba(15,23,42,0.74) 42%, rgba(15,23,42,0.4) 100%), linear-gradient(180deg, rgba(15,23,42,0.32) 0%, rgba(15,23,42,0.68) 100%)",
 };
 
-interface SectionBackdropProps {
-  /** A static image import (preferred — content-hashed) or a path under /public. */
-  src: string | StaticImageData;
-  /** Scrim tint — matches the section's surface so text stays legible. */
-  scrim?: "dark" | "light";
-  /** Backdrop image opacity (the scrim does the rest of the legibility work). */
+const DEFAULT_OPACITY = 0.5;
+const DEFAULT_OBJECT_POSITION = "center";
+
+/** A `SECTION_BACKDROPS.*` entry (bare image or `{src, opacity?, objectPosition?}`) or a /public path string. */
+type BackdropInput = string | SectionBackdropSource;
+
+/** Split a registry entry into its image + optional per-section opacity/crop. */
+function resolveSource(src: BackdropInput | null | undefined): {
+  image: string | StaticImageData | null;
   opacity?: number;
-  /** CSS object-position for the cover crop. */
+  objectPosition?: string;
+} {
+  // A backdrop is decoration — a missing/mistyped SECTION_BACKDROPS key must
+  // degrade to "no image, scrim only", never crash the whole page.
+  if (src == null) return { image: null };
+  if (typeof src === "string") return { image: src };
+  // A bare StaticImageData carries `height`/`width`; the object form does not.
+  if ("height" in src) return { image: src };
+  return { image: src.src, opacity: src.opacity, objectPosition: src.objectPosition };
+}
+
+interface SectionBackdropProps {
+  /** A `SECTION_BACKDROPS.*` entry (preferred — content-hashed) or a path under /public. */
+  src: BackdropInput;
+  /** Scrim tint — matches the section's surface so text stays legible. */
+  scrim?: "dark" | "light" | "hero";
+  /** Image opacity override. Falls back to the registry entry's `opacity`, then the default. */
+  opacity?: number;
+  /** CSS object-position override. Falls back to the registry entry's `objectPosition`, then centre. */
   objectPosition?: string;
   /** Set on above-the-fold sections only. */
   priority?: boolean;
@@ -37,21 +63,33 @@ interface SectionBackdropProps {
 export function SectionBackdrop({
   src,
   scrim = "dark",
-  opacity = 0.5,
-  objectPosition = "center",
+  opacity,
+  objectPosition,
   priority = false,
 }: SectionBackdropProps) {
+  const resolved = resolveSource(src);
+  // Precedence: explicit prop → per-section registry value → default.
+  const resolvedOpacity = opacity ?? resolved.opacity ?? DEFAULT_OPACITY;
+  const resolvedObjectPosition =
+    objectPosition ?? resolved.objectPosition ?? DEFAULT_OBJECT_POSITION;
   return (
     <>
-      <Image
-        src={src}
-        alt=""
-        aria-hidden="true"
-        fill
-        priority={priority}
-        sizes="100vw"
-        style={{ objectFit: "cover", objectPosition, opacity, zIndex: -1 }}
-      />
+      {resolved.image != null && (
+        <Image
+          src={resolved.image}
+          alt=""
+          aria-hidden="true"
+          fill
+          priority={priority}
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+            objectPosition: resolvedObjectPosition,
+            opacity: resolvedOpacity,
+            zIndex: -1,
+          }}
+        />
+      )}
       <div
         aria-hidden="true"
         style={{ position: "absolute", inset: 0, zIndex: -1, background: SCRIM[scrim] }}

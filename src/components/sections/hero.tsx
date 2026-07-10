@@ -4,7 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
-import Image from "next/image";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -560,35 +561,13 @@ export function Hero() {
         padding: "140px 40px 120px",
         position: "relative",
         overflow: "hidden",
+        isolation: "isolate",
       }}
     >
       {/* Backdrop — night light-trails: every action, captured and recorded.
-          Held well back with a navy scrim so the headline stays legible and
-          the warm trails read as navy/gold rather than red. */}
-      <Image
-        src="/hero/hero-trails-6.jpg"
-        alt=""
-        aria-hidden="true"
-        fill
-        priority
-        sizes="100vw"
-        style={{
-          objectFit: "cover",
-          objectPosition: "center 45%",
-          opacity: 0.62,
-          zIndex: 0,
-        }}
-      />
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 0,
-          background:
-            "linear-gradient(90deg, rgba(15,23,42,0.93) 0%, rgba(15,23,42,0.74) 42%, rgba(15,23,42,0.4) 100%), linear-gradient(180deg, rgba(15,23,42,0.32) 0%, rgba(15,23,42,0.68) 100%)",
-        }}
-      />
+          Held well back with a directional navy scrim so the headline stays
+          legible and the warm trails read as navy/gold rather than red. */}
+      <SectionBackdrop src={SECTION_BACKDROPS.hero} scrim="hero" priority />
 
       {/* Ambient glow layers — sit behind everything, non-interactive */}
       <AmbientGlow

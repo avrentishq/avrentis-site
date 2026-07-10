@@ -199,7 +199,7 @@ export function StatusProductPage() {
               isolation: "isolate",
             }}
           >
-            <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+            <SectionBackdrop src={SECTION_BACKDROPS.statusSubsystems} scrim="light" />
             <div
               style={{
                 padding: "14px 20px",
@@ -298,7 +298,7 @@ export function StatusProductPage() {
               isolation: "isolate",
             }}
           >
-            <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+            <SectionBackdrop src={SECTION_BACKDROPS.statusIncidents} scrim="light" />
             <h3
               style={{
                 fontFamily: sans,

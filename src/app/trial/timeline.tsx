@@ -53,8 +53,10 @@ const MILESTONES: Milestone[] = [
 
 export function TrialTimeline() {
   return (
-    <section style={{ position: "relative", overflow: "hidden", isolation: "isolate" }}>
-      <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+    <section
+      style={{ position: "relative", overflow: "hidden", isolation: "isolate" }}
+    >
+      <SectionBackdrop src={SECTION_BACKDROPS.trialTimeline} scrim="light" />
       <m.span
         variants={fadeUp}
         initial="hidden"
@@ -113,7 +115,9 @@ export function TrialTimeline() {
                     // Today is "now" — filled. Future days stay hollow.
                     backgroundColor: isNow ? "var(--color-gold)" : "#FFFFFF",
                     border: isNow ? "none" : "1.5px solid #cbd5e1",
-                    boxShadow: isNow ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)" : "none",
+                    boxShadow: isNow
+                      ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)"
+                      : "none",
                   }}
                 />
                 {!isLast && (

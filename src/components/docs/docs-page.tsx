@@ -269,7 +269,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
       id={category.eyebrow.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+      <SectionBackdrop src={SECTION_BACKDROPS.docsCategoryCard} scrim="light" />
       <div style={{ display: "grid", gap: "40px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px" }}>
@@ -384,7 +384,7 @@ export function DocsHubPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.docsHero} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -507,7 +507,7 @@ export function DocsHubPage() {
 
       {/* ── CATEGORY NAV ───────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "40px 32px", borderBottom: "1px solid #e2e8f0", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.docsCategoryNav} scrim="light" />
         <div
           style={{
             maxWidth: "1200px",
@@ -553,7 +553,7 @@ export function DocsHubPage() {
 
       {/* ── CATEGORIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#f8fafc", padding: "90px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.docsCategories} scrim="light" />
         <div style={{ maxWidth: "1180px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "80px" }}>
           {CATEGORIES.map((c, i) => (
             <Category key={c.eyebrow} category={c} index={i} />
@@ -563,7 +563,7 @@ export function DocsHubPage() {
 
       {/* ── FEEDBACK FOOTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "80px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.docsFeedbackFooter} scrim="light" />
         <div style={{ maxWidth: "820px", margin: "0 auto" }}>
           <m.div
             variants={fadeUp}

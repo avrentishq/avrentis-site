@@ -187,7 +187,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 transition={fadeUpTransition}
                 style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
               >
-                <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+                <SectionBackdrop src={SECTION_BACKDROPS.legal} scrim="light" />
                 <h2
                   style={{
                     fontFamily: sans,

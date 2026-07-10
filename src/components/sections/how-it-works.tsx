@@ -767,223 +767,216 @@ export function HowItWorks() {
           zIndex: 2,
         }}
       >
-        {/* ── Header ──────────────────────────────────── */}
-        <m.span
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--color-gold)",
-            display: "block",
-            marginBottom: "16px",
-          }}
-        >
-          HOW IT WORKS
-        </m.span>
-
-        <m.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "36px",
-            color: "#FFFFFF",
-            lineHeight: 1.2,
-            margin: "0 0 16px",
-            maxWidth: "600px",
-          }}
-          className="lg:!text-[42px]"
-        >
-          Three steps. Zero paper. Complete record.
-        </m.h2>
-
-        <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "16px",
-            color: "#64748b",
-            lineHeight: 1.7,
-            margin: "0 0 56px",
-            maxWidth: "600px",
-          }}
-        >
-          Everything your organisation currently does manually — Avrentis
-          structures, tracks, and permanently records automatically.
-        </m.p>
-
-        {/* ── Step Selector ───────────────────────────── */}
-        <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(3)}
+        <div
           style={{
             display: "flex",
+            flexDirection: "column",
+            gap: "48px",
             alignItems: "flex-start",
-            justifyContent: "center",
-            marginBottom: "56px",
-            position: "relative",
+            width: "100%",
           }}
+          className="lg:!flex-row lg:!items-center"
         >
-          {STEPS.map((step, i) => (
-            <div
-              key={step.title}
+          {/* ── Left Panel ──────────────────────────────────── */}
+          <div>
+            {/* ── Header ──────────────────────────────────── */}
+            <m.span
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={fadeUpTransition}
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                fontSize: "12px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--color-gold)",
+                display: "block",
+                marginBottom: "16px",
+              }}
+            >
+              HOW IT WORKS
+            </m.span>
+            <m.h2
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={staggerDelay(1)}
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "24px",
+                color: "#FFFFFF",
+                lineHeight: 1.2,
+                margin: "0 0 16px",
+                maxWidth: "600px",
+              }}
+              className="lg:!text-[42px]"
+            >
+              Three steps. Zero paper. Complete record.
+            </m.h2>
+
+            {/* Left — Text */}
+            <AnimatePresence mode="wait">
+              <m.div
+                key={`text-${active}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "15px",
+                    color: "#64748b",
+                    lineHeight: 1.7,
+                    margin: 0,
+                    maxWidth: "480px",
+                  }}
+                >
+                  {STEPS[active].body}
+                </p>
+              </m.div>
+            </AnimatePresence>
+
+            {/* ── Step Selector ───────────────────────────── */}
+            <m.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-40px" }}
+              transition={staggerDelay(3)}
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
-                cursor: "pointer",
+                alignItems: "flex-start",
+                justifyContent: "center",
+                marginBottom: "56px",
                 position: "relative",
-                flex: 1,
-                maxWidth: "200px",
-              }}
-              onClick={() => selectStep(i)}
-              role="button"
-              tabIndex={0}
-              aria-label={`Step ${i + 1}: ${step.title}`}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  selectStep(i);
-                }
               }}
             >
-              {/* Connecting line — between circles */}
-              {i < STEPS.length - 1 && (
+              {STEPS.map((step, i) => (
                 <div
+                  key={step.title}
                   style={{
-                    position: "absolute",
-                    top: "16px",
-                    left: "50%",
-                    right: "-50%",
-                    height: "2px",
-                    backgroundColor:
-                      i < active
-                        ? "var(--color-gold)"
-                        : "rgba(132,146,166,0.25)",
-                    zIndex: 0,
-                    transition: "background-color 0.3s ease",
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    cursor: "pointer",
+                    position: "relative",
+                    width: "100%",
+                    minHeight: "60px",
                   }}
-                />
-              )}
-
-              {/* Circle */}
-              <div
-                style={{
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  backgroundColor:
-                    i === active ? "var(--color-gold)" : "transparent",
-                  border:
-                    i === active
-                      ? "2px solid var(--color-gold)"
-                      : "2px solid rgba(132,146,166,0.4)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  position: "relative",
-                  zIndex: 1,
-                  transition: "all 0.3s ease",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-sans)",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    color: i === active ? "#0f172a" : "#64748b",
-                    transition: "color 0.3s ease",
+                  onClick={() => selectStep(i)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`Step ${i + 1}: ${step.title}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      selectStep(i);
+                    }
                   }}
                 >
-                  {i + 1}
-                </span>
-              </div>
-
-              {/* Title */}
-              <span
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: i === active ? 600 : 500,
-                  fontSize: "14px",
-                  color: i === active ? "#FFFFFF" : "#64748b",
-                  marginTop: "10px",
-                  transition: "color 0.3s ease",
-                }}
-              >
-                {step.title}
-              </span>
-            </div>
-          ))}
-        </m.div>
-
-        {/* ── Content Area ────────────────────────────── */}
-        <div
-          style={{
-            display: "grid",
-            gap: "48px",
-            alignItems: "center",
-            marginBottom: "64px",
-          }}
-          className="grid-cols-1 lg:grid-cols-2"
-        >
-          {/* Left — Text */}
-          <AnimatePresence mode="wait">
-            <m.div
-              key={`text-${active}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <p
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 400,
-                  fontSize: "15px",
-                  color: "#64748b",
-                  lineHeight: 1.7,
-                  margin: 0,
-                  maxWidth: "480px",
-                }}
-              >
-                {STEPS[active].body}
-              </p>
+                  {/* Connecting line — between circles */}
+                  {i < STEPS.length - 1 && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        left: "16px",
+                        top: "50%",
+                        bottom: "-50%",
+                        width: "2px",
+                        backgroundColor:
+                          i < active
+                            ? "var(--color-gold)"
+                            : "rgba(132,146,166,0.25)",
+                        zIndex: 0,
+                        transition: "background-color 0.3s ease",
+                      }}
+                    />
+                  )}
+                  {/* Circle */}
+                  <div
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      flexShrink: 0,
+                      backgroundColor:
+                        i === active ? "var(--color-gold)" : "transparent",
+                      border:
+                        i === active
+                          ? "2px solid var(--color-gold)"
+                          : "2px solid rgba(132,146,166,0.4)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      position: "relative",
+                      zIndex: 1,
+                      transition: "all 0.3s ease",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "var(--font-sans)",
+                        fontWeight: 600,
+                        fontSize: "13px",
+                        color: i === active ? "#0f172a" : "#64748b",
+                        transition: "color 0.3s ease",
+                      }}
+                    >
+                      {i + 1}
+                    </span>
+                  </div>
+                  {/* Title */}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: i === active ? 600 : 500,
+                      fontSize: "14px",
+                      color: i === active ? "#FFFFFF" : "#64748b",
+                      marginLeft: "14px",
+                      transition: "color 0.3s ease",
+                    }}
+                  >
+                    {step.title}
+                  </span>
+                </div>
+              ))}
             </m.div>
-          </AnimatePresence>
+          </div>
 
-          {/* Right — Mockup */}
-          <AnimatePresence mode="wait">
-            <m.div
-              key={`mockup-${active}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              style={{ maxWidth: "400px", width: "100%" }}
-              className="lg:justify-self-end"
-            >
-              <ActiveMockup />
-            </m.div>
-          </AnimatePresence>
+          {/* ── Right Panel - Content Area ────────────────────────────── */}
+          <div
+            style={{
+              display: "grid",
+              gap: "48px",
+              alignItems: "center",
+              marginBottom: "64px",
+            }}
+            className="grid-cols-1 lg:grid-cols-2"
+          >
+            {/* Right — Mockup */}
+            <AnimatePresence mode="wait">
+              <m.div
+                key={`mockup-${active}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                style={{ maxWidth: "400px", width: "100%" }}
+                className="lg:justify-self-end"
+              >
+                <ActiveMockup />
+              </m.div>
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* ── Feature Callout Strip ───────────────────── */}

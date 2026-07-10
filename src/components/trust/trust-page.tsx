@@ -142,7 +142,7 @@ export function TrustProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trustHero} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -264,7 +264,7 @@ export function TrustProductPage() {
 
       {/* ── FRAMEWORKS ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trustFrameworks} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -372,7 +372,7 @@ export function TrustProductPage() {
 
       {/* ── SUB-PROCESSORS ─────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trustSubprocessors} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -587,7 +587,7 @@ export function TrustProductPage() {
 
       {/* ── DOCUMENTS ──────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trustDocuments} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -716,7 +716,7 @@ export function TrustProductPage() {
 
       {/* ── DATA RESIDENCY ─────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trustDataResidency} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -872,7 +872,7 @@ export function TrustProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trustStatusContact} scrim="dark" />
         <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
         <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
 

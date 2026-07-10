@@ -34,7 +34,7 @@ export default function TrialPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.trialForm} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <TrialForm />
         </div>

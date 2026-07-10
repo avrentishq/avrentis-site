@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
@@ -726,8 +727,7 @@ export function HowItWorks() {
         isolation: "isolate",
       }}
     >
-      {/* <SectionBackdrop src="/sections/how-it-works.jpg" scrim="dark" /> */}
-      <SectionBackdrop src="/sections/how-it-works.jpg" scrim="dark" />
+      <SectionBackdrop src={SECTION_BACKDROPS.howItWorks} scrim="dark" />
       {/* Ambient background layers */}
       <AmbientGlow
         top="10%"

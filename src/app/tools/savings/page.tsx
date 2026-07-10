@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 
 export const metadata: Metadata = {
   title: "Approval savings estimator — Avrentis",
@@ -21,8 +23,18 @@ export default function SavingsToolPage() {
   return (
     <>
       <Navbar />
-      <main id="main" style={{ backgroundColor: "#f1f5f9", padding: "56px 40px 96px" }}>
-        <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
+      <main
+        id="main"
+        style={{
+          backgroundColor: "#f1f5f9",
+          padding: "56px 40px 96px",
+          position: "relative",
+          overflow: "hidden",
+          isolation: "isolate",
+        }}
+      >
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <div style={{ maxWidth: "1080px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: "640px", margin: "0 auto 48px", textAlign: "center" }}>
             <span
               style={{

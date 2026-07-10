@@ -18,6 +18,7 @@ import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -198,7 +199,7 @@ export function StatusProductPage() {
               isolation: "isolate",
             }}
           >
-            <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+            <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
             <div
               style={{
                 padding: "14px 20px",
@@ -297,7 +298,7 @@ export function StatusProductPage() {
               isolation: "isolate",
             }}
           >
-            <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+            <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
             <h3
               style={{
                 fontFamily: sans,

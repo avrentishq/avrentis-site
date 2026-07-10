@@ -54,6 +54,14 @@
   --radius-card: 8px;
 }
 
+/* framer-motion's useScroll({ target }) measures the target's offset against
+   the page scroll container (the <html> element). A position:static container
+   can't be measured reliably and triggers a dev-only warning — give it a
+   positioning context. No layout effect. */
+html {
+  position: relative;
+}
+
 body {
   background-color: var(--color-white);
   color: var(--color-text-primary);

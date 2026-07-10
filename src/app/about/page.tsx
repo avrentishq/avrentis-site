@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 
 export const metadata: Metadata = {
   title: "About — Avrentis",
@@ -52,7 +53,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
+          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
           <div
             style={{
               maxWidth: 800,
@@ -106,7 +107,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <p
               style={{
@@ -176,7 +177,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
             <p
               style={{
@@ -242,7 +243,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src="/sections/placeholder.jpg" scrim="light" />
+          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
           <div
             style={{
               maxWidth: 640,
@@ -319,7 +320,7 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src="/sections/placeholder.jpg" scrim="dark" />
+          <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
           <div
             style={{
               maxWidth: 640,

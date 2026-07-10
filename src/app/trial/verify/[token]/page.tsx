@@ -4,6 +4,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { VerifyResult } from "./client";
 import { TrialStepper } from "../../stepper";
+import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 
 export const metadata: Metadata = {
@@ -73,9 +75,13 @@ export default async function VerifyPage({ params }: PageProps) {
           backgroundColor: "#f1f5f9",
           padding: "120px 32px",
           minHeight: "70vh",
+          position: "relative",
+          overflow: "hidden",
+          isolation: "isolate",
         }}
       >
-        <div style={{ maxWidth: "560px", margin: "0 auto" }}>
+        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <div style={{ maxWidth: "560px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <TrialStepper current={4} />
           <VerifyResult
             status={payload.status ?? "error"}

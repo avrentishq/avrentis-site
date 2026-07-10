@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 
 /**
  * SectionBackdrop — full-bleed image backdrop + legibility scrim for a landing
@@ -8,8 +8,10 @@ import Image from "next/image";
  * makes the section a stacking context so this backdrop (z-index -1) sits
  * behind the section's normal content automatically, no content-lifting needed.
  *
- * PLACEHOLDER: each section points at `/sections/<name>.jpg` — swap those files
- * (in `public/sections/`) for the real section imagery. `scrim` picks the tint
+ * Image source: pass a static import from `@/lib/section-backdrops`
+ * (`SECTION_BACKDROPS.*`) — the single place every section's image is declared.
+ * Static imports are content-hashed by Next, so swapping a file in
+ * `public/sections/` never serves a stale cached copy. `scrim` picks the tint
  * that keeps that section's text legible: "light" for pale sections (dark body
  * text), "dark" for navy sections (white text).
  */
@@ -20,8 +22,8 @@ const SCRIM: Record<"dark" | "light", string> = {
 };
 
 interface SectionBackdropProps {
-  /** Image path under /public (e.g. "/sections/problem.jpg"). */
-  src: string;
+  /** A static image import (preferred — content-hashed) or a path under /public. */
+  src: string | StaticImageData;
   /** Scrim tint — matches the section's surface so text stays legible. */
   scrim?: "dark" | "light";
   /** Backdrop image opacity (the scrim does the rest of the legibility work). */

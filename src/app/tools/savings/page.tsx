@@ -33,7 +33,7 @@ export default function SavingsToolPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.savingsHeader} scrim="light" />
         <div style={{ maxWidth: "1080px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: "640px", margin: "0 auto 48px", textAlign: "center" }}>
             <span

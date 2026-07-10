@@ -123,7 +123,7 @@ export default function ProductOverviewPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.productHero} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <div
@@ -234,7 +234,7 @@ export default function ProductOverviewPage() {
 
       {/* ── MODULE GRID ─────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <span
             style={{
@@ -379,7 +379,7 @@ export default function ProductOverviewPage() {
 
       {/* ── PLATFORM RHYTHM (how modules share the engine) ─────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <span
             style={{

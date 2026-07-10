@@ -379,7 +379,7 @@ export function SecurityProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.securityHero} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -507,7 +507,7 @@ export function SecurityProductPage() {
 
       {/* ── PILLARS ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.securityPillars} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}
@@ -614,7 +614,7 @@ export function SecurityProductPage() {
 
       {/* ── STACK ──────────────────────────────────────────── */}
       <section id="stack" style={{ backgroundColor: "#FFFFFF", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.securityStack} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
             <StackRow key={s.key} stage={s} index={i} />
@@ -632,7 +632,7 @@ export function SecurityProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.securityCompliance} scrim="dark" />
         <AmbientGlow top="20%" left="-120px" size={460} intensity={0.15} duration={34} />
         <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
 
@@ -805,7 +805,7 @@ export function SecurityProductPage() {
 
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.securityFaq} scrim="light" />
         <div style={{ maxWidth: "980px", margin: "0 auto" }}>
           <m.span
             variants={fadeUp}

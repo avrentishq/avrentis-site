@@ -217,7 +217,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
       id={category.id}
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+      <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategoryBlock} scrim="light" />
       <div style={{ display: "grid", gap: "40px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]">
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
@@ -327,7 +327,7 @@ export function IntegrationsCataloguePage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.integrationsHero} scrim="dark" />
         <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
         <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
         <m.div
@@ -447,7 +447,7 @@ export function IntegrationsCataloguePage() {
 
       {/* ── CATEGORY NAV ───────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "40px 40px", borderBottom: "1px solid #e2e8f0", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategoryNav} scrim="light" />
         <div
           style={{
             maxWidth: "1200px",
@@ -493,7 +493,7 @@ export function IntegrationsCataloguePage() {
 
       {/* ── CATEGORIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#f8fafc", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategories} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {CATEGORIES.map((c, i) => (
             <CategoryBlock key={c.id} category={c} index={i} />
@@ -503,7 +503,7 @@ export function IntegrationsCataloguePage() {
 
       {/* ── DEV TEASER ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="light" />
+        <SectionBackdrop src={SECTION_BACKDROPS.integrationsDevTeaser} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div
@@ -637,7 +637,7 @@ export function IntegrationsCataloguePage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.placeholder} scrim="dark" />
+        <SectionBackdrop src={SECTION_BACKDROPS.integrationsCustomConnector} scrim="dark" />
         <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
         <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
 

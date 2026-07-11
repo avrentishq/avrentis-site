@@ -396,18 +396,32 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
             transition={staggerDelay(1)}
             style={{
               fontFamily: "var(--font-sans)",
-              fontSize: "13px",
-              color: "#64748b",
+              fontSize: "14px",
+              color: "#475569",
               lineHeight: 1.7,
               borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
-              paddingLeft: "14px",
+              paddingLeft: "16px",
             }}
           >
-            <div style={{ marginBottom: "6px", color: "#0f172a", fontWeight: 500 }}>What happens next</div>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "6px" }}>
-              <li>A real person reads every enquiry — no routing bots.</li>
-              <li>We reply within one business day.</li>
-              <li>For enterprise enquiries, we can sign an NDA before the first call.</li>
+            <div style={{ marginBottom: "10px", color: "#0f172a", fontWeight: 600, fontSize: "14px" }}>
+              What happens next
+            </div>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
+              {[
+                "A real person reads every enquiry — no routing bots.",
+                "We reply within one business day.",
+                "For enterprise enquiries, we can sign an NDA before the first call.",
+              ].map((point) => (
+                <li key={point} style={{ display: "flex", gap: "9px", alignItems: "baseline" }}>
+                  <span
+                    aria-hidden="true"
+                    style={{ color: "var(--color-gold-on-light)", flexShrink: 0, fontWeight: 700 }}
+                  >
+                    •
+                  </span>
+                  <span>{point}</span>
+                </li>
+              ))}
             </ul>
           </m.div>
         </div>

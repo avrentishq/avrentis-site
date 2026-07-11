@@ -21,16 +21,6 @@
           "annualLabel": "₦3,000,000/year",
           "taxRate": 0.075,
           "taxLabel": "VAT 7.5%"
-        },
-        {
-          "currency": "USD",
-          "monthly": 215,
-          "monthlyLabel": "$215/month",
-          "annualPerMonth": 179,
-          "annualTotal": 2150,
-          "annualLabel": "$2,150/year",
-          "taxRate": null,
-          "taxLabel": null
         }
       ],
       "limits": {
@@ -109,16 +99,6 @@
           "annualLabel": "₦7,000,000/year",
           "taxRate": 0.075,
           "taxLabel": "VAT 7.5%"
-        },
-        {
-          "currency": "USD",
-          "monthly": 499,
-          "monthlyLabel": "$499/month",
-          "annualPerMonth": 416,
-          "annualTotal": 4990,
-          "annualLabel": "$4,990/year",
-          "taxRate": null,
-          "taxLabel": null
         }
       ],
       "limits": {
@@ -206,16 +186,6 @@
           "annualLabel": null,
           "taxRate": 0.075,
           "taxLabel": "VAT 7.5%"
-        },
-        {
-          "currency": "USD",
-          "monthly": 1075,
-          "monthlyLabel": "From $1,075/month",
-          "annualPerMonth": null,
-          "annualTotal": null,
-          "annualLabel": null,
-          "taxRate": null,
-          "taxLabel": null
         }
       ],
       "limits": {

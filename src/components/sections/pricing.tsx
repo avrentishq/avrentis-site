@@ -42,22 +42,27 @@ function getHighlights(plan: Plan): string[] {
  * It's a marketing construct — the server's truth is `subscriptionStatus === "trial"`
  * on a tenant whose plan key is "business".
  */
+// Deltas only — the module scope is the card's badge, and the watermark +
+// 30-day-grace detail lives in the footnote below the CTA (no repetition).
 const TRIAL_HIGHLIGHTS: string[] = [
   "Full Business tier — switched on, not a sandbox",
   "Up to 10 users, ready to invite",
-  "Payables + Procurement + Documents + Compliance on your real data",
   "Bank-ready PDF exports (trial watermark)",
   "1 GB storage during trial",
-  "30-day read-only grace after trial — nothing deleted in a hurry",
 ];
 
 /* ── Component ───────────────────────────────────────────────── */
 
 interface PricingProps {
   data: PricingData;
+  /** Section-title tag. "h1" on the standalone /pricing page (its main
+   *  heading); defaults to "h2" when embedded as a section on the home page,
+   *  which already has its own page h1. */
+  headingAs?: "h1" | "h2";
 }
 
-export function Pricing({ data }: PricingProps) {
+export function Pricing({ data, headingAs = "h2" }: PricingProps) {
+  const Headline = headingAs === "h1" ? m.h1 : m.h2;
   // Default to annual — the higher-value cycle we already frame as "2 months
   // free". The card keeps the monthly-equivalent and annual total visible so
   // the default informs rather than tricks.
@@ -109,7 +114,7 @@ export function Pricing({ data }: PricingProps) {
         </m.span>
 
         {/* Headline */}
-        <m.h2
+        <Headline
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
@@ -127,7 +132,7 @@ export function Pricing({ data }: PricingProps) {
           className="lg:!text-[42px]"
         >
           Structured pricing for every stage of growth.
-        </m.h2>
+        </Headline>
 
         {/* Subheadline */}
         <m.p
@@ -339,6 +344,11 @@ export function Pricing({ data }: PricingProps) {
                 : 0;
 
             const features = getHighlights(plan);
+            // Ladder: every tier above the cheapest lists only its DELTAS,
+            // under an "Everything in <next-cheaper tier>, plus —" lead-in.
+            // Order-derived (orderedPlans is sorted ascending) so it never
+            // hardcodes tier names.
+            const inheritFrom = i > 0 ? orderedPlans[i - 1] : undefined;
 
             const moduleNames = plan.modules
               .map((m) => m.name.replace("Avrentis ", ""))
@@ -549,17 +559,17 @@ export function Pricing({ data }: PricingProps) {
                     flex: 1,
                   }}
                 >
-                  {isEnterprise && (
+                  {inheritFrom && (
                     <li
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "13px",
-                        color: "#0f172a",
+                        color: isFeatured ? "#FFFFFF" : "#0f172a",
                         marginBottom: "12px",
                       }}
                     >
-                      Everything in Business, plus &mdash;
+                      Everything in {inheritFrom.name}, plus &mdash;
                     </li>
                   )}
                   {features.map((feature) => (

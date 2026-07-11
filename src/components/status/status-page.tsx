@@ -345,7 +345,7 @@ export function StatusProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "12px",
-              color: "#94a3b8",
+              color: "#64748b",
               lineHeight: 1.7,
               margin: "32px 0 0",
               textAlign: "center",

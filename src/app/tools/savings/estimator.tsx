@@ -48,7 +48,7 @@ const inputStyle: React.CSSProperties = {
 const hintStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "12px",
-  color: "#94a3b8",
+  color: "#64748b",
   marginTop: "5px",
   display: "block",
 };
@@ -286,7 +286,7 @@ export function SavingsEstimator() {
           <StatTile value={`${hrsFmt(result.hoursPerYear)} hrs`} label="Time back per year" />
         </div>
 
-        <p style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontFamily: sans, fontSize: "12px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
           Assumes structured approvals remove about {pct}% of coordination time — a
           conservative estimate. Every other number is yours.
         </p>

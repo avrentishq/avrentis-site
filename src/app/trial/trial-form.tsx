@@ -426,15 +426,24 @@ export function TrialForm() {
               </span>
             )}
             {roleValue === "Other" && (
-              <input
-                type="text"
-                name="roleOther"
-                value={roleOtherValue}
-                onChange={(e) => setRoleOtherValue(e.target.value)}
-                placeholder="Tell us your role"
-                aria-label="Your role"
-                style={{ ...inputStyle, marginTop: "10px" }}
-              />
+              <div style={{ marginTop: "10px" }}>
+                <label style={labelStyle}>
+                  Specify your role
+                  <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  name="roleOther"
+                  value={roleOtherValue}
+                  onChange={(e) => setRoleOtherValue(e.target.value)}
+                  placeholder="Tell us your role"
+                  aria-label="Specify your role"
+                  aria-required="true"
+                  style={inputStyle}
+                />
+              </div>
             )}
           </div>
 
@@ -495,7 +504,7 @@ export function TrialForm() {
             >
               Continue →
             </button>
-            <span style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8" }}>
+            <span style={{ fontFamily: sans, fontSize: "12px", color: "#64748b" }}>
               No card required · about a minute
             </span>
           </div>
@@ -692,7 +701,7 @@ export function TrialForm() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={isValid} />
-          <span style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8" }}>
+          <span style={{ fontFamily: sans, fontSize: "12px", color: "#64748b" }}>
             No card on file — nothing to cancel · 14-day trial · Data preserved for 30 days after trial end.
           </span>
         </div>
@@ -781,7 +790,7 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       >
         {message}
       </p>
-      <p style={{ fontFamily: sans, fontSize: "12px", color: "#94a3b8", marginTop: "12px" }}>
+      <p style={{ fontFamily: sans, fontSize: "12px", color: "#64748b", marginTop: "12px" }}>
         <Clock
           size={11}
           strokeWidth={2}

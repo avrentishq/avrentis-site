@@ -547,7 +547,7 @@ export function IntegrationsCataloguePage() {
                 team actually wants, or sync sanctioned vouchers to your ledger
                 the second the MD signs.
               </p>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "#94a3b8", lineHeight: 1.7, margin: "0 0 24px" }}>
+              <p style={{ fontFamily: sans, fontSize: "14px", color: "#475569", lineHeight: 1.7, margin: "0 0 24px" }}>
                 Full API documentation is being finalised for public release.
                 Launch partners get access today.
               </p>

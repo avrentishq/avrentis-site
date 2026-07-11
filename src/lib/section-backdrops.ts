@@ -133,7 +133,6 @@ export const SECTION_BACKDROPS = {
 
   // ── /trial + /trial/verify ────────────────────────────────────────────
   trialForm: { src: textureLight, opacity: 1 },
-  trialTimeline: { src: textureNavy, opacity: 0.15 },
   trialVerify: { src: textureLight, opacity: 0.15 },
 
   // ── /trust ────────────────────────────────────────────────────────────

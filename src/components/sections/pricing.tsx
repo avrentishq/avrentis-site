@@ -286,7 +286,7 @@ export function Pricing({ data }: PricingProps) {
                 {" "}/ 14 days
               </span>
             </div>
-            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#94a3b8", margin: "0 0 20px", minHeight: "16px" }}>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", margin: "0 0 20px", minHeight: "16px" }}>
               No credit card required
             </p>
             <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
@@ -311,7 +311,7 @@ export function Pricing({ data }: PricingProps) {
             >
               Start your 14-day trial
             </Link>
-            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#94a3b8", lineHeight: 1.5, margin: "12px 0 0" }}>
+            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#64748b", lineHeight: 1.5, margin: "12px 0 0" }}>
               Exports carry an Avrentis Trial watermark until you upgrade. Data is preserved for 30 days after your trial ends.
             </p>
           </m.div>
@@ -436,7 +436,7 @@ export function Pricing({ data }: PricingProps) {
                         fontWeight: 500,
                         fontSize: "18px",
                         textDecoration: "line-through",
-                        color: isFeatured ? "#64748b" : "#94a3b8",
+                        color: isFeatured ? "#94a3b8" : "#64748b",
                       }}
                     >
                       {formatCurrencyAmount(priceData.monthly, currency)}

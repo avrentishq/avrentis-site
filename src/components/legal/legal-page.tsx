@@ -105,7 +105,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#94a3b8",
+              color: "#475569",
               margin: "0 0 40px",
             }}
           >
@@ -165,7 +165,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                       gap: "8px",
                     }}
                   >
-                    <span style={{ color: "#94a3b8", fontVariantNumeric: "tabular-nums" }}>
+                    <span style={{ color: "#64748b", fontVariantNumeric: "tabular-nums" }}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {s.heading}

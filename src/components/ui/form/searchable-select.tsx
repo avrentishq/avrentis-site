@@ -114,7 +114,7 @@ export function SearchableSelect({
           textAlign: "left",
         }}
       >
-        <span style={{ color: selected ? "#0f172a" : "#94a3b8" }}>
+        <span style={{ color: selected ? "#0f172a" : "#64748b" }}>
           {selected ? selected.label : placeholder}
         </span>
         <ChevronDown size={16} color="#64748b" aria-hidden="true" />
@@ -157,7 +157,6 @@ export function SearchableSelect({
                 fontFamily: sans,
                 fontSize: "14px",
                 border: "none",
-                outline: "none",
                 width: "100%",
                 color: "#0f172a",
                 backgroundColor: "transparent",
@@ -166,7 +165,7 @@ export function SearchableSelect({
           </div>
           <ul id={listboxId} role="listbox" aria-label={ariaLabel} style={{ listStyle: "none", margin: 0, padding: "4px", maxHeight: "220px", overflowY: "auto" }}>
             {filtered.length === 0 ? (
-              <li style={{ fontFamily: sans, fontSize: "13px", color: "#94a3b8", padding: "10px 12px" }}>
+              <li style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", padding: "10px 12px" }}>
                 No matches
               </li>
             ) : (

@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "type-check": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prebuild": "node scripts/sync-pricing-fallback.mjs",
+    "predev": "node scripts/sync-pricing-fallback.mjs"
   },
   "dependencies": {
     "@avrentishq/core": "github:avrentishq/avrentis-core#v0.32.0",

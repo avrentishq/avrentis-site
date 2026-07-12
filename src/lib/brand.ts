@@ -45,7 +45,7 @@ export const MODULES: Record<
 > = {
   pay: { key: "pay", name: "Avrentis Payables", slug: "pay", classification: "core", publiclyVisible: true },
   procure: { key: "procure", name: "Avrentis Procurement", slug: "procure", classification: "core", publiclyVisible: true },
-  vault: { key: "vault", name: "Avrentis Documents", slug: "vault", classification: "expansion", publiclyVisible: true },
+  vault: { key: "vault", name: "Avrentis Records", slug: "vault", classification: "core", publiclyVisible: true },
   audit: { key: "audit", name: "Avrentis Compliance", slug: "audit", classification: "substrate", publiclyVisible: true },
   // Not yet generally available → hidden from the marketing site.
   people: { key: "people", name: "Avrentis HR", slug: "people", classification: "expansion", publiclyVisible: false },

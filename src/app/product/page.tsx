@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "The Avrentis platform — five modules, one system of record",
     description:
-      "Five modules share one approval engine and one permanent record. Payables, Procurement, Documents, Compliance, Integrations.",
+      "Five modules share one approval engine and one permanent record. Payables, Procurement, Records, Compliance, Integrations.",
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -62,7 +62,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "vault",
-    name: "Avrentis Documents",
+    name: "Avrentis Records",
     subtitle: "Institutional memory",
     body:
       "Every approved document centrally stored, tagged, and instantly retrievable. Replace scattered drives and physical files with one searchable repository.",

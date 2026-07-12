@@ -125,7 +125,7 @@ const CATEGORIES: DocsCategory[] = [
     items: [
       { title: "Avrentis Payables", body: "Structured payment approvals.", href: "/product/pay", status: "live" },
       { title: "Avrentis Procurement", body: "Procurement on record.", href: "/product/procure", status: "live" },
-      { title: "Avrentis Documents", body: "Institutional memory.", href: "/product/vault", status: "live" },
+      { title: "Avrentis Records", body: "Institutional memory.", href: "/product/vault", status: "live" },
       { title: "Avrentis Compliance", body: "Compliance & accountability.", href: "/product/audit", status: "live" },
       { title: "Avrentis HR", body: "Workforce structure.", href: "/product/people", status: "live" },
       { title: "Avrentis Integrations", body: "External systems.", href: "/product/connect", status: "live" },

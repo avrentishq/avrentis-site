@@ -74,7 +74,7 @@ const config: ModuleConfig = {
 
   relatedModules: [
     { slug: "audit", name: "Avrentis Compliance", desc: "Every vault access + download logged to the audit trail" },
-    { slug: "pay", name: "Avrentis Payables", desc: "Every approved voucher lands in Documents automatically" },
+    { slug: "pay", name: "Avrentis Payables", desc: "Every approved voucher lands in Records automatically" },
     { slug: "procure", name: "Avrentis Procurement", desc: "POs, vendor quotes, and delivery notes stored together" },
   ],
 };

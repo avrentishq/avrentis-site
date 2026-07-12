@@ -126,3 +126,153 @@ body {
 .skip-link:focus {
   top: 8px;
 }
+
+/* ── Plan comparison table (/pricing) ──────────────────────────────────────
+   Inline styles carry structural/color per the site convention; this block
+   holds the pseudo-element, sticky, hover, and marker rules inline can't. */
+.pc-section {
+  background: var(--color-bg-light);
+  border-top: 1px solid var(--color-border);
+  padding: 56px 0;
+}
+.pc-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.pc-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 24px;
+  color: var(--color-text-primary);
+  text-align: center;
+  margin: 0 0 24px;
+}
+
+/* Top-level "Compare all features" toggle */
+.pc-toggle {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  overflow: hidden;
+}
+.pc-toggle-summary,
+.pc-group-summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+.pc-toggle-summary::-webkit-details-marker,
+.pc-group-summary::-webkit-details-marker { display: none; }
+.pc-toggle-summary::before,
+.pc-group-summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 150ms ease;
+  flex-shrink: 0;
+}
+.pc-toggle[open] > .pc-toggle-summary::before,
+.pc-group[open] > .pc-group-summary::before { transform: rotate(90deg); }
+.pc-toggle-summary {
+  padding: 16px 20px;
+  font-size: 16px;
+  background: var(--color-gold-surface);
+}
+
+/* Plan-name header. Deliberately NOT sticky: the collapse wrapper (.pc-toggle)
+   uses overflow:hidden to clip its rounded corners, and any overflow ancestor
+   scopes/clips position:sticky. Making it pin would need state-dependent corner
+   radius to drop that overflow — not worth it for a short, group-collapsible
+   table. To restore: remove overflow from .pc-toggle (round corners on the
+   summary instead) and add `position: sticky; top: 64px` here. */
+.pc-header {
+  background: var(--color-white);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+.pc-corner { background: var(--color-white); }
+.pc-plan {
+  padding: 14px 12px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--color-navy-primary);
+}
+
+/* Module / limits group accordion */
+.pc-group { border-top: 1px solid var(--color-border); }
+.pc-group-summary {
+  padding: 12px 20px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: var(--color-bg-light);
+}
+
+.pc-row { border-top: 1px solid var(--color-border); }
+.pc-row:first-child { border-top: none; }
+.pc-row:hover { background: var(--color-gold-ghost); }
+.pc-feat {
+  padding: 11px 20px;
+  text-align: left;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+.pc-cell {
+  padding: 11px 12px;
+  text-align: center;
+  vertical-align: middle;
+}
+.pc-yes { color: var(--color-gold-on-light); font-weight: 700; font-size: 15px; }
+.pc-no { color: var(--color-text-subtle); }
+.pc-limit { font-size: 13px; color: var(--color-text-primary); font-weight: 500; }
+
+/* Mobile 2-plan picker */
+.pc-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+.pc-picker-field {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+.pc-picker select {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-navy-primary);
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+}
+.pc-picker-vs { font-size: 13px; color: var(--color-text-subtle); }
+
+.pc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

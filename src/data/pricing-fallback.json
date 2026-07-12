@@ -52,11 +52,8 @@
       ],
       "features": {
         "approvalChain": true,
-        "whatsappNotifications": true,
-        "emailNotifications": true,
         "pdfExport": true,
         "watermarkedExports": false,
-        "auditTrail": true,
         "fullAuditTrail": false,
         "csvExport": true,
         "documentAttachments": true,
@@ -79,7 +76,14 @@
         "customBranding": false,
         "apiAccess": false,
         "ipAllowlist": false,
-        "sso": false
+        "sso": false,
+        "taxControls": false,
+        "vendorCompliance": false,
+        "procurementAdvanced": false,
+        "erpSync": false,
+        "controlsMonitoring": false,
+        "vendorRiskNetwork": false,
+        "fraudTypologyLibrary": false
       }
     },
     {
@@ -140,11 +144,8 @@
       ],
       "features": {
         "approvalChain": true,
-        "whatsappNotifications": true,
-        "emailNotifications": true,
         "pdfExport": true,
         "watermarkedExports": false,
-        "auditTrail": true,
         "fullAuditTrail": true,
         "csvExport": true,
         "documentAttachments": true,
@@ -167,7 +168,14 @@
         "customBranding": true,
         "apiAccess": false,
         "ipAllowlist": true,
-        "sso": false
+        "sso": false,
+        "taxControls": false,
+        "vendorCompliance": true,
+        "procurementAdvanced": false,
+        "erpSync": false,
+        "controlsMonitoring": false,
+        "vendorRiskNetwork": false,
+        "fraudTypologyLibrary": false
       }
     },
     {
@@ -232,11 +240,8 @@
       ],
       "features": {
         "approvalChain": true,
-        "whatsappNotifications": true,
-        "emailNotifications": true,
         "pdfExport": true,
         "watermarkedExports": false,
-        "auditTrail": true,
         "fullAuditTrail": true,
         "csvExport": true,
         "documentAttachments": true,
@@ -250,8 +255,8 @@
         "bankExport": true,
         "bulkBankExport": true,
         "fullAuditExport": true,
-        "multiCompanyGroup": true,
-        "groupAdminDashboard": true,
+        "multiCompanyGroup": false,
+        "groupAdminDashboard": false,
         "customApprovalChains": true,
         "dedicatedOnboarding": true,
         "prioritySupport": true,
@@ -259,7 +264,14 @@
         "customBranding": true,
         "apiAccess": true,
         "ipAllowlist": true,
-        "sso": true
+        "sso": true,
+        "taxControls": false,
+        "vendorCompliance": true,
+        "procurementAdvanced": false,
+        "erpSync": false,
+        "controlsMonitoring": false,
+        "vendorRiskNetwork": false,
+        "fraudTypologyLibrary": false
       }
     }
   ],
@@ -268,69 +280,11 @@
     "business",
     "enterprise"
   ],
-  "addOns": [
-    {
-      "key": "additional_subsidiary",
-      "name": "Additional subsidiary",
-      "description": "Add another company to your group",
-      "minPlan": "enterprise",
-      "pricing": [
-        {
-          "currency": "NGN",
-          "monthly": 40000,
-          "monthlyLabel": "₦40,000/month",
-          "annualPerMonth": null,
-          "annualTotal": null,
-          "annualLabel": null,
-          "taxRate": 0.075,
-          "taxLabel": "VAT 7.5%"
-        }
-      ]
-    },
-    {
-      "key": "group_admin_access",
-      "name": "Group admin access",
-      "description": "Cross-company visibility and group-level reporting",
-      "minPlan": "enterprise",
-      "pricing": [
-        {
-          "currency": "NGN",
-          "monthly": 30000,
-          "monthlyLabel": "₦30,000/month",
-          "annualPerMonth": null,
-          "annualTotal": null,
-          "annualLabel": null,
-          "taxRate": 0.075,
-          "taxLabel": "VAT 7.5%"
-        }
-      ]
-    },
-    {
-      "key": "extra_storage",
-      "name": "Extra storage (10GB)",
-      "description": "Additional document and attachment storage",
-      "minPlan": "business",
-      "pricing": [
-        {
-          "currency": "NGN",
-          "monthly": 5000,
-          "monthlyLabel": "₦5,000/month per 10GB",
-          "annualPerMonth": null,
-          "annualTotal": null,
-          "annualLabel": null,
-          "taxRate": 0.075,
-          "taxLabel": "VAT 7.5%"
-        }
-      ]
-    }
-  ],
+  "addOns": [],
   "featureLabels": {
     "approvalChain": "Structured approval workflow",
-    "whatsappNotifications": "WhatsApp alerts for your team",
-    "emailNotifications": "Email alerts for your team",
     "pdfExport": "Export approved documents as PDF",
     "watermarkedExports": "Watermarked document exports",
-    "auditTrail": "Track every document action",
     "fullAuditTrail": "Complete compliance visibility",
     "csvExport": "Download data as spreadsheets",
     "documentAttachments": "Attach supporting documents",
@@ -353,8 +307,77 @@
     "apiAccess": "Connect external systems via API",
     "ipAllowlist": "Restrict access by IP address",
     "mfaPolicy": "Enforce multi-factor authentication",
-    "sso": "Single sign-on (SSO) and SCIM provisioning"
+    "sso": "Single sign-on (SSO) and SCIM provisioning",
+    "taxControls": "Compute WHT/VAT and generate remittance schedules",
+    "vendorCompliance": "Track vendor tax & statutory compliance",
+    "procurementAdvanced": "Run tenders, bid evaluation and vote-book control",
+    "erpSync": "Sync with your accounting/ERP system",
+    "controlsMonitoring": "Continuous controls monitoring & evidence packs",
+    "vendorRiskNetwork": "Cross-tenant vendor-risk signals",
+    "fraudTypologyLibrary": "Shared fraud-pattern detection"
   },
+  "featureGroups": [
+    {
+      "key": "pay",
+      "label": "Payables",
+      "featureKeys": [
+        "approvalChain",
+        "pdfExport",
+        "bankExport",
+        "bulkBankExport",
+        "bankLetterGeneration"
+      ]
+    },
+    {
+      "key": "procure",
+      "label": "Procurement",
+      "featureKeys": [
+        "documentAttachments",
+        "vendorCompliance"
+      ]
+    },
+    {
+      "key": "vault",
+      "label": "Records",
+      "featureKeys": [
+        "csvExport"
+      ]
+    },
+    {
+      "key": "audit",
+      "label": "Compliance",
+      "featureKeys": [
+        "fullAuditTrail",
+        "fullAuditExport"
+      ]
+    },
+    {
+      "key": "connect",
+      "label": "Integrations",
+      "featureKeys": [
+        "apiAccess"
+      ]
+    },
+    {
+      "key": "platform",
+      "label": "Workflow & platform",
+      "featureKeys": [
+        "analytics",
+        "recurringTemplates",
+        "delegation",
+        "slaTracking",
+        "budgetCodes",
+        "customApprovalChains",
+        "dedicatedOnboarding",
+        "prioritySupport",
+        "multiLevelApprovals",
+        "customBranding",
+        "ipAllowlist",
+        "mfaPolicy",
+        "sso"
+      ]
+    }
+  ],
   "moduleOrder": [
     "pay",
     "procure",
@@ -382,7 +405,9 @@
       "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking",
       "features": [
         "approvalChain",
-        "documentAttachments"
+        "documentAttachments",
+        "vendorCompliance",
+        "procurementAdvanced"
       ]
     },
     "vault": {
@@ -400,7 +425,8 @@
       "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces",
       "features": [
         "fullAuditTrail",
-        "fullAuditExport"
+        "fullAuditExport",
+        "controlsMonitoring"
       ]
     },
     "connect": {
@@ -408,7 +434,8 @@
       "sidebarLabel": "Integrations",
       "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations",
       "features": [
-        "apiAccess"
+        "apiAccess",
+        "erpSync"
       ]
     }
   }

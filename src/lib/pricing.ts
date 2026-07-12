@@ -16,6 +16,13 @@ export interface PlanLimits {
   maxDocumentsPerMonth: number | null;
   maxStorageBytes: number | null;
   documentRetentionDays: number | null;
+  /** Display labels precomputed by the pricing API (treat `0` as unlimited,
+   *  matching the pricing cards). Prefer these over re-deriving from the raw
+   *  numbers — the numbers use `0` to mean "unlimited". */
+  maxUsersLabel?: string;
+  maxDocumentsPerMonthLabel?: string;
+  maxStorageBytesLabel?: string;
+  documentRetentionDaysLabel?: string;
 }
 
 export interface PlanModule {
@@ -42,11 +49,24 @@ export interface ModuleInfo {
   description: string;
 }
 
+/** A comparison-table section, derived server-side by the pricing API from the
+ *  module→feature ownership SSOT (deduped, orphan-free, coverage-complete).
+ *  `label` is the module's short name, or "Workflow & platform" for the
+ *  cross-cutting catch-all group. */
+export interface FeatureGroup {
+  key: string;
+  label: string;
+  featureKeys: string[];
+}
+
 export interface PricingData {
   plans: Plan[];
   planOrder: string[];
   addOns: unknown[];
   featureLabels: Record<string, string>;
+  /** Optional — absent on a cold-start stale fallback; the comparison table
+   *  self-hides when missing/empty. */
+  featureGroups?: FeatureGroup[];
   moduleOrder: string[];
   modules: Record<string, ModuleInfo>;
 }

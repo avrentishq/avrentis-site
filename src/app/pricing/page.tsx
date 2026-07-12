@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { Pricing } from "@/components/sections/pricing";
+import { PlanComparison } from "@/components/sections/plan-comparison";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { fetchPricingData } from "@/lib/pricing";
 
@@ -28,6 +29,7 @@ export default async function PricingPage() {
       <Navbar />
       <main id="main">
         <Pricing data={pricingData} headingAs="h1" />
+        <PlanComparison data={pricingData} />
         <CtaBanner />
       </main>
       <Footer />

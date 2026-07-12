@@ -126,3 +126,27 @@ body {
 .skip-link:focus {
   top: 8px;
 }
+
+/* ── Plan comparison table (/pricing) ──────────────────────────────────────
+   Structural + colour styles are INLINE in plan-comparison.tsx (site
+   convention) so the section ships legible in its own chunk. Only what inline
+   can't express lives here: the <details> disclosure markers and row :hover.
+   Keep it this way — moving structure back here made the whole table collapse
+   to unstyled default-HTML whenever this stylesheet went stale or failed. */
+.pc-toggle-summary::-webkit-details-marker,
+.pc-group-summary::-webkit-details-marker { display: none; }
+.pc-toggle-summary::before,
+.pc-group-summary::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 150ms ease;
+  flex-shrink: 0;
+}
+.pc-toggle[open] > .pc-toggle-summary::before,
+.pc-group[open] > .pc-group-summary::before { transform: rotate(90deg); }
+
+.pc-row:hover { background: var(--color-gold-ghost); }

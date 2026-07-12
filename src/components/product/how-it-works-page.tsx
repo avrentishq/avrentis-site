@@ -95,7 +95,7 @@ const STAGES = [
     title: "Record",
     subtitle: "Every action, permanent. Every document, bank-ready.",
     icon: Archive,
-    body: "The moment the MD signs, Avrentis generates the bank-ready PDF and a timeline of the decision ready for audit. Both are filed in Documents automatically. The record — every question, every change, every signature — is now permanent. Nobody, not even the person who runs the account, can edit history after the fact.",
+    body: "The moment the MD signs, Avrentis generates the bank-ready PDF and a timeline of the decision ready for audit. Both are filed in Records automatically. The record — every question, every change, every signature — is now permanent. Nobody, not even the person who runs the account, can edit history after the fact.",
     bullets: [
       "Bank-ready payment letter with the MD's signature and your company letterhead",
       "Voucher or PO PDF with the full approval chain printed on the document itself",

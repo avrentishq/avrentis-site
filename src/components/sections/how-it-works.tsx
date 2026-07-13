@@ -819,15 +819,19 @@ export function HowItWorks() {
               Three steps. Zero paper. Complete record.
             </m.h2>
 
-            {/* Left — Text */}
-            <AnimatePresence mode="wait">
-              <m.div
-                key={`text-${active}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
+            {/* Left — Text. Reserved height so the mode="wait" swap (old
+                paragraph unmounts before the new one mounts) can't collapse the
+                block to zero and jump the step selector below it. Sized to the
+                tallest body: ~204px on mobile (narrower wrap), ~128px on lg. */}
+            <div className="min-h-[204px] lg:min-h-[128px]">
+              <AnimatePresence mode="wait">
+                <m.div
+                  key={`text-${active}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                 <p
                   style={{
                     fontFamily: "var(--font-sans)",
@@ -841,8 +845,9 @@ export function HowItWorks() {
                 >
                   {STEPS[active].body}
                 </p>
-              </m.div>
-            </AnimatePresence>
+                </m.div>
+              </AnimatePresence>
+            </div>
 
             {/* ── Step Selector ───────────────────────────── */}
             <m.div
@@ -961,7 +966,12 @@ export function HowItWorks() {
             style={{
               display: "flex",
               justifyContent: "center",
+              alignItems: "flex-start",
               width: "100%",
+              // Fixed render height: the mockups are ~428px (lg) / ~443px
+              // (mobile); reserving 460px stops the mode="wait" swap from
+              // collapsing the panel to zero and jumping the section each cycle.
+              minHeight: "460px",
             }}
             className="lg:flex-1 lg:justify-end"
           >

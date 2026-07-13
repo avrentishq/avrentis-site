@@ -778,7 +778,7 @@ export function HowItWorks() {
           className="lg:!flex-row lg:!items-center"
         >
           {/* ── Left Panel ──────────────────────────────────── */}
-          <div>
+          <div className="w-full lg:flex-1">
             {/* ── Header ──────────────────────────────────── */}
             <m.span
               variants={fadeUp}
@@ -952,15 +952,18 @@ export function HowItWorks() {
             </m.div>
           </div>
 
-          {/* ── Right Panel - Content Area ────────────────────────────── */}
+          {/* ── Right Panel — Mockup ────────────────────────────── */}
+          {/* Plain flex, not a 2-col grid: the panel holds a single mockup, so
+              a grid-cols-2 reserved a permanently-empty second track — the dead
+              whitespace on the right. Balanced lg:flex-1 halves + the mockup
+              right-aligned in its half fills the width instead. */}
           <div
             style={{
-              display: "grid",
-              gap: "48px",
-              alignItems: "center",
-              marginBottom: "64px",
+              display: "flex",
+              justifyContent: "center",
+              width: "100%",
             }}
-            className="grid-cols-1 lg:grid-cols-2"
+            className="lg:flex-1 lg:justify-end"
           >
             {/* Right — Mockup */}
             <AnimatePresence mode="wait">
@@ -970,8 +973,7 @@ export function HowItWorks() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{ maxWidth: "400px", width: "100%" }}
-                className="lg:justify-self-end"
+                style={{ maxWidth: "460px", width: "100%" }}
               >
                 <ActiveMockup />
               </m.div>
@@ -990,6 +992,7 @@ export function HowItWorks() {
             backgroundColor: "#1e293b",
             borderRadius: "10px",
             padding: "20px 32px",
+            marginTop: "72px",
             display: "grid",
             gap: "16px",
           }}

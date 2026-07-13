@@ -31,7 +31,7 @@ const MODULE_CARDS: {
     key: "pay",
     icon: CreditCard,
     subtitle: "Payment & Approval Management",
-    body: "Structure every payment decision your organisation makes. From submission through defined approval levels to final authorisation — tracked, documented, and permanently on record.",
+    body: "Structure every payment decision your organisation makes. Each request is routed to the right approver by amount, department, and risk — enforced automatically, then tracked and permanently on record.",
     status: "available",
   },
   {

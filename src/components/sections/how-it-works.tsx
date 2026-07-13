@@ -778,7 +778,7 @@ export function HowItWorks() {
           className="lg:!flex-row lg:!items-center"
         >
           {/* ── Left Panel ──────────────────────────────────── */}
-          <div>
+          <div className="w-full lg:flex-1">
             {/* ── Header ──────────────────────────────────── */}
             <m.span
               variants={fadeUp}
@@ -819,15 +819,19 @@ export function HowItWorks() {
               Three steps. Zero paper. Complete record.
             </m.h2>
 
-            {/* Left — Text */}
-            <AnimatePresence mode="wait">
-              <m.div
-                key={`text-${active}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
+            {/* Left — Text. Reserved height so the mode="wait" swap (old
+                paragraph unmounts before the new one mounts) can't collapse the
+                block to zero and jump the step selector below it. Sized to the
+                tallest body: ~204px on mobile (narrower wrap), ~128px on lg. */}
+            <div className="min-h-[204px] lg:min-h-[128px]">
+              <AnimatePresence mode="wait">
+                <m.div
+                  key={`text-${active}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                 <p
                   style={{
                     fontFamily: "var(--font-sans)",
@@ -841,8 +845,9 @@ export function HowItWorks() {
                 >
                   {STEPS[active].body}
                 </p>
-              </m.div>
-            </AnimatePresence>
+                </m.div>
+              </AnimatePresence>
+            </div>
 
             {/* ── Step Selector ───────────────────────────── */}
             <m.div
@@ -952,15 +957,23 @@ export function HowItWorks() {
             </m.div>
           </div>
 
-          {/* ── Right Panel - Content Area ────────────────────────────── */}
+          {/* ── Right Panel — Mockup ────────────────────────────── */}
+          {/* Plain flex, not a 2-col grid: the panel holds a single mockup, so
+              a grid-cols-2 reserved a permanently-empty second track — the dead
+              whitespace on the right. Balanced lg:flex-1 halves + the mockup
+              right-aligned in its half fills the width instead. */}
           <div
             style={{
-              display: "grid",
-              gap: "48px",
-              alignItems: "center",
-              marginBottom: "64px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              width: "100%",
+              // Fixed render height: the mockups are ~428px (lg) / ~443px
+              // (mobile); reserving 460px stops the mode="wait" swap from
+              // collapsing the panel to zero and jumping the section each cycle.
+              minHeight: "460px",
             }}
-            className="grid-cols-1 lg:grid-cols-2"
+            className="lg:flex-1 lg:justify-end"
           >
             {/* Right — Mockup */}
             <AnimatePresence mode="wait">
@@ -970,8 +983,7 @@ export function HowItWorks() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
-                style={{ maxWidth: "400px", width: "100%" }}
-                className="lg:justify-self-end"
+                style={{ maxWidth: "460px", width: "100%" }}
               >
                 <ActiveMockup />
               </m.div>
@@ -990,6 +1002,7 @@ export function HowItWorks() {
             backgroundColor: "#1e293b",
             borderRadius: "10px",
             padding: "20px 32px",
+            marginTop: "72px",
             display: "grid",
             gap: "16px",
           }}

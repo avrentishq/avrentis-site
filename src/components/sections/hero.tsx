@@ -687,9 +687,9 @@ export function Hero() {
             }}
           >
             Most organisations run on scattered emails, informal approvals, and
-            undocumented decisions. Avrentis brings structure, visibility, and
-            accountability to every process your organisation runs —
-            permanently.
+            no clear record of who was allowed to approve what. Avrentis makes
+            authority explicit — every decision routed to the right approver,
+            enforced, and on record permanently.
           </m.p>
 
           <m.div

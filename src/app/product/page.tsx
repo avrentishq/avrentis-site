@@ -188,8 +188,9 @@ export default function ProductOverviewPage() {
           >
             Avrentis is not a collection of unrelated tools — every financial
             decision, procurement action, compliance event, and people process
-            flows through the same approval rails and lands on the same
-            immutable record.
+            flows through one delegation-of-authority engine: routed to the
+            right approver by amount, department, and risk, enforced
+            automatically, and provable on the same immutable record.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
             <Link
@@ -393,7 +394,7 @@ export default function ProductOverviewPage() {
               marginBottom: "12px",
             }}
           >
-            ONE APPROVAL ENGINE
+            ONE AUTHORITY ENGINE
           </span>
           <h2
             style={{
@@ -407,7 +408,7 @@ export default function ProductOverviewPage() {
             }}
             className="lg:!text-[38px]"
           >
-            Every module shares the same approval rails.
+            Every module runs on one delegation-of-authority engine.
           </h2>
           <p
             style={{
@@ -420,10 +421,12 @@ export default function ProductOverviewPage() {
             }}
           >
             A payment voucher, a purchase order, a leave request, and a vendor
-            onboarding all travel the same authority engine: submission →
-            defined approvers → immutable audit event → permanent record.
-            Learn one module, you know them all. Configure a rule once, it
-            applies across every approval your organisation runs.
+            onboarding all travel the same authority engine: routed to the right
+            approver by amount, department, and risk → enforced with no way
+            around it → recorded on an immutable trail. Define once who can
+            approve what, up to how much, and under which conditions — every
+            module obeys it. And for any decision, Avrentis shows exactly which
+            rule applied and can prove what policy governed it, years later.
           </p>
 
           <div

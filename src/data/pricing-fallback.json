@@ -35,6 +35,11 @@
       },
       "modules": [
         {
+          "key": "authority",
+          "name": "Avrentis Authority",
+          "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
+        },
+        {
           "key": "pay",
           "name": "Avrentis Payables",
           "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
@@ -42,7 +47,7 @@
         {
           "key": "procure",
           "name": "Avrentis Procurement",
-          "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking"
+          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine."
         },
         {
           "key": "vault",
@@ -70,6 +75,7 @@
         "multiCompanyGroup": false,
         "groupAdminDashboard": false,
         "customApprovalChains": false,
+        "advancedApprovalWorkflows": false,
         "dedicatedOnboarding": false,
         "prioritySupport": false,
         "multiLevelApprovals": true,
@@ -122,6 +128,11 @@
       },
       "modules": [
         {
+          "key": "authority",
+          "name": "Avrentis Authority",
+          "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
+        },
+        {
           "key": "pay",
           "name": "Avrentis Payables",
           "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
@@ -129,7 +140,7 @@
         {
           "key": "procure",
           "name": "Avrentis Procurement",
-          "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking"
+          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine."
         },
         {
           "key": "vault",
@@ -162,6 +173,7 @@
         "multiCompanyGroup": false,
         "groupAdminDashboard": false,
         "customApprovalChains": true,
+        "advancedApprovalWorkflows": false,
         "dedicatedOnboarding": true,
         "prioritySupport": true,
         "multiLevelApprovals": true,
@@ -213,6 +225,11 @@
       },
       "modules": [
         {
+          "key": "authority",
+          "name": "Avrentis Authority",
+          "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
+        },
+        {
           "key": "pay",
           "name": "Avrentis Payables",
           "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
@@ -220,7 +237,7 @@
         {
           "key": "procure",
           "name": "Avrentis Procurement",
-          "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking"
+          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine."
         },
         {
           "key": "vault",
@@ -258,6 +275,7 @@
         "multiCompanyGroup": false,
         "groupAdminDashboard": false,
         "customApprovalChains": true,
+        "advancedApprovalWorkflows": true,
         "dedicatedOnboarding": true,
         "prioritySupport": true,
         "multiLevelApprovals": true,
@@ -283,45 +301,48 @@
   "addOns": [],
   "featureLabels": {
     "approvalChain": "Structured approval workflow",
-    "pdfExport": "Export approved documents as PDF",
-    "watermarkedExports": "Watermarked document exports",
-    "fullAuditTrail": "Complete compliance visibility",
-    "csvExport": "Download data as spreadsheets",
-    "documentAttachments": "Attach supporting documents",
-    "analytics": "Understand your spending patterns",
-    "recurringTemplates": "Automate recurring payments",
-    "delegation": "Delegate approvals while away",
+    "multiLevelApprovals": "Route approvals through multiple reviewers",
+    "customApprovalChains": "Design your own approval process",
+    "advancedApprovalWorkflows": "Approver groups and multi-party approval gates",
     "slaTracking": "Monitor approval speed",
-    "budgetCodes": "Tag spending by budget category",
-    "bankLetterGeneration": "Generate formatted bank-letter PDFs",
+    "delegation": "Delegate approvals while away",
+    "pdfExport": "Export approved documents as PDF",
     "bankExport": "Export bank-ready payment files",
     "bulkBankExport": "Export payments in bulk",
+    "bankLetterGeneration": "Generate formatted bank-letter PDFs",
+    "documentAttachments": "Attach supporting documents",
+    "vendorCompliance": "Track vendor tax & statutory compliance",
+    "csvExport": "Download data as spreadsheets",
+    "fullAuditTrail": "Complete compliance visibility",
     "fullAuditExport": "Export full compliance records",
-    "multiCompanyGroup": "Manage multiple companies together",
-    "groupAdminDashboard": "Oversee all subsidiaries from one view",
-    "customApprovalChains": "Design your own approval process",
-    "dedicatedOnboarding": "Guided setup with a dedicated specialist",
-    "prioritySupport": "Priority access to support",
-    "multiLevelApprovals": "Route approvals through multiple reviewers",
-    "customBranding": "Brand your exported documents",
     "apiAccess": "Connect external systems via API",
     "ipAllowlist": "Restrict access by IP address",
     "mfaPolicy": "Enforce multi-factor authentication",
     "sso": "Single sign-on (SSO) and SCIM provisioning",
-    "taxControls": "Compute WHT/VAT and generate remittance schedules",
-    "vendorCompliance": "Track vendor tax & statutory compliance",
-    "procurementAdvanced": "Run tenders, bid evaluation and vote-book control",
-    "erpSync": "Sync with your accounting/ERP system",
-    "controlsMonitoring": "Continuous controls monitoring & evidence packs",
-    "vendorRiskNetwork": "Cross-tenant vendor-risk signals",
-    "fraudTypologyLibrary": "Shared fraud-pattern detection"
+    "analytics": "Understand your spending patterns",
+    "recurringTemplates": "Automate recurring payments",
+    "budgetCodes": "Tag spending by budget category",
+    "customBranding": "Brand your exported documents",
+    "dedicatedOnboarding": "Guided setup with a dedicated specialist",
+    "prioritySupport": "Priority access to support"
   },
   "featureGroups": [
+    {
+      "key": "authority",
+      "label": "Authority",
+      "featureKeys": [
+        "approvalChain",
+        "multiLevelApprovals",
+        "customApprovalChains",
+        "advancedApprovalWorkflows",
+        "slaTracking",
+        "delegation"
+      ]
+    },
     {
       "key": "pay",
       "label": "Payables",
       "featureKeys": [
-        "approvalChain",
         "pdfExport",
         "bankExport",
         "bulkBankExport",
@@ -362,23 +383,20 @@
       "key": "platform",
       "label": "Workflow & platform",
       "featureKeys": [
-        "analytics",
-        "recurringTemplates",
-        "delegation",
-        "slaTracking",
-        "budgetCodes",
-        "customApprovalChains",
-        "dedicatedOnboarding",
-        "prioritySupport",
-        "multiLevelApprovals",
-        "customBranding",
         "ipAllowlist",
         "mfaPolicy",
-        "sso"
+        "sso",
+        "analytics",
+        "recurringTemplates",
+        "budgetCodes",
+        "customBranding",
+        "dedicatedOnboarding",
+        "prioritySupport"
       ]
     }
   ],
   "moduleOrder": [
+    "authority",
     "pay",
     "procure",
     "vault",
@@ -386,12 +404,24 @@
     "connect"
   ],
   "modules": {
+    "authority": {
+      "name": "Avrentis Authority",
+      "sidebarLabel": "Authority",
+      "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record.",
+      "features": [
+        "approvalChain",
+        "multiLevelApprovals",
+        "customApprovalChains",
+        "advancedApprovalWorkflows",
+        "slaTracking",
+        "delegation"
+      ]
+    },
     "pay": {
       "name": "Avrentis Payables",
       "sidebarLabel": "Payables",
       "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank.",
       "features": [
-        "approvalChain",
         "pdfExport",
         "bankExport",
         "bulkBankExport",
@@ -402,9 +432,8 @@
     "procure": {
       "name": "Avrentis Procurement",
       "sidebarLabel": "Procurement",
-      "description": "Purchase order generation, PO approval workflow, vendor/supplier directory, quotation and invoice tracking",
+      "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine.",
       "features": [
-        "approvalChain",
         "documentAttachments",
         "vendorCompliance",
         "procurementAdvanced"

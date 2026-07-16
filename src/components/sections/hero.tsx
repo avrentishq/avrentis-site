@@ -6,6 +6,7 @@ import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { BRAND } from "@avrentishq/core/brand";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -632,7 +633,7 @@ export function Hero() {
               marginBottom: "20px",
             }}
           >
-            OPERATIONAL AUTHORITY PLATFORM
+            {BRAND.positioningStatement}
           </m.span>
 
           <m.h1

@@ -18,8 +18,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.32.0
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#f81b4af27285c99ea7c334f5d8e330e6743c2cd3(@aws-sdk/client-s3@3.1083.0)(@aws-sdk/client-sts@3.1083.0)(@neondatabase/serverless@1.1.0)(@simplewebauthn/server@13.3.2)(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(bcryptjs@3.0.3)(drizzle-orm@0.45.2(@neondatabase/serverless@1.1.0)(@upstash/redis@1.38.0))(otpauth@9.5.1)(tldts@7.4.7)(ws@8.21.0)(zod@4.3.6)
+        specifier: github:avrentishq/avrentis-core#v0.68.0
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#7cc54740c98b6058ecf08524ec69850ae47ea918(@aws-sdk/client-s3@3.1083.0)(@aws-sdk/client-sts@3.1083.0)(@neondatabase/serverless@1.1.0)(@simplewebauthn/server@13.3.2)(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(bcryptjs@3.0.3)(drizzle-orm@0.45.2(@neondatabase/serverless@1.1.0)(@upstash/redis@1.38.0))(otpauth@9.5.1)(tldts@7.4.7)(ws@8.21.0)(zod@4.3.6)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -75,13 +75,29 @@ importers:
 
 packages:
 
+  '@ai-sdk/gateway@4.0.21':
+    resolution: {integrity: sha512-GafyeyHFDKJjdtbyhCQ0aC2FORdyE56IxK45EZ1JLO1iVdg8XqEU3bwnRzI0+5S1XHV7W2qQsxkZnGYPbsFiXA==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider-utils@5.0.10':
+    resolution: {integrity: sha512-uPyec0+85dwxZYXtb8qe8gCjhjDfxP4LCDo/uRQS/iG+FIgYbHPRhr/ys281udG90bTaE18+5cxWraYaf8oHCw==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
+
+  '@ai-sdk/provider@4.0.3':
+    resolution: {integrity: sha512-e0CpNWJUY7OxAFAnCZkw+ri9QOHWwTs1tXP42782KFGCU07qt8NiXCrCVowyCB5dP2r5/Uls+g2oPd8kOJn9dw==}
+    engines: {node: '>=22'}
+
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#f81b4af27285c99ea7c334f5d8e330e6743c2cd3':
-    resolution: {commit: f81b4af27285c99ea7c334f5d8e330e6743c2cd3, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.32.0
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#7cc54740c98b6058ecf08524ec69850ae47ea918':
+    resolution: {commit: 7cc54740c98b6058ecf08524ec69850ae47ea918, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.68.0
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -1070,6 +1086,10 @@ packages:
   '@upstash/redis@1.38.0':
     resolution: {integrity: sha512-wu+dZBptlLy0+MCUEoHmzrY/TnmgDey3+c7EbIGwrLqAvkP8yi5MWZHYGIFtAygmL4Bkz2TdFu+eU0vFPncIcg==}
 
+  '@vercel/oidc@3.2.0':
+    resolution: {integrity: sha512-UycprH3T6n3jH0k44NHMa7pnFHGu/N05MjojYr+Mc6I7obkoLIJujSWwin1pCvdy/eOxrI/l3uDLQsmcrOb4ug==}
+    engines: {node: '>= 20'}
+
   '@vitest/expect@4.1.10':
     resolution: {integrity: sha512-YsCn+qAk1GWjQOWFEsEcL2gNQ0zmVmQu3T03qP6UyjhtmdtwtbuI+DASn/7iQB3HGTXkdBwGddzxPlmiql5vlA==}
 
@@ -1099,6 +1119,9 @@ packages:
   '@vitest/utils@4.1.10':
     resolution: {integrity: sha512-fy9am/HWxbaGt/Sawrp90vt6Y6jQwf1RX77cz3uwoJwJVMli/e1IEwRPnMNJ7vKfPTwo0diXifkpPvwH9v7nGA==}
 
+  '@workflow/serde@4.1.0':
+    resolution: {integrity: sha512-pav4F2BoirECWR7Nf1TKt+2eETcBj7jj4cBefQ8VXQCA6NPkaKeLfj/zMgi+3zYV5ZIBT4GuUiphsj0/b9hPQQ==}
+
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
     peerDependencies:
@@ -1108,6 +1131,12 @@ packages:
     resolution: {integrity: sha512-UVJyE9MttOsBQIDKw1skb9nAwQuR5wuGD3+82K6JgJlm/Y+KI92oNsMNGZCYdDsVtRHSak0pcV5Dno5+4jh9sw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  ai@7.0.29:
+    resolution: {integrity: sha512-q+A+skhl6SyjWliU6W7zNYgDUrEk5SbNrCc5vt4S9n6+n6e7jSorDmu51hlhjDOsS7VwzWGCgbWFvvT3iomtvg==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      zod: ^3.25.76 || ^4.1.8
 
   ajv@6.14.0:
     resolution: {integrity: sha512-IWrosm/yrn43eiKqkfkHis7QioDleaXQHdDVPKg0FSwwd/DuvyX79TZnFOnYpB7dcsFAMmtFztZuXPDvSePkFw==}
@@ -1593,6 +1622,10 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
+  eventsource-parser@3.1.0:
+    resolution: {integrity: sha512-kJezFj9YFAMLeORyi7aCLxLbD5/qWMQnoMVlVPyHIll7lgRJCc3JVln9Vgl9nwQi0YkMnhdGTMNn7CkRRAptMg==}
+    engines: {node: '>=18.0.0'}
+
   expect-type@1.4.0:
     resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
     engines: {node: '>=12.0.0'}
@@ -1920,6 +1953,9 @@ packages:
 
   json-schema-traverse@0.4.1:
     resolution: {integrity: sha512-xbbCH5dCYU5T8LcEhhuh7HJ88HXuW3qsI3Y0zOZFKfZEHcpWiHU/Jxzk629Brsab/mMiHQti9wMP+845RPe3Vg==}
+
+  json-schema@0.4.0:
+    resolution: {integrity: sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==}
 
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
@@ -2693,9 +2729,28 @@ packages:
 
 snapshots:
 
+  '@ai-sdk/gateway@4.0.21(zod@4.3.6)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.3
+      '@ai-sdk/provider-utils': 5.0.10(zod@4.3.6)
+      '@vercel/oidc': 3.2.0
+      zod: 4.3.6
+
+  '@ai-sdk/provider-utils@5.0.10(zod@4.3.6)':
+    dependencies:
+      '@ai-sdk/provider': 4.0.3
+      '@standard-schema/spec': 1.1.0
+      '@workflow/serde': 4.1.0
+      eventsource-parser: 3.1.0
+      zod: 4.3.6
+
+  '@ai-sdk/provider@4.0.3':
+    dependencies:
+      json-schema: 0.4.0
+
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#f81b4af27285c99ea7c334f5d8e330e6743c2cd3(@aws-sdk/client-s3@3.1083.0)(@aws-sdk/client-sts@3.1083.0)(@neondatabase/serverless@1.1.0)(@simplewebauthn/server@13.3.2)(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(bcryptjs@3.0.3)(drizzle-orm@0.45.2(@neondatabase/serverless@1.1.0)(@upstash/redis@1.38.0))(otpauth@9.5.1)(tldts@7.4.7)(ws@8.21.0)(zod@4.3.6)':
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#7cc54740c98b6058ecf08524ec69850ae47ea918(@aws-sdk/client-s3@3.1083.0)(@aws-sdk/client-sts@3.1083.0)(@neondatabase/serverless@1.1.0)(@simplewebauthn/server@13.3.2)(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(bcryptjs@3.0.3)(drizzle-orm@0.45.2(@neondatabase/serverless@1.1.0)(@upstash/redis@1.38.0))(otpauth@9.5.1)(tldts@7.4.7)(ws@8.21.0)(zod@4.3.6)':
     dependencies:
       '@aws-sdk/client-s3': 3.1083.0
       '@aws-sdk/client-sts': 3.1083.0
@@ -2703,6 +2758,7 @@ snapshots:
       '@simplewebauthn/server': 13.3.2
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0
+      ai: 7.0.29(zod@4.3.6)
       bcryptjs: 3.0.3
       drizzle-orm: 0.45.2(@neondatabase/serverless@1.1.0)(@upstash/redis@1.38.0)
       otpauth: 9.5.1
@@ -3730,6 +3786,8 @@ snapshots:
     dependencies:
       uncrypto: 0.1.3
 
+  '@vercel/oidc@3.2.0': {}
+
   '@vitest/expect@4.1.10':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -3771,11 +3829,20 @@ snapshots:
       convert-source-map: 2.0.0
       tinyrainbow: 3.1.0
 
+  '@workflow/serde@4.1.0': {}
+
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
       acorn: 8.16.0
 
   acorn@8.16.0: {}
+
+  ai@7.0.29(zod@4.3.6):
+    dependencies:
+      '@ai-sdk/gateway': 4.0.21(zod@4.3.6)
+      '@ai-sdk/provider': 4.0.3
+      '@ai-sdk/provider-utils': 5.0.10(zod@4.3.6)
+      zod: 4.3.6
 
   ajv@6.14.0:
     dependencies:
@@ -4340,6 +4407,8 @@ snapshots:
 
   esutils@2.0.3: {}
 
+  eventsource-parser@3.1.0: {}
+
   expect-type@1.4.0: {}
 
   fast-deep-equal@3.1.3: {}
@@ -4655,6 +4724,8 @@ snapshots:
   json-buffer@3.0.1: {}
 
   json-schema-traverse@0.4.1: {}
+
+  json-schema@0.4.0: {}
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 

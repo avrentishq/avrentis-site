@@ -15,7 +15,7 @@
     "predev": "node scripts/sync-pricing-fallback.mjs"
   },
   "dependencies": {
-    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.32.0",
+    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.68.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.17.0",

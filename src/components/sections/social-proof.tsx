@@ -25,8 +25,8 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   },
   {
     icon: Landmark,
-    title: "We structure the approval — your bank moves the money",
-    body: "Avrentis is a workflow tool, not a payment processor. Final money movement is handed to your licensed bank. Clear authority, clean separation of duties.",
+    title: "We govern the authority to pay — your bank moves the money",
+    body: "Avrentis governs who is allowed to approve a payment, and proves it. Your licensed bank moves the money. That clean separation — clear authority on our side, settlement on theirs — is the point.",
   },
   {
     icon: MapPin,

@@ -37,7 +37,7 @@
         {
           "key": "pay",
           "name": "Avrentis Payables",
-          "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank."
+          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
         },
         {
           "key": "procure",
@@ -124,7 +124,7 @@
         {
           "key": "pay",
           "name": "Avrentis Payables",
-          "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank."
+          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
         },
         {
           "key": "procure",
@@ -215,7 +215,7 @@
         {
           "key": "pay",
           "name": "Avrentis Payables",
-          "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank."
+          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
         },
         {
           "key": "procure",
@@ -389,7 +389,7 @@
     "pay": {
       "name": "Avrentis Payables",
       "sidebarLabel": "Payables",
-      "description": "Payment voucher creation, approval workflow, digital signatures, bank-ready PDF output, payment status tracking. Workflow tool — final money movement is handed off to a licensed bank.",
+      "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank.",
       "features": [
         "approvalChain",
         "pdfExport",

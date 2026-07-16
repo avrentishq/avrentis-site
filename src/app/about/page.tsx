@@ -4,16 +4,17 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { BRAND } from "@avrentishq/core/brand";
+
+const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a permanent record.`;
 
 export const metadata: Metadata = {
   title: "About — Avrentis",
-  description:
-    "Why we built Avrentis — the Operational Authority Platform for Nigerian and African organisations where decisions require defined authority, structured process, and a permanent record.",
+  description: ABOUT_DESCRIPTION,
   alternates: { canonical: "/about" },
   openGraph: {
     title: "About Avrentis",
-    description:
-      "Why we built Avrentis — the Operational Authority Platform for Nigerian and African organisations where decisions require defined authority, structured process, and a permanent record.",
+    description: ABOUT_DESCRIPTION,
     url: "https://avrentis.com/about",
     type: "website",
   },

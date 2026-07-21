@@ -9,7 +9,7 @@ import {
   Link2,
   type LucideIcon,
 } from "lucide-react";
-import { BRAND_COLORS, isModulePublic, type ModuleKey } from "@/lib/brand";
+import { BRAND_COLORS, isModulePublic, PUBLIC_MODULE_COUNT, type ModuleKey } from "@/lib/brand";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -19,14 +19,12 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ModuleStatus } from "@/components/product/module-layout";
 
 export const metadata: Metadata = {
-  title: "The Avrentis platform — five modules, one system of record",
-  description:
-    "Avrentis structures how your organisation makes decisions across payments, procurement, documents, compliance, and integrations. Five modules, one approval engine, one permanent record.",
+  title: `The Avrentis platform — ${PUBLIC_MODULE_COUNT} modules, one system of record`,
+  description: `Avrentis structures how your organisation makes decisions across payments, procurement, documents, compliance, fraud detection, grants, and integrations. ${PUBLIC_MODULE_COUNT} modules, one approval engine, one permanent record.`,
   alternates: { canonical: "/product" },
   openGraph: {
-    title: "The Avrentis platform — five modules, one system of record",
-    description:
-      "Five modules share one approval engine and one permanent record. Payables, Procurement, Records, Compliance, Integrations.",
+    title: `The Avrentis platform — ${PUBLIC_MODULE_COUNT} modules, one system of record`,
+    description: `${PUBLIC_MODULE_COUNT} modules share one approval engine and one permanent record. Payables, Procurement, Records, Compliance, Guard, Grants, Integrations.`,
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -174,7 +172,7 @@ export default function ProductOverviewPage() {
             }}
             className="lg:!text-[52px]"
           >
-            Five modules. One approval engine. One permanent record.
+            {PUBLIC_MODULE_COUNT} modules. One approval engine. One permanent record.
           </h1>
           <p
             style={{

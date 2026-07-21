@@ -46,9 +46,9 @@ function getHighlights(plan: Plan): string[] {
 // 30-day-grace detail lives in the footnote below the CTA (no repetition).
 const TRIAL_HIGHLIGHTS: string[] = [
   "Full Business tier — switched on, not a sandbox",
-  "Up to 10 users, ready to invite",
+  "Up to 5 users, ready to invite",
   "Bank-ready PDF exports (trial watermark)",
-  "1 GB storage during trial",
+  "2 GB storage during trial",
 ];
 
 /* ── Component ───────────────────────────────────────────────── */
@@ -152,7 +152,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Every plan starts with a 14-day trial &mdash; no card on file,
+          Every plan starts with a 30-day trial &mdash; no card on file,
           nothing to cancel. Scale as your organisation grows. No hidden fees.
         </m.p>
 
@@ -288,7 +288,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             <div style={{ marginBottom: "6px" }}>
               <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "36px", color: "#0f172a" }}>$0</span>
               <span style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b" }}>
-                {" "}/ 14 days
+                {" "}/ 30 days
               </span>
             </div>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", margin: "0 0 20px", minHeight: "16px" }}>
@@ -314,7 +314,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f172a"; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; }}
             >
-              Start your 14-day trial
+              Start your 30-day trial
             </Link>
             <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#64748b", lineHeight: 1.5, margin: "12px 0 0" }}>
               Exports carry an Avrentis Trial watermark until you upgrade. Data is preserved for 30 days after your trial ends.

@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * TrialTimeline — an honest, public-safe schedule of the 14-day trial.
+ * TrialTimeline — an honest, public-safe schedule of the 30-day trial.
  *
  * Transparency / "no dark patterns": the exact lifecycle is stated up front,
  * including the heads-up before the trial ends and the grace period after it.
- * Every milestone maps to real product behaviour (14-day trial → read-only →
- * 30-day grace → close at day 44). Deliberately omits internal cadence,
+ * Every milestone maps to real product behaviour (30-day trial → read-only →
+ * 30-day grace → close at day 60). Deliberately omits internal cadence,
  * mechanisms, and infrastructure — only what a customer needs to feel in
  * control appears here.
  */
@@ -30,19 +30,19 @@ const MILESTONES: Milestone[] = [
       "The complete Business tier on your own data, with a sample approval already waiting. No card.",
   },
   {
-    when: "Days 1–13",
+    when: "Days 1–29",
     title: "We keep you moving",
     detail:
       "A few getting-started nudges, a mid-trial summary, and a heads-up the day before it ends.",
   },
   {
-    when: "Day 14",
+    when: "Day 30",
     title: "Read-only — not gone",
     detail:
       "Keep viewing and exporting everything. Creating resumes the moment you upgrade.",
   },
   {
-    when: "Day 44",
+    when: "Day 60",
     title: "Nothing removed without warning",
     detail:
       "A 30-day grace period after read-only — and a clear heads-up before any data is removed.",
@@ -69,7 +69,7 @@ export function TrialTimeline() {
           marginBottom: "20px",
         }}
       >
-        How the 14 days work
+        How the 30 days work
       </m.span>
 
       <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>

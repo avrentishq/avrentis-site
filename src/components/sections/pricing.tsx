@@ -12,7 +12,13 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/pricing";
-import { PUBLIC_MODULE_COUNT } from "@/lib/brand";
+import {
+  PRODUCT_MODULE_COUNT,
+  isProductModulePublic,
+  productModuleKeys,
+  platformModuleKeys,
+  moduleName,
+} from "@/lib/brand";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -86,6 +92,23 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
     const pb = getPriceForCurrency(b, currency)?.monthly ?? Infinity;
     return pa - pb;
   });
+
+  // The always-on platform every plan runs on, shown once as an "included on
+  // every plan" trust line. The pricing API's `platformModules` is the SSOT
+  // (it also carries Authority); when absent (stale fallback / pre-deploy API)
+  // fall back to this site's own substrate catalog.
+  const platformNames = (
+    data.platformModules?.length
+      ? data.platformModules.map((m) => m.name)
+      : platformModuleKeys().map((key) => moduleName(key))
+  ).map((name) => name.replace("Avrentis ", ""));
+
+  // The trial provisions the full Business tier — its module chip lists the same
+  // sellable product modules (substrate is shown in the platform line, not here),
+  // derived from the catalog so it can't drift from the plan cards.
+  const trialModuleLabel = productModuleKeys()
+    .map((key) => moduleName(key).replace("Avrentis ", ""))
+    .join(" + ");
 
   return (
     <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
@@ -295,7 +318,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               No credit card required
             </p>
             <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
-              Payables + Procurement + Records + Compliance + Guard + Grants
+              {trialModuleLabel}
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
               {TRIAL_HIGHLIGHTS.map((feature) => (
@@ -350,13 +373,20 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             // hardcodes tier names.
             const inheritFrom = i > 0 ? orderedPlans[i - 1] : undefined;
 
-            const moduleNames = plan.modules
+            // Only SELLABLE product modules appear as badges — substrate (the
+            // always-on Compliance/Integrations/Authority) is shown once in the
+            // "included on every plan" strip below, and hidden modules (Requests)
+            // never surface. `isProductModulePublic` is guard-safe for API keys
+            // this catalog doesn't model (e.g. `authority`).
+            const productModules = plan.modules.filter((m) => isProductModulePublic(m.key));
+            const moduleNames = productModules
               .map((m) => m.name.replace("Avrentis ", ""))
               .join(" + ");
+            // No hardcoded count in the label (it drifts from the registry — the
+            // same reason the app's pricing lock test forbids "N modules" copy);
+            // a plan with the full product set reads "All modules included".
             const moduleLabel =
-              plan.modules.length >= PUBLIC_MODULE_COUNT
-                ? `All ${PUBLIC_MODULE_COUNT} modules`
-                : moduleNames;
+              productModules.length >= PRODUCT_MODULE_COUNT ? "All modules included" : moduleNames;
 
             return (
               <m.div
@@ -666,8 +696,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             marginTop: "40px",
           }}
         >
-          All plans include: Multi-level approvals &middot; Enterprise-grade
-          security &middot; Data protection compliant
+          {platformNames.length > 0
+            ? `Included on every plan: ${platformNames.join(" · ")} — the always-on approval engine, audit trail and integrations.`
+            : "All plans include: Multi-level approvals · Enterprise-grade security · Data protection compliant"}
         </m.p>
 
         <m.p

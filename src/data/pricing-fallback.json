@@ -35,11 +35,6 @@
       },
       "modules": [
         {
-          "key": "authority",
-          "name": "Avrentis Authority",
-          "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
-        },
-        {
           "key": "pay",
           "name": "Avrentis Payables",
           "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
@@ -99,6 +94,8 @@
       "highlights": [
         "Up to 50 users",
         "Full compliance audit trail",
+        "Fraud & anomaly detection (Guard)",
+        "Grant & restricted-fund tracking (Grants)",
         "Custom approval chains & branding",
         "Analytics, recurring templates, delegation",
         "100 GB storage · 3 year retention",
@@ -128,11 +125,6 @@
       },
       "modules": [
         {
-          "key": "authority",
-          "name": "Avrentis Authority",
-          "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
-        },
-        {
           "key": "pay",
           "name": "Avrentis Payables",
           "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
@@ -148,9 +140,14 @@
           "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place."
         },
         {
-          "key": "audit",
-          "name": "Avrentis Compliance",
-          "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+          "key": "guard",
+          "name": "Avrentis Guard",
+          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments, vendor bank-detail changes, threshold gaming, and separation-of-duties breaches surfaced as review flags."
+        },
+        {
+          "key": "grants",
+          "name": "Avrentis Grants",
+          "description": "Donor grant and restricted-fund tracking — allocate budgets per grant and tag spend against them for donor-ready reporting."
         }
       ],
       "features": {
@@ -197,7 +194,8 @@
       "highlights": [
         "Unlimited users & companies",
         "Unlimited storage & retention",
-        "Multi-company group & admin dashboard",
+        "Employee leave & expense requests",
+        "Single sign-on (SSO/SCIM) & advanced approvals",
         "API access for custom integrations",
         "Dedicated onboarding & priority support"
       ],
@@ -225,11 +223,6 @@
       },
       "modules": [
         {
-          "key": "authority",
-          "name": "Avrentis Authority",
-          "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
-        },
-        {
           "key": "pay",
           "name": "Avrentis Payables",
           "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
@@ -245,14 +238,19 @@
           "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place."
         },
         {
-          "key": "audit",
-          "name": "Avrentis Compliance",
-          "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+          "key": "people",
+          "name": "Avrentis Requests",
+          "description": "Employee leave and expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow."
         },
         {
-          "key": "connect",
-          "name": "Avrentis Integrations",
-          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations"
+          "key": "guard",
+          "name": "Avrentis Guard",
+          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments, vendor bank-detail changes, threshold gaming, and separation-of-duties breaches surfaced as review flags."
+        },
+        {
+          "key": "grants",
+          "name": "Avrentis Grants",
+          "description": "Donor grant and restricted-fund tracking — allocate budgets per grant and tag spend against them for donor-ready reporting."
         }
       ],
       "features": {
@@ -300,12 +298,6 @@
   ],
   "addOns": [],
   "featureLabels": {
-    "approvalChain": "Structured approval workflow",
-    "multiLevelApprovals": "Route approvals through multiple reviewers",
-    "customApprovalChains": "Design your own approval process",
-    "advancedApprovalWorkflows": "Approver groups and multi-party approval gates",
-    "slaTracking": "Monitor approval speed",
-    "delegation": "Delegate approvals while away",
     "pdfExport": "Export approved documents as PDF",
     "bankExport": "Export bank-ready payment files",
     "bulkBankExport": "Export payments in bulk",
@@ -313,32 +305,26 @@
     "documentAttachments": "Attach supporting documents",
     "vendorCompliance": "Track vendor tax & statutory compliance",
     "csvExport": "Download data as spreadsheets",
+    "approvalChain": "Structured approval workflow",
     "fullAuditTrail": "Complete compliance visibility",
     "fullAuditExport": "Export full compliance records",
+    "delegation": "Delegate approvals while away",
     "apiAccess": "Connect external systems via API",
     "ipAllowlist": "Restrict access by IP address",
     "mfaPolicy": "Enforce multi-factor authentication",
     "sso": "Single sign-on (SSO) and SCIM provisioning",
     "analytics": "Understand your spending patterns",
     "recurringTemplates": "Automate recurring payments",
+    "slaTracking": "Monitor approval speed",
     "budgetCodes": "Tag spending by budget category",
+    "customApprovalChains": "Design your own approval process",
+    "multiLevelApprovals": "Route approvals through multiple reviewers",
+    "advancedApprovalWorkflows": "Approver groups and multi-party approval gates",
     "customBranding": "Brand your exported documents",
     "dedicatedOnboarding": "Guided setup with a dedicated specialist",
     "prioritySupport": "Priority access to support"
   },
   "featureGroups": [
-    {
-      "key": "authority",
-      "label": "Authority",
-      "featureKeys": [
-        "approvalChain",
-        "multiLevelApprovals",
-        "customApprovalChains",
-        "advancedApprovalWorkflows",
-        "slaTracking",
-        "delegation"
-      ]
-    },
     {
       "key": "pay",
       "label": "Payables",
@@ -365,30 +351,24 @@
       ]
     },
     {
-      "key": "audit",
-      "label": "Compliance",
-      "featureKeys": [
-        "fullAuditTrail",
-        "fullAuditExport"
-      ]
-    },
-    {
-      "key": "connect",
-      "label": "Integrations",
-      "featureKeys": [
-        "apiAccess"
-      ]
-    },
-    {
       "key": "platform",
       "label": "Workflow & platform",
       "featureKeys": [
+        "approvalChain",
+        "fullAuditTrail",
+        "fullAuditExport",
+        "delegation",
+        "apiAccess",
         "ipAllowlist",
         "mfaPolicy",
         "sso",
         "analytics",
         "recurringTemplates",
+        "slaTracking",
         "budgetCodes",
+        "customApprovalChains",
+        "multiLevelApprovals",
+        "advancedApprovalWorkflows",
         "customBranding",
         "dedicatedOnboarding",
         "prioritySupport"
@@ -396,27 +376,14 @@
     }
   ],
   "moduleOrder": [
-    "authority",
     "pay",
     "procure",
     "vault",
-    "audit",
-    "connect"
+    "guard",
+    "people",
+    "grants"
   ],
   "modules": {
-    "authority": {
-      "name": "Avrentis Authority",
-      "sidebarLabel": "Authority",
-      "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record.",
-      "features": [
-        "approvalChain",
-        "multiLevelApprovals",
-        "customApprovalChains",
-        "advancedApprovalWorkflows",
-        "slaTracking",
-        "delegation"
-      ]
-    },
     "pay": {
       "name": "Avrentis Payables",
       "sidebarLabel": "Payables",
@@ -448,24 +415,50 @@
         "csvExport"
       ]
     },
-    "audit": {
-      "name": "Avrentis Compliance",
-      "sidebarLabel": "Compliance",
-      "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces",
+    "guard": {
+      "name": "Avrentis Guard",
+      "sidebarLabel": "Guard",
+      "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments, vendor bank-detail changes, threshold gaming, and separation-of-duties breaches surfaced as review flags.",
       "features": [
-        "fullAuditTrail",
-        "fullAuditExport",
-        "controlsMonitoring"
+        "vendorRiskNetwork",
+        "fraudTypologyLibrary"
       ]
     },
-    "connect": {
-      "name": "Avrentis Integrations",
-      "sidebarLabel": "Integrations",
-      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations",
-      "features": [
-        "apiAccess",
-        "erpSync"
-      ]
+    "people": {
+      "name": "Avrentis Requests",
+      "sidebarLabel": "Requests",
+      "description": "Employee leave and expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow.",
+      "features": []
+    },
+    "grants": {
+      "name": "Avrentis Grants",
+      "sidebarLabel": "Grants",
+      "description": "Donor grant and restricted-fund tracking — allocate budgets per grant and tag spend against them for donor-ready reporting.",
+      "features": []
     }
+  },
+  "platformModules": [
+    {
+      "key": "authority",
+      "name": "Avrentis Authority",
+      "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
+    },
+    {
+      "key": "audit",
+      "name": "Avrentis Compliance",
+      "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+    },
+    {
+      "key": "connect",
+      "name": "Avrentis Integrations",
+      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations"
+    }
+  ],
+  "trial": {
+    "enabled": true,
+    "days": 30,
+    "plan": "business",
+    "seatCap": 5,
+    "cardRequired": false
   }
 }

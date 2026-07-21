@@ -13,7 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, PUBLIC_MODULE_COUNT } from "@/lib/brand";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -71,7 +71,7 @@ const CATEGORIES: DocsCategory[] = [
       },
       {
         title: "Platform overview",
-        body: "The six modules and how they compose the shared approval engine.",
+        body: `The ${PUBLIC_MODULE_COUNT} modules and how they compose the shared approval engine.`,
         href: "/product",
         status: "live",
       },

@@ -295,7 +295,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               No credit card required
             </p>
             <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
-              Payables + Procurement + Records + Compliance
+              Payables + Procurement + Records + Compliance + Guard + Grants
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
               {TRIAL_HIGHLIGHTS.map((feature) => (

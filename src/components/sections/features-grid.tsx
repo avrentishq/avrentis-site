@@ -9,6 +9,8 @@ import {
   ShoppingCart,
   Archive,
   ClipboardCheck,
+  ShieldAlert,
+  Wallet,
   Users,
   Link2,
 } from "lucide-react";
@@ -56,11 +58,25 @@ const MODULE_CARDS: {
     status: "available",
   },
   {
-    // HR is not yet public → filtered out by isModulePublic.
+    key: "guard",
+    icon: ShieldAlert,
+    subtitle: "Fraud & Anomaly Detection",
+    body: "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
+    status: "available",
+  },
+  {
+    key: "grants",
+    icon: Wallet,
+    subtitle: "Grant & Fund Accounting",
+    body: "Tie every payment to its grant and budget line, track burn against each donor's restrictions, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
+    status: "available",
+  },
+  {
+    // Requests is hidden (Enterprise-only, not led with) → filtered out by isModulePublic.
     key: "people",
     icon: Users,
-    subtitle: "HR Approvals & Workforce Management",
-    body: "Extend operational structure to your workforce processes. Leave approvals, onboarding, policy acknowledgements — all structured, tracked, and on record.",
+    subtitle: "Employee Requests",
+    body: "Leave and expense requests routed through the same approval engine and audit trail as your payments — employee-initiated approvals, structured and on record.",
     status: "available",
   },
   {

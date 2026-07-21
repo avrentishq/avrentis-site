@@ -96,7 +96,7 @@ export const SECTION_BACKDROPS = {
   productModuleGrid: { src: textureLight, opacity: 0.15 },
   productPlatformRhythm: { src: textureFlow, opacity: 0.15 },
 
-  // ── /product/[module] (shared ProductModuleLayout, all 6 modules) ─────
+  // ── /product/[module] (shared ProductModuleLayout, all module pages) ─────
   moduleHero: { src: textureFlow, opacity: 0.5 },
   modulePillars: { src: textureLight, opacity: 0.15 },
   moduleUseCases: { src: textureFlow, opacity: 0.15 },

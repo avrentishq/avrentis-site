@@ -74,7 +74,7 @@ const config: ModuleConfig = {
   ],
 
   planAvailability: [
-    { plan: "14-day Business trial", included: true, note: "Full access" },
+    { plan: "30-day Business trial", included: true, note: "Full access" },
     { plan: "Starter", included: true, note: "Included" },
     { plan: "Business", included: true, note: "Included + custom chains" },
     { plan: "Enterprise", included: true, note: "Unlimited + SLA" },

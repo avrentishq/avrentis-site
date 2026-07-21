@@ -209,7 +209,7 @@ export default function ProductOverviewPage() {
                 textDecoration: "none",
               }}
             >
-              Start your 14-day trial
+              Start your 30-day trial
             </Link>
             <Link
               href="/product/how-it-works"

@@ -66,7 +66,7 @@ const config: ModuleConfig = {
   ],
 
   planAvailability: [
-    { plan: "14-day Business trial", included: true, note: "Full webhook + API access" },
+    { plan: "30-day Business trial", included: true, note: "Full webhook + API access" },
     { plan: "Starter", included: false, note: "Not included" },
     { plan: "Business", included: false, note: "Enterprise tier only" },
     { plan: "Enterprise", included: true, note: "Unlimited keys + priority support" },

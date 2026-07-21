@@ -85,7 +85,7 @@ export function PeoplePreview() {
           </p>
         </div>
         <span style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "#64748b" }}>
-          Balance: 14 days
+          Balance: 30 days
         </span>
       </div>
 

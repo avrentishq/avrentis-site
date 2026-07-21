@@ -129,7 +129,7 @@ export function CtaBanner() {
               e.currentTarget.style.backgroundColor = "var(--color-gold)";
             }}
           >
-            Start your 14-day trial
+            Start your 30-day trial
           </Link>
           <Link
             href="/contact"
@@ -176,7 +176,7 @@ export function CtaBanner() {
             marginTop: "20px",
           }}
         >
-          14 days. No credit card required. Setup takes less than 10
+          30 days. No credit card required. Setup takes less than 10
           minutes &mdash; your first approval can happen today.
         </m.p>
 

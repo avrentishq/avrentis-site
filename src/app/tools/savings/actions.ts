@@ -87,7 +87,7 @@ export async function emailEstimate(
       <tr><td style="padding:0 0 4px;color:#64748b;font-size:12px;">Based on your inputs</td></tr>
       <tr><td style="padding:0 0 16px;">${approvals.toLocaleString()} approvals/month &middot; ${minutes} min coordination each &middot; ${naira(cost)}/hour</td></tr>
       <tr><td style="padding:0 0 16px;font-size:12px;color:#94a3b8;line-height:1.5;">Assumes structured approvals remove about ${pct}% of coordination time — a conservative estimate. Your inputs, your numbers.</td></tr>
-      <tr><td style="padding:8px 0 0;"><a href="https://avrentis.com/trial" style="color:#C68B2F;text-decoration:none;font-weight:600;">Start your 14-day trial →</a></td></tr>
+      <tr><td style="padding:8px 0 0;"><a href="https://avrentis.com/trial" style="color:#C68B2F;text-decoration:none;font-weight:600;">Start your 30-day trial →</a></td></tr>
     </table>
   `;
 

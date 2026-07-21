@@ -66,7 +66,7 @@ const config: ModuleConfig = {
   ],
 
   planAvailability: [
-    { plan: "14-day Business trial", included: true, note: "Full trail access" },
+    { plan: "30-day Business trial", included: true, note: "Full trail access" },
     { plan: "Starter", included: true, note: "Basic audit trail" },
     { plan: "Business", included: true, note: "Full trail + regulator PDF" },
     { plan: "Enterprise", included: true, note: "Unlimited retention + SIEM export" },

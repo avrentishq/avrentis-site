@@ -6,12 +6,12 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { TrialForm } from "./trial-form";
 
 export const metadata: Metadata = {
-  title: "Start your 14-day trial — Avrentis",
+  title: "Start your 30-day trial — Avrentis",
   description:
     "Provision an Avrentis workspace in under two minutes. Full Business tier, no credit card, your real organisational data.",
   alternates: { canonical: "/trial" },
   openGraph: {
-    title: "Start your 14-day Avrentis trial",
+    title: "Start your 30-day Avrentis trial",
     description:
       "Provision in under two minutes. Full Business tier. Your organisation's data, not a demo.",
     url: "https://avrentis.com/trial",

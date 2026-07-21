@@ -416,7 +416,7 @@ export function SavingsEstimator() {
             marginTop: "2px",
           }}
         >
-          Or just start the 14-day trial &mdash; no card, nothing to cancel &rarr;
+          Or just start the 30-day trial &mdash; no card, nothing to cancel &rarr;
         </Link>
       </div>
     </m.div>

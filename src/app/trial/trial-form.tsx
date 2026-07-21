@@ -304,7 +304,7 @@ export function TrialForm() {
             marginBottom: "14px",
           }}
         >
-          14-DAY TRIAL
+          30-DAY TRIAL
         </span>
         <h1
           style={{
@@ -318,7 +318,7 @@ export function TrialForm() {
           }}
           className="lg:!text-[40px]"
         >
-          Start your 14-day trial.
+          Start your 30-day trial.
         </h1>
         <p
           style={{
@@ -702,7 +702,7 @@ export function TrialForm() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={isValid} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "#64748b" }}>
-            No card on file — nothing to cancel · 14-day trial · Data preserved for 30 days after trial end.
+            No card on file — nothing to cancel · 30-day trial · Data preserved for 30 days after trial end.
           </span>
         </div>
         </div>

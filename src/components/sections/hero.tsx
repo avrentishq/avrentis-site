@@ -729,7 +729,7 @@ export function Hero() {
                 e.currentTarget.style.backgroundColor = "var(--color-gold)";
               }}
             >
-              Start your 14-day trial
+              Start your 30-day trial
             </a>
             <a
               href="#how-it-works"

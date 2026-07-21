@@ -483,7 +483,7 @@ export function HowItWorksProductPage() {
                 textDecoration: "none",
               }}
             >
-              Start your 14-day trial
+              Start your 30-day trial
             </Link>
             <a
               href="#lifecycle"

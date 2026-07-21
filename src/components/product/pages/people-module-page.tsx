@@ -66,7 +66,7 @@ const config: ModuleConfig = {
   ],
 
   planAvailability: [
-    { plan: "14-day Business trial", included: false, note: "Not during beta" },
+    { plan: "30-day Business trial", included: false, note: "Not during beta" },
     { plan: "Starter", included: false, note: "Not included" },
     { plan: "Business", included: false, note: "Enterprise tier only at launch" },
     { plan: "Enterprise", included: true, note: "Included at launch" },

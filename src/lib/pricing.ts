@@ -69,6 +69,11 @@ export interface PricingData {
   featureGroups?: FeatureGroup[];
   moduleOrder: string[];
   modules: Record<string, ModuleInfo>;
+  /** The always-on substrate modules (approval engine, audit trail, integrations)
+   *  advertised ONCE as "included on every plan", never a per-plan badge. Optional
+   *  — absent on a stale fallback / a pre-deploy API; the render falls back to the
+   *  site's own substrate module list. Reuses `PlanModule` ({ key, name, description }). */
+  platformModules?: PlanModule[];
 }
 
 const PRICING_API = "https://app.avrentis.com/api/v1/public/pricing";

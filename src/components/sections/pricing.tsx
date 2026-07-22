@@ -12,7 +12,7 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/pricing";
-import { PUBLIC_MODULE_COUNT } from "@/lib/brand";
+import { isModulePublic } from "@/lib/brand";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -86,6 +86,33 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
     const pb = getPriceForCurrency(b, currency)?.monthly ?? Infinity;
     return pa - pb;
   });
+
+  // The universal engine every plan runs on (the API's `platformModules` =
+  // Authority, the always-on approval engine), shown once as an "included on
+  // every plan" trust line. NOT Compliance/Integrations — those are tier-gated
+  // paid modules and appear as badges. Empty on a stale/pre-deploy API → the
+  // strip falls back to generic always-on copy (no module over-claim).
+  const platformNames = (data.platformModules ?? []).map((m) => m.name.replace("Avrentis ", ""));
+
+  // A module badge shows a plan's publicly-marketed modules from the API's
+  // per-plan `modules` (the real tier entitlement — includes tier-gated
+  // Compliance/Integrations). `isModulePublic` only drops what the site doesn't
+  // market (Requests) + unknown keys.
+  const isBadgeModule = (key: string) => isModulePublic(key);
+  const publicPlanModules = (p: Plan) => p.modules.filter((m) => isBadgeModule(m.key));
+  // "All modules included" when a plan carries every module the site markets
+  // across all tiers (derived — no hardcoded count to drift).
+  const marketedModuleCount = new Set(
+    data.plans.flatMap((p) => publicPlanModules(p).map((m) => m.key)),
+  ).size;
+
+  // The trial provisions the full Business tier — its chip lists Business's own
+  // publicly-marketed modules (incl. Compliance), straight from the API data so
+  // it can't drift from the Business card.
+  const businessPlan = data.plans.find((p) => p.key === "business");
+  const trialModuleLabel = (businessPlan ? publicPlanModules(businessPlan) : [])
+    .map((m) => m.name.replace("Avrentis ", ""))
+    .join(" + ");
 
   return (
     <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
@@ -295,7 +322,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               No credit card required
             </p>
             <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
-              Payables + Procurement + Records + Compliance + Guard + Grants
+              {trialModuleLabel}
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
               {TRIAL_HIGHLIGHTS.map((feature) => (
@@ -350,13 +377,17 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             // hardcodes tier names.
             const inheritFrom = i > 0 ? orderedPlans[i - 1] : undefined;
 
-            const moduleNames = plan.modules
-              .map((m) => m.name.replace("Avrentis ", ""))
-              .join(" + ");
+            // The plan's publicly-marketed modules from the API (real tier
+            // entitlement — includes tier-gated Compliance/Integrations). The
+            // always-on engine (Authority) is not badged — it's in the "included
+            // on every plan" strip below; Requests is hidden by the site.
+            const badgeModules = publicPlanModules(plan);
+            const moduleNames = badgeModules.map((m) => m.name.replace("Avrentis ", "")).join(" + ");
+            // No hardcoded count in the label (it drifts — the same reason the
+            // app's pricing lock test forbids "N modules" copy); a plan carrying
+            // every marketed module reads "All modules included".
             const moduleLabel =
-              plan.modules.length >= PUBLIC_MODULE_COUNT
-                ? `All ${PUBLIC_MODULE_COUNT} modules`
-                : moduleNames;
+              badgeModules.length >= marketedModuleCount ? "All modules included" : moduleNames;
 
             return (
               <m.div
@@ -666,8 +697,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             marginTop: "40px",
           }}
         >
-          All plans include: Multi-level approvals &middot; Enterprise-grade
-          security &middot; Data protection compliant
+          {platformNames.length > 0
+            ? `Included on every plan: ${platformNames.join(" · ")} — the always-on approval engine, immutable audit trail and enterprise-grade security.`
+            : "All plans include: Multi-level approvals · Enterprise-grade security · Data protection compliant"}
         </m.p>
 
         <m.p

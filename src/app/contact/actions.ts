@@ -13,7 +13,7 @@
 
 import { sendContactEmail } from "@/lib/email";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
 import {
   type ContactFormState,
   type ContactIntent,
@@ -71,7 +71,7 @@ export async function submitContact(
     return { status: "success", message: "Thanks — we'll be in touch shortly." };
   }
 
-  if (!rateLimit(`contact:${await clientIp()}`, 5, 10 * 60_000)) {
+  if (!(await rateLimitDurable(`contact:${await clientIp()}`, 5, 10 * 60_000))) {
     return { status: "error", message: "Too many messages — please try again in a few minutes." };
   }
 

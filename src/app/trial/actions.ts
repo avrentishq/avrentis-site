@@ -20,7 +20,7 @@ import type { TrialFormState } from "./state";
 import { ORG_SIZES as SIZES } from "@/lib/org-size";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
 
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,7 +44,7 @@ export async function submitTrialRequest(
     return { status: "queued_for_review", message: "Thanks — we'll be in touch shortly." };
   }
 
-  if (!rateLimit(`trial:${await clientIp()}`, 5, 10 * 60_000)) {
+  if (!(await rateLimitDurable(`trial:${await clientIp()}`, 5, 10 * 60_000))) {
     return {
       status: "error",
       message: "You've submitted a few requests in a short window. Please wait a moment and try again.",
@@ -220,7 +220,7 @@ export async function reissueTrialToken(
   const token = String(formData.get("token") ?? "").trim();
   if (!token || token.length > 512) return { status: "error", message: "Missing or invalid token." };
 
-  if (!rateLimit(`reissue:${await clientIp()}`, 3, 10 * 60_000)) {
+  if (!(await rateLimitDurable(`reissue:${await clientIp()}`, 3, 10 * 60_000))) {
     return { status: "error", message: "Please wait a moment before requesting another link." };
   }
 

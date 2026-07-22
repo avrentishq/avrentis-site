@@ -64,51 +64,19 @@ export function publicModuleKeys(): ModuleKey[] {
   return MODULE_ORDER.filter((key) => MODULES[key].publiclyVisible);
 }
 
-/** Whether a module may be shown on the public marketing site. */
-export function isModulePublic(key: ModuleKey): boolean {
-  return MODULES[key].publiclyVisible;
+/**
+ * Whether a module key may be shown on the public marketing site. Guard-safe for
+ * a key this catalog doesn't model (e.g. `authority` from the pricing API) ⇒ false.
+ * Pricing badges are driven off the API's per-plan `modules` (which encode the
+ * real tier entitlement, incl. tier-gated Compliance/Integrations); this only
+ * hides the modules the site chooses not to market (Requests) + unknown keys.
+ */
+export function isModulePublic(key: string): boolean {
+  return MODULES[key as ModuleKey]?.publiclyVisible ?? false;
 }
 
-/**
- * SELLABLE product modules shown to customers (core + expansion, publicly
- * visible) — the modules a customer chooses. Excludes substrate (Compliance,
- * Integrations), which is the always-on platform, and hidden modules (Requests).
- * Mirrors the app's pricing split so the site advertises products, not plumbing.
- */
-export function productModuleKeys(): ModuleKey[] {
-  return publicModuleKeys().filter((key) => MODULES[key].classification !== "substrate");
-}
-
-/**
- * SUBSTRATE platform modules shown to customers (Compliance, Integrations) — the
- * always-on engine advertised ONCE as "included on every plan", never a per-plan
- * sellable badge. The pricing API's `platformModules` field is the SSOT (it also
- * carries Authority, which this site catalog doesn't model); this is the
- * pre-deploy / stale-fallback source.
- */
-export function platformModuleKeys(): ModuleKey[] {
-  return publicModuleKeys().filter((key) => MODULES[key].classification === "substrate");
-}
-
-/**
- * Whether a module key (possibly from the pricing API, so possibly unknown to
- * this catalog — e.g. `authority`) is a sellable product badge: known here,
- * publicly visible, and non-substrate. Guard-safe for unknown keys (⇒ false).
- */
-export function isProductModulePublic(key: string): boolean {
-  const mod = MODULES[key as ModuleKey];
-  return !!mod && mod.publiclyVisible && mod.classification !== "substrate";
-}
-
-/**
- * Total customer-facing modules (currently 7 incl. the always-on Compliance +
- * Integrations) — the platform-BREADTH number used in the product-page headline.
- * For the count of SELLABLE products (pricing), use `PRODUCT_MODULE_COUNT`.
- */
+/** Count of customer-facing modules (currently 7; Requests is hidden). */
 export const PUBLIC_MODULE_COUNT = publicModuleKeys().length;
-
-/** Count of SELLABLE product modules (excludes always-on substrate + hidden). */
-export const PRODUCT_MODULE_COUNT = productModuleKeys().length;
 
 /** Convenience accessor for a module's locked brand name. */
 export function moduleName(key: ModuleKey): string {

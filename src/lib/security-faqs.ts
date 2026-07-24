@@ -12,7 +12,7 @@ export interface SecurityFaq {
 export const SECURITY_FAQS: SecurityFaq[] = [
   {
     q: "Who at Avrentis can access our data?",
-    a: "No Avrentis engineer can read customer data by default. Platform administrators can be granted time-bound, audit-logged access to a specific tenant for support purposes — every action is written to the same immutable audit trail the customer sees.",
+    a: "No Avrentis engineer can read customer data by default. Platform administrators can be granted audit-logged, permission-gated access to a specific tenant for support purposes — every action is written to the same immutable audit trail the customer sees.",
   },
   {
     q: "What happens when someone leaves our organisation?",

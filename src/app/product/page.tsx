@@ -5,6 +5,8 @@ import {
   ShoppingCart,
   Archive,
   ClipboardCheck,
+  ShieldAlert,
+  Wallet,
   Users,
   Link2,
   type LucideIcon,
@@ -61,9 +63,9 @@ const MODULES: Module[] = [
   {
     slug: "vault",
     name: "Avrentis Records",
-    subtitle: "Institutional memory",
+    subtitle: "Financial records in one place",
     body:
-      "Every approved document centrally stored, tagged, and instantly retrievable. Replace scattered drives and physical files with one searchable repository.",
+      "Every voucher and purchase order Avrentis generates — with its attachments and version history — in one tagged record, searchable by reference, vendor, amount, or date.",
     icon: Archive,
     status: "available",
   },
@@ -77,13 +79,31 @@ const MODULES: Module[] = [
     status: "available",
   },
   {
-    slug: "people",
-    name: "Avrentis HR",
-    subtitle: "Workforce & HR approvals",
+    slug: "guard",
+    name: "Avrentis Guard",
+    subtitle: "Fraud & anomaly detection",
     body:
-      "Extend structured approvals to leave requests, onboarding, and policy acknowledgements. The same approval engine, shaped for people processes.",
+      "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
+    icon: ShieldAlert,
+    status: "available",
+  },
+  {
+    slug: "grants",
+    name: "Avrentis Grants",
+    subtitle: "Grant & fund accounting",
+    body:
+      "Tie every payment to its grant and budget line, track burn against each donor's restrictions, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
+    icon: Wallet,
+    status: "available",
+  },
+  {
+    slug: "people",
+    name: "Avrentis Requests",
+    subtitle: "Leave & expense approvals",
+    body:
+      "Extend structured approvals to leave requests and staff expense claims. The same approval engine and audit trail, shaped for people processes.",
     icon: Users,
-    status: "roadmap",
+    status: "available",
   },
   {
     slug: "connect",

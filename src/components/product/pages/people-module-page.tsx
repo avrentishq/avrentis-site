@@ -1,6 +1,6 @@
 "use client";
 
-import { Users, CalendarCheck, UserPlus, BadgeCheck } from "lucide-react";
+import { CalendarCheck, Receipt, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
@@ -8,60 +8,49 @@ import { PeoplePreview } from "@/components/product/previews/people-preview";
 const config: ModuleConfig = {
   slug: "people",
   eyebrow: MODULES.people.name,
-  headline: "HR approvals, on the same rails.",
+  headline: "Leave and expense, on the same rails.",
   description:
-    "The approvals your organisation already runs for money — same engine, shaped for people decisions. Leave requests, onboarding, policy acknowledgements, and performance sign-offs — all structured, routed, and permanently on record.",
-  status: "roadmap",
-  previewUrl: "Avrentis / people / leave / LV-2026-0042",
+    "The approvals your organisation already runs for money — same engine, shaped for people requests. Leave requests and staff expense claims, structured, routed, and permanently on record.",
+  status: "available",
+  previewUrl: "Avrentis / requests / leave / LV-2026-0042",
   preview: <PeoplePreview />,
 
   pillars: [
     {
       icon: CalendarCheck,
-      title: "Leave requests with balance tracking",
+      title: "Leave requests, routed and on record",
       body:
-        "Annual, sick, compassionate, and study leave — each with its own balance, accrual rules, and approval chain. Employees see available days; managers see team coverage before approving.",
+        "Annual, sick, compassionate, and study leave — each on its own approval chain. Employees submit, managers approve, and the request, decision, and approver are permanently attributed.",
     },
     {
-      icon: UserPlus,
-      title: "Structured onboarding workflows",
+      icon: Receipt,
+      title: "Staff expense claims with receipts",
       body:
-        "Every new hire follows the same defined checklist: welcome pack, role assignment, access grants, policy acknowledgements. HR and IT see the same progress view — no email tag.",
+        "Submit an expense claim with its receipts attached, route it through the same review-and-sanction chain as a payment, and settle it with a full audit trail behind every decision.",
     },
     {
-      icon: BadgeCheck,
-      title: "Policy acknowledgements on record",
+      icon: ShieldCheck,
+      title: "The same audit trail as your payments",
       body:
-        "Distribute an updated policy, require acknowledgement by date, track completion per employee. Every acknowledgement is timestamped and ends up on the audit trail.",
-    },
-    {
-      icon: Users,
-      title: "Delegation + out-of-office handling",
-      body:
-        "Inherits the platform's delegation engine — when a manager sets themselves OOO, their approvals auto-route to the delegate, with an audit entry naming both parties.",
+        "Leave and expense decisions run on the same approval engine and immutable audit trail as your money — every request timestamped and attributed to a person, a time, and a decision.",
     },
   ],
 
   useCases: [
     {
-      title: "End the \"did my leave get approved?\" Slack thread",
+      title: "End the \"did my leave get approved?\" thread",
       body:
-        "Employees see the status of every request in real-time — pending, approved, changes requested — with the manager's name and timestamp attached. No wondering, no chasing.",
+        "Employees see the status of every request in real time — pending, approved, changes requested — with the manager's name and timestamp attached. No wondering, no chasing.",
     },
     {
-      title: "Year-end leave planning without the spreadsheet",
+      title: "Staff expenses without the reimbursement chase",
       body:
-        "The HR dashboard shows team-wide leave overlap for any date range. Plan December coverage from one screen instead of reconciling individual email chains.",
+        "A staff member submits an expense claim with receipts; it routes to the approver, and the decision and payout are on record — the same discipline you apply to vendor payments.",
     },
     {
-      title: "Turn onboarding into a repeatable process",
+      title: "People approvals an auditor can trust",
       body:
-        "A new joiner's first week is a defined workflow, not a sprawl of ad-hoc tasks. Everyone (the hire, their manager, IT, HR) sees the same checklist and the same progress state.",
-    },
-    {
-      title: "Compliance acknowledgements that stick",
-      body:
-        "When a new anti-money-laundering policy goes out, every relevant employee gets it, acknowledges it, and their acknowledgement is filed against their record. Auditors see completeness at a glance.",
+        "Leave and expense decisions are timestamped and attributed on the same immutable trail as payments — so an auditor sees the same completeness they get on your financial approvals.",
     },
   ],
 
@@ -73,9 +62,9 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Compliance", desc: "HR events flow into the same immutable trail" },
-    { slug: "vault", name: "Avrentis Records", desc: "Employee documents and signed acknowledgements stored together" },
-    { slug: "connect", name: "Avrentis Integrations", desc: "Push HR events into your payroll or HRIS system" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Leave and expense events flow into the same immutable trail" },
+    { slug: "pay", name: "Avrentis Payables", desc: "Expense approvals run on the same review-and-sanction rails as payments" },
+    { slug: "connect", name: "Avrentis Integrations", desc: "Emit leave and expense events to your payroll or HRIS via webhook" },
   ],
 };
 

@@ -17,15 +17,12 @@
  */
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
-  // Temporarily hidden pre-launch; re-enable by deleting this entry.
-  "/trust",
-  "/customers",
-  "/status",
-  "/careers",
-  "/docs",
-  "/changelog",
-  "/product/integrations", // the named-adapter catalogue; the /product/connect module page stays
-  "/product/people", // Avrentis HR — not yet public
+  // Deferred until we have paying customers / operational history to make them
+  // honest and worth publishing. Remove an entry to re-enable that page.
+  "/customers", // no real customers to show yet — an empty logos/testimonials page reads as dead
+  "/careers", // not hiring yet (OPEN_ROLES = []) — publish when we are
+  "/changelog", // thin pre-launch; earns its place once we ship to customers on a cadence
+  "/docs", // public/API docs premature (API access is Enterprise-only) — in-app help covers trial users
 ] as const;
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */

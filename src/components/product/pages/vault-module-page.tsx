@@ -8,67 +8,62 @@ import { VaultPreview } from "@/components/product/previews/vault-preview";
 const config: ModuleConfig = {
   slug: "vault",
   eyebrow: MODULES.vault.name,
-  headline: "Institutional memory, searchable.",
+  headline: "Your financial records, in one place.",
   description:
-    "Every approved voucher, signed contract, audit report, and vendor onboarding document lives in one tagged, searchable repository. Replace the shared drive, the filing cabinet, and the \"who has the latest version?\" Slack thread with one source of truth.",
-  status: "coming_soon",
+    "Every voucher and purchase order Avrentis generates — with its attachments and full version history — in one tagged, searchable record. Find any approved payment or PO by reference, vendor, amount, or date, long after the person who raised it has moved on.",
+  status: "available",
   previewUrl: "Avrentis / vault",
   preview: <VaultPreview />,
 
   pillars: [
     {
       icon: Archive,
-      title: "Centralised document repository",
+      title: "Every record stored automatically",
       body:
-        "Every PDF Avrentis generates — vouchers, POs, bank instructions, audit bundles — is stored here automatically. External documents can be uploaded with tags and metadata. Nothing sits in an inbox.",
+        "Every PDF Avrentis generates — vouchers, POs, bank instructions — is stored here automatically, together with the receipts and attachments raised against it. Nothing sits in an inbox.",
     },
     {
       icon: Search,
-      title: "Full-text search across every record",
+      title: "Search across every record",
       body:
-        "Search by reference number, vendor name, amount, department, date range, or free-text inside documents. Find the voucher from March that paid Brightpath — without knowing its reference number.",
+        "Search by reference number, vendor name, amount, department, or date range. Find the voucher from March that paid Brightpath — without knowing its reference number.",
     },
     {
       icon: Tag,
       title: "Structured categories and tags",
       body:
-        "Every document is categorised (Payment / Procurement / Contract / Audit / HR) and taggable (signed, archived, under-review). Filter and group by any combination; saved views for regular workflows.",
+        "Every record is categorised (Payment / Procurement) and taggable (signed, archived, under-review). Filter and group by any combination.",
     },
     {
       icon: Share2,
-      title: "Role-scoped sharing and external access",
+      title: "Full version history, on the audit trail",
       body:
-        "Auditors, board members, and external partners can be granted time-bound access to specific folders or tags. Every view is logged; access expires automatically.",
+        "Every record carries its version history, and every view, download, or edit is written to the immutable audit trail — who, what, and when.",
     },
   ],
 
   useCases: [
     {
-      title: "One repository for external audits",
+      title: "Give an external auditor exactly what they need",
       body:
-        "External auditor asks for \"all Q3 approved vouchers.\" Save a view, grant time-bound access, and the auditor has exactly what they need — nothing more, and the access revokes itself.",
-    },
-    {
-      title: "Contracts never fall through the cracks",
-      body:
-        "Upload contracts with renewal dates. Records surfaces expiring contracts 60 days ahead so legal and procurement can act before lapse, not after.",
+        "Auditor asks for \"all Q3 approved vouchers.\" Filter by date and export the records with their attachments — exactly the period requested, nothing more.",
     },
     {
       title: "Find it in seconds, not hours",
       body:
-        "Reference numbers in old emails become live links. Vendor documents, historical POs, and signed agreements are one search away — even when the person who uploaded them has left the organisation.",
+        "Reference numbers in old emails become live links. Historical vouchers and POs are one search away — even when the person who raised them has left the organisation.",
     },
     {
-      title: "Institutional memory that survives staff turnover",
+      title: "Records that survive staff turnover",
       body:
-        "When the Finance Director moves on, their documents don't leave with them. Permissions transfer, context stays, and the new director onboards from a complete history.",
+        "When the Finance Director moves on, the records stay. The new director onboards from a complete voucher and purchase-order history instead of a scattered shared drive.",
     },
   ],
 
   planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full access during beta" },
+    { plan: "30-day Business trial", included: true, note: "Full access" },
     { plan: "Starter", included: false, note: "Not included" },
-    { plan: "Business", included: true, note: "Included at launch" },
+    { plan: "Business", included: true, note: "Included" },
     { plan: "Enterprise", included: true, note: "Unlimited storage + retention" },
   ],
 

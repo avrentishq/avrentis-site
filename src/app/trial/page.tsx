@@ -8,12 +8,12 @@ import { TrialForm } from "./trial-form";
 export const metadata: Metadata = {
   title: "Start your 30-day trial — Avrentis",
   description:
-    "Provision an Avrentis workspace in under two minutes. Full Business tier, no credit card, your real organisational data.",
+    "Provision an Avrentis workspace in under two minutes. Full Business features on a 5-seat pilot workspace, no credit card, your real organisational data.",
   alternates: { canonical: "/trial" },
   openGraph: {
     title: "Start your 30-day Avrentis trial",
     description:
-      "Provision in under two minutes. Full Business tier. Your organisation's data, not a demo.",
+      "Provision in under two minutes. Full Business features on a 5-seat pilot workspace. Your organisation's data, not a demo.",
     url: "https://avrentis.com/trial",
     type: "website",
   },

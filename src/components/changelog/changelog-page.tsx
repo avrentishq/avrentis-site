@@ -51,9 +51,9 @@ const ENTRIES: Entry[] = [
     tag: "pricing",
     title: "Trial-led pricing replaces the free tier.",
     body:
-      "Every plan now begins with a 14-day trial — full access, no credit card, no feature gates. The previous free tier retires in favour of a single, honest conversion funnel.",
+      "Every plan now begins with a 30-day trial — full Business features on a 5-seat pilot workspace, no credit card. The previous free tier retires in favour of a single, honest conversion funnel.",
     bullets: [
-      "14-day trial on all plans, no card required",
+      "30-day trial on all plans, no card required",
       "Trial data preserved for 30 days after expiry",
       "Exports carry a trial watermark until upgrade",
     ],
@@ -64,12 +64,12 @@ const ENTRIES: Entry[] = [
     tag: "improvement",
     title: "Module names aligned across the platform.",
     body:
-      "The six product modules now carry one name everywhere — the marketing site, the product, and your invoices all say the same thing. Pay → Payables, Vault → Documents, Audit → Compliance, People → HR, Connect → Integrations.",
+      "The product modules now carry one name everywhere — the marketing site, the product, and your invoices all say the same thing. Pay → Payables, Vault → Records, Audit → Compliance, People → Requests, Connect → Integrations.",
     bullets: [
       "Pay → Payables",
-      "Vault → Documents",
+      "Vault → Records",
       "Audit → Compliance",
-      "People → HR",
+      "People → Requests",
       "Connect → Integrations",
     ],
     link: { label: "See the modules", href: "/product" },

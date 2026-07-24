@@ -11,7 +11,7 @@ const config: ModuleConfig = {
   headline: "Leave and expense, on the same rails.",
   description:
     "The approvals your organisation already runs for money — same engine, shaped for people requests. Leave requests and staff expense claims, structured, routed, and permanently on record.",
-  status: "roadmap",
+  status: "available",
   previewUrl: "Avrentis / requests / leave / LV-2026-0042",
   preview: <PeoplePreview />,
 

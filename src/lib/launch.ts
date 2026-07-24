@@ -23,7 +23,6 @@ export const HIDDEN_AT_LAUNCH: readonly string[] = [
   "/careers", // not hiring yet (OPEN_ROLES = []) — publish when we are
   "/changelog", // thin pre-launch; earns its place once we ship to customers on a cadence
   "/docs", // public/API docs premature (API access is Enterprise-only) — in-app help covers trial users
-  "/trust", // BLOCKED: sub-processor DPA badges + UK residency stated as fact — un-hide once confirmed
 ] as const;
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */

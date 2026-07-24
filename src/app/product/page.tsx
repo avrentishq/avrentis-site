@@ -67,7 +67,7 @@ const MODULES: Module[] = [
     body:
       "Every voucher and purchase order Avrentis generates — with its attachments and version history — in one tagged record, searchable by reference, vendor, amount, or date.",
     icon: Archive,
-    status: "coming_soon",
+    status: "available",
   },
   {
     slug: "audit",
@@ -103,7 +103,7 @@ const MODULES: Module[] = [
     body:
       "Extend structured approvals to leave requests and staff expense claims. The same approval engine and audit trail, shaped for people processes.",
     icon: Users,
-    status: "roadmap",
+    status: "available",
   },
   {
     slug: "connect",

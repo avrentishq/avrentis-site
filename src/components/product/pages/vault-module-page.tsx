@@ -11,7 +11,7 @@ const config: ModuleConfig = {
   headline: "Your financial records, in one place.",
   description:
     "Every voucher and purchase order Avrentis generates — with its attachments and full version history — in one tagged, searchable record. Find any approved payment or PO by reference, vendor, amount, or date, long after the person who raised it has moved on.",
-  status: "coming_soon",
+  status: "available",
   previewUrl: "Avrentis / vault",
   preview: <VaultPreview />,
 
@@ -61,9 +61,9 @@ const config: ModuleConfig = {
   ],
 
   planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full access during beta" },
+    { plan: "30-day Business trial", included: true, note: "Full access" },
     { plan: "Starter", included: false, note: "Not included" },
-    { plan: "Business", included: true, note: "Included at launch" },
+    { plan: "Business", included: true, note: "Included" },
     { plan: "Enterprise", included: true, note: "Unlimited storage + retention" },
   ],
 

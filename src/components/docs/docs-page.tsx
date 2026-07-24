@@ -128,7 +128,7 @@ const CATEGORIES: DocsCategory[] = [
       { title: "Avrentis Guard", body: "Fraud & anomaly detection.", href: "/product/guard", status: "live" },
       { title: "Avrentis Grants", body: "Grant & fund accounting.", href: "/product/grants", status: "live" },
       { title: "Avrentis Compliance", body: "Compliance & accountability.", href: "/product/audit", status: "live" },
-      { title: "Avrentis Records", body: "Financial records in one place.", href: "/product/vault", status: "wip" },
+      { title: "Avrentis Records", body: "Financial records in one place.", href: "/product/vault", status: "live" },
       { title: "Avrentis Integrations", body: "External systems.", href: "/product/connect", status: "live" },
     ],
   },

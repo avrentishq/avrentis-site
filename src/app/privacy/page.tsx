@@ -124,8 +124,8 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          We engage trusted infrastructure providers to operate the platform. Each is bound by a data-processing
-          agreement. The categories of provider we rely on today are:
+          We engage trusted infrastructure providers to operate the platform, and limit each to the data it needs to
+          perform its function. The categories of provider we rely on today are:
         </p>
         <ul>
           <li>Managed PostgreSQL for application data (UK).</li>
@@ -143,7 +143,7 @@ const SECTIONS: LegalSection[] = [
           <li>Error and performance monitoring (EU).</li>
         </ul>
         <p>
-          The specific named providers in each category — along with their DPA status — are shared with prospective
+          The specific named providers in each category are shared with prospective
           customers through <Link href="/contact?intent=privacy">our privacy enquiry form</Link>, typically alongside a
           Data Processing Agreement.
         </p>

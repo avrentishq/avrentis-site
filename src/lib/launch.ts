@@ -17,15 +17,12 @@
  */
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
-  // Temporarily hidden pre-launch; re-enable by deleting this entry.
-  "/trust",
+  // Routes currently hidden.
+  // Remove an entry to re-enable that page.
   "/customers",
-  "/status",
   "/careers",
-  "/docs",
   "/changelog",
-  "/product/integrations", // the named-adapter catalogue; the /product/connect module page stays
-  "/product/people", // Avrentis HR — not yet public
+  "/docs",
 ] as const;
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */

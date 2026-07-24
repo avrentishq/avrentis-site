@@ -4,14 +4,14 @@ import { PeopleModulePage } from "@/components/product/pages/people-module-page"
 import { isLaunchHidden } from "@/lib/launch";
 
 export const metadata: Metadata = {
-  title: "Avrentis HR — HR approvals on the same rails",
+  title: "Avrentis Requests — leave & expense approvals on the same rails",
   description:
-    "Leave requests, onboarding, and policy acknowledgements structured through the same approval engine as your financial decisions. People operations with an audit trail.",
+    "Leave requests and staff expense claims structured through the same approval engine and audit trail as your financial decisions. People requests, permanently on record.",
   alternates: { canonical: "/product/people" },
   openGraph: {
-    title: "Avrentis HR — HR approvals on the same rails",
+    title: "Avrentis Requests — leave & expense approvals on the same rails",
     description:
-      "Leave, onboarding, acknowledgements — structured, routed, and permanently on record.",
+      "Leave and staff expense claims — structured, routed, and permanently on record.",
     url: "https://avrentis.com/product/people",
     type: "website",
   },

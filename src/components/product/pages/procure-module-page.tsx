@@ -32,7 +32,7 @@ const config: ModuleConfig = {
       icon: FileCheck,
       title: "Vendor directory with bank + compliance",
       body:
-        "Vendors are first-class records with RC numbers, account details, and verified bank accounts. Reuse across POs, track spend per vendor, flag duplicates at submission.",
+        "Vendors are first-class records with RC numbers, account details, and verified bank accounts. Reuse across POs and track spend per vendor.",
     },
     {
       icon: Truck,
@@ -49,9 +49,9 @@ const config: ModuleConfig = {
         "Operations, Facilities, Admin, and IT all raise POs through the same engine. Cross-department spend visibility for the MD without forcing departments into unfamiliar tools.",
     },
     {
-      title: "Catch duplicate vendors before they happen",
+      title: "One vendor, one record",
       body:
-        "Creating a new vendor runs a fuzzy match against the existing directory and flags likely duplicates — same RC number, similar name, same account. One vendor, one record, one spend trail.",
+        "Vendors are shared records keyed by RC number and bank account. Reuse an existing vendor across POs instead of recreating it, so spend rolls up to a single trail per vendor.",
     },
     {
       title: "Month-end procurement reports without the chase",

@@ -70,13 +70,15 @@ const FRAMEWORKS = [
 ];
 
 const SUBPROCESSOR_CATEGORIES = [
-  { purpose: "Managed PostgreSQL for application data", region: "United Kingdom", dpa: true },
-  { purpose: "Application hosting and edge compute", region: "Global edge", dpa: true },
-  { purpose: "CDN and object storage for document attachments", region: "Global", dpa: true },
-  { purpose: "Managed Redis for sessions and rate-limiting", region: "UK / US", dpa: true },
-  { purpose: "Transactional email delivery", region: "US", dpa: true },
-  { purpose: "SMS notification delivery (where enabled)", region: "Africa / international", dpa: true },
-  { purpose: "Error and performance monitoring", region: "US", dpa: true },
+  { purpose: "Managed PostgreSQL for application data", region: "United Kingdom" },
+  { purpose: "Application hosting and edge compute", region: "Global edge" },
+  { purpose: "CDN and object storage for document attachments", region: "Global" },
+  { purpose: "Managed Redis for sessions and rate-limiting", region: "UK / US" },
+  { purpose: "Transactional email delivery", region: "US" },
+  { purpose: "WhatsApp and SMS notification delivery", region: "Africa / international" },
+  { purpose: "Payment processing (where enabled)", region: "Africa / international" },
+  { purpose: "AI / large-language-model processing (where enabled, zero retention)", region: "US / EU" },
+  { purpose: "Error and performance monitoring", region: "US" },
 ];
 
 const DOCUMENTS = [
@@ -428,9 +430,10 @@ export function TrustProductPage() {
               maxWidth: "640px",
             }}
           >
-            Each provider has a data-processing agreement in place with
-            Avrentis. We notify customers of new sub-processors before
-            onboarding them where we have that obligation under your contract.
+            We engage established infrastructure providers and limit each to
+            the data it needs to perform its function. We notify customers of
+            new sub-processors before onboarding them where we have that
+            obligation under your contract.
           </m.p>
 
           <m.div
@@ -449,14 +452,14 @@ export function TrustProductPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "2.8fr 1.3fr 0.8fr",
+                gridTemplateColumns: "3fr 1.5fr",
                 padding: "14px 20px",
                 backgroundColor: "#F8FAFC",
                 borderBottom: "1px solid #e2e8f0",
                 gap: "14px",
               }}
             >
-              {["Category", "Region", "DPA"].map((h) => (
+              {["Category", "Region"].map((h) => (
                 <span
                   key={h}
                   style={{
@@ -476,7 +479,7 @@ export function TrustProductPage() {
                 key={sp.purpose}
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "2.8fr 1.3fr 0.8fr",
+                  gridTemplateColumns: "3fr 1.5fr",
                   padding: "14px 20px",
                   borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
                   gap: "14px",
@@ -487,27 +490,6 @@ export function TrustProductPage() {
                   {sp.purpose}
                 </span>
                 <span style={{ fontFamily: sans, fontSize: "13px", color: "#64748b" }}>{sp.region}</span>
-                <span
-                  style={{
-                    fontFamily: mono,
-                    fontSize: "10px",
-                    letterSpacing: "0.06em",
-                    color: sp.dpa ? "#047857" : "#94a3b8",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: "5px",
-                  }}
-                >
-                  <span
-                    style={{
-                      width: "6px",
-                      height: "6px",
-                      borderRadius: "50%",
-                      backgroundColor: sp.dpa ? "#047857" : "#cbd5e1",
-                    }}
-                  />
-                  {sp.dpa ? "SIGNED" : "PENDING"}
-                </span>
               </div>
             ))}
           </m.div>
@@ -536,9 +518,9 @@ export function TrustProductPage() {
                 Need the named vendor list?
               </div>
               <div style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.6 }}>
-                The specific providers in each category — with their DPA status
-                and any changes — are shared with prospective customers on
-                request, typically alongside a Data Processing Agreement.
+                The specific providers in each category — and any changes — are
+                shared with prospective customers on request, typically
+                alongside a Data Processing Agreement.
               </div>
             </div>
             <Link

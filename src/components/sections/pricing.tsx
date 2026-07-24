@@ -699,7 +699,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
         >
           {platformNames.length > 0
             ? `Included on every plan: ${platformNames.join(" · ")} — the always-on approval engine, immutable audit trail and enterprise-grade security.`
-            : "All plans include: Multi-level approvals · Enterprise-grade security · Data protection compliant"}
+            : "All plans include: Multi-level approvals · Enterprise-grade security · Designed for GDPR & NDPR"}
         </m.p>
 
         <m.p

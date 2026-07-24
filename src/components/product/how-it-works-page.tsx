@@ -121,7 +121,7 @@ const PO_CHAIN = [
 
 const NOTIFICATIONS = [
   { icon: Mail, channel: "Email", desc: "Structured approval request with all context + a one-click review link" },
-  { icon: MessageCircle, channel: "WhatsApp", desc: "Approver can review and sanction from WhatsApp on their phone" },
+  { icon: MessageCircle, channel: "WhatsApp", desc: "Approver taps a secure link from WhatsApp to review and sanction on their phone" },
   { icon: Bell, channel: "In-app", desc: "Live badge on the approvals inbox with full detail" },
   { icon: Smartphone, channel: "Mobile web", desc: "No native app required — the dashboard works from any browser" },
 ];

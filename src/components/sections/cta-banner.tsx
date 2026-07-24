@@ -13,7 +13,7 @@ const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
   { icon: Lock, label: "Enterprise-grade security" },
   { icon: Zap, label: "Immutable audit trail" },
-  { icon: Check, label: "Data protection compliant" },
+  { icon: Check, label: "Designed for GDPR & NDPR" },
 ];
 
 export function CtaBanner() {

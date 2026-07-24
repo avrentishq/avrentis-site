@@ -50,11 +50,11 @@ export function IsolationMockup() {
       >
         <div style={{ color: "#64748b" }}>-- every tenant-scoped query runs inside this wrap</div>
         <div style={{ color: "#e2e8f0" }}>
-          <span style={{ color: "var(--color-gold)" }}>withTenantContext</span>(<span style={{ color: "#94D2BD" }}>tenantId</span>,{" "}
+          <span style={{ color: "var(--color-gold)" }}>withTenantScope</span>(<span style={{ color: "#94D2BD" }}>tenantId</span>,{" "}
           <span style={{ color: "#94D2BD" }}>async</span> () =&gt; {"{"}
         </div>
         <div style={{ color: "#e2e8f0", paddingLeft: "16px" }}>
-          <span style={{ color: "#94D2BD" }}>SET LOCAL</span> app.tenant_id ={" "}
+          <span style={{ color: "#94D2BD" }}>SET LOCAL</span> tenant_context ={" "}
           <span style={{ color: "var(--color-gold)" }}>&apos;{"{tenantId}"}&apos;</span>;
         </div>
         <div style={{ color: "#e2e8f0", paddingLeft: "16px" }}>

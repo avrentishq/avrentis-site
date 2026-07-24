@@ -84,7 +84,7 @@ const STACK = [
       "Postgres RLS policies applied to every tenant-scoped table",
       "Tenant-scoped SQL is routed through a context wrapper — bare queries fail RLS by design",
       "Queries fail closed: without an explicit tenant context, row-level security returns no rows",
-      "Drizzle migrations are gated by a safety check that blocks policy drops",
+      "A CI check verifies every tenant table keeps its row-level-security policy",
     ],
     Mockup: IsolationMockup,
     previewUrl: "tenant isolation · database layer",

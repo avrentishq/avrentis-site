@@ -6,7 +6,7 @@ import { BRAND, MODULES, moduleName, publicModuleKeys } from "@/lib/brand";
 import { isLaunchVisible } from "@/lib/launch";
 import { LOGIN_URL } from "@/lib/platform";
 
-// Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
+// Derived from the brand SSOT — excludes not-yet-public modules (Requests) automatically.
 const PRODUCT_LINKS = publicModuleKeys().map((key) => ({
   label: moduleName(key),
   href: `/product/${MODULES[key].slug}`,

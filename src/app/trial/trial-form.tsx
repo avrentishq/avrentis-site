@@ -342,8 +342,10 @@ export function TrialForm() {
             maxWidth: "560px",
           }}
         >
-          Full Business tier on your own data. No credit card. Most teams run
-          their first sanction within fifteen minutes.
+          Full Business features on your own data — a 5-seat pilot workspace (5
+          users, 2 GB storage, 25 SMS/WhatsApp messages during the trial). No
+          credit card. Most teams run their first sanction within fifteen
+          minutes.
         </p>
       </m.div>
 

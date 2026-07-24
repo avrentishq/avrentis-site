@@ -28,6 +28,7 @@ import {
   type ContactFormState,
   type ContactIntent,
 } from "@/app/contact/state";
+import { CONTACT_TABS, tabForIntent } from "@/app/contact/tabs";
 
 interface IntentCopy {
   eyebrow: string;
@@ -200,9 +201,19 @@ function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
 
 /* ── Main component ──────────────────────────────────────────────── */
 
-export function ContactForm({ intent }: { intent: ContactIntent }) {
+export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }) {
+  // Intent starts from the ?intent= deep link, then becomes on-page switchable
+  // via the topic tabs. It only drives copy + the hidden `intent` field.
+  const [intent, setIntent] = useState<ContactIntent>(initialIntent);
   const copy = INTENT_COPY[intent];
   const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+
+  const switchIntent = useCallback((next: string) => {
+    const value = next as ContactIntent;
+    setIntent(value);
+    // Keep the URL shareable/deep-linkable without a full navigation.
+    window.history.replaceState(null, "", value === "general" ? "/contact" : `/contact?intent=${value}`);
+  }, []);
 
   // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
   // Rendered only when NEXT_PUBLIC_TURNSTILE_SITE_KEY is set. Bot defence —
@@ -327,6 +338,27 @@ export function ContactForm({ intent }: { intent: ContactIntent }) {
 
   return (
     <>
+      {/* Topic tabs — the 12 fine-grained intents rolled up to 5 switchable
+          topics. Deep links (?intent=disclosure etc.) still light the parent
+          tab and keep their specific copy; clicking a tab picks its canonical
+          intent. Sits outside <form>, so its hidden input never posts —
+          the specific intent posts via the hidden field inside the form. */}
+      <m.div
+        variants={fadeUp}
+        initial="hidden"
+        animate="visible"
+        transition={fadeUpTransition}
+        style={{ maxWidth: "640px", margin: "0 auto 24px" }}
+      >
+        <ChoiceGroup
+          name="contact_topic"
+          value={tabForIntent(intent)}
+          onChange={switchIntent}
+          options={CONTACT_TABS.map((t) => ({ value: t.value, label: t.label }))}
+          ariaLabel="What are you contacting us about?"
+        />
+      </m.div>
+
       {/* Centered intro header — matches the trial layout */}
       <m.div
         variants={fadeUp}

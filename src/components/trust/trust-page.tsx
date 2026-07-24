@@ -75,7 +75,9 @@ const SUBPROCESSOR_CATEGORIES = [
   { purpose: "CDN and object storage for document attachments", region: "Global", dpa: true },
   { purpose: "Managed Redis for sessions and rate-limiting", region: "UK / US", dpa: true },
   { purpose: "Transactional email delivery", region: "US", dpa: true },
-  { purpose: "SMS notification delivery (where enabled)", region: "Africa / international", dpa: true },
+  { purpose: "WhatsApp and SMS notification delivery", region: "Africa / international", dpa: true },
+  { purpose: "Payment processing (where enabled)", region: "Africa / international", dpa: true },
+  { purpose: "AI / large-language-model processing (where enabled, zero retention)", region: "US / EU", dpa: true },
   { purpose: "Error and performance monitoring", region: "US", dpa: true },
 ];
 

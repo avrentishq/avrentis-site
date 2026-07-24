@@ -75,10 +75,10 @@ const CATEGORIES: Category[] = [
     lede:
       "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds.",
     integrations: [
-      { name: "SCIM 2.0", summary: "Full protocol — user create, update, deactivate, group sync.", availability: "available" },
+      { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
       { name: "Okta SCIM", summary: "Verified integration with Okta's lifecycle engine.", availability: "available" },
-      { name: "Entra ID SCIM", summary: "Outbound provisioning from Entra.", availability: "available" },
-      { name: "Google Workspace SCIM", summary: "Provisioning from Workspace groups.", availability: "available" },
+      { name: "Entra ID SCIM", summary: "User provisioning from Entra.", availability: "available" },
+      { name: "Google Workspace SCIM", summary: "User provisioning from Workspace.", availability: "available" },
       { name: "JumpCloud", summary: "Standard SCIM integration.", availability: "available" },
       { name: "Rippling / BambooHR", summary: "HRIS-first provisioning bridges.", availability: "request" },
     ],
@@ -92,7 +92,7 @@ const CATEGORIES: Category[] = [
       "Every stage of the approval lifecycle can dispatch to the channels your approvers actually check. Multi-channel by default, all tracked to the audit trail.",
     integrations: [
       { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider.", availability: "available" },
-      { name: "WhatsApp", summary: "Approval cards with one-tap review, on Starter and above.", availability: "available" },
+      { name: "WhatsApp", summary: "Approval alerts with a secure review link, on Starter and above.", availability: "available" },
       { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
       { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
       { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "request" },
@@ -111,7 +111,7 @@ const CATEGORIES: Category[] = [
       { name: "QuickBooks Online", summary: "Voucher + PO sync with account mapping.", availability: "request" },
       { name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks.", availability: "request" },
       { name: "Sage Intacct", summary: "API bridge for mid-market finance teams.", availability: "request" },
-      { name: "SAP Business One", summary: "Certified connector for SAP-led procurement.", availability: "request" },
+      { name: "SAP Business One", summary: "Connector for SAP-led procurement.", availability: "request" },
       { name: "Oracle NetSuite", summary: "PO and voucher synchronisation.", availability: "request" },
     ],
   },
@@ -144,11 +144,11 @@ const CATEGORIES: Category[] = [
     eyebrow: "DEVELOPER PLATFORM",
     title: "Build on top of your approval record.",
     lede:
-      "Everything you see in the UI is available over an authenticated REST API, with webhooks for every state transition. For Enterprise customers we also issue tenant-scoped service tokens.",
+      "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition. For Enterprise customers we also issue tenant-scoped service tokens.",
     integrations: [
-      { name: "REST API (v1)", summary: "Documents, approvals, users, audit events, reports.", availability: "available" },
-      { name: "Webhooks", summary: "Per-tenant event subscriptions with retries + signing.", availability: "available" },
-      { name: "Audit export (signed)", summary: "Regulator-ready bundles, signed and downloadable.", availability: "available" },
+      { name: "REST API (v1)", summary: "Read access to documents, users, vendors, audit events, and reports.", availability: "available" },
+      { name: "Webhooks", summary: "Per-tenant event subscriptions with retries + HMAC signing.", availability: "available" },
+      { name: "Audit export", summary: "Regulator-ready audit bundles, downloadable for any period.", availability: "available" },
       { name: "Zapier", summary: "No-code workflow bridge into 6,000+ apps.", availability: "request" },
       { name: "n8n / Make", summary: "Trigger-node integration for ops teams.", availability: "request" },
     ],

@@ -1,5 +1,7 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
+import { PLATFORM_ORIGIN } from "@/lib/platform";
+
 export interface PricingCurrency {
   currency: string;
   monthly: number;
@@ -76,7 +78,7 @@ export interface PricingData {
   platformModules?: PlanModule[];
 }
 
-const PRICING_API = "https://app.avrentis.com/api/v1/public/pricing";
+const PRICING_API = `${PLATFORM_ORIGIN}/api/v1/public/pricing`;
 
 import fallback from "@/data/pricing-fallback.json";
 

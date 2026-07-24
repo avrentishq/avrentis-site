@@ -47,8 +47,8 @@ const MODULE_CARDS: {
     key: "vault",
     icon: Archive,
     subtitle: "Institutional Memory",
-    body: "Replace physical and scattered digital filing with a centralised, searchable, role-controlled document system. Every approved record — instantly retrievable, permanently preserved.",
-    status: "available",
+    body: "Every voucher and purchase order Avrentis generates — with its attachments and version history — in one tagged record, searchable by reference, vendor, amount, or date, and permanently preserved.",
+    status: "coming_soon",
   },
   {
     key: "audit",

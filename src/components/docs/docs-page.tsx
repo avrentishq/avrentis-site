@@ -125,9 +125,10 @@ const CATEGORIES: DocsCategory[] = [
     items: [
       { title: "Avrentis Payables", body: "Structured payment approvals.", href: "/product/pay", status: "live" },
       { title: "Avrentis Procurement", body: "Procurement on record.", href: "/product/procure", status: "live" },
-      { title: "Avrentis Records", body: "Institutional memory.", href: "/product/vault", status: "live" },
+      { title: "Avrentis Guard", body: "Fraud & anomaly detection.", href: "/product/guard", status: "live" },
+      { title: "Avrentis Grants", body: "Grant & fund accounting.", href: "/product/grants", status: "live" },
       { title: "Avrentis Compliance", body: "Compliance & accountability.", href: "/product/audit", status: "live" },
-      { title: "Avrentis HR", body: "Workforce structure.", href: "/product/people", status: "live" },
+      { title: "Avrentis Records", body: "Financial records in one place.", href: "/product/vault", status: "wip" },
       { title: "Avrentis Integrations", body: "External systems.", href: "/product/connect", status: "live" },
     ],
   },
@@ -209,7 +210,7 @@ const CATEGORIES: DocsCategory[] = [
         status: "live",
       },
       { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: "/contact?intent=demo", status: "wip" },
-      { title: "Audit export format", body: "The signed, regulator-ready bundle schema.", href: "/contact?intent=security", status: "wip" },
+      { title: "Audit export format", body: "The regulator-ready audit bundle schema.", href: "/contact?intent=security", status: "wip" },
     ],
   },
   {

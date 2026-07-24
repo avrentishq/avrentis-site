@@ -59,7 +59,7 @@ const config: ModuleConfig = {
     {
       title: "Approve from anywhere, any device",
       body:
-        "The MD is travelling. Approvers get notified on email and WhatsApp and can sanction from their phone in two taps. Payments keep moving, decisions stay in writing.",
+        "The MD is travelling. Approvers get notified on email and WhatsApp and can review and sanction from their phone — one click straight from the email, or a secure link from WhatsApp. Payments keep moving, decisions stay in writing.",
     },
     {
       title: "Queries without the back-and-forth",

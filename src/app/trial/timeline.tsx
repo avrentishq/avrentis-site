@@ -25,9 +25,9 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     when: "Today",
-    title: "Full access, instantly",
+    title: "Full Business features, instantly",
     detail:
-      "The complete Business tier on your own data, with a sample approval already waiting. No card.",
+      "Full Business features on your own data — a 5-seat pilot workspace, with a sample approval already waiting. No card.",
   },
   {
     when: "Days 1–29",

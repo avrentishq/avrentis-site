@@ -128,12 +128,18 @@ const SECTIONS: LegalSection[] = [
           agreement. The categories of provider we rely on today are:
         </p>
         <ul>
-          <li>Managed PostgreSQL for application data (EU).</li>
+          <li>Managed PostgreSQL for application data (UK).</li>
           <li>Application hosting and edge compute (global edge).</li>
           <li>Content delivery and object storage for document attachments (global).</li>
           <li>Managed Redis for session state and rate-limiting (EU / US).</li>
           <li>Transactional email delivery (US).</li>
-          <li>SMS notification delivery, where enabled (Africa / international).</li>
+          <li>WhatsApp and SMS notification delivery (Africa / international). WhatsApp is the primary real-time approval channel; recipient phone numbers and approval details are processed by this provider.</li>
+          <li>Payment processing, where enabled, for plan checkout and subscription billing.</li>
+          <li>
+            AI / large-language-model processing, where enabled. When you turn on optional AI features (such as
+            receipt and document extraction), the relevant document content is processed by a language model through a
+            model gateway configured for zero data retention.
+          </li>
           <li>Error and performance monitoring (EU).</li>
         </ul>
         <p>
@@ -150,7 +156,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Primary application data is stored in the European Union on a managed PostgreSQL service. Document
+          Primary application data is stored in the United Kingdom (London) on a managed PostgreSQL service. Document
           attachments are stored in an encrypted object-storage provider at the region our infrastructure tier is
           configured for. Backups are taken daily and retained for a rolling window consistent with our recovery
           objectives.
@@ -173,7 +179,9 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           <strong>Content &amp; documents.</strong> Retained per your plan&rsquo;s retention policy. Your
-          administrator can export or delete documents at any time.
+          administrator can export documents at any time, and delete them subject to statutory minimum-retention
+          obligations &mdash; financial records such as processed vouchers and purchase orders are held for the minimum
+          period Nigerian law (NDPR / CAMA) requires, and for the duration of any active legal hold, before deletion.
         </p>
         <p>
           <strong>Audit logs.</strong> Retained permanently for the lifetime of the tenant. Because the log is the

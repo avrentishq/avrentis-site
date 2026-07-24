@@ -44,19 +44,19 @@ const config: ModuleConfig = {
 
   useCases: [
     {
-      title: "Reconcile Avrentis payments into your accounting system automatically",
+      title: "Reconcile Avrentis payments into your accounting system",
       body:
-        "When the MD sanctions a voucher, the Integrations module posts it to your accounting system as an approved bill via webhook — with vendor, amount, reference, and department pre-mapped. No double-entry, no month-end reconciliation gap.",
+        "When the MD sanctions a voucher, Avrentis fires a signed voucher.sanctioned webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap.",
     },
     {
-      title: "Sync Avrentis roles into your identity provider",
+      title: "React to role changes in your own systems",
       body:
-        "Role changes in Avrentis propagate to Okta / Azure AD / Google Workspace within seconds. Deactivated users lose platform access everywhere, not just in Avrentis.",
+        "Subscribe to the user.role_changed webhook and forward it wherever you need — an internal dashboard, a review queue, your data warehouse. (Avrentis emits the event; provisioning stays one-directional — your IdP remains the source of authority via inbound SCIM.)",
     },
     {
       title: "Notify the right Slack channel on every sanction",
       body:
-        "Pipe voucher.sanctioned to #finance-audit. Your team sees every high-value approval land in real time — without granting broad access to the platform UI.",
+        "Point a webhook at your Slack workspace and every high-value approval lands in #finance-audit in real time — built on the same signed voucher.sanctioned event, without granting broad access to the platform UI.",
     },
     {
       title: "Build your own internal integrations",

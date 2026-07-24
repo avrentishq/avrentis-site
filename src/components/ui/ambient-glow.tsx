@@ -20,6 +20,7 @@
 
 import { m } from "framer-motion";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 interface AmbientGlowProps {
   /** Pixel size of the square glow. Defaults to 480. */
@@ -54,7 +55,12 @@ export function AmbientGlow({
   duration = 26,
   delay = 0,
 }: AmbientGlowProps) {
+  // Freeze the drift under reduced-motion OR on mobile (continuous compositor
+  // work + battery for a background layer the phone user barely notices).
+  // Both hooks called unconditionally — no `||` short-circuit (Rules of Hooks).
   const reducedMotion = useReducedMotion();
+  const isMobile = useIsMobile();
+  const still = reducedMotion || isMobile;
 
   const background = `radial-gradient(closest-side, ${color} 0%, transparent 70%)`;
 
@@ -63,7 +69,7 @@ export function AmbientGlow({
       aria-hidden="true"
       initial={{ x: 0, y: 0 }}
       animate={
-        reducedMotion
+        still
           ? { x: 0, y: 0 }
           : {
               // Gentle figure-8-ish drift using translateX + translateY only
@@ -72,7 +78,7 @@ export function AmbientGlow({
             }
       }
       transition={
-        reducedMotion
+        still
           ? { duration: 0 }
           : {
               duration,

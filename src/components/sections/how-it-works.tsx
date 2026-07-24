@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -694,7 +695,8 @@ export function HowItWorks() {
     const reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion) return;
+    // Skip auto-advance on mobile — same reasoning as the hero demo.
+    if (reducedMotion || isMobileViewport()) return;
 
     const timer = setInterval(() => {
       setActive((i) => (i + 1) % STEPS.length);
@@ -714,6 +716,7 @@ export function HowItWorks() {
     offset: ["start end", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [40, -80]);
+  const isMobile = useIsMobile();
 
   return (
     <section
@@ -754,7 +757,7 @@ export function HowItWorks() {
             "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
-          y: gridY,
+          y: isMobile ? 0 : gridY,
           zIndex: 1,
         }}
       />

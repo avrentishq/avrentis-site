@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@avrentishq/core/brand";
@@ -248,7 +249,9 @@ function LiveInbox({
     const reducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    if (reducedMotion || approved) return;
+    // Don't run the rotating demo on mobile — it stacks below the fold and the
+    // interval just burns main-thread/battery. Static initial state instead.
+    if (reducedMotion || isMobileViewport() || approved) return;
 
     const timer = setInterval(() => {
       setTick((t) => (t + 1) % POOL.length);
@@ -553,6 +556,7 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const isMobile = useIsMobile();
 
   return (
     <section
@@ -598,7 +602,7 @@ export function Hero() {
             "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
-          y: gridY,
+          y: isMobile ? 0 : gridY,
           zIndex: 1,
         }}
       />

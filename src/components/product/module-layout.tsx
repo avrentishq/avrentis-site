@@ -19,6 +19,7 @@ import { BRAND_COLORS, MODULES, type ModuleKey } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -169,6 +170,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const isMobile = useIsMobile();
   const { primary, secondary } = resolveCtas(config);
   const moduleName = MODULES[config.slug as ModuleKey]?.name ?? config.headline;
 
@@ -209,7 +211,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
-            y: gridY,
+            y: isMobile ? 0 : gridY,
             zIndex: 1,
           }}
         />

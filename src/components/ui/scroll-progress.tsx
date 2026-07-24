@@ -10,8 +10,18 @@
  */
 
 import { m, useScroll, useSpring } from "framer-motion";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 export function ScrollProgress() {
+  // Skip the scroll bar on mobile: low value, and mounting the inner component
+  // is what wires up useScroll/useSpring — gating here keeps that work off
+  // phones entirely (rather than running the hooks then rendering nothing).
+  const isMobile = useIsMobile();
+  if (isMobile) return null;
+  return <ScrollProgressBar />;
+}
+
+function ScrollProgressBar() {
   const { scrollYProgress } = useScroll();
   // `useSpring` here is only to smooth the raw scroll value — not a bouncy
   // motion effect; stiffness/damping picked to be near-linear.

@@ -59,8 +59,8 @@ const SECTIONS: LegalSection[] = [
           voluntarily include when contacting us.
         </p>
         <p>
-          <strong>Marketing-site analytics.</strong> Minimal aggregate traffic data for this website. We do not place
-          advertising cookies.
+          <strong>Marketing-site analytics.</strong> We do not run third-party analytics on this website, and we do
+          not place advertising cookies.
         </p>
       </>
     ),

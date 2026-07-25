@@ -9,6 +9,7 @@ import Link from "next/link";
 import type {
   PricingData,
   Plan,
+  PlanModule,
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/pricing";
@@ -92,14 +93,33 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   // every plan" trust line. NOT Compliance/Integrations — those are tier-gated
   // paid modules and appear as badges. Empty on a stale/pre-deploy API → the
   // strip falls back to generic always-on copy (no module over-claim).
-  const platformNames = (data.platformModules ?? []).map((m) => m.name.replace("Avrentis ", ""));
+  const platformNames = (data.platformModules ?? []).map((m) =>
+    m.name.replace("Avrentis ", ""),
+  );
 
   // A module badge shows a plan's publicly-marketed modules from the API's
   // per-plan `modules` (the real tier entitlement — includes tier-gated
   // Compliance/Integrations). `isModulePublic` only drops what the site doesn't
   // market (Requests) + unknown keys.
   const isBadgeModule = (key: string) => isModulePublic(key);
-  const publicPlanModules = (p: Plan) => p.modules.filter((m) => isBadgeModule(m.key));
+  const publicPlanModules = (p: Plan) =>
+    p.modules.filter((m) => isBadgeModule(m.key));
+  // Sector qualifiers for the badge above. A module the API marks
+  // `availableToSectors` is an add-on only those industries can use, so the card
+  // says so in plain words instead of over-claiming. Sector NAMES come from the
+  // API — reclassifying a sector upstream changes this copy with no site edit.
+  const sectorNotes = (mods: PlanModule[]): string[] =>
+    mods
+      .filter((m) => m.availableToSectors?.length)
+      .map((m) => {
+        const sectors = m.availableToSectors as string[];
+        const list =
+          sectors.length > 1
+            ? `${sectors.slice(0, -1).join(", ")} and ${sectors[sectors.length - 1]}`
+            : sectors[0];
+        return `${m.name.replace("Avrentis ", "")} is for ${list} organisations`;
+      });
+
   // "All modules included" when a plan carries every module the site markets
   // across all tiers (derived — no hardcoded count to drift).
   const marketedModuleCount = new Set(
@@ -115,9 +135,24 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
     .join(" + ");
 
   return (
-    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+    <section
+      style={{
+        backgroundColor: "#f1f5f9",
+        padding: "100px 40px",
+        position: "relative",
+        overflow: "hidden",
+        isolation: "isolate",
+      }}
+    >
       <SectionBackdrop src={SECTION_BACKDROPS.pricing} scrim="light" />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div
+        style={{
+          maxWidth: "1200px",
+          margin: "0 auto",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
         {/* Eyebrow */}
         <m.span
           variants={fadeUp}
@@ -179,8 +214,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Every plan starts with a 30-day trial &mdash; no card on file,
-          nothing to cancel. Scale as your organisation grows. No hidden fees.
+          Every plan starts with a 30-day trial &mdash; no card on file, nothing
+          to cancel. Scale as your organisation grows. No hidden fees.
         </m.p>
 
         {/* Controls row */}
@@ -272,8 +307,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     cursor: "pointer",
                     border: "none",
                     transition: "all 150ms ease",
-                    backgroundColor:
-                      currency === c ? "#0f172a" : "transparent",
+                    backgroundColor: currency === c ? "#0f172a" : "transparent",
                     color: currency === c ? "#FFFFFF" : "#64748b",
                   }}
                 >
@@ -305,46 +339,153 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               flexDirection: "column",
             }}
           >
-            <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: "20px", color: "#0f172a", margin: "0 0 6px" }}>
+            <h3
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 600,
+                fontSize: "20px",
+                color: "#0f172a",
+                margin: "0 0 6px",
+              }}
+            >
               Try Avrentis
             </h3>
-            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b", lineHeight: 1.5, margin: "0 0 20px" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "14px",
+                color: "#64748b",
+                lineHeight: 1.5,
+                margin: "0 0 20px",
+              }}
+            >
               The full Business tier, switched on for your own data the moment
               you verify — not a demo environment.
             </p>
             <div style={{ marginBottom: "6px" }}>
-              <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: "36px", color: "#0f172a" }}>$0</span>
-              <span style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "14px", color: "#64748b" }}>
-                {" "}/ 30 days
+              <span
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontWeight: 700,
+                  fontSize: "36px",
+                  color: "#0f172a",
+                }}
+              >
+                $0
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  color: "#64748b",
+                }}
+              >
+                {" "}
+                / 30 days
               </span>
             </div>
-            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "12px", color: "#64748b", margin: "0 0 20px", minHeight: "16px" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "12px",
+                color: "#64748b",
+                margin: "0 0 20px",
+                minHeight: "16px",
+              }}
+            >
               No credit card required
             </p>
-            <div style={{ display: "inline-block", fontSize: "11px", fontWeight: 500, fontFamily: "var(--font-sans)", padding: "4px 10px", borderRadius: "4px", backgroundColor: "rgba(var(--color-gold-rgb), 0.08)", color: "var(--color-gold-on-light)", border: "1px solid rgba(var(--color-gold-rgb), 0.2)", marginBottom: "16px", alignSelf: "flex-start" }}>
+            <div
+              style={{
+                display: "inline-block",
+                fontSize: "11px",
+                fontWeight: 500,
+                fontFamily: "var(--font-sans)",
+                padding: "4px 10px",
+                borderRadius: "4px",
+                backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+                color: "var(--color-gold-on-light)",
+                border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
+                marginBottom: "16px",
+                alignSelf: "flex-start",
+              }}
+            >
               {trialModuleLabel}
             </div>
-            <ul style={{ listStyle: "none", padding: 0, margin: "0 0 24px", flex: 1 }}>
+            <ul
+              style={{
+                listStyle: "none",
+                padding: 0,
+                margin: "0 0 24px",
+                flex: 1,
+              }}
+            >
               {TRIAL_HIGHLIGHTS.map((feature) => (
                 <li
                   key={feature}
-                  style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "13px", color: "#64748b", lineHeight: 1.5, marginBottom: "10px", display: "flex", alignItems: "flex-start", gap: "8px" }}
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 400,
+                    fontSize: "13px",
+                    color: "#64748b",
+                    lineHeight: 1.5,
+                    marginBottom: "10px",
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "8px",
+                  }}
                 >
-                  <span style={{ color: "#27AE60", fontWeight: 600, flexShrink: 0 }}>✓</span>
+                  <span
+                    style={{ color: "#27AE60", fontWeight: 600, flexShrink: 0 }}
+                  >
+                    ✓
+                  </span>
                   {feature}
                 </li>
               ))}
             </ul>
             <Link
               href="/trial"
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: "44px", borderRadius: "9999px", fontSize: "14px", fontWeight: 600, fontFamily: "var(--font-sans)", textDecoration: "none", transition: "all 150ms ease", backgroundColor: "transparent", color: "#0f172a", border: "1px solid #e2e8f0" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#0f172a"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                height: "44px",
+                borderRadius: "9999px",
+                fontSize: "14px",
+                fontWeight: 600,
+                fontFamily: "var(--font-sans)",
+                textDecoration: "none",
+                transition: "all 150ms ease",
+                backgroundColor: "transparent",
+                color: "#0f172a",
+                border: "1px solid #e2e8f0",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#0f172a";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#e2e8f0";
+              }}
             >
               Start your 30-day trial
             </Link>
-            <p style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "11px", color: "#64748b", lineHeight: 1.5, margin: "12px 0 0" }}>
-              Exports carry an Avrentis Trial watermark until you upgrade. Data is preserved for 30 days after your trial ends.
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontWeight: 400,
+                fontSize: "11px",
+                color: "#64748b",
+                lineHeight: 1.5,
+                margin: "12px 0 0",
+              }}
+            >
+              Exports carry an Avrentis Trial watermark until you upgrade. Data
+              is preserved for 30 days after your trial ends.
             </p>
           </m.div>
 
@@ -356,7 +497,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             const displayAmount =
               billing === "annual" && priceData?.annualPerMonth != null
                 ? priceData.annualPerMonth
-                : priceData?.monthly ?? 0;
+                : (priceData?.monthly ?? 0);
 
             // Honest contrast: on annual, show the real monthly struck through
             // and the genuine yearly saving — a true discount, not a fake anchor.
@@ -366,7 +507,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               priceData?.annualPerMonth != null &&
               priceData.monthly > priceData.annualPerMonth;
             const annualSaving =
-              !isEnterprise && billing === "annual" && priceData?.annualTotal != null
+              !isEnterprise &&
+              billing === "annual" &&
+              priceData?.annualTotal != null
                 ? priceData.monthly * 12 - priceData.annualTotal
                 : 0;
 
@@ -382,12 +525,16 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             // always-on engine (Authority) is not badged — it's in the "included
             // on every plan" strip below; Requests is hidden by the site.
             const badgeModules = publicPlanModules(plan);
-            const moduleNames = badgeModules.map((m) => m.name.replace("Avrentis ", "")).join(" + ");
+            const moduleNames = badgeModules
+              .map((m) => m.name.replace("Avrentis ", ""))
+              .join(" + ");
             // No hardcoded count in the label (it drifts — the same reason the
             // app's pricing lock test forbids "N modules" copy); a plan carrying
             // every marketed module reads "All modules included".
             const moduleLabel =
-              badgeModules.length >= marketedModuleCount ? "All modules included" : moduleNames;
+              badgeModules.length >= marketedModuleCount
+                ? "All modules included"
+                : moduleNames;
 
             return (
               <m.div
@@ -457,7 +604,15 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 </p>
 
                 {/* Price */}
-                <div style={{ marginBottom: "6px", display: "flex", alignItems: "baseline", gap: "8px", flexWrap: "wrap" }}>
+                <div
+                  style={{
+                    marginBottom: "6px",
+                    display: "flex",
+                    alignItems: "baseline",
+                    gap: "8px",
+                    flexWrap: "wrap",
+                  }}
+                >
                   {isEnterprise && (
                     <span
                       style={{
@@ -514,7 +669,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 600,
                       fontSize: "12px",
-                      color: isFeatured ? "var(--color-gold)" : "var(--color-gold-on-light)",
+                      color: isFeatured
+                        ? "var(--color-gold)"
+                        : "var(--color-gold-on-light)",
                       margin: "0 0 8px",
                     }}
                   >
@@ -546,8 +703,11 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                             color: isFeatured ? "#FFFFFF" : "#0f172a",
                           }}
                         >
-                          {formatCurrencyAmount(priceData.annualTotal, currency)} billed
-                          annually
+                          {formatCurrencyAmount(
+                            priceData.annualTotal,
+                            currency,
+                          )}{" "}
+                          billed annually
                         </strong>
                       </>
                     ) : (
@@ -571,7 +731,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                       backgroundColor: isFeatured
                         ? "rgba(var(--color-gold-rgb), 0.15)"
                         : "rgba(var(--color-gold-rgb), 0.08)",
-                      color: isFeatured ? "var(--color-gold)" : "var(--color-gold-on-light)",
+                      color: isFeatured
+                        ? "var(--color-gold)"
+                        : "var(--color-gold-on-light)",
                       border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
                       marginBottom: "16px",
                       alignSelf: "flex-start",
@@ -580,6 +742,26 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     {moduleLabel}
                   </div>
                 )}
+
+                {/* Sector-restricted modules on this plan (e.g. Grants, which is
+                    for grant-funded organisations). The tier includes them, but a
+                    customer outside those sectors cannot use them — so the badge
+                    above must not be left to imply every buyer gets them.
+                    API-driven (`availableToSectors`), no hardcoded sector names. */}
+                {sectorNotes(badgeModules).map((note) => (
+                  <div
+                    key={note}
+                    style={{
+                      fontSize: "11px",
+                      fontFamily: "var(--font-sans)",
+                      color: "var(--color-muted)",
+                      margin: "-8px 0 16px",
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {note}
+                  </div>
+                ))}
 
                 {/* Features */}
                 <ul
@@ -661,14 +843,16 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   }}
                   onMouseEnter={(e) => {
                     if (isFeatured) {
-                      e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
+                      e.currentTarget.style.backgroundColor =
+                        "var(--color-gold-hover)";
                     } else {
                       e.currentTarget.style.borderColor = "#0f172a";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (isFeatured) {
-                      e.currentTarget.style.backgroundColor = "var(--color-gold)";
+                      e.currentTarget.style.backgroundColor =
+                        "var(--color-gold)";
                     } else {
                       e.currentTarget.style.borderColor = "#e2e8f0";
                     }

@@ -31,6 +31,14 @@ export interface PlanModule {
   key: string;
   name: string;
   description: string;
+  /**
+   * Present ONLY for a module restricted to certain industry sectors (an
+   * archetype add-on — Grants is for grant-funded organisations). The plan
+   * includes it, but a customer outside these sectors cannot use it, so the
+   * badge MUST be qualified rather than implying every buyer on the tier gets
+   * it. Absent = available to everyone on the plan (the normal case).
+   */
+  availableToSectors?: string[];
 }
 
 export interface Plan {
@@ -49,6 +57,8 @@ export interface Plan {
 export interface ModuleInfo {
   name: string;
   description: string;
+  /** See `PlanModule.availableToSectors`. */
+  availableToSectors?: string[];
 }
 
 /** A comparison-table section, derived server-side by the pricing API from the
@@ -125,10 +135,7 @@ export function formatRetention(days: number | null): string {
   return `${days}-day`;
 }
 
-export function formatCurrencyAmount(
-  amount: number,
-  currency: string,
-): string {
+export function formatCurrencyAmount(amount: number, currency: string): string {
   const symbols: Record<string, string> = {
     USD: "$",
     NGN: "₦",

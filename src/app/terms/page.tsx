@@ -100,18 +100,78 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          <strong>You own your data.</strong> Content you or your users submit to the Service remains the
+          <strong>You own your data.</strong>{" "}Content you or your users submit to the Service remains the
           Customer&rsquo;s property. We process it under these Terms and our{" "}
           <Link href="/privacy">Privacy Policy</Link>, and, where required, under a Data Processing Agreement.
         </p>
         <p>
-          <strong>We protect your data.</strong> A summary of the technical and organisational measures we apply is
+          <strong>We protect your data.</strong>{" "}A summary of the technical and organisational measures we apply is
           at <Link href="/product/security">/product/security</Link>. Audit logs are immutable by design — this is a
           deliberate product commitment, not an optional feature.
         </p>
         <p>
-          <strong>You can export it.</strong> At any time during the subscription, and for a reasonable period after
+          <strong>You can export it.</strong>{" "}At any time during the subscription, and for a reasonable period after
           termination, administrators can export documents, audit events, and account data through the Service.
+        </p>
+      </>
+    ),
+  },
+  {
+    id: "service-data",
+    heading: "Service data and de-identified insights",
+    body: (
+      <>
+        <p>
+          <strong>Definitions.</strong>{" "}&ldquo;Customer Data&rdquo; is content you or your users submit to the Service.
+          It remains your property, as stated above. &ldquo;Service Data&rdquo; is data we generate operating the
+          Service &mdash; configuration, logs, telemetry, security events, performance measurements, usage records.
+          &ldquo;Aggregated Insights&rdquo; are statistical, aggregated, or de-identified information derived from
+          either, in a form that does not identify you, your users, or any individual, and from which you cannot
+          reasonably be re-identified. The &ldquo;Verification Network&rdquo; is our facility for corroborating
+          supplier, vendor, and payee identity and payment details across organisations using Aggregated Insights only.
+        </p>
+        <p>
+          <strong>What you grant us.</strong>{" "}You grant Avrentis a perpetual, worldwide, royalty-free right to create
+          and use Aggregated Insights from Customer Data and Service Data to: detect, investigate, and prevent fraud,
+          financial crime, and abuse of the Service, including in the interests of other Avrentis customers; verify and
+          corroborate the identity, tax registration, banking details, and compliance status of suppliers, vendors, and
+          payees; operate, maintain, and improve the security and integrity of the Service; produce aggregate
+          benchmarks, statistics, and industry research; develop, test, and improve features and analytical models,
+          using Aggregated Insights only; and operate the Verification Network for the benefit of Avrentis customers
+          generally. Avrentis owns the Aggregated Insights and any models or aggregates derived from them. Nothing here
+          transfers ownership of Customer Data, and we claim no rights in it beyond those needed to provide the Service.
+        </p>
+        <p>
+          <strong>How de-identification works.</strong>{" "}Contributions to the Verification Network are de-identified
+          before they leave your tenant. A contributed fact carries no identifier of you, your users, or the individual
+          concerned, and is stored without any association to your organisation. Counterparty identities are
+          represented by a one-way cryptographic fingerprint from which the original value cannot be recovered. A fact
+          is only made available to any customer once several unrelated organisations have independently corroborated
+          it.
+        </p>
+        <p>
+          <strong>What we will not do.</strong>{" "}We will not: sell, rent, or licence Customer Data; sell Aggregated
+          Insights as a standalone data product to data brokers, credit bureaux, or advertisers; disclose your identity
+          as the source of any contributed fact, or disclose any insight in a form that identifies you or an individual;
+          attempt to re-identify de-identified data, or assist anyone else in doing so; include the content of your
+          documents, attachments, or free-text fields in the Verification Network; or use Customer Data to train
+          generally available AI models.
+        </p>
+        <p>
+          <strong>Participation and opt-out.</strong>{" "}Participation in the Verification Network is enabled by default
+          for all plans, because the protection it provides depends on broad participation. You may opt out at any time
+          &mdash; through the administrative settings of the Service, or by written notice, or by an express term in
+          your order form. Opting out takes effect <strong>prospectively</strong>: your tenant stops contributing within
+          30 days. Facts already contributed cannot be withdrawn, because they carry no association with your
+          organisation and so cannot be located or attributed &mdash; the same property that protects your
+          confidentiality. Because the network operates on reciprocity, a customer that opts out of contributing does
+          not receive Verification Network signals; all fraud-detection features operating solely within your own tenant
+          continue unaffected.
+        </p>
+        <p>
+          <strong>Counterparty data.</strong>{" "}You represent that you have the right to submit vendor, supplier, and
+          payee information to the Service, and to have it processed for the verification and fraud-prevention purposes
+          described here, including where that information relates to an individual such as a sole trader.
         </p>
       </>
     ),
@@ -287,7 +347,7 @@ export default function TermsPage() {
       sections={SECTIONS}
       footerNote={
         <>
-          <strong>Note.</strong> These standard Terms apply to self-serve customers. Enterprise customers typically
+          <strong>Note.</strong>{" "}These standard Terms apply to self-serve customers. Enterprise customers typically
           operate under a negotiated order form that takes precedence over any conflicting provision here. To
           request that form, send a note through{" "}
           <Link href="/contact?intent=legal" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>

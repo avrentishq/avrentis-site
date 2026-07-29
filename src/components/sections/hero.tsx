@@ -655,7 +655,18 @@ export function Hero() {
             }}
             className="lg:!text-[56px]"
           >
-            {["Every", "action.", "On", "record."].map((word, i) => (
+            {/* Positioning line. Leads with the PROOF (what a buyer must be able
+                to show an auditor) and the SCOPE (across companies) — the part no
+                single accounting or ERP system can answer, because none of them
+                is installed in every entity. Word-by-word stagger is preserved;
+                the em dash closes the first line rather than opening the second,
+                so the break reads as a pause, not a hyphenated word. */}
+            {/* The em dash is bound to "what" as ONE span, never its own word: at
+                390px a standalone dash wrapped onto a line by itself and read as a
+                stray horizontal rule rather than punctuation. Caught by eye on
+                mobile — the desktop view hides it. An inline-block span cannot
+                break internally, so the pairing is what guarantees the fix. */}
+            {["Prove", "who", "authorised", "what —"].map((word, i) => (
               <m.span
                 key={`top-${i}`}
                 variants={fadeUp}
@@ -671,7 +682,7 @@ export function Hero() {
               transition={fadeUpTransition}
               style={{ display: "inline-block" }}
             >
-              Permanently.
+              across every company you run.
             </m.span>
           </m.h1>
 

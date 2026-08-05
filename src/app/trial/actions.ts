@@ -17,6 +17,10 @@
  */
 
 import type { TrialFormState } from "./state";
+import {
+  mapTrialResponse,
+  type TrialResponsePayload,
+} from "./map-response";
 import { ORG_SIZES as SIZES } from "@/lib/org-size";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { verifyTurnstile } from "@/lib/turnstile";
@@ -136,77 +140,9 @@ export async function submitTrialRequest(
     };
   }
 
-  const payload = (await response.json().catch(() => ({}))) as {
-    status?: string;
-    message?: string;
-    errors?: { fieldErrors?: Record<string, string[]> };
-  };
+  const payload = (await response.json().catch(() => ({}))) as TrialResponsePayload;
 
-  if (response.status === 403 && payload.status === "hard_blocked") {
-    return { status: "hard_blocked", message: payload.message ?? "Trial unavailable." };
-  }
-
-  if (response.status === 202 && payload.status === "verification_sent") {
-    return {
-      status: "verification_sent",
-      email,
-      message: payload.message ?? `Check ${email} for your verification link.`,
-    };
-  }
-
-  if (response.status === 202 && payload.status === "queued_for_review") {
-    return {
-      status: "queued_for_review",
-      message: payload.message ?? "We'll be in touch within 4 hours during business hours.",
-    };
-  }
-
-  if (response.status === 422) {
-    const backend = payload.errors?.fieldErrors ?? {};
-    // Only map keys the form actually renders — otherwise the field-error
-    // banner is suppressed but nothing shows (a silent no-op).
-    const KNOWN = new Set([
-      "name",
-      "email",
-      "organisation",
-      "role",
-      "orgSize",
-      "country",
-      "consent",
-    ]);
-    const mapped: FieldErrors = {};
-    for (const [k, v] of Object.entries(backend)) {
-      if (v && v[0] && KNOWN.has(k)) (mapped as Record<string, string>)[k] = v[0];
-    }
-    if (Object.keys(mapped).length > 0) {
-      return {
-        status: "error",
-        message: payload.message ?? "Please fix the highlighted fields.",
-        fieldErrors: mapped,
-      };
-    }
-    // Backend rejected on a field the form doesn't render — surface a general
-    // message so the user always gets feedback.
-    return {
-      status: "error",
-      message: payload.message ?? "We couldn't process that. Please review your details and try again.",
-    };
-  }
-
-  if (response.status === 429) {
-    return {
-      status: "error",
-      message:
-        "You've submitted a few trial requests in a short window. Please wait a moment and try again.",
-    };
-  }
-
-  return {
-    status: "error",
-    message:
-      payload.message ??
-      "Something went wrong. Please try again or contact trials@avrentis.com.",
-  };
+  return mapTrialResponse(response.status, payload, email);
 }
 
 /**

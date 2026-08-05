@@ -7,7 +7,8 @@
  *
  *   verification_sent — Path A success: "check your email"
  *   queued_for_review — Path B success: 4-hour SLA commitment
- *   hard_blocked      — Rule 1 hard block: terminal error surface
+ *   hard_blocked      — any platform rejection (HTTP 403): terminal surface,
+ *                       showing the platform's own reason
  *
  * The visual language mirrors /contact and /product/how-it-works —
  * Navbar + Footer wrapper, soft slate-50 main, card-styled form.
@@ -266,7 +267,7 @@ export function TrialForm() {
     return <QueuedCard message={state.message} email={emailValue || undefined} />;
   }
 
-  if (state.status === "hard_blocked" || state.status === "auto_rejected") {
+  if (state.status === "hard_blocked") {
     return <HardBlockedCard message={state.message} />;
   }
 

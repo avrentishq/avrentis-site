@@ -19,18 +19,18 @@ export type TrialFormState =
       message: string;
     }
   | {
-      status: "hard_blocked";
-      message: string;
-    }
-  | {
       /**
-       * Set when the platform auto-rejects a submission. The adapter maps
-       * the platform's rejection response to this variant.
+       * The platform rejected the submission (HTTP 403). `message` is the
+       * platform's own user-facing explanation — already had a trial, missing
+       * organisation, disposable email domain, sanctioned country — so surface
+       * it rather than replacing it with generic copy.
        *
-       * The UI renders it as a clear inline rejection card — see
-       * HardBlockedCard in trial-form.tsx (re-uses the same surface).
+       * Rendered by HardBlockedCard in trial-form.tsx. There was previously a
+       * second `auto_rejected` variant for the same thing; both rendered the
+       * identical card, so it was redundant and is gone. Rejections of every
+       * kind map here.
        */
-      status: "auto_rejected";
+      status: "hard_blocked";
       message: string;
     }
   | {

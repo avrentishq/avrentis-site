@@ -418,8 +418,9 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         }}
         className="grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_1.2fr]"
       >
-        {/* What happens next — after the form on mobile; left column on desktop */}
-        <div className="order-2 lg:order-none lg:col-start-1 lg:row-start-1">
+        {/* What happens next — after the form on mobile; left column on desktop,
+            vertically centred against the taller form. */}
+        <div className="order-2 lg:order-none lg:col-start-1 lg:row-start-1 lg:self-center">
           <m.div
             variants={fadeUp}
             initial="hidden"
@@ -455,6 +456,56 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 </li>
               ))}
             </ul>
+          </m.div>
+
+          {/* Email fallback — some visitors will not use a web form at all, and
+              a visible address plus an explicit no-marketing promise lowers the
+              cost of getting in touch. The address is the same one the action
+              falls back to when Resend fails. */}
+          <m.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={staggerDelay(3)}
+            style={{ marginTop: "32px" }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "#0f172a",
+                marginBottom: "8px",
+              }}
+            >
+              Prefer email?
+            </div>
+            <a
+              href="mailto:hello@avrentis.com"
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "15px",
+                fontWeight: 500,
+                color: "var(--color-gold-on-light)",
+                textDecoration: "none",
+              }}
+            >
+              hello@avrentis.com
+            </a>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "13px",
+                color: "#64748b",
+                lineHeight: 1.7,
+                margin: "12px 0 0",
+                maxWidth: "300px",
+              }}
+            >
+              We only use your details to reply to this enquiry — never for
+              marketing lists.
+            </p>
           </m.div>
         </div>
 

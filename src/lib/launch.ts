@@ -24,6 +24,7 @@ export const HIDDEN_AT_LAUNCH: readonly string[] = [
   "/changelog", // thin pre-launch; earns its place once we ship to customers on a cadence
   "/docs", // public/API docs premature (API access is Enterprise-only) — in-app help covers trial users
   "/trust", // hidden until incorporation — no named legal entity / data controller to stand behind it yet
+  "/product/people", // Requests is publiclyVisible:false in MODULES and excluded from the sitemap; this makes the route match that intent instead of staying quietly reachable
 ] as const;
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */

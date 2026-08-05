@@ -108,6 +108,12 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   // `availableToSectors` is an add-on only those industries can use, so the card
   // says so in plain words instead of over-claiming. Sector NAMES come from the
   // API — reclassifying a sector upstream changes this copy with no site edit.
+  //
+  // The sentence deliberately ends on the sector list with no trailing noun.
+  // API sector names are already complete noun phrases ("Religious
+  // Organisations"), so appending one produced "…Religious Organisations
+  // organisations". Don't reintroduce it — any noun that reads correctly for
+  // one sector name will read wrongly for another.
   const sectorNotes = (mods: PlanModule[]): string[] =>
     mods
       .filter((m) => m.availableToSectors?.length)
@@ -117,7 +123,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           sectors.length > 1
             ? `${sectors.slice(0, -1).join(", ")} and ${sectors[sectors.length - 1]}`
             : sectors[0];
-        return `${m.name.replace("Avrentis ", "")} is for ${list} organisations`;
+        return `${m.name.replace("Avrentis ", "")} is for ${list}`;
       });
 
   // "All modules included" when a plan carries every module the site markets

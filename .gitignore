@@ -41,7 +41,14 @@ yarn-error.log*
 next-env.d.ts
 
 # planning and internal docs (top-level only — do not ignore src/app/docs
-# or src/components/docs which are the public /docs route)
-/docs/
+# or src/components/docs which are the public /docs route).
+#
+# `/docs/*` and `.claude/*` are deliberately written WITHOUT a trailing slash:
+# a trailing slash stops git descending into the directory at all, which makes
+# every `!` negation below it inert. Matching the children instead lets the
+# negations re-include the two directories we do want tracked.
+/docs/*
+!/docs/architecture/
 /guides/
-.claude/
+.claude/*
+!.claude/skills/

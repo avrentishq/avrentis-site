@@ -207,6 +207,18 @@ export function Navbar() {
                 transition: "gap 300ms ease",
               }}
             >
+              {/*
+                Plain <img> for both logo lockup pieces is deliberate, not an
+                oversight. These are small self-hosted SVGs, which next/image
+                does not optimise: it refuses SVG unless `images.dangerouslyAllowSVG`
+                is enabled in next.config.ts, and that flag pipes SVG through the
+                optimiser — a documented XSS vector. Turning on a security-relevant
+                flag to satisfy a lint rule aimed at unoptimised raster images
+                would be a net regression, so the rule is disabled here instead.
+                Both are decorative (alt="" + aria-hidden) and animate their
+                height on scroll, which next/image's sizing would fight.
+              */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={
                   scrolled
@@ -222,6 +234,7 @@ export function Navbar() {
                   transition: "height 300ms ease",
                 }}
               />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={
                   scrolled

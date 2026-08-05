@@ -15,7 +15,7 @@ import Script from "next/script";
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Check } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUp, fadeUpTransition } from "@/lib/animations";
 import { BOUNDS, EFFICIENCY, clampInt, computeSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";

@@ -24,6 +24,7 @@ export const HIDDEN_AT_LAUNCH: readonly string[] = [
   "/changelog",
   "/docs",
   "/trust",
+  "/product/people",
 ] as const;
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */

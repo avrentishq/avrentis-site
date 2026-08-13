@@ -1,11 +1,11 @@
 "use client";
 
 import { Workflow, Package, FileCheck, Truck } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "procure",
   eyebrow: MODULES.procure.name,
   headline: "Procurement on record. Vendor to issue.",
@@ -65,13 +65,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full access" },
-    { plan: "Starter", included: true, note: "Included" },
-    { plan: "Business", included: true, note: "Included + custom chains" },
-    { plan: "Enterprise", included: true, note: "Unlimited + SLA" },
-  ],
-
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Turn sanctioned POs into paid invoices on the same rails" },
     { slug: "audit", name: "Avrentis Compliance", desc: "Every PO, every signature — permanently on record" },
@@ -79,6 +72,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function ProcureModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function ProcureModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

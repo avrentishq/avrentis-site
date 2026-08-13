@@ -7,6 +7,7 @@ import {
   CreditCard,
   ShoppingCart,
   Archive,
+  SlidersHorizontal,
   ClipboardCheck,
   Users,
   Link2,
@@ -52,6 +53,13 @@ const MODULES = [
     desc: "Institutional memory",
     href: `/product/${PRODUCT_MODULES.vault.slug}`,
     icon: Archive,
+  },
+  {
+    key: PRODUCT_MODULES.authority.key,
+    name: PRODUCT_MODULES.authority.name,
+    desc: "Approval rules, enforced",
+    href: `/product/${PRODUCT_MODULES.authority.slug}`,
+    icon: SlidersHorizontal,
   },
   {
     key: PRODUCT_MODULES.audit.key,

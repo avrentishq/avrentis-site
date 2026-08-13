@@ -1,11 +1,11 @@
 "use client";
 
 import { Webhook, KeyRound, Network, ShieldCheck } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { ConnectPreview } from "@/components/product/previews/connect-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "connect",
   eyebrow: MODULES.connect.name,
   headline: "Avrentis in your existing stack.",
@@ -65,13 +65,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full webhook + API access" },
-    { plan: "Starter", included: false, note: "Not included" },
-    { plan: "Business", included: false, note: "Enterprise tier only" },
-    { plan: "Enterprise", included: true, note: "Unlimited keys + priority support" },
-  ],
-
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Push sanctioned payments straight into accounting" },
     { slug: "procure", name: "Avrentis Procurement", desc: "Sync issued POs into ERP and vendor portals" },
@@ -79,6 +72,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function ConnectModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function ConnectModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { GuardModulePage } from "@/components/product/pages/guard-module-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Guard — Catch the bad payment before the money moves",
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductGuardPage() {
-  return <GuardModulePage />;
+export default async function ProductGuardPage() {
+  const pricingData = await fetchPricingData();
+  return <GuardModulePage planAvailability={planAvailabilityFor("guard", pricingData)} />;
 }

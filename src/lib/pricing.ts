@@ -71,11 +71,26 @@ export interface FeatureGroup {
   featureKeys: string[];
 }
 
+/** The free-trial terms, as published by the pricing API. The trial runs on a
+ *  real plan tier (`plan`), so what a trialist can actually use is that plan's
+ *  entitlement — which is why the module pages derive their trial row from it
+ *  rather than restating "30-day Business trial" in eight places. */
+export interface TrialInfo {
+  enabled: boolean;
+  days: number;
+  /** Plan KEY the trial runs on (matches a `Plan.key`), not a display name. */
+  plan: string;
+  seatCap?: number;
+  cardRequired?: boolean;
+}
+
 export interface PricingData {
   plans: Plan[];
   planOrder: string[];
   addOns: unknown[];
   featureLabels: Record<string, string>;
+  /** Optional — absent on a stale fallback; the trial row then self-hides. */
+  trial?: TrialInfo;
   /** Optional — absent on a cold-start stale fallback; the comparison table
    *  self-hides when missing/empty. */
   featureGroups?: FeatureGroup[];

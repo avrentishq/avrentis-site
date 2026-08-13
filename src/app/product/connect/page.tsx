@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { ConnectModulePage } from "@/components/product/pages/connect-module-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Integrations — Avrentis in your existing stack",
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductConnectPage() {
-  return <ConnectModulePage />;
+export default async function ProductConnectPage() {
+  const pricingData = await fetchPricingData();
+  return <ConnectModulePage planAvailability={planAvailabilityFor("connect", pricingData)} />;
 }

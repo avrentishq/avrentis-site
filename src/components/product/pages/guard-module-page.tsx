@@ -1,11 +1,11 @@
 "use client";
 
 import { Copy, Landmark, Split, ListChecks } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { GuardPreview } from "@/components/product/previews/guard-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "guard",
   eyebrow: MODULES.guard.name,
   headline: "Catch the bad payment before the money moves.",
@@ -60,13 +60,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full Guard flags on the trial's Business tier" },
-    { plan: "Starter", included: false },
-    { plan: "Business", included: true, note: "All rule-based flags + review queue" },
-    { plan: "Enterprise", included: true, note: "All rule-based flags + review queue" },
-  ],
-
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Guard checks every payment voucher as it enters the approval chain" },
     { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders and invoices are screened for duplicates too" },
@@ -74,6 +67,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function GuardModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function GuardModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

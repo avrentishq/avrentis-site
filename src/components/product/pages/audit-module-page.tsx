@@ -1,11 +1,11 @@
 "use client";
 
 import { ShieldCheck, FileSearch, Download, LockKeyhole } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "audit",
   eyebrow: MODULES.audit.name,
   headline: "Compliance without the scramble.",
@@ -65,13 +65,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full trail access" },
-    { plan: "Starter", included: true, note: "Basic audit trail" },
-    { plan: "Business", included: true, note: "Full trail + regulator PDF" },
-    { plan: "Enterprise", included: true, note: "Unlimited retention + SIEM export" },
-  ],
-
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Every payment event lands in the audit trail automatically" },
     { slug: "procure", name: "Avrentis Procurement", desc: "PO lifecycle events — from submission to issue — all tracked" },
@@ -79,6 +72,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function AuditModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function AuditModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

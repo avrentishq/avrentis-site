@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PeopleModulePage } from "@/components/product/pages/people-module-page";
 import { isLaunchHidden } from "@/lib/launch";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Requests — leave & expense approvals on the same rails",
@@ -17,7 +19,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductPeoplePage() {
+export default async function ProductPeoplePage() {
+  // Launch gate first — never fetch pricing for a page we're about to 404.
   if (isLaunchHidden("/product/people")) notFound();
-  return <PeopleModulePage />;
+  const pricingData = await fetchPricingData();
+  return <PeopleModulePage planAvailability={planAvailabilityFor("people", pricingData)} />;
 }

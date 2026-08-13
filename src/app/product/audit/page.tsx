@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { AuditModulePage } from "@/components/product/pages/audit-module-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Compliance — Compliance without the scramble",
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductAuditPage() {
-  return <AuditModulePage />;
+export default async function ProductAuditPage() {
+  const pricingData = await fetchPricingData();
+  return <AuditModulePage planAvailability={planAvailabilityFor("audit", pricingData)} />;
 }

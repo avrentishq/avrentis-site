@@ -1,11 +1,11 @@
 "use client";
 
-import { Archive, Search, Tag, Share2 } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { Archive, Search, Tag, Share2, Gavel, CalendarClock } from "lucide-react";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "vault",
   eyebrow: MODULES.vault.name,
   headline: "Your financial records, in one place.",
@@ -40,6 +40,18 @@ const config: ModuleConfig = {
       body:
         "Every record carries its version history, and every view, download, or edit is written to the immutable audit trail — who, what, and when.",
     },
+    {
+      icon: CalendarClock,
+      title: "Financial records can't be deleted too early",
+      body:
+        "Nigerian tax and company law expect financial records to be kept for years, so payment vouchers, purchase orders and their version snapshots sit behind a seven-year floor. A shorter retention setting still applies to everything else — it simply cannot purge the documents the law says you must keep.",
+    },
+    {
+      icon: Gavel,
+      title: "Legal hold, for when something is disputed",
+      body:
+        "Put a hold on a single record or on the whole organisation and deletion stops, including the scheduled clean-ups that would otherwise run. Placing and releasing a hold are themselves recorded, so there is a clean answer to when preservation started and who asked for it.",
+    },
   ],
 
   useCases: [
@@ -58,13 +70,11 @@ const config: ModuleConfig = {
       body:
         "When the Finance Director moves on, the records stay. The new director onboards from a complete voucher and purchase-order history instead of a scattered shared drive.",
     },
-  ],
-
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full access" },
-    { plan: "Starter", included: false, note: "Not included" },
-    { plan: "Business", included: true, note: "Included" },
-    { plan: "Enterprise", included: true, note: "Unlimited storage + retention" },
+    {
+      title: "Preserve everything, the day the dispute starts",
+      body:
+        "A contract goes to arbitration, or a regulator opens a query. Put the organisation under legal hold and nothing can be deleted while it runs — no scramble to warn people not to tidy up, and a record of exactly when preservation began.",
+    },
   ],
 
   relatedModules: [
@@ -74,6 +84,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function VaultModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function VaultModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

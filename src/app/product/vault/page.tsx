@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { VaultModulePage } from "@/components/product/pages/vault-module-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Records — Institutional memory, searchable",
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductVaultPage() {
-  return <VaultModulePage />;
+export default async function ProductVaultPage() {
+  const pricingData = await fetchPricingData();
+  return <VaultModulePage planAvailability={planAvailabilityFor("vault", pricingData)} />;
 }

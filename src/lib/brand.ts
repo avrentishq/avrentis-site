@@ -12,15 +12,37 @@ export * from "@avrentishq/core/brand";
 
 // ── Marketing module catalog (site-specific) ─────────────────────────────────
 
-export type ModuleKey = "pay" | "procure" | "vault" | "audit" | "guard" | "grants" | "people" | "connect";
+export type ModuleKey =
+  | "pay"
+  | "procure"
+  | "vault"
+  | "authority"
+  | "audit"
+  | "guard"
+  | "grants"
+  | "people"
+  | "connect";
 
 /**
  * Module entitlement layer:
  *   - `core`       — included on every plan tier (Payables, Procurement, Records).
+ *   - `universal`  — the engine every plan runs on, sold with none of them (Authority).
  *   - `substrate`  — always-on platform foundation (Compliance, Integrations).
  *   - `expansion`  — plan-gated upgrade (Guard + Grants = Business+, Requests = Enterprise).
+ *
+ * WHY `universal` IS NOT `core`. Both are on every tier, but they answer to
+ * different UI. A `core` module is a thing a buyer chooses and compares, so it
+ * earns a per-plan badge. Authority is the delegation-of-authority engine that
+ * every approval in the product already runs through — badging it on all three
+ * plans would read as a differentiator that differentiates nothing, and pricing
+ * already advertises it once, correctly, as an included-on-every-plan trust line.
+ *
+ * The pricing API encodes exactly this: `authority` is published under
+ * `platformModules`, never inside a plan's own `modules` array. So a `universal`
+ * module gets a product page and site navigation, and gets no badge, WITHOUT
+ * anything here having to special-case it — see `planAvailabilityFor`.
  */
-export type ModuleClassification = "core" | "substrate" | "expansion";
+export type ModuleClassification = "core" | "universal" | "substrate" | "expansion";
 
 /**
  * Module brand names — kept consistent with the product app.
@@ -48,6 +70,9 @@ export const MODULES: Record<
   pay: { key: "pay", name: "Avrentis Payables", slug: "pay", classification: "core", publiclyVisible: true },
   procure: { key: "procure", name: "Avrentis Procurement", slug: "procure", classification: "core", publiclyVisible: true },
   vault: { key: "vault", name: "Avrentis Records", slug: "vault", classification: "core", publiclyVisible: true },
+  // The approval engine every plan runs on. Documented publicly, never badged
+  // per-plan — see `ModuleClassification` and `planAvailabilityFor`.
+  authority: { key: "authority", name: "Avrentis Authority", slug: "authority", classification: "universal", publiclyVisible: true },
   audit: { key: "audit", name: "Avrentis Compliance", slug: "audit", classification: "substrate", publiclyVisible: true },
   guard: { key: "guard", name: "Avrentis Guard", slug: "guard", classification: "expansion", publiclyVisible: true },
   grants: { key: "grants", name: "Avrentis Grants", slug: "grants", classification: "expansion", publiclyVisible: true },
@@ -56,8 +81,23 @@ export const MODULES: Record<
   connect: { key: "connect", name: "Avrentis Integrations", slug: "connect", classification: "substrate", publiclyVisible: true },
 } as const;
 
-/** Canonical module display order. */
-export const MODULE_ORDER: ModuleKey[] = ["pay", "procure", "vault", "audit", "guard", "grants", "people", "connect"];
+/**
+ * Canonical module display order. Authority sits after the three modules a
+ * buyer actually shops for and ahead of the rest of the platform layer: it is
+ * what they all run on, but leading a product menu with the engine rather than
+ * with Payables would bury the thing people arrive looking for.
+ */
+export const MODULE_ORDER: ModuleKey[] = [
+  "pay",
+  "procure",
+  "vault",
+  "authority",
+  "audit",
+  "guard",
+  "grants",
+  "people",
+  "connect",
+];
 
 /** Module keys shown to customers, in display order — excludes hidden modules (Requests). */
 export function publicModuleKeys(): ModuleKey[] {
@@ -66,16 +106,20 @@ export function publicModuleKeys(): ModuleKey[] {
 
 /**
  * Whether a module key may be shown on the public marketing site. Guard-safe for
- * a key this catalog doesn't model (e.g. `authority` from the pricing API) ⇒ false.
+ * a key this catalog doesn't model (e.g. `foundation` / `intelligence`, which the
+ * pricing API never publishes) ⇒ false.
+ *
  * Pricing badges are driven off the API's per-plan `modules` (which encode the
  * real tier entitlement, incl. tier-gated Compliance/Integrations); this only
  * hides the modules the site chooses not to market (Requests) + unknown keys.
+ * Note this does NOT badge Authority despite it now being public: the API keeps
+ * `authority` out of every plan's `modules` array, so there is nothing to badge.
  */
 export function isModulePublic(key: string): boolean {
   return MODULES[key as ModuleKey]?.publiclyVisible ?? false;
 }
 
-/** Count of customer-facing modules (currently 7; Requests is hidden). */
+/** Count of customer-facing modules (currently 8; Requests is hidden). */
 export const PUBLIC_MODULE_COUNT = publicModuleKeys().length;
 
 /** Convenience accessor for a module's locked brand name. */

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { MODULE_ORDER, MODULES } from "@/lib/brand";
 
 /**
  * Plan inclusion must stay DERIVED. Two of the eight product module pages had
@@ -75,18 +76,11 @@ describe("product module pages — plan availability stays derived", () => {
       return source.includes("planAvailabilityFor(");
     });
 
-    // security / how-it-works / integrations are narrative pages, not modules.
-    expect(wired.sort()).toEqual(
-      [
-        "audit",
-        "connect",
-        "grants",
-        "guard",
-        "pay",
-        "people",
-        "procure",
-        "vault",
-      ].sort(),
-    );
+    // Derived from the module catalog, not listed here: a hardcoded expectation
+    // in the test that polices hardcoding is the same bug wearing a lab coat.
+    // Every module in the catalog owns a /product/<slug> route (including the
+    // ones hidden from nav, which are launch-gated rather than absent);
+    // /security, /how-it-works and /integrations are narrative pages, not modules.
+    expect(wired.sort()).toEqual(MODULE_ORDER.map((key) => MODULES[key].slug).sort());
   });
 });

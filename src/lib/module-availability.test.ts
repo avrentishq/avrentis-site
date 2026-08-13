@@ -60,6 +60,16 @@ describe("planAvailabilityFor — inclusion comes from the API, never from prose
     ]);
   });
 
+  it("shows a platform module as included on every tier", () => {
+    // Authority is published under `platformModules`, never inside a plan's own
+    // `modules` array. Read naively that renders a wall of crosses for the one
+    // module no tenant can be without — the exact wrong answer.
+    const rows = planAvailabilityFor("authority", data);
+    expect(rows.length).toBeGreaterThan(0);
+    expect(rows.every((r) => r.included)).toBe(true);
+    expect(data.plans.every((p) => !p.modules.some((m) => m.key === "authority"))).toBe(true);
+  });
+
   it("carries no note that restates the tick", () => {
     for (const moduleKey of data.moduleOrder) {
       for (const r of planAvailabilityFor(moduleKey, data)) {

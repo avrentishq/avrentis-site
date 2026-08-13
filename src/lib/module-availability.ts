@@ -36,8 +36,17 @@ export function planAvailabilityFor(
   data: PricingData,
 ): ModulePlan[] {
   const planFor = (key: string) => data.plans.find((p) => p.key === key);
+
+  // A PLATFORM module (Authority — the approval engine) is on every plan and is
+  // therefore published under `platformModules`, deliberately absent from any
+  // plan's own `modules` array. Read literally that would render a page of
+  // crosses for the one module nobody can be without, so inclusion is answered
+  // from the field the API actually puts it in. Still derived — no key is
+  // special-cased here, and a module the API later promotes or demotes follows
+  // automatically.
+  const isPlatformModule = (data.platformModules ?? []).some((m) => m.key === moduleKey);
   const includes = (planKey: string) =>
-    planFor(planKey)?.modules.some((m) => m.key === moduleKey) ?? false;
+    isPlatformModule || (planFor(planKey)?.modules.some((m) => m.key === moduleKey) ?? false);
 
   const notes = MODULE_PLAN_NOTES[moduleKey] ?? {};
   const rows: ModulePlan[] = [];
@@ -91,6 +100,14 @@ const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
   },
   vault: {
     enterprise: "Unlimited storage and retention",
+  },
+  authority: {
+    // On every tier by definition; the depth is what moves. Base engine
+    // (approval chains, multi-level routing) is universal — see the app's
+    // module catalog, which gates only the depth behind plan features.
+    starter: "Approval chains and multi-level routing",
+    business: "Adds custom chains, SLA tracking and delegation",
+    enterprise: "Adds approver groups, quorum gates and condition-based routing",
   },
   audit: {
     // The honesty fix. Starter does not carry Compliance, but the immutable

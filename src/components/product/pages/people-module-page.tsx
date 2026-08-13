@@ -1,11 +1,11 @@
 "use client";
 
 import { CalendarCheck, Receipt, ShieldCheck } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "people",
   eyebrow: MODULES.people.name,
   headline: "Leave and expense, on the same rails.",
@@ -54,13 +54,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: false, note: "Not during beta" },
-    { plan: "Starter", included: false, note: "Not included" },
-    { plan: "Business", included: false, note: "Enterprise tier only at launch" },
-    { plan: "Enterprise", included: true, note: "Included at launch" },
-  ],
-
   relatedModules: [
     { slug: "audit", name: "Avrentis Compliance", desc: "Leave and expense events flow into the same immutable trail" },
     { slug: "pay", name: "Avrentis Payables", desc: "Expense approvals run on the same review-and-sanction rails as payments" },
@@ -68,6 +61,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function PeopleModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function PeopleModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

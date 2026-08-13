@@ -1,11 +1,11 @@
 "use client";
 
 import { Archive, Search, Tag, Share2 } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "vault",
   eyebrow: MODULES.vault.name,
   headline: "Your financial records, in one place.",
@@ -60,13 +60,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full access" },
-    { plan: "Starter", included: false, note: "Not included" },
-    { plan: "Business", included: true, note: "Included" },
-    { plan: "Enterprise", included: true, note: "Unlimited storage + retention" },
-  ],
-
   relatedModules: [
     { slug: "audit", name: "Avrentis Compliance", desc: "Every vault access + download logged to the audit trail" },
     { slug: "pay", name: "Avrentis Payables", desc: "Every approved voucher lands in Records automatically" },
@@ -74,6 +67,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function VaultModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function VaultModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

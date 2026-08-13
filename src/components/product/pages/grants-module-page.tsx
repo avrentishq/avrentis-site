@@ -1,11 +1,11 @@
 "use client";
 
 import { Wallet, Gauge, Share2, FileText } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { GrantsPreview } from "@/components/product/previews/grants-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "grants",
   eyebrow: MODULES.grants.name,
   headline: "Prove where every donor naira went.",
@@ -60,13 +60,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full Grants on the trial's Business tier" },
-    { plan: "Starter", included: false },
-    { plan: "Business", included: true, note: "Donors, grants, budget lines, burn, reports" },
-    { plan: "Enterprise", included: true, note: "Everything in Business + sub-grantees at scale" },
-  ],
-
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Disbursements to grantees and partners run through the payment workflow" },
     { slug: "procure", name: "Avrentis Procurement", desc: "Grant-funded purchases are tagged to the grant at the point of spend" },
@@ -74,6 +67,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function GrantsModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function GrantsModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

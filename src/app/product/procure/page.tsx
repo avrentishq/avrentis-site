@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { ProcureModulePage } from "@/components/product/pages/procure-module-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Procurement — Procurement on record",
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductProcurePage() {
-  return <ProcureModulePage />;
+export default async function ProductProcurePage() {
+  const pricingData = await fetchPricingData();
+  return <ProcureModulePage planAvailability={planAvailabilityFor("procure", pricingData)} />;
 }

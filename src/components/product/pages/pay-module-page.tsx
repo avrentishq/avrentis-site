@@ -9,11 +9,11 @@
  */
 
 import { FileCheck, Workflow, Banknote, ShieldCheck } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { PayPreview } from "@/components/product/previews/pay-preview";
 
-const config: ModuleConfig = {
+const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "pay",
   eyebrow: MODULES.pay.name,
   headline: "Every payment, on record. End-to-end.",
@@ -73,13 +73,6 @@ const config: ModuleConfig = {
     },
   ],
 
-  planAvailability: [
-    { plan: "30-day Business trial", included: true, note: "Full access" },
-    { plan: "Starter", included: true, note: "Included" },
-    { plan: "Business", included: true, note: "Included + custom chains" },
-    { plan: "Enterprise", included: true, note: "Unlimited + SLA" },
-  ],
-
   relatedModules: [
     { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders on the same approval rails" },
     { slug: "audit", name: "Avrentis Compliance", desc: "The full compliance trail across every payment" },
@@ -87,6 +80,6 @@ const config: ModuleConfig = {
   ],
 };
 
-export function PayModulePage() {
-  return <ProductModuleLayout config={config} />;
+export function PayModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
+  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
 }

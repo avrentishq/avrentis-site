@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { GrantsModulePage } from "@/components/product/pages/grants-module-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
   title: "Avrentis Grants — Prove where every donor naira went",
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductGrantsPage() {
-  return <GrantsModulePage />;
+export default async function ProductGrantsPage() {
+  const pricingData = await fetchPricingData();
+  return <GrantsModulePage planAvailability={planAvailabilityFor("grants", pricingData)} />;
 }

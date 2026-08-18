@@ -53,7 +53,12 @@ There is no CI. Nothing runs these for you.
 - **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css`. This
   codebase styles with inline `style={{}}` objects, not Tailwind classes.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
-  names come from `MODULES` in `src/lib/brand.ts`.
+  names come from `MODULES` in `src/lib/brand.ts`. This includes BRANCHING on a tier:
+  `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,
+  the struck-through price and the annual saving, and is wrong the moment a second tier
+  is quote-priced or Enterprise becomes self-serve. Read `plan.selfServeCheckout`, which
+  the product API publishes and enforces on its own Pay button. `pricing.test.ts` fails
+  on a tier-name branch in the pricing section.
 - Full-word variable names. No cryptic abbreviations.
 - Visual changes get verified in a real browser and looked at, not reasoned about.
 

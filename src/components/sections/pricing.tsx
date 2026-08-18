@@ -498,7 +498,11 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           {orderedPlans.map((plan, i) => {
             const isFeatured = plan.key === FEATURED_PLAN;
             const priceData = getPriceForCurrency(plan, currency);
-            const isEnterprise = plan.key === "enterprise";
+            // Derived from the product API, never from the tier NAME. A name
+            // check silently becomes wrong the day a second tier is quote-priced
+            // or Enterprise becomes self-serve, and nothing would fail — the page
+            // would just quietly sell, or refuse to sell, the wrong thing.
+            const isQuotePriced = !plan.selfServeCheckout;
 
             const displayAmount =
               billing === "annual" && priceData?.annualPerMonth != null
@@ -508,12 +512,12 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             // Honest contrast: on annual, show the real monthly struck through
             // and the genuine yearly saving — a true discount, not a fake anchor.
             const showStrike =
-              !isEnterprise &&
+              !isQuotePriced &&
               billing === "annual" &&
               priceData?.annualPerMonth != null &&
               priceData.monthly > priceData.annualPerMonth;
             const annualSaving =
-              !isEnterprise &&
+              !isQuotePriced &&
               billing === "annual" &&
               priceData?.annualTotal != null
                 ? priceData.monthly * 12 - priceData.annualTotal
@@ -619,7 +623,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     flexWrap: "wrap",
                   }}
                 >
-                  {isEnterprise && (
+                  {isQuotePriced && (
                     <span
                       style={{
                         fontFamily: "var(--font-sans)",
@@ -697,7 +701,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     lineHeight: 1.5,
                   }}
                 >
-                  {isEnterprise ? (
+                  {isQuotePriced ? (
                     "Custom pricing — tailored to your organisation"
                   ) : billing === "annual" ? (
                     priceData?.annualTotal != null ? (
@@ -822,7 +826,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
 
                 {/* CTA */}
                 <Link
-                  href={isEnterprise ? "/contact?intent=demo" : "/trial"}
+                  href={isQuotePriced ? "/contact?intent=demo" : "/trial"}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -864,7 +868,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     }
                   }}
                 >
-                  {isEnterprise ? "Talk to us" : "Start my trial"}
+                  {isQuotePriced ? "Talk to us" : "Start my trial"}
                 </Link>
               </m.div>
             );

@@ -11,6 +11,7 @@
         "WhatsApp & email alerts",
         "10 GB storage · 1 year retention"
       ],
+      "selfServeCheckout": true,
       "pricing": [
         {
           "currency": "NGN",
@@ -101,6 +102,7 @@
         "100 GB storage · 3 year retention",
         "Priority support"
       ],
+      "selfServeCheckout": true,
       "pricing": [
         {
           "currency": "NGN",
@@ -209,6 +211,7 @@
         "API access for custom integrations",
         "Dedicated onboarding & priority support"
       ],
+      "selfServeCheckout": false,
       "pricing": [
         {
           "currency": "NGN",

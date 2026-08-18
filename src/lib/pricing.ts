@@ -48,6 +48,19 @@ export interface Plan {
   /** Curated, short marketing bullets from the product API. Prefer these over
    *  composing features + limits — the product API is the single source of truth. */
   highlights: string[];
+  /**
+   * Can this tier be bought with a card, or does it need a sales conversation?
+   *
+   * READ THIS, NEVER THE TIER NAME. `plan.key === "enterprise"` was how the CTA,
+   * the struck-through price and the annual-saving line all decided — which
+   * silently becomes wrong the day a second tier is quote-priced, or the day
+   * Enterprise becomes self-serve. The published amount cannot answer it either:
+   * a quote-priced tier shows a FLOOR ("From ₦…"), which reads as a price.
+   *
+   * The product API is the single source of truth and enforces the same flag on
+   * its own Pay button, so the page and the product cannot disagree.
+   */
+  selfServeCheckout: boolean;
   pricing: PricingCurrency[];
   limits: PlanLimits;
   modules: PlanModule[];
@@ -123,7 +136,15 @@ export async function fetchPricingData(): Promise<PricingData> {
       data.plans.length > 0 &&
       Array.isArray(data?.planOrder) &&
       data.planOrder.length > 0 &&
-      data.plans.every((p: { pricing?: unknown }) => Array.isArray(p?.pricing));
+      data.plans.every(
+        (p: { pricing?: unknown; selfServeCheckout?: unknown }) =>
+          // `selfServeCheckout` is guarded like `pricing` because the page reads
+          // it to decide between "Start my trial" and "Talk to us". Absent, the
+          // check below would coerce to false and put EVERY tier behind a sales
+          // conversation — so a payload without it is not trusted, and the
+          // committed snapshot serves instead.
+          Array.isArray(p?.pricing) && typeof p?.selfServeCheckout === "boolean",
+      );
     if (!valid) return fallback as unknown as PricingData;
 
     return data as PricingData;

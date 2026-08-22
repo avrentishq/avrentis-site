@@ -54,7 +54,6 @@
       "features": {
         "approvalChain": true,
         "pdfExport": true,
-        "watermarkedExports": false,
         "fullAuditTrail": false,
         "csvExport": true,
         "documentAttachments": true,
@@ -82,8 +81,10 @@
         "taxControls": false,
         "vendorCompliance": false,
         "procurementAdvanced": false,
+        "procurementTendering": false,
         "erpSync": false,
         "controlsMonitoring": false,
+        "controlsAttestation": false,
         "vendorRiskNetwork": false,
         "fraudTypologyLibrary": false
       }
@@ -164,7 +165,6 @@
       "features": {
         "approvalChain": true,
         "pdfExport": true,
-        "watermarkedExports": false,
         "fullAuditTrail": true,
         "csvExport": true,
         "documentAttachments": true,
@@ -191,9 +191,11 @@
         "sso": false,
         "taxControls": false,
         "vendorCompliance": true,
-        "procurementAdvanced": false,
+        "procurementAdvanced": true,
+        "procurementTendering": false,
         "erpSync": false,
-        "controlsMonitoring": false,
+        "controlsMonitoring": true,
+        "controlsAttestation": true,
         "vendorRiskNetwork": false,
         "fraudTypologyLibrary": false
       }
@@ -283,7 +285,6 @@
       "features": {
         "approvalChain": true,
         "pdfExport": true,
-        "watermarkedExports": false,
         "fullAuditTrail": true,
         "csvExport": true,
         "documentAttachments": true,
@@ -310,9 +311,11 @@
         "sso": true,
         "taxControls": false,
         "vendorCompliance": true,
-        "procurementAdvanced": false,
+        "procurementAdvanced": true,
+        "procurementTendering": false,
         "erpSync": false,
-        "controlsMonitoring": false,
+        "controlsMonitoring": true,
+        "controlsAttestation": true,
         "vendorRiskNetwork": false,
         "fraudTypologyLibrary": false
       }
@@ -331,9 +334,12 @@
     "bankLetterGeneration": "Generate formatted bank-letter PDFs",
     "documentAttachments": "Attach supporting documents",
     "vendorCompliance": "Track vendor tax & statutory compliance",
+    "procurementAdvanced": "Record competitive quotes and enforce bid rules",
     "csvExport": "Download data as spreadsheets",
     "fullAuditTrail": "Complete compliance visibility",
     "fullAuditExport": "Export full compliance records",
+    "controlsMonitoring": "Prove your controls were on and working",
+    "controlsAttestation": "Sign off that you reviewed your controls",
     "apiAccess": "Connect external systems via API",
     "approvalChain": "Structured approval workflow",
     "delegation": "Delegate approvals while away",
@@ -369,7 +375,8 @@
       "label": "Procurement",
       "featureKeys": [
         "documentAttachments",
-        "vendorCompliance"
+        "vendorCompliance",
+        "procurementAdvanced"
       ]
     },
     {
@@ -384,7 +391,9 @@
       "label": "Compliance",
       "featureKeys": [
         "fullAuditTrail",
-        "fullAuditExport"
+        "fullAuditExport",
+        "controlsMonitoring",
+        "controlsAttestation"
       ]
     },
     {
@@ -437,8 +446,7 @@
         "pdfExport",
         "bankExport",
         "bulkBankExport",
-        "bankLetterGeneration",
-        "watermarkedExports"
+        "bankLetterGeneration"
       ]
     },
     "procure": {
@@ -448,7 +456,8 @@
       "features": [
         "documentAttachments",
         "vendorCompliance",
-        "procurementAdvanced"
+        "procurementAdvanced",
+        "procurementTendering"
       ]
     },
     "vault": {
@@ -467,7 +476,8 @@
       "features": [
         "fullAuditTrail",
         "fullAuditExport",
-        "controlsMonitoring"
+        "controlsMonitoring",
+        "controlsAttestation"
       ]
     },
     "guard": {

@@ -83,6 +83,16 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       body:
         "External auditors ask for Q3's payment records. Export the full period as a timestamped PDF bundle — reference numbers, approval chains, signatures, and attachments — in a single click.",
     },
+    {
+      title: "Answer \"has this been paid?\" without asking Finance",
+      body:
+        "Whoever raised a voucher can see what happened to it — the payment recorded against it, when the money left, and the bank's reference — without a call to Finance. A head of department sees their department's; Finance and the MD see the organisation's.",
+    },
+    {
+      title: "Work in more than one currency",
+      body:
+        "Raise documents in Naira, US Dollars, Pounds or Euros. Each one carries the rate it was measured at, so a total is never quietly recomputed at today's rate, and budgets are held against the rate the period was planned on.",
+    },
   ],
 
   relatedModules: [

@@ -105,7 +105,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "ACCOUNTING & ERP",
     title: "Vouchers and POs flow into the system of record.",
     lede:
-      "Avrentis owns the approval chain. The final record can flow into the ledger or ERP of your choice through native connectors or CSV / API exchange.",
+      "Avrentis owns the approval chain. The final record flows into the ledger or ERP of your choice through CSV export or the documented API — the named connectors below are delivered on request.",
     integrations: [
       { name: "CSV export", summary: "Period-bounded exports with full approval trail per line.", availability: "available" },
       { name: "QuickBooks Online", summary: "Voucher + PO sync with account mapping.", availability: "request" },

@@ -1,6 +1,6 @@
 "use client";
 
-import { Workflow, Package, FileCheck, Truck } from "lucide-react";
+import { Workflow, Package, FileCheck, Truck, Store, PackageCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
@@ -39,6 +39,18 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       title: "Issue-to-vendor PDF generation",
       body:
         "Approved POs produce a formatted vendor-facing PDF — reference, line items, delivery address, signatures — ready to email to the vendor. No formatting trouble, no inconsistent templates.",
+    },
+    {
+      icon: Store,
+      title: "Suppliers can see where their order stands",
+      body:
+        "Give a supplier their own login: the purchase orders you have sent them, whether each was accepted or declined, the invoice they submitted, and how far the payment has got. It removes the emails asking whether a PO arrived and when the money is coming. Included on every plan.",
+    },
+    {
+      icon: PackageCheck,
+      title: "Goods receipts, matched three ways",
+      body:
+        "Record what actually arrived against what was ordered, then match the purchase order, the goods receipt and the invoice before anything is paid. A quantity or price that does not line up is caught before the money moves, not at month-end. Included on every plan.",
     },
   ],
 

@@ -112,11 +112,12 @@ const STACK = [
     title: "Session integrity",
     subtitle: "When a role changes or a user leaves, their active sessions are invalid within seconds.",
     body:
-      "Every active session is checked against a revocation signal on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation forces re-authentication on the next request. Two-factor sign-in uses standard time-based codes with secured recovery codes. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
+      "Every active session is checked against a revocation signal on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation forces re-authentication on the next request. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
     icon: ShieldCheck,
     bullets: [
       "Active sessions end within seconds of a role change, deactivation, or password change",
-      "Two-factor sign-in with recovery codes; required for platform administrators",
+      "Two-factor sign-in by passkey, authenticator app, email code or SMS, with recovery codes — and your organisation decides which of those its people may enrol",
+      "Require two-factor for everyone, or only for the roles you name. Single sign-on can count as that second factor, or be told not to when you would rather verify in-app. Platform administrators are always required, regardless",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
       "Single sign-on via OpenID Connect (OIDC); SAML 2.0 on the enterprise roadmap. Sensitive tokens encrypted at rest",
     ],

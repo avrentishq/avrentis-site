@@ -8,7 +8,7 @@
  * handles metadata and mounts this component.
  */
 
-import { FileCheck, Workflow, Banknote, ShieldCheck } from "lucide-react";
+import { FileCheck, Workflow, Banknote, ShieldCheck, Receipt, Scale } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { PayPreview } from "@/components/product/previews/pay-preview";
@@ -40,13 +40,25 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: Banknote,
       title: "Bank-ready payment instructions",
       body:
-        "The moment the MD sanctions a voucher, Avrentis generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Copy straight into your treasury process.",
+        "The moment the MD sanctions a voucher, Avrentis generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours. Available on Business and Enterprise.",
     },
     {
       icon: ShieldCheck,
       title: "Separation of duties enforced",
       body:
         "Built-in ABAC rules prevent submitters from approving their own requests and enforce department-scoped approval windows. Amount thresholds route high-value vouchers directly to the MD. Compliance is the default path.",
+    },
+    {
+      icon: Receipt,
+      title: "Proof that the money actually moved",
+      body:
+        "Sanctioning a voucher is not the same as paying it. Finance records the payment against the voucher — which account it left, the bank's reference, the value date, and the receipt — and a voucher cannot be confirmed as paid until that evidence is attached. The reference and the receipt stay on the record, visible to whoever raised it.",
+    },
+    {
+      icon: Scale,
+      title: "Reconciled against your bank statement",
+      body:
+        "Import the statement and match it line by line against what you recorded. A receipt proves a particular voucher was paid; a statement is the only thing that shows money leaving the account with no document behind it — a duplicate debit, or a batch leg that quietly failed. Available on Business and Enterprise.",
     },
   ],
 
@@ -70,6 +82,16 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       title: "Audit-ready exports on demand",
       body:
         "External auditors ask for Q3's payment records. Export the full period as a timestamped PDF bundle — reference numbers, approval chains, signatures, and attachments — in a single click.",
+    },
+    {
+      title: "Answer \"has this been paid?\" without asking Finance",
+      body:
+        "Whoever raised a voucher can see what happened to it — the payment recorded against it, when the money left, and the bank's reference — without a call to Finance. A head of department sees their department's; Finance and the MD see the organisation's.",
+    },
+    {
+      title: "Work in more than one currency",
+      body:
+        "Raise documents in Naira, US Dollars, Pounds or Euros. Each one carries the rate it was measured at, so a total is never quietly recomputed at today's rate, and budgets are held against the rate the period was planned on.",
     },
   ],
 

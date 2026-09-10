@@ -63,6 +63,7 @@
         "mfaPolicy": false,
         "slaTracking": false,
         "budgetCodes": false,
+        "commitmentControl": false,
         "bankLetterGeneration": false,
         "bankExport": true,
         "bulkBankExport": false,
@@ -174,6 +175,7 @@
         "mfaPolicy": true,
         "slaTracking": true,
         "budgetCodes": true,
+        "commitmentControl": true,
         "bankLetterGeneration": true,
         "bankExport": true,
         "bulkBankExport": true,
@@ -294,6 +296,7 @@
         "mfaPolicy": true,
         "slaTracking": true,
         "budgetCodes": true,
+        "commitmentControl": true,
         "bankLetterGeneration": true,
         "bankExport": true,
         "bulkBankExport": true,
@@ -357,7 +360,8 @@
     "groupAdminDashboard": "One read-only view across every company in the group",
     "customBranding": "Brand your exported documents",
     "dedicatedOnboarding": "Guided setup with a dedicated specialist",
-    "prioritySupport": "Priority access to support"
+    "prioritySupport": "Priority access to support",
+    "commitmentControl": "commitmentControl"
   },
   "featureGroups": [
     {
@@ -423,7 +427,8 @@
         "groupAdminDashboard",
         "customBranding",
         "dedicatedOnboarding",
-        "prioritySupport"
+        "prioritySupport",
+        "commitmentControl"
       ]
     }
   ],

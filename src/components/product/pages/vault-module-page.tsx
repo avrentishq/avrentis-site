@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, Search, Tag, Share2, Gavel, CalendarClock } from "lucide-react";
+import { Archive, Search, Tag, Share2, Gavel, CalendarClock, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
@@ -52,6 +52,12 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       body:
         "Put a hold on a single record or on the whole organisation and deletion stops, including the scheduled clean-ups that would otherwise run. Placing and releasing a hold are themselves recorded, so there is a clean answer to when preservation started and who asked for it.",
     },
+    {
+      icon: ShieldCheck,
+      title: "Custody you can prove, not just claim",
+      body:
+        "Every record type declares what the platform guarantees about it — whether it can be altered at all, whether it is hash-chained, which fields are encrypted at rest, and what happens to it if someone asks to be erased. Those declarations are checked against the code that enforces them on every build, so what is promised here cannot quietly drift from what the database actually does.",
+    },
   ],
 
   useCases: [
@@ -74,6 +80,11 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       title: "Preserve everything, the day the dispute starts",
       body:
         "A contract goes to arbitration, or a regulator opens a query. Put the organisation under legal hold and nothing can be deleted while it runs — no scramble to warn people not to tidy up, and a record of exactly when preservation began.",
+    },
+    {
+      title: "Someone asks to be erased, and you still need the ledger",
+      body:
+        "A personal-data erasure request does not mean deleting a payment record. Each type of record is handled the way your books and the law both require — some anonymised, some removed outright, some held until a legal obligation lapses — and that decision is declared once per record type rather than argued case by case.",
     },
   ],
 

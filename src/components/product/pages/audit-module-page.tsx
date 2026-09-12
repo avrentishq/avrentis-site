@@ -1,6 +1,6 @@
 "use client";
 
-import { ShieldCheck, FileSearch, Download, LockKeyhole } from "lucide-react";
+import { ShieldCheck, FileSearch, Download, LockKeyhole, UserSearch } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
@@ -39,6 +39,12 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       title: "SOC2 + ISO 27001 aligned controls",
       body:
         "Separation of duties, role-based access control, immutable trails, and time-bound access grants — all part of the platform architecture. No bolt-on compliance theatre.",
+    },
+    {
+      icon: UserSearch,
+      title: "Data-subject requests, handled on a clock",
+      body:
+        "Someone can ask what personal data you hold on them, have it corrected, take a copy, or ask you to erase it. Requests arrive through your organisation's own link, identity is verified before anything is disclosed, and the statutory deadline is tracked with warnings before it is missed rather than after. Included on every plan.",
     },
   ],
 

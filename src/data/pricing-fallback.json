@@ -151,7 +151,7 @@
         {
           "key": "guard",
           "name": "Avrentis Guard",
-          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments, vendor bank-detail changes, threshold gaming, and separation-of-duties breaches surfaced as review flags."
+          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact."
         },
         {
           "key": "grants",
@@ -267,12 +267,12 @@
         {
           "key": "connect",
           "name": "Avrentis Integrations",
-          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations"
+          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems connect through that API, webhooks, or CSV export — named connectors are delivered on request."
         },
         {
           "key": "guard",
           "name": "Avrentis Guard",
-          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments, vendor bank-detail changes, threshold gaming, and separation-of-duties breaches surfaced as review flags."
+          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact."
         },
         {
           "key": "grants",
@@ -361,7 +361,7 @@
     "customBranding": "Brand your exported documents",
     "dedicatedOnboarding": "Guided setup with a dedicated specialist",
     "prioritySupport": "Priority access to support",
-    "commitmentControl": "commitmentControl"
+    "commitmentControl": "Budgets that count commitments, not just spend"
   },
   "featureGroups": [
     {
@@ -488,7 +488,7 @@
     "guard": {
       "name": "Avrentis Guard",
       "sidebarLabel": "Guard",
-      "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments, vendor bank-detail changes, threshold gaming, and separation-of-duties breaches surfaced as review flags.",
+      "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact.",
       "features": [
         "vendorRiskNetwork",
         "fraudTypologyLibrary"
@@ -503,7 +503,7 @@
     "connect": {
       "name": "Avrentis Integrations",
       "sidebarLabel": "Integrations",
-      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery; ERP integrations",
+      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems connect through that API, webhooks, or CSV export — named connectors are delivered on request.",
       "features": [
         "apiAccess",
         "erpSync"

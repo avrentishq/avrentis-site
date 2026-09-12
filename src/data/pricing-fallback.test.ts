@@ -45,8 +45,32 @@ function featureMatrix(data: {
   return matrix;
 }
 
+/**
+ * Published module copy — the `name` and `description` a buyer actually reads
+ * on the pricing page and the module cards.
+ *
+ * Checked separately from the feature matrix because it drifts separately, and
+ * because it is the half with reputational consequences: a boolean that is
+ * wrong understates or oversells a tier, but a stale DESCRIPTION can keep
+ * advertising a capability the company has already retracted. That happened —
+ * this file carried "…; ERP integrations" and "separation-of-duties breaches
+ * surfaced as review flags" for a full release after both claims were removed
+ * at source, and the matrix check above was green throughout, because it never
+ * looks at a string.
+ */
+function moduleCopy(data: {
+  modules?: Record<string, { name?: string; description?: string }>;
+}): Record<string, { name: string; description: string }> {
+  const copy: Record<string, { name: string; description: string }> = {};
+  for (const [key, entry] of Object.entries(data.modules ?? {})) {
+    copy[key] = { name: entry.name ?? "", description: entry.description ?? "" };
+  }
+  return copy;
+}
+
 async function livePricing(): Promise<{
-  plans: { key?: string; features?: Record<string, boolean> }[];
+  plans: { key?: string; features?: Record<string, boolean>; modules?: { key?: string; name?: string; description?: string }[] }[];
+  modules?: Record<string, { name?: string; description?: string }>;
 } | null> {
   try {
     const res = await fetch(PRICING_API, { signal: AbortSignal.timeout(10_000) });
@@ -80,6 +104,83 @@ describe("pricing fallback", () => {
       expect(keys.has(key), `planOrder names "${key}" but no plan has that key`).toBe(true);
     }
   });
+
+  it("says the same thing about a module everywhere it appears", () => {
+    // Offline. Every module's copy is published TWICE — once in the canonical
+    // `modules` map and again inside each plan that includes it. A partial
+    // refresh (or a hand-edit, which this file forbids) leaves the two
+    // disagreeing, and whichever one a given surface happens to read decides
+    // what the buyer is told.
+    const canonical = moduleCopy(fallback);
+    const mismatches: string[] = [];
+
+    for (const plan of fallback.plans) {
+      for (const listed of (plan as { modules?: { key: string; name?: string; description?: string }[] })
+        .modules ?? []) {
+        const source = canonical[listed.key];
+        if (!source) {
+          mismatches.push(`plan "${plan.key}" lists module "${listed.key}", absent from the modules map`);
+          continue;
+        }
+        if (listed.description !== undefined && listed.description !== source.description) {
+          mismatches.push(`${plan.key}/${listed.key}: description differs from the modules map`);
+        }
+        if (listed.name !== undefined && listed.name !== source.name) {
+          mismatches.push(`${plan.key}/${listed.key}: name differs from the modules map`);
+        }
+      }
+    }
+
+    expect(mismatches, `the fallback contradicts itself:\n${mismatches.join("\n")}`).toEqual([]);
+  });
+
+  it("matches the live API's module copy, when the API can be reached", async () => {
+    const live = await livePricing();
+    if (!live) {
+      console.warn(
+        "[pricing-fallback] live API unreachable — module copy not checked this run. " +
+          "Run `node scripts/sync-pricing-fallback.mjs` locally to refresh.",
+      );
+      return;
+    }
+
+    const liveCopy = moduleCopy(live);
+    const committedCopy = moduleCopy(fallback);
+
+    // Guard on the guard: if the projection ever returned nothing — a renamed
+    // payload key, say — every comparison below would pass over an empty set
+    // and this check would be decorative.
+    expect(
+      Object.keys(liveCopy).length,
+      "live API returned no module copy — the projection is reading the wrong key",
+    ).toBeGreaterThan(0);
+
+    const drift: string[] = [];
+    for (const [key, live_] of Object.entries(liveCopy)) {
+      const committed = committedCopy[key];
+      if (!committed) {
+        drift.push(`module "${key}" is live but missing from the fallback`);
+        continue;
+      }
+      if (committed.description !== live_.description) {
+        drift.push(
+          `${key}.description has drifted:\n    fallback: ${committed.description}\n    live:     ${live_.description}`,
+        );
+      }
+      if (committed.name !== live_.name) {
+        drift.push(`${key}.name: fallback says "${committed.name}", live says "${live_.name}"`);
+      }
+    }
+    for (const key of Object.keys(committedCopy)) {
+      if (!(key in liveCopy)) drift.push(`module "${key}" is in the fallback but no longer live`);
+    }
+
+    expect(
+      drift,
+      "published module copy has drifted — run `node scripts/sync-pricing-fallback.mjs` and commit " +
+        "the result. A stale description keeps advertising what the product no longer claims.",
+    ).toEqual([]);
+  }, 15_000);
 
   it("matches the live API's feature matrix, when the API can be reached", async () => {
     const live = await livePricing();

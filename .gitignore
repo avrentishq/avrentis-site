@@ -48,7 +48,12 @@ next-env.d.ts
 # every `!` negation below it inert. Matching the children instead lets the
 # negations re-include the two directories we do want tracked.
 /docs/*
-!/docs/architecture/
+# `docs/architecture/` was tracked. It is internal engineering documentation —
+# the abuse-defence pipeline in order, which code paths carry no tests, the
+# infrastructure inventory, tech-debt counts — and this repository is PUBLIC.
+# None of it has any business being readable by anyone outside the team. It
+# stays on disk for the repo-map skill; it is no longer published.
+/docs/architecture/
 /guides/
 .claude/*
 !.claude/skills/

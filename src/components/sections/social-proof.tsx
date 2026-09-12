@@ -9,7 +9,8 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND_COLORS } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 
-// Pre-launch, no customers yet — so no testimonials and no invented metrics.
+// No testimonials and no invented metrics — the section states what the
+// platform enforces, which is verifiable, rather than borrowed credibility.
 // This section earns trust the honest way: verifiable architecture a security,
 // finance, or audit reviewer can check for themselves.
 const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [

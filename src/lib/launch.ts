@@ -1,24 +1,24 @@
 /**
  * Launch visibility gate — the single, reversible source of truth for which
- * routes are hidden at launch.
- *
- * The routes listed below are hidden.
+ * routes are currently hidden.
  *
  * Each hidden page calls `notFound()` when `isLaunchHidden(path)` is true, and
  * the nav + footer link lists filter their hrefs through `isLaunchVisible(href)`
  * so a hidden page is neither reachable nor advertised.
  *
- * To re-enable a page once its content is ready: delete its entry below. That is
- * the ONLY change required — the page renders again and its nav/footer links
- * reappear automatically. No content is deleted; the routes stay in the repo.
+ * To re-enable a page: delete its entry below. That is the ONLY change
+ * required — the page renders again and its nav/footer links reappear
+ * automatically. No content is deleted; the routes stay in the repo.
  *
  * This file is intentionally dependency-free (pure predicates) so it can be
  * imported by both server pages and client nav components.
+ *
+ * Rationale per entry is deliberately NOT recorded here. This repository is
+ * public, and "why a page is not published yet" is commercial context. It
+ * lives in `guides/public-site-setup.md`, which is gitignored.
  */
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
-  // Routes currently hidden.
-  // Remove an entry to re-enable that page.
   "/customers",
   "/careers",
   "/changelog",

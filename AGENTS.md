@@ -20,6 +20,9 @@ does not own, which conventions to follow, what a domain term means, or what the
 landmines are. It points at `docs/architecture/` — one reference file per topic.
 Use `repo-map-refresh` to update those docs from a git range after a change.
 
+`docs/architecture/` is **gitignored and stays that way**. This repository is public and
+those files are internal engineering detail. Keep them on disk; never track them.
+
 ## Commands
 
 | | |
@@ -30,7 +33,7 @@ Use `repo-map-refresh` to update those docs from a git range after a change.
 | `pnpm lint` | `eslint .` — expect `0 problems`. |
 | `pnpm type-check` | `tsc --noEmit`. **Turbopack dev does not typecheck — run this before claiming done.** |
 
-There is no CI. Nothing runs these for you.
+Run these locally before you claim anything is done.
 
 ## Non-negotiables
 

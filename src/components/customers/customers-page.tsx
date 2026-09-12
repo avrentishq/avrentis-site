@@ -1,12 +1,10 @@
 "use client";
 
 /**
- * CustomersProductPage — the /customers page. Honest framing for an
- * early-stage platform: no invented logos, no invented testimonials. We
- * surface the industries we're built for, the common patterns we hear
- * in discovery conversations, and the launch-partner programme that
- * replaces a traditional logo wall until we have real case studies to
- * publish.
+ * CustomersProductPage — the /customers page. No invented logos and no
+ * invented testimonials: it surfaces the industries the platform is built
+ * for, the operational patterns it addresses, and the launch-partner
+ * programme, in place of a traditional logo wall.
  */
 
 import { useRef } from "react";

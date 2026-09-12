@@ -1,30 +1,30 @@
 /**
  * Launch visibility gate — the single, reversible source of truth for which
- * routes are hidden at launch.
+ * routes are currently hidden.
  *
- * Pages that aren't yet rooted/tested/verified (or that have no real content
- * yet — empty customer/careers/status/docs/changelog pages) are listed here.
  * Each hidden page calls `notFound()` when `isLaunchHidden(path)` is true, and
  * the nav + footer link lists filter their hrefs through `isLaunchVisible(href)`
  * so a hidden page is neither reachable nor advertised.
  *
- * To re-enable a page once its content is ready: delete its entry below. That is
- * the ONLY change required — the page renders again and its nav/footer links
- * reappear automatically. No content is deleted; the routes stay in the repo.
+ * To re-enable a page: delete its entry below. That is the ONLY change
+ * required — the page renders again and its nav/footer links reappear
+ * automatically. No content is deleted; the routes stay in the repo.
  *
  * This file is intentionally dependency-free (pure predicates) so it can be
  * imported by both server pages and client nav components.
+ *
+ * Rationale per entry is deliberately NOT recorded here. This repository is
+ * public, and "why a page is not published yet" is commercial context. It
+ * lives in `guides/public-site-setup.md`, which is gitignored.
  */
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
-  // Deferred until we have paying customers / operational history to make them
-  // honest and worth publishing. Remove an entry to re-enable that page.
-  "/customers", // no real customers to show yet — an empty logos/testimonials page reads as dead
-  "/careers", // not hiring yet (OPEN_ROLES = []) — publish when we are
-  "/changelog", // thin pre-launch; earns its place once we ship to customers on a cadence
-  "/docs", // public/API docs premature (API access is Enterprise-only) — in-app help covers trial users
-  "/trust", // hidden until incorporation — no named legal entity / data controller to stand behind it yet
-  "/product/people", // Requests is publiclyVisible:false in MODULES and excluded from the sitemap; this makes the route match that intent instead of staying quietly reachable
+  "/customers",
+  "/careers",
+  "/changelog",
+  "/docs",
+  "/trust",
+  "/product/people",
 ] as const;
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */

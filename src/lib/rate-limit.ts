@@ -6,16 +6,18 @@ import { Redis } from "@upstash/redis";
 /**
  * Rate limiter for the public marketing surfaces (contact + savings-estimate).
  *
- * Uses Upstash Redis for a STRICT cross-instance/region cap when
- * `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN` are set (the durable
- * path — a single sliding window shared by every serverless instance, so the
- * cap can't be multiplied by fanning out across instances). When Redis is not
- * configured — local dev, previews, or before the site project provisions KV —
- * it falls back to the best-effort in-memory limiter below (per-instance burst
- * guard; no regression, works with zero setup).
+ * Two paths: a durable shared window when the KV credentials are present, and
+ * an in-memory limiter otherwise so local development and previews work with
+ * no setup.
+ *
+ * This repository is PUBLIC. The behaviour of each path under failure, and the
+ * reasoning behind that choice, is deliberately not described here — it is
+ * abuse-defence detail, and it lives in `guides/security-posture.md`, which is
+ * gitignored. Read that before changing anything in this file: the tradeoffs
+ * are considered, not accidental.
  */
 
-// ── In-memory fallback (per-instance) ──────────────────────────────────────
+// ── In-memory limiter ───────────────────────────────────────────────────────
 
 interface Bucket {
   count: number;
@@ -78,10 +80,11 @@ function getLimiter(limit: number, windowMs: number): Ratelimit | null {
 }
 
 /**
- * Strict cross-instance rate limit when Redis is configured; otherwise the
- * per-instance in-memory fallback. True = allowed, false = over the limit.
- * Fails OPEN on a Redis error (marketing forms are already Turnstile-gated —
- * a transient KV outage must not take the contact/savings forms down).
+ * True = allowed, false = over the limit.
+ *
+ * Behaviour when the durable store is unavailable is a deliberate tradeoff
+ * documented in `guides/security-posture.md` (gitignored — this repo is
+ * public). Do not change it from what you see here without reading that.
  */
 export async function rateLimitDurable(
   key: string,
@@ -94,7 +97,7 @@ export async function rateLimitDurable(
     const { success } = await limiter.limit(key);
     return success;
   } catch {
-    // Redis reachable-check failed — don't block a legitimate submission.
+    // See guides/security-posture.md before altering this branch.
     return true;
   }
 }

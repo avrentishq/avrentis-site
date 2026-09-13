@@ -114,7 +114,9 @@ export function Footer() {
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <AvrentisLogo variant="transparent-gold" size={28} wordmarkColor="var(--color-gold)" />
+            {/* The platform lockup: gold container, navy gate, white wordmark.
+                Was a bare gold gate with a gold wordmark. */}
+            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
             <span
               style={{
                 fontFamily: "var(--font-mono)",

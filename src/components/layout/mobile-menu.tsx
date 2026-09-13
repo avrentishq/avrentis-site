@@ -112,7 +112,7 @@ export function MobileMenu({
               flexShrink: 0,
             }}
           >
-            <AvrentisLogo size={28} variant="transparent-gold" wordmarkColor="#ffffff" />
+            <AvrentisLogo size={28} variant="primary" wordmarkColor="#ffffff" />
             <button
               ref={closeBtnRef}
               onClick={onClose}

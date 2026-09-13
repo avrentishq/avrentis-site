@@ -15,6 +15,7 @@ import {
   Menu,
 } from "lucide-react";
 import { MobileMenu } from "@/components/layout/mobile-menu";
+import { AvrentisLogo } from "@/components/ui/logo";
 import {
   BRAND,
   BRAND_COLORS,
@@ -144,7 +145,8 @@ export function Navbar() {
       fontFamily: "var(--font-sans)",
       fontWeight: 400,
       fontSize: "14px",
-      color: active ? "var(--color-gold)" : scrolled ? "#0f172a" : "#ffffff",
+      // White in both states: the pill is navy whether scrolled or not.
+      color: active ? "var(--color-gold)" : "#ffffff",
       textDecoration: "none",
       transition: "color 150ms ease",
       borderBottom: active
@@ -187,14 +189,19 @@ export function Navbar() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            backgroundColor: scrolled
-              ? "rgba(247, 246, 242, 0.9)"
-              : "transparent",
+            // Frosted NAVY pill at 0.94, not the cream one it used to be. The
+            // alpha is high on purpose: at 0.85 the light page behind it lifted
+            // the pill to slate, which no longer read as the product's navy
+            // chrome — the whole point of the change. The lockup
+            // carries a white wordmark in both scroll states (matching the
+            // product), and white on cream is unreadable — so the pill follows
+            // the logo rather than the logo following the pill.
+            backgroundColor: scrolled ? "rgba(15, 23, 42, 0.94)" : "transparent",
             backdropFilter: scrolled ? "blur(12px)" : "none",
             WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
             borderRadius: scrolled ? "9999px" : "0",
             border: scrolled
-              ? "1px solid rgba(15, 23, 42, 0.08)"
+              ? "1px solid rgba(var(--color-gold-rgb), 0.2)"
               : "1px solid transparent",
             boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.28)" : "none",
             transition:
@@ -203,62 +210,22 @@ export function Navbar() {
         >
           {/* ── Logo ──────────────────────────────────────────────── */}
           <Link href="/" aria-label={`${BRAND.name} home`}>
-            {/* Dark bar: reversed mark (gold badge, navy gate) + white
-                wordmark. Off-white pill: bare navy gate (no box) + navy
-                wordmark. Both assets live in /public/logos; the Link carries
-                the accessible name, so the images are decorative. */}
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: scrolled ? "7px" : "9px",
-                transition: "gap 300ms ease",
-              }}
-            >
-              {/*
-                Plain <img> for both logo lockup pieces is deliberate, not an
-                oversight. These are small self-hosted SVGs, which next/image
-                does not optimise: it refuses SVG unless `images.dangerouslyAllowSVG`
-                is enabled in next.config.ts, and that flag pipes SVG through the
-                optimiser — a documented XSS vector. Turning on a security-relevant
-                flag to satisfy a lint rule aimed at unoptimised raster images
-                would be a net regression, so the rule is disabled here instead.
-                Both are decorative (alt="" + aria-hidden) and animate their
-                height on scroll, which next/image's sizing would fight.
-              */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={
-                  scrolled
-                    ? "/logos/mark-transparent-navy-256.svg"
-                    : "/logos/mark-transparent-gold-256.svg"
-                }
-                alt=""
-                aria-hidden="true"
-                style={{
-                  height: scrolled ? "30px" : "36px",
-                  width: "auto",
-                  display: "block",
-                  transition: "height 300ms ease",
-                }}
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={
-                  scrolled
-                    ? "/logos/wordmark-navy.svg"
-                    : "/logos/wordmark-gold.svg"
-                }
-                alt=""
-                aria-hidden="true"
-                style={{
-                  height: scrolled ? "18px" : "24px",
-                  width: "auto",
-                  display: "block",
-                  transition: "height 300ms ease",
-                }}
-              />
-            </span>
+            {/* ONE lockup, both scroll states, identical to the platform's:
+                the `primary` mark (gold container, navy gate) with a white
+                wordmark — the same thing the app and admin sidebars render.
+                It used to be two static SVGs that swapped on scroll (bare gold
+                gate → bare navy gate, gold wordmark → navy wordmark), so a
+                visitor moving between the site and the product saw three
+                different marks for one brand.
+
+                This is why the pill below stays DARK when scrolled: the
+                wordmark is white in both states by design, so the surface
+                under it has to be. */}
+            <AvrentisLogo
+              size={scrolled ? 30 : 36}
+              variant="primary"
+              wordmarkColor="#ffffff"
+            />
           </Link>
 
           {/* ── Center nav links ──────────────────────────────────── */}
@@ -298,9 +265,7 @@ export function Navbar() {
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = scrolled
-                      ? "#0f172a"
-                      : "#ffffff";
+                    e.currentTarget.style.color = "#ffffff";
                 }}
               >
                 Product
@@ -492,9 +457,7 @@ export function Navbar() {
               }}
               onMouseLeave={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = scrolled
-                    ? "#0f172a"
-                    : "#ffffff";
+                  e.currentTarget.style.color = "#ffffff";
               }}
             >
               Pricing
@@ -580,7 +543,8 @@ export function Navbar() {
               padding: "8px",
             }}
           >
-            <Menu size={18} color="#64748b" strokeWidth={1.5} />
+            {/* White, not the old mid-grey: the bar is navy in both states now. */}
+            <Menu size={18} color="#ffffff" strokeWidth={1.5} />
           </button>
         </div>
       </nav>

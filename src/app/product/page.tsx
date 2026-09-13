@@ -11,7 +11,14 @@ import {
   Link2,
   type LucideIcon,
 } from "lucide-react";
-import { BRAND_COLORS, isModulePublic, PUBLIC_MODULE_COUNT, type ModuleKey } from "@/lib/brand";
+import {
+  BRAND_COLORS,
+  isModulePublic,
+  moduleSuite,
+  PUBLIC_MODULE_COUNT,
+  SUITES,
+  type ModuleKey,
+} from "@/lib/brand";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -285,114 +292,58 @@ export default function ProductOverviewPage() {
             Each module does one thing, precisely.
           </h2>
 
-          <div
-            style={{ display: "grid", gap: "20px" }}
-            className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          >
-            {MODULES.filter((mod) => isModulePublic(mod.slug as ModuleKey)).map((mod) => {
-              const Icon = mod.icon;
-              const badge = STATUS_BADGE[mod.status];
-              return (
-                <Link
-                  key={mod.slug}
-                  href={`/product/${mod.slug}`}
+          {SUITES.map((suite) => {
+            const modules = MODULES.filter(
+              (mod) =>
+                isModulePublic(mod.slug as ModuleKey) &&
+                moduleSuite(mod.slug as ModuleKey) === suite.key,
+            );
+            // A suite the site markets nothing in renders nothing — no heading
+            // over an empty row. (None today; true the day one is added.)
+            if (modules.length === 0) return null;
+            return (
+              <div key={suite.key} style={{ marginBottom: "56px" }}>
+                <h3
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "10px",
-                    padding: "28px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "14px",
-                    textDecoration: "none",
-                    transition: "border-color 200ms ease, transform 200ms ease",
+                    fontFamily: "var(--font-sans)",
+                    fontWeight: 600,
+                    fontSize: "20px",
+                    color: "#0f172a",
+                    margin: "0 0 4px",
+                    letterSpacing: "0.01em",
                   }}
-                  className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
                 >
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "6px",
-                        backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
-                    </div>
-                    <span
-                      style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "11px",
-                        fontWeight: 600,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
-                        color: badge.color,
-                        backgroundColor: badge.bg,
-                        borderRadius: "3px",
-                        padding: "3px 8px",
-                      }}
-                    >
-                      {badge.label}
-                    </span>
-                  </div>
-
-                  <div>
-                    <h3
-                      style={{
-                        fontFamily: "var(--font-sans)",
-                        fontWeight: 600,
-                        fontSize: "18px",
-                        color: "#0f172a",
-                        margin: "0 0 2px",
-                      }}
-                    >
-                      {mod.name}
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
-                        color: "var(--color-gold-on-light)",
-                        margin: 0,
-                        fontWeight: 500,
-                      }}
-                    >
-                      {mod.subtitle}
-                    </p>
-                  </div>
-
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
-                      color: "#64748b",
-                      lineHeight: 1.65,
-                      margin: 0,
-                      flex: 1,
-                    }}
-                  >
-                    {mod.body}
-                  </p>
-
-                  <span
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "13px",
-                      fontWeight: 500,
-                      color: "#0f172a",
-                      marginTop: "4px",
-                    }}
-                  >
-                    Explore {mod.name.replace("Avrentis ", "")} →
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
+                  {suite.label}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans)",
+                    fontSize: "14px",
+                    color: "#64748b",
+                    margin: "0 0 20px",
+                    maxWidth: "560px",
+                  }}
+                >
+                  {suite.blurb}
+                </p>
+                {/* auto-fit, not a fixed 3-up: the suites hold three, two, two and
+                    one module, so a fixed three-column grid would leave Evidence
+                    two-thirds empty and Infrastructure a third full. auto-fit
+                    stretches whatever a suite has across the full width. */}
+                <div
+                  style={{
+                    display: "grid",
+                    gap: "20px",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                  }}
+                >
+                  {modules.map((mod) => (
+                    <ModuleCard key={mod.slug} mod={mod} />
+                  ))}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
@@ -508,5 +459,113 @@ export default function ProductOverviewPage() {
       <CtaBanner />
       <Footer />
     </>
+  );
+}
+
+/**
+ * One module card. Extracted when the grid became four suite sections — the
+ * card is identical in every suite, so it is a component rather than the same
+ * hundred lines repeated per bucket.
+ */
+function ModuleCard({ mod }: { mod: Module }) {
+  const Icon = mod.icon;
+  const badge = STATUS_BADGE[mod.status];
+  return (
+    <Link
+      href={`/product/${mod.slug}`}
+      style={{
+        backgroundColor: "#F8FAFC",
+        border: "1px solid #e2e8f0",
+        borderRadius: "10px",
+        padding: "28px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "14px",
+        textDecoration: "none",
+        transition: "border-color 200ms ease, transform 200ms ease",
+      }}
+      className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
+    >
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div
+          style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "6px",
+            backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+        </div>
+        <span
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "11px",
+            fontWeight: 600,
+            letterSpacing: "0.06em",
+            textTransform: "uppercase",
+            color: badge.color,
+            backgroundColor: badge.bg,
+            borderRadius: "3px",
+            padding: "3px 8px",
+          }}
+        >
+          {badge.label}
+        </span>
+      </div>
+
+      <div>
+        <h3
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontWeight: 600,
+            fontSize: "18px",
+            color: "#0f172a",
+            margin: "0 0 2px",
+          }}
+        >
+          {mod.name}
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--font-sans)",
+            fontSize: "12px",
+            color: "var(--color-gold-on-light)",
+            margin: 0,
+            fontWeight: 500,
+          }}
+        >
+          {mod.subtitle}
+        </p>
+      </div>
+
+      <p
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: "14px",
+          color: "#64748b",
+          lineHeight: 1.65,
+          margin: 0,
+          flex: 1,
+        }}
+      >
+        {mod.body}
+      </p>
+
+      <span
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: "13px",
+          fontWeight: 500,
+          color: "#0f172a",
+          marginTop: "4px",
+        }}
+      >
+        Explore {mod.name.replace("Avrentis ", "")} →
+      </span>
+    </Link>
   );
 }

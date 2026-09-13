@@ -45,6 +45,46 @@ export type ModuleKey =
 export type ModuleClassification = "core" | "universal" | "substrate" | "expansion";
 
 /**
+ * Product suite — the four buckets the modules are presented in, mirroring
+ * core's `ModuleSuite`. Unlike `classification` (which this site deliberately
+ * defines its OWN way, adding `universal`), a suite means exactly what core
+ * means by it, and `module-catalog-parity.test.ts` fails if the two disagree.
+ *
+ * Mirrored rather than imported so the runtime keeps consuming ONE slice of
+ * core — `core/brand` — as `RELEASING.md` describes. The parity test does the
+ * importing, so drift is caught at test time without widening what ships.
+ */
+export type ModuleSuite = "spend" | "oversight" | "evidence" | "infrastructure";
+
+/**
+ * Suite display order and the words the site uses for them. Core stores keys
+ * only and leaves the copy to each consumer; this is the marketing wording,
+ * which is why it is not identical to the product app's.
+ */
+export const SUITES: ReadonlyArray<{ key: ModuleSuite; label: string; blurb: string }> = [
+  {
+    key: "spend",
+    label: "Spend",
+    blurb: "Everything that asks for money to leave the organisation.",
+  },
+  {
+    key: "oversight",
+    label: "Oversight",
+    blurb: "Who may approve what — and the checks that catch the rules being worked around.",
+  },
+  {
+    key: "evidence",
+    label: "Evidence",
+    blurb: "The record of what happened, and the proof it was not altered.",
+  },
+  {
+    key: "infrastructure",
+    label: "Infrastructure",
+    blurb: "How Avrentis reaches your people and connects to your other systems.",
+  },
+];
+
+/**
  * Module brand names — kept consistent with the product app.
  * `key`/`slug` are the internal identifiers (decoupled from the brand name);
  * the URL slug stays the short key so existing `/product/<slug>` links and SEO
@@ -64,21 +104,23 @@ export const MODULES: Record<
     name: string;
     slug: ModuleKey;
     classification: ModuleClassification;
+    /** Presentation bucket — mirrors core's `suite`; `module-catalog-parity.test.ts` proves it. */
+    suite: ModuleSuite;
     publiclyVisible: boolean;
   }
 > = {
-  pay: { key: "pay", name: "Avrentis Payables", slug: "pay", classification: "core", publiclyVisible: true },
-  procure: { key: "procure", name: "Avrentis Procurement", slug: "procure", classification: "core", publiclyVisible: true },
-  vault: { key: "vault", name: "Avrentis Records", slug: "vault", classification: "core", publiclyVisible: true },
+  pay: { key: "pay", name: "Avrentis Payables", slug: "pay", classification: "core", suite: "spend", publiclyVisible: true },
+  procure: { key: "procure", name: "Avrentis Procurement", slug: "procure", classification: "core", suite: "spend", publiclyVisible: true },
+  vault: { key: "vault", name: "Avrentis Records", slug: "vault", classification: "core", suite: "evidence", publiclyVisible: true },
   // The approval engine every plan runs on. Documented publicly, never badged
   // per-plan — see `ModuleClassification` and `planAvailabilityFor`.
-  authority: { key: "authority", name: "Avrentis Authority", slug: "authority", classification: "universal", publiclyVisible: true },
-  audit: { key: "audit", name: "Avrentis Compliance", slug: "audit", classification: "substrate", publiclyVisible: true },
-  guard: { key: "guard", name: "Avrentis Guard", slug: "guard", classification: "expansion", publiclyVisible: true },
-  grants: { key: "grants", name: "Avrentis Grants", slug: "grants", classification: "expansion", publiclyVisible: true },
+  authority: { key: "authority", name: "Avrentis Authority", slug: "authority", classification: "universal", suite: "oversight", publiclyVisible: true },
+  audit: { key: "audit", name: "Avrentis Compliance", slug: "audit", classification: "substrate", suite: "evidence", publiclyVisible: true },
+  guard: { key: "guard", name: "Avrentis Guard", slug: "guard", classification: "expansion", suite: "oversight", publiclyVisible: true },
+  grants: { key: "grants", name: "Avrentis Grants", slug: "grants", classification: "expansion", suite: "spend", publiclyVisible: true },
   // GA but Enterprise-only and deliberately not led with → hidden from the marketing site.
-  people: { key: "people", name: "Avrentis Requests", slug: "people", classification: "expansion", publiclyVisible: false },
-  connect: { key: "connect", name: "Avrentis Integrations", slug: "connect", classification: "substrate", publiclyVisible: true },
+  people: { key: "people", name: "Avrentis Requests", slug: "people", classification: "expansion", suite: "spend", publiclyVisible: false },
+  connect: { key: "connect", name: "Avrentis Integrations", slug: "connect", classification: "substrate", suite: "infrastructure", publiclyVisible: true },
 } as const;
 
 /**
@@ -125,4 +167,14 @@ export const PUBLIC_MODULE_COUNT = publicModuleKeys().length;
 /** Convenience accessor for a module's locked brand name. */
 export function moduleName(key: ModuleKey): string {
   return MODULES[key].name;
+}
+
+/**
+ * The suite a module belongs to. Pages read THIS rather than carrying a suite on
+ * their own module lists — the product page already keeps its own copy for icons
+ * and marketing copy, and a second place to record the bucket is a second place
+ * for it to be wrong.
+ */
+export function moduleSuite(key: ModuleKey): ModuleSuite {
+  return MODULES[key].suite;
 }

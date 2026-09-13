@@ -3,25 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  CreditCard,
-  ShoppingCart,
-  Archive,
-  SlidersHorizontal,
-  ClipboardCheck,
-  Users,
-  Link2,
-  ChevronDown,
-  Menu,
-} from "lucide-react";
+import { ChevronDown, Menu, ArrowRight } from "lucide-react";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { AvrentisLogo } from "@/components/ui/logo";
-import {
-  BRAND,
-  BRAND_COLORS,
-  MODULES as PRODUCT_MODULES,
-  isModulePublic,
-} from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { SUITE_NAV } from "@/lib/product-suites";
 import { isLaunchVisible } from "@/lib/launch";
 import { LOGIN_URL } from "@/lib/platform";
 
@@ -31,58 +17,6 @@ const NAV_LINKS = [
   { label: "Product", href: "/product" },
   { label: "Customers", href: "/customers" },
   { label: "Pricing", href: "/pricing" },
-];
-
-const MODULES = [
-  {
-    key: PRODUCT_MODULES.pay.key,
-    name: PRODUCT_MODULES.pay.name,
-    desc: "Structured payment approvals",
-    href: `/product/${PRODUCT_MODULES.pay.slug}`,
-    icon: CreditCard,
-  },
-  {
-    key: PRODUCT_MODULES.procure.key,
-    name: PRODUCT_MODULES.procure.name,
-    desc: "Procurement on record",
-    href: `/product/${PRODUCT_MODULES.procure.slug}`,
-    icon: ShoppingCart,
-  },
-  {
-    key: PRODUCT_MODULES.vault.key,
-    name: PRODUCT_MODULES.vault.name,
-    desc: "Institutional memory",
-    href: `/product/${PRODUCT_MODULES.vault.slug}`,
-    icon: Archive,
-  },
-  {
-    key: PRODUCT_MODULES.authority.key,
-    name: PRODUCT_MODULES.authority.name,
-    desc: "Approval rules, enforced",
-    href: `/product/${PRODUCT_MODULES.authority.slug}`,
-    icon: SlidersHorizontal,
-  },
-  {
-    key: PRODUCT_MODULES.audit.key,
-    name: PRODUCT_MODULES.audit.name,
-    desc: "Compliance & accountability",
-    href: `/product/${PRODUCT_MODULES.audit.slug}`,
-    icon: ClipboardCheck,
-  },
-  {
-    key: PRODUCT_MODULES.people.key,
-    name: PRODUCT_MODULES.people.name,
-    desc: "Workforce structure",
-    href: `/product/${PRODUCT_MODULES.people.slug}`,
-    icon: Users,
-  },
-  {
-    key: PRODUCT_MODULES.connect.key,
-    name: PRODUCT_MODULES.connect.name,
-    desc: "External systems",
-    href: `/product/${PRODUCT_MODULES.connect.slug}`,
-    icon: Link2,
-  },
 ];
 
 const PLATFORM = [
@@ -309,7 +243,7 @@ export function Navbar() {
                         marginBottom: "12px",
                       }}
                     >
-                      Modules
+                      Suites
                     </div>
                     <div
                       style={{
@@ -318,75 +252,71 @@ export function Navbar() {
                         gap: "2px",
                       }}
                     >
-                      {MODULES.filter((mod) => isModulePublic(mod.key)).map(
-                        (mod) => {
-                          const Icon = mod.icon;
-                          return (
-                            <Link
-                              key={mod.href}
-                              href={mod.href}
-                              onClick={closeDropdownImmediate}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "12px",
-                                padding: "8px",
-                                borderRadius: "6px",
-                                textDecoration: "none",
-                                transition: "background-color 150ms ease",
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor =
-                                  "rgba(var(--color-gold-rgb), 0.06)";
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor =
-                                  "transparent";
-                              }}
-                            >
-                              <div
-                                style={{
-                                  width: "32px",
-                                  height: "32px",
-                                  borderRadius: "50%",
-                                  backgroundColor:
-                                    "rgba(var(--color-gold-rgb), 0.08)",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  flexShrink: 0,
-                                }}
-                              >
-                                <Icon size={16} color={BRAND_COLORS.gold} />
-                              </div>
-                              <div>
-                                <div
-                                  style={{
-                                    fontFamily: "var(--font-sans)",
-                                    fontWeight: 500,
-                                    fontSize: "14px",
-                                    color: "#ffffff",
-                                    lineHeight: 1.3,
-                                  }}
-                                >
-                                  {mod.name}
-                                </div>
-                                <div
-                                  style={{
-                                    fontFamily: "var(--font-sans)",
-                                    fontWeight: 400,
-                                    fontSize: "12px",
-                                    color: "#64748b",
-                                    lineHeight: 1.3,
-                                  }}
-                                >
-                                  {mod.desc}
-                                </div>
-                              </div>
-                            </Link>
-                          );
-                        },
-                      )}
+                      {SUITE_NAV.map((suite) => (
+                        <Link
+                          key={suite.href}
+                          href={suite.href}
+                          onClick={closeDropdownImmediate}
+                          style={{
+                            display: "block",
+                            padding: "10px 8px",
+                            borderRadius: "6px",
+                            textDecoration: "none",
+                            transition: "background-color 150ms ease",
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor =
+                              "rgba(var(--color-gold-rgb), 0.06)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                          }}
+                        >
+                          <div
+                            style={{
+                              fontFamily: "var(--font-sans)",
+                              fontWeight: 500,
+                              fontSize: "14px",
+                              color: "#ffffff",
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            {suite.label}
+                          </div>
+                          <div
+                            style={{
+                              fontFamily: "var(--font-sans)",
+                              fontWeight: 400,
+                              fontSize: "12px",
+                              color: "#64748b",
+                              lineHeight: 1.4,
+                            }}
+                          >
+                            {suite.desc}
+                          </div>
+                        </Link>
+                      ))}
+                      {/* The module index is still one click away: the suites
+                          group the catalogue, they do not hide it. */}
+                      <Link
+                        href="/product"
+                        onClick={closeDropdownImmediate}
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          marginTop: "8px",
+                          padding: "8px",
+                          fontFamily: "var(--font-sans)",
+                          fontSize: "13px",
+                          fontWeight: 500,
+                          color: "var(--color-gold)",
+                          textDecoration: "none",
+                        }}
+                      >
+                        All modules
+                        <ArrowRight size={14} aria-hidden="true" />
+                      </Link>
                     </div>
                   </div>
 

@@ -79,8 +79,15 @@ export function Navbar() {
       fontFamily: "var(--font-sans)",
       fontWeight: 400,
       fontSize: "14px",
-      // White in both states: the pill is navy whether scrolled or not.
-      color: active ? "var(--color-gold)" : "#ffffff",
+      color: active
+        ? // Plain gold is a dark-surface colour; on the cream pill it needs the
+          // on-light token to stay legible.
+          scrolled
+          ? "var(--color-gold-on-light)"
+          : "var(--color-gold)"
+        : scrolled
+          ? "#0f172a"
+          : "#ffffff",
       textDecoration: "none",
       transition: "color 150ms ease",
       borderBottom: active
@@ -123,19 +130,18 @@ export function Navbar() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            // Frosted NAVY pill at 0.94, not the cream one it used to be. The
-            // alpha is high on purpose: at 0.85 the light page behind it lifted
-            // the pill to slate, which no longer read as the product's navy
-            // chrome — the whole point of the change. The lockup
-            // carries a white wordmark in both scroll states (matching the
-            // product), and white on cream is unreadable — so the pill follows
-            // the logo rather than the logo following the pill.
-            backgroundColor: scrolled ? "rgba(15, 23, 42, 0.94)" : "transparent",
+            // Frosted CREAM pill when scrolled, transparent over the navy bar
+            // at the top. The MARK is the platform's in both states; the text
+            // beside it is not, and cannot be: white on cream is unreadable, so
+            // the wordmark, the links and the menu button all follow the surface
+            // they sit on. The mark is what carries the brand; the word next to
+            // it only has to be legible.
+            backgroundColor: scrolled ? "rgba(247, 246, 242, 0.9)" : "transparent",
             backdropFilter: scrolled ? "blur(12px)" : "none",
             WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
             borderRadius: scrolled ? "9999px" : "0",
             border: scrolled
-              ? "1px solid rgba(var(--color-gold-rgb), 0.2)"
+              ? "1px solid rgba(15, 23, 42, 0.08)"
               : "1px solid transparent",
             boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.28)" : "none",
             transition:
@@ -144,21 +150,22 @@ export function Navbar() {
         >
           {/* ── Logo ──────────────────────────────────────────────── */}
           <Link href="/" aria-label={`${BRAND.name} home`}>
-            {/* ONE lockup, both scroll states, identical to the platform's:
-                the `primary` mark (gold container, navy gate) with a white
-                wordmark — the same thing the app and admin sidebars render.
-                It used to be two static SVGs that swapped on scroll (bare gold
-                gate → bare navy gate, gold wordmark → navy wordmark), so a
-                visitor moving between the site and the product saw three
-                different marks for one brand.
+            {/* The MARK is the platform's `primary` lockup — gold container,
+                navy gate — in both scroll states, the same thing the app and
+                admin sidebars render. It used to be two static SVGs that swapped
+                on scroll (bare gold gate → bare navy gate), so a visitor moving
+                between the site and the product saw three different marks for
+                one brand.
 
-                This is why the pill below stays DARK when scrolled: the
-                wordmark is white in both states by design, so the surface
-                under it has to be. */}
+                The WORDMARK is the one piece that cannot be fixed: it is plain
+                text, and the bar it sits on is navy at the top of the page and
+                cream once scrolled. White on cream is unreadable, so it takes
+                the readable colour for its surface. The gold-on-navy container
+                carries the brand either way. */}
             <AvrentisLogo
               size={scrolled ? 30 : 36}
               variant="primary"
-              wordmarkColor="#ffffff"
+              wordmarkColor={scrolled ? "#0f172a" : "#ffffff"}
             />
           </Link>
 
@@ -195,11 +202,13 @@ export function Navbar() {
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = "var(--color-gold)";
+                    e.currentTarget.style.color = scrolled
+                      ? "var(--color-gold-on-light)"
+                      : "var(--color-gold)";
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = "#ffffff";
+                    e.currentTarget.style.color = scrolled ? "#0f172a" : "#ffffff";
                 }}
               >
                 Product
@@ -383,11 +392,13 @@ export function Navbar() {
               style={activeLinkStyle("/pricing")}
               onMouseEnter={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = "var(--color-gold)";
+                  e.currentTarget.style.color = scrolled
+                    ? "var(--color-gold-on-light)"
+                    : "var(--color-gold)";
               }}
               onMouseLeave={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = "#ffffff";
+                  e.currentTarget.style.color = scrolled ? "#0f172a" : "#ffffff";
               }}
             >
               Pricing
@@ -473,8 +484,8 @@ export function Navbar() {
               padding: "8px",
             }}
           >
-            {/* White, not the old mid-grey: the bar is navy in both states now. */}
-            <Menu size={18} color="#ffffff" strokeWidth={1.5} />
+            {/* Follows the bar it sits on, like the links beside it. */}
+            <Menu size={18} color={scrolled ? "#0f172a" : "#ffffff"} strokeWidth={1.5} />
           </button>
         </div>
       </nav>

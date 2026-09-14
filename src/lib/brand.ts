@@ -161,9 +161,6 @@ export function isModulePublic(key: string): boolean {
   return MODULES[key as ModuleKey]?.publiclyVisible ?? false;
 }
 
-/** Count of customer-facing modules (currently 8; Requests is hidden). */
-export const PUBLIC_MODULE_COUNT = publicModuleKeys().length;
-
 /** Convenience accessor for a module's locked brand name. */
 export function moduleName(key: ModuleKey): string {
   return MODULES[key].name;

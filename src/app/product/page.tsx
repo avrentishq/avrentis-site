@@ -15,7 +15,6 @@ import {
   BRAND_COLORS,
   isModulePublic,
   moduleSuite,
-  PUBLIC_MODULE_COUNT,
   SUITES,
   type ModuleKey,
 } from "@/lib/brand";
@@ -28,12 +27,14 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ModuleStatus } from "@/components/product/module-layout";
 
 export const metadata: Metadata = {
-  title: `The Avrentis platform — ${PUBLIC_MODULE_COUNT} modules, one system of record`,
-  description: `Avrentis structures how your organisation makes decisions across payments, procurement, documents, compliance, fraud detection, grants, and integrations. ${PUBLIC_MODULE_COUNT} modules, one approval engine, one permanent record.`,
+  title: "The Avrentis platform — spend, oversight, evidence, on one record",
+  description:
+    "Avrentis structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one permanent record.",
   alternates: { canonical: "/product" },
   openGraph: {
-    title: `The Avrentis platform — ${PUBLIC_MODULE_COUNT} modules, one system of record`,
-    description: `${PUBLIC_MODULE_COUNT} modules share one approval engine and one permanent record. Payables, Procurement, Records, Compliance, Guard, Grants, Integrations.`,
+    title: "The Avrentis platform — spend, oversight, evidence, on one record",
+    description:
+      "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one permanent record.",
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -199,7 +200,8 @@ export default function ProductOverviewPage() {
             }}
             className="lg:!text-[52px]"
           >
-            {PUBLIC_MODULE_COUNT} modules. One approval engine. One permanent record.
+            Spend, oversight, evidence. One approval engine. One permanent
+            record.
           </h1>
           <p
             style={{
@@ -274,7 +276,7 @@ export default function ProductOverviewPage() {
               marginBottom: "12px",
             }}
           >
-            THE MODULES
+            THE FOUR SUITES
           </span>
           <h2
             style={{
@@ -289,7 +291,7 @@ export default function ProductOverviewPage() {
             }}
             className="lg:!text-[38px]"
           >
-            Each module does one thing, precisely.
+            Four suites. Each module in them does one thing, precisely.
           </h2>
 
           {SUITES.map((suite) => {

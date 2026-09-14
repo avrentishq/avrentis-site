@@ -2,15 +2,19 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND, MODULES, moduleName, publicModuleKeys } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { SUITE_NAV } from "@/lib/product-suites";
 import { isLaunchVisible } from "@/lib/launch";
 import { LOGIN_URL } from "@/lib/platform";
 
-// Derived from the brand SSOT — excludes not-yet-public modules (Requests) automatically.
-const PRODUCT_LINKS = publicModuleKeys().map((key) => ({
-  label: moduleName(key),
-  href: `/product/${MODULES[key].slug}`,
-}));
+// The PRODUCT column lists the four SUITES, not the eight modules — the same
+// grouping the navbar uses. Every module page stays one click further on (from
+// its suite page, or from the module index this column ends with), and stays in
+// the sitemap. Derived from the brand SSOT, so a suite added there appears here.
+const PRODUCT_LINKS = [
+  ...SUITE_NAV.map((suite) => ({ label: suite.label, href: suite.href })),
+  { label: "All modules", href: "/product" },
+];
 
 const PLATFORM_LINKS = [
   { label: "How it works", href: "/product/how-it-works" },
@@ -114,7 +118,9 @@ export function Footer() {
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            <AvrentisLogo variant="transparent-gold" size={28} wordmarkColor="var(--color-gold)" />
+            {/* The platform lockup: gold container, navy gate, white wordmark.
+                Was a bare gold gate with a gold wordmark. */}
+            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
             <span
               style={{
                 fontFamily: "var(--font-mono)",

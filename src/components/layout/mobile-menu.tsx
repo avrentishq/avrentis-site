@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BRAND_COLORS, moduleName, publicModuleKeys, MODULES } from "@/lib/brand";
+import { BRAND_COLORS } from "@/lib/brand";
+import { SUITE_NAV } from "@/lib/product-suites";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { isLaunchVisible } from "@/lib/launch";
 
@@ -17,10 +18,12 @@ interface MobileMenuProps {
 }
 
 // Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
-const PRODUCT_MODULES = publicModuleKeys().map((key) => ({
-  name: moduleName(key),
-  href: `/product/${MODULES[key].slug}`,
-}));
+// Suites, not modules — mirroring the desktop dropdown. "All modules" keeps
+// the full catalogue one tap away.
+const PRODUCT_SUITES = [
+  ...SUITE_NAV.map((suite) => ({ name: suite.label, href: suite.href })),
+  { name: "All modules", href: "/product" },
+];
 
 const PRODUCT_PLATFORM = [
   { name: "How it works", href: "/product/how-it-works" },
@@ -112,7 +115,7 @@ export function MobileMenu({
               flexShrink: 0,
             }}
           >
-            <AvrentisLogo size={28} variant="transparent-gold" wordmarkColor="#ffffff" />
+            <AvrentisLogo size={28} variant="primary" wordmarkColor="#ffffff" />
             <button
               ref={closeBtnRef}
               onClick={onClose}
@@ -157,7 +160,7 @@ export function MobileMenu({
 
               {/* Module links */}
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                {PRODUCT_MODULES.map((mod) => (
+                {PRODUCT_SUITES.map((mod) => (
                   <Link
                     key={mod.href}
                     href={mod.href}

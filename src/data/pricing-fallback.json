@@ -442,11 +442,18 @@
     "connect",
     "grants"
   ],
+  "suiteOrder": [
+    "spend",
+    "oversight",
+    "evidence",
+    "infrastructure"
+  ],
   "modules": {
     "pay": {
       "name": "Avrentis Payables",
       "sidebarLabel": "Payables",
       "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank.",
+      "suite": "spend",
       "features": [
         "pdfExport",
         "bankExport",
@@ -458,6 +465,7 @@
       "name": "Avrentis Procurement",
       "sidebarLabel": "Procurement",
       "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine.",
+      "suite": "spend",
       "features": [
         "documentAttachments",
         "vendorCompliance",
@@ -469,6 +477,7 @@
       "name": "Avrentis Records",
       "sidebarLabel": "Records",
       "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place.",
+      "suite": "evidence",
       "features": [
         "documentAttachments",
         "csvExport"
@@ -478,6 +487,7 @@
       "name": "Avrentis Compliance",
       "sidebarLabel": "Compliance",
       "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces",
+      "suite": "evidence",
       "features": [
         "fullAuditTrail",
         "fullAuditExport",
@@ -489,6 +499,7 @@
       "name": "Avrentis Guard",
       "sidebarLabel": "Guard",
       "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact.",
+      "suite": "oversight",
       "features": [
         "vendorRiskNetwork",
         "fraudTypologyLibrary"
@@ -498,12 +509,14 @@
       "name": "Avrentis Requests",
       "sidebarLabel": "Requests",
       "description": "Employee leave and expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow.",
+      "suite": "spend",
       "features": []
     },
     "connect": {
       "name": "Avrentis Integrations",
       "sidebarLabel": "Integrations",
       "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems connect through that API, webhooks, or CSV export — named connectors are delivered on request.",
+      "suite": "infrastructure",
       "features": [
         "apiAccess",
         "erpSync"
@@ -517,6 +530,7 @@
       ],
       "sidebarLabel": "Grants",
       "description": "Donor grant and restricted-fund tracking — allocate budgets per grant and tag spend against them for donor-ready reporting.",
+      "suite": "spend",
       "features": []
     }
   },

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { isLaunchVisible } from "@/lib/launch";
-import { publicModuleKeys, MODULES } from "@/lib/brand";
+import { publicModuleKeys, MODULES, SUITES } from "@/lib/brand";
 
 const BASE_URL = "https://avrentis.com";
 
@@ -43,9 +43,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (key) => `/product/${MODULES[key].slug}`,
   );
 
+  // Suite pages are derived too, so a fifth suite is indexed the moment it has
+  // a page rather than whenever somebody remembers this file.
+  const suiteRoutes = SUITES.map((suite) => `/product/${suite.key}`);
+
   const lastModified = new Date();
 
-  return [...staticRoutes, ...moduleRoutes]
+  return [...staticRoutes, ...suiteRoutes, ...moduleRoutes]
     .filter(isLaunchVisible)
     .map((path) => ({
       url: `${BASE_URL}${path === "/" ? "" : path}`,

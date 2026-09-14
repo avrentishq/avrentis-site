@@ -73,25 +73,43 @@ export function Navbar() {
     return pathname === href;
   };
 
+  /**
+   * The bar's surface, defined ONCE and consumed by both the pill and the
+   * dropdown that hangs off it — the dropdown is part of the bar, so it must
+   * never be styled independently of it. Two literals in two places is exactly
+   * how a navy panel ended up hanging off a cream pill.
+   *
+   * `onLight` then drives every foreground in the bar: white on the navy top
+   * state, navy on the cream scrolled state. Gold follows the same rule through
+   * its own on-light token, because plain gold is a dark-surface colour.
+   */
+  const onLight = scrolled;
+  const barSurface = {
+    background: onLight ? "rgba(247, 246, 242, 0.9)" : "#0f172a",
+    // The SAME colour, opaque. The bar is a thin strip, so 0.9 + blur reads as
+    // frosted glass; the dropdown is a 520px panel over body copy, and at the
+    // same alpha the page showed straight through it — headings behind the menu
+    // were legible through the menu. Matching the bar means matching its colour,
+    // not inheriting a transparency that only works on a strip.
+    panel: onLight ? "#f7f6f2" : "#0f172a",
+    blur: "blur(12px)",
+    border: onLight ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(var(--color-gold-rgb), 0.15)",
+    text: onLight ? "#0f172a" : "#ffffff",
+    mutedText: onLight ? "#475569" : "#64748b",
+    accent: onLight ? "var(--color-gold-on-light)" : "var(--color-gold)",
+  };
+
   const activeLinkStyle = (href: string): React.CSSProperties => {
     const active = isActive(href);
     return {
       fontFamily: "var(--font-sans)",
       fontWeight: 400,
       fontSize: "14px",
-      color: active
-        ? // Plain gold is a dark-surface colour; on the cream pill it needs the
-          // on-light token to stay legible.
-          scrolled
-          ? "var(--color-gold-on-light)"
-          : "var(--color-gold)"
-        : scrolled
-          ? "#0f172a"
-          : "#ffffff",
+      color: active ? barSurface.accent : barSurface.text,
       textDecoration: "none",
       transition: "color 150ms ease",
       borderBottom: active
-        ? "2px solid var(--color-gold)"
+        ? `2px solid ${barSurface.accent}`
         : "2px solid transparent",
       paddingBottom: "2px",
     };
@@ -111,7 +129,7 @@ export function Navbar() {
           justifyContent: "center",
           // Transparent when scrolled so the inner container reads as a floating
           // pill; solid navy at the top so it stays legible over any page.
-          backgroundColor: scrolled ? "transparent" : "#0f172a",
+          backgroundColor: scrolled ? "transparent" : barSurface.background,
           borderBottom: scrolled
             ? "0.5px solid transparent"
             : "0.5px solid rgba(var(--color-gold-rgb), 0.2)",
@@ -136,13 +154,14 @@ export function Navbar() {
             // the wordmark, the links and the menu button all follow the surface
             // they sit on. The mark is what carries the brand; the word next to
             // it only has to be legible.
-            backgroundColor: scrolled ? "rgba(247, 246, 242, 0.9)" : "transparent",
-            backdropFilter: scrolled ? "blur(12px)" : "none",
-            WebkitBackdropFilter: scrolled ? "blur(12px)" : "none",
+            // Transparent at the top because the nav bar behind it is already
+            // `barSurface.background`; the pill only paints its own surface once
+            // it detaches on scroll.
+            backgroundColor: scrolled ? barSurface.background : "transparent",
+            backdropFilter: scrolled ? barSurface.blur : "none",
+            WebkitBackdropFilter: scrolled ? barSurface.blur : "none",
             borderRadius: scrolled ? "9999px" : "0",
-            border: scrolled
-              ? "1px solid rgba(15, 23, 42, 0.08)"
-              : "1px solid transparent",
+            border: scrolled ? barSurface.border : "1px solid transparent",
             boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.28)" : "none",
             transition:
               "max-width 300ms ease, height 300ms ease, padding 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, border-radius 300ms ease",
@@ -165,7 +184,7 @@ export function Navbar() {
             <AvrentisLogo
               size={scrolled ? 30 : 36}
               variant="primary"
-              wordmarkColor={scrolled ? "#0f172a" : "#ffffff"}
+              wordmarkColor={barSurface.text}
             />
           </Link>
 
@@ -202,13 +221,11 @@ export function Navbar() {
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = scrolled
-                      ? "var(--color-gold-on-light)"
-                      : "var(--color-gold)";
+                    e.currentTarget.style.color = barSurface.accent;
                 }}
                 onMouseLeave={(e) => {
                   if (!isActive("/product"))
-                    e.currentTarget.style.color = scrolled ? "#0f172a" : "#ffffff";
+                    e.currentTarget.style.color = barSurface.text;
                 }}
               >
                 Product
@@ -229,11 +246,14 @@ export function Navbar() {
                     top: "calc(100% + 12px)",
                     left: "-16px",
                     width: "520px",
-                    backgroundColor: "#0f172a",
-                    border: "1px solid rgba(var(--color-gold-rgb), 0.15)",
+                    // Matches the bar it hangs off, in both states.
+                    backgroundColor: barSurface.panel,
+                    border: barSurface.border,
                     borderRadius: "8px",
                     padding: "24px",
-                    boxShadow: "0 16px 40px rgba(0,0,0,0.3)",
+                    boxShadow: onLight
+                      ? "0 16px 40px rgba(15,23,42,0.14)"
+                      : "0 16px 40px rgba(0,0,0,0.3)",
                     display: "flex",
                     gap: "24px",
                     zIndex: 100,
@@ -246,7 +266,7 @@ export function Navbar() {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "10px",
-                        color: "var(--color-gold)",
+                        color: barSurface.accent,
                         textTransform: "uppercase",
                         letterSpacing: "0.10em",
                         marginBottom: "12px",
@@ -286,7 +306,7 @@ export function Navbar() {
                               fontFamily: "var(--font-sans)",
                               fontWeight: 500,
                               fontSize: "14px",
-                              color: "#ffffff",
+                              color: barSurface.text,
                               lineHeight: 1.3,
                             }}
                           >
@@ -297,7 +317,7 @@ export function Navbar() {
                               fontFamily: "var(--font-sans)",
                               fontWeight: 400,
                               fontSize: "12px",
-                              color: "#64748b",
+                              color: barSurface.mutedText,
                               lineHeight: 1.4,
                             }}
                           >
@@ -319,7 +339,7 @@ export function Navbar() {
                           fontFamily: "var(--font-sans)",
                           fontSize: "13px",
                           fontWeight: 500,
-                          color: "var(--color-gold)",
+                          color: barSurface.accent,
                           textDecoration: "none",
                         }}
                       >
@@ -336,7 +356,7 @@ export function Navbar() {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "10px",
-                        color: "var(--color-gold)",
+                        color: barSurface.accent,
                         textTransform: "uppercase",
                         letterSpacing: "0.10em",
                         marginBottom: "12px",
@@ -362,7 +382,7 @@ export function Navbar() {
                             fontFamily: "var(--font-sans)",
                             fontWeight: 400,
                             fontSize: "14px",
-                            color: "#ffffff",
+                            color: barSurface.text,
                             textDecoration: "none",
                             padding: "8px",
                             borderRadius: "6px",
@@ -392,13 +412,11 @@ export function Navbar() {
               style={activeLinkStyle("/pricing")}
               onMouseEnter={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = scrolled
-                    ? "var(--color-gold-on-light)"
-                    : "var(--color-gold)";
+                  e.currentTarget.style.color = barSurface.accent;
               }}
               onMouseLeave={(e) => {
                 if (!isActive("/pricing"))
-                  e.currentTarget.style.color = scrolled ? "#0f172a" : "#ffffff";
+                  e.currentTarget.style.color = barSurface.text;
               }}
             >
               Pricing
@@ -485,7 +503,7 @@ export function Navbar() {
             }}
           >
             {/* Follows the bar it sits on, like the links beside it. */}
-            <Menu size={18} color={scrolled ? "#0f172a" : "#ffffff"} strokeWidth={1.5} />
+            <Menu size={18} color={barSurface.text} strokeWidth={1.5} />
           </button>
         </div>
       </nav>

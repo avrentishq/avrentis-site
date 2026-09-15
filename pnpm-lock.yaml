@@ -45,8 +45,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.206.0
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#ea0eef1b104f4fa93440f0534dd275688ec40136(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
+        specifier: github:avrentishq/avrentis-core#v0.207.0
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#1574d9c1bc155872bae69e746da856faf10a5ddf(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -112,9 +112,9 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#ea0eef1b104f4fa93440f0534dd275688ec40136':
-    resolution: {commit: ea0eef1b104f4fa93440f0534dd275688ec40136, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.206.0
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#1574d9c1bc155872bae69e746da856faf10a5ddf':
+    resolution: {commit: 1574d9c1bc155872bae69e746da856faf10a5ddf, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.207.0
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -2448,7 +2448,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#ea0eef1b104f4fa93440f0534dd275688ec40136(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#1574d9c1bc155872bae69e746da856faf10a5ddf(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
     dependencies:
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0

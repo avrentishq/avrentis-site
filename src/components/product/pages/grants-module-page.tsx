@@ -1,6 +1,6 @@
 "use client";
 
-import { Wallet, Gauge, Share2, FileText } from "lucide-react";
+import { Wallet, Gauge, Share2, FileText, Banknote, CalendarClock } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { GrantsPreview } from "@/components/product/previews/grants-preview";
@@ -33,6 +33,18 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       title: "Sub-grantee oversight",
       body:
         "Money passed to partner organisations is tracked against the parent grant, with a hard cap so a sub-grant can't exceed what the grant holds. Disbursements to a partner are traceable end to end.",
+    },
+    {
+      icon: Banknote,
+      title: "Receipts and cash position",
+      body:
+        "Record each tranche the donor actually sends — what left them, what landed, and the rate the two imply. The award then answers what has been received, what is still to come, and whether the programme is spending ahead of the money.",
+    },
+    {
+      icon: CalendarClock,
+      title: "Reporting calendar",
+      body:
+        "Every reporting obligation carries its period and its due date, settled once when it is sent or waived. A nightly sweep reminds the finance team a week out and once when the date passes — not every night, which is how a reminder becomes noise.",
     },
     {
       icon: FileText,

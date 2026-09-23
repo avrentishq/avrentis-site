@@ -122,9 +122,12 @@ const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
     business: "All rule-based flags and the review queue",
   },
   grants: {
+    // No enterprise line. Sub-grantee oversight is part of the module, and the
+    // module is Business+ in its entirety — "Adds sub-grantees at scale" sold
+    // an upgrade for something the Business buyer already has.
     starter: "From Business",
-    business: "Donors, grants, budget lines, burn and reports",
-    enterprise: "Adds sub-grantees at scale",
+    business:
+      "Donors, awards and budget lines, partner sub-awards, donor receipts and cash position, matching contributions, reporting deadlines and donor-ready reports",
   },
   people: {
     starter: "Enterprise tier only",

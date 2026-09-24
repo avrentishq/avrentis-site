@@ -73,7 +73,7 @@ const MODULES: Module[] = [
     name: "Avrentis Records",
     subtitle: "Financial records in one place",
     body:
-      "Every voucher and purchase order Avrentis generates — with its attachments and version history — in one tagged record, searchable by reference, vendor, amount, or date.",
+      "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history, findable by reference, payee, department, status or date.",
     icon: Archive,
     status: "available",
   },

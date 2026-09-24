@@ -1,48 +1,51 @@
 /**
- * VaultPreview — browser-frame for /product/vault. Shows a searchable
- * document list with categories and tags, matching how the real Records
- * module will surface documents once it ships.
+ * VaultPreview — browser-frame for /product/vault. Shows the Records list as
+ * it is in the product: every financial record of four types, filterable by
+ * type, with each record's supporting-file count and status.
  */
 
 import { FileText, Search } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 
 export function VaultPreview() {
+  // Shaped like the real Records list: one row per record (not per PDF), its
+  // type, how many supporting files it carries, and its status. Records has no
+  // tags and does not hold contracts or reports — the preview must not imply it.
   const documents = [
     {
-      name: "PV-2026-0184 · Brightpath Technologies.pdf",
-      category: "Payment Voucher",
-      tag: "Approved",
+      name: "PV-2026-0184 · Brightpath Technologies",
+      category: "Payment voucher",
+      files: "2 files",
+      tag: "Paid",
       tagColor: "#047857",
       tagBg: "rgba(4,120,87,0.08)",
-      size: "216 KB",
       added: "Today",
     },
     {
-      name: "Vendor contract — Greenfields Logistics.pdf",
-      category: "Contract",
-      tag: "Signed",
+      name: "INV-88213 · Greenfields Logistics",
+      category: "Supplier invoice",
+      files: "1 file",
+      tag: "Matched",
       tagColor: "#047857",
       tagBg: "rgba(4,120,87,0.08)",
-      size: "1.4 MB",
       added: "Yesterday",
     },
     {
-      name: "Q3 compliance report — auditor copy.pdf",
-      category: "Audit",
-      tag: "Archived",
+      name: "GRN-2026-0042 · Diesel supply",
+      category: "Goods receipt",
+      files: "3 files",
+      tag: "Received",
       tagColor: "#64748b",
       tagBg: "rgba(148,163,184,0.12)",
-      size: "842 KB",
       added: "2 days ago",
     },
     {
-      name: "PO-2026-0091 · Diesel supply.pdf",
-      category: "Purchase Order",
+      name: "PO-2026-0091 · Diesel supply",
+      category: "Purchase order",
+      files: "1 file",
       tag: "Issued",
       tagColor: "var(--color-gold)",
       tagBg: "rgba(var(--color-gold-rgb), 0.08)",
-      size: "304 KB",
       added: "3 days ago",
     },
   ];
@@ -64,13 +67,13 @@ export function VaultPreview() {
       >
         <Search size={14} strokeWidth={1.8} color="#94a3b8" aria-hidden="true" />
         <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#94a3b8" }}>
-          Search vouchers, contracts, reports…
+          Filter by reference, payee, department…
         </span>
       </div>
 
       {/* Category chips */}
       <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginBottom: "12px" }}>
-        {["All", "Payments", "Procurement", "Contracts", "Audit"].map((cat, i) => (
+        {["All", "Payment vouchers", "Purchase orders", "Goods receipts", "Supplier invoices"].map((cat, i) => (
           <span
             key={cat}
             style={{
@@ -138,7 +141,7 @@ export function VaultPreview() {
                 {doc.name}
               </p>
               <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
-                {doc.category} · {doc.size}
+                {doc.category} · {doc.files} · {doc.added}
               </p>
             </div>
             <span
@@ -154,23 +157,12 @@ export function VaultPreview() {
             >
               {doc.tag}
             </span>
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "11px",
-                color: "#64748b",
-                minWidth: "72px",
-                textAlign: "right",
-              }}
-            >
-              {doc.added}
-            </span>
           </div>
         ))}
       </div>
 
       <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#94a3b8", margin: "10px 0 0", textAlign: "right" }}>
-        Showing 4 of 1,284 documents
+        Showing 4 of 1,284 records
       </p>
     </div>
   );

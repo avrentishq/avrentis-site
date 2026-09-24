@@ -1,6 +1,6 @@
 "use client";
 
-import { Archive, Search, Tag, Share2, Gavel, CalendarClock, ShieldCheck } from "lucide-react";
+import { Archive, Search, FingerprintPattern, Share2, Gavel, CalendarClock, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
@@ -10,7 +10,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   eyebrow: MODULES.vault.name,
   headline: "Your financial records, in one place.",
   description:
-    "Every voucher and purchase order Avrentis generates — with its attachments and full version history — in one tagged, searchable record. Find any approved payment or PO by reference, vendor, amount, or date, long after the person who raised it has moved on.",
+    "Every payment voucher, purchase order, goods receipt and supplier invoice in one list, with the files, questions and submission history behind each. Find any of them by reference, payee, department, status or date, long after the person who raised it has moved on.",
   status: "available",
   previewUrl: "Avrentis / vault",
   preview: <VaultPreview />,
@@ -18,27 +18,27 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   pillars: [
     {
       icon: Archive,
-      title: "Every record stored automatically",
+      title: "Every record in one list, as soon as it is raised",
       body:
-        "Every PDF Avrentis generates — vouchers, POs, bank instructions — is stored here automatically, together with the receipts and attachments raised against it. Nothing sits in an inbox.",
+        "Vouchers, purchase orders, goods receipts and supplier invoices appear here the moment they are created in Payables or Procurement, with the files attached to them. Each person sees exactly the records they are allowed to see. The approved PDF and the bank letter are produced fresh from the record whenever they are opened, so they always match it.",
     },
     {
       icon: Search,
-      title: "Search across every record",
+      title: "Find any record without its reference number",
       body:
-        "Search by reference number, vendor name, amount, department, or date range. Find the voucher from March that paid Brightpath — without knowing its reference number.",
+        "Filter by reference, payee or vendor, record type, status, currency, department or date range. Find the voucher from March that paid Brightpath without knowing its number.",
     },
     {
-      icon: Tag,
-      title: "Structured categories and tags",
+      icon: FingerprintPattern,
+      title: "Supporting files that cannot be quietly swapped",
       body:
-        "Every record is categorised (Payment / Procurement) and taggable (signed, archived, under-review). Filter and group by any combination.",
+        "Every file is checked when it is uploaded, fingerprinted, and tied to the one record it was attached to. Once a record is under query, a file can be withdrawn but not deleted, so what the approver saw is still there to prove it.",
     },
     {
       icon: Share2,
-      title: "Full version history, on the audit trail",
+      title: "Version history, on the audit trail",
       body:
-        "Every record carries its version history, and every view, download, or edit is written to the immutable audit trail — who, what, and when.",
+        "Each submission and resubmission keeps a snapshot of the record, including the files it carried, so you can see what changed between versions. Every file opened and every PDF or bank letter produced is written to the tamper-evident audit trail: who, what and when.",
     },
     {
       icon: CalendarClock,
@@ -64,12 +64,12 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "Give an external auditor exactly what they need",
       body:
-        "Auditor asks for \"all Q3 approved vouchers.\" Filter by date and export the records with their attachments — exactly the period requested, nothing more.",
+        "Auditor asks for \"all Q3 approved vouchers.\" Filter by status and date and export the list as a spreadsheet: exactly the period requested, nothing more. Each record's files are one click away, and every one opened is on the audit trail.",
     },
     {
       title: "Find it in seconds, not hours",
       body:
-        "Reference numbers in old emails become live links. Historical vouchers and POs are one search away — even when the person who raised them has left the organisation.",
+        "Historical vouchers, purchase orders and invoices are one filter away, even when the person who raised them has left the organisation.",
     },
     {
       title: "Records that survive staff turnover",
@@ -89,9 +89,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every vault access + download logged to the audit trail" },
-    { slug: "pay", name: "Avrentis Payables", desc: "Every approved voucher lands in Records automatically" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "POs, vendor quotes, and delivery notes stored together" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Every file opened and every PDF produced is on the audit trail" },
+    { slug: "pay", name: "Avrentis Payables", desc: "Vouchers and supplier invoices appear in Records as they are raised" },
+    { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders and goods receipts in the same list" },
   ],
 };
 

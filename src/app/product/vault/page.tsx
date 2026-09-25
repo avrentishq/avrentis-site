@@ -6,12 +6,12 @@ import { planAvailabilityFor } from "@/lib/module-availability";
 export const metadata: Metadata = {
   title: "Avrentis Records — Institutional memory, searchable",
   description:
-    "Every approved document in one tagged, searchable repository. Replace scattered drives, physical files, and lost email attachments with a single source of truth for your organisation.",
+    "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history. Replace scattered drives, paper files and lost email attachments with one place to find what was approved.",
   alternates: { canonical: "/product/vault" },
   openGraph: {
     title: "Avrentis Records — Institutional memory, searchable",
     description:
-      "Centralised, tagged, searchable document repository. Every approved record — instantly retrievable, permanently preserved.",
+      "Every financial record in one list, with its files and history — findable in seconds and kept for at least seven years.",
     url: "https://avrentis.com/product/vault",
     type: "website",
   },

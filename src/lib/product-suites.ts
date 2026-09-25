@@ -178,7 +178,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
         icon: Archive,
         title: "Findable after the person has left",
         body:
-          "Records are tagged and searchable by reference, vendor, amount or date, with every version kept — so the answer does not leave when the person who raised it does.",
+          "Records can be found by reference, payee, department, status or date, with every submitted version kept, so the answer does not leave when the person who raised it does.",
       },
       {
         icon: ClipboardCheck,
@@ -192,7 +192,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
         icon: Archive,
         claim: "The documents themselves, with their history.",
         body:
-          "Every voucher and purchase order with its attachments and full submission history, in one tagged and searchable record — the working memory of what your organisation has actually approved.",
+          "Every voucher, purchase order, goods receipt and supplier invoice, with its files and full submission history, in one list: the working memory of what your organisation has actually approved.",
       },
       audit: {
         icon: ClipboardCheck,

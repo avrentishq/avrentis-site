@@ -151,7 +151,7 @@
         {
           "key": "guard",
           "name": "Avrentis Guard",
-          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact."
+          "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
         },
         {
           "key": "grants",
@@ -272,7 +272,7 @@
         {
           "key": "guard",
           "name": "Avrentis Guard",
-          "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact."
+          "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
         },
         {
           "key": "grants",
@@ -498,7 +498,7 @@
     "guard": {
       "name": "Avrentis Guard",
       "sidebarLabel": "Guard",
-      "description": "Real-time fraud and anomaly detection across the approval workflow — duplicate payments and invoices, vendor and beneficiary bank-detail changes, threshold gaming, denied-party matches, and non-compliant vendors surfaced as review flags. Separation of duties is enforced by the approval engine itself, not flagged after the fact.",
+      "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on.",
       "suite": "oversight",
       "features": [
         "vendorRiskNetwork",

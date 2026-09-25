@@ -47,7 +47,7 @@ const MODULE_CARDS: {
     key: "vault",
     icon: Archive,
     subtitle: "Institutional Memory",
-    body: "Every voucher and purchase order Avrentis generates — with its attachments and version history — in one tagged record, searchable by reference, vendor, amount, or date, and permanently preserved.",
+    body: "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history, findable by reference, payee, department, status or date, and kept for at least seven years.",
     status: "available",
   },
   {

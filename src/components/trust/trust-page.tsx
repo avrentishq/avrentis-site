@@ -741,7 +741,7 @@ export function TrustProductPage() {
             }}
             className="lg:!text-[38px]"
           >
-            Where your data lives — today and on the roadmap.
+            Where your data lives.
           </m.h2>
           <m.p
             variants={fadeUp}
@@ -763,7 +763,7 @@ export function TrustProductPage() {
             Here is the honest picture.
           </m.p>
 
-          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
             {[
               {
                 label: "Today · default",
@@ -776,12 +776,6 @@ export function TrustProductPage() {
                 title: "In-region / in-country hosting",
                 body:
                   "We can provision a dedicated infrastructure tier in another region as part of an enterprise engagement — useful when your policy, regulator, or customer contract mandates data remain in a specific jurisdiction.",
-              },
-              {
-                label: "Roadmap",
-                title: "Multi-region failover",
-                body:
-                  "Active-passive replication across regions with Customer-selectable primary and documented RPO/RTO. In scoping now; enterprise partners are helping us shape the requirements.",
               },
             ].map((r, i) => (
               <m.div

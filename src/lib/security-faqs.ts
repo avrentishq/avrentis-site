@@ -28,7 +28,7 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Where is our data hosted and can it stay in a specific region?",
-    a: "Today, the platform runs on managed infrastructure primarily hosted in the UK (London), with a global edge network in front. Dedicated in-country or in-region hosting is available on request as part of an enterprise engagement.",
+    a: "Today, the application and its database run in the UK (London). Document attachments and nightly encrypted backups are stored in the European Union. Email, background processing and notification delivery use providers outside the UK, and a global edge network sits in front. Dedicated in-country or in-region hosting is available on request as part of an enterprise engagement.",
   },
   {
     q: "Can we sign a Data Processing Agreement?",

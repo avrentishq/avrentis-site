@@ -10,7 +10,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   eyebrow: MODULES.audit.name,
   headline: "Compliance without the scramble.",
   description:
-    "Every submission, approval, query, signature, and access event — recorded to an immutable audit trail that no user, including superadmins, can modify. Export a regulator-ready bundle for any period, any entity, in one click.",
+    "Every submission, approval, query, signature, and access event — recorded to an immutable audit trail that no user, including superadmins, can modify. Export a regulator-ready bundle for any period up to a year, in one click.",
   status: "available",
   previewUrl: "Avrentis / audit",
   preview: <AuditPreview />,
@@ -26,19 +26,19 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: FileSearch,
       title: "Every action, structured",
       body:
-        "Each event carries actor, role, action code, entity reference, IP, user-agent, and a payload snapshot of the state-change. Filter by any combination. Investigate anything.",
+        "Each event carries actor, role, action code, entity reference, a masked IP address, user-agent, and a snapshot of what changed. Filter by any combination. Investigate anything.",
     },
     {
       icon: Download,
       title: "Regulator-ready PDF + CSV exports",
       body:
-        "Export a period-scoped audit bundle as a formatted PDF for auditors or a CSV for analysts. Every export itself is logged, so you always know which auditor received which snapshot.",
+        "Export a period-scoped bundle as a formatted PDF for auditors or one CSV per section for analysts, or deliver the trail to your SIEM every night. Every export is itself logged, so you always know who received which snapshot.",
     },
     {
       icon: ShieldCheck,
       title: "SOC2 + ISO 27001 aligned controls",
       body:
-        "Separation of duties, role-based access control, immutable trails, and time-bound access grants — all part of the platform architecture. No bolt-on compliance theatre.",
+        "Separation of duties enforced as work moves, with a report of every exception; access reviews and control sign-offs signed by a named officer and kept on the record; role-based access and time-bound grants. No bolt-on compliance theatre.",
     },
     {
       icon: UserSearch,

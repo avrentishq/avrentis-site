@@ -70,15 +70,19 @@ const FRAMEWORKS = [
 ];
 
 const SUBPROCESSOR_CATEGORIES = [
-  { purpose: "Managed PostgreSQL for application data", region: "United Kingdom" },
-  { purpose: "Application hosting and edge compute", region: "Global edge" },
-  { purpose: "CDN and object storage for document attachments", region: "Global" },
-  { purpose: "Managed Redis for sessions and rate-limiting", region: "UK / US" },
+  { purpose: "Managed PostgreSQL for application data", region: "United Kingdom (London)" },
+  { purpose: "Application hosting and compute", region: "United Kingdom (London)" },
+  { purpose: "Object storage for document attachments", region: "European Union" },
+  { purpose: "Content delivery network", region: "Global edge" },
+  { purpose: "Encrypted off-site backups", region: "European Union" },
+  { purpose: "Running the nightly backup job (briefly, before encryption)", region: "US" },
+  { purpose: "Managed Redis for sessions and rate-limiting", region: "United Kingdom (London)" },
+  { purpose: "Background job processing", region: "US" },
   { purpose: "Transactional email delivery", region: "US" },
   { purpose: "WhatsApp and SMS notification delivery", region: "Africa / international" },
   { purpose: "Payment processing (where enabled)", region: "Africa / international" },
   { purpose: "AI / large-language-model processing (where enabled, zero retention)", region: "US / EU" },
-  { purpose: "Error and performance monitoring", region: "US" },
+  { purpose: "Error and performance monitoring", region: "European Union" },
 ];
 
 const DOCUMENTS = [
@@ -115,7 +119,7 @@ const DOCUMENTS = [
   {
     icon: MapPin,
     title: "Data residency",
-    body: "Primary data in the UK (London) today. In-country/in-region hosting available as an enterprise engagement.",
+    body: "Primary data in the UK (London) today. Need it to stay in a specific country or region? Talk to us.",
     cta: { label: "Talk to us about residency", href: "/contact?intent=security" },
   },
 ];
@@ -737,7 +741,7 @@ export function TrustProductPage() {
             }}
             className="lg:!text-[38px]"
           >
-            Where your data lives — today and on the roadmap.
+            Where your data lives.
           </m.h2>
           <m.p
             variants={fadeUp}
@@ -759,25 +763,19 @@ export function TrustProductPage() {
             Here is the honest picture.
           </m.p>
 
-          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
             {[
               {
                 label: "Today · default",
                 title: "United Kingdom (London)",
                 body:
-                  "Primary application data and its backups are hosted in the UK (London region). Document attachments flow through an encrypted object-storage provider at the region configured for our infrastructure tier. The marketing site and edge compute run on a global edge network.",
+                  "Primary application data is hosted in the UK (London region). Document attachments are stored in the European Union, and nightly encrypted backups are kept with an independent provider in the European Union. Email, background processing and notification delivery use providers outside the UK — see the categories below. The marketing site runs on a global edge network.",
               },
               {
-                label: "Enterprise · on request",
-                title: "In-region / in-country hosting",
+                label: "Other regions",
+                title: "Need your data somewhere else?",
                 body:
-                  "We can provision a dedicated infrastructure tier in another region as part of an enterprise engagement — useful when your policy, regulator, or customer contract mandates data remain in a specific jurisdiction.",
-              },
-              {
-                label: "Roadmap",
-                title: "Multi-region failover",
-                body:
-                  "Active-passive replication across regions with Customer-selectable primary and documented RPO/RTO. In scoping now; enterprise partners are helping us shape the requirements.",
+                  "If your policy, regulator or customer contracts require your data to stay in a specific country or region, talk to us. We will tell you plainly what we can support today.",
               },
             ].map((r, i) => (
               <m.div

@@ -9,7 +9,7 @@
         "Unlimited documents",
         "Bank-ready exports (PDF & spreadsheet)",
         "WhatsApp & email alerts",
-        "10 GB storage · 1 year retention"
+        "10 GB storage · 7-year record retention"
       ],
       "selfServeCheckout": true,
       "pricing": [
@@ -28,11 +28,11 @@
         "maxUsers": 10,
         "maxDocumentsPerMonth": 0,
         "maxStorageBytes": 10737418240,
-        "documentRetentionDays": 365,
+        "documentRetentionDays": 2555,
         "maxUsersLabel": "Up to 10 users",
         "maxDocumentsPerMonthLabel": "Unlimited documents",
         "maxStorageBytesLabel": "10 GB storage",
-        "documentRetentionDaysLabel": "1 year retention"
+        "documentRetentionDaysLabel": "7 years retention"
       },
       "modules": [
         {
@@ -48,7 +48,7 @@
         {
           "key": "vault",
           "name": "Avrentis Records",
-          "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place."
+          "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history."
         }
       ],
       "features": {
@@ -101,7 +101,7 @@
         "Grant & restricted-fund tracking (Grants)",
         "Custom approval chains & branding",
         "Analytics, recurring templates, delegation",
-        "100 GB storage · 3 year retention",
+        "100 GB storage · 7-year record retention",
         "Priority support"
       ],
       "selfServeCheckout": true,
@@ -121,11 +121,11 @@
         "maxUsers": 50,
         "maxDocumentsPerMonth": 0,
         "maxStorageBytes": 107374182400,
-        "documentRetentionDays": 1095,
+        "documentRetentionDays": 2555,
         "maxUsersLabel": "Up to 50 users",
         "maxDocumentsPerMonthLabel": "Unlimited documents",
         "maxStorageBytesLabel": "100 GB storage",
-        "documentRetentionDaysLabel": "3 years retention"
+        "documentRetentionDaysLabel": "7 years retention"
       },
       "modules": [
         {
@@ -141,7 +141,7 @@
         {
           "key": "vault",
           "name": "Avrentis Records",
-          "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place."
+          "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history."
         },
         {
           "key": "audit",
@@ -252,7 +252,7 @@
         {
           "key": "vault",
           "name": "Avrentis Records",
-          "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place."
+          "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history."
         },
         {
           "key": "audit",
@@ -476,7 +476,7 @@
     "vault": {
       "name": "Avrentis Records",
       "sidebarLabel": "Records",
-      "description": "A unified record of your vouchers and purchase orders — supporting attachments and full submission version history in one place.",
+      "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history.",
       "suite": "evidence",
       "features": [
         "documentAttachments",

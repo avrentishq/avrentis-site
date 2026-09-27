@@ -228,8 +228,8 @@ const SECTIONS: LegalSection[] = [
           locked against deletion: daily copies are kept for 30 days and monthly copies for 12 months.
         </p>
         <p>
-          Dedicated in-country or in-region hosting is available as part of an enterprise engagement. Contact us if
-          data residency is a hard requirement for your organisation.
+          If your data must stay in a specific country or region, contact us and we will tell you plainly what we can
+          support today.
         </p>
       </>
     ),

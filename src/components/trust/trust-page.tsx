@@ -119,7 +119,7 @@ const DOCUMENTS = [
   {
     icon: MapPin,
     title: "Data residency",
-    body: "Primary data in the UK (London) today. In-country/in-region hosting available as an enterprise engagement.",
+    body: "Primary data in the UK (London) today. Need it to stay in a specific country or region? Talk to us.",
     cta: { label: "Talk to us about residency", href: "/contact?intent=security" },
   },
 ];
@@ -772,10 +772,10 @@ export function TrustProductPage() {
                   "Primary application data is hosted in the UK (London region). Document attachments are stored in the European Union, and nightly encrypted backups are kept with an independent provider in the European Union. Email, background processing and notification delivery use providers outside the UK — see the categories below. The marketing site runs on a global edge network.",
               },
               {
-                label: "Enterprise · on request",
-                title: "In-region / in-country hosting",
+                label: "Other regions",
+                title: "Need your data somewhere else?",
                 body:
-                  "We can provision a dedicated infrastructure tier in another region as part of an enterprise engagement — useful when your policy, regulator, or customer contract mandates data remain in a specific jurisdiction.",
+                  "If your policy, regulator or customer contracts require your data to stay in a specific country or region, talk to us. We will tell you plainly what we can support today.",
               },
             ].map((r, i) => (
               <m.div

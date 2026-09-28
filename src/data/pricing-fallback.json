@@ -146,7 +146,7 @@
         {
           "key": "audit",
           "name": "Avrentis Compliance",
-          "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+          "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes"
         },
         {
           "key": "guard",
@@ -257,7 +257,7 @@
         {
           "key": "audit",
           "name": "Avrentis Compliance",
-          "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces"
+          "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes"
         },
         {
           "key": "people",
@@ -486,7 +486,7 @@
     "audit": {
       "name": "Avrentis Compliance",
       "sidebarLabel": "Compliance",
-      "description": "Immutable audit trail, compliance reporting, activity timeline, DSAR handling, data-retention controls, regulatory-ready exports, SOC 2 evidence surfaces",
+      "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes",
       "suite": "evidence",
       "features": [
         "fullAuditTrail",

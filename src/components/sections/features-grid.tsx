@@ -76,7 +76,7 @@ const MODULE_CARDS: {
     key: "people",
     icon: Users,
     subtitle: "Employee Requests",
-    body: "Leave and expense requests routed through the same approval engine and audit trail as your payments — employee-initiated approvals, structured and on record.",
+    body: "Staff expense requests routed through the same approval engine and audit trail as your payments — employee-initiated approvals, structured and on record.",
     status: "available",
   },
   {

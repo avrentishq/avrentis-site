@@ -1,7 +1,7 @@
 /**
- * PeoplePreview — browser-frame for /product/people. Shows a leave
- * request review screen: employee info, leave window, reason, manager
- * approval panel. Mirrors how an HR approval will surface once HR ships.
+ * PeoplePreview — browser-frame for /product/people. Shows an expense
+ * claim review screen: employee info, category, amount, receipts, purpose,
+ * approver decision panel.
  */
 
 export function PeoplePreview() {
@@ -10,7 +10,7 @@ export function PeoplePreview() {
       {/* Reference + badges */}
       <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
         <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "#0f172a" }}>
-          LV-2026-0042
+          ER-2026-0042
         </span>
         <span
           style={{
@@ -25,7 +25,7 @@ export function PeoplePreview() {
             textTransform: "uppercase",
           }}
         >
-          LEAVE
+          EXPENSE
         </span>
         <span
           style={{
@@ -85,7 +85,7 @@ export function PeoplePreview() {
           </p>
         </div>
         <span style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "#64748b" }}>
-          Balance: 30 days
+          2 receipts
         </span>
       </div>
 
@@ -101,13 +101,13 @@ export function PeoplePreview() {
       >
         <div style={{ display: "grid", gridTemplateColumns: "90px 1fr", rowGap: "6px", fontFamily: "var(--font-sans)", fontSize: "11px" }}>
           <span style={{ color: "#64748b" }}>Type</span>
-          <span style={{ color: "#0f172a" }}>Annual leave</span>
-          <span style={{ color: "#64748b" }}>Dates</span>
-          <span style={{ color: "#0f172a", fontFeatureSettings: '"tnum" 1' }}>15 Dec — 22 Dec (6 working days)</span>
-          <span style={{ color: "#64748b" }}>Reason</span>
-          <span style={{ color: "#0f172a" }}>Year-end break with family</span>
-          <span style={{ color: "#64748b" }}>Cover</span>
-          <span style={{ color: "#0f172a" }}>Samuel Adeyemi (Operations)</span>
+          <span style={{ color: "#0f172a" }}>Travel</span>
+          <span style={{ color: "#64748b" }}>Amount</span>
+          <span style={{ color: "#0f172a", fontFeatureSettings: '"tnum" 1' }}>₦84,500</span>
+          <span style={{ color: "#64748b" }}>Purpose</span>
+          <span style={{ color: "#0f172a" }}>Client site visit, Abuja</span>
+          <span style={{ color: "#64748b" }}>Paid to</span>
+          <span style={{ color: "#0f172a" }}>Ifeoma Nwachukwu (employee payee)</span>
         </div>
       </div>
 

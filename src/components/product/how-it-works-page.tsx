@@ -47,7 +47,7 @@ const STAGES = [
     title: "Submit",
     subtitle: "Structured request, not an email.",
     icon: FileCheck,
-    body: "Any team member raises a payment voucher, purchase order, or leave request through a structured form — payee details, amount, purpose, department, cost code, supporting attachments. The form only accepts complete, valid information, so the person reviewing never has to chase details or send it back.",
+    body: "Any team member raises a payment voucher, purchase order, or expense claim through a structured form — payee details, amount, purpose, department, cost code, supporting attachments. The form only accepts complete, valid information, so the person reviewing never has to chase details or send it back.",
     bullets: [
       "Auto-saves as you go — no lost work if the browser closes unexpectedly",
       "Attach contracts, invoices, and quotes — all stored with the document permanently",

@@ -6,14 +6,14 @@ import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 
 export const metadata: Metadata = {
-  title: "Avrentis Requests — leave & expense approvals on the same rails",
+  title: "Avrentis Requests — staff expense approvals on the same rails",
   description:
-    "Leave requests and staff expense claims structured through the same approval engine and audit trail as your financial decisions. People requests, permanently on record.",
+    "Staff expense claims structured through the same approval engine and audit trail as your financial decisions. Every claim permanently on record.",
   alternates: { canonical: "/product/people" },
   openGraph: {
-    title: "Avrentis Requests — leave & expense approvals on the same rails",
+    title: "Avrentis Requests — staff expense approvals on the same rails",
     description:
-      "Leave and staff expense claims — structured, routed, and permanently on record.",
+      "Staff expense claims — structured, routed, and permanently on record.",
     url: "https://avrentis.com/product/people",
     type: "website",
   },

@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, Receipt, ShieldCheck } from "lucide-react";
+import { Receipt, ShieldCheck, Tags } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
@@ -8,20 +8,14 @@ import { PeoplePreview } from "@/components/product/previews/people-preview";
 const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "people",
   eyebrow: MODULES.people.name,
-  headline: "Leave and expense, on the same rails.",
+  headline: "Staff expenses, on the same rails as payments.",
   description:
-    "The approvals your organisation already runs for money — same engine, shaped for people requests. Leave requests and staff expense claims, structured, routed, and permanently on record.",
+    "The approvals your organisation already runs for money — same engine, shaped for staff expense claims. Structured, routed, reimbursed and permanently on record.",
   status: "available",
-  previewUrl: "Avrentis / requests / leave / LV-2026-0042",
+  previewUrl: "Avrentis / requests / expenses / ER-2026-0042",
   preview: <PeoplePreview />,
 
   pillars: [
-    {
-      icon: CalendarCheck,
-      title: "Leave requests, routed and on record",
-      body:
-        "Annual, sick, compassionate, and study leave — each on its own approval chain. Employees submit, managers approve, and the request, decision, and approver are permanently attributed.",
-    },
     {
       icon: Receipt,
       title: "Staff expense claims with receipts",
@@ -29,18 +23,24 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
         "Submit an expense claim with its receipts attached, route it through the same review-and-sanction chain as a payment, and settle it with a full audit trail behind every decision.",
     },
     {
+      icon: Tags,
+      title: "Your categories, your limits",
+      body:
+        "Define expense categories with their own receipt thresholds and approvers, and keep each employee's bank details on file as a payee — so a claim is paid to the right account without retyping it.",
+    },
+    {
       icon: ShieldCheck,
       title: "The same audit trail as your payments",
       body:
-        "Leave and expense decisions run on the same approval engine and immutable audit trail as your money — every request timestamped and attributed to a person, a time, and a decision.",
+        "Expense decisions run on the same approval engine and immutable audit trail as your money — every request timestamped and attributed to a person, a time, and a decision.",
     },
   ],
 
   useCases: [
     {
-      title: "End the \"did my leave get approved?\" thread",
+      title: "End the \"has my claim been approved?\" thread",
       body:
-        "Employees see the status of every request in real time — pending, approved, changes requested — with the manager's name and timestamp attached. No wondering, no chasing.",
+        "Employees see the status of every claim in real time — pending, approved, returned for changes, reimbursed — with the approver's name and timestamp attached. No wondering, no chasing.",
     },
     {
       title: "Staff expenses without the reimbursement chase",
@@ -50,14 +50,14 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "People approvals an auditor can trust",
       body:
-        "Leave and expense decisions are timestamped and attributed on the same immutable trail as payments — so an auditor sees the same completeness they get on your financial approvals.",
+        "Expense decisions are timestamped and attributed on the same immutable trail as payments — so an auditor sees the same completeness they get on your financial approvals.",
     },
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Compliance", desc: "Leave and expense events flow into the same immutable trail" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Expense events flow into the same immutable trail" },
     { slug: "pay", name: "Avrentis Payables", desc: "Expense approvals run on the same review-and-sanction rails as payments" },
-    { slug: "connect", name: "Avrentis Integrations", desc: "Emit leave and expense events to your payroll or HRIS via webhook" },
+    { slug: "connect", name: "Avrentis Integrations", desc: "Emit expense events to your accounting or payroll system via webhook" },
   ],
 };
 

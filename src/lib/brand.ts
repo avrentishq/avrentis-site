@@ -92,7 +92,7 @@ export const SUITES: ReadonlyArray<{ key: ModuleSuite; label: string; blurb: str
  *
  * `publiclyVisible` controls whether a module is shown publicly on the
  * marketing site. A module we choose not to lead with (currently Requests, the
- * employee leave/expense module — GA but Enterprise-only and deliberately not
+ * employee expense module — GA but Enterprise-only and deliberately not
  * marketed as a standalone product) is hidden everywhere — drive lists off
  * `publicModuleKeys()` so a hidden module never leaks, and it returns
  * automatically when this flag flips to `true`.

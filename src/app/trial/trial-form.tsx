@@ -27,7 +27,7 @@ import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
-import { COUNTRIES } from "@/data/countries";
+import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
 
@@ -483,7 +483,15 @@ export function TrialForm() {
               placeholder="Search for your country…"
               invalid={!!fieldErrors?.country}
             />
-            {fieldErrors?.country && <span style={errorStyle}>{fieldErrors.country}</span>}
+            {fieldErrors?.country ? (
+              <span style={errorStyle}>{fieldErrors.country}</span>
+            ) : countryValue ? (
+              <span style={hintStyle}>
+                {isServedCountry(countryValue)
+                  ? "Your currency, tax and bank-account formats are set up for this country."
+                  : "We don't set this country up automatically yet — our team will review your request and agree your setup with you."}
+              </span>
+            ) : null}
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>

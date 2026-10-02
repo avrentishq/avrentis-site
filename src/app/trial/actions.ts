@@ -22,6 +22,7 @@ import {
   type TrialResponsePayload,
 } from "./map-response";
 import { ORG_SIZES as SIZES } from "@/lib/org-size";
+import { isSelectableCountry } from "@/data/countries";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
@@ -85,6 +86,9 @@ export async function submitTrialRequest(
     fieldErrors.orgSize = "Please select your organisation size.";
   }
   if (!country) fieldErrors.country = "Please select your country.";
+  else if (!isSelectableCountry(country.toUpperCase())) {
+    fieldErrors.country = "Please choose your country from the list.";
+  }
   if (!consent) fieldErrors.consent = "We need your consent to process this request.";
 
   // Length bounds — mirror the platform's Zod limits so we fail fast and never

@@ -36,7 +36,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     },
     {
       icon: ShieldCheck,
-      title: "SOC2 + ISO 27001 aligned controls",
+      title: "Policies that follow SOC 2 structure",
       body:
         "Separation of duties enforced as work moves, with a report of every exception; access reviews and control sign-offs signed by a named officer and kept on the record; role-based access and time-bound grants. No bolt-on compliance theatre.",
     },

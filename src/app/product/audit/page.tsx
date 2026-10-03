@@ -6,7 +6,7 @@ import { planAvailabilityFor } from "@/lib/module-availability";
 export const metadata: Metadata = {
   title: "Avrentis Compliance — Compliance without the scramble",
   description:
-    "A tamper-evident, regulator-ready audit trail of every action in your organisation, sealed daily and verifiable without trusting us. Structured events, one-click exports, and SOC2-aligned controls baked into the platform.",
+    "A tamper-evident, regulator-ready audit trail of every action in your organisation, sealed daily and verifiable without trusting us. Structured events, one-click exports, and policies that follow SOC 2 structure.",
   alternates: { canonical: "/product/audit" },
   openGraph: {
     title: "Avrentis Compliance — Compliance without the scramble",

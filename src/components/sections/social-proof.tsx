@@ -22,7 +22,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Database,
     title: "Your data, isolated at the database",
-    body: "Postgres row-level security enforces tenant isolation in the database itself, not just the application layer. Your organisation's records stay yours.",
+    body: "Tenant isolation is enforced by the database itself, not just the application layer. Your organisation's records stay yours.",
   },
   {
     icon: Landmark,

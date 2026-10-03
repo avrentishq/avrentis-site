@@ -46,7 +46,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: ShieldCheck,
       title: "Separation of duties enforced",
       body:
-        "Built-in ABAC rules prevent submitters from approving their own requests and enforce department-scoped approval windows. Amount thresholds route high-value vouchers directly to the MD. Compliance is the default path.",
+        "Built-in rules prevent submitters from approving their own requests and enforce department-scoped approval windows. Amount thresholds route high-value vouchers directly to the MD. Compliance is the default path.",
     },
     {
       icon: Receipt,

@@ -6,7 +6,7 @@ import { isLaunchHidden } from "@/lib/launch";
 export const metadata: Metadata = {
   title: "Trust centre — Avrentis",
   description:
-    "Controls framework alignment, sub-processors, data residency, DPA on request, responsible disclosure. Everything a CISO, legal, or procurement reviewer needs to evaluate Avrentis — on one honest page.",
+    "Where we stand on SOC 2, sub-processors, data residency, DPA on request, responsible disclosure. Everything a CISO, legal, or procurement reviewer needs to evaluate Avrentis — on one honest page.",
   alternates: { canonical: "/trust" },
   openGraph: {
     title: "Avrentis trust centre",

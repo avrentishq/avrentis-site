@@ -98,8 +98,8 @@ const CATEGORIES: DocsCategory[] = [
       "Approvals, roles, queries, separation of duties — learn the vocabulary the platform is built around so the rest of the product reads quickly.",
     items: [
       {
-        title: "Roles, permissions, and ABAC",
-        body: "A fine-grained permission system with attribute-based overlays for department scope and amount thresholds.",
+        title: "Roles, permissions, and approval rules",
+        body: "A fine-grained permission system with extra rules for department scope and amount thresholds.",
         href: "/product/security",
         status: "live",
       },

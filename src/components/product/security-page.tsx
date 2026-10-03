@@ -7,9 +7,10 @@
  * language and motion spec as /product/how-it-works (dark hero, light
  * stack rows with browser-framed mockups, honest framing).
  *
- * Content is grounded in the platform's actual implementation: RLS,
- * RBAC/ABAC, Redis-backed session revocation, MFA, IP allowlist, SCIM,
- * tamper-evident audit trail. No certification claims — controls-aligned
+ * Content is grounded in the platform's actual implementation: database-
+ * enforced tenant isolation, role and request rules, session revocation, MFA,
+ * IP allowlist, SCIM,
+ * tamper-evident audit trail. No certification claims — "policies follow SOC 2 structure"
  * framing only, per the stated trust posture.
  */
 
@@ -78,13 +79,13 @@ const STACK = [
     title: "Isolation",
     subtitle: "Your data is yours — no other customer can ever see it. Enforced by the database itself, not just by the app.",
     body:
-      "Every tenant-scoped query runs inside a transactional context that sets a Postgres session variable. Row-level security policies on every table match on that variable before returning a row. Cross-tenant access is impossible by construction — a query that forgets the tenant context returns nothing rather than another tenant's rows.",
+      "Every request is tied to one organisation, and the database itself checks that each row it returns belongs to that organisation. The check fails closed: a request that is not tied to an organisation gets nothing back, never someone else's data.",
     icon: Database,
     bullets: [
-      "Postgres RLS policies applied to every tenant-scoped table",
-      "Tenant-scoped SQL is routed through a context wrapper — bare queries fail RLS by design",
-      "Queries fail closed: without an explicit tenant context, row-level security returns no rows",
-      "A CI check verifies every tenant table keeps its row-level-security policy",
+      "Isolation rules enforced by the database on every table that holds customer data",
+      "Every request runs inside its own organisation's context",
+      "Fails closed: a request with no organisation sees no rows at all",
+      "An automated check fails the build if any customer table loses its isolation rule",
     ],
     Mockup: IsolationMockup,
     previewUrl: "tenant isolation · database layer",
@@ -95,7 +96,7 @@ const STACK = [
     title: "Authority",
     subtitle: "Two layers of control: what your role lets you do in general, and what's allowed for this specific request — in this specific department, at this specific amount.",
     body:
-      "RBAC determines the set of capabilities a role can exercise — a fine-grained permission system with clean separation between administrative and operational capability. ABAC then evaluates the specific request: can the submitter approve their own document, is the Head of Department acting within their department, does the amount exceed their threshold.",
+      "Your role decides the set of things you can do — a fine-grained permission system with clean separation between administrative and operational capability. A second layer then checks the specific request: can the submitter approve their own document, is the Head of Department acting within their department, does the amount exceed their threshold.",
     icon: UserCog,
     bullets: [
       "A fine-grained permission system with clean separation between administrative and operational capability",
@@ -162,14 +163,14 @@ const STACK = [
     number: "06",
     key: "infra",
     title: "Encryption & infrastructure",
-    subtitle: "Encrypted from your browser all the way to our database — and again on top of that, for the most sensitive pieces like two-factor codes and single sign-on tokens.",
+    subtitle: "Encrypted in transit and at rest — and again on top of that, for the most sensitive pieces like two-factor codes and single sign-on tokens.",
     body:
-      "All traffic is encrypted with modern TLS. The application database is managed PostgreSQL with encryption at rest and automated daily snapshots. Sensitive application secrets — two-factor codes, single sign-on tokens — are encrypted again at the application layer before being written, so even a database leak would not expose them. Attachments live in encrypted object storage and are delivered through short-lived, per-upload URLs.",
+      "All traffic is encrypted with modern TLS. The application database is encrypted at rest, with automated daily snapshots. Sensitive application secrets — two-factor codes, single sign-on tokens — are encrypted again at the application layer before being written, so even a database leak would not expose them. Attachments live in encrypted object storage and are delivered through short-lived, per-upload URLs.",
     icon: Lock,
     bullets: [
       "Modern TLS in transit, with strict browser-side policies",
-      "Managed PostgreSQL with encryption at rest and daily snapshots",
-      "Application-layer encryption on top for sensitive secrets (AES-256-GCM)",
+      "Database encrypted at rest, with daily snapshots",
+      "A second layer of encryption for sensitive fields, with keys per company",
       "Encrypted object storage with short-lived, per-upload delivery URLs",
     ],
     Mockup: InfraMockup,
@@ -180,15 +181,15 @@ const STACK = [
 const COMPLIANCE = [
   {
     framework: "SOC 2",
-    status: "Controls aligned",
+    status: "On our roadmap",
     body:
-      "The platform's access, audit, change-management, and encryption controls are designed to meet SOC 2 Type II criteria. A formal audit has not been completed yet.",
+      "Our policies for access, audit, change management and encryption follow SOC 2 structure. A SOC 2 Type II audit and an independent penetration test are on our roadmap; neither is done yet.",
   },
   {
     framework: "ISO 27001",
-    status: "Controls aligned",
+    status: "Not certified",
     body:
-      "Information-security management practices follow the ISO 27001 Annex A control families relevant to a SaaS operator. Formal certification is not in place today.",
+      "Avrentis is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how our controls cover the areas you need.",
   },
   {
     framework: "GDPR & NDPR",
@@ -694,10 +695,10 @@ export function SecurityProductPage() {
               maxWidth: "680px",
             }}
           >
-            Avrentis does not hold formal SOC 2 or ISO 27001 certifications
-            today. The platform is built with the controls that those frameworks
-            measure — access, audit, encryption, change-management — and we can
-            walk you through each one on a security review.
+            Avrentis does not hold SOC 2 or ISO 27001 certification today. Our
+            policies follow SOC 2 structure, a SOC 2 Type II audit and an
+            independent penetration test are on our roadmap, and we can walk you
+            through each control on a security review.
           </m.p>
 
           <div

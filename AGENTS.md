@@ -39,13 +39,19 @@ Run these locally before you claim anything is done.
 
 - **`import { m } from "framer-motion"`, never `motion`.** The app is wrapped in
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
-- **Only import from `@avrentishq/core/brand` and `@avrentishq/core/region/countries`.**
+- **Runtime code imports only `@avrentishq/core/brand` and `@avrentishq/core/region/countries`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library).
+  Tests may also import the dependency-free `modules/catalog` and `security/dependency-floors`
+  — they back the parity lock tests and never ship.
 - **Never hand-edit `src/data/pricing-fallback.json`.** It is generated on every `pnpm dev`
   and `pnpm build`.
-- **Keep every `pnpm.overrides` entry bounded to one major** (`^1.2.3`, never `>=1.2.3`).
-  An unbounded override silently floated three majors and broke `pnpm lint` repo-wide.
+- **`pnpm.overrides` materialises core's canonical floor map**
+  (`@avrentishq/core/security/dependency-floors`), enforced by
+  `src/lib/security/dependency-floors.lock.test.ts`. Change a shared floor in core, not here;
+  copy the entries verbatim, reinstall, and confirm the lockfile moved. A site-only extra floor
+  must be bounded to one major (use the version-ranged key form) — an unbounded one silently
+  floated three majors and broke `pnpm lint` repo-wide. Re-run `pnpm lint` after any change.
 - **Name tests `*.test.ts`, never `*.test.tsx`.** The vitest glob excludes `.tsx`, so a
   `.tsx` test is silently never executed and appears to pass.
 - **Server Actions return a state object; they never throw to the client.**
@@ -70,9 +76,9 @@ Run these locally before you claim anything is done.
 
 Long-horizon work gets a plan file on disk at
 `docs/superpowers/plans/<YYYY-MM-DD>-<slug>.md`, updated as the work proceeds — plans do
-not live in session context. See `docs/architecture/planning.md`. Note that
-`docs/superpowers/` is gitignored; only `docs/architecture/` is tracked, so promote any
-durable decision out of the plan and into the reference docs.
+not live in session context. See `docs/architecture/planning.md`. Both `docs/superpowers/`
+and `docs/architecture/` are gitignored, so a plan does not survive a fresh clone — promote a
+durable decision that every session must respect into this file.
 
 # Compact instructions
 When compacting, preserve: the current task and plan, file paths touched, decisions

@@ -72,6 +72,5 @@ src/components/product/security-mockups.tsx  @avrentishq/identity @avrentishq/pr
 # ─────────────────────────────────────────────────────────────────────────────
 
 /.github/CODEOWNERS                     @avrentishq/founders
-/.github/workflows/codeowners-review.yml @avrentishq/founders @avrentishq/infra
 /src/lib/pricing.ts                     @avrentishq/founders @avrentishq/product
 /src/data/pricing-fallback.json         @avrentishq/founders @avrentishq/product

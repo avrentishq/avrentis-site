@@ -39,8 +39,9 @@ Run these locally before you claim anything is done.
 
 - **`import { m } from "framer-motion"`, never `motion`.** The app is wrapped in
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
-- **Only import from `@avrentishq/core/brand`.** Every other subpath of that package needs
-  peer dependencies this repo does not install.
+- **Only import from `@avrentishq/core/brand` and `@avrentishq/core/region/countries`.**
+  Every other subpath of that package needs peer dependencies this repo does not install
+  (`region/countries` has type-only imports; the `region` index pulls in a phone library).
 - **Never hand-edit `src/data/pricing-fallback.json`.** It is generated on every `pnpm dev`
   and `pnpm build`.
 - **Keep every `pnpm.overrides` entry bounded to one major** (`^1.2.3`, never `>=1.2.3`).

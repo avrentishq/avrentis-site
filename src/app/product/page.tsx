@@ -107,9 +107,9 @@ const MODULES: Module[] = [
   {
     slug: "people",
     name: "Avrentis Requests",
-    subtitle: "Leave & expense approvals",
+    subtitle: "Staff expense approvals",
     body:
-      "Extend structured approvals to leave requests and staff expense claims. The same approval engine and audit trail, shaped for people processes.",
+      "Extend structured approvals to staff expense claims. The same approval engine and audit trail, shaped for people processes.",
     icon: Users,
     status: "available",
   },
@@ -391,7 +391,7 @@ export default function ProductOverviewPage() {
               maxWidth: "640px",
             }}
           >
-            A payment voucher, a purchase order, a leave request, and a vendor
+            A payment voucher, a purchase order, an expense claim, and a vendor
             onboarding all travel the same authority engine: routed to the right
             approver by amount, department, and risk → enforced with no way
             around it → recorded on an immutable trail. Define once who can

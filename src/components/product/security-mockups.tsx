@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Browser-framed mockups for each layer of the security stack page.
  * Mirrors the real-UI visual language used on /product/how-it-works and

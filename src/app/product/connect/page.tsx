@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Avrentis Integrations — Avrentis in your existing stack",
     description:
-      "Typed webhooks, HMAC-signed delivery, scoped API keys, and SSO/SCIM. Your operational record flowing where it needs to go.",
+      "Typed webhooks with Standard Webhooks signatures, scoped API keys, and SSO/SCIM. Your operational record flowing where it needs to go.",
     url: "https://avrentis.com/product/connect",
     type: "website",
   },

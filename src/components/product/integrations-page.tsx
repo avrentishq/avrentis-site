@@ -147,7 +147,7 @@ const CATEGORIES: Category[] = [
       "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition. For Enterprise customers we also issue tenant-scoped service tokens.",
     integrations: [
       { name: "REST API (v1)", summary: "Read access to documents, users, vendors, audit events, and reports.", availability: "available" },
-      { name: "Webhooks", summary: "Per-tenant event subscriptions with retries + HMAC signing.", availability: "available" },
+      { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },
       { name: "Audit export", summary: "Regulator-ready audit bundles, downloadable for any period.", availability: "available" },
       { name: "Zapier", summary: "No-code workflow bridge into 6,000+ apps.", availability: "request" },
       { name: "n8n / Make", summary: "Trigger-node integration for ops teams.", availability: "request" },
@@ -542,8 +542,9 @@ export function IntegrationsCataloguePage() {
                 Every transition is an event you can subscribe to.
               </h2>
               <p style={{ fontFamily: sans, fontSize: "15px", color: "#64748b", lineHeight: 1.75, margin: "0 0 16px" }}>
-                Signed HMAC webhook payloads, versioned schemas, idempotent
-                retries with exponential backoff. Build the notifications your
+                Webhooks signed to the Standard Webhooks scheme, versioned
+                schemas, and retries with exponential backoff that keep the same
+                delivery id, so you can safely ignore repeats. Build the notifications your
                 team actually wants, or sync sanctioned vouchers to your ledger
                 the second the MD signs.
               </p>
@@ -605,23 +606,42 @@ export function IntegrationsCataloguePage() {
                   wordBreak: "break-word",
                 }}
               >
-{`{
-  "event": "voucher.sanctioned",
-  "tenant": "acme-org",
-  "occurred_at": "2026-04-21T14:42:17.003Z",
-  "actor": {
-    "id": "u_01HMPW2Q1",
-    "role": "md",
-    "ip": "154.113.x.x"
-  },
-  "entity": {
-    "type": "payment_voucher",
-    "id": "PV-2026-0184",
-    "amount": { "currency": "NGN", "value": 12450000 }
-  },
-  "signature": "sha256=8f3d…"
+{`content-type: application/json
+webhook-id: 6f1c2a9e-4b7d-4e21-9c55-0d3a8e7b1f42
+webhook-timestamp: 1776782537
+webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
+
+{
+  "eventId": "evt_8c1f0b6e2d4a…",
+  "type": "document.sanctioned",
+  "tenantId": "0d9e4c1a-…",
+  "createdAt": "2026-04-21T14:42:17.003Z",
+  "data": {
+    "documentType": "payment_voucher",
+    "referenceNumber": "PV-2026-0184",
+    "amountMinor": 1245000000,
+    "currency": "NGN",
+    "sanctionedBy": { "name": "Aisha Danjuma", "role": "md" },
+    "sanctionedAt": "2026-04-21T14:42:17Z",
+    "departmentName": "Operations"
+  }
 }`}
               </pre>
+              <p
+                style={{
+                  fontFamily: sans,
+                  fontSize: "12px",
+                  color: "#94a3b8",
+                  lineHeight: 1.6,
+                  margin: "14px 0 0",
+                }}
+              >
+                Verify <code style={{ fontFamily: mono }}>webhook-signature</code> (HMAC-SHA256 over{" "}
+                <code style={{ fontFamily: mono }}>{"{webhook-id}.{webhook-timestamp}.{body}"}</code> with your
+                subscription secret), reject timestamps more than five minutes off your clock, and ignore ids you have
+                already processed. The older <code style={{ fontFamily: mono }}>X-Avrentis-Signature</code> header is
+                still sent but deprecated.
+              </p>
             </m.div>
           </div>
         </div>

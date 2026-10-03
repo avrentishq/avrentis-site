@@ -38,7 +38,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: ListChecks,
       title: "A review-and-resolve queue",
       body:
-        "Every flag lands in a Guard inbox where a reviewer clears it or escalates it — and each action is written to the immutable audit trail. Detection, review, and resolution in one loop.",
+        "Every flag lands in a Guard inbox where a reviewer clears it or escalates it — and each action is written to the tamper-evident audit trail. Detection, review, and resolution in one loop.",
     },
   ],
 
@@ -63,7 +63,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Guard checks every payment voucher as it enters the approval chain" },
     { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders and invoices are screened for duplicates too" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every flag raised or resolved is written to the immutable trail" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Every flag raised or resolved is written to the tamper-evident trail" },
   ],
 };
 

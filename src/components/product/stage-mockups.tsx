@@ -609,7 +609,7 @@ export function RecordStageMockup() {
           Approved
         </span>
         <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "#64748b" }}>
-          Immutable
+          Tamper-evident
         </span>
       </div>
 

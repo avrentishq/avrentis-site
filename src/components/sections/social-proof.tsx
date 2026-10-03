@@ -16,8 +16,8 @@ import type { LucideIcon } from "lucide-react";
 const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: ShieldCheck,
-    title: "Every action on an immutable record",
-    body: "Submissions, approvals, queries, and signatures are written to a tamper-proof audit trail no user — not even an administrator — can alter or delete.",
+    title: "Every action on a tamper-evident record",
+    body: "Submissions, approvals, queries, and signatures are written to a tamper-evident audit trail, sealed daily. No user — not even an administrator — can edit or remove an entry, and you can check the seal yourself.",
   },
   {
     icon: Database,

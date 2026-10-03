@@ -6,12 +6,12 @@ import { SECURITY_FAQS } from "@/lib/security-faqs";
 export const metadata: Metadata = {
   title: "Security — authority at every layer",
   description:
-    "Avrentis is built for organisations where every approval carries weight. Postgres RLS, 10-role RBAC layered with ABAC, Redis-backed session revocation, immutable audit trails, SCIM provisioning, AES-256-GCM encryption — the complete security stack, explained honestly.",
+    "Avrentis is built for organisations where every approval carries weight. Postgres RLS, role-based access with separation of duties layered with ABAC, Redis-backed session revocation, a tamper-evident audit trail sealed daily, SCIM provisioning, AES-256-GCM encryption — the complete security stack, explained honestly.",
   alternates: { canonical: "/product/security" },
   openGraph: {
     title: "Avrentis security — authority at every layer",
     description:
-      "Tenant isolation at the database. Role + attribute-based authority. Immutable audit. Lifecycle-bound access. Encryption end to end. No marketing — the actual stack.",
+      "Tenant isolation at the database. Role + attribute-based authority. Tamper-evident audit, sealed daily. Lifecycle-bound access. Per-company encryption. No marketing — the actual stack.",
     url: "https://avrentis.com/product/security",
     type: "website",
   },

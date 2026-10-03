@@ -57,7 +57,7 @@ export function AuditPreview() {
             Audit trail
           </h3>
           <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
-            1,284 events · Immutable
+            1,284 events · Tamper-evident
           </p>
         </div>
         <button

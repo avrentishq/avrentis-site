@@ -82,7 +82,7 @@ const MODULES: Module[] = [
     name: "Avrentis Compliance",
     subtitle: "Compliance & accountability",
     body:
-      "A tamper-proof log of every action — submissions, approvals, queries, signatures. Meet SOC2 + internal audits without the manual scramble.",
+      "A tamper-evident log of every action — submissions, approvals, queries, signatures — sealed daily. Face internal and external audits without the manual scramble.",
     icon: ClipboardCheck,
     status: "available",
   },
@@ -217,7 +217,7 @@ export default function ProductOverviewPage() {
             decision, procurement action, compliance event, and people process
             flows through one delegation-of-authority engine: routed to the
             right approver by amount, department, and risk, enforced
-            automatically, and provable on the same immutable record.
+            automatically, and provable on the same tamper-evident record.
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
             <Link
@@ -394,7 +394,7 @@ export default function ProductOverviewPage() {
             A payment voucher, a purchase order, an expense claim, and a vendor
             onboarding all travel the same authority engine: routed to the right
             approver by amount, department, and risk → enforced with no way
-            around it → recorded on an immutable trail. Define once who can
+            around it → recorded on a tamper-evident trail. Define once who can
             approve what, up to how much, and under which conditions — every
             module obeys it. And for any decision, Avrentis shows exactly which
             rule applied and can prove what policy governed it, years later.
@@ -414,7 +414,7 @@ export default function ProductOverviewPage() {
             {[
               { step: "01", title: "Submit", body: "Any module, structured form." },
               { step: "02", title: "Approve", body: "Role-based chain, any device." },
-              { step: "03", title: "Record", body: "Immutable audit log entry." },
+              { step: "03", title: "Record", body: "Tamper-evident audit log entry." },
               { step: "04", title: "Export", body: "Audit-ready PDF bundles." },
             ].map((s) => (
               <div key={s.step} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>

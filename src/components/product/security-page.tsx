@@ -9,7 +9,7 @@
  *
  * Content is grounded in the platform's actual implementation: RLS,
  * RBAC/ABAC, Redis-backed session revocation, MFA, IP allowlist, SCIM,
- * immutable audit trail. No certification claims — controls-aligned
+ * tamper-evident audit trail. No certification claims — controls-aligned
  * framing only, per the stated trust posture.
  */
 
@@ -59,9 +59,9 @@ const PILLARS = [
   },
   {
     icon: FileSearch,
-    title: "Every action is permanent",
+    title: "Every action is on the record",
     body:
-      "Every submission, approval, question, and role change is recorded. Nobody can edit the record after the fact — not us, not your administrator, not even the database's top-level user. The history is the history.",
+      "Every submission, approval, question, and role change is recorded in a tamper-evident chain and sealed daily with a signed fingerprint you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.",
   },
   {
     icon: KeyRound,
@@ -128,9 +128,9 @@ const STACK = [
     number: "04",
     key: "audit",
     title: "Audit trail",
-    subtitle: "Every action, permanent. Every export, regulator-ready.",
+    subtitle: "Every action recorded and sealed. Every export, regulator-ready.",
     body:
-      "The audit log records actor, role, action, entity, IP, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated immutable trails. Database triggers block UPDATE and DELETE on audit rows — the only way to remove them would be to drop the table, which requires DDL that is not granted to the application user.",
+      "The audit log records actor, role, action, entity, IP, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting Avrentis.",
     icon: FileSearch,
     bullets: [
       "Every approval, query, and role change written to an append-only log",
@@ -139,7 +139,7 @@ const STACK = [
       "One-click regulator-ready export for any period",
     ],
     Mockup: AuditMockup,
-    previewUrl: "immutable audit trail · role-change log",
+    previewUrl: "tamper-evident audit trail · role-change log",
   },
   {
     number: "05",

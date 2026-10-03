@@ -341,7 +341,7 @@ export function AuditMockup() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
         <Label>AUDIT TRAIL · PV-2026-0184</Label>
         <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold-on-light)", letterSpacing: "0.06em" }}>
-          IMMUTABLE
+          TAMPER-EVIDENT
         </span>
       </div>
       <div

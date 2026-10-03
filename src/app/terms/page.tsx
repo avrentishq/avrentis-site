@@ -106,8 +106,9 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           <strong>We protect your data.</strong>{" "}A summary of the technical and organisational measures we apply is
-          at <Link href="/product/security">/product/security</Link>. Audit logs are immutable by design — this is a
-          deliberate product commitment, not an optional feature.
+          at <Link href="/product/security">/product/security</Link>. Audit logs are tamper-evident by design: entries cannot be edited
+          through the Service, and the only deletions permitted are lawful retention or erasure, each of which leaves a
+          verifiable record. This is a deliberate product commitment, not an optional feature.
         </p>
         <p>
           <strong>You can export it.</strong>{" "}At any time during the subscription, and for a reasonable period after

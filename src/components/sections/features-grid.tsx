@@ -54,7 +54,7 @@ const MODULE_CARDS: {
     key: "audit",
     icon: ClipboardCheck,
     subtitle: "Compliance & Accountability",
-    body: "A complete, tamper-proof log of every action across your organisation. Meet compliance requirements and face every audit with confidence — not scrambling.",
+    body: "A complete, tamper-evident log of every action across your organisation, sealed daily. Meet compliance requirements and face every audit with confidence — not scrambling.",
     status: "available",
   },
   {

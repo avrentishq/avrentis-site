@@ -21,14 +21,14 @@ const STEPS = [
   },
   {
     title: "Record",
-    body: "The moment a decision is made, Avrentis creates a complete, timestamped, tamper-proof record. Supporting documents are generated automatically. Every action is permanently attributed to a person, a time, and a decision. Your organisation builds institutional memory with every transaction — across every department, every team, every location.",
+    body: "The moment a decision is made, Avrentis creates a complete, timestamped, tamper-evident record. Supporting documents are generated automatically. Every action is permanently attributed to a person, a time, and a decision. Your organisation builds institutional memory with every transaction — across every department, every team, every location.",
   },
 ];
 
 const FEATURES = [
   { icon: Zap, label: "Real-time notifications" },
   { icon: Smartphone, label: "Approve from any device" },
-  { icon: Lock, label: "Tamper-proof records" },
+  { icon: Lock, label: "Tamper-evident records" },
   { icon: Globe, label: "Works across any location" },
 ];
 

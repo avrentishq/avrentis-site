@@ -34,7 +34,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: FileCheck,
       title: "A complete digital paper trail",
       body:
-        "Every submission, query, return, and signature is captured on an immutable audit trail. Who approved, when, with which signature — all permanently on record and exportable for auditors.",
+        "Every submission, query, return, and signature is captured on a tamper-evident audit trail. Who approved, when, with which signature — all permanently on record and exportable for auditors.",
     },
     {
       icon: Banknote,

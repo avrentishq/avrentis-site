@@ -12,6 +12,7 @@ import Link from "next/link";
 import { m } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
+import { AUDIT_TRAIL_KEPT, DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -46,6 +47,19 @@ const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border
 };
 
 const ENTRIES: Entry[] = [
+  {
+    date: "October 2026",
+    tag: "improvement",
+    title: "One webhook signature, and clearer record-keeping.",
+    body:
+      "Webhook deliveries are now signed only with the Standard Webhooks headers, so there is one way to check a delivery is genuine. We also made the site precise about what is kept and for how long.",
+    bullets: [
+      "Webhooks carry webhook-id, webhook-timestamp and webhook-signature only — the old X-Avrentis-Signature webhook header is no longer sent",
+      `The audit trail of every action and decision is ${AUDIT_TRAIL_KEPT}`,
+      `Documents and attached files are ${DOCUMENTS_KEPT}`,
+    ],
+    link: { label: "See the integrations", href: "/product/integrations" },
+  },
   {
     date: "April 2026",
     tag: "pricing",

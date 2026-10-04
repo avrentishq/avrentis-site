@@ -639,8 +639,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
                 Verify <code style={{ fontFamily: mono }}>webhook-signature</code> (HMAC-SHA256 over{" "}
                 <code style={{ fontFamily: mono }}>{"{webhook-id}.{webhook-timestamp}.{body}"}</code> with your
                 subscription secret), reject timestamps more than five minutes off your clock, and ignore ids you have
-                already processed. The older <code style={{ fontFamily: mono }}>X-Avrentis-Signature</code> header is
-                still sent but deprecated.
+                already processed. These three Standard Webhooks headers are the only signature a delivery carries.
               </p>
             </m.div>
           </div>

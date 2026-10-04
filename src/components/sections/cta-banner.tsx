@@ -86,7 +86,7 @@ export function CtaBanner() {
           }}
         >
           Join the organisations across Africa that have replaced paper,
-          email, and assumption with structure, authority, and permanent record.
+          email, and assumption with structure, authority, and an audit trail that lasts.
         </m.p>
 
         {/* CTAs */}

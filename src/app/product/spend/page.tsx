@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 import { ProductSuiteLayout } from "@/components/product/suite-layout";
+import { SUITE_PAGES } from "@/lib/product-suites";
 
 export const metadata: Metadata = {
   title: "Avrentis Spend — payments, purchase orders and restricted funds",
-  description:
-    "Payments, purchase orders and restricted funds on one approval path — routed to whoever is allowed to approve the amount, and kept on record permanently.",
+  description: SUITE_PAGES.spend.metaDescription,
   alternates: { canonical: "/product/spend" },
   openGraph: {
     title: "Avrentis Spend — payments, purchase orders and restricted funds",
-    description: "Nothing leaves the account without a decision behind it.",
+    description: SUITE_PAGES.spend.headline,
     url: "https://avrentis.com/product/spend",
     type: "website",
   },

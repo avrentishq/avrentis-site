@@ -6,7 +6,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@avrentishq/core/brand";
 
-const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a permanent record.`;
+const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
 export const metadata: Metadata = {
   title: "About — Avrentis",

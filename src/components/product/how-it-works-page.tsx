@@ -10,6 +10,7 @@
  */
 
 import { useRef } from "react";
+import { DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import Link from "next/link";
 import {
   m,
@@ -50,7 +51,7 @@ const STAGES = [
     body: "Any team member raises a payment voucher, purchase order, or expense claim through a structured form — payee details, amount, purpose, department, cost code, supporting attachments. The form only accepts complete, valid information, so the person reviewing never has to chase details or send it back.",
     bullets: [
       "Auto-saves as you go — no lost work if the browser closes unexpectedly",
-      "Attach contracts, invoices, and quotes — all stored with the document permanently",
+      `Attach contracts, invoices, and quotes — ${DOCUMENTS_KEPT}`,
       "Every request gets a unique reference number on submit (PV-2026-0184, PO-2026-0091)",
       "Flags possible duplicates by vendor and amount so you don't pay the same invoice twice",
     ],
@@ -77,7 +78,7 @@ const STAGES = [
     number: "03",
     key: "sanction",
     title: "Sanction",
-    subtitle: "Final authority, permanently attached.",
+    subtitle: "Final authority, signed and on record.",
     icon: Signature,
     body: "The Managing Director sees the full picture — what Finance or the Head of Department approved, what the submitter answered to any questions, every signature collected along the way. They sign it off digitally, and that signature is stamped onto every document the request produces. This is the moment authority becomes binding.",
     bullets: [
@@ -435,7 +436,7 @@ export function HowItWorksProductPage() {
             }}
             className="lg:!text-[56px]"
           >
-            From request to permanent record —
+            From request to audit-ready record —
             <br />
             the complete lifecycle.
           </m.h1>
@@ -456,7 +457,7 @@ export function HowItWorksProductPage() {
           >
             Every payment voucher, purchase order, and HR approval travels the
             same four-stage lifecycle. Structured at submission, routed by
-            role, sanctioned by authority, recorded permanently. No email
+            role, sanctioned by authority, recorded on the audit trail. No email
             threads. No lost approvals. No guessing what changed.
           </m.p>
           <m.div
@@ -593,7 +594,7 @@ export function HowItWorksProductPage() {
           >
             Payment vouchers follow one authority chain. Purchase orders follow
             another. Each chain is role-enforced, separation-of-duties-safe,
-            and permanently on record. Authority at every stage.
+            and on the audit trail. Authority at every stage.
           </m.p>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="md:!gap-[32px] lg:!gap-[48px]">

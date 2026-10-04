@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 import { ProductSuiteLayout } from "@/components/product/suite-layout";
+import { SUITE_PAGES } from "@/lib/product-suites";
 
 export const metadata: Metadata = {
   title: "Avrentis Evidence — a tamper-evident record of every decision",
-  description:
-    "A tamper-evident record of every approval and document, sealed daily, searchable years later and exportable for auditors and regulators in one step.",
+  description: SUITE_PAGES.evidence.metaDescription,
   alternates: { canonical: "/product/evidence" },
   openGraph: {
     title: "Avrentis Evidence — a tamper-evident record of every decision",
-    description: "What happened, and proof it was not edited afterwards.",
+    description: SUITE_PAGES.evidence.headline,
     url: "https://avrentis.com/product/evidence",
     type: "website",
   },

@@ -5,11 +5,11 @@ import { ScrollProgress } from "@/components/ui/scroll-progress";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import { BRAND } from "@/lib/brand";
 import { JsonLd, organizationSchema } from "@/lib/seo";
+import { AUDIT_TRAIL_KEPT, SITE_DESCRIPTION } from "@/lib/record-keeping";
 import "./globals.css";
 
 const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
-const OG_DESCRIPTION =
-  "Replace scattered approvals with structured authority — a permanent operational record for every decision, approval, and process your organisation runs.";
+const OG_DESCRIPTION = `Replace scattered approvals with structured authority — a tamper-evident audit trail of every decision, approval, and process your organisation runs, ${AUDIT_TRAIL_KEPT}.`;
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -37,8 +37,7 @@ const cabinetGrotesk = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://avrentis.com"),
   title: `${BRAND.name} — ${BRAND.positioningStatement}`,
-  description:
-    "Avrentis replaces scattered emails, paper trails, and manual processes with structure, authority, and a permanent operational record for every decision your organisation makes.",
+  description: SITE_DESCRIPTION,
   openGraph: {
     title: OG_TITLE,
     description: OG_DESCRIPTION,

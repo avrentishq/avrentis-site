@@ -71,7 +71,7 @@ const STATUS = {
 
 // The one-click CTA offered on a row depends on where it is in the flow, so
 // the demo shows a realistic mix (not just "Approve"). Whatever the verb, the
-// outcome is the same product promise: a permanent, audited record.
+// outcome is the same product promise: the decision lands on the audit trail.
 const CTA_VERB: Record<string, string> = {
   "Under review": "Approve",
   Submitted: "Review",
@@ -289,7 +289,7 @@ function LiveInbox({
       {rows.map((entry, i) => {
         const isLast = i === VISIBLE - 1;
         // The acted-on row freezes into a neutral "Recorded" state — whatever
-        // the verb was, the payoff is the same permanent, audited record.
+        // the verb was, the payoff is the same: the decision lands on the audit trail.
         const isDone = engagedRow === i;
         const status = isDone ? STATUS.recorded : entry.status;
         // One live CTA at a time, on a random slot; verb depends on the row's
@@ -981,7 +981,7 @@ export function Hero() {
                       lineHeight: 1.5,
                     }}
                   >
-                    Recorded &mdash; permanently, with a full audit trail.
+                    Recorded &mdash; on an audit trail kept for the life of your account.
                     That&rsquo;s the core loop.{" "}
                     <a
                       href="/trial"
@@ -1005,8 +1005,8 @@ export function Hero() {
                     textAlign: "right",
                   }}
                 >
-                  Showing 4 of 4 &middot; Act on one &mdash; it&rsquo;s
-                  permanently recorded
+                  Showing 4 of 4 &middot; Act on one &mdash; your decision
+                  stays on record
                 </p>
               )}
             </div>

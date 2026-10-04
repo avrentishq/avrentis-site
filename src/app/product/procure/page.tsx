@@ -6,7 +6,7 @@ import { planAvailabilityFor } from "@/lib/module-availability";
 export const metadata: Metadata = {
   title: "Avrentis Procurement — Procurement on record",
   description:
-    "Every purchase order submitted, approved, and issued through a structured vendor and approval system. Line items, vendor directory, and a permanent record for every procurement decision.",
+    "Every purchase order submitted, approved, and issued through a structured vendor and approval system. Line items, vendor directory, and a tamper-evident audit trail of every procurement decision.",
   alternates: { canonical: "/product/procure" },
   openGraph: {
     title: "Avrentis Procurement — Procurement on record",

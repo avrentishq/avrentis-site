@@ -5,9 +5,9 @@ import { Pricing } from "@/components/sections/pricing";
 import { PlanComparison } from "@/components/sections/plan-comparison";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { fetchPricingData } from "@/lib/pricing";
+import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 
-const DESCRIPTION =
-  "Simple, transparent plans for Nigerian and African organisations — Starter, Business, and Enterprise. Every plan includes the approval engine, permanent audit trail, and full security stack.";
+const DESCRIPTION = `Simple, transparent plans for Nigerian and African organisations — Starter, Business, and Enterprise. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
 
 export const metadata: Metadata = {
   title: "Pricing — Avrentis",

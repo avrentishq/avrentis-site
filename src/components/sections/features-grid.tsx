@@ -33,7 +33,7 @@ const MODULE_CARDS: {
     key: "pay",
     icon: CreditCard,
     subtitle: "Payment & Approval Management",
-    body: "Structure every payment decision your organisation makes. Each request is routed to the right approver by amount, department, and risk — enforced automatically, then tracked and permanently on record.",
+    body: "Structure every payment decision your organisation makes. Each request is routed to the right approver by amount, department, and risk — enforced automatically, with every decision tracked and kept on record.",
     status: "available",
   },
   {

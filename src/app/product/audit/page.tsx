@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Avrentis Compliance — Compliance without the scramble",
     description:
-      "Tamper-evident audit trail sealed daily, structured events, regulator-ready PDF + CSV exports. Every action permanently on record.",
+      "Tamper-evident audit trail sealed daily, structured events, regulator-ready PDF + CSV exports. Every action on record for the life of your account.",
     url: "https://avrentis.com/product/audit",
     type: "website",
   },

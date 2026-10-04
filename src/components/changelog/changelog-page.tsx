@@ -135,7 +135,7 @@ const ENTRIES: Entry[] = [
     tag: "feature",
     title: "Approval engine, digital signatures, bank-ready exports.",
     body:
-      "The engine that moves a document from draft to permanent record. Sign once, and your signature is stamped onto every document the approval produces. The moment the MD signs, the bank-ready letter is generated automatically.",
+      "The engine that moves a document from draft to a signed approval on the record. Sign once, and your signature is stamped onto every document the approval produces. The moment the MD signs, the bank-ready letter is generated automatically.",
     bullets: [
       "Custom approval chains with out-of-office delegation",
       "Amount thresholds and separation-of-duties rules baked in",

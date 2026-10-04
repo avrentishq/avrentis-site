@@ -530,7 +530,7 @@ function RecordMockup() {
               color: "#64748b",
             }}
           >
-            Permanently on record
+            On record for good
           </span>
         </div>
 

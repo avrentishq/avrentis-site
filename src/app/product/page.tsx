@@ -29,12 +29,12 @@ import type { ModuleStatus } from "@/components/product/module-layout";
 export const metadata: Metadata = {
   title: "The Avrentis platform — spend, oversight, evidence, on one record",
   description:
-    "Avrentis structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one permanent record.",
+    "Avrentis structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.",
   alternates: { canonical: "/product" },
   openGraph: {
     title: "The Avrentis platform — spend, oversight, evidence, on one record",
     description:
-      "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one permanent record.",
+      "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
     url: "https://avrentis.com/product",
     type: "website",
   },
@@ -200,7 +200,7 @@ export default function ProductOverviewPage() {
             }}
             className="lg:!text-[52px]"
           >
-            Spend, oversight, evidence. One approval engine. One permanent
+            Spend, oversight, evidence. One approval engine. One tamper-evident
             record.
           </h1>
           <p

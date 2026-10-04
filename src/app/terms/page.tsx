@@ -41,7 +41,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Avrentis is a multi-tenant platform for structuring, approving, and permanently recording operational
+          Avrentis is a multi-tenant platform for structuring, approving, and recording operational
           documents — payment vouchers, purchase orders, personnel actions, and related records. The Service
           includes workflow automation, notifications, PDF generation, audit trails, administrative tooling, and
           supporting APIs. We may release new features, retire features that no longer serve the product, or

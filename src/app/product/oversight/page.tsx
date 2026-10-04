@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 
 import { ProductSuiteLayout } from "@/components/product/suite-layout";
+import { SUITE_PAGES } from "@/lib/product-suites";
 
 export const metadata: Metadata = {
   title: "Avrentis Oversight — approval authority, enforced and monitored",
-  description:
-    "Define who can approve what, up to how much — enforced on every request automatically, and monitored for the patterns that mean somebody is working around it.",
+  description: SUITE_PAGES.oversight.metaDescription,
   alternates: { canonical: "/product/oversight" },
   openGraph: {
     title: "Avrentis Oversight — approval authority, enforced and monitored",
-    description: "The rules are written down, enforced, and watched.",
+    description: SUITE_PAGES.oversight.headline,
     url: "https://avrentis.com/product/oversight",
     type: "website",
   },

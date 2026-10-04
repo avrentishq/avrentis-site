@@ -77,6 +77,10 @@ Run these locally before you claim anything is done.
   for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.
   `colour-tokens.lock.test.ts` enforces it. This codebase styles with inline `style={{}}`
   objects, not Tailwind classes.
+- **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`),
+  the site URL in `src/lib/seo.tsx` (`SITE_URL`, `canonical(path)`); `contacts.lock.test.ts`
+  enforces both. `/.well-known/security.txt` is generated from them (expiry always a year
+  ahead, rebuilt daily) — never replace it with a static file.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts`. This includes BRANCHING on a tier:
   `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,

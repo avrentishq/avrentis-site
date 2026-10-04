@@ -11,7 +11,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, MODULES } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -144,7 +144,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "DEVELOPER PLATFORM",
     title: "Build on top of your approval record.",
     lede:
-      "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition. For Enterprise customers we also issue tenant-scoped service tokens.",
+      `On plans that include ${MODULES.connect.name}, a read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition and tenant-scoped API keys.`,
     integrations: [
       { name: "REST API (v1)", summary: "Read access to documents, users, vendors, audit events, and reports.", availability: "available" },
       { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },

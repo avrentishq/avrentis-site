@@ -60,8 +60,11 @@ Run these locally before you claim anything is done.
   comment in the file first. This repo is public, so the specifics live in
   `guides/security-posture.md`, which is gitignored.
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
-- **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css`. This
-  codebase styles with inline `style={{}}` objects, not Tailwind classes.
+- **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css` as
+  `var(--color-…)`, or `rgba(var(--color-…-rgb), alpha)` for a tint; add a role-named token
+  for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.
+  `colour-tokens.lock.test.ts` enforces it. This codebase styles with inline `style={{}}`
+  objects, not Tailwind classes.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts`. This includes BRANCHING on a tier:
   `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,

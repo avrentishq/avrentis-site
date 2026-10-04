@@ -26,7 +26,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: KeyRound,
       title: "Scoped, rotatable API keys",
       body:
-        "Generate keys per integration with fine-grained scopes (read-only, write-specific-module, etc). Every key call is logged with IP, user-agent, and response. Rotate keys without downtime.",
+        "Generate keys per integration with fine-grained scopes (read-only, write-specific-module, etc). Every key call is logged with a masked IP address, user-agent, and response. Rotate keys without downtime.",
     },
     {
       icon: Network,

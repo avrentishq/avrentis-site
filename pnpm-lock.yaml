@@ -45,8 +45,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.238.0
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#3d379cc22557ad4dcd0ea4acb85c21bc874a3115(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
+        specifier: github:avrentishq/avrentis-core#v0.239.0
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#b6d9e812e151e8c5b8891c2c4f649992d1bd7376(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -112,9 +112,9 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#3d379cc22557ad4dcd0ea4acb85c21bc874a3115':
-    resolution: {commit: 3d379cc22557ad4dcd0ea4acb85c21bc874a3115, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.238.0
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#b6d9e812e151e8c5b8891c2c4f649992d1bd7376':
+    resolution: {commit: b6d9e812e151e8c5b8891c2c4f649992d1bd7376, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.239.0
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -125,6 +125,7 @@ packages:
       '@upstash/redis': ^1.38.0
       ai: ^7.0.19
       bcryptjs: ^3.0.2
+      cron-parser: ^5.10.0
       drizzle-orm: ^0.45.2
       libphonenumber-js: 1.13.13
       otpauth: ^9.5.1
@@ -2446,7 +2447,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#3d379cc22557ad4dcd0ea4acb85c21bc874a3115(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#b6d9e812e151e8c5b8891c2c4f649992d1bd7376(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
     dependencies:
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0

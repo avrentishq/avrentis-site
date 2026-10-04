@@ -17,8 +17,8 @@ export function VaultPreview() {
       category: "Payment voucher",
       files: "2 files",
       tag: "Paid",
-      tagColor: "#047857",
-      tagBg: "rgba(4,120,87,0.08)",
+      tagColor: "var(--color-success)",
+      tagBg: "rgba(var(--color-success-rgb), 0.08)",
       added: "Today",
     },
     {
@@ -26,8 +26,8 @@ export function VaultPreview() {
       category: "Supplier invoice",
       files: "1 file",
       tag: "Matched",
-      tagColor: "#047857",
-      tagBg: "rgba(4,120,87,0.08)",
+      tagColor: "var(--color-success)",
+      tagBg: "rgba(var(--color-success-rgb), 0.08)",
       added: "Yesterday",
     },
     {
@@ -35,8 +35,8 @@ export function VaultPreview() {
       category: "Goods receipt",
       files: "3 files",
       tag: "Received",
-      tagColor: "#64748b",
-      tagBg: "rgba(148,163,184,0.12)",
+      tagColor: "var(--color-text-muted)",
+      tagBg: "rgba(var(--color-text-subtle-rgb), 0.12)",
       added: "2 days ago",
     },
     {
@@ -58,15 +58,15 @@ export function VaultPreview() {
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "8px 12px",
           marginBottom: "12px",
         }}
       >
-        <Search size={14} strokeWidth={1.8} color="#94a3b8" aria-hidden="true" />
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "#94a3b8" }}>
+        <Search size={14} strokeWidth={1.8} style={{ color: "var(--color-text-subtle)" }} aria-hidden="true" />
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--color-text-subtle)" }}>
           Filter by reference, payee, department…
         </span>
       </div>
@@ -82,9 +82,9 @@ export function VaultPreview() {
               fontWeight: 500,
               padding: "4px 10px",
               borderRadius: "3px",
-              backgroundColor: i === 0 ? "#0f172a" : "#FFFFFF",
-              color: i === 0 ? "#FFFFFF" : "#0f172a",
-              border: i === 0 ? "1px solid #0f172a" : "1px solid #e2e8f0",
+              backgroundColor: i === 0 ? "var(--color-navy-primary)" : "var(--color-white)",
+              color: i === 0 ? "var(--color-white)" : "var(--color-navy-primary)",
+              border: i === 0 ? "1px solid var(--color-navy-primary)" : "1px solid var(--color-border)",
             }}
           >
             {cat}
@@ -95,8 +95,8 @@ export function VaultPreview() {
       {/* Document list */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
         }}
       >
@@ -108,7 +108,7 @@ export function VaultPreview() {
               alignItems: "center",
               gap: "12px",
               padding: "10px 14px",
-              borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+              borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
             }}
           >
             <div
@@ -131,7 +131,7 @@ export function VaultPreview() {
                   fontFamily: "var(--font-sans)",
                   fontSize: "12px",
                   fontWeight: 500,
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   margin: "0 0 1px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -140,7 +140,7 @@ export function VaultPreview() {
               >
                 {doc.name}
               </p>
-              <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
+              <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
                 {doc.category} · {doc.files} · {doc.added}
               </p>
             </div>
@@ -161,7 +161,7 @@ export function VaultPreview() {
         ))}
       </div>
 
-      <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#94a3b8", margin: "10px 0 0", textAlign: "right" }}>
+      <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-subtle)", margin: "10px 0 0", textAlign: "right" }}>
         Showing 4 of 1,284 records
       </p>
     </div>

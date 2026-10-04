@@ -11,8 +11,8 @@ export function AuditPreview() {
       actor: "Aisha Danjuma · MD",
       entity: "PV-2026-0184",
       when: "14:32",
-      actionBg: "rgba(4,120,87,0.08)",
-      actionColor: "#047857",
+      actionBg: "rgba(var(--color-success-rgb), 0.08)",
+      actionColor: "var(--color-success)",
     },
     {
       action: "PV_APPROVED",
@@ -20,31 +20,31 @@ export function AuditPreview() {
       entity: "PV-2026-0184",
       when: "11:02",
       actionBg: "rgba(var(--color-gold-rgb), 0.08)",
-      actionColor: "#92400e",
+      actionColor: "var(--color-warning)",
     },
     {
       action: "PV_QUERIED",
       actor: "Chinedu Okafor · Finance",
       entity: "PV-2026-0182",
       when: "10:48",
-      actionBg: "rgba(91,33,182,0.08)",
-      actionColor: "#3B0764",
+      actionBg: "rgba(var(--color-queried-accent-rgb), 0.08)",
+      actionColor: "var(--color-queried)",
     },
     {
       action: "USER_ROLE_CHANGED",
       actor: "Tunde Bello · Admin",
       entity: "user:ifeoma.n@acme.ng",
       when: "09:15",
-      actionBg: "rgba(29,78,216,0.08)",
-      actionColor: "#1e3a8a",
+      actionBg: "rgba(var(--color-identity-tint-rgb), 0.08)",
+      actionColor: "var(--color-identity)",
     },
     {
       action: "PV_SUBMITTED",
       actor: "Fatima Abubakar · Staff",
       entity: "PV-2026-0184",
       when: "09:14",
-      actionBg: "rgba(180,83,9,0.08)",
-      actionColor: "#78350f",
+      actionBg: "rgba(var(--color-warning-accent-rgb), 0.08)",
+      actionColor: "var(--color-warning-strong)",
     },
   ];
 
@@ -53,10 +53,10 @@ export function AuditPreview() {
       {/* Header */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "12px" }}>
         <div>
-          <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "18px", color: "#0f172a", margin: "0 0 2px" }}>
+          <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 2px" }}>
             Audit trail
           </h3>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
             1,284 events · Tamper-evident
           </p>
         </div>
@@ -66,8 +66,8 @@ export function AuditPreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#0f172a",
-            color: "#FFFFFF",
+            backgroundColor: "var(--color-navy-primary)",
+            color: "var(--color-white)",
             border: "none",
             borderRadius: "3px",
             padding: "6px 14px",
@@ -89,9 +89,9 @@ export function AuditPreview() {
               fontWeight: 500,
               padding: "3px 8px",
               borderRadius: "3px",
-              backgroundColor: i === 0 ? "#0f172a" : "#FFFFFF",
-              color: i === 0 ? "#FFFFFF" : "#0f172a",
-              border: i === 0 ? "1px solid #0f172a" : "1px solid #e2e8f0",
+              backgroundColor: i === 0 ? "var(--color-navy-primary)" : "var(--color-white)",
+              color: i === 0 ? "var(--color-white)" : "var(--color-navy-primary)",
+              border: i === 0 ? "1px solid var(--color-navy-primary)" : "1px solid var(--color-border)",
             }}
           >
             {f}
@@ -100,19 +100,19 @@ export function AuditPreview() {
       </div>
 
       {/* Audit rows */}
-      <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
+      <div style={{ backgroundColor: "var(--color-white)", border: "1px solid var(--color-border)", borderRadius: "4px" }}>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1.2fr 1.2fr 0.9fr 50px",
             gap: "10px",
             padding: "8px 14px",
-            backgroundColor: "#F8FAFC",
-            borderBottom: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-bg-light)",
+            borderBottom: "1px solid var(--color-border)",
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             letterSpacing: "0.04em",
             textTransform: "uppercase",
           }}
@@ -130,7 +130,7 @@ export function AuditPreview() {
               gridTemplateColumns: "1.2fr 1.2fr 0.9fr 50px",
               gap: "10px",
               padding: "8px 14px",
-              borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+              borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
               alignItems: "center",
               fontFamily: "var(--font-sans)",
               fontSize: "11px",
@@ -151,13 +151,13 @@ export function AuditPreview() {
             >
               {row.action}
             </span>
-            <span style={{ color: "#0f172a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <span style={{ color: "var(--color-text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {row.actor}
             </span>
-            <span style={{ color: "#64748b", fontFeatureSettings: '"tnum" 1', overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <span style={{ color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1', overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {row.entity}
             </span>
-            <span style={{ color: "#64748b", textAlign: "right", fontFeatureSettings: '"tnum" 1' }}>
+            <span style={{ color: "var(--color-text-muted)", textAlign: "right", fontFeatureSettings: '"tnum" 1' }}>
               {row.when}
             </span>
           </div>

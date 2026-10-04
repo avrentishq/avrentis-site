@@ -11,25 +11,25 @@ export function AuthorityPreview() {
       role: "Officer",
       limit: "Up to ₦250,000",
       then: "Routes to Head of Department",
-      tone: "#64748b",
+      tone: "var(--color-text-muted)",
     },
     {
       role: "Head of Department",
       limit: "Up to ₦2,000,000",
       then: "Routes to Finance",
-      tone: "#64748b",
+      tone: "var(--color-text-muted)",
     },
     {
       role: "Finance Manager",
       limit: "Up to ₦10,000,000",
       then: "Routes to Managing Director",
-      tone: "#64748b",
+      tone: "var(--color-text-muted)",
     },
     {
       role: "Managing Director",
       limit: "No ceiling",
       then: "Final approval",
-      tone: "#047857",
+      tone: "var(--color-success)",
     },
   ];
 
@@ -50,13 +50,13 @@ export function AuthorityPreview() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "18px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               margin: "0 0 2px",
             }}
           >
             Approval authority
           </h3>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
             Payment vouchers · enforced on every submission
           </p>
         </div>
@@ -65,8 +65,8 @@ export function AuthorityPreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#0f172a",
-            color: "#FFFFFF",
+            backgroundColor: "var(--color-navy-primary)",
+            color: "var(--color-white)",
             borderRadius: "3px",
             padding: "6px 14px",
           }}
@@ -76,19 +76,19 @@ export function AuthorityPreview() {
       </div>
 
       {/* Authority rows */}
-      <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
+      <div style={{ backgroundColor: "var(--color-white)", border: "1px solid var(--color-border)", borderRadius: "4px" }}>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1.1fr 1fr 1.3fr",
             gap: "10px",
             padding: "8px 14px",
-            backgroundColor: "#F8FAFC",
-            borderBottom: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-bg-light)",
+            borderBottom: "1px solid var(--color-border)",
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             letterSpacing: "0.04em",
             textTransform: "uppercase",
           }}
@@ -105,23 +105,23 @@ export function AuthorityPreview() {
               gridTemplateColumns: "1.1fr 1fr 1.3fr",
               gap: "10px",
               padding: "9px 14px",
-              borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+              borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
               alignItems: "center",
               fontFamily: "var(--font-sans)",
               fontSize: "11px",
             }}
           >
-            <span style={{ color: "#0f172a", fontWeight: 500 }}>{row.role}</span>
+            <span style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>{row.role}</span>
             <span
               style={{
                 fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: "10px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
               }}
             >
               {row.limit}
             </span>
-            <span style={{ color: row.tone, fontWeight: row.tone === "#047857" ? 500 : 400 }}>
+            <span style={{ color: row.tone, fontWeight: row.tone === "var(--color-success)" ? 500 : 400 }}>
               {row.then}
             </span>
           </div>
@@ -133,7 +133,7 @@ export function AuthorityPreview() {
         style={{
           fontFamily: "var(--font-sans)",
           fontSize: "10px",
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           margin: "10px 2px 0",
         }}
       >

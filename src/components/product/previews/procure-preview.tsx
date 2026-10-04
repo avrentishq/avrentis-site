@@ -15,7 +15,7 @@ export function ProcurePreview() {
     <div style={{ padding: "22px 24px" }}>
       {/* Reference + badges */}
       <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "#0f172a" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
           PO-2026-0091
         </span>
         <span
@@ -23,7 +23,7 @@ export function ProcurePreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
@@ -41,16 +41,16 @@ export function ProcurePreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "rgba(4,120,87,0.08)",
-            color: "#047857",
+            backgroundColor: "rgba(var(--color-success-rgb), 0.08)",
+            color: "var(--color-success)",
             borderRadius: "3px",
             padding: "2px 6px",
           }}
         >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#047857" }} />
+          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-success)" }} />
           Issued
         </span>
-        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "#64748b" }}>
+        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "var(--color-text-muted)" }}>
           3 line items
         </span>
       </div>
@@ -58,31 +58,31 @@ export function ProcurePreview() {
       {/* Vendor + total */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "14px 16px",
           marginBottom: "12px",
         }}
       >
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "#64748b", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 0 6px" }}>
+        <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 0 6px" }}>
           Vendor
         </p>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a", margin: "0 0 2px" }}>
+        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
           Greenfields Logistics Ltd.
         </p>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: "0 0 10px" }}>
+        <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "0 0 10px" }}>
           RC 1245890 · Zenith Bank · 2012345678
         </p>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", borderTop: "1px solid #e2e8f0", paddingTop: "10px" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b" }}>Total</span>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", borderTop: "1px solid var(--color-border)", paddingTop: "10px" }}>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)" }}>Total</span>
           <span
             style={{
               fontFamily: "var(--font-sans)",
               fontFeatureSettings: '"tnum" 1',
               fontSize: "18px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
             }}
           >
             ₦8,240,000
@@ -93,8 +93,8 @@ export function ProcurePreview() {
       {/* Line items table */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           marginBottom: "12px",
           overflow: "hidden",
@@ -106,12 +106,12 @@ export function ProcurePreview() {
             gridTemplateColumns: "1fr 50px 80px",
             gap: "10px",
             padding: "8px 14px",
-            backgroundColor: "#F8FAFC",
-            borderBottom: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-bg-light)",
+            borderBottom: "1px solid var(--color-border)",
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             letterSpacing: "0.04em",
             textTransform: "uppercase",
           }}
@@ -128,14 +128,14 @@ export function ProcurePreview() {
               gridTemplateColumns: "1fr 50px 80px",
               gap: "10px",
               padding: "10px 14px",
-              borderBottom: "1px solid #e2e8f0",
+              borderBottom: "1px solid var(--color-border)",
               fontFamily: "var(--font-sans)",
               fontSize: "12px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
             }}
           >
             <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.description}</span>
-            <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', color: "#64748b" }}>
+            <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', color: "var(--color-text-muted)" }}>
               {item.qty.toLocaleString()}
             </span>
             <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', fontWeight: 500 }}>{item.total}</span>
@@ -152,8 +152,8 @@ export function ProcurePreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#0f172a",
-            color: "#FFFFFF",
+            backgroundColor: "var(--color-navy-primary)",
+            color: "var(--color-white)",
             border: "none",
             borderRadius: "3px",
             padding: "8px 0",
@@ -169,9 +169,9 @@ export function ProcurePreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#FFFFFF",
-            color: "#0f172a",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            color: "var(--color-text-primary)",
+            border: "1px solid var(--color-border)",
             borderRadius: "3px",
             padding: "8px 0",
             cursor: "default",

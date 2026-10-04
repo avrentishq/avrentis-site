@@ -9,7 +9,7 @@ export function PeoplePreview() {
     <div style={{ padding: "22px 24px" }}>
       {/* Reference + badges */}
       <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "#0f172a" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
           ER-2026-0042
         </span>
         <span
@@ -17,7 +17,7 @@ export function PeoplePreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
@@ -36,7 +36,7 @@ export function PeoplePreview() {
             fontSize: "10px",
             fontWeight: 500,
             backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-            color: "#92400e",
+            color: "var(--color-warning)",
             borderRadius: "3px",
             padding: "2px 6px",
           }}
@@ -49,8 +49,8 @@ export function PeoplePreview() {
       {/* Employee block */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "14px 16px",
           marginBottom: "12px",
@@ -64,8 +64,8 @@ export function PeoplePreview() {
             width: "40px",
             height: "40px",
             borderRadius: "50%",
-            backgroundColor: "#0f172a",
-            color: "#FFFFFF",
+            backgroundColor: "var(--color-navy-primary)",
+            color: "var(--color-white)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -77,14 +77,14 @@ export function PeoplePreview() {
           IN
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a", margin: "0 0 2px" }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
             Ifeoma Nwachukwu
           </p>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
             Administrator · Operations · Joined Feb 2024
           </p>
         </div>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "#64748b" }}>
+        <span style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)" }}>
           2 receipts
         </span>
       </div>
@@ -92,35 +92,35 @@ export function PeoplePreview() {
       {/* Request details */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "14px 16px",
           marginBottom: "12px",
         }}
       >
         <div style={{ display: "grid", gridTemplateColumns: "90px 1fr", rowGap: "6px", fontFamily: "var(--font-sans)", fontSize: "11px" }}>
-          <span style={{ color: "#64748b" }}>Type</span>
-          <span style={{ color: "#0f172a" }}>Travel</span>
-          <span style={{ color: "#64748b" }}>Amount</span>
-          <span style={{ color: "#0f172a", fontFeatureSettings: '"tnum" 1' }}>₦84,500</span>
-          <span style={{ color: "#64748b" }}>Purpose</span>
-          <span style={{ color: "#0f172a" }}>Client site visit, Abuja</span>
-          <span style={{ color: "#64748b" }}>Paid to</span>
-          <span style={{ color: "#0f172a" }}>Ifeoma Nwachukwu (employee payee)</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Type</span>
+          <span style={{ color: "var(--color-text-primary)" }}>Travel</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Amount</span>
+          <span style={{ color: "var(--color-text-primary)", fontFeatureSettings: '"tnum" 1' }}>₦84,500</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Purpose</span>
+          <span style={{ color: "var(--color-text-primary)" }}>Client site visit, Abuja</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Paid to</span>
+          <span style={{ color: "var(--color-text-primary)" }}>Ifeoma Nwachukwu (employee payee)</span>
         </div>
       </div>
 
       {/* Action panel */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "14px 16px",
         }}
       >
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "#64748b", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 0 10px" }}>
+        <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 0 10px" }}>
           Your decision
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
@@ -130,8 +130,8 @@ export function PeoplePreview() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#0f172a",
-              color: "#FFFFFF",
+              backgroundColor: "var(--color-navy-primary)",
+              color: "var(--color-white)",
               border: "none",
               borderRadius: "3px",
               padding: "8px 0",
@@ -146,9 +146,9 @@ export function PeoplePreview() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#FFFFFF",
-              color: "#0f172a",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              color: "var(--color-text-primary)",
+              border: "1px solid var(--color-border)",
               borderRadius: "3px",
               padding: "8px 0",
               cursor: "default",

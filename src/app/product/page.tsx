@@ -128,10 +128,10 @@ const STATUS_BADGE: Record<
   ModuleStatus,
   { label: string; bg: string; color: string }
 > = {
-  available: { label: "Available", bg: "rgba(39,174,96,0.12)", color: "#047857" },
+  available: { label: "Available", bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
   coming_soon: { label: "Coming soon", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
   partial: { label: "In beta", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
-  roadmap: { label: "Roadmap", bg: "rgba(148,163,184,0.12)", color: "#64748b" },
+  roadmap: { label: "Roadmap", bg: "rgba(var(--color-text-subtle-rgb), 0.12)", color: "var(--color-text-muted)" },
 };
 
 export default function ProductOverviewPage() {
@@ -142,7 +142,7 @@ export default function ProductOverviewPage() {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -159,7 +159,7 @@ export default function ProductOverviewPage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             zIndex: 1,
@@ -194,7 +194,7 @@ export default function ProductOverviewPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -207,7 +207,7 @@ export default function ProductOverviewPage() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 36px",
               maxWidth: "640px",
@@ -227,7 +227,7 @@ export default function ProductOverviewPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -244,8 +244,8 @@ export default function ProductOverviewPage() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -261,7 +261,7 @@ export default function ProductOverviewPage() {
       </section>
 
       {/* ── MODULE GRID ─────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <span
@@ -283,7 +283,7 @@ export default function ProductOverviewPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "560px",
@@ -310,7 +310,7 @@ export default function ProductOverviewPage() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "20px",
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                     letterSpacing: "0.01em",
                   }}
@@ -321,7 +321,7 @@ export default function ProductOverviewPage() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "14px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     margin: "0 0 20px",
                     maxWidth: "560px",
                   }}
@@ -350,7 +350,7 @@ export default function ProductOverviewPage() {
       </section>
 
       {/* ── PLATFORM RHYTHM (how modules share the engine) ─────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
           <span
@@ -372,7 +372,7 @@ export default function ProductOverviewPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 24px",
               letterSpacing: "0.01em",
@@ -385,7 +385,7 @@ export default function ProductOverviewPage() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "16px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 32px",
               maxWidth: "640px",
@@ -402,8 +402,8 @@ export default function ProductOverviewPage() {
 
           <div
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "8px",
               padding: "32px",
               display: "grid",
@@ -435,7 +435,7 @@ export default function ProductOverviewPage() {
                     fontFamily: "var(--font-sans)",
                     fontSize: "16px",
                     fontWeight: 600,
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: 0,
                   }}
                 >
@@ -445,7 +445,7 @@ export default function ProductOverviewPage() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "13px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     margin: 0,
                     lineHeight: 1.6,
                   }}
@@ -476,8 +476,8 @@ function ModuleCard({ mod }: { mod: Module }) {
     <Link
       href={`/product/${mod.slug}`}
       style={{
-        backgroundColor: "#F8FAFC",
-        border: "1px solid #e2e8f0",
+        backgroundColor: "var(--color-bg-light)",
+        border: "1px solid var(--color-border)",
         borderRadius: "10px",
         padding: "28px",
         display: "flex",
@@ -525,7 +525,7 @@ function ModuleCard({ mod }: { mod: Module }) {
             fontFamily: "var(--font-sans)",
             fontWeight: 600,
             fontSize: "18px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             margin: "0 0 2px",
           }}
         >
@@ -548,7 +548,7 @@ function ModuleCard({ mod }: { mod: Module }) {
         style={{
           fontFamily: "var(--font-sans)",
           fontSize: "14px",
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
           flex: 1,
@@ -562,7 +562,7 @@ function ModuleCard({ mod }: { mod: Module }) {
           fontFamily: "var(--font-sans)",
           fontSize: "13px",
           fontWeight: 500,
-          color: "#0f172a",
+          color: "var(--color-text-primary)",
           marginTop: "4px",
         }}
       >

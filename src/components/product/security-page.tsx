@@ -249,7 +249,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "28px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 margin: 0,
                 letterSpacing: "0.01em",
                 lineHeight: 1.2,
@@ -265,7 +265,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
             fontFamily: "var(--font-sans)",
             fontSize: "17px",
             fontWeight: 500,
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.5,
             margin: "0 0 14px",
           }}
@@ -276,7 +276,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "15px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.75,
             margin: "0 0 20px",
           }}
@@ -293,7 +293,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 alignItems: "flex-start",
                 fontFamily: "var(--font-sans)",
                 fontSize: "14px",
-                color: "#334155",
+                color: "var(--color-text-faint)",
                 lineHeight: 1.6,
               }}
             >
@@ -308,15 +308,15 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
       <div
         style={{
           borderRadius: "10px",
-          border: "1px solid #e2e8f0",
-          backgroundColor: "#F8FAFC",
-          boxShadow: "0 20px 50px rgba(15,23,42,0.08), 0 4px 10px rgba(15,23,42,0.04)",
+          border: "1px solid var(--color-border)",
+          backgroundColor: "var(--color-bg-light)",
+          boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.08), 0 4px 10px rgba(var(--color-navy-primary-rgb), 0.04)",
           overflow: "hidden",
         }}
       >
         <div
           style={{
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             padding: "10px 14px",
             display: "flex",
             alignItems: "center",
@@ -331,7 +331,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                   width: "10px",
                   height: "10px",
                   borderRadius: "50%",
-                  backgroundColor: "rgba(255,255,255,0.15)",
+                  backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
                 }}
               />
             ))}
@@ -339,12 +339,12 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
           <div
             style={{
               flex: 1,
-              backgroundColor: "rgba(255,255,255,0.06)",
+              backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
               borderRadius: "5px",
               padding: "4px 10px",
               fontFamily: "var(--font-sans)",
               fontSize: "11px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               textAlign: "center",
             }}
           >
@@ -374,7 +374,7 @@ export function SecurityProductPage() {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -391,7 +391,7 @@ export function SecurityProductPage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY,
@@ -429,7 +429,7 @@ export function SecurityProductPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -448,7 +448,7 @@ export function SecurityProductPage() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
@@ -474,7 +474,7 @@ export function SecurityProductPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -491,8 +491,8 @@ export function SecurityProductPage() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -508,7 +508,7 @@ export function SecurityProductPage() {
       </section>
 
       {/* ── PILLARS ────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityPillars} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
@@ -540,7 +540,7 @@ export function SecurityProductPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "620px",
@@ -563,8 +563,8 @@ export function SecurityProductPage() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={staggerDelay(i + 2)}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "28px",
                     display: "flex",
@@ -590,7 +590,7 @@ export function SecurityProductPage() {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 600,
                       fontSize: "18px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
                   >
@@ -600,7 +600,7 @@ export function SecurityProductPage() {
                     style={{
                       fontFamily: "var(--font-sans)",
                       fontSize: "14px",
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
                     }}
@@ -615,7 +615,7 @@ export function SecurityProductPage() {
       </section>
 
       {/* ── STACK ──────────────────────────────────────────── */}
-      <section id="stack" style={{ backgroundColor: "#FFFFFF", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section id="stack" style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityStack} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
@@ -627,7 +627,7 @@ export function SecurityProductPage() {
       {/* ── COMPLIANCE POSTURE ─────────────────────────────── */}
       <section
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px",
           position: "relative",
           overflow: "hidden",
@@ -669,7 +669,7 @@ export function SecurityProductPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               maxWidth: "640px",
@@ -689,7 +689,7 @@ export function SecurityProductPage() {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "15px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 0 48px",
               maxWidth: "680px",
@@ -714,8 +714,8 @@ export function SecurityProductPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.10)",
+                  backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
+                  border: "1px solid rgba(var(--color-white-rgb), 0.10)",
                   borderRadius: "10px",
                   padding: "24px",
                 }}
@@ -726,7 +726,7 @@ export function SecurityProductPage() {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 600,
                       fontSize: "15px",
-                      color: "#FFFFFF",
+                      color: "var(--color-white)",
                     }}
                   >
                     {c.framework}
@@ -751,7 +751,7 @@ export function SecurityProductPage() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "13px",
-                    color: "#94a3b8",
+                    color: "var(--color-text-subtle)",
                     lineHeight: 1.6,
                     margin: 0,
                   }}
@@ -771,8 +771,8 @@ export function SecurityProductPage() {
             style={{
               marginTop: "40px",
               padding: "22px 26px",
-              backgroundColor: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
+              border: "1px solid rgba(var(--color-white-rgb), 0.08)",
               borderRadius: "10px",
               display: "flex",
               flexDirection: "column",
@@ -790,7 +790,7 @@ export function SecurityProductPage() {
             >
               RESPONSIBLE DISCLOSURE
             </span>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "#e2e8f0", margin: 0, lineHeight: 1.7 }}>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--color-border)", margin: 0, lineHeight: 1.7 }}>
               Found a vulnerability?{" "}
               <Link
                 href="/contact?intent=disclosure"
@@ -806,7 +806,7 @@ export function SecurityProductPage() {
       </section>
 
       {/* ── FAQ ────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityFaq} scrim="light" />
         <div style={{ maxWidth: "980px", margin: "0 auto" }}>
           <m.span
@@ -838,7 +838,7 @@ export function SecurityProductPage() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               maxWidth: "620px",
@@ -851,8 +851,8 @@ export function SecurityProductPage() {
 
           <div
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               overflow: "hidden",
             }}
@@ -866,7 +866,7 @@ export function SecurityProductPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 2)}
                 style={{
-                  borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+                  borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
                   padding: "18px 22px",
                 }}
               >
@@ -877,7 +877,7 @@ export function SecurityProductPage() {
                     fontFamily: "var(--font-sans)",
                     fontSize: "15px",
                     fontWeight: 500,
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
@@ -893,7 +893,7 @@ export function SecurityProductPage() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "14px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: "12px 0 0",
                   }}
@@ -913,8 +913,8 @@ export function SecurityProductPage() {
             style={{
               marginTop: "32px",
               padding: "22px 26px",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               display: "flex",
               flexWrap: "wrap",
@@ -926,10 +926,10 @@ export function SecurityProductPage() {
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <Mail size={18} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
               <div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 600, color: "#0f172a" }}>
+                <div style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
                   Got a question we haven&rsquo;t answered?
                 </div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "#64748b" }}>
+                <div style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--color-text-muted)" }}>
                   Talk directly with our team — we respond within one business day.
                 </div>
               </div>
@@ -941,7 +941,7 @@ export function SecurityProductPage() {
                 fontWeight: 600,
                 fontSize: "13px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 18px",
                 height: "40px",

@@ -76,9 +76,9 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
   const config: Record<ModuleStatus, { label: string; bg: string; color: string; border: string }> = {
     available: {
       label: "Available now",
-      bg: "rgba(39,174,96,0.12)",
-      color: "#34D399",
-      border: "1px solid rgba(39,174,96,0.3)",
+      bg: "rgba(var(--color-available-rgb), 0.12)",
+      color: "var(--color-available-on-dark)",
+      border: "1px solid rgba(var(--color-available-rgb), 0.3)",
     },
     coming_soon: {
       label: "Coming soon",
@@ -94,9 +94,9 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
     },
     roadmap: {
       label: "On the roadmap",
-      bg: "rgba(148,163,184,0.10)",
-      color: "#94a3b8",
-      border: "1px solid rgba(148,163,184,0.25)",
+      bg: "rgba(var(--color-text-subtle-rgb), 0.10)",
+      color: "var(--color-text-subtle)",
+      border: "1px solid rgba(var(--color-text-subtle-rgb), 0.25)",
     },
   };
   const c = config[status];
@@ -190,7 +190,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -208,7 +208,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: isMobile ? 0 : gridY,
@@ -268,7 +268,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 700,
                 fontSize: "34px",
-                color: "#FFFFFF",
+                color: "var(--color-white)",
                 lineHeight: 1.15,
                 margin: 0,
               }}
@@ -287,7 +287,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "17px",
-                color: "#94a3b8",
+                color: "var(--color-text-subtle)",
                 lineHeight: 1.7,
                 margin: 0,
                 maxWidth: "480px",
@@ -311,7 +311,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   fontWeight: 600,
                   fontSize: "14px",
                   backgroundColor: "var(--color-gold)",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   borderRadius: "6px",
                   padding: "0 22px",
                   height: "44px",
@@ -328,8 +328,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 500,
                   fontSize: "14px",
-                  color: "#FFFFFF",
-                  border: "1px solid rgba(255,255,255,0.2)",
+                  color: "var(--color-white)",
+                  border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                   borderRadius: "6px",
                   padding: "0 22px",
                   height: "44px",
@@ -353,21 +353,21 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             <div
               style={{
                 borderRadius: "10px",
-                border: "1px solid rgba(255,255,255,0.10)",
-                backgroundColor: "#F8FAFC",
-                boxShadow: "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(0,0,0,0.45)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.10)",
+                backgroundColor: "var(--color-bg-light)",
+                boxShadow: "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.45)",
                 overflow: "hidden",
               }}
             >
               {/* Browser chrome */}
               <div
                 style={{
-                  backgroundColor: "#0f172a",
+                  backgroundColor: "var(--color-navy-primary)",
                   padding: "10px 14px",
                   display: "flex",
                   alignItems: "center",
                   gap: "12px",
-                  borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
                 }}
               >
                 <div style={{ display: "flex", gap: "6px" }}>
@@ -378,7 +378,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                         width: "10px",
                         height: "10px",
                         borderRadius: "50%",
-                        backgroundColor: "rgba(255,255,255,0.15)",
+                        backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
                       }}
                     />
                   ))}
@@ -386,12 +386,12 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 <div
                   style={{
                     flex: 1,
-                    backgroundColor: "rgba(255,255,255,0.06)",
+                    backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
                     borderRadius: "5px",
                     padding: "4px 10px",
                     fontFamily: "var(--font-sans)",
                     fontSize: "11px",
-                    color: "#94a3b8",
+                    color: "var(--color-text-subtle)",
                     textAlign: "center",
                   }}
                 >
@@ -405,7 +405,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       </section>
 
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePillars} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
@@ -437,7 +437,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "560px",
@@ -463,8 +463,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={staggerDelay(i + 2)}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "28px",
                     display: "flex",
@@ -490,7 +490,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 600,
                       fontSize: "18px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
                   >
@@ -500,7 +500,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                     style={{
                       fontFamily: "var(--font-sans)",
                       fontSize: "14px",
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
                     }}
@@ -515,7 +515,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       </section>
 
       {/* ── USE CASES ────────────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.moduleUseCases} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
@@ -547,7 +547,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "560px",
@@ -568,8 +568,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 2)}
                 style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-white)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "6px",
                   padding: "24px",
                 }}
@@ -579,7 +579,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "15px",
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: "0 0 6px",
                   }}
                 >
@@ -589,7 +589,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "14px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.65,
                     margin: 0,
                   }}
@@ -603,7 +603,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       </section>
 
       {/* ── PLAN AVAILABILITY + RELATED MODULES ──────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePlan} scrim="light" />
         <div
           style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gap: "48px" }}
@@ -636,7 +636,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "24px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 margin: "0 0 24px",
               }}
             >
@@ -644,8 +644,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             </h3>
             <div
               style={{
-                backgroundColor: "#F8FAFC",
-                border: "1px solid #e2e8f0",
+                backgroundColor: "var(--color-bg-light)",
+                border: "1px solid var(--color-border)",
                 borderRadius: "6px",
               }}
             >
@@ -658,7 +658,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                     justifyContent: "space-between",
                     gap: "16px",
                     padding: "14px 18px",
-                    borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+                    borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
                   }}
                 >
                   <span
@@ -666,7 +666,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       fontFamily: "var(--font-sans)",
                       fontSize: "14px",
                       fontWeight: 500,
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       flexShrink: 0,
                     }}
                   >
@@ -678,7 +678,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                         fontFamily: "var(--font-sans)",
                         fontSize: "12px",
                         fontWeight: 500,
-                        color: "#047857",
+                        color: "var(--color-success)",
                         display: "inline-flex",
                         alignItems: "center",
                         gap: "4px",
@@ -689,7 +689,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                           width: "5px",
                           height: "5px",
                           borderRadius: "50%",
-                          backgroundColor: "#047857",
+                          backgroundColor: "var(--color-success)",
                         }}
                       />
                       {p.note ?? "Included"}
@@ -699,7 +699,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontSize: "12px",
-                        color: "#94a3b8",
+                        color: "var(--color-text-subtle)",
                       }}
                     >
                       {p.note ?? "Not included"}
@@ -753,7 +753,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "24px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 margin: "0 0 24px",
               }}
             >
@@ -765,8 +765,8 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   key={rm.slug}
                   href={`/product/${rm.slug}`}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "6px",
                     padding: "16px 18px",
                     textDecoration: "none",
@@ -783,7 +783,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                         fontFamily: "var(--font-sans)",
                         fontSize: "14px",
                         fontWeight: 500,
-                        color: "#0f172a",
+                        color: "var(--color-text-primary)",
                         margin: "0 0 2px",
                       }}
                     >
@@ -793,7 +793,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontSize: "12px",
-                        color: "#64748b",
+                        color: "var(--color-text-muted)",
                         margin: 0,
                       }}
                     >

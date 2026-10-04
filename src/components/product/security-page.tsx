@@ -131,7 +131,7 @@ const STACK = [
     title: "Audit trail",
     subtitle: "Every action recorded and sealed. Every export, regulator-ready.",
     body:
-      "The audit log records actor, role, action, entity, IP, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting Avrentis.",
+      "The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting Avrentis.",
     icon: FileSearch,
     bullets: [
       "Every approval, query, and role change written to an append-only log",

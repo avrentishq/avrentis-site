@@ -5,6 +5,7 @@ import { ContactForm } from "@/components/contact/contact-form";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ContactIntent } from "./state";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Contact — Avrentis",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
     title: "Contact Avrentis",
     description:
       "Contact us or talk to our team. Real humans, one-business-day reply.",
-    url: "https://avrentis.com/contact",
+    url: canonical("/contact"),
     type: "website",
   },
 };

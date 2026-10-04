@@ -20,6 +20,7 @@ import {
   type ContactIntent,
   VALID_INTENTS,
 } from "./state";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -155,7 +156,7 @@ export async function submitContact(
     console.error("Contact submission failed:", err);
     return {
       status: "error",
-      message: "Something went wrong sending your enquiry. Please email hello@avrentis.com directly.",
+      message: `Something went wrong sending your enquiry. Please email ${CONTACT_EMAIL.general} directly.`,
     };
   }
 

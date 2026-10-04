@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { ProductSuiteLayout } from "@/components/product/suite-layout";
 import { SUITE_PAGES } from "@/lib/product-suites";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Infrastructure — access, alerts and integrations",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Avrentis Infrastructure — access, alerts and integrations",
     description: SUITE_PAGES.infrastructure.headline,
-    url: "https://avrentis.com/product/infrastructure",
+    url: canonical("/product/infrastructure"),
     type: "website",
   },
 };

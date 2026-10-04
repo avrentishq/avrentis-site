@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { TrialForm } from "./trial-form";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Start your 30-day trial — Avrentis",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     title: "Start your 30-day Avrentis trial",
     description:
       "Provision in under two minutes. Full Business features on a 5-seat pilot workspace. Your organisation's data, not a demo.",
-    url: "https://avrentis.com/trial",
+    url: canonical("/trial"),
     type: "website",
   },
 };

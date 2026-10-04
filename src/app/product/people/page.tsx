@@ -4,6 +4,7 @@ import { PeopleModulePage } from "@/components/product/pages/people-module-page"
 import { isLaunchHidden } from "@/lib/launch";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Requests — staff expense approvals on the same rails",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     title: "Avrentis Requests — staff expense approvals on the same rails",
     description:
       "Staff expense claims — structured, routed, and every approval on record.",
-    url: "https://avrentis.com/product/people",
+    url: canonical("/product/people"),
     type: "website",
   },
 };

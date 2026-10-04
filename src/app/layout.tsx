@@ -7,6 +7,7 @@ import { BRAND } from "@/lib/brand";
 import { JsonLd, organizationSchema } from "@/lib/seo";
 import { AUDIT_TRAIL_KEPT, SITE_DESCRIPTION } from "@/lib/record-keeping";
 import "./globals.css";
+import { SITE_URL } from "@/lib/seo";
 
 const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
 const OG_DESCRIPTION = `Replace scattered approvals with structured authority — a tamper-evident audit trail of every decision, approval, and process your organisation runs, ${AUDIT_TRAIL_KEPT}.`;
@@ -35,13 +36,13 @@ const cabinetGrotesk = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://avrentis.com"),
+  metadataBase: new URL(SITE_URL),
   title: `${BRAND.name} — ${BRAND.positioningStatement}`,
   description: SITE_DESCRIPTION,
   openGraph: {
     title: OG_TITLE,
     description: OG_DESCRIPTION,
-    url: "https://avrentis.com",
+    url: SITE_URL,
     siteName: BRAND.name,
     type: "website",
   },

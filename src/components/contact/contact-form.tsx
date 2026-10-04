@@ -29,6 +29,7 @@ import {
   type ContactIntent,
 } from "@/app/contact/state";
 import { CONTACT_TABS, tabForIntent } from "@/app/contact/tabs";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 interface IntentCopy {
   eyebrow: string;
@@ -482,7 +483,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               Prefer email?
             </div>
             <a
-              href="mailto:hello@avrentis.com"
+              href={`mailto:${CONTACT_EMAIL.general}`}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "15px",
@@ -491,7 +492,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 textDecoration: "none",
               }}
             >
-              hello@avrentis.com
+              {CONTACT_EMAIL.general}
             </a>
             <p
               style={{

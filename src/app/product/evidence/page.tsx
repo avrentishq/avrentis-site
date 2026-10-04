@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { ProductSuiteLayout } from "@/components/product/suite-layout";
 import { SUITE_PAGES } from "@/lib/product-suites";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Evidence — a tamper-evident record of every decision",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Avrentis Evidence — a tamper-evident record of every decision",
     description: SUITE_PAGES.evidence.headline,
-    url: "https://avrentis.com/product/evidence",
+    url: canonical("/product/evidence"),
     type: "website",
   },
 };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ProcureModulePage } from "@/components/product/pages/procure-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Procurement — Procurement on record",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis Procurement — Procurement on record",
     description:
       "Submit, approve, and issue purchase orders through a single system of record. Vendor directory + line items + approval chain.",
-    url: "https://avrentis.com/product/procure",
+    url: canonical("/product/procure"),
     type: "website",
   },
 };

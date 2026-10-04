@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PayModulePage } from "@/components/product/pages/pay-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Payables — Structured payment approvals",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis Payables — Structured payment approvals",
     description:
       "Submit, approve, and authorise every payment through a defined chain. Bank-ready exports and a full audit trail, without the paper.",
-    url: "https://avrentis.com/product/pay",
+    url: canonical("/product/pay"),
     type: "website",
   },
 };

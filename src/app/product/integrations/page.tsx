@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IntegrationsCataloguePage, type PlansByFeature } from "@/components/product/integrations-page";
 import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Integrations — Avrentis",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: "Avrentis integrations catalogue",
     description:
       "Plug Avrentis into the identity, notification, accounting, banking, and developer tools your organisation already runs.",
-    url: "https://avrentis.com/product/integrations",
+    url: canonical("/product/integrations"),
     type: "website",
   },
 };

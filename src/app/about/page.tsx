@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@avrentishq/core/brand";
+import { canonical } from "@/lib/seo";
 
 const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Avrentis",
     description: ABOUT_DESCRIPTION,
-    url: "https://avrentis.com/about",
+    url: canonical("/about"),
     type: "website",
   },
 };

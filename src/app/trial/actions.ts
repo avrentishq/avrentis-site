@@ -26,6 +26,7 @@ import { isSelectableCountry } from "@/data/countries";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -144,7 +145,7 @@ export async function submitTrialRequest(
     return {
       status: "error",
       message:
-        "We couldn't reach the provisioning service. Please try again in a moment, or contact trials@avrentis.com.",
+        `We couldn't reach the provisioning service. Please try again in a moment, or contact ${CONTACT_EMAIL.trials}.`,
     };
   }
 

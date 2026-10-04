@@ -6,6 +6,7 @@ import { PlanComparison } from "@/components/sections/plan-comparison";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
+import { canonical } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   // Tier names come from the pricing API (same cached fetch the page renders),
@@ -19,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: `Avrentis pricing — ${names.join(", ")}`,
       description,
-      url: "https://avrentis.com/pricing",
+      url: canonical("/pricing"),
       type: "website",
     },
   };

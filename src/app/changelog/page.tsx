@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ChangelogProductPage } from "@/components/changelog/changelog-page";
 import { isLaunchHidden } from "@/lib/launch";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Changelog — Avrentis",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis changelog",
     description:
       "What we've shipped — notable changes and new capabilities, newest first.",
-    url: "https://avrentis.com/changelog",
+    url: canonical("/changelog"),
     type: "website",
   },
 };

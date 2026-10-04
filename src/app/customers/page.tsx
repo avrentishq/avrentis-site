@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomersProductPage } from "@/components/customers/customers-page";
 import { isLaunchHidden } from "@/lib/launch";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Customers — Avrentis",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis customers & launch partners",
     description:
       "Honest about where we are. Industries we serve, problems we hear, and the launch cohort that shapes what ships next.",
-    url: "https://avrentis.com/customers",
+    url: canonical("/customers"),
     type: "website",
   },
 };

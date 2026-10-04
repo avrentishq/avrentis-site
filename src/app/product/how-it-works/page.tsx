@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { HowItWorksProductPage } from "@/components/product/how-it-works-page";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "How Avrentis works — the complete approval lifecycle",
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
     title: "How Avrentis works — the complete approval lifecycle",
     description:
       "Submit → Review → Sanction → Record. Role-enforced chains, multi-channel notifications, tamper-evident audit trail. The complete walk-through.",
-    url: "https://avrentis.com/product/how-it-works",
+    url: canonical("/product/how-it-works"),
     type: "website",
   },
 };

@@ -32,6 +32,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -113,7 +114,7 @@ const DOCUMENTS = [
   {
     icon: AlertOctagon,
     title: "Responsible disclosure",
-    body: "Report security issues to security@avrentis.com. We triage within two business days.",
+    body: `Report security issues to ${CONTACT_EMAIL.security}. We triage within two business days.`,
     cta: { label: "Report a vulnerability", href: "/contact?intent=disclosure" },
   },
   {

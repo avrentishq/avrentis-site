@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Approval savings estimator — Avrentis",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     title: "What would structured approvals save you?",
     description:
       "A free, instant estimate of the time and cost you recover with structured approvals. No signup required.",
-    url: "https://avrentis.com/tools/savings",
+    url: canonical("/tools/savings"),
     type: "website",
   },
 };

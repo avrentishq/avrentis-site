@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SecurityProductPage } from "@/components/product/security-page";
-import { JsonLd, faqPageSchema } from "@/lib/seo";
+import { JsonLd, canonical, faqPageSchema } from "@/lib/seo";
 import { SECURITY_FAQS } from "@/lib/security-faqs";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     title: "Avrentis security — authority at every layer",
     description:
       "Tenant isolation at the database. Role + attribute-based authority. Tamper-evident audit, sealed daily. Lifecycle-bound access. Per-company encryption. No marketing — the actual stack.",
-    url: "https://avrentis.com/product/security",
+    url: canonical("/product/security"),
     type: "website",
   },
 };

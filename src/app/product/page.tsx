@@ -25,6 +25,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ModuleStatus } from "@/components/product/module-layout";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "The Avrentis platform — spend, oversight, evidence, on one record",
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     title: "The Avrentis platform — spend, oversight, evidence, on one record",
     description:
       "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
-    url: "https://avrentis.com/product",
+    url: canonical("/product"),
     type: "website",
   },
 };

@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
 import { isLaunchVisible } from "@/lib/launch";
 import { publicModuleKeys, MODULES, SUITES } from "@/lib/brand";
+import { SITE_URL } from "@/lib/seo";
 
-const BASE_URL = "https://avrentis.com";
+const BASE_URL = SITE_URL;
 
 /**
  * Sitemap of publicly-reachable routes. Launch-hidden routes (filtered via the

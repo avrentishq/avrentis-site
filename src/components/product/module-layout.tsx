@@ -656,6 +656,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
+                    gap: "16px",
                     padding: "14px 18px",
                     borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
                   }}
@@ -666,6 +667,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                       fontSize: "14px",
                       fontWeight: 500,
                       color: "#0f172a",
+                      flexShrink: 0,
                     }}
                   >
                     {p.plan}

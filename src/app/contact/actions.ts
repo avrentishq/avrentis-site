@@ -14,7 +14,7 @@
 import { sendContactEmail } from "@/lib/email";
 import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import {
   type ContactFormState,
   type ContactIntent,
@@ -72,8 +72,15 @@ export async function submitContact(
     return { status: "success", message: "Thanks — we'll be in touch shortly." };
   }
 
-  if (!(await rateLimitDurable(`contact:${await clientIp()}`, 5, 10 * 60_000))) {
-    return { status: "error", message: "Too many messages — please try again in a few minutes." };
+  const rateLimit = await limitVisitor("contact");
+  if (!rateLimit.ok) {
+    return {
+      status: "error",
+      message:
+        rateLimit.status === 503
+          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
+          : "Too many messages — please try again in a few minutes.",
+    };
   }
 
   const name = String(formData.get("name") ?? "").trim();

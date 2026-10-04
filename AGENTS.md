@@ -39,11 +39,22 @@ Run these locally before you claim anything is done.
 
 - **`import { m } from "framer-motion"`, never `motion`.** The app is wrapped in
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
-- **Runtime code imports only `@avrentishq/core/brand` and `@avrentishq/core/region/countries`.**
+- **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
+  `@avrentishq/core/security/rate-limit` and `@avrentishq/core/security/rate-limit-tiers`.**
   Every other subpath of that package needs peer dependencies this repo does not install
-  (`region/countries` has type-only imports; the `region` index pulls in a phone library).
+  (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
+  two rate-limit modules need only the Upstash packages the site already has — the rest of
+  `security/` does not, so it is admitted module by module, never as `security/*`).
   Tests may also import the dependency-free `modules/catalog` and `security/dependency-floors`
-  — they back the parity lock tests and never ship.
+  — they back the parity lock tests and never ship. `src/lib/core-imports.lock.test.ts`
+  enforces this list; extend both together.
+- **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per
+  Server Action (core tier, identifier, numbers, fail mode) and `limitVisitor(action)`; never
+  build an Upstash client or limiter in this repo. Every limiter carries a `site_*` tier from
+  `@avrentishq/core/security/rate-limit-tiers`, so refusals show up in the platform console.
+  Refusal counts reach the console only when the site uses the same Upstash database and
+  `RATE_LIMIT_KEY_PREFIX` as that environment's app; environments sharing one database each need
+  a distinct prefix. `RATE_LIMIT_DISABLED=true` bypasses limits in `next dev` only.
 - **Never hand-edit `src/data/pricing-fallback.json`.** It is generated on every `pnpm dev`
   and `pnpm build`.
 - **`pnpm.overrides` materialises core's canonical floor map**
@@ -55,9 +66,9 @@ Run these locally before you claim anything is done.
 - **Name tests `*.test.ts`, never `*.test.tsx`.** The vitest glob excludes `.tsx`, so a
   `.tsx` test is silently never executed and appears to pass.
 - **Server Actions return a state object; they never throw to the client.**
-- **The abuse-defence and CSP behaviour in `src/lib/rate-limit.ts`, `src/lib/turnstile.ts`
-  and `next.config.ts` encodes deliberate tradeoffs, not oversights.** Read the header
-  comment in the file first. This repo is public, so the specifics live in
+- **The abuse-defence and CSP behaviour in `src/lib/rate-limit.ts` (each action's
+  `failClosed`), `src/lib/turnstile.ts` and `next.config.ts` encodes deliberate tradeoffs,
+  not oversights.** Read the header comment in the file first. This repo is public, so the specifics live in
   `guides/security-posture.md`, which is gitignored.
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
 - **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css` as

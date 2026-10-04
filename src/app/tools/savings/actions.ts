@@ -14,7 +14,7 @@
 import { sendEmail } from "@/lib/email";
 import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { BOUNDS, clampInt, computeSavings, EFFICIENCY } from "./compute";
 import { type EstimateEmailState } from "./state";
 
@@ -43,9 +43,16 @@ export async function emailEstimate(
   }
 
   // Rate limit the send (this action emails an arbitrary recipient, so cap
-  // bursts to blunt spam-relay abuse). Best-effort, per-instance.
-  if (!(await rateLimitDurable(`estimate:${await clientIp()}`, 5, 10 * 60_000))) {
-    return { status: "error", message: "Too many requests — please try again in a few minutes." };
+  // bursts to blunt spam-relay abuse).
+  const rateLimit = await limitVisitor("savingsEstimate");
+  if (!rateLimit.ok) {
+    return {
+      status: "error",
+      message:
+        rateLimit.status === 503
+          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
+          : "Too many requests — please try again in a few minutes.",
+    };
   }
 
   const email = String(formData.get("email") ?? "").trim();

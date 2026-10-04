@@ -57,7 +57,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "Investigate \"who changed this?\" with certainty",
       body:
-        "A vendor's bank details changed between submission and payment. Audit shows who changed it, when, from which IP, and what the previous values were. No Slack archaeology.",
+        "A vendor's bank details changed between submission and payment. Audit shows who changed it, when, from which (masked) IP address, and what the previous values were. No Slack archaeology.",
     },
     {
       title: "Post-incident forensics without gaps",

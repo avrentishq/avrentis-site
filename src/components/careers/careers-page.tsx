@@ -87,7 +87,7 @@ export function CareersProductPage() {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -104,7 +104,7 @@ export function CareersProductPage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY,
@@ -139,7 +139,7 @@ export function CareersProductPage() {
               fontFamily: sans,
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -155,7 +155,7 @@ export function CareersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
@@ -177,7 +177,7 @@ export function CareersProductPage() {
               fontWeight: 600,
               fontSize: "14px",
               backgroundColor: "var(--color-gold)",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               borderRadius: "6px",
               padding: "0 22px",
               height: "44px",
@@ -192,7 +192,7 @@ export function CareersProductPage() {
       </section>
 
       {/* ── PRINCIPLES ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersPrinciples} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
@@ -224,7 +224,7 @@ export function CareersProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               maxWidth: "620px",
@@ -247,8 +247,8 @@ export function CareersProductPage() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={staggerDelay(i + 2)}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "28px",
                     display: "flex",
@@ -274,13 +274,13 @@ export function CareersProductPage() {
                       fontFamily: sans,
                       fontWeight: 600,
                       fontSize: "17px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
                   >
                     {p.title}
                   </h3>
-                  <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                  <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                     {p.body}
                   </p>
                 </m.div>
@@ -291,7 +291,7 @@ export function CareersProductPage() {
       </section>
 
       {/* ── WHO WE WANT ────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersWhoWeWant} scrim="light" />
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
           <m.span
@@ -323,7 +323,7 @@ export function CareersProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "30px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 28px",
               letterSpacing: "0.01em",
@@ -354,7 +354,7 @@ export function CareersProductPage() {
                 style={{
                   fontFamily: sans,
                   fontSize: "15px",
-                  color: "#334155",
+                  color: "var(--color-text-faint)",
                   lineHeight: 1.7,
                   paddingLeft: "20px",
                   position: "relative",
@@ -380,7 +380,7 @@ export function CareersProductPage() {
       </section>
 
       {/* ── OPEN ROLES / HONEST NO-ROLES STATE ─────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersOpenRoles} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <m.span
@@ -411,8 +411,8 @@ export function CareersProductPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={staggerDelay(1)}
               style={{
-                backgroundColor: "#F8FAFC",
-                border: "1px solid #e2e8f0",
+                backgroundColor: "var(--color-bg-light)",
+                border: "1px solid var(--color-border)",
                 borderRadius: "10px",
                 padding: "32px 36px",
               }}
@@ -422,14 +422,14 @@ export function CareersProductPage() {
                   fontFamily: sans,
                   fontWeight: 500,
                   fontSize: "22px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   margin: "0 0 10px",
                   letterSpacing: "0.01em",
                 }}
               >
                 No open roles right now.
               </h2>
-              <p style={{ fontFamily: sans, fontSize: "15px", color: "#64748b", lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.75, margin: 0 }}>
                 We open roles deliberately. When a seat is ready, we run a
                 short, respectful process — and we reach out to the people
                 who&rsquo;ve already registered interest first. Leave your
@@ -445,8 +445,8 @@ export function CareersProductPage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={staggerDelay(1)}
               style={{
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #e2e8f0",
+                backgroundColor: "var(--color-white)",
+                border: "1px solid var(--color-border)",
                 borderRadius: "10px",
                 overflow: "hidden",
               }}
@@ -456,7 +456,7 @@ export function CareersProductPage() {
                   key={role.title}
                   style={{
                     padding: "22px 26px",
-                    borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
+                    borderTop: i === 0 ? "none" : "1px solid var(--color-bg)",
                     display: "flex",
                     justifyContent: "space-between",
                     gap: "16px",
@@ -470,7 +470,7 @@ export function CareersProductPage() {
                         fontFamily: sans,
                         fontWeight: 600,
                         fontSize: "16px",
-                        color: "#0f172a",
+                        color: "var(--color-text-primary)",
                         margin: "0 0 4px",
                       }}
                     >
@@ -479,7 +479,7 @@ export function CareersProductPage() {
                     <p style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold-on-light)", margin: "0 0 8px" }}>
                       {role.location}
                     </p>
-                    <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                    <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                       {role.summary}
                     </p>
                   </div>
@@ -490,7 +490,7 @@ export function CareersProductPage() {
                       fontSize: "13px",
                       fontWeight: 600,
                       backgroundColor: "var(--color-gold)",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       borderRadius: "6px",
                       padding: "0 18px",
                       height: "40px",
@@ -512,7 +512,7 @@ export function CareersProductPage() {
       <section
         id="register-interest"
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "100px 40px",
           scrollMarginTop: "80px",
           position: "relative",
@@ -535,7 +535,7 @@ export function CareersProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "30px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               letterSpacing: "0.01em",
@@ -553,7 +553,7 @@ export function CareersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.75,
               margin: "0 auto 28px",
               maxWidth: "600px",
@@ -582,7 +582,7 @@ export function CareersProductPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -601,8 +601,8 @@ export function CareersProductPage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",

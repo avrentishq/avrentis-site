@@ -47,8 +47,17 @@ interface Category {
   eyebrow: string;
   title: string;
   lede: string;
+  /** Plan feature that gates this category; its plans are named after the lede. */
+  planFeature?: PlanFeature;
   integrations: Integration[];
 }
+
+/** The plan features this page names plans for. SCIM provisioning rides on `sso`. */
+export type PlanFeature = "sso" | "apiAccess";
+/** "Business and Enterprise" per feature, read from the pricing API by the route
+ *  (formatted server-side so this client bundle never imports the pricing module).
+ *  Empty string = unknown; the sentence is then left off rather than guessed. */
+export type PlansByFeature = Record<PlanFeature, string>;
 
 const CATEGORIES: Category[] = [
   {
@@ -58,6 +67,7 @@ const CATEGORIES: Category[] = [
     title: "Sign in with the identity provider you already run.",
     lede:
       "Avrentis speaks the standard identity protocols — no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace.",
+    planFeature: "sso",
     integrations: [
       { name: "SAML 2.0", summary: "Federated sign-in for any SAML-compliant IdP — on the enterprise roadmap.", availability: "request" },
       { name: "OpenID Connect (OIDC)", summary: "OIDC flow for modern identity providers.", availability: "available" },
@@ -74,6 +84,7 @@ const CATEGORIES: Category[] = [
     title: "Users flow from your IdP — and leave when they should.",
     lede:
       "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds.",
+    planFeature: "sso",
     integrations: [
       { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
       { name: "Okta SCIM", summary: "Verified integration with Okta's lifecycle engine.", availability: "available" },
@@ -144,7 +155,8 @@ const CATEGORIES: Category[] = [
     eyebrow: "DEVELOPER PLATFORM",
     title: "Build on top of your approval record.",
     lede:
-      "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition. For Enterprise customers we also issue tenant-scoped service tokens.",
+      "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition and tenant-scoped API keys.",
+    planFeature: "apiAccess",
     integrations: [
       { name: "REST API (v1)", summary: "Read access to documents, users, vendors, audit events, and reports.", availability: "available" },
       { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },
@@ -158,9 +170,9 @@ const CATEGORIES: Category[] = [
 const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: string; border: string }> = {
   available: {
     label: "Available",
-    color: "#047857",
-    bg: "rgba(4,120,87,0.10)",
-    border: "rgba(4,120,87,0.28)",
+    color: "var(--color-success)",
+    bg: "rgba(var(--color-success-rgb), 0.10)",
+    border: "rgba(var(--color-success-rgb), 0.28)",
   },
   request: {
     label: "Talk to us",
@@ -205,7 +217,7 @@ function Badge({ availability }: { availability: Availability }) {
   );
 }
 
-function CategoryBlock({ category, index }: { category: Category; index: number }) {
+function CategoryBlock({ category, index, plans }: { category: Category; index: number; plans?: string }) {
   const Icon = category.icon;
   return (
     <m.section
@@ -250,7 +262,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "26px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 12px",
               letterSpacing: "0.01em",
@@ -259,15 +271,16 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
           >
             {category.title}
           </h2>
-          <p style={{ fontFamily: sans, fontSize: "15px", color: "#64748b", lineHeight: 1.7, margin: 0, maxWidth: "440px" }}>
+          <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "440px" }}>
             {category.lede}
+            {plans ? ` Available on ${plans}.` : null}
           </p>
         </div>
 
         <div
           style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "10px",
             overflow: "hidden",
           }}
@@ -277,7 +290,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
               key={integration.name}
               style={{
                 padding: "18px 22px",
-                borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
+                borderTop: i === 0 ? "none" : "1px solid var(--color-bg)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "16px",
@@ -286,11 +299,11 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
             >
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
-                  <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "#0f172a" }}>
+                  <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
                     {integration.name}
                   </span>
                 </div>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
                   {integration.summary}
                 </p>
               </div>
@@ -303,7 +316,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
   );
 }
 
-export function IntegrationsCataloguePage() {
+export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: PlansByFeature }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -320,7 +333,7 @@ export function IntegrationsCataloguePage() {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -337,7 +350,7 @@ export function IntegrationsCataloguePage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY,
@@ -372,7 +385,7 @@ export function IntegrationsCataloguePage() {
               fontFamily: sans,
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -388,7 +401,7 @@ export function IntegrationsCataloguePage() {
             style={{
               fontFamily: sans,
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "660px",
@@ -412,7 +425,7 @@ export function IntegrationsCataloguePage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -429,8 +442,8 @@ export function IntegrationsCataloguePage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -446,7 +459,7 @@ export function IntegrationsCataloguePage() {
       </section>
 
       {/* ── CATEGORY NAV ───────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "40px 40px", borderBottom: "1px solid #e2e8f0", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "40px 40px", borderBottom: "1px solid var(--color-border)", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategoryNav} scrim="light" />
         <div
           style={{
@@ -465,7 +478,7 @@ export function IntegrationsCataloguePage() {
               fontSize: "10px",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
             }}
           >
             Jump to:
@@ -477,12 +490,12 @@ export function IntegrationsCataloguePage() {
               style={{
                 fontFamily: sans,
                 fontSize: "13px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 textDecoration: "none",
                 padding: "6px 12px",
                 borderRadius: "999px",
-                border: "1px solid #e2e8f0",
-                backgroundColor: "#F8FAFC",
+                border: "1px solid var(--color-border)",
+                backgroundColor: "var(--color-bg-light)",
               }}
             >
               {c.eyebrow.split(" & ")[0].toLowerCase().replace(/^\w/, (ch) => ch.toUpperCase())}
@@ -492,17 +505,17 @@ export function IntegrationsCataloguePage() {
       </section>
 
       {/* ── CATEGORIES ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f8fafc", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg-light)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategories} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {CATEGORIES.map((c, i) => (
-            <CategoryBlock key={c.id} category={c} index={i} />
+            <CategoryBlock key={c.id} category={c} index={i} plans={c.planFeature ? plansByFeature[c.planFeature] : undefined} />
           ))}
         </div>
       </section>
 
       {/* ── DEV TEASER ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsDevTeaser} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-2">
@@ -532,7 +545,7 @@ export function IntegrationsCataloguePage() {
                   fontFamily: sans,
                   fontWeight: 400,
                   fontSize: "30px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   lineHeight: 1.2,
                   margin: "0 0 14px",
                   letterSpacing: "0.01em",
@@ -541,14 +554,14 @@ export function IntegrationsCataloguePage() {
               >
                 Every transition is an event you can subscribe to.
               </h2>
-              <p style={{ fontFamily: sans, fontSize: "15px", color: "#64748b", lineHeight: 1.75, margin: "0 0 16px" }}>
+              <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.75, margin: "0 0 16px" }}>
                 Webhooks signed to the Standard Webhooks scheme, versioned
                 schemas, and retries with exponential backoff that keep the same
                 delivery id, so you can safely ignore repeats. Build the notifications your
                 team actually wants, or sync sanctioned vouchers to your ledger
                 the second the MD signs.
               </p>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "#475569", lineHeight: 1.7, margin: "0 0 24px" }}>
+              <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-secondary)", lineHeight: 1.7, margin: "0 0 24px" }}>
                 Full API documentation is being finalised for public release.
                 Launch partners get access today.
               </p>
@@ -576,10 +589,10 @@ export function IntegrationsCataloguePage() {
               viewport={{ once: true, margin: "-40px" }}
               transition={staggerDelay(1)}
               style={{
-                backgroundColor: "#0f172a",
+                backgroundColor: "var(--color-navy-primary)",
                 borderRadius: "10px",
                 padding: "22px",
-                boxShadow: "0 20px 50px rgba(15,23,42,0.18)",
+                boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.18)",
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
@@ -587,7 +600,7 @@ export function IntegrationsCataloguePage() {
                   style={{
                     fontFamily: mono,
                     fontSize: "10px",
-                    color: "#94a3b8",
+                    color: "var(--color-text-subtle)",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
                   }}
@@ -599,7 +612,7 @@ export function IntegrationsCataloguePage() {
                 style={{
                   fontFamily: mono,
                   fontSize: "12px",
-                  color: "#e2e8f0",
+                  color: "var(--color-border)",
                   lineHeight: 1.7,
                   margin: 0,
                   whiteSpace: "pre-wrap",
@@ -631,7 +644,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
                 style={{
                   fontFamily: sans,
                   fontSize: "12px",
-                  color: "#94a3b8",
+                  color: "var(--color-text-subtle)",
                   lineHeight: 1.6,
                   margin: "14px 0 0",
                 }}
@@ -639,8 +652,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
                 Verify <code style={{ fontFamily: mono }}>webhook-signature</code> (HMAC-SHA256 over{" "}
                 <code style={{ fontFamily: mono }}>{"{webhook-id}.{webhook-timestamp}.{body}"}</code> with your
                 subscription secret), reject timestamps more than five minutes off your clock, and ignore ids you have
-                already processed. The older <code style={{ fontFamily: mono }}>X-Avrentis-Signature</code> header is
-                still sent but deprecated.
+                already processed. These three Standard Webhooks headers are the only signature a delivery carries.
               </p>
             </m.div>
           </div>
@@ -650,7 +662,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
       {/* ── CUSTOM CONNECTOR ───────────────────────────────── */}
       <section
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "100px 40px",
           position: "relative",
           overflow: "hidden",
@@ -698,7 +710,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "30px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               letterSpacing: "0.01em",
@@ -716,7 +728,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 28px",
               maxWidth: "600px",
@@ -742,7 +754,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -759,8 +771,8 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",

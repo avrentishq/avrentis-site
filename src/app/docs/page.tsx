@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DocsHubPage } from "@/components/docs/docs-page";
 import { isLaunchHidden } from "@/lib/launch";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Documentation — Avrentis",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis documentation",
     description:
       "Everything you need to run Avrentis, in one place — with honest signals for guides still in progress.",
-    url: "https://avrentis.com/docs",
+    url: canonical("/docs"),
     type: "website",
   },
 };

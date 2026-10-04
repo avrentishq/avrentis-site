@@ -38,7 +38,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
 
 export function SocialProof() {
   return (
-    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+    <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.socialProof} scrim="light" />
       <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         {/* Eyebrow */}
@@ -74,7 +74,7 @@ export function SocialProof() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
             textAlign: "center",
@@ -95,7 +95,7 @@ export function SocialProof() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
             maxWidth: "620px",
@@ -123,14 +123,14 @@ export function SocialProof() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-white)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "8px",
                   padding: "28px",
                   display: "flex",
                   gap: "16px",
                   alignItems: "flex-start",
-                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                  boxShadow: "0 2px 8px rgba(var(--color-shadow-rgb), 0.04)",
                 }}
               >
                 <div
@@ -139,7 +139,7 @@ export function SocialProof() {
                     height: "40px",
                     flexShrink: 0,
                     borderRadius: "8px",
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--color-navy-primary)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -153,7 +153,7 @@ export function SocialProof() {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 600,
                       fontSize: "17px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: "0 0 6px",
                       lineHeight: 1.35,
                     }}
@@ -165,7 +165,7 @@ export function SocialProof() {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 400,
                       fontSize: "14px",
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       lineHeight: 1.6,
                       margin: 0,
                     }}
@@ -186,7 +186,7 @@ export function SocialProof() {
           viewport={{ once: true, margin: "-40px" }}
           transition={staggerDelay(6)}
           style={{
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             borderRadius: "10px",
             padding: "32px",
             display: "flex",
@@ -202,7 +202,7 @@ export function SocialProof() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
                 fontSize: "18px",
-                color: "#FFFFFF",
+                color: "var(--color-white)",
                 margin: "0 0 6px",
                 lineHeight: 1.4,
               }}
@@ -214,7 +214,7 @@ export function SocialProof() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "14px",
-                color: "#94a3b8",
+                color: "var(--color-text-subtle)",
                 margin: 0,
                 lineHeight: 1.6,
               }}
@@ -231,7 +231,7 @@ export function SocialProof() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -248,8 +248,8 @@ export function SocialProof() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",

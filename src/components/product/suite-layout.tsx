@@ -46,7 +46,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
       {/* ── HERO ───────────────────────────────────────────────────── */}
       <section
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "112px 40px 88px",
           position: "relative",
           overflow: "hidden",
@@ -74,7 +74,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
               fontSize: "34px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.18,
               margin: "0 0 22px",
             }}
@@ -86,7 +86,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: 0,
               maxWidth: "640px",
@@ -98,14 +98,14 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
       </section>
 
       {/* ── WHAT THEY SHARE ────────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "88px 40px" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "88px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <h2
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "30px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               letterSpacing: "0.01em",
@@ -127,8 +127,8 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                 <div
                   key={point.title}
                   style={{
-                    backgroundColor: "#FFFFFF",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-white)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "28px",
                     display: "flex",
@@ -154,7 +154,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 600,
                       fontSize: "17px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: 0,
                     }}
                   >
@@ -164,7 +164,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                     style={{
                       fontFamily: "var(--font-sans)",
                       fontSize: "14px",
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
                     }}
@@ -179,14 +179,14 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
       </section>
 
       {/* ── WHAT EACH ONE ADDS ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "88px 40px" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "88px 40px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <h2
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "30px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 8px",
               letterSpacing: "0.01em",
@@ -199,7 +199,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               margin: "0 0 40px",
               maxWidth: "620px",
             }}
@@ -218,8 +218,8 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                   key={key}
                   href={`/product/${MODULES[key].slug}`}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "28px",
                     display: "flex",
@@ -250,7 +250,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "18px",
-                        color: "#0f172a",
+                        color: "var(--color-text-primary)",
                         margin: "0 0 2px",
                       }}
                     >
@@ -271,7 +271,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                       style={{
                         fontFamily: "var(--font-sans)",
                         fontSize: "14px",
-                        color: "#64748b",
+                        color: "var(--color-text-muted)",
                         lineHeight: 1.65,
                         margin: "0 0 12px",
                       }}
@@ -283,7 +283,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                         fontFamily: "var(--font-sans)",
                         fontSize: "13px",
                         fontWeight: 500,
-                        color: "#0f172a",
+                        color: "var(--color-text-primary)",
                       }}
                     >
                       Explore {moduleName(key).replace("Avrentis ", "")}{" "}
@@ -302,7 +302,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
               margin: "32px 0 0",
             }}
           >
-            <Link href="/product" style={{ color: "#0f172a", fontWeight: 500 }}>
+            <Link href="/product" style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>
               See the whole platform &rarr;
             </Link>
           </p>

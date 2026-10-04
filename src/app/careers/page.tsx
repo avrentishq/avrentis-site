@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CareersProductPage } from "@/components/careers/careers-page";
 import { isLaunchHidden } from "@/lib/launch";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Careers — Avrentis",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Careers at Avrentis",
     description:
       "Structure over speed. Customers before narrative. Built for Africa, standard-setting globally.",
-    url: "https://avrentis.com/careers",
+    url: canonical("/careers"),
     type: "website",
   },
 };

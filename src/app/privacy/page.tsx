@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: "Avrentis privacy policy",
     description:
       "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
-    url: "https://avrentis.com/privacy",
+    url: canonical("/privacy"),
     type: "website",
   },
 };

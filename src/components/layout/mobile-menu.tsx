@@ -98,7 +98,7 @@ export function MobileMenu({
           style={{
             position: "fixed",
             inset: 0,
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             zIndex: 70,
             display: "flex",
             flexDirection: "column",
@@ -115,7 +115,7 @@ export function MobileMenu({
               flexShrink: 0,
             }}
           >
-            <AvrentisLogo size={28} variant="primary" wordmarkColor="#ffffff" />
+            <AvrentisLogo size={28} variant="primary" wordmarkColor="var(--color-white)" />
             <button
               ref={closeBtnRef}
               onClick={onClose}
@@ -169,7 +169,7 @@ export function MobileMenu({
                       fontFamily: FONT,
                       fontWeight: 400,
                       fontSize: "16px",
-                      color: isActive(mod.href) ? "var(--color-gold)" : "#ffffff",
+                      color: isActive(mod.href) ? "var(--color-gold)" : "var(--color-white)",
                       textDecoration: "none",
                     }}
                   >
@@ -198,7 +198,7 @@ export function MobileMenu({
                       fontFamily: FONT,
                       fontWeight: 400,
                       fontSize: "15px",
-                      color: isActive(item.href) ? "var(--color-gold)" : "#94a3b8",
+                      color: isActive(item.href) ? "var(--color-gold)" : "var(--color-text-subtle)",
                       textDecoration: "none",
                     }}
                   >
@@ -220,7 +220,7 @@ export function MobileMenu({
                     fontFamily: FONT,
                     fontWeight: 400,
                     fontSize: "16px",
-                    color: isActive(link.href) ? "var(--color-gold)" : "#ffffff",
+                    color: isActive(link.href) ? "var(--color-gold)" : "var(--color-white)",
                     textDecoration: "none",
                   }}
                 >
@@ -246,7 +246,7 @@ export function MobileMenu({
                 fontFamily: FONT,
                 fontWeight: 400,
                 fontSize: "14px",
-                color: "#94a3b8",
+                color: "var(--color-text-subtle)",
                 textDecoration: "none",
                 textAlign: "center",
               }}
@@ -262,8 +262,8 @@ export function MobileMenu({
                 fontSize: "14px",
                 letterSpacing: "0.04em",
                 backgroundColor: "transparent",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 height: "44px",
                 display: "flex",
@@ -284,7 +284,7 @@ export function MobileMenu({
                 fontSize: "14px",
                 letterSpacing: "0.04em",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 height: "44px",
                 display: "flex",

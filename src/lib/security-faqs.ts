@@ -1,3 +1,4 @@
+import { CONTACT_EMAIL } from "@/lib/contacts";
 /**
  * Security FAQ content — the single source for both the visible accordion on
  * /product/security and the FAQPage JSON-LD on that route. Keeping them in one
@@ -36,6 +37,6 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Do you have a responsible disclosure policy?",
-    a: "Yes. Security researchers can report vulnerabilities to security@avrentis.com. We triage within two business days and do not pursue legal action against good-faith researchers following standard responsible-disclosure practice.",
+    a: `Yes. Security researchers can report vulnerabilities to ${CONTACT_EMAIL.security}. We triage within two business days and do not pursue legal action against good-faith researchers following standard responsible-disclosure practice.`,
   },
 ];

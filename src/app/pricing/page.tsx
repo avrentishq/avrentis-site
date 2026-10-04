@@ -4,22 +4,27 @@ import { Footer } from "@/components/layout/footer";
 import { Pricing } from "@/components/sections/pricing";
 import { PlanComparison } from "@/components/sections/plan-comparison";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { fetchPricingData } from "@/lib/pricing";
+import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
+import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
+import { canonical } from "@/lib/seo";
 
-const DESCRIPTION =
-  "Simple, transparent plans for Nigerian and African organisations — Starter, Business, and Enterprise. Every plan includes the approval engine, permanent audit trail, and full security stack.";
-
-export const metadata: Metadata = {
-  title: "Pricing — Avrentis",
-  description: DESCRIPTION,
-  alternates: { canonical: "/pricing" },
-  openGraph: {
-    title: "Avrentis pricing — Starter, Business, Enterprise",
-    description: DESCRIPTION,
-    url: "https://avrentis.com/pricing",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  // Tier names come from the pricing API (same cached fetch the page renders),
+  // so the description cannot name a plan that is not sold.
+  const names = planNames(await fetchPricingData());
+  const description = `Simple, transparent plans for Nigerian and African organisations — ${formatPlanList(names)}. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
+  return {
+    title: "Pricing — Avrentis",
+    description,
+    alternates: { canonical: "/pricing" },
+    openGraph: {
+      title: `Avrentis pricing — ${names.join(", ")}`,
+      description,
+      url: canonical("/pricing"),
+      type: "website",
+    },
+  };
+}
 
 export default async function PricingPage() {
   const pricingData = await fetchPricingData();

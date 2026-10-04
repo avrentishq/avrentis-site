@@ -13,17 +13,17 @@ export function GrantsPreview() {
   ];
 
   const barColor = (pct: number) =>
-    pct >= 90 ? "#9f1239" : pct >= 70 ? "#92400e" : "#047857";
+    pct >= 90 ? "var(--color-critical)" : pct >= 70 ? "var(--color-warning)" : "var(--color-success)";
 
   return (
     <div style={{ padding: "22px 24px" }}>
       {/* Header */}
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "14px" }}>
         <div>
-          <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "18px", color: "#0f172a", margin: "0 0 2px" }}>
+          <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 2px" }}>
             Rural WASH Programme
           </h3>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: 0 }}>
+          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
             Donor: Sahel Development Fund · Currency: USD
           </p>
         </div>
@@ -32,8 +32,8 @@ export function GrantsPreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#0f172a",
-            color: "#FFFFFF",
+            backgroundColor: "var(--color-navy-primary)",
+            color: "var(--color-white)",
             borderRadius: "3px",
             padding: "6px 14px",
           }}
@@ -52,15 +52,15 @@ export function GrantsPreview() {
         }}
       >
         {[
-          { label: "Allocated", value: "$500,000", color: "#0f172a" },
-          { label: "Spent", value: "$312,400", color: "#92400e" },
-          { label: "Remaining", value: "$187,600", color: "#047857" },
+          { label: "Allocated", value: "$500,000", color: "var(--color-text-primary)" },
+          { label: "Spent", value: "$312,400", color: "var(--color-warning)" },
+          { label: "Remaining", value: "$187,600", color: "var(--color-success)" },
         ].map((stat) => (
           <div
             key={stat.label}
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "4px",
               padding: "10px 12px",
             }}
@@ -70,7 +70,7 @@ export function GrantsPreview() {
                 fontFamily: "var(--font-sans)",
                 fontSize: "10px",
                 fontWeight: 500,
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 letterSpacing: "0.04em",
                 textTransform: "uppercase",
                 margin: "0 0 4px",
@@ -95,13 +95,13 @@ export function GrantsPreview() {
       </div>
 
       {/* Budget lines */}
-      <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #e2e8f0", borderRadius: "4px", padding: "12px 14px" }}>
+      <div style={{ backgroundColor: "var(--color-white)", border: "1px solid var(--color-border)", borderRadius: "4px", padding: "12px 14px" }}>
         <p
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             letterSpacing: "0.04em",
             textTransform: "uppercase",
             margin: "0 0 10px",
@@ -112,19 +112,19 @@ export function GrantsPreview() {
         {lines.map((line) => (
           <div key={line.name} style={{ marginBottom: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#0f172a" }}>{line.name}</span>
+              <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-primary)" }}>{line.name}</span>
               <span
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontSize: "11px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   fontFeatureSettings: '"tnum" 1',
                 }}
               >
                 {line.pct}%
               </span>
             </div>
-            <div style={{ height: "6px", backgroundColor: "#F1F5F9", borderRadius: "3px", overflow: "hidden" }}>
+            <div style={{ height: "6px", backgroundColor: "var(--color-bg)", borderRadius: "3px", overflow: "hidden" }}>
               <div style={{ width: `${line.pct}%`, height: "100%", backgroundColor: barColor(line.pct) }} />
             </div>
           </div>

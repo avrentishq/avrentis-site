@@ -5,6 +5,7 @@ import { ContactForm } from "@/components/contact/contact-form";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ContactIntent } from "./state";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Contact — Avrentis",
@@ -15,7 +16,7 @@ export const metadata: Metadata = {
     title: "Contact Avrentis",
     description:
       "Contact us or talk to our team. Real humans, one-business-day reply.",
-    url: "https://avrentis.com/contact",
+    url: canonical("/contact"),
     type: "website",
   },
 };
@@ -54,7 +55,7 @@ export default async function ContactPage({
       <main
         id="main"
         style={{
-          backgroundColor: "#f1f5f9",
+          backgroundColor: "var(--color-bg)",
           padding: "56px 40px 96px",
           minHeight: "70vh",
           position: "relative",

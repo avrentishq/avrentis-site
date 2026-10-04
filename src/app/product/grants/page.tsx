@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GrantsModulePage } from "@/components/product/pages/grants-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Grants — Prove where every donor naira went",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis Grants — Prove where every donor naira went",
     description:
       "Restricted-fund tracking, per-grant burn, sub-grantee oversight, and donor-ready report exports — from the same approvals your finance team already runs.",
-    url: "https://avrentis.com/product/grants",
+    url: canonical("/product/grants"),
     type: "website",
   },
 };

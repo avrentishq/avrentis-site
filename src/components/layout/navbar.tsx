@@ -85,17 +85,17 @@ export function Navbar() {
    */
   const onLight = scrolled;
   const barSurface = {
-    background: onLight ? "rgba(247, 246, 242, 0.9)" : "#0f172a",
+    background: onLight ? "rgba(var(--color-nav-surface-rgb), 0.9)" : "var(--color-navy-primary)",
     // The SAME colour, opaque. The bar is a thin strip, so 0.9 + blur reads as
     // frosted glass; the dropdown is a 520px panel over body copy, and at the
     // same alpha the page showed straight through it — headings behind the menu
     // were legible through the menu. Matching the bar means matching its colour,
     // not inheriting a transparency that only works on a strip.
-    panel: onLight ? "#f7f6f2" : "#0f172a",
+    panel: onLight ? "var(--color-nav-surface)" : "var(--color-navy-primary)",
     blur: "blur(12px)",
-    border: onLight ? "1px solid rgba(15, 23, 42, 0.08)" : "1px solid rgba(var(--color-gold-rgb), 0.15)",
-    text: onLight ? "#0f172a" : "#ffffff",
-    mutedText: onLight ? "#475569" : "#64748b",
+    border: onLight ? "1px solid rgba(var(--color-navy-primary-rgb), 0.08)" : "1px solid rgba(var(--color-gold-rgb), 0.15)",
+    text: onLight ? "var(--color-text-primary)" : "var(--color-white)",
+    mutedText: onLight ? "var(--color-text-secondary)" : "var(--color-text-muted)",
     accent: onLight ? "var(--color-gold-on-light)" : "var(--color-gold)",
   };
 
@@ -162,7 +162,7 @@ export function Navbar() {
             WebkitBackdropFilter: scrolled ? barSurface.blur : "none",
             borderRadius: scrolled ? "9999px" : "0",
             border: scrolled ? barSurface.border : "1px solid transparent",
-            boxShadow: scrolled ? "0 8px 32px rgba(0, 0, 0, 0.28)" : "none",
+            boxShadow: scrolled ? "0 8px 32px rgba(var(--color-shadow-rgb), 0.28)" : "none",
             transition:
               "max-width 300ms ease, height 300ms ease, padding 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, border-radius 300ms ease",
           }}
@@ -252,8 +252,8 @@ export function Navbar() {
                     borderRadius: "8px",
                     padding: "24px",
                     boxShadow: onLight
-                      ? "0 16px 40px rgba(15,23,42,0.14)"
-                      : "0 16px 40px rgba(0,0,0,0.3)",
+                      ? "0 16px 40px rgba(var(--color-navy-primary-rgb), 0.14)"
+                      : "0 16px 40px rgba(var(--color-shadow-rgb), 0.3)",
                     display: "flex",
                     gap: "24px",
                     zIndex: 100,
@@ -437,15 +437,15 @@ export function Navbar() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: "#94a3b8",
+                    color: "var(--color-text-subtle)",
                     textDecoration: "none",
                     transition: "color 150ms ease",
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "#ffffff";
+                    e.currentTarget.style.color = "var(--color-white)";
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "#94a3b8";
+                    e.currentTarget.style.color = "var(--color-text-subtle)";
                   }}
                 >
                   Login
@@ -463,7 +463,7 @@ export function Navbar() {
                 textTransform: "uppercase",
                 lineHeight: 1,
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 border: "none",
                 borderRadius: "9999px",
                 height: "32px",

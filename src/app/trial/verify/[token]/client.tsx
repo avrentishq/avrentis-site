@@ -59,7 +59,7 @@ export function VerifyResult({ status, message, token }: Props) {
               style={{
                 fontFamily: sans,
                 fontSize: "12px",
-                color: "#b91c1c",
+                color: "var(--color-danger)",
                 marginTop: "10px",
               }}
             >
@@ -75,7 +75,7 @@ export function VerifyResult({ status, message, token }: Props) {
     return (
       <Card
         variant="error"
-        icon={<AlertCircle size={26} color="#b91c1c" strokeWidth={1.8} />}
+        icon={<AlertCircle size={26} style={{ color: "var(--color-danger)" }} strokeWidth={1.8} />}
         title="This request couldn't be provisioned."
         message={message}
       >
@@ -100,7 +100,7 @@ export function VerifyResult({ status, message, token }: Props) {
   return (
     <Card
       variant="error"
-      icon={<AlertCircle size={26} color="#b91c1c" strokeWidth={1.8} />}
+      icon={<AlertCircle size={26} style={{ color: "var(--color-danger)" }} strokeWidth={1.8} />}
       title="We couldn't verify this link."
       message={message}
     >
@@ -145,7 +145,7 @@ function ReissueButton() {
         fontWeight: 600,
         fontSize: "13px",
         backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "#0f172a",
+        color: "var(--color-text-primary)",
         border: "none",
         borderRadius: "9999px",
         padding: "0 20px",
@@ -178,15 +178,15 @@ function Card({
 }) {
   const bg =
     variant === "success"
-      ? "rgba(4,120,87,0.10)"
+      ? "rgba(var(--color-success-rgb), 0.10)"
       : variant === "warning"
         ? "rgba(var(--color-gold-rgb), 0.12)"
-        : "rgba(185,28,28,0.10)";
+        : "rgba(var(--color-danger-rgb), 0.10)";
   return (
     <div
       style={{
-        backgroundColor: "#FFFFFF",
-        border: "1px solid #e2e8f0",
+        backgroundColor: "var(--color-white)",
+        border: "1px solid var(--color-border)",
         borderRadius: "10px",
         padding: "48px 40px",
         textAlign: "center",
@@ -214,7 +214,7 @@ function Card({
           fontFamily: sans,
           fontWeight: 500,
           fontSize: "20px",
-          color: "#0f172a",
+          color: "var(--color-text-primary)",
           margin: 0,
         }}
       >
@@ -224,7 +224,7 @@ function Card({
         style={{
           fontFamily: sans,
           fontSize: "14px",
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
           maxWidth: "420px",

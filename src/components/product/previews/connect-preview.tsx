@@ -5,9 +5,9 @@
 
 export function ConnectPreview() {
   const apiKeys = [
-    { name: "Accounting sync (prod)", status: "Active", bg: "rgba(4,120,87,0.08)", color: "#047857", used: "2m ago" },
-    { name: "Data warehouse export", status: "Active", bg: "rgba(4,120,87,0.08)", color: "#047857", used: "18m ago" },
-    { name: "Legacy bridge", status: "Rotated", bg: "rgba(148,163,184,0.12)", color: "#64748b", used: "Never" },
+    { name: "Accounting sync (prod)", status: "Active", bg: "rgba(var(--color-success-rgb), 0.08)", color: "var(--color-success)", used: "2m ago" },
+    { name: "Data warehouse export", status: "Active", bg: "rgba(var(--color-success-rgb), 0.08)", color: "var(--color-success)", used: "18m ago" },
+    { name: "Legacy bridge", status: "Rotated", bg: "rgba(var(--color-text-subtle-rgb), 0.12)", color: "var(--color-text-muted)", used: "Never" },
   ];
 
   const webhooks = [
@@ -21,7 +21,7 @@ export function ConnectPreview() {
       {/* API keys section */}
       <div style={{ marginBottom: "14px" }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "8px" }}>
-          <h4 style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "#64748b", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0 }}>
+          <h4 style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "var(--color-text-muted)", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0 }}>
             API keys
           </h4>
           <span
@@ -29,13 +29,13 @@ export function ConnectPreview() {
               fontFamily: "var(--font-sans)",
               fontSize: "11px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
             }}
           >
             + New key
           </span>
         </div>
-        <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
+        <div style={{ backgroundColor: "var(--color-white)", border: "1px solid var(--color-border)", borderRadius: "4px" }}>
           {apiKeys.map((key, i) => (
             <div
               key={key.name}
@@ -44,14 +44,14 @@ export function ConnectPreview() {
                 alignItems: "center",
                 gap: "12px",
                 padding: "10px 14px",
-                borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+                borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
               }}
             >
               <span
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
                   fontSize: "11px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   width: "84px",
                   flexShrink: 0,
                 }}
@@ -63,7 +63,7 @@ export function ConnectPreview() {
                   fontFamily: "var(--font-sans)",
                   fontSize: "12px",
                   fontWeight: 500,
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   flex: 1,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -89,7 +89,7 @@ export function ConnectPreview() {
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontSize: "11px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   minWidth: "64px",
                   textAlign: "right",
                 }}
@@ -104,14 +104,14 @@ export function ConnectPreview() {
       {/* Webhooks section */}
       <div>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "8px" }}>
-          <h4 style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "#64748b", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0 }}>
+          <h4 style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "var(--color-text-muted)", letterSpacing: "0.04em", textTransform: "uppercase", margin: 0 }}>
             Webhooks
           </h4>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", fontWeight: 500, color: "#0f172a" }}>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", fontWeight: 500, color: "var(--color-text-primary)" }}>
             + New webhook
           </span>
         </div>
-        <div style={{ backgroundColor: "#FFFFFF", border: "1px solid #e2e8f0", borderRadius: "4px" }}>
+        <div style={{ backgroundColor: "var(--color-white)", border: "1px solid var(--color-border)", borderRadius: "4px" }}>
           {webhooks.map((hook, i) => (
             <div
               key={hook.event}
@@ -120,14 +120,14 @@ export function ConnectPreview() {
                 alignItems: "center",
                 gap: "12px",
                 padding: "10px 14px",
-                borderTop: i === 0 ? "none" : "1px solid #e2e8f0",
+                borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
               }}
             >
               <span
                 style={{
                   fontFamily: "'IBM Plex Mono', monospace",
                   fontSize: "11px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   fontWeight: 500,
                   minWidth: "140px",
                 }}
@@ -138,7 +138,7 @@ export function ConnectPreview() {
                 style={{
                   fontFamily: "var(--font-sans)",
                   fontSize: "11px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   flex: 1,
                   overflow: "hidden",
                   textOverflow: "ellipsis",
@@ -152,7 +152,7 @@ export function ConnectPreview() {
                   fontFamily: "var(--font-sans)",
                   fontFeatureSettings: '"tnum" 1',
                   fontSize: "11px",
-                  color: "#047857",
+                  color: "var(--color-success)",
                   fontWeight: 500,
                 }}
               >

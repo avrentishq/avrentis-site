@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AuditModulePage } from "@/components/product/pages/audit-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Compliance — Compliance without the scramble",
@@ -11,8 +12,8 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Avrentis Compliance — Compliance without the scramble",
     description:
-      "Tamper-evident audit trail sealed daily, structured events, regulator-ready PDF + CSV exports. Every action permanently on record.",
-    url: "https://avrentis.com/product/audit",
+      "Tamper-evident audit trail sealed daily, structured events, regulator-ready PDF + CSV exports. Every action on record for the life of your account.",
+    url: canonical("/product/audit"),
     type: "website",
   },
 };

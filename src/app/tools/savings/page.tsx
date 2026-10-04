@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Approval savings estimator — Avrentis",
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
     title: "What would structured approvals save you?",
     description:
       "A free, instant estimate of the time and cost you recover with structured approvals. No signup required.",
-    url: "https://avrentis.com/tools/savings",
+    url: canonical("/tools/savings"),
     type: "website",
   },
 };
@@ -26,7 +27,7 @@ export default function SavingsToolPage() {
       <main
         id="main"
         style={{
-          backgroundColor: "#f1f5f9",
+          backgroundColor: "var(--color-bg)",
           padding: "56px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -55,7 +56,7 @@ export default function SavingsToolPage() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "34px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 lineHeight: 1.2,
                 margin: "0 0 16px",
                 letterSpacing: "0.01em",
@@ -68,7 +69,7 @@ export default function SavingsToolPage() {
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "16px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 lineHeight: 1.7,
                 margin: 0,
               }}

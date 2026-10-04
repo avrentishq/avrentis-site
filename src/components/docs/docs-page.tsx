@@ -297,7 +297,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "24px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 10px",
               letterSpacing: "0.01em",
@@ -306,15 +306,15 @@ function Category({ category, index }: { category: DocsCategory; index: number }
           >
             {category.title}
           </h2>
-          <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.7, margin: 0, maxWidth: "400px" }}>
+          <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "400px" }}>
             {category.lede}
           </p>
         </div>
 
         <div
           style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "10px",
             overflow: "hidden",
           }}
@@ -325,12 +325,12 @@ function Category({ category, index }: { category: DocsCategory; index: number }
               <>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "4px" }}>
-                    <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "#0f172a" }}>
+                    <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
                       {item.title}
                     </span>
                     <StatusPill status={item.status} />
                   </div>
-                  <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.55, margin: 0 }}>
+                  <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
                     {item.body}
                   </p>
                 </div>
@@ -339,7 +339,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
             );
             const style: React.CSSProperties = {
               padding: "18px 22px",
-              borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
+              borderTop: i === 0 ? "none" : "1px solid var(--color-bg)",
               display: "flex",
               alignItems: "center",
               gap: "16px",
@@ -379,7 +379,7 @@ export function DocsHubPage() {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -396,7 +396,7 @@ export function DocsHubPage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY,
@@ -431,7 +431,7 @@ export function DocsHubPage() {
               fontFamily: sans,
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -447,7 +447,7 @@ export function DocsHubPage() {
             style={{
               fontFamily: sans,
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
@@ -472,7 +472,7 @@ export function DocsHubPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -489,8 +489,8 @@ export function DocsHubPage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -508,7 +508,7 @@ export function DocsHubPage() {
       </section>
 
       {/* ── CATEGORY NAV ───────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "40px 32px", borderBottom: "1px solid #e2e8f0", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "40px 32px", borderBottom: "1px solid var(--color-border)", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsCategoryNav} scrim="light" />
         <div
           style={{
@@ -527,7 +527,7 @@ export function DocsHubPage() {
               fontSize: "10px",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
             }}
           >
             Jump to:
@@ -539,12 +539,12 @@ export function DocsHubPage() {
               style={{
                 fontFamily: sans,
                 fontSize: "12px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 textDecoration: "none",
                 padding: "6px 12px",
                 borderRadius: "999px",
-                border: "1px solid #e2e8f0",
-                backgroundColor: "#F8FAFC",
+                border: "1px solid var(--color-border)",
+                backgroundColor: "var(--color-bg-light)",
               }}
             >
               {c.eyebrow.charAt(0) + c.eyebrow.slice(1).toLowerCase().split(" ")[0]}
@@ -554,7 +554,7 @@ export function DocsHubPage() {
       </section>
 
       {/* ── CATEGORIES ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f8fafc", padding: "90px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg-light)", padding: "90px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsCategories} scrim="light" />
         <div style={{ maxWidth: "1180px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "80px" }}>
           {CATEGORIES.map((c, i) => (
@@ -564,7 +564,7 @@ export function DocsHubPage() {
       </section>
 
       {/* ── FEEDBACK FOOTER ────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "80px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "80px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsFeedbackFooter} scrim="light" />
         <div style={{ maxWidth: "820px", margin: "0 auto" }}>
           <m.div
@@ -574,8 +574,8 @@ export function DocsHubPage() {
             viewport={{ once: true, margin: "-40px" }}
             transition={fadeUpTransition}
             style={{
-              backgroundColor: "#F8FAFC",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-bg-light)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               padding: "28px 32px",
               display: "flex",
@@ -591,13 +591,13 @@ export function DocsHubPage() {
                   fontFamily: sans,
                   fontWeight: 600,
                   fontSize: "16px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   margin: "0 0 6px",
                 }}
               >
                 Couldn&rsquo;t find what you were looking for?
               </h3>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                 Tell us what guide would have helped. We write what customers
                 actually ask for, not what marketing thinks we should publish.
               </p>
@@ -609,7 +609,7 @@ export function DocsHubPage() {
                 fontWeight: 600,
                 fontSize: "13px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 18px",
                 height: "40px",

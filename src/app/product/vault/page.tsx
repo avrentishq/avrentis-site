@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { VaultModulePage } from "@/components/product/pages/vault-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Records — Institutional memory, searchable",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis Records — Institutional memory, searchable",
     description:
       "Every financial record in one list, with its files and history — findable in seconds and kept for at least seven years.",
-    url: "https://avrentis.com/product/vault",
+    url: canonical("/product/vault"),
     type: "website",
   },
 };

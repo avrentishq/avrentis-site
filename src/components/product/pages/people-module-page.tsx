@@ -10,7 +10,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   eyebrow: MODULES.people.name,
   headline: "Staff expenses, on the same rails as payments.",
   description:
-    "The approvals your organisation already runs for money — same engine, shaped for staff expense claims. Structured, routed, reimbursed and permanently on record.",
+    "The approvals your organisation already runs for money — same engine, shaped for staff expense claims. Structured, routed, reimbursed — and every approval on record.",
   status: "available",
   previewUrl: "Avrentis / requests / expenses / ER-2026-0042",
   preview: <PeoplePreview />,

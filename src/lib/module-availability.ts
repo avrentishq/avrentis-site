@@ -111,11 +111,12 @@ const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
   },
   audit: {
     // The honesty fix. Starter does not carry Compliance, but the tamper-evident
-    // trail is foundation and runs for everyone — say both, claim neither.
+    // trail and data-subject request handling are foundation and run for
+    // everyone — say both, claim neither.
     starter:
-      "Trail still recorded — reporting, exports and DSAR tools from Business",
+      "Trail still recorded and data-subject requests handled — reporting and exports from Business",
     business: "Full trail history and regulator-ready export",
-    enterprise: "Unlimited retention and SIEM export",
+    enterprise: "Unlimited retention, plus a live SIEM feed through the API",
   },
   guard: {
     starter: "From Business",

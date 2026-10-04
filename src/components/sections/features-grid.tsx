@@ -33,7 +33,7 @@ const MODULE_CARDS: {
     key: "pay",
     icon: CreditCard,
     subtitle: "Payment & Approval Management",
-    body: "Structure every payment decision your organisation makes. Each request is routed to the right approver by amount, department, and risk — enforced automatically, then tracked and permanently on record.",
+    body: "Structure every payment decision your organisation makes. Each request is routed to the right approver by amount, department, and risk — enforced automatically, with every decision tracked and kept on record.",
     status: "available",
   },
   {
@@ -94,15 +94,15 @@ const BADGE_STYLES: Record<
 > = {
   available: {
     label: "Available now",
-    bg: "rgba(39,174,96,0.1)",
-    color: "#27AE60",
-    border: "1px solid rgba(39,174,96,0.2)",
+    bg: "rgba(var(--color-available-rgb), 0.1)",
+    color: "var(--color-available)",
+    border: "1px solid rgba(var(--color-available-rgb), 0.2)",
   },
   coming_soon: {
     label: "Coming soon",
-    bg: "rgba(100,116,139,0.1)",
-    color: "#64748b",
-    border: "1px solid rgba(100,116,139,0.2)",
+    bg: "rgba(var(--color-text-muted-rgb), 0.1)",
+    color: "var(--color-text-muted)",
+    border: "1px solid rgba(var(--color-text-muted-rgb), 0.2)",
   },
   partial: {
     label: "Partially available",
@@ -112,15 +112,15 @@ const BADGE_STYLES: Record<
   },
   roadmap: {
     label: "On the roadmap",
-    bg: "rgba(132,146,166,0.1)",
-    color: "#64748b",
-    border: "1px solid rgba(132,146,166,0.2)",
+    bg: "rgba(var(--color-neutral-tint-rgb), 0.1)",
+    color: "var(--color-text-muted)",
+    border: "1px solid rgba(var(--color-neutral-tint-rgb), 0.2)",
   },
 };
 
 export function FeaturesGrid() {
   return (
-    <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+    <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.featuresGrid} scrim="light" />
       <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <m.span
@@ -154,7 +154,7 @@ export function FeaturesGrid() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
             textAlign: "center",
@@ -174,7 +174,7 @@ export function FeaturesGrid() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
             textAlign: "center",
@@ -205,8 +205,8 @@ export function FeaturesGrid() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-white)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "8px",
                   padding: "24px",
                   transition:
@@ -215,12 +215,12 @@ export function FeaturesGrid() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.boxShadow =
-                    "0 8px 24px rgba(0,0,0,0.08)";
+                    "0 8px 24px rgba(var(--color-shadow-rgb), 0.08)";
                   e.currentTarget.style.borderLeft = "3px solid var(--color-gold)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.boxShadow = "none";
-                  e.currentTarget.style.borderLeft = "1px solid #e2e8f0";
+                  e.currentTarget.style.borderLeft = "1px solid var(--color-border)";
                 }}
               >
                 <div
@@ -228,7 +228,7 @@ export function FeaturesGrid() {
                     width: "36px",
                     height: "36px",
                     borderRadius: "8px",
-                    backgroundColor: "#0f172a",
+                    backgroundColor: "var(--color-navy-primary)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -247,7 +247,7 @@ export function FeaturesGrid() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "16px",
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                   }}
                 >
@@ -260,7 +260,7 @@ export function FeaturesGrid() {
                     fontSize: "12px",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     display: "block",
                     marginBottom: "10px",
                   }}
@@ -272,7 +272,7 @@ export function FeaturesGrid() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.6,
                     margin: 0,
                   }}

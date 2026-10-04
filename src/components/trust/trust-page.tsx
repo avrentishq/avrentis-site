@@ -32,6 +32,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -113,7 +114,7 @@ const DOCUMENTS = [
   {
     icon: AlertOctagon,
     title: "Responsible disclosure",
-    body: "Report security issues to security@avrentis.com. We triage within two business days.",
+    body: `Report security issues to ${CONTACT_EMAIL.security}. We triage within two business days.`,
     cta: { label: "Report a vulnerability", href: "/contact?intent=disclosure" },
   },
   {
@@ -141,7 +142,7 @@ export function TrustProductPage() {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -158,7 +159,7 @@ export function TrustProductPage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY,
@@ -193,7 +194,7 @@ export function TrustProductPage() {
               fontFamily: sans,
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -209,7 +210,7 @@ export function TrustProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
@@ -235,7 +236,7 @@ export function TrustProductPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -252,8 +253,8 @@ export function TrustProductPage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -269,7 +270,7 @@ export function TrustProductPage() {
       </section>
 
       {/* ── FRAMEWORKS ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustFrameworks} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
@@ -301,7 +302,7 @@ export function TrustProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
@@ -320,7 +321,7 @@ export function TrustProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 40px",
               maxWidth: "640px",
@@ -341,8 +342,8 @@ export function TrustProductPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "#F8FAFC",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-bg-light)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "10px",
                   padding: "24px",
                   display: "flex",
@@ -351,7 +352,7 @@ export function TrustProductPage() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
-                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "#0f172a", margin: 0 }}>
+                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "var(--color-text-primary)", margin: 0 }}>
                     {f.name}
                   </h3>
                   <CheckCircle2 size={16} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
@@ -367,7 +368,7 @@ export function TrustProductPage() {
                 >
                   {f.status}
                 </span>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                   {f.body}
                 </p>
               </m.div>
@@ -377,7 +378,7 @@ export function TrustProductPage() {
       </section>
 
       {/* ── SUB-PROCESSORS ─────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustSubprocessors} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
@@ -409,7 +410,7 @@ export function TrustProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
@@ -428,7 +429,7 @@ export function TrustProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 32px",
               maxWidth: "640px",
@@ -447,8 +448,8 @@ export function TrustProductPage() {
             viewport={{ once: true, margin: "-40px" }}
             transition={staggerDelay(3)}
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               overflow: "hidden",
             }}
@@ -458,8 +459,8 @@ export function TrustProductPage() {
                 display: "grid",
                 gridTemplateColumns: "3fr 1.5fr",
                 padding: "14px 20px",
-                backgroundColor: "#F8FAFC",
-                borderBottom: "1px solid #e2e8f0",
+                backgroundColor: "var(--color-bg-light)",
+                borderBottom: "1px solid var(--color-border)",
                 gap: "14px",
               }}
             >
@@ -469,7 +470,7 @@ export function TrustProductPage() {
                   style={{
                     fontFamily: mono,
                     fontSize: "10px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
                   }}
@@ -485,15 +486,15 @@ export function TrustProductPage() {
                   display: "grid",
                   gridTemplateColumns: "3fr 1.5fr",
                   padding: "14px 20px",
-                  borderTop: i === 0 ? "none" : "1px solid #f1f5f9",
+                  borderTop: i === 0 ? "none" : "1px solid var(--color-bg)",
                   gap: "14px",
                   alignItems: "center",
                 }}
               >
-                <span style={{ fontFamily: sans, fontSize: "13px", color: "#0f172a", lineHeight: 1.5 }}>
+                <span style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
                   {sp.purpose}
                 </span>
-                <span style={{ fontFamily: sans, fontSize: "13px", color: "#64748b" }}>{sp.region}</span>
+                <span style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)" }}>{sp.region}</span>
               </div>
             ))}
           </m.div>
@@ -507,8 +508,8 @@ export function TrustProductPage() {
             style={{
               marginTop: "24px",
               padding: "22px 26px",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               display: "flex",
               alignItems: "center",
@@ -518,10 +519,10 @@ export function TrustProductPage() {
             }}
           >
             <div>
-              <div style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "#0f172a", marginBottom: "4px" }}>
+              <div style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "4px" }}>
                 Need the named vendor list?
               </div>
-              <div style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.6 }}>
+              <div style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
                 The specific providers in each category — and any changes — are
                 shared with prospective customers on request, typically
                 alongside a Data Processing Agreement.
@@ -534,7 +535,7 @@ export function TrustProductPage() {
                 fontWeight: 600,
                 fontSize: "13px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 18px",
                 height: "40px",
@@ -557,7 +558,7 @@ export function TrustProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "16px 0 0",
             }}
@@ -572,7 +573,7 @@ export function TrustProductPage() {
       </section>
 
       {/* ── DOCUMENTS ──────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustDocuments} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
@@ -604,7 +605,7 @@ export function TrustProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               maxWidth: "640px",
@@ -628,8 +629,8 @@ export function TrustProductPage() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={staggerDelay(i + 2)}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "24px",
                     display: "flex",
@@ -650,10 +651,10 @@ export function TrustProductPage() {
                   >
                     <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
-                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "#0f172a", margin: "4px 0 0" }}>
+                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "var(--color-text-primary)", margin: "4px 0 0" }}>
                     {d.title}
                   </h3>
-                  <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.65, margin: 0, flex: 1 }}>
+                  <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0, flex: 1 }}>
                     {d.body}
                   </p>
                   {isExternal ? (
@@ -701,7 +702,7 @@ export function TrustProductPage() {
       </section>
 
       {/* ── DATA RESIDENCY ─────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustDataResidency} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
@@ -733,7 +734,7 @@ export function TrustProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
@@ -752,7 +753,7 @@ export function TrustProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 40px",
               maxWidth: "680px",
@@ -786,8 +787,8 @@ export function TrustProductPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-white)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "10px",
                   padding: "24px",
                   display: "flex",
@@ -806,10 +807,10 @@ export function TrustProductPage() {
                 >
                   {r.label}
                 </span>
-                <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "#0f172a", margin: "2px 0 0" }}>
+                <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "var(--color-text-primary)", margin: "2px 0 0" }}>
                   {r.title}
                 </h3>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                   {r.body}
                 </p>
               </m.div>
@@ -825,16 +826,16 @@ export function TrustProductPage() {
             style={{
               marginTop: "28px",
               padding: "20px 24px",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               fontFamily: sans,
               fontSize: "13px",
-              color: "#475569",
+              color: "var(--color-text-secondary)",
               lineHeight: 1.7,
             }}
           >
-            <strong style={{ color: "#0f172a" }}>Cross-border transfers.</strong>{" "}
+            <strong style={{ color: "var(--color-text-primary)" }}>Cross-border transfers.</strong>{" "}
             Where personal data moves between regions, we rely on Standard
             Contractual Clauses (SCCs) and equivalent mechanisms recognised
             under applicable law. Our DPA sets out these terms in full.
@@ -845,7 +846,7 @@ export function TrustProductPage() {
       {/* ── STATUS + CONTACT ───────────────────────────────── */}
       <section
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "100px 40px",
           position: "relative",
           overflow: "hidden",
@@ -886,7 +887,7 @@ export function TrustProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "30px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               letterSpacing: "0.01em",
@@ -904,7 +905,7 @@ export function TrustProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 28px",
               maxWidth: "600px",
@@ -930,7 +931,7 @@ export function TrustProductPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -947,8 +948,8 @@ export function TrustProductPage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",

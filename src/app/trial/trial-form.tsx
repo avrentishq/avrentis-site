@@ -111,7 +111,7 @@ const labelStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "12px",
   fontWeight: 500,
-  color: "#0f172a",
+  color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
   display: "block",
   marginBottom: "6px",
@@ -120,19 +120,19 @@ const labelStyle: React.CSSProperties = {
 const inputStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "14px",
-  color: "#0f172a",
+  color: "var(--color-text-primary)",
   width: "100%",
   height: "42px",
-  border: "1px solid #e2e8f0",
+  border: "1px solid var(--color-border)",
   borderRadius: "6px",
   padding: "0 14px",
-  backgroundColor: "#FFFFFF",
+  backgroundColor: "var(--color-white)",
 };
 
 const errorStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "12px",
-  color: "#b91c1c",
+  color: "var(--color-danger)",
   marginTop: "6px",
   display: "block",
 };
@@ -141,7 +141,7 @@ const errorStyle: React.CSSProperties = {
 const hintStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "12px",
-  color: "#64748b",
+  color: "var(--color-text-muted)",
   marginTop: "5px",
   display: "block",
 };
@@ -158,7 +158,7 @@ function SubmitButton({ isValid }: { isValid: boolean }) {
         fontWeight: 600,
         fontSize: "14px",
         backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "#0f172a",
+        color: "var(--color-text-primary)",
         border: "none",
         borderRadius: "9999px",
         padding: "0 24px",
@@ -312,7 +312,7 @@ export function TrialForm() {
             fontFamily: sans,
             fontWeight: 400,
             fontSize: "32px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.2,
             margin: "0 0 12px",
             letterSpacing: "0.01em",
@@ -326,7 +326,7 @@ export function TrialForm() {
             fontFamily: sans,
             fontWeight: 400,
             fontSize: "19px",
-            color: "#334155",
+            color: "var(--color-text-faint)",
             lineHeight: 1.45,
             margin: "0 0 14px",
           }}
@@ -337,7 +337,7 @@ export function TrialForm() {
           style={{
             fontFamily: sans,
             fontSize: "15px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto",
             maxWidth: "560px",
@@ -368,8 +368,8 @@ export function TrialForm() {
         animate="visible"
         transition={staggerDelay(2)}
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "14px",
           padding: "32px",
           display: "flex",
@@ -377,7 +377,7 @@ export function TrialForm() {
           gap: "18px",
           // Focal action card: lift it off the page and pin it beside the
           // taller left-hand narrative as the visitor scrolls.
-          boxShadow: "0 1px 3px rgba(15,23,42,0.04), 0 18px 44px rgba(15,23,42,0.07)",
+          boxShadow: "0 1px 3px rgba(var(--color-navy-primary-rgb), 0.04), 0 18px 44px rgba(var(--color-navy-primary-rgb), 0.07)",
           position: "sticky",
           top: "88px",
           alignSelf: "start",
@@ -398,7 +398,7 @@ export function TrialForm() {
           <button
             type="button"
             onClick={() => setStep(1)}
-            style={{ alignSelf: "flex-start", fontFamily: sans, fontSize: "13px", fontWeight: 500, color: "#64748b", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "2px" }}
+            style={{ alignSelf: "flex-start", fontFamily: sans, fontSize: "13px", fontWeight: 500, color: "var(--color-text-muted)", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "2px" }}
           >
             ← Back
           </button>
@@ -409,7 +409,7 @@ export function TrialForm() {
           <div>
             <label style={labelStyle}>
               Your role
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <ChoiceGroup
               name="role"
@@ -432,7 +432,7 @@ export function TrialForm() {
               <div style={{ marginTop: "10px" }}>
                 <label style={labelStyle}>
                   Specify your role
-                  <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">
+                  <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">
                     *
                   </span>
                 </label>
@@ -453,7 +453,7 @@ export function TrialForm() {
           <div>
             <label style={labelStyle}>
               Organisation size
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <div style={{ marginTop: "8px" }}>
               <ChoiceGroup
@@ -472,7 +472,7 @@ export function TrialForm() {
           <div>
             <label style={labelStyle}>
               Country
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <SearchableSelect
               name="country"
@@ -504,7 +504,7 @@ export function TrialForm() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: step1Valid ? "var(--color-gold)" : "var(--color-gold-hover)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 border: "none",
                 borderRadius: "9999px",
                 padding: "0 24px",
@@ -515,7 +515,7 @@ export function TrialForm() {
             >
               Continue →
             </button>
-            <span style={{ fontFamily: sans, fontSize: "12px", color: "#64748b" }}>
+            <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
               No card required · about a minute
             </span>
           </div>
@@ -527,7 +527,7 @@ export function TrialForm() {
           <div>
             <label htmlFor="name" style={labelStyle}>
               Full name
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <input
               id="name"
@@ -539,7 +539,7 @@ export function TrialForm() {
               onChange={(e) => setNameValue(e.target.value)}
               style={{
                 ...inputStyle,
-                borderColor: fieldErrors?.name ? "#b91c1c" : "#e2e8f0",
+                borderColor: fieldErrors?.name ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
             {fieldErrors?.name && <span style={errorStyle}>{fieldErrors.name}</span>}
@@ -547,7 +547,7 @@ export function TrialForm() {
           <div>
             <label htmlFor="email" style={labelStyle}>
               Work email
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <input
               id="email"
@@ -559,7 +559,7 @@ export function TrialForm() {
               onChange={(e) => setEmailValue(e.target.value)}
               style={{
                 ...inputStyle,
-                borderColor: fieldErrors?.email ? "#b91c1c" : "#e2e8f0",
+                borderColor: fieldErrors?.email ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
             {fieldErrors?.email && <span style={errorStyle}>{fieldErrors.email}</span>}
@@ -576,7 +576,7 @@ export function TrialForm() {
         <div>
           <label htmlFor="organisation" style={labelStyle}>
             Organisation
-            <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+            <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
           </label>
           <input
             id="organisation"
@@ -588,7 +588,7 @@ export function TrialForm() {
             onChange={(e) => setOrganisationValue(e.target.value)}
             style={{
               ...inputStyle,
-              borderColor: fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
+              borderColor: fieldErrors?.organisation ? "var(--color-danger)" : "var(--color-border)",
             }}
           />
           {fieldErrors?.organisation && (
@@ -615,7 +615,7 @@ export function TrialForm() {
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#334155",
+              color: "var(--color-text-faint)",
               display: "flex",
               alignItems: "flex-start",
               gap: "10px",
@@ -639,7 +639,7 @@ export function TrialForm() {
                 privacy policy
               </Link>
               .{" "}
-              <span style={{ color: "#dc2626" }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
             </span>
           </label>
           {fieldErrors?.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
@@ -651,9 +651,9 @@ export function TrialForm() {
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#b91c1c",
-              backgroundColor: "rgba(185,28,28,0.06)",
-              border: "1px solid rgba(185,28,28,0.2)",
+              color: "var(--color-danger)",
+              backgroundColor: "rgba(var(--color-danger-rgb), 0.06)",
+              border: "1px solid rgba(var(--color-danger-rgb), 0.2)",
               borderRadius: "6px",
               padding: "10px 12px",
               display: "flex",
@@ -674,9 +674,9 @@ export function TrialForm() {
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#92400e",
-              backgroundColor: "rgba(217,119,6,0.07)",
-              border: "1px solid rgba(217,119,6,0.25)",
+              color: "var(--color-warning)",
+              backgroundColor: "rgba(var(--color-notice-rgb), 0.07)",
+              border: "1px solid rgba(var(--color-notice-rgb), 0.25)",
               borderRadius: "6px",
               padding: "10px 12px",
               display: "flex",
@@ -687,13 +687,12 @@ export function TrialForm() {
             <AlertCircle
               size={14}
               strokeWidth={2}
-              color="#b45309"
-              style={{ marginTop: "2px", flexShrink: 0 }}
+              style={{ color: "var(--color-warning-accent)", marginTop: "2px", flexShrink: 0 }}
               aria-hidden="true"
             />
             <span>
               We already received a request from this browser at{" "}
-              <strong style={{ color: "#78350f" }}>{recentSubmission!.email}</strong> a few minutes
+              <strong style={{ color: "var(--color-warning-strong)" }}>{recentSubmission!.email}</strong> a few minutes
               ago. Check that inbox first — the verification link expires in 30 minutes.
             </span>
           </div>
@@ -712,7 +711,7 @@ export function TrialForm() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={isValid} />
-          <span style={{ fontFamily: sans, fontSize: "12px", color: "#64748b" }}>
+          <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
             No card on file — nothing to cancel · 30-day trial · Data preserved for 30 days after trial end.
           </span>
         </div>
@@ -740,8 +739,8 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       style={{
         maxWidth: "560px",
         margin: "0 auto",
-        backgroundColor: "#FFFFFF",
-        border: "1px solid #e2e8f0",
+        backgroundColor: "var(--color-white)",
+        border: "1px solid var(--color-border)",
         borderRadius: "10px",
         padding: "48px 40px",
         textAlign: "center",
@@ -769,7 +768,7 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
           fontFamily: sans,
           fontWeight: 500,
           fontSize: "22px",
-          color: "#0f172a",
+          color: "var(--color-text-primary)",
           margin: 0,
         }}
       >
@@ -779,21 +778,21 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
         style={{
           fontFamily: sans,
           fontSize: "15px",
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
           maxWidth: "420px",
         }}
       >
         We sent a verification link to{" "}
-        <strong style={{ color: "#0f172a" }}>{email}</strong>. Check your inbox —
+        <strong style={{ color: "var(--color-text-primary)" }}>{email}</strong>. Check your inbox —
         it expires in 30 minutes.
       </p>
       <p
         style={{
           fontFamily: sans,
           fontSize: "14px",
-          color: "#475569",
+          color: "var(--color-text-secondary)",
           lineHeight: 1.65,
           margin: 0,
           maxWidth: "420px",
@@ -801,7 +800,7 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       >
         {message}
       </p>
-      <p style={{ fontFamily: sans, fontSize: "12px", color: "#64748b", marginTop: "12px" }}>
+      <p style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)", marginTop: "12px" }}>
         <Clock
           size={11}
           strokeWidth={2}
@@ -824,8 +823,8 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
       style={{
         maxWidth: "560px",
         margin: "0 auto",
-        backgroundColor: "#FFFFFF",
-        border: "1px solid #e2e8f0",
+        backgroundColor: "var(--color-white)",
+        border: "1px solid var(--color-border)",
         borderRadius: "10px",
         padding: "48px 40px",
         textAlign: "center",
@@ -840,20 +839,20 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
           width: "56px",
           height: "56px",
           borderRadius: "50%",
-          backgroundColor: "rgba(4,120,87,0.12)",
+          backgroundColor: "rgba(var(--color-success-rgb), 0.12)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Check size={26} strokeWidth={2} color="#047857" aria-hidden="true" />
+        <Check size={26} strokeWidth={2} style={{ color: "var(--color-success)" }} aria-hidden="true" />
       </div>
       <h2
         style={{
           fontFamily: sans,
           fontWeight: 500,
           fontSize: "22px",
-          color: "#0f172a",
+          color: "var(--color-text-primary)",
           margin: 0,
         }}
       >
@@ -864,21 +863,21 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
           style={{
             fontFamily: sans,
             fontSize: "14px",
-            color: "#475569",
+            color: "var(--color-text-secondary)",
             lineHeight: 1.65,
             margin: 0,
             maxWidth: "440px",
           }}
         >
           We&rsquo;ll be in touch at{" "}
-          <strong style={{ color: "#0f172a" }}>{email}</strong>.
+          <strong style={{ color: "var(--color-text-primary)" }}>{email}</strong>.
         </p>
       )}
       <p
         style={{
           fontFamily: sans,
           fontSize: "15px",
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
           maxWidth: "440px",
@@ -914,8 +913,8 @@ function HardBlockedCard({ message }: { message: string }) {
       style={{
         maxWidth: "560px",
         margin: "0 auto",
-        backgroundColor: "#FFFFFF",
-        border: "1px solid #e2e8f0",
+        backgroundColor: "var(--color-white)",
+        border: "1px solid var(--color-border)",
         borderRadius: "10px",
         padding: "48px 40px",
         textAlign: "center",
@@ -930,20 +929,20 @@ function HardBlockedCard({ message }: { message: string }) {
           width: "56px",
           height: "56px",
           borderRadius: "50%",
-          backgroundColor: "rgba(185,28,28,0.10)",
+          backgroundColor: "rgba(var(--color-danger-rgb), 0.10)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <AlertCircle size={26} strokeWidth={1.8} color="#b91c1c" aria-hidden="true" />
+        <AlertCircle size={26} strokeWidth={1.8} style={{ color: "var(--color-danger)" }} aria-hidden="true" />
       </div>
       <h2
         style={{
           fontFamily: sans,
           fontWeight: 500,
           fontSize: "20px",
-          color: "#0f172a",
+          color: "var(--color-text-primary)",
           margin: 0,
         }}
       >
@@ -953,7 +952,7 @@ function HardBlockedCard({ message }: { message: string }) {
         style={{
           fontFamily: sans,
           fontSize: "14px",
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
           maxWidth: "420px",

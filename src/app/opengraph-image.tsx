@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
-import { BRAND, BRAND_COLORS } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
+import { STATIC_COLORS } from "@/lib/static-colors";
 
 // Default Open Graph / social-share image for every route (1200×630). Branded,
 // self-contained (no external assets) — closes the missing-og:image gap and
@@ -19,13 +20,13 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: "96px",
-          backgroundColor: BRAND_COLORS.navy,
+          backgroundColor: STATIC_COLORS.navy,
           fontFamily: "sans-serif",
         }}
       >
         <div
           style={{
-            color: BRAND_COLORS.gold,
+            color: STATIC_COLORS.gold,
             fontSize: 30,
             letterSpacing: 8,
             textTransform: "uppercase",
@@ -34,10 +35,10 @@ export default function OpengraphImage() {
         >
           {BRAND.positioningStatement}
         </div>
-        <div style={{ color: "#ffffff", fontSize: 96, fontWeight: 700, lineHeight: 1.05 }}>
+        <div style={{ color: STATIC_COLORS.white, fontSize: 96, fontWeight: 700, lineHeight: 1.05 }}>
           {BRAND.name}
         </div>
-        <div style={{ color: "#94a3b8", fontSize: 44, marginTop: 28 }}>
+        <div style={{ color: STATIC_COLORS.textSubtle, fontSize: 44, marginTop: 28 }}>
           {BRAND.tagline}
         </div>
       </div>

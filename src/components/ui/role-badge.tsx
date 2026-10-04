@@ -11,11 +11,11 @@ const ROLE_LABELS: Record<Role, string> = {
 };
 
 const ROLE_STYLES: Record<Role, { bg: string; text: string; border?: string }> = {
-  staff: { bg: "#f1f5f9", text: "#475569" },
-  hod: { bg: "var(--color-gold-surface)", text: "#78350f", border: "var(--color-gold)" },
-  finance: { bg: "rgba(4,120,87,0.08)", text: "#047857" },
-  md: { bg: "#0f172a", text: "var(--color-gold)", border: "var(--color-gold)" },
-  admin: { bg: "#1e293b", text: "#cbd5e1", border: "#334155" },
+  staff: { bg: "var(--color-bg)", text: "var(--color-text-secondary)" },
+  hod: { bg: "var(--color-gold-surface)", text: "var(--color-warning-strong)", border: "var(--color-gold)" },
+  finance: { bg: "rgba(var(--color-success-rgb), 0.08)", text: "var(--color-success)" },
+  md: { bg: "var(--color-navy-primary)", text: "var(--color-gold)", border: "var(--color-gold)" },
+  admin: { bg: "var(--color-navy-mid)", text: "var(--color-text-inverse-muted)", border: "var(--color-navy-light)" },
 };
 
 interface RoleBadgeProps {

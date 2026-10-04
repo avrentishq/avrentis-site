@@ -17,13 +17,13 @@ import type { SectionBackdropSource } from "@/lib/section-backdrops";
  * text), "dark" for navy sections (white text).
  */
 const SCRIM: Record<"dark" | "light" | "hero", string> = {
-  dark: "linear-gradient(180deg, rgba(15,23,42,0.80) 0%, rgba(15,23,42,0.90) 100%)",
+  dark: "linear-gradient(180deg, rgba(var(--color-navy-primary-rgb), 0.80) 0%, rgba(var(--color-navy-primary-rgb), 0.90) 100%)",
   light:
-    "linear-gradient(180deg, rgba(241,245,249,0.88) 0%, rgba(241,245,249,0.94) 100%)",
+    "linear-gradient(180deg, rgba(var(--color-bg-rgb), 0.88) 0%, rgba(var(--color-bg-rgb), 0.94) 100%)",
   // Directional navy scrim: heaviest on the left so the hero's left-aligned
   // copy stays legible over the light-trails, easing to near-clear on the
   // right where the product mock sits.
-  hero: "linear-gradient(90deg, rgba(15,23,42,0.93) 0%, rgba(15,23,42,0.74) 42%, rgba(15,23,42,0.4) 100%), linear-gradient(180deg, rgba(15,23,42,0.32) 0%, rgba(15,23,42,0.68) 100%)",
+  hero: "linear-gradient(90deg, rgba(var(--color-navy-primary-rgb), 0.93) 0%, rgba(var(--color-navy-primary-rgb), 0.74) 42%, rgba(var(--color-navy-primary-rgb), 0.4) 100%), linear-gradient(180deg, rgba(var(--color-navy-primary-rgb), 0.32) 0%, rgba(var(--color-navy-primary-rgb), 0.68) 100%)",
 };
 
 const DEFAULT_OPACITY = 0.5;

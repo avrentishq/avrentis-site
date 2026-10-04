@@ -16,7 +16,7 @@ export function PayPreview() {
             fontFeatureSettings: '"tnum" 1',
             fontSize: "13px",
             fontWeight: 500,
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
           }}
         >
           PV-2026-0184
@@ -26,7 +26,7 @@ export function PayPreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             color: "var(--color-gold)",
             borderRadius: "3px",
             padding: "1px 5px",
@@ -44,16 +44,16 @@ export function PayPreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            backgroundColor: "rgba(4,120,87,0.08)",
-            color: "#047857",
+            backgroundColor: "rgba(var(--color-success-rgb), 0.08)",
+            color: "var(--color-success)",
             borderRadius: "3px",
             padding: "2px 6px",
           }}
         >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "#047857" }} />
+          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-success)" }} />
           Approved
         </span>
-        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "#64748b" }}>
+        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "var(--color-text-muted)" }}>
           Bank-ready
         </span>
       </div>
@@ -61,14 +61,14 @@ export function PayPreview() {
       {/* Summary block */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "14px 16px",
           marginBottom: "12px",
         }}
       >
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "#0f172a", margin: "0 0 2px" }}>
+        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
           Brightpath Technologies
         </p>
         <p
@@ -77,27 +77,27 @@ export function PayPreview() {
             fontFeatureSettings: '"tnum" 1',
             fontSize: "22px",
             fontWeight: 500,
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             margin: "0 0 12px",
           }}
         >
           ₦850,000
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "88px 1fr", rowGap: "5px", fontFamily: "var(--font-sans)", fontSize: "11px" }}>
-          <span style={{ color: "#64748b" }}>Purpose</span>
-          <span style={{ color: "#0f172a" }}>Diesel supply — November</span>
-          <span style={{ color: "#64748b" }}>Account</span>
-          <span style={{ color: "#0f172a", fontFeatureSettings: '"tnum" 1' }}>GTB · 0123456789</span>
-          <span style={{ color: "#64748b" }}>Department</span>
-          <span style={{ color: "#0f172a" }}>Operations</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Purpose</span>
+          <span style={{ color: "var(--color-text-primary)" }}>Diesel supply — November</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Account</span>
+          <span style={{ color: "var(--color-text-primary)", fontFeatureSettings: '"tnum" 1' }}>GTB · 0123456789</span>
+          <span style={{ color: "var(--color-text-muted)" }}>Department</span>
+          <span style={{ color: "var(--color-text-primary)" }}>Operations</span>
         </div>
       </div>
 
       {/* Approval timeline */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "4px",
           padding: "14px 16px",
           marginBottom: "12px",
@@ -108,7 +108,7 @@ export function PayPreview() {
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
             fontWeight: 500,
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             letterSpacing: "0.04em",
             textTransform: "uppercase",
             margin: "0 0 10px",
@@ -124,7 +124,7 @@ export function PayPreview() {
               top: "8px",
               bottom: "8px",
               width: "1px",
-              backgroundColor: "#e2e8f0",
+              backgroundColor: "var(--color-border)",
             }}
           />
           {[
@@ -138,8 +138,8 @@ export function PayPreview() {
                   width: "20px",
                   height: "20px",
                   borderRadius: "50%",
-                  backgroundColor: "#FFFFFF",
-                  border: "1.5px solid #047857",
+                  backgroundColor: "var(--color-white)",
+                  border: "1.5px solid var(--color-success)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -147,13 +147,13 @@ export function PayPreview() {
                   zIndex: 1,
                 }}
               >
-                <span style={{ color: "#047857", fontSize: "10px", lineHeight: 1 }}>✓</span>
+                <span style={{ color: "var(--color-success)", fontSize: "10px", lineHeight: 1 }}>✓</span>
               </span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "#0f172a", margin: 0 }}>
-                  {s.role} <span style={{ color: "#64748b", fontWeight: 400 }}>— {s.actor}</span>
+                <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "var(--color-text-primary)", margin: 0 }}>
+                  {s.role} <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>— {s.actor}</span>
                 </p>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "#64748b", margin: "1px 0 0" }}>
+                <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "1px 0 0" }}>
                   {s.when}
                 </p>
               </div>
@@ -171,8 +171,8 @@ export function PayPreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#0f172a",
-            color: "#FFFFFF",
+            backgroundColor: "var(--color-navy-primary)",
+            color: "var(--color-white)",
             border: "none",
             borderRadius: "3px",
             padding: "8px 0",
@@ -188,9 +188,9 @@ export function PayPreview() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "12px",
-            backgroundColor: "#FFFFFF",
-            color: "#0f172a",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            color: "var(--color-text-primary)",
+            border: "1px solid var(--color-border)",
             borderRadius: "3px",
             padding: "8px 0",
             cursor: "default",

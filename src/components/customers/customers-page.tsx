@@ -134,7 +134,7 @@ export function CustomersProductPage() {
       <section
         ref={heroRef}
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
@@ -151,7 +151,7 @@ export function CustomersProductPage() {
             inset: 0,
             opacity: 0.05,
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY,
@@ -186,7 +186,7 @@ export function CustomersProductPage() {
               fontFamily: sans,
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -202,7 +202,7 @@ export function CustomersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "17px",
-              color: "#94a3b8",
+              color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
@@ -227,7 +227,7 @@ export function CustomersProductPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -244,8 +244,8 @@ export function CustomersProductPage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.2)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -261,7 +261,7 @@ export function CustomersProductPage() {
       </section>
 
       {/* ── INDUSTRIES ─────────────────────────────────────── */}
-      <section style={{ backgroundColor: "#FFFFFF", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.customersIndustries} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <m.span
@@ -293,7 +293,7 @@ export function CustomersProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
@@ -312,7 +312,7 @@ export function CustomersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 40px",
               maxWidth: "640px",
@@ -335,8 +335,8 @@ export function CustomersProductPage() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={staggerDelay(i + 3)}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "10px",
                     padding: "28px",
                     display: "flex",
@@ -357,10 +357,10 @@ export function CustomersProductPage() {
                   >
                     <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
                   </div>
-                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "#0f172a", margin: "4px 0 0" }}>
+                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "var(--color-text-primary)", margin: "4px 0 0" }}>
                     {ind.title}
                   </h3>
-                  <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                  <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                     {ind.body}
                   </p>
                 </m.div>
@@ -371,7 +371,7 @@ export function CustomersProductPage() {
       </section>
 
       {/* ── COMMON PATTERNS ────────────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.customersPatterns} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <m.span
@@ -403,7 +403,7 @@ export function CustomersProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "32px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
@@ -422,7 +422,7 @@ export function CustomersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 40px",
               maxWidth: "640px",
@@ -443,8 +443,8 @@ export function CustomersProductPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-white)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "10px",
                   padding: "24px 26px",
                   display: "flex",
@@ -452,10 +452,10 @@ export function CustomersProductPage() {
                   gap: "8px",
                 }}
               >
-                <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "#0f172a", margin: 0 }}>
+                <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "var(--color-text-primary)", margin: 0 }}>
                   {p.title}
                 </h3>
-                <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.65, margin: 0 }}>
+                <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                   {p.body}
                 </p>
               </m.div>
@@ -471,7 +471,7 @@ export function CustomersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "28px 0 0",
               fontStyle: "italic",
@@ -488,7 +488,7 @@ export function CustomersProductPage() {
       <section
         id="launch-partners"
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "var(--color-white)",
           padding: "120px 40px",
           scrollMarginTop: "80px",
           position: "relative",
@@ -525,7 +525,7 @@ export function CustomersProductPage() {
                   fontFamily: sans,
                   fontWeight: 400,
                   fontSize: "32px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   lineHeight: 1.2,
                   margin: "0 0 16px",
                   letterSpacing: "0.01em",
@@ -538,7 +538,7 @@ export function CustomersProductPage() {
                 style={{
                   fontFamily: sans,
                   fontSize: "15px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   lineHeight: 1.75,
                   margin: "0 0 20px",
                 }}
@@ -552,7 +552,7 @@ export function CustomersProductPage() {
                 style={{
                   fontFamily: sans,
                   fontSize: "14px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                   lineHeight: 1.7,
                   margin: "0 0 24px",
                   borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
@@ -571,7 +571,7 @@ export function CustomersProductPage() {
                   fontWeight: 600,
                   fontSize: "14px",
                   backgroundColor: "var(--color-gold)",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   borderRadius: "6px",
                   padding: "0 22px",
                   height: "44px",
@@ -603,8 +603,8 @@ export function CustomersProductPage() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={staggerDelay(i + 2)}
                   style={{
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-bg-light)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: "8px",
                     padding: "18px 20px",
                     display: "flex",
@@ -628,10 +628,10 @@ export function CustomersProductPage() {
                     <Check size={14} color={BRAND_COLORS.gold} strokeWidth={2.5} aria-hidden="true" />
                   </div>
                   <div>
-                    <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "15px", color: "#0f172a", margin: "0 0 4px" }}>
+                    <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "15px", color: "var(--color-text-primary)", margin: "0 0 4px" }}>
                       {b.title}
                     </h3>
-                    <p style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+                    <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0 }}>
                       {b.body}
                     </p>
                   </div>
@@ -643,7 +643,7 @@ export function CustomersProductPage() {
       </section>
 
       {/* ── COMING SOON: STORIES ───────────────────────────── */}
-      <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+      <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.customersStories} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
           <m.div
@@ -682,7 +682,7 @@ export function CustomersProductPage() {
               fontFamily: sans,
               fontWeight: 400,
               fontSize: "28px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.3,
               margin: "0 0 16px",
               letterSpacing: "0.01em",
@@ -700,7 +700,7 @@ export function CustomersProductPage() {
             style={{
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.75,
               margin: "0 auto 28px",
               maxWidth: "580px",
@@ -725,7 +725,7 @@ export function CustomersProductPage() {
                 fontWeight: 600,
                 fontSize: "14px",
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -742,8 +742,8 @@ export function CustomersProductPage() {
                 fontFamily: sans,
                 fontWeight: 500,
                 fontSize: "14px",
-                color: "#0f172a",
-                border: "1px solid #cbd5e1",
+                color: "var(--color-text-primary)",
+                border: "1px solid var(--color-border-strong)",
                 borderRadius: "6px",
                 padding: "0 22px",
                 height: "44px",
@@ -761,9 +761,9 @@ export function CustomersProductPage() {
       {/* ── QUIET FOOTER BAND ──────────────────────────────── */}
       <section
         style={{
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "var(--color-white)",
           padding: "80px 40px",
-          borderTop: "1px solid #e2e8f0",
+          borderTop: "1px solid var(--color-border)",
           position: "relative",
           overflow: "hidden",
           isolation: "isolate",
@@ -790,13 +790,13 @@ export function CustomersProductPage() {
                   fontFamily: sans,
                   fontWeight: 600,
                   fontSize: "16px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                   margin: "0 0 6px",
                 }}
               >
                 Already reviewing Avrentis inside your organisation?
               </h3>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "#64748b", lineHeight: 1.7, margin: "0 0 12px" }}>
+              <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: "0 0 12px" }}>
                 We share a security review pack, a draft DPA, and a tailored
                 rollout plan for any team that asks. No gating, no pretend
                 wait-times.

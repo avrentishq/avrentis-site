@@ -28,6 +28,7 @@
  */
 
 import type { TrialFormState } from "./state";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 /** Field keys the trial form actually renders, so a mapped error can be shown. */
 const RENDERED_FIELDS = new Set([
@@ -119,6 +120,6 @@ export function mapTrialResponse(
     status: "error",
     message:
       payload.message ??
-      "Something went wrong. Please try again or contact trials@avrentis.com.",
+      `Something went wrong. Please try again or contact ${CONTACT_EMAIL.trials}.`,
   };
 }

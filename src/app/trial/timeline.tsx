@@ -108,8 +108,8 @@ export function TrialTimeline() {
                     marginTop: "4px",
                     flexShrink: 0,
                     // Today is "now" — filled. Future days stay hollow.
-                    backgroundColor: isNow ? "var(--color-gold)" : "#FFFFFF",
-                    border: isNow ? "none" : "1.5px solid #cbd5e1",
+                    backgroundColor: isNow ? "var(--color-gold)" : "var(--color-white)",
+                    border: isNow ? "none" : "1.5px solid var(--color-border-strong)",
                     boxShadow: isNow
                       ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)"
                       : "none",
@@ -122,7 +122,7 @@ export function TrialTimeline() {
                       width: "1.5px",
                       flex: 1,
                       minHeight: "24px",
-                      backgroundColor: "#e2e8f0",
+                      backgroundColor: "var(--color-border)",
                       marginTop: "6px",
                     }}
                   />
@@ -150,7 +150,7 @@ export function TrialTimeline() {
                     fontFamily: sans,
                     fontSize: "16px",
                     fontWeight: 600,
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: "0 0 5px",
                     lineHeight: 1.35,
                   }}
@@ -161,7 +161,7 @@ export function TrialTimeline() {
                   style={{
                     fontFamily: sans,
                     fontSize: "14px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: 0,
                   }}

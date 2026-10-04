@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Terms of service — Avrentis",
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     title: "Avrentis terms of service",
     description:
       "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
-    url: "https://avrentis.com/terms",
+    url: canonical("/terms"),
     type: "website",
   },
 };
@@ -41,7 +42,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Avrentis is a multi-tenant platform for structuring, approving, and permanently recording operational
+          Avrentis is a multi-tenant platform for structuring, approving, and recording operational
           documents — payment vouchers, purchase orders, personnel actions, and related records. The Service
           includes workflow automation, notifications, PDF generation, audit trails, administrative tooling, and
           supporting APIs. We may release new features, retire features that no longer serve the product, or

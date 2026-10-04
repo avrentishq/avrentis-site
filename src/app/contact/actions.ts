@@ -12,13 +12,15 @@
  */
 
 import { sendContactEmail } from "@/lib/email";
+import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import {
   type ContactFormState,
   type ContactIntent,
   VALID_INTENTS,
 } from "./state";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -71,8 +73,15 @@ export async function submitContact(
     return { status: "success", message: "Thanks — we'll be in touch shortly." };
   }
 
-  if (!(await rateLimitDurable(`contact:${await clientIp()}`, 5, 10 * 60_000))) {
-    return { status: "error", message: "Too many messages — please try again in a few minutes." };
+  const rateLimit = await limitVisitor("contact");
+  if (!rateLimit.ok) {
+    return {
+      status: "error",
+      message:
+        rateLimit.status === 503
+          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
+          : "Too many messages — please try again in a few minutes.",
+    };
   }
 
   const name = String(formData.get("name") ?? "").trim();
@@ -127,16 +136,16 @@ export async function submitContact(
   const safeName = name.replace(/[\r\n]+/g, " ");
   const subject = `[Avrentis — ${intentLabel(intent)}] ${safeOrg} · ${safeName}`;
   const html = `
-    <table role="presentation" cellpadding="0" cellspacing="0" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:#0f172a;max-width:640px;">
-      <tr><td style="padding:0 0 16px;font-size:12px;color:#64748b;letter-spacing:0.08em;text-transform:uppercase;">Intent · ${escape(intentLabel(intent))}</td></tr>
-      <tr><td style="padding:0 0 4px;color:#64748b;font-size:12px;">Name</td></tr>
+    <table role="presentation" cellpadding="0" cellspacing="0" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};max-width:640px;">
+      <tr><td style="padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textMuted};letter-spacing:0.08em;text-transform:uppercase;">Intent · ${escape(intentLabel(intent))}</td></tr>
+      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Name</td></tr>
       <tr><td style="padding:0 0 12px;">${escape(name)}</td></tr>
-      <tr><td style="padding:0 0 4px;color:#64748b;font-size:12px;">Work email</td></tr>
-      <tr><td style="padding:0 0 12px;"><a href="mailto:${escape(email)}" style="color:#C68B2F;text-decoration:none;">${escape(email)}</a></td></tr>
-      <tr><td style="padding:0 0 4px;color:#64748b;font-size:12px;">Organisation</td></tr>
+      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Work email</td></tr>
+      <tr><td style="padding:0 0 12px;"><a href="mailto:${escape(email)}" style="color:${STATIC_COLORS.gold};text-decoration:none;">${escape(email)}</a></td></tr>
+      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Organisation</td></tr>
       <tr><td style="padding:0 0 12px;">${escape(organisation)}${size ? ` · ${escape(size)}` : ""}</td></tr>
-      ${country ? `<tr><td style="padding:0 0 4px;color:#64748b;font-size:12px;">Country</td></tr><tr><td style="padding:0 0 12px;">${escape(country)}</td></tr>` : ""}
-      <tr><td style="padding:0 0 4px;color:#64748b;font-size:12px;">Message</td></tr>
+      ${country ? `<tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Country</td></tr><tr><td style="padding:0 0 12px;">${escape(country)}</td></tr>` : ""}
+      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Message</td></tr>
       <tr><td style="padding:0 0 12px;white-space:pre-wrap;line-height:1.55;">${escape(message)}</td></tr>
     </table>
   `;
@@ -147,7 +156,7 @@ export async function submitContact(
     console.error("Contact submission failed:", err);
     return {
       status: "error",
-      message: "Something went wrong sending your enquiry. Please email hello@avrentis.com directly.",
+      message: `Something went wrong sending your enquiry. Please email ${CONTACT_EMAIL.general} directly.`,
     };
   }
 

@@ -25,7 +25,8 @@ import { ORG_SIZES as SIZES } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { verifyTurnstile } from "@/lib/turnstile";
-import { rateLimitDurable, clientIp } from "@/lib/rate-limit";
+import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -49,10 +50,14 @@ export async function submitTrialRequest(
     return { status: "queued_for_review", message: "Thanks — we'll be in touch shortly." };
   }
 
-  if (!(await rateLimitDurable(`trial:${await clientIp()}`, 5, 10 * 60_000))) {
+  const rateLimit = await limitVisitor("trialRequest");
+  if (!rateLimit.ok) {
     return {
       status: "error",
-      message: "You've submitted a few requests in a short window. Please wait a moment and try again.",
+      message:
+        rateLimit.status === 503
+          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
+          : "You've submitted a few requests in a short window. Please wait a moment and try again.",
     };
   }
 
@@ -140,7 +145,7 @@ export async function submitTrialRequest(
     return {
       status: "error",
       message:
-        "We couldn't reach the provisioning service. Please try again in a moment, or contact trials@avrentis.com.",
+        `We couldn't reach the provisioning service. Please try again in a moment, or contact ${CONTACT_EMAIL.trials}.`,
     };
   }
 
@@ -160,8 +165,15 @@ export async function reissueTrialToken(
   const token = String(formData.get("token") ?? "").trim();
   if (!token || token.length > 512) return { status: "error", message: "Missing or invalid token." };
 
-  if (!(await rateLimitDurable(`reissue:${await clientIp()}`, 3, 10 * 60_000))) {
-    return { status: "error", message: "Please wait a moment before requesting another link." };
+  const rateLimit = await limitVisitor("trialResend");
+  if (!rateLimit.ok) {
+    return {
+      status: "error",
+      message:
+        rateLimit.status === 503
+          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
+          : "Please wait a moment before requesting another link.",
+    };
   }
 
   let response: Response;

@@ -1,9 +1,13 @@
 @import "tailwindcss";
 
-@theme {
+/* `static` emits every token below whether or not a utility uses it. Inline
+   styles read these as var(--color-…); without `static` Tailwind drops any token
+   it cannot see written out in source, and the colour silently vanishes. */
+@theme static {
   /* Navy */
   --color-navy-primary: #0f172a;
   --color-navy-deep: #020617;
+  --color-navy-primary-rgb: 15, 23, 42;
   --color-navy-mid: #1e293b;
   --color-navy-light: #334155;
 
@@ -31,16 +35,70 @@
 
   /* Surfaces */
   --color-white: #ffffff;
+  --color-white-rgb: 255, 255, 255;
   --color-bg: #f1f5f9;
+  --color-bg-rgb: 241, 245, 249;
   --color-bg-light: #f8fafc;
+  --color-bg-light-rgb: 248, 250, 252;
   --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+  /* Light navbar panel — warm off-white, distinct from --color-bg. */
+  --color-nav-surface: #f7f6f2;
+  --color-nav-surface-rgb: 247, 246, 242;
+  /* Trial stepper: a step not yet reached. */
+  --color-step-idle: #d8dee7;
+  /* Drop shadows (paired with an alpha). */
+  --color-shadow-rgb: 0, 0, 0;
 
   /* Text */
   --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
+  --color-text-secondary-rgb: 71, 85, 105;
   --color-text-muted: #64748b;
+  --color-text-muted-rgb: 100, 116, 139;
   --color-text-subtle: #94a3b8;
+  --color-text-subtle-rgb: 148, 163, 184;
   --color-text-faint: #334155;
+  /* Secondary text on navy surfaces. */
+  --color-text-inverse-muted: #cbd5e1;
+  /* Keyword colour in the dark code samples. */
+  --color-code-keyword: #94d2bd;
+
+  /* Status tones — text on light surfaces; pair the -rgb triplet with an
+     alpha for the matching tint and border. */
+  --color-success: #047857;
+  --color-success-rgb: 4, 120, 87;
+  --color-info: #0369a1;
+  --color-info-rgb: 3, 105, 161;
+  --color-caution: #7c2d12;
+  --color-caution-rgb: 124, 45, 18;
+
+  /* Errors and required-field marks. */
+  --color-danger: #b91c1c;
+  --color-danger-rgb: 185, 28, 28;
+  --color-required: #dc2626;
+  /* Pending / needs attention — the amber family. */
+  --color-warning: #92400e;
+  --color-warning-strong: #78350f;
+  --color-warning-accent: #b45309;
+  --color-warning-accent-rgb: 180, 83, 9;
+  --color-notice-rgb: 217, 119, 6;
+  /* High-severity flag (Guard "Open", grant over 90%). */
+  --color-critical: #9f1239;
+  --color-critical-tint-rgb: 190, 18, 60;
+  /* A request sent back with a question. */
+  --color-queried: #3b0764;
+  --color-queried-accent: #5b21b6;
+  --color-queried-accent-rgb: 91, 33, 182;
+  /* Identity and access events (role changes) in the audit samples. */
+  --color-identity: #1e3a8a;
+  --color-identity-tint-rgb: 29, 78, 216;
+  /* "Available now" capability badges, on light and on navy. */
+  --color-available: #27ae60;
+  --color-available-rgb: 39, 174, 96;
+  --color-available-on-dark: #34d399;
+  /* Neutral tint for roadmap / inactive badges. */
+  --color-neutral-tint-rgb: 132, 146, 166;
 
   /* Typography */
   --font-sans: var(--font-archivo), system-ui, sans-serif;
@@ -115,8 +173,8 @@ body {
   left: 8px;
   top: -56px;
   z-index: 100;
-  background: #0f172a;
-  color: #ffffff;
+  background: var(--color-navy-primary);
+  color: var(--color-white);
   font-family: var(--font-sans);
   font-size: 14px;
   padding: 10px 16px;

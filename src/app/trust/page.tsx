@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { TrustProductPage } from "@/components/trust/trust-page";
 import { isLaunchHidden } from "@/lib/launch";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Trust centre — Avrentis",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis trust centre",
     description:
       "Frameworks we align to, sub-processors, residency, DPA, responsible disclosure — one page, honest about where we are.",
-    url: "https://avrentis.com/trust",
+    url: canonical("/trust"),
     type: "website",
   },
 };

@@ -37,7 +37,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
       <Navbar />
       <main
         style={{
-          backgroundColor: "#f8fafc",
+          backgroundColor: "var(--color-bg-light)",
           padding: "100px 32px 120px",
           minHeight: "70vh",
         }}
@@ -71,7 +71,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
               fontFamily: sans,
               fontWeight: 500,
               fontSize: "36px",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 18px",
               letterSpacing: "0.01em",
@@ -89,7 +89,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             style={{
               fontFamily: sans,
               fontSize: "16px",
-              color: "#475569",
+              color: "var(--color-text-secondary)",
               lineHeight: 1.75,
               margin: "0 0 8px",
             }}
@@ -105,7 +105,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             style={{
               fontFamily: sans,
               fontSize: "13px",
-              color: "#475569",
+              color: "var(--color-text-secondary)",
               margin: "0 0 40px",
             }}
           >
@@ -120,8 +120,8 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             transition={staggerDelay(4)}
             aria-label="Document sections"
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "10px",
               padding: "20px 24px",
               marginBottom: "56px",
@@ -159,13 +159,13 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                     style={{
                       fontFamily: sans,
                       fontSize: "14px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       textDecoration: "none",
                       display: "inline-flex",
                       gap: "8px",
                     }}
                   >
-                    <span style={{ color: "#64748b", fontVariantNumeric: "tabular-nums" }}>
+                    <span style={{ color: "var(--color-text-muted)", fontVariantNumeric: "tabular-nums" }}>
                       {String(i + 1).padStart(2, "0")}
                     </span>
                     {s.heading}
@@ -193,7 +193,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                     fontFamily: sans,
                     fontWeight: 600,
                     fontSize: "20px",
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: "0 0 16px",
                     display: "flex",
                     alignItems: "baseline",
@@ -217,7 +217,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                   style={{
                     fontFamily: sans,
                     fontSize: "15px",
-                    color: "#334155",
+                    color: "var(--color-text-faint)",
                     lineHeight: 1.75,
                   }}
                   className="legal-prose"
@@ -238,12 +238,12 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
               style={{
                 marginTop: "64px",
                 padding: "20px 24px",
-                backgroundColor: "#FFFFFF",
-                border: "1px solid #e2e8f0",
+                backgroundColor: "var(--color-white)",
+                border: "1px solid var(--color-border)",
                 borderRadius: "10px",
                 fontFamily: sans,
                 fontSize: "13px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 lineHeight: 1.65,
               }}
             >
@@ -261,11 +261,11 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
           .legal-prose ul li { margin-bottom: 6px; }
           .legal-prose a { color: var(--color-gold-on-light); text-decoration: none; }
           .legal-prose a:hover { text-decoration: underline; }
-          .legal-prose strong { color: #0f172a; font-weight: 600; }
+          .legal-prose strong { color: var(--color-text-primary); font-weight: 600; }
           .legal-prose code {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 0.9em;
-            background: #f1f5f9;
+            background: var(--color-bg);
             padding: 1px 6px;
             border-radius: 3px;
           }

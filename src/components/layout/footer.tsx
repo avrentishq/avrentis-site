@@ -59,7 +59,7 @@ const linkStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontWeight: 400,
   fontSize: "12px",
-  color: "#64748b",
+  color: "var(--color-text-muted)",
   textDecoration: "none",
   display: "block",
   marginBottom: "8px",
@@ -86,7 +86,7 @@ function FooterColumn({ label, links }: { label: string; links: { label: string;
           href={link.href}
           style={linkStyle}
           onMouseEnter={(e) => { e.currentTarget.style.color = "var(--color-gold)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "#64748b"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-text-muted)"; }}
         >
           {link.label}
         </Link>
@@ -99,7 +99,7 @@ export function Footer() {
   return (
     <footer
       style={{
-        backgroundColor: "#020617",
+        backgroundColor: "var(--color-navy-deep)",
         padding: "64px 40px 32px",
         borderTop: "0.5px solid rgba(var(--color-gold-rgb), 0.1)",
       }}
@@ -120,7 +120,7 @@ export function Footer() {
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {/* The platform lockup: gold container, navy gate, white wordmark.
                 Was a bare gold gate with a gold wordmark. */}
-            <AvrentisLogo variant="primary" size={28} wordmarkColor="#ffffff" />
+            <AvrentisLogo variant="primary" size={28} wordmarkColor="var(--color-white)" />
             <span
               style={{
                 fontFamily: "var(--font-mono)",
@@ -138,7 +138,7 @@ export function Footer() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "12px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 lineHeight: 1.6,
                 maxWidth: "200px",
               }}
@@ -155,7 +155,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div
           style={{
-            borderTop: "0.5px solid rgba(255,255,255,0.04)",
+            borderTop: "0.5px solid rgba(var(--color-white-rgb), 0.04)",
             paddingTop: "20px",
             display: "flex",
             justifyContent: "space-between",
@@ -169,7 +169,7 @@ export function Footer() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "11px",
-              color: "#334155",
+              color: "var(--color-text-faint)",
             }}
           >
             &copy; 2026 {BRAND.name} All rights reserved.

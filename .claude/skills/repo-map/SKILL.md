@@ -26,7 +26,8 @@ question — do not read them all.**
 Three rules that silence-fail if you get them wrong, all detailed in `conventions.md`:
 
 - Import `{ m }` from framer-motion, never `motion` — `LazyMotion strict` throws on `motion.*`.
-- Runtime code imports only `@avrentishq/core/brand` and `@avrentishq/core/region/countries`.
+- Runtime code imports only `@avrentishq/core/brand`, `core/region/countries` and the two
+  rate-limit modules `core/security/rate-limit(-tiers)` (`core-imports.lock.test.ts`).
   Every other subpath needs peer deps this repo does not install (tests may also import
   `modules/catalog` and `security/dependency-floors` for the parity locks).
 - Name tests `*.test.ts`. A `*.test.tsx` file is silently never executed.

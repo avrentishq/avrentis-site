@@ -187,3 +187,19 @@ export function formatCurrencyAmount(amount: number, currency: string): string {
   const symbol = symbols[currency] ?? currency + " ";
   return `${symbol}${amount.toLocaleString()}`;
 }
+
+/* ── Plan-name helpers — copy names tiers from the API, never by hand ── */
+
+/** Plan names in display order (`planOrder`), optionally only those with `featureKey` on. */
+export function planNames(data: PricingData, featureKey?: string): string[] {
+  return data.planOrder
+    .map((key) => data.plans.find((plan) => plan.key === key))
+    .filter((plan): plan is Plan => plan !== undefined)
+    .filter((plan) => featureKey === undefined || plan.features[featureKey] === true)
+    .map((plan) => plan.name);
+}
+
+/** "Enterprise", "Business and Enterprise", "Starter, Business and Enterprise". */
+export function formatPlanList(names: string[]): string {
+  return new Intl.ListFormat("en-GB", { style: "long", type: "conjunction" }).format(names);
+}

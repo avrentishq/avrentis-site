@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ConnectModulePage } from "@/components/product/pages/connect-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Integrations — Avrentis in your existing stack",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis Integrations — Avrentis in your existing stack",
     description:
       "Typed webhooks with Standard Webhooks signatures, scoped API keys, and SSO/SCIM. Your operational record flowing where it needs to go.",
-    url: "https://avrentis.com/product/connect",
+    url: canonical("/product/connect"),
     type: "website",
   },
 };

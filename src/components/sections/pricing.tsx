@@ -143,7 +143,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   return (
     <section
       style={{
-        backgroundColor: "#f1f5f9",
+        backgroundColor: "var(--color-bg)",
         padding: "100px 40px",
         position: "relative",
         overflow: "hidden",
@@ -192,7 +192,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
             textAlign: "center",
@@ -213,7 +213,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto 32px",
             textAlign: "center",
@@ -244,7 +244,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           <div
             style={{
               display: "inline-flex",
-              border: "1px solid #e2e8f0",
+              border: "1px solid var(--color-border)",
               borderRadius: "8px",
               padding: "4px",
             }}
@@ -262,8 +262,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 border: "none",
                 transition: "all 150ms ease",
                 backgroundColor:
-                  billing === "monthly" ? "#0f172a" : "transparent",
-                color: billing === "monthly" ? "#FFFFFF" : "#64748b",
+                  billing === "monthly" ? "var(--color-navy-primary)" : "transparent",
+                color: billing === "monthly" ? "var(--color-white)" : "var(--color-text-muted)",
               }}
             >
               Monthly
@@ -282,7 +282,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 transition: "all 150ms ease",
                 backgroundColor:
                   billing === "annual" ? "var(--color-gold)" : "transparent",
-                color: billing === "annual" ? "#0f172a" : "#64748b",
+                color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
               }}
             >
               Annual · 2 months free
@@ -294,7 +294,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             <div
               style={{
                 display: "inline-flex",
-                border: "1px solid #e2e8f0",
+                border: "1px solid var(--color-border)",
                 borderRadius: "8px",
                 padding: "4px",
               }}
@@ -313,8 +313,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     cursor: "pointer",
                     border: "none",
                     transition: "all 150ms ease",
-                    backgroundColor: currency === c ? "#0f172a" : "transparent",
-                    color: currency === c ? "#FFFFFF" : "#64748b",
+                    backgroundColor: currency === c ? "var(--color-navy-primary)" : "transparent",
+                    color: currency === c ? "var(--color-white)" : "var(--color-text-muted)",
                   }}
                 >
                   {c}
@@ -337,8 +337,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             viewport={{ once: true, margin: "-40px" }}
             transition={staggerDelay(4)}
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "12px",
               padding: "32px",
               display: "flex",
@@ -350,7 +350,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
                 fontSize: "20px",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 margin: "0 0 6px",
               }}
             >
@@ -361,7 +361,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "14px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 lineHeight: 1.5,
                 margin: "0 0 20px",
               }}
@@ -375,7 +375,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 700,
                   fontSize: "36px",
-                  color: "#0f172a",
+                  color: "var(--color-text-primary)",
                 }}
               >
                 $0
@@ -385,7 +385,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   fontFamily: "var(--font-sans)",
                   fontWeight: 400,
                   fontSize: "14px",
-                  color: "#64748b",
+                  color: "var(--color-text-muted)",
                 }}
               >
                 {" "}
@@ -397,7 +397,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "12px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 margin: "0 0 20px",
                 minHeight: "16px",
               }}
@@ -436,7 +436,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.5,
                     marginBottom: "10px",
                     display: "flex",
@@ -445,7 +445,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   }}
                 >
                   <span
-                    style={{ color: "#27AE60", fontWeight: 600, flexShrink: 0 }}
+                    style={{ color: "var(--color-available)", fontWeight: 600, flexShrink: 0 }}
                   >
                     ✓
                   </span>
@@ -468,14 +468,14 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 textDecoration: "none",
                 transition: "all 150ms ease",
                 backgroundColor: "transparent",
-                color: "#0f172a",
-                border: "1px solid #e2e8f0",
+                color: "var(--color-text-primary)",
+                border: "1px solid var(--color-border)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#0f172a";
+                e.currentTarget.style.borderColor = "var(--color-navy-primary)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#e2e8f0";
+                e.currentTarget.style.borderColor = "var(--color-border)";
               }}
             >
               Start your 30-day trial
@@ -485,7 +485,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "11px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 lineHeight: 1.5,
                 margin: "12px 0 0",
               }}
@@ -555,10 +555,10 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 4)}
                 style={{
-                  backgroundColor: isFeatured ? "#0f172a" : "#FFFFFF",
+                  backgroundColor: isFeatured ? "var(--color-navy-primary)" : "var(--color-white)",
                   border: isFeatured
                     ? "1px solid rgba(var(--color-gold-rgb), 0.3)"
-                    : "1px solid #e2e8f0",
+                    : "1px solid var(--color-border)",
                   borderRadius: "12px",
                   padding: "32px",
                   display: "flex",
@@ -571,7 +571,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     style={{
                       display: "inline-block",
                       backgroundColor: "var(--color-gold)",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       fontSize: "11px",
                       fontWeight: 600,
                       fontFamily: "var(--font-sans)",
@@ -592,7 +592,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 600,
                     fontSize: "20px",
-                    color: isFeatured ? "#FFFFFF" : "#0f172a",
+                    color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                     margin: "0 0 6px",
                   }}
                 >
@@ -605,7 +605,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "14px",
-                    color: isFeatured ? "#94a3b8" : "#64748b",
+                    color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                     lineHeight: 1.5,
                     margin: "0 0 20px",
                   }}
@@ -629,7 +629,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "16px",
-                        color: "#64748b",
+                        color: "var(--color-text-muted)",
                       }}
                     >
                       From
@@ -642,7 +642,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         fontWeight: 500,
                         fontSize: "18px",
                         textDecoration: "line-through",
-                        color: isFeatured ? "#94a3b8" : "#64748b",
+                        color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                       }}
                     >
                       {formatCurrencyAmount(priceData.monthly, currency)}
@@ -654,7 +654,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 700,
                         fontSize: "34px",
-                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                        color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                       }}
                     >
                       {formatCurrencyAmount(displayAmount, currency)}
@@ -664,7 +664,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "14px",
-                        color: isFeatured ? "#94a3b8" : "#64748b",
+                        color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                       }}
                     >
                       /month
@@ -695,7 +695,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: isFeatured ? "#cbd5e1" : "#64748b",
+                    color: isFeatured ? "var(--color-text-inverse-muted)" : "var(--color-text-muted)",
                     margin: "0 0 20px",
                     minHeight: "18px",
                     lineHeight: 1.5,
@@ -710,7 +710,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         <strong
                           style={{
                             fontWeight: 600,
-                            color: isFeatured ? "#FFFFFF" : "#0f172a",
+                            color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                           }}
                         >
                           {formatCurrencyAmount(
@@ -764,7 +764,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     style={{
                       fontSize: "11px",
                       fontFamily: "var(--font-sans)",
-                      color: "var(--color-muted)",
+                      color: "var(--color-text-muted)",
                       margin: "-8px 0 16px",
                       alignSelf: "flex-start",
                     }}
@@ -788,7 +788,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "13px",
-                        color: isFeatured ? "#FFFFFF" : "#0f172a",
+                        color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                         marginBottom: "12px",
                       }}
                     >
@@ -802,7 +802,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 400,
                         fontSize: "13px",
-                        color: isFeatured ? "#94a3b8" : "#64748b",
+                        color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                         lineHeight: 1.5,
                         marginBottom: "10px",
                         display: "flex",
@@ -812,7 +812,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     >
                       <span
                         style={{
-                          color: isFeatured ? "var(--color-gold)" : "#27AE60",
+                          color: isFeatured ? "var(--color-gold)" : "var(--color-available)",
                           fontWeight: 600,
                           flexShrink: 0,
                         }}
@@ -842,13 +842,13 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     ...(isFeatured
                       ? {
                           backgroundColor: "var(--color-gold)",
-                          color: "#0f172a",
+                          color: "var(--color-text-primary)",
                           border: "none",
                         }
                       : {
                           backgroundColor: "transparent",
-                          color: "#0f172a",
-                          border: "1px solid #e2e8f0",
+                          color: "var(--color-text-primary)",
+                          border: "1px solid var(--color-border)",
                         }),
                   }}
                   onMouseEnter={(e) => {
@@ -856,7 +856,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                       e.currentTarget.style.backgroundColor =
                         "var(--color-gold-hover)";
                     } else {
-                      e.currentTarget.style.borderColor = "#0f172a";
+                      e.currentTarget.style.borderColor = "var(--color-navy-primary)";
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -864,7 +864,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                       e.currentTarget.style.backgroundColor =
                         "var(--color-gold)";
                     } else {
-                      e.currentTarget.style.borderColor = "#e2e8f0";
+                      e.currentTarget.style.borderColor = "var(--color-border)";
                     }
                   }}
                 >
@@ -886,7 +886,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "13px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             textAlign: "center",
             marginTop: "40px",
           }}

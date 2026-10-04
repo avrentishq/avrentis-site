@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { GuardModulePage } from "@/components/product/pages/guard-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
+import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Avrentis Guard — Catch the bad payment before the money moves",
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
     title: "Avrentis Guard — Catch the bad payment before the money moves",
     description:
       "Duplicate payments, vendor bank-account changes, and structuring flagged before approval — with an audited review-and-resolve queue.",
-    url: "https://avrentis.com/product/guard",
+    url: canonical("/product/guard"),
     type: "website",
   },
 };

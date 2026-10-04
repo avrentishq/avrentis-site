@@ -22,6 +22,7 @@ import {
   type ModuleKey,
   type ModuleSuite,
 } from "@/lib/brand";
+import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 
 /**
  * Copy for the four SUITE pages (`/product/<suite>`).
@@ -33,7 +34,7 @@ import {
  *
  * WHAT GOES WHERE. `shared` is the half that used to be repeated, slightly
  * differently, on every module page: one delegation-of-authority engine, one
- * permanent record, one set of permissions. `modules[key]` is the half that is
+ * audit trail, one set of permissions. `modules[key]` is the half that is
  * true of exactly one module — if a line here would read as true of its
  * neighbour, it belongs in `shared` instead.
  *
@@ -73,7 +74,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
   spend: {
     headline: "Nothing leaves the account without a decision behind it.",
     description:
-      "Payments, purchase orders and donor funds all start the same way — somebody asks for money to go out. Avrentis puts every one of those requests on the same path: routed to whoever is allowed to approve it, at the amount they are allowed to approve, with the answer kept permanently.",
+      `Payments, purchase orders and donor funds all start the same way — somebody asks for money to go out. Avrentis puts every one of those requests on the same path: routed to whoever is allowed to approve it, at the amount they are allowed to approve, with the answer ${AUDIT_TRAIL_KEPT}.`,
     sharedTitle: "What they have in common",
     shared: [
       {
@@ -90,7 +91,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
       },
       {
         icon: FileLock2,
-        title: "The same permanent record at the end",
+        title: "The same audit trail at the end",
         body:
           "Whatever was spent and whoever approved it lands on one tamper-evident trail — the same one your auditors, your board and your donors are shown. No module keeps its own private history.",
       },
@@ -116,7 +117,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
       },
     },
     metaDescription:
-      "Payments, purchase orders and restricted funds on one approval path — routed to whoever is allowed to approve the amount, and kept on record permanently.",
+      `Payments, purchase orders and restricted funds on one approval path — routed to whoever is allowed to approve the amount, with every decision ${AUDIT_TRAIL_KEPT}.`,
   },
 
   oversight: {

@@ -8,6 +8,7 @@
 
 import { BRAND } from "@/lib/brand";
 import type { PricingData } from "@/lib/pricing";
+import { SITE_DESCRIPTION } from "@/lib/record-keeping";
 
 export const SITE_URL = "https://avrentis.com";
 
@@ -70,9 +71,7 @@ export function softwareApplicationSchema(pricing?: PricingData | null): Record<
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     url: SITE_URL,
-    description:
-      `${BRAND.positioningStatement} — structured approval workflows, enforced authority, ` +
-      "and a permanent operational record for payment vouchers, purchase orders, and more.",
+    description: SITE_DESCRIPTION,
   };
   const offer = aggregateOffer(pricing);
   if (offer) schema.offers = offer;

@@ -1,5 +1,6 @@
 import "server-only";
 import { Resend } from "resend";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 /**
  * Thin wrapper around Resend so the rest of the site doesn't need to know
@@ -7,8 +8,8 @@ import { Resend } from "resend";
  * check at send-time so local development without a key still renders pages.
  */
 
-const FROM = process.env.CONTACT_FROM ?? "Avrentis <hello@avrentis.com>";
-const INBOX = process.env.CONTACT_INBOX ?? "hello@avrentis.com";
+const FROM = process.env.CONTACT_FROM ?? `Avrentis <${CONTACT_EMAIL.general}>`;
+const INBOX = process.env.CONTACT_INBOX ?? CONTACT_EMAIL.general;
 
 interface SendParams {
   subject: string;

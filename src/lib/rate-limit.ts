@@ -1,113 +1,99 @@
 import "server-only";
 import { headers } from "next/headers";
-import { Ratelimit } from "@upstash/ratelimit";
-import { Redis } from "@upstash/redis";
+import type { Ratelimit } from "@upstash/ratelimit";
+import {
+  checkRateLimit,
+  makeLimiter,
+  type RateLimitVerdict,
+} from "@avrentishq/core/security/rate-limit";
+import type { RateLimitTierKey } from "@avrentishq/core/security/rate-limit-tiers";
 
 /**
- * Rate limiter for the public marketing surfaces (contact + savings-estimate).
+ * Rate limits for the four public Server Actions, run on core's shared limiter
+ * (`@avrentishq/core/security/rate-limit`) — the same seam the tenant app and
+ * the platform console use. Each limiter is tagged with its registry tier, so
+ * a refusal is counted where the platform console can see it.
  *
- * Two paths: a durable shared window when the KV credentials are present, and
- * an in-memory limiter otherwise so local development and previews work with
- * no setup.
- *
- * This repository is PUBLIC. The behaviour of each path under failure, and the
- * reasoning behind that choice, is deliberately not described here — it is
- * abuse-defence detail, and it lives in `guides/security-posture.md`, which is
- * gitignored. Read that before changing anything in this file: the tradeoffs
- * are considered, not accidental.
+ * This repository is PUBLIC. Why each action has the failure mode it has is
+ * abuse-defence detail and lives in `guides/security-posture.md`, which is
+ * gitignored. Read that before changing a `failClosed` flag or a number.
  */
 
-// ── In-memory limiter ───────────────────────────────────────────────────────
-
-interface Bucket {
-  count: number;
-  resetAt: number;
+interface SiteRateLimit {
+  /** Registry tier in core — the name the console counts refusals under. */
+  readonly tier: RateLimitTierKey;
+  /** Prefix of the per-visitor identifier (`<identifierPrefix>:<ip>`). */
+  readonly identifierPrefix: string;
+  readonly requests: number;
+  readonly windowSeconds: number;
+  readonly failClosed: boolean;
 }
 
-const buckets = new Map<string, Bucket>();
+const TEN_MINUTES_SECONDS = 10 * 60;
 
-/** Best-effort per-instance limiter. True = allowed, false = over the limit. */
-export function rateLimit(key: string, limit: number, windowMs: number): boolean {
-  const now = Date.now();
+export const SITE_RATE_LIMITS = {
+  contact: {
+    tier: "site_contact",
+    identifierPrefix: "contact",
+    requests: 5,
+    windowSeconds: TEN_MINUTES_SECONDS,
+    failClosed: false,
+  },
+  savingsEstimate: {
+    tier: "site_savings_estimate",
+    identifierPrefix: "estimate",
+    requests: 5,
+    windowSeconds: TEN_MINUTES_SECONDS,
+    failClosed: true,
+  },
+  trialRequest: {
+    tier: "site_trial_request",
+    identifierPrefix: "trial",
+    requests: 5,
+    windowSeconds: TEN_MINUTES_SECONDS,
+    failClosed: true,
+  },
+  trialResend: {
+    tier: "site_trial_resend",
+    identifierPrefix: "reissue",
+    requests: 3,
+    windowSeconds: TEN_MINUTES_SECONDS,
+    failClosed: true,
+  },
+} as const satisfies Record<string, SiteRateLimit>;
 
-  // Occasional prune so the map can't grow unbounded under load.
-  if (buckets.size > 10_000) {
-    for (const [k, v] of buckets) if (now > v.resetAt) buckets.delete(k);
+export type SiteRateLimitedAction = keyof typeof SITE_RATE_LIMITS;
+
+/** Shown when a fail-closed action cannot reach its limiter (verdict status 503). */
+export const RATE_LIMIT_UNAVAILABLE_MESSAGE =
+  "This form is temporarily unavailable. Please try again in a few minutes.";
+
+// Built once per action; null when the shared store is not configured.
+const limiters = new Map<SiteRateLimitedAction, Ratelimit | null>();
+
+/** The limiter an action runs on — exported so tests can read its tier. */
+export function limiterFor(action: SiteRateLimitedAction): Ratelimit | null {
+  if (!limiters.has(action)) {
+    const { requests, windowSeconds, tier } = SITE_RATE_LIMITS[action];
+    limiters.set(action, makeLimiter(requests, windowSeconds, tier));
   }
-
-  const bucket = buckets.get(key);
-  if (!bucket || now > bucket.resetAt) {
-    buckets.set(key, { count: 1, resetAt: now + windowMs });
-    return true;
-  }
-  if (bucket.count >= limit) return false;
-  bucket.count += 1;
-  return true;
+  return limiters.get(action) ?? null;
 }
 
-// ── Durable Upstash-backed limiter (cross-instance) ─────────────────────────
-
-let _redis: Redis | null = null;
-
-function getRedis(): Redis | null {
-  if (_redis) return _redis;
-  const url = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-  if (!url || !token) return null;
-  _redis = new Redis({ url, token });
-  return _redis;
-}
-
-// One limiter per (limit, windowMs) shape — cached so we don't rebuild per call.
-const _limiters = new Map<string, Ratelimit>();
-
-function getLimiter(limit: number, windowMs: number): Ratelimit | null {
-  const redis = getRedis();
-  if (!redis) return null;
-  const seconds = Math.max(1, Math.round(windowMs / 1000));
-  const cacheKey = `${limit}:${seconds}`;
-  let limiter = _limiters.get(cacheKey);
-  if (!limiter) {
-    limiter = new Ratelimit({
-      redis,
-      limiter: Ratelimit.slidingWindow(limit, `${seconds} s`),
-      analytics: false,
-      prefix: "avrentis-site",
-    });
-    _limiters.set(cacheKey, limiter);
-  }
-  return limiter;
-}
-
-/**
- * True = allowed, false = over the limit.
- *
- * Behaviour when the durable store is unavailable is a deliberate tradeoff
- * documented in `guides/security-posture.md` (gitignored — this repo is
- * public). Do not change it from what you see here without reading that.
- */
-export async function rateLimitDurable(
-  key: string,
-  limit: number,
-  windowMs: number,
-): Promise<boolean> {
-  const limiter = getLimiter(limit, windowMs);
-  if (!limiter) return rateLimit(key, limit, windowMs);
-  try {
-    const { success } = await limiter.limit(key);
-    return success;
-  } catch {
-    // See guides/security-posture.md before altering this branch.
-    return true;
-  }
+/** Check (and spend) one of this visitor's attempts at `action`. */
+export async function limitVisitor(action: SiteRateLimitedAction): Promise<RateLimitVerdict> {
+  const { identifierPrefix, failClosed } = SITE_RATE_LIMITS[action];
+  return checkRateLimit(limiterFor(action), `${identifierPrefix}:${await clientIp()}`, {
+    failClosed,
+  });
 }
 
 /** Best-effort client IP from proxy headers; "unknown" if unavailable. */
-export async function clientIp(): Promise<string> {
-  const h = await headers();
+async function clientIp(): Promise<string> {
+  const requestHeaders = await headers();
   return (
-    h.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    h.get("x-real-ip")?.trim() ||
+    requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    requestHeaders.get("x-real-ip")?.trim() ||
     "unknown"
   );
 }

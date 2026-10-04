@@ -27,7 +27,7 @@ const labelStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "12px",
   fontWeight: 500,
-  color: "#0f172a",
+  color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
   display: "block",
   marginBottom: "6px",
@@ -36,19 +36,19 @@ const labelStyle: React.CSSProperties = {
 const inputStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "15px",
-  color: "#0f172a",
+  color: "var(--color-text-primary)",
   width: "100%",
   height: "44px",
-  border: "1px solid #e2e8f0",
+  border: "1px solid var(--color-border)",
   borderRadius: "8px",
   padding: "0 14px",
-  backgroundColor: "#FFFFFF",
+  backgroundColor: "var(--color-white)",
 };
 
 const hintStyle: React.CSSProperties = {
   fontFamily: sans,
   fontSize: "12px",
-  color: "#64748b",
+  color: "var(--color-text-muted)",
   marginTop: "5px",
   display: "block",
 };
@@ -89,7 +89,7 @@ function NumberField({
               transform: "translateY(-50%)",
               fontFamily: sans,
               fontSize: "15px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
             }}
           >
             {prefix}
@@ -123,8 +123,8 @@ function StatTile({
   return (
     <div
       style={{
-        backgroundColor: featured ? "#0f172a" : "#FFFFFF",
-        border: featured ? "1px solid rgba(var(--color-gold-rgb), 0.3)" : "1px solid #e2e8f0",
+        backgroundColor: featured ? "var(--color-navy-primary)" : "var(--color-white)",
+        border: featured ? "1px solid rgba(var(--color-gold-rgb), 0.3)" : "1px solid var(--color-border)",
         borderRadius: "12px",
         padding: "20px 22px",
       }}
@@ -134,7 +134,7 @@ function StatTile({
           fontFamily: sans,
           fontWeight: 700,
           fontSize: featured ? "30px" : "24px",
-          color: featured ? "var(--color-gold)" : "#0f172a",
+          color: featured ? "var(--color-gold)" : "var(--color-text-primary)",
           lineHeight: 1.1,
           letterSpacing: "-0.01em",
         }}
@@ -145,7 +145,7 @@ function StatTile({
         style={{
           fontFamily: sans,
           fontSize: "12px",
-          color: featured ? "#94a3b8" : "#64748b",
+          color: featured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
           marginTop: "6px",
         }}
       >
@@ -167,7 +167,7 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
         fontWeight: 600,
         fontSize: "14px",
         backgroundColor: off ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "#0f172a",
+        color: "var(--color-text-primary)",
         border: "none",
         borderRadius: "9999px",
         padding: "0 22px",
@@ -237,8 +237,8 @@ export function SavingsEstimator() {
       {/* Left — inputs */}
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "14px",
           padding: "28px",
           display: "flex",
@@ -286,7 +286,7 @@ export function SavingsEstimator() {
           <StatTile value={`${hrsFmt(result.hoursPerYear)} hrs`} label="Time back per year" />
         </div>
 
-        <p style={{ fontFamily: sans, fontSize: "12px", color: "#64748b", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0 }}>
           Assumes structured approvals remove about {pct}% of coordination time — a
           conservative estimate. Every other number is yours.
         </p>
@@ -299,13 +299,13 @@ export function SavingsEstimator() {
               alignItems: "center",
               gap: "10px",
               padding: "14px 16px",
-              backgroundColor: "rgba(4,120,87,0.07)",
-              border: "1px solid rgba(4,120,87,0.20)",
+              backgroundColor: "rgba(var(--color-success-rgb), 0.07)",
+              border: "1px solid rgba(var(--color-success-rgb), 0.20)",
               borderRadius: "10px",
             }}
           >
-            <Check size={18} strokeWidth={2.2} color="#047857" aria-hidden="true" />
-            <span style={{ fontFamily: sans, fontSize: "14px", color: "#0f172a" }}>
+            <Check size={18} strokeWidth={2.2} style={{ color: "var(--color-success)" }} aria-hidden="true" />
+            <span style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-primary)" }}>
               {state.message}
             </span>
           </div>
@@ -313,8 +313,8 @@ export function SavingsEstimator() {
           <form
             action={action}
             style={{
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              border: "1px solid var(--color-border)",
               borderRadius: "14px",
               padding: "20px 22px",
               display: "flex",
@@ -323,7 +323,7 @@ export function SavingsEstimator() {
             }}
             noValidate
           >
-            <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "#0f172a" }}>
+            <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
               Want a copy? We&rsquo;ll email your {nairaFmt(result.nairaPerYear)}/yr estimate — no sales call required.
             </span>
 
@@ -360,7 +360,7 @@ export function SavingsEstimator() {
               style={{
                 fontFamily: sans,
                 fontSize: "12px",
-                color: "#334155",
+                color: "var(--color-text-faint)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
@@ -387,7 +387,7 @@ export function SavingsEstimator() {
             </label>
 
             {(state.fieldError || (state.status === "error" && state.message)) && (
-              <span style={{ fontFamily: sans, fontSize: "12px", color: "#b91c1c" }}>
+              <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}>
                 {state.fieldError ?? state.message}
               </span>
             )}

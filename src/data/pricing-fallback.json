@@ -538,7 +538,7 @@
     {
       "key": "authority",
       "name": "Avrentis Authority",
-      "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the immutable record."
+      "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the tamper-evident record."
     }
   ],
   "trial": {

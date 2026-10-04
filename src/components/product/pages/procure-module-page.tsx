@@ -79,7 +79,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
 
   relatedModules: [
     { slug: "pay", name: "Avrentis Payables", desc: "Turn sanctioned POs into paid invoices on the same rails" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every PO, every signature — permanently on record" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Every PO decision, every signature — on the audit trail" },
     { slug: "vault", name: "Avrentis Records", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
   ],
 };

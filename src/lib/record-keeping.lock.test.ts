@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
+import { RECORD_KEEPING_FORBIDDEN, recordKeepingViolations } from "@avrentishq/core/brand/copy-guardrails";
 
 /**
  * Copy must not promise to keep DOCUMENTS forever. The audit trail is kept for
@@ -9,34 +10,20 @@ import { join, relative } from "node:path";
  * "stored with the document permanently" and "a permanent record" — a promise
  * the product does not keep, made in a market that will hold us to it.
  *
- * Deliberately narrow. "Every action is permanently attributed" and "every
- * decision … on record permanently" are TRUE (they are the audit trail) and
- * stay legal; only a document word near a permanence word, the ambiguous
- * "permanent record", and "immutable record" (the trail is tamper-evident,
- * not immutable) fail.
+ * The rules are core's (`@avrentishq/core/brand/copy-guardrails`), so the site,
+ * the app and the console all refuse the same wording. This file keeps only the
+ * site's own proof that the detector is live and leaves accurate lines alone.
+ * "Every action is permanently attributed" is TRUE (it is the audit trail) and
+ * passes; a document word near a permanence word, "permanent(ly on) record",
+ * and "immutable record" (the trail is tamper-evident, not immutable) fail.
  */
 
-const PERMANENCE = String.raw`(?:permanent(?:ly)?|forever)`;
-const DOCUMENT_WORD = String.raw`(?:documents?|files?|attachments?|contracts?|invoices?|quotes?|vouchers?|purchase orders?|POs?|PDFs?|claims?)`;
-
-const FORBIDDEN: Array<{ name: string; pattern: RegExp }> = [
-  { name: "document kept permanently", pattern: new RegExp(String.raw`\b${DOCUMENT_WORD}\b[^.]{0,50}\b${PERMANENCE}\b`, "i") },
-  { name: "permanently … document", pattern: new RegExp(String.raw`\b${PERMANENCE}\b[^.]{0,40}\b${DOCUMENT_WORD}\b`, "i") },
-  { name: "ambiguous 'permanent record'", pattern: /\bpermanent\s+(?:operational\s+)?record\b/i },
-  { name: "'immutable' record", pattern: /\bimmutable\s+(?:record|audit|trail|log|ledger|history)\b/i },
-];
-
 const SRC = join(process.cwd(), "src");
-const THIS_FILE = "lib/record-keeping.lock.test.ts";
 
 function copyFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
     .filter((file) => /\.(tsx?|json)$/.test(file))
     .filter((file) => !file.endsWith(".test.ts"));
-}
-
-function violations(text: string): string[] {
-  return FORBIDDEN.filter(({ pattern }) => pattern.test(text)).map(({ name }) => name);
 }
 
 describe("record-keeping copy — documents are not permanent", () => {
@@ -50,7 +37,7 @@ describe("record-keeping copy — documents are not permanent", () => {
       "permanently recording operational\n          documents",
       "provable on the immutable record.",
     ]) {
-      expect(violations(old), old).not.toEqual([]);
+      expect(recordKeepingViolations(old), old).not.toEqual([]);
     }
   });
 
@@ -60,8 +47,9 @@ describe("record-keeping copy — documents are not permanent", () => {
       "Supporting documents are generated automatically. Every action is permanently attributed to a person.",
       "every decision routed to the right approver, enforced, and on record permanently.",
       "Document retention follows your plan; the audit trail itself is never purged while the account is active.",
+      "When the retention period ends, documents and their files are permanently deleted.",
     ]) {
-      expect(violations(accurate), accurate).toEqual([]);
+      expect(recordKeepingViolations(accurate), accurate).toEqual([]);
     }
   });
 
@@ -72,11 +60,10 @@ describe("record-keeping copy — documents are not permanent", () => {
   it("no copy claims documents are kept permanently", () => {
     const offenders: string[] = [];
     for (const file of copyFiles()) {
-      if (file === THIS_FILE) continue;
       const source = readFileSync(join(SRC, file), "utf8");
-      for (const { name, pattern } of FORBIDDEN) {
-        const match = source.match(pattern);
-        if (match) offenders.push(`${relative(process.cwd(), join(SRC, file))}: ${name} — "${match[0]}"`);
+      for (const name of recordKeepingViolations(source)) {
+        const pattern = RECORD_KEEPING_FORBIDDEN.find((rule) => rule.name === name)!.pattern;
+        offenders.push(`${relative(process.cwd(), join(SRC, file))}: ${name} — "${source.match(pattern)?.[0] ?? ""}"`);
       }
     }
     expect(

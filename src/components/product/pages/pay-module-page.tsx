@@ -11,6 +11,7 @@
 import { FileCheck, Workflow, Banknote, ShieldCheck, Receipt, Scale } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
+import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { PayPreview } from "@/components/product/previews/pay-preview";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
@@ -34,7 +35,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: FileCheck,
       title: "A complete digital paper trail",
       body:
-        "Every submission, query, return, and signature is captured on a tamper-evident audit trail. Who approved, when, with which signature — all permanently on record and exportable for auditors.",
+        `Every submission, query, return, and signature is captured on a tamper-evident audit trail, ${AUDIT_TRAIL_KEPT}. Who approved, when, with which signature — all on record and exportable for auditors.`,
     },
     {
       icon: Banknote,

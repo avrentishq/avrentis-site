@@ -11,7 +11,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, MODULES } from "@/lib/brand";
+import { BRAND_COLORS } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -47,8 +47,17 @@ interface Category {
   eyebrow: string;
   title: string;
   lede: string;
+  /** Plan feature that gates this category; its plans are named after the lede. */
+  planFeature?: PlanFeature;
   integrations: Integration[];
 }
+
+/** The plan features this page names plans for. SCIM provisioning rides on `sso`. */
+export type PlanFeature = "sso" | "apiAccess";
+/** "Business and Enterprise" per feature, read from the pricing API by the route
+ *  (formatted server-side so this client bundle never imports the pricing module).
+ *  Empty string = unknown; the sentence is then left off rather than guessed. */
+export type PlansByFeature = Record<PlanFeature, string>;
 
 const CATEGORIES: Category[] = [
   {
@@ -58,6 +67,7 @@ const CATEGORIES: Category[] = [
     title: "Sign in with the identity provider you already run.",
     lede:
       "Avrentis speaks the standard identity protocols — no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace.",
+    planFeature: "sso",
     integrations: [
       { name: "SAML 2.0", summary: "Federated sign-in for any SAML-compliant IdP — on the enterprise roadmap.", availability: "request" },
       { name: "OpenID Connect (OIDC)", summary: "OIDC flow for modern identity providers.", availability: "available" },
@@ -74,6 +84,7 @@ const CATEGORIES: Category[] = [
     title: "Users flow from your IdP — and leave when they should.",
     lede:
       "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds.",
+    planFeature: "sso",
     integrations: [
       { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
       { name: "Okta SCIM", summary: "Verified integration with Okta's lifecycle engine.", availability: "available" },
@@ -144,7 +155,8 @@ const CATEGORIES: Category[] = [
     eyebrow: "DEVELOPER PLATFORM",
     title: "Build on top of your approval record.",
     lede:
-      `On plans that include ${MODULES.connect.name}, a read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition and tenant-scoped API keys.`,
+      "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition and tenant-scoped API keys.",
+    planFeature: "apiAccess",
     integrations: [
       { name: "REST API (v1)", summary: "Read access to documents, users, vendors, audit events, and reports.", availability: "available" },
       { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },
@@ -205,7 +217,7 @@ function Badge({ availability }: { availability: Availability }) {
   );
 }
 
-function CategoryBlock({ category, index }: { category: Category; index: number }) {
+function CategoryBlock({ category, index, plans }: { category: Category; index: number; plans?: string }) {
   const Icon = category.icon;
   return (
     <m.section
@@ -261,6 +273,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
           </h2>
           <p style={{ fontFamily: sans, fontSize: "15px", color: "#64748b", lineHeight: 1.7, margin: 0, maxWidth: "440px" }}>
             {category.lede}
+            {plans ? ` Available on ${plans}.` : null}
           </p>
         </div>
 
@@ -303,7 +316,7 @@ function CategoryBlock({ category, index }: { category: Category; index: number 
   );
 }
 
-export function IntegrationsCataloguePage() {
+export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: PlansByFeature }) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -496,7 +509,7 @@ export function IntegrationsCataloguePage() {
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategories} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {CATEGORIES.map((c, i) => (
-            <CategoryBlock key={c.id} category={c} index={i} />
+            <CategoryBlock key={c.id} category={c} index={i} plans={c.planFeature ? plansByFeature[c.planFeature] : undefined} />
           ))}
         </div>
       </section>

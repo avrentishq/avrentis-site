@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { formatCurrencyAmount, formatBytes, formatRetention } from "@/lib/pricing";
+import { formatCurrencyAmount, formatBytes, formatRetention, planNames, formatPlanList, type PricingData } from "@/lib/pricing";
 import fallback from "@/data/pricing-fallback.json";
 
 describe("pricing formatters (money path feeding the UI + JSON-LD)", () => {
@@ -66,5 +66,26 @@ describe("quote-priced tiers are API-derived, never name-derived", () => {
     // above cannot catch on their own.
     expect(selling.length).toBeGreaterThan(0);
     expect(selling.length).toBeLessThan(fallback.plans.length);
+  });
+});
+
+describe("plan names come from the pricing data, in plan order", () => {
+  const data = fallback as unknown as PricingData;
+
+  it("lists every plan, and only the plans carrying a feature", () => {
+    expect(planNames(data)).toEqual(data.planOrder.map((key) => data.plans.find((plan) => plan.key === key)!.name));
+    const withSso = planNames(data, "sso");
+    expect(withSso.length).toBeGreaterThan(0);
+    expect(withSso.length).toBeLessThan(data.plans.length);
+    for (const name of withSso) {
+      expect(data.plans.find((plan) => plan.name === name)!.features.sso).toBe(true);
+    }
+    expect(planNames(data, "no-such-feature")).toEqual([]);
+  });
+
+  it("joins names the way a sentence reads", () => {
+    expect(formatPlanList(["Enterprise"])).toBe("Enterprise");
+    expect(formatPlanList(["Business", "Enterprise"])).toBe("Business and Enterprise");
+    expect(formatPlanList(["Starter", "Business", "Enterprise"])).toBe("Starter, Business and Enterprise");
   });
 });

@@ -116,7 +116,7 @@ const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
     starter:
       "Trail still recorded and data-subject requests handled — reporting and exports from Business",
     business: "Full trail history and regulator-ready export",
-    enterprise: "Unlimited retention and SIEM export",
+    enterprise: "Unlimited retention, plus a live SIEM feed through the API",
   },
   guard: {
     starter: "From Business",

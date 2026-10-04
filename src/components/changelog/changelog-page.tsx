@@ -33,23 +33,15 @@ interface Entry {
   link?: { label: string; href: string };
 }
 
-// One tone per tag, all from the @theme tokens in globals.css: the token is the
-// label colour, its -rgb triplet at low alpha is the tint and the border.
-function tone(label: string, token: string): { label: string; color: string; bg: string; border: string } {
-  return {
-    label,
-    color: `var(--color-${token})`,
-    bg: `rgba(var(--color-${token}-rgb), 0.08)`,
-    border: `rgba(var(--color-${token}-rgb), 0.24)`,
-  };
-}
-
+// Every value is a literal @theme token from globals.css. Keep them spelled out:
+// Tailwind only emits a theme variable it can find written in the source, so a
+// token assembled at runtime (`var(--color-${name})`) resolves to nothing.
 const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border: string }> = {
-  feature: { ...tone("FEATURE", "gold"), color: "var(--color-gold-on-light)" },
-  improvement: tone("IMPROVEMENT", "info"),
-  security: tone("SECURITY", "success"),
-  pricing: tone("PRICING", "caution"),
-  platform: tone("PLATFORM", "text-secondary"),
+  feature: { label: "FEATURE", color: "var(--color-gold-on-light)", bg: "rgba(var(--color-gold-rgb), 0.08)", border: "rgba(var(--color-gold-rgb), 0.24)" },
+  improvement: { label: "IMPROVEMENT", color: "var(--color-info)", bg: "rgba(var(--color-info-rgb), 0.08)", border: "rgba(var(--color-info-rgb), 0.24)" },
+  security: { label: "SECURITY", color: "var(--color-success)", bg: "rgba(var(--color-success-rgb), 0.08)", border: "rgba(var(--color-success-rgb), 0.24)" },
+  pricing: { label: "PRICING", color: "var(--color-caution)", bg: "rgba(var(--color-caution-rgb), 0.08)", border: "rgba(var(--color-caution-rgb), 0.24)" },
+  platform: { label: "PLATFORM", color: "var(--color-text-secondary)", bg: "rgba(var(--color-text-secondary-rgb), 0.08)", border: "rgba(var(--color-text-secondary-rgb), 0.24)" },
 };
 
 const ENTRIES: Entry[] = [

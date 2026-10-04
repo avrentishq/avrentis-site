@@ -20,11 +20,11 @@ export function CtaBanner() {
   return (
     <section
       style={{
-        backgroundColor: "#0f172a",
+        backgroundColor: "var(--color-navy-primary)",
         padding: "120px 40px",
         textAlign: "center",
         backgroundImage:
-          "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          "linear-gradient(rgba(var(--color-white-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.05) 1px, transparent 1px)",
         backgroundSize: "60px 60px",
         position: "relative",
         overflow: "hidden",
@@ -60,7 +60,7 @@ export function CtaBanner() {
             fontFamily: "var(--font-sans)",
             fontWeight: 700,
             fontSize: "36px",
-            color: "#FFFFFF",
+            color: "var(--color-white)",
             lineHeight: 1.2,
             margin: "0 0 16px",
           }}
@@ -80,7 +80,7 @@ export function CtaBanner() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 0 32px",
           }}
@@ -110,7 +110,7 @@ export function CtaBanner() {
               fontWeight: 600,
               fontSize: "16px",
               backgroundColor: "var(--color-gold)",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               border: "none",
               borderRadius: "9999px",
               height: "52px",
@@ -138,8 +138,8 @@ export function CtaBanner() {
               fontWeight: 500,
               fontSize: "16px",
               backgroundColor: "transparent",
-              color: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.2)",
+              color: "var(--color-white)",
+              border: "1px solid rgba(var(--color-white-rgb), 0.2)",
               borderRadius: "9999px",
               height: "48px",
               padding: "0 32px",
@@ -151,10 +151,10 @@ export function CtaBanner() {
               transition: "border-color 150ms ease",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
+              e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.5)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)";
+              e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.2)";
             }}
           >
             Contact us &rarr;
@@ -172,7 +172,7 @@ export function CtaBanner() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "13px",
-            color: "#475569",
+            color: "var(--color-text-secondary)",
             marginTop: "20px",
           }}
         >
@@ -204,7 +204,7 @@ export function CtaBanner() {
                 gap: "6px",
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
               }}
             >
               <Icon size={14} color={BRAND_COLORS.gold} strokeWidth={2} />

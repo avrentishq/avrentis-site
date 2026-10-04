@@ -27,7 +27,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
     <div style={{ margin: "0 auto 36px", maxWidth: "480px" }}>
       {/* Header: label + live percentage */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "12px" }}>
-        <span style={{ fontFamily: sans, fontSize: "12px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "#64748b" }}>
+        <span style={{ fontFamily: sans, fontSize: "12px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
           Your progress
         </span>
         <span style={{ fontFamily: sans, fontSize: "12px", fontWeight: 600, color: "var(--color-gold-on-light)" }}>
@@ -37,7 +37,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
 
       {/* Track + circles: the track is the progress bar; circles ride on it */}
       <div style={{ position: "relative", height: "28px" }} aria-hidden="true">
-        <div style={{ position: "absolute", top: "12px", left: "14px", right: "14px", height: "4px", backgroundColor: "#e2e8f0", borderRadius: "9999px" }} />
+        <div style={{ position: "absolute", top: "12px", left: "14px", right: "14px", height: "4px", backgroundColor: "var(--color-border)", borderRadius: "9999px" }} />
         <div
           style={{
             position: "absolute",
@@ -62,9 +62,9 @@ export function TrialStepper({ current }: TrialStepperProps) {
                   width: "28px",
                   height: "28px",
                   borderRadius: "50%",
-                  border: `1.5px solid ${done || active ? "var(--color-gold)" : "#d8dee7"}`,
-                  backgroundColor: done ? "var(--color-gold)" : "#f1f5f9",
-                  color: done ? "#0f172a" : active ? "var(--color-gold-on-light)" : "#94a3b8",
+                  border: `1.5px solid ${done || active ? "var(--color-gold)" : "var(--color-step-idle)"}`,
+                  backgroundColor: done ? "var(--color-gold)" : "var(--color-bg)",
+                  color: done ? "var(--color-text-primary)" : active ? "var(--color-gold-on-light)" : "var(--color-text-subtle)",
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -75,7 +75,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
                   transition: "border-color 320ms ease, background-color 320ms ease, box-shadow 320ms ease",
                 }}
               >
-                {done ? <Check size={14} strokeWidth={2.5} color="#0f172a" /> : step}
+                {done ? <Check size={14} strokeWidth={2.5} style={{ color: "var(--color-text-primary)" }} /> : step}
               </span>
             );
           })}
@@ -96,7 +96,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
                 fontFamily: sans,
                 fontSize: "12px",
                 fontWeight: active ? 600 : 400,
-                color: done || active ? "#0f172a" : "#94a3b8",
+                color: done || active ? "var(--color-text-primary)" : "var(--color-text-subtle)",
                 textAlign: i === 0 ? "left" : i === STEPS.length - 1 ? "right" : "center",
                 flex: 1,
                 transition: "color 320ms ease",

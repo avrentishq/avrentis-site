@@ -54,7 +54,7 @@ export default async function ContactPage({
       <main
         id="main"
         style={{
-          backgroundColor: "#f1f5f9",
+          backgroundColor: "var(--color-bg)",
           padding: "56px 40px 96px",
           minHeight: "70vh",
           position: "relative",

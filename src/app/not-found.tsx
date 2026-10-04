@@ -10,7 +10,7 @@ export default function NotFound() {
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#0f172a",
+        backgroundColor: "var(--color-navy-primary)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -37,7 +37,7 @@ export default function NotFound() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "32px",
-            color: "#ffffff",
+            color: "var(--color-white)",
             lineHeight: 1.2,
             margin: "0 0 16px",
           }}
@@ -48,7 +48,7 @@ export default function NotFound() {
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "15px",
-            color: "#94a3b8",
+            color: "var(--color-text-subtle)",
             lineHeight: 1.7,
             margin: "0 auto 28px",
             maxWidth: "420px",
@@ -65,7 +65,7 @@ export default function NotFound() {
               fontWeight: 600,
               fontSize: "14px",
               backgroundColor: "var(--color-gold)",
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               borderRadius: "6px",
               padding: "0 22px",
               height: "44px",
@@ -82,8 +82,8 @@ export default function NotFound() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "14px",
-              color: "#ffffff",
-              border: "1px solid rgba(255,255,255,0.2)",
+              color: "var(--color-white)",
+              border: "1px solid rgba(var(--color-white-rgb), 0.2)",
               borderRadius: "6px",
               padding: "0 22px",
               height: "44px",
@@ -102,7 +102,7 @@ export default function NotFound() {
             fontSize: "9px",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "#334155",
+            color: "var(--color-text-faint)",
             margin: "40px 0 0",
           }}
         >

@@ -133,7 +133,7 @@ const labelStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontSize: "12px",
   fontWeight: 500,
-  color: "#0f172a",
+  color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
   display: "block",
   marginBottom: "6px",
@@ -142,13 +142,13 @@ const labelStyle: React.CSSProperties = {
 const inputStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontSize: "14px",
-  color: "#0f172a",
+  color: "var(--color-text-primary)",
   width: "100%",
   height: "42px",
-  border: "1px solid #e2e8f0",
+  border: "1px solid var(--color-border)",
   borderRadius: "6px",
   padding: "0 14px",
-  backgroundColor: "#FFFFFF",
+  backgroundColor: "var(--color-white)",
   transition: "border-color 150ms ease, box-shadow 150ms ease",
 };
 
@@ -164,7 +164,7 @@ const textareaStyle: React.CSSProperties = {
 const errorStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
   fontSize: "12px",
-  color: "#b91c1c",
+  color: "var(--color-danger)",
   marginTop: "6px",
   display: "block",
 };
@@ -181,7 +181,7 @@ function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
         fontWeight: 600,
         fontSize: "14px",
         backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "#0f172a",
+        color: "var(--color-text-primary)",
         border: "none",
         borderRadius: "9999px",
         padding: "0 24px",
@@ -268,8 +268,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         animate="visible"
         transition={fadeUpTransition}
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "10px",
           padding: "48px 40px",
           textAlign: "center",
@@ -284,20 +284,20 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             width: "56px",
             height: "56px",
             borderRadius: "50%",
-            backgroundColor: "rgba(4,120,87,0.12)",
+            backgroundColor: "rgba(var(--color-success-rgb), 0.12)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Check size={26} strokeWidth={2} color="#047857" aria-hidden="true" />
+          <Check size={26} strokeWidth={2} style={{ color: "var(--color-success)" }} aria-hidden="true" />
         </div>
         <h2
           style={{
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "22px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             margin: 0,
           }}
         >
@@ -307,7 +307,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "15px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.65,
             margin: 0,
             maxWidth: "420px",
@@ -386,7 +386,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "32px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.2,
             margin: "0 0 12px",
             letterSpacing: "0.01em",
@@ -399,7 +399,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "15px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto",
             maxWidth: "520px",
@@ -430,13 +430,13 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "14px",
-              color: "#475569",
+              color: "var(--color-text-secondary)",
               lineHeight: 1.7,
               borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
               paddingLeft: "16px",
             }}
           >
-            <div style={{ marginBottom: "10px", color: "#0f172a", fontWeight: 600, fontSize: "14px" }}>
+            <div style={{ marginBottom: "10px", color: "var(--color-text-primary)", fontWeight: 600, fontSize: "14px" }}>
               What happens next
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
@@ -475,7 +475,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
                 fontWeight: 500,
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 marginBottom: "8px",
               }}
             >
@@ -497,7 +497,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 lineHeight: 1.7,
                 margin: "12px 0 0",
                 maxWidth: "300px",
@@ -519,14 +519,14 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           viewport={{ once: true, margin: "-40px" }}
           transition={staggerDelay(2)}
           style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "14px",
             padding: "32px",
             display: "flex",
             flexDirection: "column",
             gap: "18px",
-            boxShadow: "0 1px 3px rgba(15,23,42,0.04), 0 18px 44px rgba(15,23,42,0.07)",
+            boxShadow: "0 1px 3px rgba(var(--color-navy-primary-rgb), 0.04), 0 18px 44px rgba(var(--color-navy-primary-rgb), 0.07)",
           }}
           noValidate
         >
@@ -547,7 +547,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             <div>
               <label htmlFor="name" style={labelStyle}>
                 Full name
-                <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+                <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
               </label>
               <input
                 id="name"
@@ -561,7 +561,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 aria-describedby={state.fieldErrors?.name ? "contact-name-error" : undefined}
                 style={{
                   ...inputStyle,
-                  borderColor: state.fieldErrors?.name ? "#b91c1c" : "#e2e8f0",
+                  borderColor: state.fieldErrors?.name ? "var(--color-danger)" : "var(--color-border)",
                 }}
               />
               {state.fieldErrors?.name && <span id="contact-name-error" style={errorStyle}>{state.fieldErrors.name}</span>}
@@ -569,7 +569,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             <div>
               <label htmlFor="email" style={labelStyle}>
                 Work email
-                <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+                <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
               </label>
               <input
                 id="email"
@@ -583,7 +583,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 aria-describedby={state.fieldErrors?.email ? "contact-email-error" : undefined}
                 style={{
                   ...inputStyle,
-                  borderColor: state.fieldErrors?.email ? "#b91c1c" : "#e2e8f0",
+                  borderColor: state.fieldErrors?.email ? "var(--color-danger)" : "var(--color-border)",
                 }}
               />
               {state.fieldErrors?.email && <span id="contact-email-error" style={errorStyle}>{state.fieldErrors.email}</span>}
@@ -593,7 +593,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           <div>
             <label htmlFor="organisation" style={labelStyle}>
               Organisation
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <input
               id="organisation"
@@ -607,7 +607,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               aria-describedby={state.fieldErrors?.organisation ? "contact-org-error" : undefined}
               style={{
                 ...inputStyle,
-                borderColor: state.fieldErrors?.organisation ? "#b91c1c" : "#e2e8f0",
+                borderColor: state.fieldErrors?.organisation ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
             {state.fieldErrors?.organisation && <span id="contact-org-error" style={errorStyle}>{state.fieldErrors.organisation}</span>}
@@ -640,7 +640,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           <div>
             <label htmlFor="message" style={labelStyle}>
               Tell us about your use case
-              <span style={{ color: "#dc2626", marginLeft: 4 }} aria-hidden="true">*</span>
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
             <textarea
               id="message"
@@ -653,7 +653,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               aria-describedby={state.fieldErrors?.message ? "contact-message-error" : undefined}
               style={{
                 ...textareaStyle,
-                borderColor: state.fieldErrors?.message ? "#b91c1c" : "#e2e8f0",
+                borderColor: state.fieldErrors?.message ? "var(--color-danger)" : "var(--color-border)",
               }}
               placeholder="What approvals or records are you trying to structure? How many people, how often?"
             />
@@ -666,7 +666,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
-                color: "#334155",
+                color: "var(--color-text-faint)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "10px",
@@ -689,7 +689,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                   privacy policy
                 </Link>
                 .{" "}
-                <span style={{ color: "#dc2626" }} aria-hidden="true">*</span>
+                <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
               </span>
             </label>
             {state.fieldErrors?.consent && <span style={errorStyle}>{state.fieldErrors.consent}</span>}
@@ -701,9 +701,9 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
-                color: "#b91c1c",
-                backgroundColor: "rgba(185,28,28,0.06)",
-                border: "1px solid rgba(185,28,28,0.2)",
+                color: "var(--color-danger)",
+                backgroundColor: "rgba(var(--color-danger-rgb), 0.06)",
+                border: "1px solid rgba(var(--color-danger-rgb), 0.2)",
                 borderRadius: "6px",
                 padding: "10px 12px",
               }}

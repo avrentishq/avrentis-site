@@ -72,7 +72,7 @@ export default async function VerifyPage({ params }: PageProps) {
       <Navbar />
       <main
         style={{
-          backgroundColor: "#f1f5f9",
+          backgroundColor: "var(--color-bg)",
           padding: "120px 32px",
           minHeight: "70vh",
           position: "relative",

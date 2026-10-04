@@ -47,7 +47,7 @@ export default function AboutPage() {
         {/* ── Hero ── */}
         <section
           style={{
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             padding: "120px 40px 80px",
             position: "relative",
             overflow: "hidden",
@@ -76,7 +76,7 @@ export default function AboutPage() {
             </p>
             <h1
               style={{
-                color: "#ffffff",
+                color: "var(--color-white)",
                 fontSize: 36,
                 fontWeight: 400,
                 margin: "0 0 16px",
@@ -87,7 +87,7 @@ export default function AboutPage() {
             </h1>
             <p
               style={{
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 fontSize: 18,
                 fontWeight: 400,
                 margin: 0,
@@ -101,7 +101,7 @@ export default function AboutPage() {
         {/* ── Mission & Story ── */}
         <section
           style={{
-            backgroundColor: "#ffffff",
+            backgroundColor: "var(--color-white)",
             padding: "80px 40px",
             position: "relative",
             overflow: "hidden",
@@ -112,7 +112,7 @@ export default function AboutPage() {
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <p
               style={{
-                color: "#475569",
+                color: "var(--color-text-secondary)",
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
@@ -127,7 +127,7 @@ export default function AboutPage() {
             </p>
             <p
               style={{
-                color: "#475569",
+                color: "var(--color-text-secondary)",
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
@@ -152,7 +152,7 @@ export default function AboutPage() {
             </p>
             <p
               style={{
-                color: "#475569",
+                color: "var(--color-text-secondary)",
                 fontSize: 16,
                 fontWeight: 400,
                 lineHeight: 1.8,
@@ -171,7 +171,7 @@ export default function AboutPage() {
         {/* ── Values ── */}
         <section
           style={{
-            backgroundColor: "#f1f5f9",
+            backgroundColor: "var(--color-bg)",
             padding: "80px 40px",
             position: "relative",
             overflow: "hidden",
@@ -201,15 +201,15 @@ export default function AboutPage() {
                 <div
                   key={v.title}
                   style={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #e2e8f0",
+                    backgroundColor: "var(--color-white)",
+                    border: "1px solid var(--color-border)",
                     borderRadius: 8,
                     padding: 24,
                   }}
                 >
                   <p
                     style={{
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       fontSize: 16,
                       fontWeight: 600,
                       margin: "0 0 8px",
@@ -219,7 +219,7 @@ export default function AboutPage() {
                   </p>
                   <p
                     style={{
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       fontSize: 14,
                       fontWeight: 400,
                       lineHeight: 1.6,
@@ -237,7 +237,7 @@ export default function AboutPage() {
         {/* ── Join Us ── */}
         <section
           style={{
-            backgroundColor: "#ffffff",
+            backgroundColor: "var(--color-white)",
             padding: "80px 40px",
             position: "relative",
             overflow: "hidden",
@@ -266,7 +266,7 @@ export default function AboutPage() {
             </p>
             <h2
               style={{
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 fontSize: 24,
                 fontWeight: 400,
                 lineHeight: 1.4,
@@ -278,7 +278,7 @@ export default function AboutPage() {
             </h2>
             <p
               style={{
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 fontSize: 15,
                 fontWeight: 400,
                 lineHeight: 1.7,
@@ -314,7 +314,7 @@ export default function AboutPage() {
         {/* ── Contact ── */}
         <section
           style={{
-            backgroundColor: "#0f172a",
+            backgroundColor: "var(--color-navy-primary)",
             padding: "80px 40px",
             position: "relative",
             overflow: "hidden",
@@ -331,7 +331,7 @@ export default function AboutPage() {
           >
             <h2
               style={{
-                color: "#ffffff",
+                color: "var(--color-white)",
                 fontSize: 28,
                 fontWeight: 400,
                 margin: "0 0 16px",
@@ -341,7 +341,7 @@ export default function AboutPage() {
             </h2>
             <p
               style={{
-                color: "#64748b",
+                color: "var(--color-text-muted)",
                 fontSize: 15,
                 fontWeight: 400,
                 lineHeight: 1.7,
@@ -366,7 +366,7 @@ export default function AboutPage() {
             </Link>
             <p
               style={{
-                color: "#475569",
+                color: "var(--color-text-secondary)",
                 fontSize: 13,
                 fontWeight: 400,
                 marginTop: 8,

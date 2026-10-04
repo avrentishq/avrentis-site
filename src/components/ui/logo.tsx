@@ -147,7 +147,7 @@ export function AvrentisLogo({
   className,
 }: AvrentisLogoProps) {
   const defaultWordmarkColor =
-    variant === "transparent-navy" ? "var(--color-primary-800)" : "#ffffff";
+    variant === "transparent-navy" ? "var(--color-primary-800)" : "var(--color-white)";
   const wColor = wordmarkColor ?? defaultWordmarkColor;
 
   return (

@@ -40,32 +40,32 @@ const STATUS = {
   underReview: {
     label: "Under review",
     bg: "rgba(var(--color-gold-rgb), 0.08)",
-    text: "#92400e",
+    text: "var(--color-warning)",
     dot: "var(--color-gold)",
   },
   submitted: {
     label: "Submitted",
-    bg: "rgba(180,83,9,0.08)",
-    text: "#78350f",
-    dot: "#b45309",
+    bg: "rgba(var(--color-warning-accent-rgb), 0.08)",
+    text: "var(--color-warning-strong)",
+    dot: "var(--color-warning-accent)",
   },
   queried: {
     label: "Queried",
-    bg: "rgba(91,33,182,0.08)",
-    text: "#3B0764",
-    dot: "#5B21B6",
+    bg: "rgba(var(--color-queried-accent-rgb), 0.08)",
+    text: "var(--color-queried)",
+    dot: "var(--color-queried-accent)",
   },
   approved: {
     label: "Approved",
-    bg: "rgba(4,120,87,0.08)",
-    text: "#047857",
-    dot: "#047857",
+    bg: "rgba(var(--color-success-rgb), 0.08)",
+    text: "var(--color-success)",
+    dot: "var(--color-success)",
   },
   recorded: {
     label: "Recorded",
-    bg: "rgba(4,120,87,0.08)",
-    text: "#047857",
-    dot: "#047857",
+    bg: "rgba(var(--color-success-rgb), 0.08)",
+    text: "var(--color-success)",
+    dot: "var(--color-success)",
   },
 } as const;
 
@@ -277,13 +277,13 @@ function LiveInbox({
         // Liquid glass: frosted translucent card so the light-trails refract
         // through the list too. Kept light enough (compounds with the frosted
         // window behind it) that the dark row text stays legible.
-        backgroundColor: "rgba(255,255,255,0.64)",
+        backgroundColor: "rgba(var(--color-white-rgb), 0.64)",
         backdropFilter: "blur(22px) saturate(1.4)",
         WebkitBackdropFilter: "blur(22px) saturate(1.4)",
         borderRadius: "10px",
-        border: "1px solid rgba(255,255,255,0.55)",
+        border: "1px solid rgba(var(--color-white-rgb), 0.55)",
         boxShadow:
-          "inset 0 1px 0 rgba(255,255,255,0.6), 0 1px 2px rgba(0,0,0,0.05)",
+          "inset 0 1px 0 rgba(var(--color-white-rgb), 0.6), 0 1px 2px rgba(var(--color-shadow-rgb), 0.05)",
       }}
     >
       {rows.map((entry, i) => {
@@ -351,7 +351,7 @@ function ApprovalRow({
         alignItems: "center",
         gap: "12px",
         padding: "14px 16px",
-        borderBottom: hideDivider ? "none" : "1px solid rgba(15,23,42,0.08)",
+        borderBottom: hideDivider ? "none" : "1px solid rgba(var(--color-navy-primary-rgb), 0.08)",
       }}
     >
       {/* Accent urgency bar */}
@@ -382,7 +382,7 @@ function ApprovalRow({
               fontFeatureSettings: '"tnum" 1',
               fontSize: "12px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               letterSpacing: "0.02em",
             }}
           >
@@ -393,7 +393,7 @@ function ApprovalRow({
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
               fontWeight: 500,
-              backgroundColor: "#0f172a",
+              backgroundColor: "var(--color-navy-primary)",
               color: "var(--color-gold)",
               borderRadius: "3px",
               padding: "1px 5px",
@@ -444,7 +444,7 @@ function ApprovalRow({
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
             fontWeight: 500,
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             margin: "0 0 2px",
             overflow: "hidden",
             textOverflow: "ellipsis",
@@ -459,7 +459,7 @@ function ApprovalRow({
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "11px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             margin: 0,
           }}
         >
@@ -475,7 +475,7 @@ function ApprovalRow({
             fontFeatureSettings: '"tnum" 1',
             fontSize: "14px",
             fontWeight: 500,
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             margin: "0 0 2px",
           }}
         >
@@ -485,7 +485,7 @@ function ApprovalRow({
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "11px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             margin: 0,
           }}
         >
@@ -523,7 +523,7 @@ function ApproveButton({
         fontSize: "12px",
         lineHeight: 1,
         backgroundColor: "var(--color-gold)",
-        color: "#0f172a",
+        color: "var(--color-text-primary)",
         border: "none",
         borderRadius: "9999px",
         height: "30px",
@@ -562,7 +562,7 @@ export function Hero() {
     <section
       ref={sectionRef}
       style={{
-        backgroundColor: "#0f172a",
+        backgroundColor: "var(--color-navy-primary)",
         padding: "140px 40px 120px",
         position: "relative",
         overflow: "hidden",
@@ -599,7 +599,7 @@ export function Hero() {
           inset: 0,
           opacity: 0.05,
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+            "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
           y: isMobile ? 0 : gridY,
@@ -649,7 +649,7 @@ export function Hero() {
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
               fontSize: "36px",
-              color: "#FFFFFF",
+              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
@@ -696,7 +696,7 @@ export function Hero() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "18px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 36px",
               maxWidth: "520px",
@@ -724,7 +724,7 @@ export function Hero() {
                 fontSize: "16px",
                 lineHeight: 1,
                 backgroundColor: "var(--color-gold)",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 border: "none",
                 borderRadius: "9999px",
                 height: "48px",
@@ -753,12 +753,12 @@ export function Hero() {
                 fontWeight: 500,
                 fontSize: "16px",
                 lineHeight: 1,
-                backgroundColor: "rgba(255,255,255,0.08)",
+                backgroundColor: "rgba(var(--color-white-rgb), 0.08)",
                 backdropFilter: "blur(12px) saturate(1.4)",
                 WebkitBackdropFilter: "blur(12px) saturate(1.4)",
-                color: "#FFFFFF",
-                border: "1px solid rgba(255,255,255,0.22)",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.18)",
+                color: "var(--color-white)",
+                border: "1px solid rgba(var(--color-white-rgb), 0.22)",
+                boxShadow: "inset 0 1px 0 rgba(var(--color-white-rgb), 0.18)",
                 borderRadius: "9999px",
                 height: "48px",
                 padding: "0 28px",
@@ -771,14 +771,14 @@ export function Hero() {
                   "border-color 150ms ease, background-color 150ms ease",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.4)";
+                e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.4)";
                 e.currentTarget.style.backgroundColor =
-                  "rgba(255,255,255,0.14)";
+                  "rgba(var(--color-white-rgb), 0.14)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)";
+                e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.22)";
                 e.currentTarget.style.backgroundColor =
-                  "rgba(255,255,255,0.08)";
+                  "rgba(var(--color-white-rgb), 0.08)";
               }}
             >
               See how it works &rarr;
@@ -795,7 +795,7 @@ export function Hero() {
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
               fontSize: "13px",
-              color: "#475569",
+              color: "var(--color-text-secondary)",
               marginTop: "24px",
               lineHeight: 1.5,
             }}
@@ -827,24 +827,24 @@ export function Hero() {
               width: "100%",
               maxWidth: "560px",
               borderRadius: "16px",
-              border: "1px solid rgba(255,255,255,0.45)",
-              backgroundColor: "rgba(248,250,252,0.72)",
+              border: "1px solid rgba(var(--color-white-rgb), 0.45)",
+              backgroundColor: "rgba(var(--color-bg-light-rgb), 0.72)",
               backdropFilter: "blur(24px) saturate(1.4)",
               WebkitBackdropFilter: "blur(24px) saturate(1.4)",
               boxShadow:
-                "inset 0 1px 0 rgba(255,255,255,0.65), 0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(0,0,0,0.5)",
+                "inset 0 1px 0 rgba(var(--color-white-rgb), 0.65), 0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.5)",
               overflow: "hidden",
             }}
           >
             {/* Browser chrome */}
             <div
               style={{
-                backgroundColor: "#0f172a",
+                backgroundColor: "var(--color-navy-primary)",
                 padding: "10px 14px",
                 display: "flex",
                 alignItems: "center",
                 gap: "12px",
-                borderBottom: "1px solid rgba(255,255,255,0.06)",
+                borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
               }}
             >
               <div style={{ display: "flex", gap: "6px" }}>
@@ -853,7 +853,7 @@ export function Hero() {
                     width: "10px",
                     height: "10px",
                     borderRadius: "50%",
-                    backgroundColor: "rgba(255,255,255,0.15)",
+                    backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
                   }}
                 />
                 <span
@@ -861,7 +861,7 @@ export function Hero() {
                     width: "10px",
                     height: "10px",
                     borderRadius: "50%",
-                    backgroundColor: "rgba(255,255,255,0.15)",
+                    backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
                   }}
                 />
                 <span
@@ -869,19 +869,19 @@ export function Hero() {
                     width: "10px",
                     height: "10px",
                     borderRadius: "50%",
-                    backgroundColor: "rgba(255,255,255,0.15)",
+                    backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
                   }}
                 />
               </div>
               <div
                 style={{
                   flex: 1,
-                  backgroundColor: "rgba(255,255,255,0.06)",
+                  backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
                   borderRadius: "5px",
                   padding: "4px 10px",
                   fontFamily: "var(--font-sans)",
                   fontSize: "11px",
-                  color: "#94a3b8",
+                  color: "var(--color-text-subtle)",
                   textAlign: "center",
                 }}
               >
@@ -906,7 +906,7 @@ export function Hero() {
                       fontFamily: "var(--font-sans)",
                       fontWeight: 400,
                       fontSize: "20px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: 0,
                       letterSpacing: "0.01em",
                     }}
@@ -917,7 +917,7 @@ export function Hero() {
                     style={{
                       fontFamily: "var(--font-sans)",
                       fontSize: "12px",
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       margin: "2px 0 0",
                     }}
                   >
@@ -962,14 +962,14 @@ export function Hero() {
                     gap: "8px",
                     margin: "14px 0 0",
                     padding: "10px 12px",
-                    backgroundColor: "rgba(4,120,87,0.07)",
-                    border: "1px solid rgba(4,120,87,0.20)",
+                    backgroundColor: "rgba(var(--color-success-rgb), 0.07)",
+                    border: "1px solid rgba(var(--color-success-rgb), 0.20)",
                     borderRadius: "8px",
                   }}
                 >
                   <span
                     aria-hidden="true"
-                    style={{ color: "#047857", fontWeight: 700, flexShrink: 0 }}
+                    style={{ color: "var(--color-success)", fontWeight: 700, flexShrink: 0 }}
                   >
                     ✓
                   </span>
@@ -977,7 +977,7 @@ export function Hero() {
                     style={{
                       fontFamily: "var(--font-sans)",
                       fontSize: "12px",
-                      color: "#334155",
+                      color: "var(--color-text-faint)",
                       lineHeight: 1.5,
                     }}
                   >
@@ -1000,7 +1000,7 @@ export function Hero() {
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontSize: "11px",
-                    color: "#94a3b8",
+                    color: "var(--color-text-subtle)",
                     margin: "14px 0 0",
                     textAlign: "right",
                   }}

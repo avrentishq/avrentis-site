@@ -113,31 +113,31 @@ export function ChoiceGroup({
               minHeight: isCards ? (hasIcons ? "88px" : "48px") : undefined,
               fontSize: "14px",
               fontWeight: selected ? 600 : 500,
-              color: selected ? "#0f172a" : "#475569",
-              backgroundColor: selected ? "rgba(var(--color-gold-rgb), 0.08)" : "#FFFFFF",
+              color: selected ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+              backgroundColor: selected ? "rgba(var(--color-gold-rgb), 0.08)" : "var(--color-white)",
               border: `1px solid ${
                 selected
                   ? "var(--color-gold)"
                   : invalid
-                    ? "rgba(185,28,28,0.5)"
-                    : "#e2e8f0"
+                    ? "rgba(var(--color-danger-rgb), 0.5)"
+                    : "var(--color-border)"
               }`,
               borderRadius: isCards ? "10px" : "9999px",
               boxShadow: selected ? "0 0 0 3px rgba(var(--color-gold-rgb), 0.10)" : "none",
               transition: "border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease",
             }}
             onMouseEnter={(e) => {
-              if (!selected) e.currentTarget.style.borderColor = "#cbd5e1";
+              if (!selected) e.currentTarget.style.borderColor = "var(--color-border-strong)";
             }}
             onMouseLeave={(e) => {
-              if (!selected) e.currentTarget.style.borderColor = invalid ? "rgba(185,28,28,0.5)" : "#e2e8f0";
+              if (!selected) e.currentTarget.style.borderColor = invalid ? "rgba(var(--color-danger-rgb), 0.5)" : "var(--color-border)";
             }}
           >
             {Icon && (
               <Icon
                 size={isCards ? 20 : 16}
                 strokeWidth={1.8}
-                color={selected ? "var(--color-gold-on-light)" : "#64748b"}
+                color={selected ? "var(--color-gold-on-light)" : "var(--color-text-muted)"}
                 aria-hidden="true"
               />
             )}

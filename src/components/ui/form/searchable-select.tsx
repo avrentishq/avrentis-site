@@ -103,10 +103,10 @@ export function SearchableSelect({
           fontSize: "14px",
           width: "100%",
           height: "42px",
-          border: `1px solid ${invalid ? "rgba(185,28,28,0.5)" : "#e2e8f0"}`,
+          border: `1px solid ${invalid ? "rgba(var(--color-danger-rgb), 0.5)" : "var(--color-border)"}`,
           borderRadius: "6px",
           padding: "0 12px 0 14px",
-          backgroundColor: "#FFFFFF",
+          backgroundColor: "var(--color-white)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -114,10 +114,10 @@ export function SearchableSelect({
           textAlign: "left",
         }}
       >
-        <span style={{ color: selected ? "#0f172a" : "#64748b" }}>
+        <span style={{ color: selected ? "var(--color-text-primary)" : "var(--color-text-muted)" }}>
           {selected ? selected.label : placeholder}
         </span>
-        <ChevronDown size={16} color="#64748b" aria-hidden="true" />
+        <ChevronDown size={16} style={{ color: "var(--color-text-muted)" }} aria-hidden="true" />
       </button>
 
       {open && (
@@ -128,15 +128,15 @@ export function SearchableSelect({
             left: 0,
             right: 0,
             zIndex: 30,
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "8px",
-            boxShadow: "0 12px 32px rgba(15,23,42,0.14)",
+            boxShadow: "0 12px 32px rgba(var(--color-navy-primary-rgb), 0.14)",
             overflow: "hidden",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 12px", borderBottom: "1px solid #f1f5f9" }}>
-            <Search size={14} color="#94a3b8" aria-hidden="true" />
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "10px 12px", borderBottom: "1px solid var(--color-bg)" }}>
+            <Search size={14} style={{ color: "var(--color-text-subtle)" }} aria-hidden="true" />
             <input
               ref={searchRef}
               type="text"
@@ -158,14 +158,14 @@ export function SearchableSelect({
                 fontSize: "14px",
                 border: "none",
                 width: "100%",
-                color: "#0f172a",
+                color: "var(--color-text-primary)",
                 backgroundColor: "transparent",
               }}
             />
           </div>
           <ul id={listboxId} role="listbox" aria-label={ariaLabel} style={{ listStyle: "none", margin: 0, padding: "4px", maxHeight: "220px", overflowY: "auto" }}>
             {filtered.length === 0 ? (
-              <li style={{ fontFamily: sans, fontSize: "13px", color: "#64748b", padding: "10px 12px" }}>
+              <li style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", padding: "10px 12px" }}>
                 No matches
               </li>
             ) : (
@@ -186,7 +186,7 @@ export function SearchableSelect({
                     style={{
                       fontFamily: sans,
                       fontSize: "14px",
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       padding: "9px 12px",
                       borderRadius: "6px",
                       cursor: "pointer",

@@ -50,7 +50,7 @@ const CARDS: { icon: LucideIcon; title: string; body: string }[] = [
 
 export function Problem() {
   return (
-    <section style={{ backgroundColor: "#f1f5f9", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
+    <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.problem} scrim="light" />
       <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
         <m.span
@@ -83,7 +83,7 @@ export function Problem() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "36px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             lineHeight: 1.3,
             margin: "0 0 12px",
             maxWidth: "600px",
@@ -103,7 +103,7 @@ export function Problem() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "16px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 0 40px",
             maxWidth: "580px",
@@ -131,11 +131,11 @@ export function Problem() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
-                  backgroundColor: "#FFFFFF",
-                  border: "1px solid #e2e8f0",
+                  backgroundColor: "var(--color-white)",
+                  border: "1px solid var(--color-border)",
                   borderRadius: "8px",
                   padding: "24px",
-                  boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+                  boxShadow: "0 1px 3px rgba(var(--color-shadow-rgb), 0.04)",
                 }}
               >
                 <div
@@ -163,7 +163,7 @@ export function Problem() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 500,
                     fontSize: "14px",
-                    color: "#0f172a",
+                    color: "var(--color-text-primary)",
                     margin: "0 0 6px",
                   }}
                 >
@@ -174,7 +174,7 @@ export function Problem() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "13px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.6,
                     margin: 0,
                   }}
@@ -196,7 +196,7 @@ export function Problem() {
             fontFamily: "var(--font-sans)",
             fontWeight: 500,
             fontSize: "18px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             textAlign: "center",
             marginTop: "48px",
             marginBottom: 0,

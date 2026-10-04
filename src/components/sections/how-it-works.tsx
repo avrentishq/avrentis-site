@@ -49,22 +49,22 @@ function MockupShell({
     <div
       style={{
         borderRadius: "10px",
-        border: "1px solid rgba(255,255,255,0.10)",
-        backgroundColor: "#F8FAFC",
+        border: "1px solid rgba(var(--color-white-rgb), 0.10)",
+        backgroundColor: "var(--color-bg-light)",
         boxShadow:
-          "0 0 40px rgba(var(--color-gold-rgb), 0.06), 0 20px 50px rgba(0,0,0,0.4)",
+          "0 0 40px rgba(var(--color-gold-rgb), 0.06), 0 20px 50px rgba(var(--color-shadow-rgb), 0.4)",
         overflow: "hidden",
       }}
     >
       {/* Browser chrome */}
       <div
         style={{
-          backgroundColor: "#0f172a",
+          backgroundColor: "var(--color-navy-primary)",
           padding: "8px 12px",
           display: "flex",
           alignItems: "center",
           gap: "10px",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
+          borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
         }}
       >
         <div style={{ display: "flex", gap: "5px" }}>
@@ -75,7 +75,7 @@ function MockupShell({
                 width: "9px",
                 height: "9px",
                 borderRadius: "50%",
-                backgroundColor: "rgba(255,255,255,0.15)",
+                backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
               }}
             />
           ))}
@@ -83,12 +83,12 @@ function MockupShell({
         <div
           style={{
             flex: 1,
-            backgroundColor: "rgba(255,255,255,0.06)",
+            backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
             borderRadius: "4px",
             padding: "3px 10px",
             fontFamily: "var(--font-sans)",
             fontSize: "10px",
-            color: "#94a3b8",
+            color: "var(--color-text-subtle)",
             textAlign: "center",
           }}
         >
@@ -110,7 +110,7 @@ function SubmitMockup() {
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
             fontSize: "18px",
-            color: "#0f172a",
+            color: "var(--color-text-primary)",
             margin: "0 0 4px",
             letterSpacing: "0.01em",
           }}
@@ -121,7 +121,7 @@ function SubmitMockup() {
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "12px",
-            color: "#64748b",
+            color: "var(--color-text-muted)",
             margin: "0 0 18px",
           }}
         >
@@ -137,7 +137,7 @@ function SubmitMockup() {
                 flex: 1,
                 height: "3px",
                 borderRadius: "2px",
-                backgroundColor: i === 0 ? "var(--color-gold)" : "#e2e8f0",
+                backgroundColor: i === 0 ? "var(--color-gold)" : "var(--color-border)",
               }}
             />
           ))}
@@ -180,9 +180,9 @@ function SubmitMockup() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#FFFFFF",
-              color: "#0f172a",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              color: "var(--color-text-primary)",
+              border: "1px solid var(--color-border)",
               borderRadius: "3px",
               padding: "8px 16px",
               cursor: "default",
@@ -196,8 +196,8 @@ function SubmitMockup() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#0f172a",
-              color: "#FFFFFF",
+              backgroundColor: "var(--color-navy-primary)",
+              color: "var(--color-white)",
               border: "none",
               borderRadius: "3px",
               padding: "8px 18px",
@@ -230,7 +230,7 @@ function MockupField({
           fontFamily: "var(--font-sans)",
           fontSize: "10px",
           fontWeight: 500,
-          color: "#64748b",
+          color: "var(--color-text-muted)",
           letterSpacing: "0.04em",
           textTransform: "uppercase",
           display: "block",
@@ -241,13 +241,13 @@ function MockupField({
       </label>
       <div
         style={{
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #e2e8f0",
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
           borderRadius: "3px",
           padding: compact ? "7px 10px" : "8px 10px",
           fontFamily: "var(--font-sans)",
           fontSize: compact ? "11px" : "12px",
-          color: filled ? "#0f172a" : "#94a3b8",
+          color: filled ? "var(--color-text-primary)" : "var(--color-text-subtle)",
           fontWeight: filled ? 500 : 400,
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -280,7 +280,7 @@ function ApproveMockup() {
               fontFeatureSettings: '"tnum" 1',
               fontSize: "13px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
             }}
           >
             PV-2026-0041
@@ -290,7 +290,7 @@ function ApproveMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
               fontWeight: 500,
-              backgroundColor: "#0f172a",
+              backgroundColor: "var(--color-navy-primary)",
               color: "var(--color-gold)",
               borderRadius: "3px",
               padding: "1px 5px",
@@ -309,7 +309,7 @@ function ApproveMockup() {
               fontSize: "10px",
               fontWeight: 500,
               backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-              color: "#92400e",
+              color: "var(--color-warning)",
               borderRadius: "3px",
               padding: "2px 6px",
             }}
@@ -330,8 +330,8 @@ function ApproveMockup() {
         {/* Summary block */}
         <div
           style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "4px",
             padding: "14px 16px",
             marginBottom: "14px",
@@ -342,7 +342,7 @@ function ApproveMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "13px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               margin: "0 0 2px",
             }}
           >
@@ -354,7 +354,7 @@ function ApproveMockup() {
               fontFeatureSettings: '"tnum" 1',
               fontSize: "20px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
               margin: "0 0 10px",
             }}
           >
@@ -369,20 +369,20 @@ function ApproveMockup() {
               fontSize: "11px",
             }}
           >
-            <span style={{ color: "#64748b" }}>Purpose</span>
-            <span style={{ color: "#0f172a" }}>Diesel supply — November</span>
-            <span style={{ color: "#64748b" }}>Submitted</span>
-            <span style={{ color: "#0f172a" }}>Fatima Abubakar · 2h ago</span>
-            <span style={{ color: "#64748b" }}>Department</span>
-            <span style={{ color: "#0f172a" }}>Operations</span>
+            <span style={{ color: "var(--color-text-muted)" }}>Purpose</span>
+            <span style={{ color: "var(--color-text-primary)" }}>Diesel supply — November</span>
+            <span style={{ color: "var(--color-text-muted)" }}>Submitted</span>
+            <span style={{ color: "var(--color-text-primary)" }}>Fatima Abubakar · 2h ago</span>
+            <span style={{ color: "var(--color-text-muted)" }}>Department</span>
+            <span style={{ color: "var(--color-text-primary)" }}>Operations</span>
           </div>
         </div>
 
         {/* Approval actions panel */}
         <div
           style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "4px",
             padding: "14px 16px",
           }}
@@ -392,7 +392,7 @@ function ApproveMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
               fontWeight: 500,
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               letterSpacing: "0.04em",
               textTransform: "uppercase",
               margin: "0 0 10px",
@@ -413,8 +413,8 @@ function ApproveMockup() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
                 fontSize: "12px",
-                backgroundColor: "#0f172a",
-                color: "#FFFFFF",
+                backgroundColor: "var(--color-navy-primary)",
+                color: "var(--color-white)",
                 border: "none",
                 borderRadius: "3px",
                 padding: "8px 0",
@@ -429,9 +429,9 @@ function ApproveMockup() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
                 fontSize: "12px",
-                backgroundColor: "#FFFFFF",
-                color: "#0f172a",
-                border: "1px solid #e2e8f0",
+                backgroundColor: "var(--color-white)",
+                color: "var(--color-text-primary)",
+                border: "1px solid var(--color-border)",
                 borderRadius: "3px",
                 padding: "8px 0",
                 cursor: "default",
@@ -445,9 +445,9 @@ function ApproveMockup() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
                 fontSize: "12px",
-                backgroundColor: "#FFFFFF",
-                color: "#b91c1c",
-                border: "1px solid rgba(185,28,28,0.3)",
+                backgroundColor: "var(--color-white)",
+                color: "var(--color-danger)",
+                border: "1px solid rgba(var(--color-danger-rgb), 0.3)",
                 borderRadius: "3px",
                 padding: "8px 0",
                 cursor: "default",
@@ -493,7 +493,7 @@ function RecordMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "13px",
               fontWeight: 500,
-              color: "#0f172a",
+              color: "var(--color-text-primary)",
             }}
           >
             PV-2026-0041
@@ -506,8 +506,8 @@ function RecordMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
               fontWeight: 500,
-              backgroundColor: "rgba(4,120,87,0.08)",
-              color: "#047857",
+              backgroundColor: "rgba(var(--color-success-rgb), 0.08)",
+              color: "var(--color-success)",
               borderRadius: "3px",
               padding: "2px 6px",
             }}
@@ -517,7 +517,7 @@ function RecordMockup() {
                 width: "5px",
                 height: "5px",
                 borderRadius: "50%",
-                backgroundColor: "#047857",
+                backgroundColor: "var(--color-success)",
               }}
             />
             Approved
@@ -527,7 +527,7 @@ function RecordMockup() {
               marginLeft: "auto",
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
-              color: "#64748b",
+              color: "var(--color-text-muted)",
             }}
           >
             On record for good
@@ -537,8 +537,8 @@ function RecordMockup() {
         {/* Approval timeline card */}
         <div
           style={{
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #e2e8f0",
+            backgroundColor: "var(--color-white)",
+            border: "1px solid var(--color-border)",
             borderRadius: "4px",
             padding: "14px 16px",
             marginBottom: "12px",
@@ -549,7 +549,7 @@ function RecordMockup() {
               fontFamily: "var(--font-sans)",
               fontSize: "10px",
               fontWeight: 500,
-              color: "#64748b",
+              color: "var(--color-text-muted)",
               letterSpacing: "0.04em",
               textTransform: "uppercase",
               margin: "0 0 12px",
@@ -566,7 +566,7 @@ function RecordMockup() {
                 top: "10px",
                 bottom: "10px",
                 width: "1px",
-                backgroundColor: "#e2e8f0",
+                backgroundColor: "var(--color-border)",
               }}
             />
             {stages.map((s) => (
@@ -585,8 +585,8 @@ function RecordMockup() {
                     width: "20px",
                     height: "20px",
                     borderRadius: "50%",
-                    backgroundColor: "#FFFFFF",
-                    border: "1.5px solid #047857",
+                    backgroundColor: "var(--color-white)",
+                    border: "1.5px solid var(--color-success)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -596,7 +596,7 @@ function RecordMockup() {
                 >
                   <span
                     style={{
-                      color: "#047857",
+                      color: "var(--color-success)",
                       fontSize: "10px",
                       lineHeight: 1,
                     }}
@@ -610,12 +610,12 @@ function RecordMockup() {
                       fontFamily: "var(--font-sans)",
                       fontSize: "12px",
                       fontWeight: 500,
-                      color: "#0f172a",
+                      color: "var(--color-text-primary)",
                       margin: 0,
                     }}
                   >
                     {s.role}{" "}
-                    <span style={{ color: "#64748b", fontWeight: 400 }}>
+                    <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>
                       — {s.actor}
                     </span>
                   </p>
@@ -623,7 +623,7 @@ function RecordMockup() {
                     style={{
                       fontFamily: "var(--font-sans)",
                       fontSize: "11px",
-                      color: "#64748b",
+                      color: "var(--color-text-muted)",
                       margin: "2px 0 0",
                     }}
                   >
@@ -644,9 +644,9 @@ function RecordMockup() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#FFFFFF",
-              color: "#0f172a",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              color: "var(--color-text-primary)",
+              border: "1px solid var(--color-border)",
               borderRadius: "3px",
               padding: "8px 0",
               cursor: "default",
@@ -661,9 +661,9 @@ function RecordMockup() {
               fontFamily: "var(--font-sans)",
               fontWeight: 500,
               fontSize: "12px",
-              backgroundColor: "#FFFFFF",
-              color: "#0f172a",
-              border: "1px solid #e2e8f0",
+              backgroundColor: "var(--color-white)",
+              color: "var(--color-text-primary)",
+              border: "1px solid var(--color-border)",
               borderRadius: "3px",
               padding: "8px 0",
               cursor: "default",
@@ -723,7 +723,7 @@ export function HowItWorks() {
       id="how-it-works"
       ref={sectionRef}
       style={{
-        backgroundColor: "#0f172a",
+        backgroundColor: "var(--color-navy-primary)",
         padding: "120px 40px",
         position: "relative",
         overflow: "hidden",
@@ -754,7 +754,7 @@ export function HowItWorks() {
           inset: 0,
           opacity: 0.04,
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+            "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
           pointerEvents: "none",
           y: isMobile ? 0 : gridY,
@@ -812,7 +812,7 @@ export function HowItWorks() {
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
                 fontSize: "24px",
-                color: "#FFFFFF",
+                color: "var(--color-white)",
                 lineHeight: 1.2,
                 margin: "0 0 16px",
                 maxWidth: "600px",
@@ -840,7 +840,7 @@ export function HowItWorks() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
                     fontSize: "15px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: 0,
                     maxWidth: "480px",
@@ -903,7 +903,7 @@ export function HowItWorks() {
                         backgroundColor:
                           i < active
                             ? "var(--color-gold)"
-                            : "rgba(132,146,166,0.25)",
+                            : "rgba(var(--color-neutral-tint-rgb), 0.25)",
                         zIndex: 0,
                         transition: "background-color 0.3s ease",
                       }}
@@ -921,7 +921,7 @@ export function HowItWorks() {
                       border:
                         i === active
                           ? "2px solid var(--color-gold)"
-                          : "2px solid rgba(132,146,166,0.4)",
+                          : "2px solid rgba(var(--color-neutral-tint-rgb), 0.4)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -935,7 +935,7 @@ export function HowItWorks() {
                         fontFamily: "var(--font-sans)",
                         fontWeight: 600,
                         fontSize: "13px",
-                        color: i === active ? "#0f172a" : "#64748b",
+                        color: i === active ? "var(--color-navy-primary)" : "var(--color-text-muted)",
                         transition: "color 0.3s ease",
                       }}
                     >
@@ -948,7 +948,7 @@ export function HowItWorks() {
                       fontFamily: "var(--font-sans)",
                       fontWeight: i === active ? 600 : 500,
                       fontSize: "14px",
-                      color: i === active ? "#FFFFFF" : "#64748b",
+                      color: i === active ? "var(--color-white)" : "var(--color-text-muted)",
                       marginLeft: "14px",
                       transition: "color 0.3s ease",
                     }}
@@ -1002,7 +1002,7 @@ export function HowItWorks() {
           viewport={{ once: true, margin: "-40px" }}
           transition={staggerDelay(4)}
           style={{
-            backgroundColor: "#1e293b",
+            backgroundColor: "var(--color-navy-mid)",
             borderRadius: "10px",
             padding: "20px 32px",
             marginTop: "72px",
@@ -1033,7 +1033,7 @@ export function HowItWorks() {
                     fontFamily: "var(--font-sans)",
                     fontWeight: 500,
                     fontSize: "13px",
-                    color: "#64748b",
+                    color: "var(--color-text-muted)",
                   }}
                 >
                   {feat.label}

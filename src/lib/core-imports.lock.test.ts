@@ -15,7 +15,8 @@ import { join } from "node:path";
  *     `@upstash/ratelimit` and `@upstash/redis`, which the site installs.
  *     Admitted module by module, not as `security/*`: the rest of that folder
  *     pulls in peers the site does not carry.
- * Tests may additionally import dependency-free modules that back parity locks.
+ * Tests may additionally import dependency-free modules that back parity locks
+ * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  */
 const RUNTIME_ALLOWED = new Set([
   "brand",
@@ -23,7 +24,11 @@ const RUNTIME_ALLOWED = new Set([
   "security/rate-limit",
   "security/rate-limit-tiers",
 ]);
-const TEST_ONLY_ALLOWED = new Set(["modules/catalog", "security/dependency-floors"]);
+const TEST_ONLY_ALLOWED = new Set([
+  "modules/catalog",
+  "security/dependency-floors",
+  "brand/copy-guardrails",
+]);
 
 const SRC = join(process.cwd(), "src");
 // This file's own detector fixtures name disallowed subpaths on purpose.

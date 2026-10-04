@@ -45,7 +45,8 @@ Run these locally before you claim anything is done.
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
   `security/` does not, so it is admitted module by module, never as `security/*`).
-  Tests may also import the dependency-free `modules/catalog` and `security/dependency-floors`
+  Tests may also import the dependency-free `modules/catalog`, `security/dependency-floors` and
+  `brand/copy-guardrails`
   — they back the parity lock tests and never ship. `src/lib/core-imports.lock.test.ts`
   enforces this list; extend both together.
 - **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per

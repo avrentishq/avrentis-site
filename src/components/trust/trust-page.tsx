@@ -39,15 +39,15 @@ const mono = "'IBM Plex Mono', monospace";
 const FRAMEWORKS = [
   {
     name: "SOC 2 (Type II)",
-    status: "Controls aligned · audit not yet completed",
+    status: "Policies follow SOC 2 structure · audit on our roadmap",
     body:
-      "The way we handle access, change management, security, uptime, and incident response is designed to meet SOC 2 Type II standards. We can walk your team through each of those areas on a review call.",
+      "Our policies for access, change management, security, uptime and incident response follow SOC 2 structure. A SOC 2 Type II audit and an independent penetration test are on our roadmap; neither is done yet. We can walk your team through each area on a review call.",
   },
   {
     name: "ISO 27001",
-    status: "Controls aligned · certification not in place",
+    status: "Not certified",
     body:
-      "The way we run information security follows the areas ISO 27001 cares about — who can access what, how we protect assets, how we encrypt things, how we run operations, and how we manage the suppliers we use.",
+      "Avrentis is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how we handle access, assets, encryption, operations and suppliers.",
   },
   {
     name: "GDPR & UK GDPR",
@@ -89,7 +89,7 @@ const DOCUMENTS = [
   {
     icon: ShieldCheck,
     title: "Security overview",
-    body: "The full stack — tenant isolation, RBAC + ABAC, session integrity, audit, encryption.",
+    body: "The full posture — tenant isolation, role and request-level authority, session integrity, audit, encryption.",
     cta: { label: "Read the stack", href: "/product/security" },
   },
   {
@@ -326,9 +326,9 @@ export function TrustProductPage() {
               maxWidth: "640px",
             }}
           >
-            Avrentis has not yet completed a SOC 2 or ISO 27001 audit. The
-            platform is built with the controls those frameworks measure and
-            we&rsquo;re transparent about where we are in each journey.
+            Avrentis has not yet completed a SOC 2 or ISO 27001 audit. Our
+            policies follow SOC 2 structure, and we&rsquo;re transparent about
+            where we are with each framework.
           </m.p>
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

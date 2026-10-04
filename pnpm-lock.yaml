@@ -12,8 +12,8 @@ overrides:
   yaml: '>=2.8.3'
   picomatch: '>=4.0.4'
   vite: '>=8.0.16'
-  brace-expansion@<2.0.0: '>=1.1.18 <2.0.0'
-  brace-expansion@>=2.0.0 <3.0.0: '>=2.1.4 <3.0.0'
+  brace-expansion@<2.0.0: '>=1.1.21 <2.0.0'
+  brace-expansion@>=2.0.0 <3.0.0: '>=2.1.7 <3.0.0'
   brace-expansion@>=3.0.0: '>=5.0.12'
   socket.io-parser: '>=4.2.7 <5'
   ip-address: '>=10.5.1'
@@ -45,8 +45,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.236.1
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#396f0df710cdeaf676516ac1897802197d91da4b(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
+        specifier: github:avrentishq/avrentis-core#v0.238.0
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#3d379cc22557ad4dcd0ea4acb85c21bc874a3115(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -112,9 +112,9 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#396f0df710cdeaf676516ac1897802197d91da4b':
-    resolution: {commit: 396f0df710cdeaf676516ac1897802197d91da4b, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.236.1
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#3d379cc22557ad4dcd0ea4acb85c21bc874a3115':
+    resolution: {commit: 3d379cc22557ad4dcd0ea4acb85c21bc874a3115, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.238.0
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -1077,8 +1077,8 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
 
-  brace-expansion@1.1.18:
-    resolution: {integrity: sha512-Edep/X9fGqVNmzKBVsDYIOtD+z1tuezV70LBjdCst9Tqu76lsnvRiZ6oTic1n+/BIwX6QDGAO94PN4N2SADvtw==}
+  brace-expansion@1.1.21:
+    resolution: {integrity: sha512-9zeA+KLZNNzglF2TPKRQEDyx6Yby7daAkuy8MiPzpXPsYDWi/DRM8jmwUDxokQjYqBpv5DgPiwD4h4ZZSy1Ujw==}
 
   brace-expansion@5.0.12:
     resolution: {integrity: sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==}
@@ -2446,7 +2446,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#396f0df710cdeaf676516ac1897802197d91da4b(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#3d379cc22557ad4dcd0ea4acb85c21bc874a3115(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
     dependencies:
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0
@@ -3296,7 +3296,7 @@ snapshots:
 
   baseline-browser-mapping@2.11.23: {}
 
-  brace-expansion@1.1.18:
+  brace-expansion@1.1.21:
     dependencies:
       balanced-match: 1.0.2
       concat-map: 0.0.1
@@ -4174,7 +4174,7 @@ snapshots:
 
   minimatch@3.1.5:
     dependencies:
-      brace-expansion: 1.1.18
+      brace-expansion: 1.1.21
 
   minimist@1.2.8: {}
 

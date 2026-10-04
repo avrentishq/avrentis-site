@@ -52,7 +52,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           <strong>Usage and device data.</strong>{" "}IP address, user-agent, timestamps, and pages or actions accessed —
-          recorded primarily to power the immutable audit trail and to secure the service.
+          recorded primarily to power the tamper-evident audit trail and to secure the service.
         </p>
         <p>
           <strong>Support correspondence.</strong>{" "}Messages, phone numbers (if shared), and any information you

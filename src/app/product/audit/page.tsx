@@ -6,12 +6,12 @@ import { planAvailabilityFor } from "@/lib/module-availability";
 export const metadata: Metadata = {
   title: "Avrentis Compliance — Compliance without the scramble",
   description:
-    "An immutable, regulator-ready audit trail of every action in your organisation. Structured events, one-click exports, and SOC2-aligned controls baked into the platform.",
+    "A tamper-evident, regulator-ready audit trail of every action in your organisation, sealed daily and verifiable without trusting us. Structured events, one-click exports, and policies that follow SOC 2 structure.",
   alternates: { canonical: "/product/audit" },
   openGraph: {
     title: "Avrentis Compliance — Compliance without the scramble",
     description:
-      "Tamper-proof audit trail, structured events, regulator-ready PDF + CSV exports. Every action permanently on record.",
+      "Tamper-evident audit trail sealed daily, structured events, regulator-ready PDF + CSV exports. Every action permanently on record.",
     url: "https://avrentis.com/product/audit",
     type: "website",
   },

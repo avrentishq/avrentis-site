@@ -32,7 +32,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: ShieldCheck,
       title: "The same audit trail as your payments",
       body:
-        "Expense decisions run on the same approval engine and immutable audit trail as your money — every request timestamped and attributed to a person, a time, and a decision.",
+        "Expense decisions run on the same approval engine and tamper-evident audit trail as your money — every request timestamped and attributed to a person, a time, and a decision.",
     },
   ],
 
@@ -50,12 +50,12 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "People approvals an auditor can trust",
       body:
-        "Expense decisions are timestamped and attributed on the same immutable trail as payments — so an auditor sees the same completeness they get on your financial approvals.",
+        "Expense decisions are timestamped and attributed on the same tamper-evident trail as payments — so an auditor sees the same completeness they get on your financial approvals.",
     },
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Compliance", desc: "Expense events flow into the same immutable trail" },
+    { slug: "audit", name: "Avrentis Compliance", desc: "Expense events flow into the same tamper-evident trail" },
     { slug: "pay", name: "Avrentis Payables", desc: "Expense approvals run on the same review-and-sanction rails as payments" },
     { slug: "connect", name: "Avrentis Integrations", desc: "Emit expense events to your accounting or payroll system via webhook" },
   ],

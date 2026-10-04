@@ -210,7 +210,7 @@
         "Unlimited users",
         "See and export across all your companies in one view (read-only)",
         "Unlimited storage & retention",
-        "Employee leave & expense requests",
+        "Employee expense requests",
         "Single sign-on (SSO/SCIM) & advanced approvals",
         "API access for custom integrations",
         "Dedicated onboarding & priority support"
@@ -262,7 +262,7 @@
         {
           "key": "people",
           "name": "Avrentis Requests",
-          "description": "Employee leave and expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow."
+          "description": "Employee expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow."
         },
         {
           "key": "connect",
@@ -508,7 +508,7 @@
     "people": {
       "name": "Avrentis Requests",
       "sidebarLabel": "Requests",
-      "description": "Employee leave and expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow.",
+      "description": "Employee expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow.",
       "suite": "spend",
       "features": []
     },

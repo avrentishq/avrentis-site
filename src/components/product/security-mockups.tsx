@@ -1,5 +1,3 @@
-"use client";
-
 /**
  * Browser-framed mockups for each layer of the security stack page.
  * Mirrors the real-UI visual language used on /product/how-it-works and
@@ -35,7 +33,7 @@ function Label({ children }: { children: React.ReactNode }) {
 export function IsolationMockup() {
   return (
     <div style={{ padding: "22px", display: "flex", flexDirection: "column", gap: "18px", backgroundColor: "#F8FAFC" }}>
-      <Label>POSTGRES SESSION · PER-REQUEST</Label>
+      <Label>DATABASE · EVERY REQUEST</Label>
       <div
         style={{
           fontFamily: mono,
@@ -48,20 +46,18 @@ export function IsolationMockup() {
           overflowX: "auto",
         }}
       >
-        <div style={{ color: "#64748b" }}>-- every tenant-scoped query runs inside this wrap</div>
+        <div style={{ color: "#64748b" }}>{"// every request belongs to one organisation"}</div>
         <div style={{ color: "#e2e8f0" }}>
-          <span style={{ color: "var(--color-gold)" }}>withTenantScope</span>(<span style={{ color: "#94D2BD" }}>tenantId</span>,{" "}
-          <span style={{ color: "#94D2BD" }}>async</span> () =&gt; {"{"}
+          request <span style={{ color: "#94D2BD" }}>for</span>{" "}
+          <span style={{ color: "var(--color-gold)" }}>Tenant A</span>
         </div>
         <div style={{ color: "#e2e8f0", paddingLeft: "16px" }}>
-          <span style={{ color: "#94D2BD" }}>SET LOCAL</span> tenant_context ={" "}
-          <span style={{ color: "var(--color-gold)" }}>&apos;{"{tenantId}"}&apos;</span>;
+          <span style={{ color: "#94D2BD" }}>→</span> database checks every row
         </div>
         <div style={{ color: "#e2e8f0", paddingLeft: "16px" }}>
-          <span style={{ color: "#94D2BD" }}>SELECT</span> * <span style={{ color: "#94D2BD" }}>FROM</span> vouchers;{" "}
-          <span style={{ color: "#64748b" }}>-- RLS-enforced</span>
+          <span style={{ color: "#94D2BD" }}>→</span> returns{" "}
+          <span style={{ color: "var(--color-gold)" }}>Tenant A</span> rows only
         </div>
-        <div style={{ color: "#e2e8f0" }}>{"}"})</div>
       </div>
       <div
         style={{
@@ -119,7 +115,7 @@ export function IsolationMockup() {
       >
         <ShieldCheck size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" />
         <span>
-          A bare <code style={{ fontFamily: mono }}>db.query()</code> without tenant context is blocked at the database.
+          A request that is not tied to an organisation gets no rows back.
         </span>
       </div>
     </div>
@@ -343,7 +339,7 @@ export function AuditMockup() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
         <Label>AUDIT TRAIL · PV-2026-0184</Label>
         <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold-on-light)", letterSpacing: "0.06em" }}>
-          IMMUTABLE
+          TAMPER-EVIDENT
         </span>
       </div>
       <div
@@ -542,8 +538,8 @@ export function LifecycleMockup() {
 const STACK_LAYERS = [
   { label: "Browser", detail: "Modern TLS · strict browser-side policies" },
   { label: "Edge / app", detail: "Autoscaling compute · secure session cookies · bot protection" },
-  { label: "Database", detail: "Managed Postgres · encrypted at rest · daily snapshots" },
-  { label: "Secrets", detail: "Application-layer AES-256-GCM for 2FA and SSO" },
+  { label: "Database", detail: "Encrypted at rest · daily snapshots" },
+  { label: "Sensitive fields", detail: "Encrypted again, with keys per company" },
   { label: "Object storage", detail: "Encrypted · short-lived per-upload delivery URLs" },
 ];
 

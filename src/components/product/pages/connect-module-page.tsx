@@ -20,7 +20,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: Webhook,
       title: "Typed webhooks for every lifecycle event",
       body:
-        "Subscribe to voucher.sanctioned, po.issued, user.role_changed, and more lifecycle events. Each payload is versioned and typed; deliveries are signed with HMAC and retried on failure with exponential backoff.",
+        "Subscribe to document.sanctioned, user.role_changed, vendor.bank_details_updated, and more lifecycle events. Each payload is versioned and typed; deliveries are signed to the Standard Webhooks scheme and retried on failure with exponential backoff.",
     },
     {
       icon: KeyRound,
@@ -38,7 +38,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: ShieldCheck,
       title: "Security on by default",
       body:
-        "All delivery URLs must be HTTPS. Payload bodies are HMAC-SHA256 signed with a per-subscription secret. IP allowlisting available per webhook. Every delivery attempt is logged for replay and troubleshooting.",
+        "All delivery URLs must be HTTPS. Every delivery is signed with HMAC-SHA256 over its id, timestamp and body using a per-subscription secret, so your receiver can reject forged or replayed requests. Rotating a secret keeps the old one valid for 24 hours, and every delivery attempt is logged and can be retried.",
     },
   ],
 
@@ -46,7 +46,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "Reconcile Avrentis payments into your accounting system",
       body:
-        "When the MD sanctions a voucher, Avrentis fires a signed voucher.sanctioned webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap.",
+        "When the MD sanctions a voucher, Avrentis fires a signed document.sanctioned webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap.",
     },
     {
       title: "React to role changes in your own systems",
@@ -56,12 +56,12 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "Notify the right Slack channel on every sanction",
       body:
-        "Point a webhook at your Slack workspace and every high-value approval lands in #finance-audit in real time — built on the same signed voucher.sanctioned event, without granting broad access to the platform UI.",
+        "Point a webhook at your Slack workspace and every high-value approval lands in #finance-audit in real time — built on the same signed document.sanctioned event, without granting broad access to the platform UI.",
     },
     {
       title: "Build your own internal integrations",
       body:
-        "The typed webhook schema and OpenAPI spec are public. Your platform team can build an integration to your internal data warehouse in an afternoon.",
+        "The typed webhook schema and OpenAPI spec are available to launch partners today. Your platform team can build an integration to your internal data warehouse in an afternoon.",
     },
   ],
 

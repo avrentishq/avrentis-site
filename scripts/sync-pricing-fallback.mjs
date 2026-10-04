@@ -31,7 +31,10 @@ function isValidPricing(data) {
     data.plans.length > 0 &&
     Array.isArray(data?.planOrder) &&
     data.planOrder.length > 0 &&
-    data.plans.every((p) => Array.isArray(p?.pricing))
+    // Same shape the page trusts (src/lib/pricing.ts :: fetchPricingData) —
+    // keep the two in step, or a payload the page would refuse gets saved here
+    // and served as the cold-start floor.
+    data.plans.every((p) => Array.isArray(p?.pricing) && typeof p?.selfServeCheckout === "boolean")
   );
 }
 

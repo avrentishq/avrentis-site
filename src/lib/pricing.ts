@@ -114,6 +114,9 @@ export interface PricingData {
    *  — absent on a stale fallback / a pre-deploy API; the render falls back to the
    *  site's own substrate module list. Reuses `PlanModule` ({ key, name, description }). */
   platformModules?: PlanModule[];
+  /** The order the module suites are shown in (e.g. spend, oversight, …).
+   *  Optional — absent on an older fallback or API. */
+  suiteOrder?: string[];
 }
 
 const PRICING_API = `${PLATFORM_ORIGIN}/api/v1/public/pricing`;

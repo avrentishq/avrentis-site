@@ -11,8 +11,8 @@ export function ConnectPreview() {
   ];
 
   const webhooks = [
-    { event: "voucher.sanctioned", endpoint: "hooks.finance.acme.ng/avrentis", success: "127 / 127" },
-    { event: "po.issued", endpoint: "erp.acme.ng/webhooks/avrentis", success: "84 / 84" },
+    { event: "document.sanctioned", endpoint: "hooks.finance.acme.ng/avrentis", success: "127 / 127" },
+    { event: "document.bank_ready", endpoint: "erp.acme.ng/webhooks/avrentis", success: "84 / 84" },
     { event: "user.role_changed", endpoint: "hris.acme.ng/sync", success: "12 / 12" },
   ];
 

@@ -92,7 +92,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
         icon: FileLock2,
         title: "The same permanent record at the end",
         body:
-          "Whatever was spent and whoever approved it lands on one immutable trail — the same one your auditors, your board and your donors are shown. No module keeps its own private history.",
+          "Whatever was spent and whoever approved it lands on one tamper-evident trail — the same one your auditors, your board and your donors are shown. No module keeps its own private history.",
       },
     ],
     modules: {
@@ -170,9 +170,9 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
     shared: [
       {
         icon: FileLock2,
-        title: "Nobody can edit history — including us",
+        title: "Nobody can quietly edit history — including us",
         body:
-          "Approvals, signatures, queries and access events are written to a tamper-evident trail that no user can modify. Not an administrator, not a superadmin.",
+          "Approvals, signatures, queries and access events are written to a tamper-evident trail that no user can modify — not an administrator, not a superadmin — and sealed every night with a signed fingerprint you can check yourself.",
       },
       {
         icon: Archive,
@@ -198,11 +198,11 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
         icon: ClipboardCheck,
         claim: "The proof of what was done and by whom.",
         body:
-          "An immutable trail of every submission, approval, query, signature and access event, with regulator-ready exports, data-retention controls and data-subject request handling on top.",
+          "A tamper-evident trail of every submission, approval, query, signature and access event, with regulator-ready exports, data-retention controls and data-subject request handling on top.",
       },
     },
     metaDescription:
-      "An immutable record of every approval and document, searchable years later and exportable for auditors and regulators in one step.",
+      "A tamper-evident record of every approval and document, sealed daily, searchable years later and exportable for auditors and regulators in one step.",
   },
 
   infrastructure: {

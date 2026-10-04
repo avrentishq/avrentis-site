@@ -10,7 +10,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   eyebrow: MODULES.audit.name,
   headline: "Compliance without the scramble.",
   description:
-    "Every submission, approval, query, signature, and access event — recorded to an immutable audit trail that no user, including superadmins, can modify. Export a regulator-ready bundle for any period up to a year, in one click.",
+    "Every submission, approval, query, signature, and access event — recorded to a tamper-evident audit trail, sealed daily, that no user — superadmins included — can edit. Export a regulator-ready bundle for any period up to a year, in one click.",
   status: "available",
   previewUrl: "Avrentis / audit",
   preview: <AuditPreview />,
@@ -18,9 +18,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   pillars: [
     {
       icon: LockKeyhole,
-      title: "Tamper-proof immutable log",
+      title: "Tamper-evident, sealed daily",
       body:
-        "Postgres-level triggers block UPDATE and DELETE on audit tables; the platform has no API surface that can alter a historical entry. What happened, happened — and the record proves it.",
+        "Database triggers refuse edits and deletions of audit entries, and the platform has no API surface that can alter a historical entry. Each entry is chained to the one before it and the chain is sealed every night with a signed fingerprint, so any change would show — and you can check it yourself.",
     },
     {
       icon: FileSearch,
@@ -36,7 +36,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     },
     {
       icon: ShieldCheck,
-      title: "SOC2 + ISO 27001 aligned controls",
+      title: "Policies that follow SOC 2 structure",
       body:
         "Separation of duties enforced as work moves, with a report of every exception; access reviews and control sign-offs signed by a named officer and kept on the record; role-based access and time-bound grants. No bolt-on compliance theatre.",
     },
@@ -62,7 +62,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "Post-incident forensics without gaps",
       body:
-        "If a fraudulent approval is ever attempted, the audit trail is complete and unalterable. Security teams have a forensic source of truth on day one, not the scattered evidence they usually inherit.",
+        "If a fraudulent approval is ever attempted, the audit trail is complete, and any later change to it would show. Security teams have a forensic source of truth on day one, not the scattered evidence they usually inherit.",
     },
     {
       title: "Board-ready operational reports",

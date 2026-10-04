@@ -28,7 +28,7 @@ import type { ModulePlan } from "@/components/product/module-layout";
  * NOTE ON SUBSTRATE MODULES. `included` answers "is the sellable module in this
  * tier", which is the question the table's tick actually claims. It is NOT the
  * same as "you get nothing" — the always-on foundation (approval engine,
- * immutable trail) runs on every plan. Where that distinction matters the note
+ * tamper-evident trail) runs on every plan. Where that distinction matters the note
  * says so explicitly; see `MODULE_PLAN_NOTES.audit.starter`.
  */
 export function planAvailabilityFor(
@@ -110,7 +110,7 @@ const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
     enterprise: "Adds approver groups, quorum gates and condition-based routing",
   },
   audit: {
-    // The honesty fix. Starter does not carry Compliance, but the immutable
+    // The honesty fix. Starter does not carry Compliance, but the tamper-evident
     // trail is foundation and runs for everyone — say both, claim neither.
     starter:
       "Trail still recorded — reporting, exports and DSAR tools from Business",

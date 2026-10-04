@@ -34,7 +34,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: FileCheck,
       title: "A complete digital paper trail",
       body:
-        "Every submission, query, return, and signature is captured on an immutable audit trail. Who approved, when, with which signature — all permanently on record and exportable for auditors.",
+        "Every submission, query, return, and signature is captured on a tamper-evident audit trail. Who approved, when, with which signature — all permanently on record and exportable for auditors.",
     },
     {
       icon: Banknote,
@@ -46,7 +46,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: ShieldCheck,
       title: "Separation of duties enforced",
       body:
-        "Built-in ABAC rules prevent submitters from approving their own requests and enforce department-scoped approval windows. Amount thresholds route high-value vouchers directly to the MD. Compliance is the default path.",
+        "Built-in rules prevent submitters from approving their own requests and enforce department-scoped approval windows. Amount thresholds route high-value vouchers directly to the MD. Compliance is the default path.",
     },
     {
       icon: Receipt,

@@ -12,11 +12,11 @@ export interface SecurityFaq {
 export const SECURITY_FAQS: SecurityFaq[] = [
   {
     q: "Who at Avrentis can access our data?",
-    a: "No Avrentis engineer can read customer data by default. Platform administrators can be granted audit-logged, permission-gated access to a specific tenant for support purposes — every action is written to the same immutable audit trail the customer sees.",
+    a: "No Avrentis engineer can read customer data by default. Platform administrators can be granted audit-logged, permission-gated access to a specific tenant for support purposes — every action is written to the same tamper-evident audit trail the customer sees.",
   },
   {
     q: "What happens when someone leaves our organisation?",
-    a: "Deactivation revokes active JWTs via Redis within seconds. If deprovisioned over SCIM, this happens automatically when your IdP marks the user inactive. Their historical actions remain in the audit trail — the record is preserved, not deleted.",
+    a: "Deactivation ends their active sessions within seconds. If they are deprovisioned through your identity provider (SCIM), this happens automatically when it marks the user inactive. Their historical actions remain in the audit trail — the record is preserved, not deleted.",
   },
   {
     q: "Can we export everything — for an auditor, regulator, or migration?",
@@ -24,7 +24,7 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Do you support SSO and SCIM?",
-    a: "Yes — OpenID Connect (OIDC) for SSO and SCIM 2.0 for provisioning, tested against Okta, Microsoft Entra, and Google Workspace. SAML 2.0 is on our enterprise roadmap. Client secrets and tokens are encrypted with AES-256-GCM at rest.",
+    a: "Yes — OpenID Connect (OIDC) for SSO and SCIM 2.0 for provisioning, tested against Okta, Microsoft Entra, and Google Workspace. SAML 2.0 is on our enterprise roadmap. Client secrets and tokens are encrypted at rest.",
   },
   {
     q: "Where is our data hosted and can it stay in a specific region?",

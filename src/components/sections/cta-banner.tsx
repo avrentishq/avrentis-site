@@ -12,7 +12,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
   { icon: Lock, label: "Enterprise-grade security" },
-  { icon: Zap, label: "Immutable audit trail" },
+  { icon: Zap, label: "Tamper-evident audit trail" },
   { icon: Check, label: "Designed for GDPR & NDPR" },
 ];
 

@@ -107,13 +107,13 @@ const ENTRIES: Entry[] = [
     tag: "security",
     title: "Our enterprise security stack landed.",
     body:
-      "The controls every serious customer asks about: tenant-to-tenant isolation at the database itself, roles that actually enforce what they say, sessions that end the moment someone changes role or leaves, two-factor sign-in, and a record of every action that nobody can edit.",
+      "The controls every serious customer asks about: tenant-to-tenant isolation at the database itself, roles that actually enforce what they say, sessions that end the moment someone changes role or leaves, two-factor sign-in, and a tamper-evident record of every action.",
     bullets: [
       "Each customer's data is walled off inside the database itself — not just the app",
       "A fine-grained permission system across multiple roles, plus rules that stop people acting outside their remit",
       "Automated user provisioning from Okta, Microsoft Entra, and Google Workspace",
       "Two-factor sign-in with recovery codes, required for platform admins",
-      "Once an action is recorded, no one can edit or delete it — not even us",
+      "Once an action is recorded, no one can quietly edit or delete it — any change would show",
     ],
     link: { label: "Read the security stack", href: "/product/security" },
   },

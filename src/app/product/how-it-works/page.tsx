@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "How Avrentis works — the complete approval lifecycle",
     description:
-      "Submit → Review → Sanction → Record. Role-enforced chains, multi-channel notifications, immutable audit trail. The complete walk-through.",
+      "Submit → Review → Sanction → Record. Role-enforced chains, multi-channel notifications, tamper-evident audit trail. The complete walk-through.",
     url: "https://avrentis.com/product/how-it-works",
     type: "website",
   },

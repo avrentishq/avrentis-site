@@ -16,13 +16,13 @@ import type { LucideIcon } from "lucide-react";
 const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: ShieldCheck,
-    title: "Every action on an immutable record",
-    body: "Submissions, approvals, queries, and signatures are written to a tamper-proof audit trail no user — not even an administrator — can alter or delete.",
+    title: "Every action on a tamper-evident record",
+    body: "Submissions, approvals, queries, and signatures are written to a tamper-evident audit trail, sealed daily. No user — not even an administrator — can edit or remove an entry, and you can check the seal yourself.",
   },
   {
     icon: Database,
     title: "Your data, isolated at the database",
-    body: "Postgres row-level security enforces tenant isolation in the database itself, not just the application layer. Your organisation's records stay yours.",
+    body: "Tenant isolation is enforced by the database itself, not just the application layer. Your organisation's records stay yours.",
   },
   {
     icon: Landmark,

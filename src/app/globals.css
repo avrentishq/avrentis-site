@@ -38,9 +38,19 @@
   /* Text */
   --color-text-primary: #0f172a;
   --color-text-secondary: #475569;
+  --color-text-secondary-rgb: 71, 85, 105;
   --color-text-muted: #64748b;
   --color-text-subtle: #94a3b8;
   --color-text-faint: #334155;
+
+  /* Status tones — text on light surfaces; pair the -rgb triplet with an
+     alpha for the matching tint and border. */
+  --color-success: #047857;
+  --color-success-rgb: 4, 120, 87;
+  --color-info: #0369a1;
+  --color-info-rgb: 3, 105, 161;
+  --color-caution: #7c2d12;
+  --color-caution-rgb: 124, 45, 18;
 
   /* Typography */
   --font-sans: var(--font-archivo), system-ui, sans-serif;

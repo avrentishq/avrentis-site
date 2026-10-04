@@ -33,17 +33,23 @@ interface Entry {
   link?: { label: string; href: string };
 }
 
+// One tone per tag, all from the @theme tokens in globals.css: the token is the
+// label colour, its -rgb triplet at low alpha is the tint and the border.
+function tone(label: string, token: string): { label: string; color: string; bg: string; border: string } {
+  return {
+    label,
+    color: `var(--color-${token})`,
+    bg: `rgba(var(--color-${token}-rgb), 0.08)`,
+    border: `rgba(var(--color-${token}-rgb), 0.24)`,
+  };
+}
+
 const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border: string }> = {
-  feature: { label: "FEATURE", color: "var(--color-gold-on-light)", bg: "rgba(var(--color-gold-rgb), 0.10)", border: "rgba(var(--color-gold-rgb), 0.28)" },
-  improvement: {
-    label: "IMPROVEMENT",
-    color: "#0369a1",
-    bg: "rgba(3,105,161,0.08)",
-    border: "rgba(3,105,161,0.22)",
-  },
-  security: { label: "SECURITY", color: "#047857", bg: "rgba(4,120,87,0.10)", border: "rgba(4,120,87,0.28)" },
-  pricing: { label: "PRICING", color: "#7c2d12", bg: "rgba(124,45,18,0.08)", border: "rgba(124,45,18,0.22)" },
-  platform: { label: "PLATFORM", color: "#475569", bg: "rgba(71,85,105,0.08)", border: "rgba(71,85,105,0.22)" },
+  feature: { ...tone("FEATURE", "gold"), color: "var(--color-gold-on-light)" },
+  improvement: tone("IMPROVEMENT", "info"),
+  security: tone("SECURITY", "success"),
+  pricing: tone("PRICING", "caution"),
+  platform: tone("PLATFORM", "text-secondary"),
 };
 
 const ENTRIES: Entry[] = [

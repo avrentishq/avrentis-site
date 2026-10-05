@@ -15,7 +15,7 @@
     "predev": "node scripts/sync-pricing-fallback.mjs"
   },
   "dependencies": {
-    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.242.0",
+    "@avrentishq/core": "github:avrentishq/avrentis-core#89801070547774a359b0aae7f8d9bc08ad8e06dd",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "clsx": "^2.1.1",

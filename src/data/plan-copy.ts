@@ -22,7 +22,8 @@ import {
  * cold cache. The site is English-only (no i18n layer), so plain strings.
  *
  * NO FIGURES. Every number a line states — seats, documents, storage,
- * retention — is passed in from core's capacity and formatted by
+ * retention — is passed in from core's catalogue (capacity, and retention via
+ * `billing/retention`) and formatted by
  * `@/lib/plan-limits`, so a capacity change in core reaches this copy with no
  * edit. Module names are core's too. Keyed by `PlanKey`, so a plan added to
  * core fails the type check here until it has words.
@@ -37,8 +38,6 @@ export interface PlanCopyInput {
 export interface PlanCopy {
   description: (input: PlanCopyInput) => string;
   highlights: (input: PlanCopyInput) => string[];
-  /** How long the public price list says this plan keeps financial documents. */
-  retention: "statutory_floor" | "indefinite";
 }
 
 /** "Up to 10 users" → "up to 10 users", for the middle of a sentence. */
@@ -67,7 +66,6 @@ export const PLAN_COPY: Readonly<Record<PlanKey, PlanCopy>> = {
       "WhatsApp & email alerts",
       storageAndRetention(input),
     ],
-    retention: "statutory_floor",
   },
   business: {
     description: ({ capacity }) =>
@@ -82,7 +80,6 @@ export const PLAN_COPY: Readonly<Record<PlanKey, PlanCopy>> = {
       storageAndRetention(input),
       "Priority support",
     ],
-    retention: "statutory_floor",
   },
   enterprise: {
     description: () => "Unlimited scale, dedicated support, and full platform access",
@@ -95,19 +92,8 @@ export const PLAN_COPY: Readonly<Record<PlanKey, PlanCopy>> = {
       "API access for custom integrations",
       "Dedicated onboarding & priority support",
     ],
-    retention: "indefinite",
   },
 };
-
-/**
- * The statutory floor the public price list states for a floored plan, in
- * years. MIRRORS the app's platform floor (`NDPR_FINANCIAL_RETENTION_YEARS`
- * in avrentis-app `src/lib/billing/retention.ts`), which core does not hold yet;
- * core's per-country figure (`financialRecordRetentionYears`) is a different,
- * per-tenant number and only ever lengthens this. Lift both into core's plan
- * catalogue and read them here.
- */
-export const PUBLIC_RETENTION_FLOOR_YEARS = 7;
 
 /**
  * Comparison-table row labels, by feature key. Every feature core sells on at

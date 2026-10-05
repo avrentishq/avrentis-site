@@ -29,7 +29,9 @@ import {
 import { CURRENCIES, type CurrencyCode } from "@avrentishq/core/money/types";
 import { SECTORS, isModuleAllowedForSector, sectorRestrictedModuleKeys } from "@avrentishq/core/sectors";
 
-import { FEATURE_LABELS, PLAN_COPY, PUBLIC_RETENTION_FLOOR_YEARS } from "../data/plan-copy";
+import { effectiveDocumentRetentionDays } from "@avrentishq/core/billing/retention";
+
+import { FEATURE_LABELS, PLAN_COPY } from "../data/plan-copy";
 import { formatCurrencyAmount } from "./money";
 import {
   documentLimitLine,
@@ -52,6 +54,8 @@ import type { FeatureGroup, Plan, PlanModule, PricingCurrency, PricingData } fro
  *   - plans, order, names, how each is sold, prices in the currencies the
  *     platform collects in (monthly, and annual from `annualPriceMinor`),
  *     capacity, sold features and service commitments → `billing/catalog`;
+ *   - document retention → the plan's window through `billing/retention`'s
+ *     `effectiveDocumentRetentionDays` (the platform floor, as the API states it);
  *   - which modules a plan includes → `planModules` (each module's `planGate`),
  *     narrowed to what may be advertised (generally available, not the
  *     universal approval engine, sector add-ons qualified) — the same rules the
@@ -127,8 +131,9 @@ function featureMap(plan: PlanKey): Record<string, boolean> {
   );
 }
 
+/** What the plan's window delivers on the public list: no country in view, so the platform floor. */
 function documentRetentionDays(plan: PlanKey): number {
-  return PLAN_COPY[plan].retention === "indefinite" ? 0 : PUBLIC_RETENTION_FLOOR_YEARS * 365;
+  return effectiveDocumentRetentionDays(PLAN_CATALOG[plan].documentRetentionDays);
 }
 
 function buildPlan(plan: PlanKey): Plan {

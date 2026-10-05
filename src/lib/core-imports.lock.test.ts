@@ -26,7 +26,8 @@ import { dirname, join } from "node:path";
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
  * at build time and by its test; never imported by a page) may also read
- * `billing/features`, `modules/catalog` and `sectors`.
+ * `billing/features`, `billing/retention`, `modules/catalog` and `sectors`; so may
+ * tests, which check the generator's output against core.
  *
  * The last test below walks each allowed subpath's VALUE import graph inside
  * core and fails on any package the site does not install, so admitting a
@@ -45,7 +46,7 @@ const RUNTIME_ALLOWED = new Set([
   "money/types",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
-const BUILD_ONLY_ALLOWED = new Set(["billing/features", "modules/catalog", "sectors"]);
+const BUILD_ONLY_ALLOWED = new Set(["billing/features", "billing/retention", "modules/catalog", "sectors"]);
 const TEST_ONLY_ALLOWED = new Set([
   "modules/catalog",
   "security/dependency-floors",
@@ -87,7 +88,7 @@ describe("core imports stay inside the site's allowlist", () => {
       const isTest = /\.test\.tsx?$/.test(file);
       return coreSubpaths(readFileSync(join(SRC, file), "utf8"))
         .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
-        .filter((subpath) => !(isTest && TEST_ONLY_ALLOWED.has(subpath)))
+        .filter((subpath) => !(isTest && (TEST_ONLY_ALLOWED.has(subpath) || BUILD_ONLY_ALLOWED.has(subpath))))
         .filter((subpath) => !(BUILD_FILES.has(file) && BUILD_ONLY_ALLOWED.has(subpath)))
         .map((subpath) => `src/${file}  @avrentishq/core/${subpath}`);
     });

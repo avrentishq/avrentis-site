@@ -23,6 +23,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { PLAN_CATALOG, PLAN_ORDER, annualPriceMinor } from "@avrentishq/core/billing/catalog";
 import { CURRENCIES } from "@avrentishq/core/money/types";
+import { effectiveDocumentRetentionDays } from "@avrentishq/core/billing/retention";
 
 import { serialisePricingFallback } from "@/lib/pricing-fallback-build";
 import fallback from "./pricing-fallback.json";
@@ -48,7 +49,7 @@ describe("pricing fallback", () => {
     ).toBe(serialisePricingFallback());
   });
 
-  it("states core's prices, in major units, for every plan it lists", () => {
+  it("states core's prices, capacity and retention for every plan it lists", () => {
     // The equality above proves the file matches the GENERATOR; this proves the
     // generator matches CORE, so a bug in the builder cannot pass by agreeing
     // with itself.
@@ -63,6 +64,9 @@ describe("pricing fallback", () => {
       }
       expect(plan.limits.maxUsers).toBe(PLAN_CATALOG[key].capacity.maxUsers);
       expect(plan.limits.maxStorageBytes).toBe(PLAN_CATALOG[key].capacity.maxStorageBytes);
+      expect(plan.limits.documentRetentionDays).toBe(
+        effectiveDocumentRetentionDays(PLAN_CATALOG[key].documentRetentionDays),
+      );
     }
     expect(fallback.planOrder).toEqual([...PLAN_ORDER]);
   });

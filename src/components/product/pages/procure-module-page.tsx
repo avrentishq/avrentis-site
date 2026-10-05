@@ -73,7 +73,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "From PO to invoice to payment — one continuous chain of authority",
       body:
-        "A PO sanctioned here becomes the vendor's reference. When the invoice arrives, Avrentis Payables references the same PO number. Full traceability from request to bank instruction.",
+        `A PO sanctioned here becomes the vendor's reference. When the invoice arrives, ${MODULES.pay.name} references the same PO number. Full traceability from request to bank instruction.`,
     },
   ],
 

@@ -3,14 +3,15 @@ import { GrantsModulePage } from "@/components/product/pages/grants-module-page"
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { moduleName } from "@/lib/brand";
 
 export const metadata: Metadata = {
-  title: "Avrentis Grants — Prove where every donor naira went",
+  title: `${moduleName("grants")} — Prove where every donor naira went`,
   description:
     "Restricted-fund accounting built into your approvals: tag every payment to a grant and budget line, track burn per donor, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
   alternates: { canonical: "/product/grants" },
   openGraph: {
-    title: "Avrentis Grants — Prove where every donor naira went",
+    title: `${moduleName("grants")} — Prove where every donor naira went`,
     description:
       "Restricted-fund tracking, per-grant burn, sub-grantee oversight, and donor-ready report exports — from the same approvals your finance team already runs.",
     url: canonical("/product/grants"),

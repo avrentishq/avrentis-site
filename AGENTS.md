@@ -40,7 +40,9 @@ Run these locally before you claim anything is done.
 - **`import { m } from "framer-motion"`, never `motion`.** The app is wrapped in
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
-  `@avrentishq/core/security/rate-limit` and `@avrentishq/core/security/rate-limit-tiers`.**
+  `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
+  pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
+  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax` and `region/sales-tax`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
@@ -48,7 +50,14 @@ Run these locally before you claim anything is done.
   Tests may also import the dependency-free `modules/catalog`, `security/dependency-floors` and
   `brand/copy-guardrails`
   — they back the parity lock tests and never ship. `src/lib/core-imports.lock.test.ts`
-  enforces this list; extend both together.
+  enforces this list AND walks each allowed subpath's value-import graph, failing on any
+  package the site does not install; extend both together.
+- **Never type a trial term.** The trial's length, read-only grace, seat cap, storage and
+  message caps and the plan it runs on come from core via `src/lib/trial-terms.ts`
+  (`START_TRIAL_CTA`, `TRIAL_LENGTH`, …); a page that renders the pricing API's `trial`
+  block reads `days`/`seatCap` from it. `trial-terms.lock.test.ts` fails on a typed
+  "30-day trial", "N-seat", "N days after trial" or "<Plan> tier". The changelog is exempt —
+  an entry records what was true on its date.
 - **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per
   Server Action (core tier, identifier, numbers, fail mode) and `limitVisitor(action)`; never
   build an Upstash client or limiter in this repo. Every limiter carries a `site_*` tier from
@@ -56,8 +65,13 @@ Run these locally before you claim anything is done.
   Refusal counts reach the console only when the site uses the same Upstash database and
   `RATE_LIMIT_KEY_PREFIX` as that environment's app; environments sharing one database each need
   a distinct prefix. `RATE_LIMIT_DISABLED=true` bypasses limits in `next dev` only.
-- **Never hand-edit `src/data/pricing-fallback.json`.** It is generated on every `pnpm dev`
-  and `pnpm build`.
+- **Never hand-edit `src/data/pricing-fallback.json`.** It is generated from core's plan
+  catalogue (prices, capacity, features, modules, trial) plus the site's own plan words in
+  `src/data/plan-copy.ts`, by `src/lib/pricing-fallback-build.ts`, run through
+  `scripts/generate-pricing-fallback.mjs` on every `pnpm dev` / `pnpm build` — no network.
+  `pricing-fallback.test.ts` (and `pnpm pricing:check`) fails when the committed file
+  differs, so after a core bump: run the script and commit the JSON. The generator and the
+  plan copy are build-only — no page imports them (`core-imports.lock.test.ts`).
 - **`pnpm.overrides` materialises core's canonical floor map**
   (`@avrentishq/core/security/dependency-floors`), enforced by
   `src/lib/security/dependency-floors.lock.test.ts`. Change a shared floor in core, not here;
@@ -81,13 +95,29 @@ Run these locally before you claim anything is done.
   the site URL in `src/lib/seo.tsx` (`SITE_URL`, `canonical(path)`); `contacts.lock.test.ts`
   enforces both. `/.well-known/security.txt` is generated from them (expiry always a year
   ahead, rebuilt daily) — never replace it with a static file.
+- **Prices and limits are formatted on the site from the numbers.** A price goes through
+  `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
+  `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
+  Never print the API's `*Label` strings — their wording is not part of the contract.
+- **Listed prices are before tax.** A naira card shows "+ <rate> VAT" from `priceTaxNote`
+  (`src/lib/price-tax.ts`): the API's numeric `taxRate` when present, else core's
+  `platformSalesTax`; never a typed rate. Stripe currencies show no tax line (tax is
+  computed at checkout).
+- **Service commitments (dedicated onboarding, priority support) are their own comparison
+  group**, "Service & support" — never under "Workflow & platform". `fetchPricingData` runs
+  every payload (live or fallback) through `withServiceCommitmentGroup`
+  (`src/lib/service-commitments.ts`, keys from core's `SERVICE_COMMITMENT_KEYS`), which reads
+  per-plan `serviceCommitments` and falls back to `features` for an older payload.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
-  names come from `MODULES` in `src/lib/brand.ts`. This includes BRANCHING on a tier:
+  names come from `MODULES` in `src/lib/brand.ts` (`moduleName(key)` in titles and prose —
+  `module-names.lock.test.ts` fails on a typed "Avrentis <Module>" anywhere else). This includes BRANCHING on a tier:
   `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,
   the struck-through price and the annual saving, and is wrong the moment a second tier
   is quote-priced or Enterprise becomes self-serve. Read `plan.selfServeCheckout`, which
-  the product API publishes and enforces on its own Pay button. `pricing.test.ts` fails
-  on a tier-name branch in the pricing section.
+  the product API publishes and enforces on its own Pay button; the featured tier is core's
+  `PLAN_CATALOG[*].recommended`; "N months free" is core's `ANNUAL_BILLED_MONTHS`; a sentence
+  naming the plans a feature is on uses `planNames(data, feature)`. `pricing.test.ts` fails
+  on any plan key typed in the pricing section.
 - Full-word variable names. No cryptic abbreviations.
 - Visual changes get verified in a real browser and looked at, not reasoned about.
 

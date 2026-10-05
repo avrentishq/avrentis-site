@@ -9,9 +9,10 @@
         "Unlimited documents",
         "Bank-ready exports (PDF & spreadsheet)",
         "WhatsApp & email alerts",
-        "10 GB storage · 7-year record retention"
+        "10 GiB storage · 7-year record retention"
       ],
       "selfServeCheckout": true,
+      "serviceCommitments": [],
       "pricing": [
         {
           "currency": "NGN",
@@ -31,7 +32,7 @@
         "documentRetentionDays": 2555,
         "maxUsersLabel": "Up to 10 users",
         "maxDocumentsPerMonthLabel": "Unlimited documents",
-        "maxStorageBytesLabel": "10 GB storage",
+        "maxStorageBytesLabel": "10 GiB storage",
         "documentRetentionDaysLabel": "7 years retention"
       },
       "modules": [
@@ -53,41 +54,43 @@
       ],
       "features": {
         "approvalChain": true,
+        "multiLevelApprovals": true,
         "pdfExport": true,
-        "fullAuditTrail": false,
         "csvExport": true,
         "documentAttachments": true,
-        "analytics": false,
-        "recurringTemplates": false,
-        "delegation": false,
-        "mfaPolicy": false,
-        "slaTracking": false,
-        "budgetCodes": false,
-        "commitmentControl": false,
-        "bankLetterGeneration": false,
         "bankExport": true,
-        "bulkBankExport": false,
-        "fullAuditExport": false,
-        "multiCompanyGroup": false,
-        "groupAdminDashboard": false,
         "customApprovalChains": false,
         "advancedApprovalWorkflows": false,
-        "dedicatedOnboarding": false,
-        "prioritySupport": false,
-        "multiLevelApprovals": true,
-        "customBranding": false,
-        "apiAccess": false,
-        "ipAllowlist": false,
-        "sso": false,
-        "taxControls": false,
+        "slaTracking": false,
+        "delegation": false,
+        "bankLetterGeneration": false,
+        "bulkBankExport": false,
         "vendorCompliance": false,
         "procurementAdvanced": false,
         "procurementTendering": false,
-        "erpSync": false,
+        "fullAuditTrail": false,
+        "fullAuditExport": false,
         "controlsMonitoring": false,
         "controlsAttestation": false,
+        "analytics": false,
+        "recurringTemplates": false,
+        "budgetCodes": false,
+        "commitmentControl": false,
+        "companyBoard": false,
+        "oversightRoles": false,
+        "multiCompanyGroup": false,
+        "groupAdminDashboard": false,
+        "mfaPolicy": false,
+        "ipAllowlist": false,
+        "sso": false,
+        "customBranding": false,
+        "apiAccess": false,
+        "taxControls": false,
+        "erpSync": false,
         "vendorRiskNetwork": false,
-        "fraudTypologyLibrary": false
+        "fraudTypologyLibrary": false,
+        "dedicatedOnboarding": false,
+        "prioritySupport": false
       }
     },
     {
@@ -101,10 +104,14 @@
         "Grant & restricted-fund tracking (Grants)",
         "Custom approval chains & branding",
         "Analytics, recurring templates, delegation",
-        "100 GB storage · 7-year record retention",
+        "100 GiB storage · 7-year record retention",
         "Priority support"
       ],
       "selfServeCheckout": true,
+      "serviceCommitments": [
+        "dedicatedOnboarding",
+        "prioritySupport"
+      ],
       "pricing": [
         {
           "currency": "NGN",
@@ -124,7 +131,7 @@
         "documentRetentionDays": 2555,
         "maxUsersLabel": "Up to 50 users",
         "maxDocumentsPerMonthLabel": "Unlimited documents",
-        "maxStorageBytesLabel": "100 GB storage",
+        "maxStorageBytesLabel": "100 GiB storage",
         "documentRetentionDaysLabel": "7 years retention"
       },
       "modules": [
@@ -165,41 +172,43 @@
       ],
       "features": {
         "approvalChain": true,
+        "multiLevelApprovals": true,
         "pdfExport": true,
-        "fullAuditTrail": true,
         "csvExport": true,
         "documentAttachments": true,
-        "analytics": true,
-        "recurringTemplates": true,
-        "delegation": true,
-        "mfaPolicy": true,
-        "slaTracking": true,
-        "budgetCodes": true,
-        "commitmentControl": true,
-        "bankLetterGeneration": true,
         "bankExport": true,
-        "bulkBankExport": true,
-        "fullAuditExport": true,
-        "multiCompanyGroup": false,
-        "groupAdminDashboard": false,
         "customApprovalChains": true,
         "advancedApprovalWorkflows": false,
-        "dedicatedOnboarding": true,
-        "prioritySupport": true,
-        "multiLevelApprovals": true,
-        "customBranding": true,
-        "apiAccess": false,
-        "ipAllowlist": true,
-        "sso": false,
-        "taxControls": false,
+        "slaTracking": true,
+        "delegation": true,
+        "bankLetterGeneration": true,
+        "bulkBankExport": true,
         "vendorCompliance": true,
         "procurementAdvanced": true,
         "procurementTendering": false,
-        "erpSync": false,
+        "fullAuditTrail": true,
+        "fullAuditExport": true,
         "controlsMonitoring": true,
         "controlsAttestation": true,
+        "analytics": true,
+        "recurringTemplates": true,
+        "budgetCodes": true,
+        "commitmentControl": true,
+        "companyBoard": true,
+        "oversightRoles": true,
+        "multiCompanyGroup": false,
+        "groupAdminDashboard": false,
+        "mfaPolicy": true,
+        "ipAllowlist": true,
+        "sso": false,
+        "customBranding": true,
+        "apiAccess": false,
+        "taxControls": false,
+        "erpSync": false,
         "vendorRiskNetwork": false,
-        "fraudTypologyLibrary": false
+        "fraudTypologyLibrary": false,
+        "dedicatedOnboarding": true,
+        "prioritySupport": true
       }
     },
     {
@@ -216,6 +225,10 @@
         "Dedicated onboarding & priority support"
       ],
       "selfServeCheckout": false,
+      "serviceCommitments": [
+        "dedicatedOnboarding",
+        "prioritySupport"
+      ],
       "pricing": [
         {
           "currency": "NGN",
@@ -260,6 +273,11 @@
           "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes"
         },
         {
+          "key": "guard",
+          "name": "Avrentis Guard",
+          "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
+        },
+        {
           "key": "people",
           "name": "Avrentis Requests",
           "description": "Employee expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow."
@@ -268,11 +286,6 @@
           "key": "connect",
           "name": "Avrentis Integrations",
           "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems connect through that API, webhooks, or CSV export — named connectors are delivered on request."
-        },
-        {
-          "key": "guard",
-          "name": "Avrentis Guard",
-          "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
         },
         {
           "key": "grants",
@@ -286,41 +299,43 @@
       ],
       "features": {
         "approvalChain": true,
+        "multiLevelApprovals": true,
         "pdfExport": true,
-        "fullAuditTrail": true,
         "csvExport": true,
         "documentAttachments": true,
-        "analytics": true,
-        "recurringTemplates": true,
-        "delegation": true,
-        "mfaPolicy": true,
-        "slaTracking": true,
-        "budgetCodes": true,
-        "commitmentControl": true,
-        "bankLetterGeneration": true,
         "bankExport": true,
-        "bulkBankExport": true,
-        "fullAuditExport": true,
-        "multiCompanyGroup": true,
-        "groupAdminDashboard": true,
         "customApprovalChains": true,
         "advancedApprovalWorkflows": true,
-        "dedicatedOnboarding": true,
-        "prioritySupport": true,
-        "multiLevelApprovals": true,
-        "customBranding": true,
-        "apiAccess": true,
-        "ipAllowlist": true,
-        "sso": true,
-        "taxControls": false,
+        "slaTracking": true,
+        "delegation": true,
+        "bankLetterGeneration": true,
+        "bulkBankExport": true,
         "vendorCompliance": true,
         "procurementAdvanced": true,
         "procurementTendering": false,
-        "erpSync": false,
+        "fullAuditTrail": true,
+        "fullAuditExport": true,
         "controlsMonitoring": true,
         "controlsAttestation": true,
+        "analytics": true,
+        "recurringTemplates": true,
+        "budgetCodes": true,
+        "commitmentControl": true,
+        "companyBoard": true,
+        "oversightRoles": true,
+        "multiCompanyGroup": true,
+        "groupAdminDashboard": true,
+        "mfaPolicy": true,
+        "ipAllowlist": true,
+        "sso": true,
+        "customBranding": true,
+        "apiAccess": true,
+        "taxControls": false,
+        "erpSync": false,
         "vendorRiskNetwork": false,
-        "fraudTypologyLibrary": false
+        "fraudTypologyLibrary": false,
+        "dedicatedOnboarding": true,
+        "prioritySupport": true
       }
     }
   ],
@@ -361,7 +376,9 @@
     "customBranding": "Brand your exported documents",
     "dedicatedOnboarding": "Guided setup with a dedicated specialist",
     "prioritySupport": "Priority access to support",
-    "commitmentControl": "Budgets that count commitments, not just spend"
+    "commitmentControl": "Budgets that count commitments, not just spend",
+    "companyBoard": "Company Board and executive summary",
+    "oversightRoles": "Auditor and Company Board roles"
   },
   "featureGroups": [
     {
@@ -426,9 +443,17 @@
         "multiCompanyGroup",
         "groupAdminDashboard",
         "customBranding",
+        "commitmentControl",
+        "companyBoard",
+        "oversightRoles"
+      ]
+    },
+    {
+      "key": "service",
+      "label": "Service & support",
+      "featureKeys": [
         "dedicatedOnboarding",
-        "prioritySupport",
-        "commitmentControl"
+        "prioritySupport"
       ]
     }
   ],

@@ -12,12 +12,27 @@ import type {
   PlanModule,
   PricingCurrency,
 } from "@/lib/pricing";
-import { formatCurrencyAmount } from "@/lib/pricing";
+import { formatCurrencyAmount } from "@/lib/money";
+import { priceTaxNote } from "@/lib/price-tax";
 import { isModulePublic } from "@/lib/brand";
+import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import {
+  READ_ONLY_GRACE_DAYS,
+  TRIAL_DURATION_DAYS,
+  TRIAL_PLAN,
+  TRIAL_PLAN_NAME,
+  TRIAL_SEAT_CAP,
+  TRIAL_STORAGE,
+} from "@/lib/trial-terms";
 
 type BillingCycle = "monthly" | "annual";
 
-const FEATURED_PLAN = "business";
+/** The plan the card row features — core's recommended tier, never a typed key. */
+const FEATURED_PLAN = PLAN_ORDER.find((key) => PLAN_CATALOG[key].recommended);
+
+/** Months an annual plan does not charge for ("2 months free"), from core. */
+const ANNUAL_FREE_MONTHS = 12 - ANNUAL_BILLED_MONTHS;
+const ANNUAL_TOGGLE_LABEL = `Annual · ${ANNUAL_FREE_MONTHS} ${ANNUAL_FREE_MONTHS === 1 ? "month" : "months"} free`;
 
 /* ── Helpers ─────────────────────────────────────────────────── */
 
@@ -39,18 +54,22 @@ function getHighlights(plan: Plan): string[] {
 }
 
 /**
- * The Trial card is rendered client-side, not fetched from the API.
- * It's a marketing construct — the server's truth is `subscriptionStatus === "trial"`
- * on a tenant whose plan key is "business".
+ * The Trial card is a marketing construct, not a plan — the server's truth is
+ * `subscriptionStatus === "trial"` on a tenant whose plan is the trial plan.
+ * Its terms come from the API's `trial` block where it has one (the product's
+ * live answer) and from core's constants otherwise; nothing here is typed in.
+ *
+ * Deltas only — the module scope is the card's badge, and the watermark + grace
+ * detail lives in the footnote below the CTA (no repetition).
  */
-// Deltas only — the module scope is the card's badge, and the watermark +
-// 30-day-grace detail lives in the footnote below the CTA (no repetition).
-const TRIAL_HIGHLIGHTS: string[] = [
-  "Full Business tier — switched on, not a sandbox",
-  "Up to 5 users, ready to invite",
-  "Bank-ready PDF exports (trial watermark)",
-  "2 GB storage during trial",
-];
+function trialHighlights(planName: string, seatCap: number): string[] {
+  return [
+    `Full ${planName} tier — switched on, not a sandbox`,
+    `Up to ${seatCap} users, ready to invite`,
+    "Bank-ready PDF exports (trial watermark)",
+    `${TRIAL_STORAGE} storage during trial`,
+  ];
+}
 
 /* ── Component ───────────────────────────────────────────────── */
 
@@ -64,7 +83,7 @@ interface PricingProps {
 
 export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   const Headline = headingAs === "h1" ? m.h1 : m.h2;
-  // Default to annual — the higher-value cycle we already frame as "2 months
+  // Default to annual — the higher-value cycle we already frame as "N months
   // free". The card keeps the monthly-equivalent and annual total visible so
   // the default informs rather than tricks.
   const [billing, setBilling] = useState<BillingCycle>("annual");
@@ -132,11 +151,15 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
     data.plans.flatMap((p) => publicPlanModules(p).map((m) => m.key)),
   ).size;
 
-  // The trial provisions the full Business tier — its chip lists Business's own
+  // The trial provisions a real tier — its chip lists that tier's own
   // publicly-marketed modules (incl. Compliance), straight from the API data so
-  // it can't drift from the Business card.
-  const businessPlan = data.plans.find((p) => p.key === "business");
-  const trialModuleLabel = (businessPlan ? publicPlanModules(businessPlan) : [])
+  // it can't drift from that tier's card. Days and seats are the API's live
+  // terms when it publishes them, core's constants when it does not.
+  const trialPlan = data.plans.find((p) => p.key === (data.trial?.plan ?? TRIAL_PLAN));
+  const trialPlanName = trialPlan?.name ?? TRIAL_PLAN_NAME;
+  const trialDays = data.trial?.days ?? TRIAL_DURATION_DAYS;
+  const trialSeatCap = data.trial?.seatCap ?? TRIAL_SEAT_CAP;
+  const trialModuleLabel = (trialPlan ? publicPlanModules(trialPlan) : [])
     .map((m) => m.name.replace("Avrentis ", ""))
     .join(" + ");
 
@@ -220,8 +243,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Every plan starts with a 30-day trial &mdash; no card on file, nothing
-          to cancel. Scale as your organisation grows. No hidden fees.
+          Every plan starts with a {trialDays}-day trial &mdash; no card on file,
+          nothing to cancel. Scale as your organisation grows. No hidden fees.
         </m.p>
 
         {/* Controls row */}
@@ -285,7 +308,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
               }}
             >
-              Annual · 2 months free
+              {ANNUAL_TOGGLE_LABEL}
             </button>
           </div>
 
@@ -366,8 +389,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 margin: "0 0 20px",
               }}
             >
-              The full Business tier, switched on for your own data the moment
-              you verify — not a demo environment.
+              The full {trialPlanName} tier, switched on for your own data the
+              moment you verify — not a demo environment.
             </p>
             <div style={{ marginBottom: "6px" }}>
               <span
@@ -378,7 +401,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   color: "var(--color-text-primary)",
                 }}
               >
-                $0
+                {formatCurrencyAmount(0, currency)}
               </span>
               <span
                 style={{
@@ -389,7 +412,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 }}
               >
                 {" "}
-                / 30 days
+                / {trialDays} days
               </span>
             </div>
             <p
@@ -429,7 +452,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 flex: 1,
               }}
             >
-              {TRIAL_HIGHLIGHTS.map((feature) => (
+              {trialHighlights(trialPlanName, trialSeatCap).map((feature) => (
                 <li
                   key={feature}
                   style={{
@@ -478,7 +501,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 e.currentTarget.style.borderColor = "var(--color-border)";
               }}
             >
-              Start your 30-day trial
+              Start your {trialDays}-day trial
             </Link>
             <p
               style={{
@@ -491,7 +514,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               }}
             >
               Exports carry an Avrentis Trial watermark until you upgrade. Data
-              is preserved for 30 days after your trial ends.
+              is preserved for {READ_ONLY_GRACE_DAYS} days after your trial ends.
             </p>
           </m.div>
 
@@ -522,6 +545,10 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               priceData?.annualTotal != null
                 ? priceData.monthly * 12 - priceData.annualTotal
                 : 0;
+
+            // Prices are before tax: naira adds VAT on top ("+ <rate> VAT"), rate
+            // from the API's numeric field or core — never typed. None for USD.
+            const taxNote = priceData ? priceTaxNote(currency, priceData.taxRate) : null;
 
             const features = getHighlights(plan);
             // Ladder: every tier above the cheapest lists only its DELTAS,
@@ -671,6 +698,20 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     </span>
                   </span>
                 </div>
+
+                {taxNote && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 400,
+                      fontSize: "12px",
+                      color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
+                      margin: "0 0 8px",
+                    }}
+                  >
+                    {taxNote}
+                  </p>
+                )}
 
                 {/* Real yearly saving on annual — honest contrast */}
                 {annualSaving > 0 && (

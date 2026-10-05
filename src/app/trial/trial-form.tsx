@@ -30,6 +30,14 @@ import { INITIAL_STATE, type TrialFormState } from "./state";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
+import {
+  READ_ONLY_GRACE_DAYS,
+  TRIAL_LENGTH,
+  TRIAL_MESSAGE_CAP,
+  TRIAL_PLAN_NAME,
+  TRIAL_SEAT_CAP,
+  TRIAL_STORAGE,
+} from "@/lib/trial-terms";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
@@ -305,7 +313,7 @@ export function TrialForm() {
             marginBottom: "14px",
           }}
         >
-          30-DAY TRIAL
+          {TRIAL_LENGTH} trial
         </span>
         <h1
           style={{
@@ -319,7 +327,7 @@ export function TrialForm() {
           }}
           className="lg:!text-[40px]"
         >
-          Start your 30-day trial.
+          Start your {TRIAL_LENGTH} trial.
         </h1>
         <p
           style={{
@@ -343,9 +351,10 @@ export function TrialForm() {
             maxWidth: "560px",
           }}
         >
-          Full Business features on your own data — a 5-seat pilot workspace (5
-          users, 2 GB storage, 25 SMS/WhatsApp messages during the trial). No
-          credit card. Most teams run their first sanction within fifteen
+          Full {TRIAL_PLAN_NAME} features on your own data — a {TRIAL_SEAT_CAP}-seat
+          pilot workspace ({TRIAL_SEAT_CAP} users, {TRIAL_STORAGE} storage,{" "}
+          {TRIAL_MESSAGE_CAP} SMS/WhatsApp messages during the trial). No credit
+          card. Most teams run their first sanction within fifteen
           minutes.
         </p>
       </m.div>
@@ -712,7 +721,8 @@ export function TrialForm() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={isValid} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
-            No card on file — nothing to cancel · 30-day trial · Data preserved for 30 days after trial end.
+            No card on file — nothing to cancel · {TRIAL_LENGTH} trial · Data preserved for{" "}
+            {READ_ONLY_GRACE_DAYS} days after trial end.
           </span>
         </div>
         </div>

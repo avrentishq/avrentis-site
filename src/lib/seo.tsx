@@ -47,19 +47,29 @@ export function organizationSchema(): Record<string, unknown> {
   };
 }
 
-/** AggregateOffer derived from the live/fallback pricing (USD, major units). */
+/**
+ * AggregateOffer derived from the live/fallback pricing (major units), in the
+ * currency the price list leads with. Only self-serve plans are priced offers —
+ * a quote plan's figure is a floor, not a price, so it is left out of the range.
+ *
+ * This used to look for USD only. The price list serves the currencies the
+ * platform can collect in (naira today), so the offer silently never rendered.
+ */
 function aggregateOffer(pricing?: PricingData | null): Record<string, unknown> | null {
   if (!pricing?.plans?.length) return null;
-  const usd = pricing.plans
-    .map((plan) => plan.pricing?.find((p) => p.currency === "USD")?.monthly)
+  const currency = pricing.plans[0]?.pricing?.[0]?.currency;
+  if (!currency) return null;
+  const amounts = pricing.plans
+    .filter((plan) => plan.selfServeCheckout)
+    .map((plan) => plan.pricing?.find((p) => p.currency === currency)?.monthly)
     .filter((n): n is number => typeof n === "number" && n > 0);
-  if (!usd.length) return null;
+  if (!amounts.length) return null;
   return {
     "@type": "AggregateOffer",
-    priceCurrency: "USD",
-    lowPrice: Math.min(...usd),
-    highPrice: Math.max(...usd),
-    offerCount: pricing.plans.length,
+    priceCurrency: currency,
+    lowPrice: Math.min(...amounts),
+    highPrice: Math.max(...amounts),
+    offerCount: amounts.length,
   };
 }
 

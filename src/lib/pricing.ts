@@ -1,26 +1,34 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
 import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
+/** One plan's price in one currency. Amounts are MAJOR units; the site formats
+ *  them itself (`formatCurrencyAmount`) and never prints the `*Label` strings,
+ *  so a change to how the API words its labels cannot reach the page. */
 export interface PricingCurrency {
   currency: string;
   monthly: number;
+  /** Published by the API; not read by the site. */
   monthlyLabel: string | null;
   annualPerMonth: number | null;
   annualTotal: number | null;
+  /** Published by the API; not read by the site. */
   annualLabel: string | null;
   taxRate: number | null;
   taxLabel: string | null;
 }
 
+/** A plan's limits. `0` means unlimited for every figure (core's convention);
+ *  the site formats its own lines from these numbers (`@/lib/plan-limits`). */
 export interface PlanLimits {
   maxUsers: number;
-  maxDocumentsPerMonth: number | null;
-  maxStorageBytes: number | null;
-  documentRetentionDays: number | null;
-  /** Display labels precomputed by the pricing API (treat `0` as unlimited,
-   *  matching the pricing cards). Prefer these over re-deriving from the raw
-   *  numbers — the numbers use `0` to mean "unlimited". */
+  maxDocumentsPerMonth: number;
+  maxStorageBytes: number;
+  documentRetentionDays: number;
+  /** Labels published by the API. NOT read by the site: they once printed a
+   *  gibibyte figure as "GB", and formatting here keeps their wording out of
+   *  the contract. */
   maxUsersLabel?: string;
   maxDocumentsPerMonthLabel?: string;
   maxStorageBytesLabel?: string;
@@ -61,6 +69,10 @@ export interface Plan {
    * its own Pay button, so the page and the product cannot disagree.
    */
   selfServeCheckout: boolean;
+  /** Service promises this plan carries (dedicated onboarding, priority
+   *  support) — never runtime gates. Absent on an older payload, which listed
+   *  them only in `features`; `withServiceCommitmentGroup` reads either. */
+  serviceCommitments?: string[];
   pricing: PricingCurrency[];
   limits: PlanLimits;
   modules: PlanModule[];
@@ -87,7 +99,7 @@ export interface FeatureGroup {
 /** The free-trial terms, as published by the pricing API. The trial runs on a
  *  real plan tier (`plan`), so what a trialist can actually use is that plan's
  *  entitlement — which is why the module pages derive their trial row from it
- *  rather than restating "30-day Business trial" in eight places. */
+ *  rather than restating the trial's length and tier in eight places. */
 export interface TrialInfo {
   enabled: boolean;
   days: number;
@@ -123,7 +135,13 @@ const PRICING_API = `${PLATFORM_ORIGIN}/api/v1/public/pricing`;
 
 import fallback from "@/data/pricing-fallback.json";
 
+/** Every payload the page renders — live or fallback — shows service
+ *  commitments as their own comparison group (see `@/lib/service-commitments`). */
 export async function fetchPricingData(): Promise<PricingData> {
+  return withServiceCommitmentGroup(await fetchRawPricingData());
+}
+
+async function fetchRawPricingData(): Promise<PricingData> {
   try {
     const res = await fetch(PRICING_API, {
       next: { revalidate: 3600 },
@@ -154,38 +172,6 @@ export async function fetchPricingData(): Promise<PricingData> {
   } catch {
     return fallback as unknown as PricingData;
   }
-}
-
-/* ── Formatting helpers ──────────────────────────────────────── */
-
-export function formatBytes(bytes: number | null): string {
-  if (bytes === null) return "Unlimited";
-  if (bytes >= 1073741824) return `${Math.round(bytes / 1073741824)} GB`;
-  if (bytes >= 1048576) return `${Math.round(bytes / 1048576)} MB`;
-  return `${bytes} B`;
-}
-
-export function formatRetention(days: number | null): string {
-  if (days === null) return "Unlimited";
-  if (days >= 365) {
-    const years = Math.round(days / 365);
-    return `${years} year${years > 1 ? "s" : ""}`;
-  }
-  return `${days}-day`;
-}
-
-export function formatCurrencyAmount(amount: number, currency: string): string {
-  const symbols: Record<string, string> = {
-    USD: "$",
-    NGN: "₦",
-    GBP: "£",
-    EUR: "€",
-    GHS: "GH₵",
-    KES: "KSh",
-    ZAR: "R",
-  };
-  const symbol = symbols[currency] ?? currency + " ";
-  return `${symbol}${amount.toLocaleString()}`;
 }
 
 /* ── Plan-name helpers — copy names tiers from the API, never by hand ── */

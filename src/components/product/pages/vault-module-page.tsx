@@ -89,9 +89,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every file opened and every PDF produced is on the audit trail" },
-    { slug: "pay", name: "Avrentis Payables", desc: "Vouchers and supplier invoices appear in Records as they are raised" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders and goods receipts in the same list" },
+    { slug: "audit", name: MODULES.audit.name, desc: "Every file opened and every PDF produced is on the audit trail" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Vouchers and supplier invoices appear in Records as they are raised" },
+    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders and goods receipts in the same list" },
   ],
 };
 

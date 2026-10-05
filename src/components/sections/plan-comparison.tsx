@@ -27,15 +27,22 @@ import { useState } from "react";
 import type { CSSProperties } from "react";
 import type { Plan, PricingData } from "@/lib/pricing";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
+import {
+  documentLimitLine,
+  retentionLimitLine,
+  storageLimitLine,
+  userLimitLine,
+} from "@/lib/plan-limits";
 
 const FIRST_COL = "42%";
 
-// Use the API's precomputed labels — the raw numbers use `0` to mean unlimited.
+// Formatted here from the numbers (`0` = unlimited), never from the API's
+// label strings — see `@/lib/plan-limits`.
 const LIMIT_ROWS: { label: string; get: (plan: Plan) => string }[] = [
-  { label: "Team members", get: (p) => p.limits.maxUsersLabel ?? "—" },
-  { label: "Documents", get: (p) => p.limits.maxDocumentsPerMonthLabel ?? "—" },
-  { label: "Storage", get: (p) => p.limits.maxStorageBytesLabel ?? "—" },
-  { label: "Data retention", get: (p) => p.limits.documentRetentionDaysLabel ?? "—" },
+  { label: "Team members", get: (p) => userLimitLine(p.limits.maxUsers) },
+  { label: "Documents", get: (p) => documentLimitLine(p.limits.maxDocumentsPerMonth) },
+  { label: "Storage", get: (p) => storageLimitLine(p.limits.maxStorageBytes) },
+  { label: "Data retention", get: (p) => retentionLimitLine(p.limits.documentRetentionDays) },
 ];
 
 // Structural + colour styles, inline per the site convention. CSS custom

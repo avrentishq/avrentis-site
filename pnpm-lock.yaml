@@ -45,8 +45,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.242.0
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#55afe78ccd627f61b3dc62c893b969965f6d1815(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)
+        specifier: github:avrentishq/avrentis-core#v0.243.1
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#1da41d3b1255f573ccbc34748c366c861f5ff488(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -96,6 +96,9 @@ importers:
       eslint-config-next:
         specifier: 16.3.6
         version: 16.3.6(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
+      jiti:
+        specifier: ^2.6.1
+        version: 2.6.1
       tailwindcss:
         specifier: ^4
         version: 4.2.2
@@ -112,9 +115,9 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#55afe78ccd627f61b3dc62c893b969965f6d1815':
-    resolution: {commit: 55afe78ccd627f61b3dc62c893b969965f6d1815, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.242.0
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#1da41d3b1255f573ccbc34748c366c861f5ff488':
+    resolution: {commit: 1da41d3b1255f573ccbc34748c366c861f5ff488, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.243.1
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -134,9 +137,37 @@ packages:
       ws: '>=8.21.0'
       zod: ^3.24.0
     peerDependenciesMeta:
+      '@aws-sdk/client-s3':
+        optional: true
+      '@aws-sdk/client-sts':
+        optional: true
+      '@neondatabase/serverless':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      '@upstash/ratelimit':
+        optional: true
+      '@upstash/redis':
+        optional: true
       ai:
         optional: true
+      bcryptjs:
+        optional: true
+      cron-parser:
+        optional: true
+      drizzle-orm:
+        optional: true
+      libphonenumber-js:
+        optional: true
+      otpauth:
+        optional: true
+      tldts:
+        optional: true
       typescript:
+        optional: true
+      ws:
+        optional: true
+      zod:
         optional: true
 
   '@babel/code-frame@8.0.0':
@@ -2447,12 +2478,10 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#55afe78ccd627f61b3dc62c893b969965f6d1815(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)(zod@4.3.6)':
-    dependencies:
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#1da41d3b1255f573ccbc34748c366c861f5ff488(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)':
+    optionalDependencies:
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0
-      zod: 4.3.6
-    optionalDependencies:
       typescript: 5.9.3
 
   '@babel/code-frame@8.0.0':

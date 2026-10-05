@@ -8,6 +8,7 @@ import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { START_TRIAL_CTA, TRIAL_DURATION_DAYS } from "@/lib/trial-terms";
 
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
@@ -129,7 +130,7 @@ export function CtaBanner() {
               e.currentTarget.style.backgroundColor = "var(--color-gold)";
             }}
           >
-            Start your 30-day trial
+            {START_TRIAL_CTA}
           </Link>
           <Link
             href="/contact"
@@ -176,7 +177,7 @@ export function CtaBanner() {
             marginTop: "20px",
           }}
         >
-          30 days. No credit card required. Setup takes less than 10
+          {TRIAL_DURATION_DAYS} days. No credit card required. Setup takes less than 10
           minutes &mdash; your first approval can happen today.
         </m.p>
 

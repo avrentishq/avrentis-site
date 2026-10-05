@@ -13,7 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, moduleName } from "@/lib/brand";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -124,13 +124,13 @@ const CATEGORIES: DocsCategory[] = [
     lede:
       "Deep-dive pages for every module — capabilities, use cases, plan availability, pairs-well-with.",
     items: [
-      { title: "Avrentis Payables", body: "Structured payment approvals.", href: "/product/pay", status: "live" },
-      { title: "Avrentis Procurement", body: "Procurement on record.", href: "/product/procure", status: "live" },
-      { title: "Avrentis Guard", body: "Fraud & anomaly detection.", href: "/product/guard", status: "live" },
-      { title: "Avrentis Grants", body: "Grant & fund accounting.", href: "/product/grants", status: "live" },
-      { title: "Avrentis Compliance", body: "Compliance & accountability.", href: "/product/audit", status: "live" },
-      { title: "Avrentis Records", body: "Financial records in one place.", href: "/product/vault", status: "live" },
-      { title: "Avrentis Integrations", body: "External systems.", href: "/product/connect", status: "live" },
+      { title: moduleName("pay"), body: "Structured payment approvals.", href: "/product/pay", status: "live" },
+      { title: moduleName("procure"), body: "Procurement on record.", href: "/product/procure", status: "live" },
+      { title: moduleName("guard"), body: "Fraud & anomaly detection.", href: "/product/guard", status: "live" },
+      { title: moduleName("grants"), body: "Grant & fund accounting.", href: "/product/grants", status: "live" },
+      { title: moduleName("audit"), body: "Compliance & accountability.", href: "/product/audit", status: "live" },
+      { title: moduleName("vault"), body: "Financial records in one place.", href: "/product/vault", status: "live" },
+      { title: moduleName("connect"), body: "External systems.", href: "/product/connect", status: "live" },
     ],
   },
   {

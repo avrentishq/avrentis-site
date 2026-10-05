@@ -3,16 +3,17 @@ import { AuthorityModulePage } from "@/components/product/pages/authority-module
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { moduleName } from "@/lib/brand";
 
 const DESCRIPTION =
   "Write your approval rules down once — who can sanction what, up to how much, and what happens above that — and have them enforced on every request automatically, with the proof kept for you.";
 
 export const metadata: Metadata = {
-  title: "Avrentis Authority — who can approve what, up to how much",
+  title: `${moduleName("authority")} — who can approve what, up to how much`,
   description: DESCRIPTION,
   alternates: { canonical: "/product/authority" },
   openGraph: {
-    title: "Avrentis Authority — your approval rules, enforced automatically",
+    title: `${moduleName("authority")} — your approval rules, enforced automatically`,
     description:
       "Approval limits per role, approver groups and quorum, separation of duties, and cover for absence — on every plan.",
     url: canonical("/product/authority"),

@@ -1,18 +1,26 @@
 "use client";
 
 /**
- * TrialTimeline — an honest, public-safe schedule of the 30-day trial.
+ * TrialTimeline — an honest, public-safe schedule of the trial.
  *
  * Transparency / "no dark patterns": the exact lifecycle is stated up front,
  * including the heads-up before the trial ends and the grace period after it.
- * Every milestone maps to real product behaviour (30-day trial → read-only →
- * 30-day grace → close at day 60). Deliberately omits internal cadence,
+ * Every milestone maps to real product behaviour (trial → read-only → grace →
+ * close), and every day count is read from core (`@/lib/trial-terms`), so the
+ * schedule moves when the product's does. Deliberately omits internal cadence,
  * mechanisms, and infrastructure — only what a customer needs to feel in
  * control appears here.
  */
 
 import { m } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import {
+  READ_ONLY_GRACE_DAYS,
+  TRIAL_CLOSE_DAY,
+  TRIAL_DURATION_DAYS,
+  TRIAL_PLAN_NAME,
+  TRIAL_SEAT_CAP,
+} from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
 
@@ -25,27 +33,25 @@ interface Milestone {
 const MILESTONES: Milestone[] = [
   {
     when: "Today",
-    title: "Full Business features, instantly",
-    detail:
-      "Full Business features on your own data — a 5-seat pilot workspace, with a sample approval already waiting. No card.",
+    title: `Full ${TRIAL_PLAN_NAME} features, instantly`,
+    detail: `Full ${TRIAL_PLAN_NAME} features on your own data — a ${TRIAL_SEAT_CAP}-seat pilot workspace, with a sample approval already waiting. No card.`,
   },
   {
-    when: "Days 1–29",
+    when: `Days 1–${TRIAL_DURATION_DAYS - 1}`,
     title: "We keep you moving",
     detail:
       "A few getting-started nudges, a mid-trial summary, and a heads-up the day before it ends.",
   },
   {
-    when: "Day 30",
+    when: `Day ${TRIAL_DURATION_DAYS}`,
     title: "Read-only — not gone",
     detail:
       "Keep viewing and exporting everything. Creating resumes the moment you upgrade.",
   },
   {
-    when: "Day 60",
+    when: `Day ${TRIAL_CLOSE_DAY}`,
     title: "Nothing removed without warning",
-    detail:
-      "A 30-day grace period after read-only — and a clear heads-up before any data is removed.",
+    detail: `A ${READ_ONLY_GRACE_DAYS}-day grace period after read-only — and a clear heads-up before any data is removed.`,
   },
 ];
 
@@ -69,7 +75,7 @@ export function TrialTimeline() {
           marginBottom: "20px",
         }}
       >
-        How the 30 days work
+        How the {TRIAL_DURATION_DAYS} days work
       </m.span>
 
       <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>

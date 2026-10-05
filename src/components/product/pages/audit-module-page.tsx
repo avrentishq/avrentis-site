@@ -72,9 +72,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Payables", desc: "Every payment event lands in the audit trail automatically" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "PO lifecycle events — from submission to issue — all tracked" },
-    { slug: "vault", name: "Avrentis Records", desc: "Document access and download events logged to the compliance trail" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Every payment event lands in the audit trail automatically" },
+    { slug: "procure", name: MODULES.procure.name, desc: "PO lifecycle events — from submission to issue — all tracked" },
+    { slug: "vault", name: MODULES.vault.name, desc: "Document access and download events logged to the compliance trail" },
   ],
 };
 

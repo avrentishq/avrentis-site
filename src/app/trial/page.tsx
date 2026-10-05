@@ -5,16 +5,15 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { TrialForm } from "./trial-form";
 import { canonical } from "@/lib/seo";
+import { TRIAL_LENGTH, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP } from "@/lib/trial-terms";
 
 export const metadata: Metadata = {
-  title: "Start your 30-day trial — Avrentis",
-  description:
-    "Provision an Avrentis workspace in under two minutes. Full Business features on a 5-seat pilot workspace, no credit card, your real organisational data.",
+  title: `Start your ${TRIAL_LENGTH} trial — Avrentis`,
+  description: `Provision an Avrentis workspace in under two minutes. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace, no credit card, your real organisational data.`,
   alternates: { canonical: "/trial" },
   openGraph: {
-    title: "Start your 30-day Avrentis trial",
-    description:
-      "Provision in under two minutes. Full Business features on a 5-seat pilot workspace. Your organisation's data, not a demo.",
+    title: `Start your ${TRIAL_LENGTH} Avrentis trial`,
+    description: `Provision in under two minutes. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace. Your organisation's data, not a demo.`,
     url: canonical("/trial"),
     type: "website",
   },

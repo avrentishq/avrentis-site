@@ -40,6 +40,7 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { SubmitStageMockup, ReviewStageMockup, SanctionStageMockup, RecordStageMockup } from "./stage-mockups";
+import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 const STAGES = [
   {
@@ -484,7 +485,7 @@ export function HowItWorksProductPage() {
                 textDecoration: "none",
               }}
             >
-              Start your 30-day trial
+              {START_TRIAL_CTA}
             </Link>
             <a
               href="#lifecycle"

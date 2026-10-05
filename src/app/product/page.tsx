@@ -14,6 +14,7 @@ import {
 import {
   BRAND_COLORS,
   isModulePublic,
+  moduleName,
   moduleSuite,
   SUITES,
   type ModuleKey,
@@ -26,6 +27,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ModuleStatus } from "@/components/product/module-layout";
 import { canonical } from "@/lib/seo";
+import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 export const metadata: Metadata = {
   title: "The Avrentis platform — spend, oversight, evidence, on one record",
@@ -53,7 +55,7 @@ interface Module {
 const MODULES: Module[] = [
   {
     slug: "pay",
-    name: "Avrentis Payables",
+    name: moduleName("pay"),
     subtitle: "Payment approvals & authorisation",
     body:
       "Every payment voucher submitted, reviewed, and sanctioned through a defined approval chain. Bank-ready PDFs the moment the MD signs.",
@@ -62,7 +64,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "procure",
-    name: "Avrentis Procurement",
+    name: moduleName("procure"),
     subtitle: "Purchase orders on record",
     body:
       "Structured purchase order workflow with vendor management, line-item tracking, and role-based approval chains. Procurement without the paperwork gap.",
@@ -71,7 +73,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "vault",
-    name: "Avrentis Records",
+    name: moduleName("vault"),
     subtitle: "Financial records in one place",
     body:
       "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history, findable by reference, payee, department, status or date.",
@@ -80,7 +82,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "audit",
-    name: "Avrentis Compliance",
+    name: moduleName("audit"),
     subtitle: "Compliance & accountability",
     body:
       "A tamper-evident log of every action — submissions, approvals, queries, signatures — sealed daily. Face internal and external audits without the manual scramble.",
@@ -89,7 +91,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "guard",
-    name: "Avrentis Guard",
+    name: moduleName("guard"),
     subtitle: "Fraud & anomaly detection",
     body:
       "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
@@ -98,7 +100,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "grants",
-    name: "Avrentis Grants",
+    name: moduleName("grants"),
     subtitle: "Grant & fund accounting",
     body:
       "Tie every payment to its grant and budget line, track burn against each donor's restrictions, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
@@ -107,7 +109,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "people",
-    name: "Avrentis Requests",
+    name: moduleName("people"),
     subtitle: "Staff expense approvals",
     body:
       "Extend structured approvals to staff expense claims. The same approval engine and audit trail, shaped for people processes.",
@@ -116,7 +118,7 @@ const MODULES: Module[] = [
   },
   {
     slug: "connect",
-    name: "Avrentis Integrations",
+    name: moduleName("connect"),
     subtitle: "External systems & integrations",
     body:
       "Push Avrentis events into your accounting, HR, or data-warehouse stack via webhooks and a typed API. Your operational record flowing where it needs to go.",
@@ -237,7 +239,7 @@ export default function ProductOverviewPage() {
                 textDecoration: "none",
               }}
             >
-              Start your 30-day trial
+              {START_TRIAL_CTA}
             </Link>
             <Link
               href="/product/how-it-works"

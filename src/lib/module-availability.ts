@@ -30,6 +30,10 @@ import type { ModulePlan } from "@/components/product/module-layout";
  * same as "you get nothing" — the always-on foundation (approval engine,
  * tamper-evident trail) runs on every plan. Where that distinction matters the note
  * says so explicitly; see `MODULE_PLAN_NOTES.audit.starter`.
+ *
+ * A row that does NOT include the module and has no authored note says where the
+ * module starts ("From <tier>" / "<tier> tier only"), derived from the
+ * same membership — tier names are never typed into a note.
  */
 export function planAvailabilityFor(
   moduleKey: string,
@@ -51,6 +55,24 @@ export function planAvailabilityFor(
   const notes = MODULE_PLAN_NOTES[moduleKey] ?? {};
   const rows: ModulePlan[] = [];
 
+  // Where the module starts, for the rows that do not include it: "From
+  // <tier>", or "<tier> tier only" when only the top tier carries it.
+  // Derived from the same membership as the tick, so no plan name is typed here.
+  const includingPlans = data.planOrder.filter(includes);
+  const lowestIncluding = includingPlans.length > 0 ? planFor(includingPlans[0]!) : undefined;
+  const isTopTierOnly =
+    includingPlans.length === 1 && includingPlans[0] === data.planOrder[data.planOrder.length - 1];
+  const startsAt = lowestIncluding
+    ? isTopTierOnly
+      ? `${lowestIncluding.name} tier only`
+      : `From ${lowestIncluding.name}`
+    : undefined;
+  const noteFor = (key: string, included: boolean): string | undefined => {
+    const authored = notes[key];
+    if (typeof authored === "function") return authored(lowestIncluding?.name ?? "");
+    return authored ?? (included ? undefined : startsAt);
+  };
+
   // Trial row first — a trialist is on a real tier, so its inclusion is that
   // tier's inclusion. Self-hides when the API omits trial terms (stale fallback)
   // or the trial is switched off, rather than asserting a trial that isn't sold.
@@ -60,7 +82,7 @@ export function planAvailabilityFor(
     rows.push({
       plan: `${trial.days}-day ${trialPlan.name} trial`,
       included: includes(trial.plan),
-      note: notes.trial,
+      note: noteFor("trial", includes(trial.plan)),
     });
   }
 
@@ -70,7 +92,7 @@ export function planAvailabilityFor(
     rows.push({
       plan: plan.name,
       included: includes(planKey),
-      note: notes[planKey],
+      note: noteFor(planKey, includes(planKey)),
     });
   }
 
@@ -87,9 +109,13 @@ export function planAvailabilityFor(
  * plan key (or `trial`). A missing entry renders no note, which is fine.
  *
  * Do not restate numbers the API already publishes (seats, storage, retention)
- * — those live in `Plan.limits` with precomputed labels and would drift here.
+ * — those live in `Plan.limits` and would drift here. Never name a tier either:
+ * "From <tier>" is derived for every row that lacks the module, and a note that
+ * must name one is a function handed the lowest tier that includes the module.
  */
-const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
+type PlanNote = string | ((lowestIncludingPlanName: string) => string);
+
+const MODULE_PLAN_NOTES: Record<string, Record<string, PlanNote>> = {
   pay: {
     business: "Adds custom approval chains",
     enterprise: "Adds SLA tracking and advanced routing",
@@ -113,30 +139,22 @@ const MODULE_PLAN_NOTES: Record<string, Record<string, string>> = {
     // The honesty fix. Starter does not carry Compliance, but the tamper-evident
     // trail and data-subject request handling are foundation and run for
     // everyone — say both, claim neither.
-    starter:
-      "Trail still recorded and data-subject requests handled — reporting and exports from Business",
+    starter: (from) =>
+      `Trail still recorded and data-subject requests handled — reporting and exports from ${from}`,
     business: "Full trail history and regulator-ready export",
     enterprise: "Unlimited retention, plus a live SIEM feed through the API",
   },
   guard: {
-    starter: "From Business",
     business: "All rule-based flags and the review queue",
   },
   grants: {
     // No enterprise line. Sub-grantee oversight is part of the module, and the
     // module is Business+ in its entirety — "Adds sub-grantees at scale" sold
     // an upgrade for something the Business buyer already has.
-    starter: "From Business",
     business:
       "Donors, awards and budget lines, partner sub-awards, donor receipts and cash position, matching contributions, reporting deadlines and donor-ready reports",
   },
-  people: {
-    starter: "Enterprise tier only",
-    business: "Enterprise tier only",
-  },
   connect: {
-    starter: "Enterprise tier only",
-    business: "Enterprise tier only",
     enterprise: "Unlimited API keys and priority support",
   },
 };

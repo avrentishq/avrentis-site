@@ -103,7 +103,7 @@ const CATEGORIES: Category[] = [
       "Every stage of the approval lifecycle can dispatch to the channels your approvers actually check. Multi-channel by default, all tracked to the audit trail.",
     integrations: [
       { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider.", availability: "available" },
-      { name: "WhatsApp", summary: "Approval alerts with a secure review link, on Starter and above.", availability: "available" },
+      { name: "WhatsApp", summary: "Approval alerts with a secure review link, on every plan.", availability: "available" },
       { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
       { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
       { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "request" },

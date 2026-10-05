@@ -9,7 +9,7 @@ import type { PricingData } from "@/lib/pricing";
  */
 const data = fallback as unknown as PricingData;
 
-describe("plan comparison data (from the synced pricing fallback)", () => {
+describe("plan comparison data (from the generated pricing fallback)", () => {
   it("exposes feature groups", () => {
     expect(data.featureGroups?.length ?? 0).toBeGreaterThan(0);
   });

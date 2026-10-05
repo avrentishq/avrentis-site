@@ -8,6 +8,7 @@ import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@avrentishq/core/brand";
+import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -744,7 +745,7 @@ export function Hero() {
                 e.currentTarget.style.backgroundColor = "var(--color-gold)";
               }}
             >
-              Start your 30-day trial
+              {START_TRIAL_CTA}
             </a>
             <a
               href="#how-it-works"

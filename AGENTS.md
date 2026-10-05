@@ -65,8 +65,13 @@ Run these locally before you claim anything is done.
   Refusal counts reach the console only when the site uses the same Upstash database and
   `RATE_LIMIT_KEY_PREFIX` as that environment's app; environments sharing one database each need
   a distinct prefix. `RATE_LIMIT_DISABLED=true` bypasses limits in `next dev` only.
-- **Never hand-edit `src/data/pricing-fallback.json`.** It is generated on every `pnpm dev`
-  and `pnpm build`.
+- **Never hand-edit `src/data/pricing-fallback.json`.** It is generated from core's plan
+  catalogue (prices, capacity, features, modules, trial) plus the site's own plan words in
+  `src/data/plan-copy.ts`, by `src/lib/pricing-fallback-build.ts`, run through
+  `scripts/generate-pricing-fallback.mjs` on every `pnpm dev` / `pnpm build` — no network.
+  `pricing-fallback.test.ts` (and `pnpm pricing:check`) fails when the committed file
+  differs, so after a core bump: run the script and commit the JSON. The generator and the
+  plan copy are build-only — no page imports them (`core-imports.lock.test.ts`).
 - **`pnpm.overrides` materialises core's canonical floor map**
   (`@avrentishq/core/security/dependency-floors`), enforced by
   `src/lib/security/dependency-floors.lock.test.ts`. Change a shared floor in core, not here;

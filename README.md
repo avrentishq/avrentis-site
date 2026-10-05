@@ -15,8 +15,9 @@ pnpm install
 pnpm dev          # runs under Doppler (doppler run --config dev) — secrets are not in the repo
 ```
 
-`predev` and `prebuild` refresh the pricing fallback from the live API; never hand-edit that
-file.
+`predev` and `prebuild` regenerate the pricing fallback from the installed core's plan
+catalogue (no network); never hand-edit that file. After a core bump, commit the regenerated
+JSON — `pnpm test` (or `pnpm pricing:check`) fails until you do.
 
 ## Checks
 

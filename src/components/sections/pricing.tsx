@@ -12,8 +12,9 @@ import type {
   PlanModule,
   PricingCurrency,
 } from "@/lib/pricing";
-import { formatCurrencyAmount } from "@/lib/pricing";
+import { formatCurrencyAmount } from "@/lib/money";
 import { isModulePublic } from "@/lib/brand";
+import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 import {
   READ_ONLY_GRACE_DAYS,
   TRIAL_DURATION_DAYS,
@@ -25,7 +26,12 @@ import {
 
 type BillingCycle = "monthly" | "annual";
 
-const FEATURED_PLAN = "business";
+/** The plan the card row features — core's recommended tier, never a typed key. */
+const FEATURED_PLAN = PLAN_ORDER.find((key) => PLAN_CATALOG[key].recommended);
+
+/** Months an annual plan does not charge for ("2 months free"), from core. */
+const ANNUAL_FREE_MONTHS = 12 - ANNUAL_BILLED_MONTHS;
+const ANNUAL_TOGGLE_LABEL = `Annual · ${ANNUAL_FREE_MONTHS} ${ANNUAL_FREE_MONTHS === 1 ? "month" : "months"} free`;
 
 /* ── Helpers ─────────────────────────────────────────────────── */
 
@@ -76,7 +82,7 @@ interface PricingProps {
 
 export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   const Headline = headingAs === "h1" ? m.h1 : m.h2;
-  // Default to annual — the higher-value cycle we already frame as "2 months
+  // Default to annual — the higher-value cycle we already frame as "N months
   // free". The card keeps the monthly-equivalent and annual total visible so
   // the default informs rather than tricks.
   const [billing, setBilling] = useState<BillingCycle>("annual");
@@ -301,7 +307,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
               }}
             >
-              Annual · 2 months free
+              {ANNUAL_TOGGLE_LABEL}
             </button>
           </div>
 

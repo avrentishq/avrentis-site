@@ -51,9 +51,10 @@ describe("product module pages — plan availability stays derived", () => {
       const source = readFileSync(join(process.cwd(), PAGES_DIR, file), "utf8");
       // Whitespace-collapsed, and tolerant of the trailing comma/semicolon a
       // formatter adds when it breaks this signature across lines. A lock test
-      // that fails on reformatting is noise, and noise gets deleted.
+      // that fails on reformatting is noise, and noise gets deleted. Other props
+      // may sit beside it (Pay also takes the plans its bank letter is on).
       const flat = source.replace(/\s+/g, " ");
-      return !/planAvailability,? \}: \{ planAvailability: ModulePlan\[\];? \}/.test(flat);
+      return !/\{[^{}]*\bplanAvailability\b[^{}]*\}: \{[^{}]*\bplanAvailability: ModulePlan\[\];?[^{}]*\}/.test(flat);
     });
 
     expect(

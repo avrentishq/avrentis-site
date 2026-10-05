@@ -20,6 +20,8 @@ import { dirname, join } from "node:path";
  *     byte formatter. Pure data and `Intl`; their value imports reach only
  *     `modules/catalog`, `entitlements/dimensions`, `dates/durations` and
  *     `locales`, none of which import a package.
+ *   - `money/format` + `money/types` — core's one money formatter, so a price
+ *     prints the way the product prints it. `Intl` and `locales` only.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  *
@@ -36,6 +38,8 @@ const RUNTIME_ALLOWED = new Set([
   "billing/capacity",
   "billing/catalog",
   "billing/limit-format",
+  "money/format",
+  "money/types",
 ]);
 const TEST_ONLY_ALLOWED = new Set([
   "modules/catalog",

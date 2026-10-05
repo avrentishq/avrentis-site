@@ -1,7 +1,17 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { formatCurrencyAmount, formatBytes, formatRetention, planNames, formatPlanList, type PricingData } from "@/lib/pricing";
+import { planNames, formatPlanList, type PricingData } from "@/lib/pricing";
+import { formatCurrencyAmount } from "@/lib/money";
+import {
+  documentLimitLine,
+  retentionAdjective,
+  retentionLimitLine,
+  storageLimitLine,
+  userLimitLine,
+} from "@/lib/plan-limits";
 import fallback from "@/data/pricing-fallback.json";
+import { PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import { softwareApplicationSchema } from "@/lib/seo";
 
 describe("pricing formatters (money path feeding the UI + JSON-LD)", () => {
   it("formats known currencies with their symbol", () => {
@@ -14,11 +24,33 @@ describe("pricing formatters (money path feeding the UI + JSON-LD)", () => {
     expect(formatCurrencyAmount(1000, "XYZ")).toBe("XYZ 1,000");
   });
 
-  it("formats bytes and retention", () => {
-    expect(formatBytes(1073741824)).toBe("1 GB");
-    expect(formatBytes(null)).toBe("Unlimited");
-    expect(formatRetention(30)).toBe("30-day");
-    expect(formatRetention(730)).toBe("2 years");
+  it("rounds to whole units and never groups by the visitor's locale", () => {
+    expect(formatCurrencyAmount(583333.4, "NGN")).toBe("₦583,333");
+    expect(formatCurrencyAmount(3000000, "NGN")).toBe("₦3,000,000");
+  });
+});
+
+describe("limit lines are formatted from the numbers (0 = unlimited)", () => {
+  it("formats seats and documents", () => {
+    expect(userLimitLine(10)).toBe("Up to 10 users");
+    expect(userLimitLine(0)).toBe("Unlimited users");
+    expect(documentLimitLine(0)).toBe("Unlimited documents");
+    expect(documentLimitLine(200)).toBe("200 documents/month");
+  });
+
+  it("writes storage in the binary unit it is counted in", () => {
+    expect(storageLimitLine(10 * 1024 ** 3)).toBe("10 GiB storage");
+    expect(storageLimitLine(0)).toBe("Unlimited storage");
+    expect(storageLimitLine(null)).toBe("Unlimited storage");
+  });
+
+  it("formats retention as a line and as an adjective", () => {
+    expect(retentionLimitLine(2555)).toBe("7 years retention");
+    expect(retentionLimitLine(365)).toBe("1 year retention");
+    expect(retentionLimitLine(90)).toBe("90 days retention");
+    expect(retentionLimitLine(0)).toBe("Unlimited retention");
+    expect(retentionAdjective(2555)).toBe("7-year");
+    expect(retentionAdjective(0)).toBeNull();
   });
 });
 
@@ -42,6 +74,15 @@ describe("quote-priced tiers are API-derived, never name-derived", () => {
     // Proven live rather than assumed: this same pattern matched before the
     // change, which is what makes its absence now meaningful.
     expect(pricingSource).not.toMatch(/key\s*===\s*["']enterprise["']/);
+  });
+
+  it("types no plan key at all — the featured tier is core's recommended plan", () => {
+    // `FEATURED_PLAN = "business"` and `find((p) => p.key === "business")` (the
+    // trial chip) were the other two tier literals in this file.
+    for (const key of PLAN_ORDER) {
+      expect(pricingSource).not.toMatch(new RegExp(`["'\`]${key}["'\`]`));
+    }
+    expect(pricingSource).toMatch(/PLAN_CATALOG\[key\]\.recommended/);
   });
 
   it("derives the quote-priced decision from selfServeCheckout", () => {
@@ -87,5 +128,24 @@ describe("plan names come from the pricing data, in plan order", () => {
     expect(formatPlanList(["Enterprise"])).toBe("Enterprise");
     expect(formatPlanList(["Business", "Enterprise"])).toBe("Business and Enterprise");
     expect(formatPlanList(["Starter", "Business", "Enterprise"])).toBe("Starter, Business and Enterprise");
+  });
+});
+
+describe("the SoftwareApplication offer is priced from the served currency", () => {
+  it("renders an offer from the price list's own currency, self-serve plans only", () => {
+    const data = fallback as unknown as PricingData;
+    const offer = softwareApplicationSchema(data).offers as Record<string, unknown> | undefined;
+    // It looked for USD only, so with a naira-only price list it never rendered.
+    expect(offer).toBeDefined();
+    const currency = data.plans[0]!.pricing[0]!.currency;
+    const selfServe = data.plans
+      .filter((plan) => plan.selfServeCheckout)
+      .map((plan) => plan.pricing.find((price) => price.currency === currency)!.monthly);
+    expect(offer).toMatchObject({
+      priceCurrency: currency,
+      lowPrice: Math.min(...selfServe),
+      highPrice: Math.max(...selfServe),
+      offerCount: selfServe.length,
+    });
   });
 });

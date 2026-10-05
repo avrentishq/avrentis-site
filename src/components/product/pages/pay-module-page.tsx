@@ -14,6 +14,8 @@ import { MODULES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { PayPreview } from "@/components/product/previews/pay-preview";
 
+const BANK_LETTER_PILLAR = "Bank-ready payment instructions";
+
 const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "pay",
   eyebrow: MODULES.pay.name,
@@ -39,9 +41,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     },
     {
       icon: Banknote,
-      title: "Bank-ready payment instructions",
+      title: BANK_LETTER_PILLAR,
       body:
-        "The moment the MD sanctions a voucher, Avrentis generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours. Available on Business and Enterprise.",
+        "The moment the MD sanctions a voucher, Avrentis generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours.",
     },
     {
       icon: ShieldCheck,
@@ -59,7 +61,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       icon: Scale,
       title: "Reconciled against your bank statement",
       body:
-        "Import the statement and match it line by line against what you recorded. A receipt proves a particular voucher was paid; a statement is the only thing that shows money leaving the account with no document behind it — a duplicate debit, or a batch leg that quietly failed. Available on Business and Enterprise.",
+        "Import the statement and match it line by line against what you recorded. A receipt proves a particular voucher was paid; a statement is the only thing that shows money leaving the account with no document behind it — a duplicate debit, or a batch leg that quietly failed.",
     },
   ],
 
@@ -103,6 +105,24 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function PayModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+/**
+ * `bankLetterPlans` — "Business and Enterprise", the plans carrying
+ * `bankLetterGeneration`, read from the pricing API by the route (the same
+ * pattern as the integrations page). Empty = unknown, and the sentence is left
+ * off rather than guessed. Statement reconciliation names no plan: it is part
+ * of Payables on every tier, so the availability table already says it.
+ */
+export function PayModulePage({
+  planAvailability,
+  bankLetterPlans,
+}: {
+  planAvailability: ModulePlan[];
+  bankLetterPlans: string;
+}) {
+  const pillars = config.pillars.map((pillar) =>
+    pillar.title === BANK_LETTER_PILLAR && bankLetterPlans
+      ? { ...pillar, body: `${pillar.body} Available on ${bankLetterPlans}.` }
+      : pillar,
+  );
+  return <ProductModuleLayout config={{ ...config, pillars, planAvailability }} />;
 }

@@ -41,8 +41,8 @@ Run these locally before you claim anything is done.
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
-  pure billing slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog` and
-  `billing/limit-format`.**
+  pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
+  `billing/limit-format`, `money/format` and `money/types`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
@@ -90,13 +90,19 @@ Run these locally before you claim anything is done.
   the site URL in `src/lib/seo.tsx` (`SITE_URL`, `canonical(path)`); `contacts.lock.test.ts`
   enforces both. `/.well-known/security.txt` is generated from them (expiry always a year
   ahead, rebuilt daily) — never replace it with a static file.
+- **Prices and limits are formatted on the site from the numbers.** A price goes through
+  `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
+  `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
+  Never print the API's `*Label` strings — their wording is not part of the contract.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts`. This includes BRANCHING on a tier:
   `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,
   the struck-through price and the annual saving, and is wrong the moment a second tier
   is quote-priced or Enterprise becomes self-serve. Read `plan.selfServeCheckout`, which
-  the product API publishes and enforces on its own Pay button. `pricing.test.ts` fails
-  on a tier-name branch in the pricing section.
+  the product API publishes and enforces on its own Pay button; the featured tier is core's
+  `PLAN_CATALOG[*].recommended`; "N months free" is core's `ANNUAL_BILLED_MONTHS`; a sentence
+  naming the plans a feature is on uses `planNames(data, feature)`. `pricing.test.ts` fails
+  on any plan key typed in the pricing section.
 - Full-word variable names. No cryptic abbreviations.
 - Visual changes get verified in a real browser and looked at, not reasoned about.
 

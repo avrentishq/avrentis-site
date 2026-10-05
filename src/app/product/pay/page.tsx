@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PayModulePage } from "@/components/product/pages/pay-module-page";
-import { fetchPricingData } from "@/lib/pricing";
+import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
 
@@ -20,5 +20,10 @@ export const metadata: Metadata = {
 
 export default async function ProductPayPage() {
   const pricingData = await fetchPricingData();
-  return <PayModulePage planAvailability={planAvailabilityFor("pay", pricingData)} />;
+  return (
+    <PayModulePage
+      planAvailability={planAvailabilityFor("pay", pricingData)}
+      bankLetterPlans={formatPlanList(planNames(pricingData, "bankLetterGeneration"))}
+    />
+  );
 }

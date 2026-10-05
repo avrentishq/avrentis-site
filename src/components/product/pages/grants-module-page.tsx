@@ -73,9 +73,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Payables", desc: "Disbursements to grantees and partners run through the payment workflow" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "Grant-funded purchases are tagged to the grant at the point of spend" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every allocation and report export is on the tamper-evident audit trail" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Disbursements to grantees and partners run through the payment workflow" },
+    { slug: "procure", name: MODULES.procure.name, desc: "Grant-funded purchases are tagged to the grant at the point of spend" },
+    { slug: "audit", name: MODULES.audit.name, desc: "Every allocation and report export is on the tamper-evident audit trail" },
   ],
 };
 

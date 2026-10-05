@@ -99,9 +99,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders on the same approval rails" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "The full compliance trail across every payment" },
-    { slug: "connect", name: "Avrentis Integrations", desc: "Push payment events into your accounting system" },
+    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders on the same approval rails" },
+    { slug: "audit", name: MODULES.audit.name, desc: "The full compliance trail across every payment" },
+    { slug: "connect", name: MODULES.connect.name, desc: "Push payment events into your accounting system" },
   ],
 };
 

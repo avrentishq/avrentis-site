@@ -55,9 +55,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: "Avrentis Compliance", desc: "Expense events flow into the same tamper-evident trail" },
-    { slug: "pay", name: "Avrentis Payables", desc: "Expense approvals run on the same review-and-sanction rails as payments" },
-    { slug: "connect", name: "Avrentis Integrations", desc: "Emit expense events to your accounting or payroll system via webhook" },
+    { slug: "audit", name: MODULES.audit.name, desc: "Expense events flow into the same tamper-evident trail" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Expense approvals run on the same review-and-sanction rails as payments" },
+    { slug: "connect", name: MODULES.connect.name, desc: "Emit expense events to your accounting or payroll system via webhook" },
   ],
 };
 

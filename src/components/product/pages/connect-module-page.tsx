@@ -66,9 +66,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Payables", desc: "Push sanctioned payments straight into accounting" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "Sync issued POs into ERP and vendor portals" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "Stream audit events to your SIEM or log aggregator" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Push sanctioned payments straight into accounting" },
+    { slug: "procure", name: MODULES.procure.name, desc: "Sync issued POs into ERP and vendor portals" },
+    { slug: "audit", name: MODULES.audit.name, desc: "Stream audit events to your SIEM or log aggregator" },
   ],
 };
 

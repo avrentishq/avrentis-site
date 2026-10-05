@@ -61,9 +61,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Payables", desc: "Every payment voucher is routed and sanctioned by these rules" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders run through the same authority policy" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every approval, delegation, and policy change lands on the tamper-evident trail" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Every payment voucher is routed and sanctioned by these rules" },
+    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders run through the same authority policy" },
+    { slug: "audit", name: MODULES.audit.name, desc: "Every approval, delegation, and policy change lands on the tamper-evident trail" },
   ],
 };
 

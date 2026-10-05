@@ -61,9 +61,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: "Avrentis Payables", desc: "Guard checks every payment voucher as it enters the approval chain" },
-    { slug: "procure", name: "Avrentis Procurement", desc: "Purchase orders and invoices are screened for duplicates too" },
-    { slug: "audit", name: "Avrentis Compliance", desc: "Every flag raised or resolved is written to the tamper-evident trail" },
+    { slug: "pay", name: MODULES.pay.name, desc: "Guard checks every payment voucher as it enters the approval chain" },
+    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders and invoices are screened for duplicates too" },
+    { slug: "audit", name: MODULES.audit.name, desc: "Every flag raised or resolved is written to the tamper-evident trail" },
   ],
 };
 

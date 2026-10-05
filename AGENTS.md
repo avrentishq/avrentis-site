@@ -40,7 +40,9 @@ Run these locally before you claim anything is done.
 - **`import { m } from "framer-motion"`, never `motion`.** The app is wrapped in
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
-  `@avrentishq/core/security/rate-limit` and `@avrentishq/core/security/rate-limit-tiers`.**
+  `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
+  pure billing slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog` and
+  `billing/limit-format`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
@@ -48,7 +50,14 @@ Run these locally before you claim anything is done.
   Tests may also import the dependency-free `modules/catalog`, `security/dependency-floors` and
   `brand/copy-guardrails`
   — they back the parity lock tests and never ship. `src/lib/core-imports.lock.test.ts`
-  enforces this list; extend both together.
+  enforces this list AND walks each allowed subpath's value-import graph, failing on any
+  package the site does not install; extend both together.
+- **Never type a trial term.** The trial's length, read-only grace, seat cap, storage and
+  message caps and the plan it runs on come from core via `src/lib/trial-terms.ts`
+  (`START_TRIAL_CTA`, `TRIAL_LENGTH`, …); a page that renders the pricing API's `trial`
+  block reads `days`/`seatCap` from it. `trial-terms.lock.test.ts` fails on a typed
+  "30-day trial", "N-seat", "N days after trial" or "<Plan> tier". The changelog is exempt —
+  an entry records what was true on its date.
 - **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per
   Server Action (core tier, identifier, numbers, fail mode) and `limitVisitor(action)`; never
   build an Upstash client or limiter in this repo. Every limiter carries a `site_*` tier from

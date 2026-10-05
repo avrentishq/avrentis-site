@@ -14,6 +14,14 @@ import type {
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/pricing";
 import { isModulePublic } from "@/lib/brand";
+import {
+  READ_ONLY_GRACE_DAYS,
+  TRIAL_DURATION_DAYS,
+  TRIAL_PLAN,
+  TRIAL_PLAN_NAME,
+  TRIAL_SEAT_CAP,
+  TRIAL_STORAGE,
+} from "@/lib/trial-terms";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -39,18 +47,22 @@ function getHighlights(plan: Plan): string[] {
 }
 
 /**
- * The Trial card is rendered client-side, not fetched from the API.
- * It's a marketing construct — the server's truth is `subscriptionStatus === "trial"`
- * on a tenant whose plan key is "business".
+ * The Trial card is a marketing construct, not a plan — the server's truth is
+ * `subscriptionStatus === "trial"` on a tenant whose plan is the trial plan.
+ * Its terms come from the API's `trial` block where it has one (the product's
+ * live answer) and from core's constants otherwise; nothing here is typed in.
+ *
+ * Deltas only — the module scope is the card's badge, and the watermark + grace
+ * detail lives in the footnote below the CTA (no repetition).
  */
-// Deltas only — the module scope is the card's badge, and the watermark +
-// 30-day-grace detail lives in the footnote below the CTA (no repetition).
-const TRIAL_HIGHLIGHTS: string[] = [
-  "Full Business tier — switched on, not a sandbox",
-  "Up to 5 users, ready to invite",
-  "Bank-ready PDF exports (trial watermark)",
-  "2 GB storage during trial",
-];
+function trialHighlights(planName: string, seatCap: number): string[] {
+  return [
+    `Full ${planName} tier — switched on, not a sandbox`,
+    `Up to ${seatCap} users, ready to invite`,
+    "Bank-ready PDF exports (trial watermark)",
+    `${TRIAL_STORAGE} storage during trial`,
+  ];
+}
 
 /* ── Component ───────────────────────────────────────────────── */
 
@@ -132,11 +144,15 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
     data.plans.flatMap((p) => publicPlanModules(p).map((m) => m.key)),
   ).size;
 
-  // The trial provisions the full Business tier — its chip lists Business's own
+  // The trial provisions a real tier — its chip lists that tier's own
   // publicly-marketed modules (incl. Compliance), straight from the API data so
-  // it can't drift from the Business card.
-  const businessPlan = data.plans.find((p) => p.key === "business");
-  const trialModuleLabel = (businessPlan ? publicPlanModules(businessPlan) : [])
+  // it can't drift from that tier's card. Days and seats are the API's live
+  // terms when it publishes them, core's constants when it does not.
+  const trialPlan = data.plans.find((p) => p.key === (data.trial?.plan ?? TRIAL_PLAN));
+  const trialPlanName = trialPlan?.name ?? TRIAL_PLAN_NAME;
+  const trialDays = data.trial?.days ?? TRIAL_DURATION_DAYS;
+  const trialSeatCap = data.trial?.seatCap ?? TRIAL_SEAT_CAP;
+  const trialModuleLabel = (trialPlan ? publicPlanModules(trialPlan) : [])
     .map((m) => m.name.replace("Avrentis ", ""))
     .join(" + ");
 
@@ -220,8 +236,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Every plan starts with a 30-day trial &mdash; no card on file, nothing
-          to cancel. Scale as your organisation grows. No hidden fees.
+          Every plan starts with a {trialDays}-day trial &mdash; no card on file,
+          nothing to cancel. Scale as your organisation grows. No hidden fees.
         </m.p>
 
         {/* Controls row */}
@@ -366,8 +382,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 margin: "0 0 20px",
               }}
             >
-              The full Business tier, switched on for your own data the moment
-              you verify — not a demo environment.
+              The full {trialPlanName} tier, switched on for your own data the
+              moment you verify — not a demo environment.
             </p>
             <div style={{ marginBottom: "6px" }}>
               <span
@@ -378,7 +394,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   color: "var(--color-text-primary)",
                 }}
               >
-                $0
+                {formatCurrencyAmount(0, currency)}
               </span>
               <span
                 style={{
@@ -389,7 +405,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 }}
               >
                 {" "}
-                / 30 days
+                / {trialDays} days
               </span>
             </div>
             <p
@@ -429,7 +445,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 flex: 1,
               }}
             >
-              {TRIAL_HIGHLIGHTS.map((feature) => (
+              {trialHighlights(trialPlanName, trialSeatCap).map((feature) => (
                 <li
                   key={feature}
                   style={{
@@ -478,7 +494,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 e.currentTarget.style.borderColor = "var(--color-border)";
               }}
             >
-              Start your 30-day trial
+              Start your {trialDays}-day trial
             </Link>
             <p
               style={{
@@ -491,7 +507,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               }}
             >
               Exports carry an Avrentis Trial watermark until you upgrade. Data
-              is preserved for 30 days after your trial ends.
+              is preserved for {READ_ONLY_GRACE_DAYS} days after your trial ends.
             </p>
           </m.div>
 

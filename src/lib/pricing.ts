@@ -87,7 +87,7 @@ export interface FeatureGroup {
 /** The free-trial terms, as published by the pricing API. The trial runs on a
  *  real plan tier (`plan`), so what a trialist can actually use is that plan's
  *  entitlement — which is why the module pages derive their trial row from it
- *  rather than restating "30-day Business trial" in eight places. */
+ *  rather than restating the trial's length and tier in eight places. */
 export interface TrialInfo {
   enabled: boolean;
   days: number;

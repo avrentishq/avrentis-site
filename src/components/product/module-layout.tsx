@@ -27,6 +27,7 @@ import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 export type ModuleStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
@@ -142,7 +143,7 @@ function resolveCtas(config: ModuleConfig): {
   switch (config.status) {
     case "available":
       return {
-        primary: config.primaryCta ?? { label: "Start your 30-day trial", href: "/trial" },
+        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: "/trial" },
         secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
       };
     case "coming_soon":

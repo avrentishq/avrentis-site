@@ -19,6 +19,7 @@ import { fadeUp, fadeUpTransition } from "@/lib/animations";
 import { BOUNDS, EFFICIENCY, clampInt, computeSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
+import { TRIAL_LENGTH } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
 const pct = Math.round(EFFICIENCY * 100);
@@ -416,7 +417,7 @@ export function SavingsEstimator() {
             marginTop: "2px",
           }}
         >
-          Or just start the 30-day trial &mdash; no card, nothing to cancel &rarr;
+          Or just start the {TRIAL_LENGTH} trial &mdash; no card, nothing to cancel &rarr;
         </Link>
       </div>
     </m.div>

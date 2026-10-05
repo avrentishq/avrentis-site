@@ -2,8 +2,10 @@ import { describe, it, expect } from "vitest";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import type { PricingData } from "@/lib/pricing";
 import fallback from "@/data/pricing-fallback.json";
+import { TRIAL_LENGTH, TRIAL_PLAN_NAME } from "@/lib/trial-terms";
 
 const data = fallback as unknown as PricingData;
+const TRIAL_ROW = `${TRIAL_LENGTH} ${TRIAL_PLAN_NAME} trial`;
 
 /** The row for a plan display name, e.g. "Starter". */
 const row = (moduleKey: string, planName: string) =>
@@ -40,10 +42,10 @@ describe("planAvailabilityFor — inclusion comes from the API, never from prose
   });
 
   it("derives the trial row from the tier the trial actually runs on", () => {
-    // Not the literal string "30-day Business trial" in eight files: change the
-    // trial length or tier in the API and every module page follows.
+    // Not a typed trial label in eight files: change the trial length or tier
+    // in core (and so the API) and every module page follows.
     const rows = planAvailabilityFor("guard", data);
-    expect(rows[0]!.plan).toBe("30-day Business trial");
+    expect(rows[0]!.plan).toBe(TRIAL_ROW);
     // Guard is a Business module, and the trial is a Business trial ⇒ included.
     expect(rows[0]!.included).toBe(true);
     // People is Enterprise-only, so a Business trial does NOT include it.
@@ -53,7 +55,7 @@ describe("planAvailabilityFor — inclusion comes from the API, never from prose
   it("emits one row per plan, in the API's declared order", () => {
     const rows = planAvailabilityFor("vault", data).map((r) => r.plan);
     expect(rows).toEqual([
-      "30-day Business trial",
+      TRIAL_ROW,
       "Starter",
       "Business",
       "Enterprise",
@@ -110,4 +112,24 @@ describe("planAvailabilityFor — degraded payloads must not invent entitlement"
     expect(rows.length).toBeGreaterThan(0);
     expect(rows.every((r) => !r.included)).toBe(true);
   });
+
+  it("says where a missing module starts, from membership, never a typed tier", () => {
+    const nameOf = (key: string) => data.plans.find((plan) => plan.key === key)!.name;
+    const lowest = (moduleKey: string) =>
+      data.planOrder.find((key) => data.plans.find((plan) => plan.key === key)!.modules.some((m) => m.key === moduleKey))!;
+    const top = data.planOrder[data.planOrder.length - 1]!;
+    // Guard starts below the top tier → "From <tier>".
+    expect(lowest("guard")).not.toBe(top);
+    expect(row("guard", nameOf(data.planOrder[0]!))?.note).toBe(`From ${nameOf(lowest("guard"))}`);
+    // Requests is top-tier only → "<tier> tier only", on every row without it.
+    expect(lowest("people")).toBe(top);
+    for (const r of planAvailabilityFor("people", data).filter((r) => !r.included)) {
+      expect(r.note).toBe(`${nameOf(top)} tier only`);
+    }
+    // An authored note that names a tier gets the derived one handed in.
+    expect(row("audit", nameOf(data.planOrder[0]!))?.note).toMatch(
+      new RegExp(`exports from ${nameOf(lowest("audit"))}$`),
+    );
+  });
 });
+

@@ -26,6 +26,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import type { ModuleStatus } from "@/components/product/module-layout";
 import { canonical } from "@/lib/seo";
+import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 export const metadata: Metadata = {
   title: "The Avrentis platform — spend, oversight, evidence, on one record",
@@ -237,7 +238,7 @@ export default function ProductOverviewPage() {
                 textDecoration: "none",
               }}
             >
-              Start your 30-day trial
+              {START_TRIAL_CTA}
             </Link>
             <Link
               href="/product/how-it-works"

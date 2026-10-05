@@ -30,7 +30,7 @@ describe("planAvailabilityFor — inclusion comes from the API, never from prose
   });
 
   it("tracks real membership across every tier", () => {
-    // Ground truth: avrentis-app src/lib/billing/plans.ts module lists.
+    // Ground truth: core modules/catalog planGate (billing/catalog planModules).
     expect(row("pay", "Starter")?.included).toBe(true);
     expect(row("procure", "Starter")?.included).toBe(true);
     expect(row("guard", "Starter")?.included).toBe(false);

@@ -1,6 +1,7 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
 import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
 /** One plan's price in one currency. Amounts are MAJOR units; the site formats
  *  them itself (`formatCurrencyAmount`) and never prints the `*Label` strings,
@@ -68,6 +69,10 @@ export interface Plan {
    * its own Pay button, so the page and the product cannot disagree.
    */
   selfServeCheckout: boolean;
+  /** Service promises this plan carries (dedicated onboarding, priority
+   *  support) — never runtime gates. Absent on an older payload, which listed
+   *  them only in `features`; `withServiceCommitmentGroup` reads either. */
+  serviceCommitments?: string[];
   pricing: PricingCurrency[];
   limits: PlanLimits;
   modules: PlanModule[];
@@ -130,7 +135,13 @@ const PRICING_API = `${PLATFORM_ORIGIN}/api/v1/public/pricing`;
 
 import fallback from "@/data/pricing-fallback.json";
 
+/** Every payload the page renders — live or fallback — shows service
+ *  commitments as their own comparison group (see `@/lib/service-commitments`). */
 export async function fetchPricingData(): Promise<PricingData> {
+  return withServiceCommitmentGroup(await fetchRawPricingData());
+}
+
+async function fetchRawPricingData(): Promise<PricingData> {
   try {
     const res = await fetch(PRICING_API, {
       next: { revalidate: 3600 },

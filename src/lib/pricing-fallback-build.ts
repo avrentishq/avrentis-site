@@ -40,6 +40,7 @@ import {
   userLimitLine,
 } from "./plan-limits";
 import type { FeatureGroup, Plan, PlanModule, PricingCurrency, PricingData } from "./pricing";
+import { withServiceCommitmentGroup } from "./service-commitments";
 
 /**
  * `src/data/pricing-fallback.json` — the page's cold-start floor, served only
@@ -66,6 +67,11 @@ import type { FeatureGroup, Plan, PlanModule, PricingCurrency, PricingData } fro
  * in `src/data/plan-copy.ts`. Tax fields are null: the rate belongs to the
  * country rule pack the app reads, which core does not hold, and the site never
  * prints tax. `addOns` is empty: the product sells none.
+ *
+ * Service commitments are listed per plan (`serviceCommitments`, as the API
+ * publishes them) and grouped under "Service & support", not the platform
+ * group (`withServiceCommitmentGroup`, the same pass the page applies to a
+ * live payload).
  *
  * `scripts/generate-pricing-fallback.mjs` writes the file on `prebuild` /
  * `predev`; `pricing-fallback.test.ts` fails when the committed file differs.
@@ -153,6 +159,7 @@ function buildPlan(plan: PlanKey): Plan {
     description: PLAN_COPY[plan].description(copyInput),
     highlights: PLAN_COPY[plan].highlights(copyInput),
     selfServeCheckout: isSelfServePlan(plan),
+    serviceCommitments: [...entry.serviceCommitments],
     pricing: priceEntries(plan),
     limits: {
       maxUsers: entry.capacity.maxUsers,
@@ -222,7 +229,7 @@ export function buildPricingFallback(): PricingData {
     groups.flatMap((group) => group.featureKeys).map((feature) => [feature, FEATURE_LABELS[feature]!]),
   );
 
-  return {
+  return withServiceCommitmentGroup({
     plans,
     planOrder: [...PLAN_ORDER],
     addOns: [],
@@ -255,7 +262,7 @@ export function buildPricingFallback(): PricingData {
       seatCap: TRIAL_SEAT_CAP,
       cardRequired: false,
     },
-  };
+  });
 }
 
 /** The file's exact text: two-space JSON plus a trailing newline. */

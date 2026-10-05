@@ -42,7 +42,7 @@ Run these locally before you claim anything is done.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
-  `billing/limit-format`, `money/format` and `money/types`.**
+  `billing/limit-format`, `money/format`, `money/types` and `billing/features`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
@@ -99,6 +99,11 @@ Run these locally before you claim anything is done.
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
   Never print the API's `*Label` strings — their wording is not part of the contract.
+- **Service commitments (dedicated onboarding, priority support) are their own comparison
+  group**, "Service & support" — never under "Workflow & platform". `fetchPricingData` runs
+  every payload (live or fallback) through `withServiceCommitmentGroup`
+  (`src/lib/service-commitments.ts`, keys from core's `SERVICE_COMMITMENT_KEYS`), which reads
+  per-plan `serviceCommitments` and falls back to `features` for an older payload.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts` (`moduleName(key)` in titles and prose —
   `module-names.lock.test.ts` fails on a typed "Avrentis <Module>" anywhere else). This includes BRANCHING on a tier:

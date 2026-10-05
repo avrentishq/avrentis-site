@@ -12,6 +12,7 @@
         "10 GiB storage · 7-year record retention"
       ],
       "selfServeCheckout": true,
+      "serviceCommitments": [],
       "pricing": [
         {
           "currency": "NGN",
@@ -107,6 +108,10 @@
         "Priority support"
       ],
       "selfServeCheckout": true,
+      "serviceCommitments": [
+        "dedicatedOnboarding",
+        "prioritySupport"
+      ],
       "pricing": [
         {
           "currency": "NGN",
@@ -220,6 +225,10 @@
         "Dedicated onboarding & priority support"
       ],
       "selfServeCheckout": false,
+      "serviceCommitments": [
+        "dedicatedOnboarding",
+        "prioritySupport"
+      ],
       "pricing": [
         {
           "currency": "NGN",
@@ -434,11 +443,17 @@
         "multiCompanyGroup",
         "groupAdminDashboard",
         "customBranding",
-        "dedicatedOnboarding",
-        "prioritySupport",
         "commitmentControl",
         "companyBoard",
         "oversightRoles"
+      ]
+    },
+    {
+      "key": "service",
+      "label": "Service & support",
+      "featureKeys": [
+        "dedicatedOnboarding",
+        "prioritySupport"
       ]
     }
   ],

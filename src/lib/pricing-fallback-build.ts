@@ -33,6 +33,7 @@ import { effectiveDocumentRetentionDays } from "@avrentishq/core/billing/retenti
 
 import { FEATURE_LABELS, PLAN_COPY } from "../data/plan-copy";
 import { formatCurrencyAmount } from "./money";
+import { addedSalesTax, taxLabel } from "./price-tax";
 import {
   documentLimitLine,
   retentionLimitLine,
@@ -64,9 +65,10 @@ import { withServiceCommitmentGroup } from "./service-commitments";
  *   - the trial → `billing/trial-deadlines` + `billing/capacity`.
  *
  * The words (plan descriptions, highlights, feature labels) are the site's own,
- * in `src/data/plan-copy.ts`. Tax fields are null: the rate belongs to the
- * country rule pack the app reads, which core does not hold, and the site never
- * prints tax. `addOns` is empty: the product sells none.
+ * in `src/data/plan-copy.ts`. Prices are before tax; `taxRate`/`taxLabel` are
+ * the tax the platform adds on top in that currency (core `billing/platform-tax`:
+ * Nigerian VAT on naira, none where Stripe computes it). `addOns` is empty: the
+ * product sells none.
  *
  * Service commitments are listed per plan (`serviceCommitments`, as the API
  * publishes them) and grouped under "Service & support", not the platform
@@ -98,8 +100,8 @@ function priceEntries(plan: PlanKey): PricingCurrency[] {
         annualPerMonth: annualTotal === null ? null : Math.round(annualTotal / 12),
         annualTotal,
         annualLabel: annualTotal === null ? null : `${formatCurrencyAmount(annualTotal, currency)}/year`,
-        taxRate: null,
-        taxLabel: null,
+        taxRate: addedSalesTax(currency)?.rate ?? null,
+        taxLabel: taxLabel(currency),
       },
     ];
   });

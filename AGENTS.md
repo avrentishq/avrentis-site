@@ -42,7 +42,7 @@ Run these locally before you claim anything is done.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
-  `billing/limit-format`, `money/format`, `money/types` and `billing/features`.**
+  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax` and `region/sales-tax`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
@@ -99,6 +99,10 @@ Run these locally before you claim anything is done.
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
   Never print the API's `*Label` strings — their wording is not part of the contract.
+- **Listed prices are before tax.** A naira card shows "+ <rate> VAT" from `priceTaxNote`
+  (`src/lib/price-tax.ts`): the API's numeric `taxRate` when present, else core's
+  `platformSalesTax`; never a typed rate. Stripe currencies show no tax line (tax is
+  computed at checkout).
 - **Service commitments (dedicated onboarding, priority support) are their own comparison
   group**, "Service & support" — never under "Workflow & platform". `fetchPricingData` runs
   every payload (live or fallback) through `withServiceCommitmentGroup`

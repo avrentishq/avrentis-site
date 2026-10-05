@@ -13,6 +13,7 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/money";
+import { priceTaxNote } from "@/lib/price-tax";
 import { isModulePublic } from "@/lib/brand";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 import {
@@ -545,6 +546,10 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 ? priceData.monthly * 12 - priceData.annualTotal
                 : 0;
 
+            // Prices are before tax: naira adds VAT on top ("+ <rate> VAT"), rate
+            // from the API's numeric field or core — never typed. None for USD.
+            const taxNote = priceData ? priceTaxNote(currency, priceData.taxRate) : null;
+
             const features = getHighlights(plan);
             // Ladder: every tier above the cheapest lists only its DELTAS,
             // under an "Everything in <next-cheaper tier>, plus —" lead-in.
@@ -693,6 +698,20 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     </span>
                   </span>
                 </div>
+
+                {taxNote && (
+                  <p
+                    style={{
+                      fontFamily: "var(--font-sans)",
+                      fontWeight: 400,
+                      fontSize: "12px",
+                      color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
+                      margin: "0 0 8px",
+                    }}
+                  >
+                    {taxNote}
+                  </p>
+                )}
 
                 {/* Real yearly saving on annual — honest contrast */}
                 {annualSaving > 0 && (

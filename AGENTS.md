@@ -99,10 +99,13 @@ Run these locally before you claim anything is done.
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
   Never print the API's `*Label` strings — their wording is not part of the contract.
-- **Listed prices are before tax.** A naira card shows "+ <rate> VAT" from `priceTaxNote`
-  (`src/lib/price-tax.ts`): the API's numeric `taxRate` when present, else core's
-  `platformSalesTax`; never a typed rate. Stripe currencies show no tax line (tax is
-  computed at checkout).
+- **Listed prices are before tax, and a tax line shows only where core says tax is
+  charged.** `priceTaxNote` (`src/lib/price-tax.ts`) asks core's `platformSalesTax`, which
+  adds tax only for a country in core's `PLATFORM_TAX_REGISTRATIONS` — empty until Avrentis
+  is registered, so no VAT line today. Core decides WHETHER; the API's numeric `taxRate`
+  only formats the rate once core says yes (else core's rate), and is ignored when core
+  says no — so an app on an older core can never make the site advertise uncharged tax.
+  Never a typed rate. Stripe currencies show no tax line (tax is computed at checkout).
 - **Service commitments (dedicated onboarding, priority support) are their own comparison
   group**, "Service & support" — never under "Workflow & platform". `fetchPricingData` runs
   every payload (live or fallback) through `withServiceCommitmentGroup`

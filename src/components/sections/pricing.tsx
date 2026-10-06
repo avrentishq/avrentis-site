@@ -546,8 +546,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 ? priceData.monthly * 12 - priceData.annualTotal
                 : 0;
 
-            // Prices are before tax: naira adds VAT on top ("+ <rate> VAT"), rate
-            // from the API's numeric field or core — never typed. None for USD.
+            // Prices are before tax. A tax line ("+ <rate> VAT") shows only where
+            // core says tax is charged (registered); the API's rate only formats
+            // it — never typed. None for USD.
             const taxNote = priceData ? priceTaxNote(currency, priceData.taxRate) : null;
 
             const features = getHighlights(plan);

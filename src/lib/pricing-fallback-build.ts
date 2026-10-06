@@ -67,7 +67,8 @@ import { withServiceCommitmentGroup } from "./service-commitments";
  * The words (plan descriptions, highlights, feature labels) are the site's own,
  * in `src/data/plan-copy.ts`. Prices are before tax; `taxRate`/`taxLabel` are
  * the tax the platform adds on top in that currency (core `billing/platform-tax`:
- * Nigerian VAT on naira, none where Stripe computes it). `addOns` is empty: the
+ * naira's VAT only once Avrentis is registered for it — null until then — and
+ * none where Stripe computes it). `addOns` is empty: the
  * product sells none.
  *
  * Service commitments are listed per plan (`serviceCommitments`, as the API

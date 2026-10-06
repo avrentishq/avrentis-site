@@ -25,8 +25,9 @@ import { dirname, join } from "node:path";
  *   - `billing/features` — `SERVICE_COMMITMENT_KEYS` for the comparison table's
  *     service group (server-side, in `fetchPricingData`). Reaches only
  *     `modules/catalog`; its `db/schema` and role imports are type-only.
- *   - `billing/platform-tax` + `region/sales-tax` — the VAT added on top of a
- *     naira price. A small rate table; country types are type-only imports.
+ *   - `billing/platform-tax` + `region/sales-tax` — whether tax is added on top
+ *     of a naira price (only where core lists a registration) and at what rate.
+ *     A small rate table; country types are type-only imports.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`

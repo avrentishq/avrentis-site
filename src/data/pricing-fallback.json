@@ -21,8 +21,8 @@
           "annualPerMonth": 250000,
           "annualTotal": 3000000,
           "annualLabel": "₦3,000,000/year",
-          "taxRate": 0.075,
-          "taxLabel": "VAT 7.5%"
+          "taxRate": null,
+          "taxLabel": null
         }
       ],
       "limits": {
@@ -120,8 +120,8 @@
           "annualPerMonth": 583333,
           "annualTotal": 7000000,
           "annualLabel": "₦7,000,000/year",
-          "taxRate": 0.075,
-          "taxLabel": "VAT 7.5%"
+          "taxRate": null,
+          "taxLabel": null
         }
       ],
       "limits": {
@@ -237,8 +237,8 @@
           "annualPerMonth": null,
           "annualTotal": null,
           "annualLabel": null,
-          "taxRate": 0.075,
-          "taxLabel": "VAT 7.5%"
+          "taxRate": null,
+          "taxLabel": null
         }
       ],
       "limits": {

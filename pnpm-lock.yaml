@@ -39,6 +39,7 @@ overrides:
   tmp: '>=0.2.6'
   sharp: '>=0.35.5'
   source-map-js: '>=1.2.2'
+  proxy-addr: '>=2.0.8'
   '@babel/core': ^8.0.1
 
 importers:
@@ -46,8 +47,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.249.1
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#513a185aa9867ade22856bcb50ff67aafbd41a8b(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)
+        specifier: github:avrentishq/avrentis-core#v0.249.2
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#9054d137cf36cb9b39605fc68c432536d9a2c71f(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -116,9 +117,9 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#513a185aa9867ade22856bcb50ff67aafbd41a8b':
-    resolution: {commit: 513a185aa9867ade22856bcb50ff67aafbd41a8b, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.249.1
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#9054d137cf36cb9b39605fc68c432536d9a2c71f':
+    resolution: {commit: 9054d137cf36cb9b39605fc68c432536d9a2c71f, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.249.2
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -2479,7 +2480,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#513a185aa9867ade22856bcb50ff67aafbd41a8b(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)':
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#9054d137cf36cb9b39605fc68c432536d9a2c71f(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)':
     optionalDependencies:
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0

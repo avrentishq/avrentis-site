@@ -60,6 +60,14 @@ const SECTIONS: LegalSection[] = [
           voluntarily include when contacting us.
         </p>
         <p>
+          <strong>Free-trial record.</strong>{" "}When an organisation starts a free trial, we keep a one-way scrambled
+          code derived from the billing email address the trial was started with &mdash; never the address itself
+          &mdash; together with the date and which organisation started the trial. If that organisation later replaces
+          its billing email address, the same kind of code is kept for the address it replaced. The code cannot be
+          turned back into an email address; it only lets us check whether an address we are given has already been
+          used for a free trial. See <a href="#how-long">How long we keep it</a>.
+        </p>
+        <p>
           <strong>Marketing-site analytics.</strong>{" "}We do not run third-party analytics on this website, and we do
           not place advertising cookies.
         </p>
@@ -259,6 +267,16 @@ const SECTIONS: LegalSection[] = [
           reasonable record-keeping.
         </p>
         <p>
+          <strong>Free-trial record.</strong>{" "}Kept indefinitely, so that each email address can start only one
+          free trial. It is not deleted when the organisation&rsquo;s account is deleted (only its link to that
+          organisation is removed), and it is not deleted when you ask us to erase your personal data. We keep it on
+          the basis of our legitimate interest in preventing fraud and abuse of the free trial (GDPR Article 6(1)(f),
+          read with Recital 47, and the legitimate-interest basis in section 25 of the Nigeria Data Protection Act
+          2023). It holds only the scrambled code described under{" "}
+          <a href="#what-we-collect">What we collect</a>, the date it was recorded, and &mdash; until that
+          account is deleted &mdash; which organisation started the trial.
+        </p>
+        <p>
           <strong>De-identified and aggregated information.</strong>{" "}Retained indefinitely. It contains no personal
           data and no identifier of any customer, so it is not deleted when an account closes and cannot be deleted on
           request &mdash; it cannot be traced to any customer or individual.
@@ -278,7 +296,10 @@ const SECTIONS: LegalSection[] = [
         <ul>
           <li>Access the personal data we hold about you.</li>
           <li>Request correction of inaccurate data.</li>
-          <li>Request deletion, subject to legal and contractual retention obligations.</li>
+          <li>
+            Request deletion, subject to legal and contractual retention obligations and to the free-trial record
+            described under <a href="#how-long">How long we keep it</a>.
+          </li>
           <li>Receive a portable copy of your data.</li>
           <li>Object to or restrict certain processing.</li>
           <li>Withdraw consent where consent is the lawful basis.</li>
@@ -350,7 +371,7 @@ export default function PrivacyPage() {
       eyebrow="PRIVACY POLICY"
       title="How we handle your data."
       lede="This policy is a plain-language summary of how Avrentis collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords."
-      effectiveDate="26 September 2026"
+      effectiveDate="7 October 2026"
       sections={SECTIONS}
       footerNote={
         <>

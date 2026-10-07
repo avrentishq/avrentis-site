@@ -16,7 +16,7 @@
     "pricing:check": "node scripts/generate-pricing-fallback.mjs --check"
   },
   "dependencies": {
-    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.246.0",
+    "@avrentishq/core": "github:avrentishq/avrentis-core#a3860ca738071ef0ac754e4ede8644b032caa2ae",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "clsx": "^2.1.1",

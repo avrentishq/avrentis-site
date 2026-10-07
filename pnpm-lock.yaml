@@ -45,8 +45,8 @@ importers:
   .:
     dependencies:
       '@avrentishq/core':
-        specifier: github:avrentishq/avrentis-core#v0.248.1
-        version: git+https://git@github.com:avrentishq/avrentis-core.git#89c85978e97a011213184bb161072a7c2300893c(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)
+        specifier: github:avrentishq/avrentis-core#v0.249.0
+        version: git+https://git@github.com:avrentishq/avrentis-core.git#bc49ba2dc9846be61c574cb0a820d197c3be7fdb(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -115,9 +115,9 @@ packages:
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
     engines: {node: '>=10'}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#89c85978e97a011213184bb161072a7c2300893c':
-    resolution: {commit: 89c85978e97a011213184bb161072a7c2300893c, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
-    version: 0.248.1
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#bc49ba2dc9846be61c574cb0a820d197c3be7fdb':
+    resolution: {commit: bc49ba2dc9846be61c574cb0a820d197c3be7fdb, repo: git@github.com:avrentishq/avrentis-core.git, type: git}
+    version: 0.249.0
     engines: {node: '>=22.15.0'}
     peerDependencies:
       '@aws-sdk/client-s3': ^3.1065.0
@@ -2478,7 +2478,7 @@ snapshots:
 
   '@alloc/quick-lru@5.2.0': {}
 
-  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#89c85978e97a011213184bb161072a7c2300893c(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)':
+  '@avrentishq/core@git+https://git@github.com:avrentishq/avrentis-core.git#bc49ba2dc9846be61c574cb0a820d197c3be7fdb(@upstash/ratelimit@2.0.8(@upstash/redis@1.38.0))(@upstash/redis@1.38.0)(typescript@5.9.3)':
     optionalDependencies:
       '@upstash/ratelimit': 2.0.8(@upstash/redis@1.38.0)
       '@upstash/redis': 1.38.0

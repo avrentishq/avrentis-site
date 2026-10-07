@@ -151,7 +151,7 @@ const CATEGORIES: DocsCategory[] = [
     eyebrow: "ADMINISTRATION",
     title: "Running Avrentis inside your organisation.",
     lede:
-      "User provisioning, SSO configuration, IP allowlisting, MFA, custom domains. Written for admins and internal IT.",
+      "User provisioning, SSO configuration, IP allowlisting and MFA. Written for admins and internal IT.",
     items: [
       {
         title: "SSO configuration (OIDC; SAML on the roadmap)",

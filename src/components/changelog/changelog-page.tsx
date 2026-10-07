@@ -103,12 +103,11 @@ const ENTRIES: Entry[] = [
     tag: "platform",
     title: "Platform tools for enterprise operations teams.",
     body:
-      "A set of capabilities for larger customers who need tighter control. Subscribe to what's happening inside Avrentis from your own systems, track incidents in one place, restrict sign-in to your office IP addresses, use your own domain, and import users in bulk.",
+      "A set of capabilities for larger customers who need tighter control. Subscribe to what's happening inside Avrentis from your own systems, track incidents in one place, restrict sign-in to your office IP addresses, and import users in bulk.",
     bullets: [
       "Subscribe to events inside Avrentis from your own systems",
       "Track incidents directly from the admin dashboard",
       "Restrict sign-in to your organisation's approved IP addresses",
-      "Use your own domain for the Avrentis portal",
       "Import large numbers of users in a single upload",
     ],
     link: { label: "Integrations catalogue", href: "/product/integrations" },

@@ -28,6 +28,8 @@ import { dirname, join } from "node:path";
  *   - `billing/platform-tax` + `region/sales-tax` — whether tax is added on top
  *     of a naira price (only where core lists a registration) and at what rate.
  *     A small rate table; country types are type-only imports.
+ *   - `billing/reserved-mail-domain` — the trial form refuses an address that
+ *     can never receive mail, by the rule core shares with the app and console. No imports.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
@@ -53,6 +55,7 @@ const RUNTIME_ALLOWED = new Set([
   "billing/features",
   "billing/platform-tax",
   "region/sales-tax",
+  "billing/reserved-mail-domain",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
 const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog", "sectors"]);

@@ -42,7 +42,7 @@ Run these locally before you claim anything is done.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
-  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax` and `region/sales-tax`.**
+  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax` and `billing/reserved-mail-domain`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of

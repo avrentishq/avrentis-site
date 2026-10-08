@@ -27,6 +27,7 @@ import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
+import { hasEmailShape, trialEmailError } from "./email-check";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
@@ -242,7 +243,7 @@ export function TrialForm() {
   const isValid = useMemo(
     () =>
       nameValue.trim().length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue) &&
+      trialEmailError(emailValue.trim()) === undefined &&
       organisationValue.trim().length > 0 &&
       roleValue !== "" &&
       orgSizeValue !== "" &&
@@ -280,6 +281,14 @@ export function TrialForm() {
   }
 
   const fieldErrors = state.status === "error" ? state.fieldErrors : undefined;
+
+  // ── Email: refused before submit ────────────────────────────────
+  // Only once the value has an address's shape, so a half-typed domain
+  // ("you@test" on its way to "you@testco.ng") never flashes an error.
+  // The server action asks the same rule; its error shows otherwise.
+  const trimmedEmail = emailValue.trim();
+  const emailError =
+    (hasEmailShape(trimmedEmail) ? trialEmailError(trimmedEmail) : undefined) ?? fieldErrors?.email;
 
   // ── Free-email hint ─────────────────────────────────────────────
   const emailDomain = emailValue.includes("@")
@@ -568,13 +577,13 @@ export function TrialForm() {
               onChange={(e) => setEmailValue(e.target.value)}
               style={{
                 ...inputStyle,
-                borderColor: fieldErrors?.email ? "var(--color-danger)" : "var(--color-border)",
+                borderColor: emailError ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
-            {fieldErrors?.email && <span style={errorStyle}>{fieldErrors.email}</span>}
+            {emailError && <span style={errorStyle}>{emailError}</span>}
             {/* Free-email nudge — shown when domain matches a personal provider.
                 Not a block; the submit button remains enabled. */}
-            {showFreeEmailHint && !fieldErrors?.email && (
+            {showFreeEmailHint && !emailError && (
               <span style={hintStyle}>
                 Tip: work emails get the fastest setup. Personal emails work too.
               </span>

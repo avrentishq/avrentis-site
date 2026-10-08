@@ -27,9 +27,7 @@ import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { CONTACT_EMAIL } from "@/lib/contacts";
-
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+import { trialEmailError } from "./email-check";
 
 const ROLES = [
   "CFO",
@@ -81,8 +79,8 @@ export async function submitTrialRequest(
   >;
   const fieldErrors: FieldErrors = {};
   if (!name) fieldErrors.name = "Please share your full name.";
-  if (!email) fieldErrors.email = "Please share your work email.";
-  else if (!EMAIL_RE.test(email)) fieldErrors.email = "That doesn't look like a valid email.";
+  const emailError = trialEmailError(email);
+  if (emailError) fieldErrors.email = emailError;
   if (!organisation) fieldErrors.organisation = "Please share your organisation.";
   if (!role || !ROLES.includes(role as (typeof ROLES)[number])) {
     fieldErrors.role = "Please select your role.";
@@ -99,7 +97,6 @@ export async function submitTrialRequest(
   // Length bounds — mirror the platform's Zod limits so we fail fast and never
   // forward unbounded input into the request body.
   if (name.length > 200) fieldErrors.name = "That name is too long (200 character max).";
-  if (email.length > 320) fieldErrors.email = "That email is too long.";
   if (organisation.length > 200)
     fieldErrors.organisation = "That organisation name is too long (200 character max).";
 

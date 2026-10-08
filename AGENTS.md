@@ -103,7 +103,8 @@ Run these locally before you claim anything is done.
 - **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`);
   the site URL is core's `BRAND.siteUrl`, used through `src/lib/seo.tsx` (`SITE_URL`,
   `canonical(path)`); `contacts.lock.test.ts` enforces both. The other origins are core's
-  too — the app (`BRAND.appUrl`, also in the CSP), the status page (`statusUrl()`) and the docs
+  too — the app (`BRAND.appUrl`; the browser never calls it, so it is not in the CSP's
+  `connect-src`), the status page (`statusUrl()`) and the docs
   (`docsUrl(path)`), all built from `SITE_HOST`; `site-pages.lock.test.ts` fails on any typed
   `<sub>.avrentis.com` host in `src/` or `next.config.ts`. `/.well-known/security.txt` is
   generated from them (expiry always a year ahead, rebuilt daily) — never replace it with a

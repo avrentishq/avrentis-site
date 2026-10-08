@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import { BRAND } from "@avrentishq/core/brand";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -13,6 +12,11 @@ const isDev = process.env.NODE_ENV !== "production";
  * Cloudflare Turnstile (bot defence on the public contact form) loads a script
  * from, renders an iframe from, and posts back to `challenges.cloudflare.com`,
  * so that origin is allowed in `script-src` / `frame-src` / `connect-src`.
+ *
+ * The product app is NOT in `connect-src`: the browser never calls it. Trial
+ * requests, verification and pricing are fetched server-side (Server Actions and
+ * server components, `src/lib/platform.ts`); the browser only navigates to the
+ * app's login page, which `connect-src` does not govern.
  *
  * SECURITY DECISION — `script-src 'unsafe-inline'` is an ACCEPTED residual, not
  * an oversight. There is no user-controlled HTML sink anywhere on the site (the
@@ -34,7 +38,7 @@ const contentSecurityPolicy = [
   "font-src 'self'",
   "style-src 'self' 'unsafe-inline'",
   `script-src 'self' 'unsafe-inline' ${TURNSTILE_ORIGIN}${isDev ? " 'unsafe-eval'" : ""}`,
-  `connect-src 'self' ${BRAND.appUrl} ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
+  `connect-src 'self' ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
   "form-action 'self'",
 ].join("; ");
 

@@ -140,8 +140,9 @@ describe("Avrentis hosts are never typed by hand", () => {
   });
 
   it("the scan reads the files that build these origins", () => {
-    // Guards against a vacuous pass: both read core's builders, not a literal.
+    // Guards against a vacuous pass: the status page reads core's builder, and
+    // the root file scanned is the one that writes the CSP.
     expect(readFileSync(join(APP, "status", "page.tsx"), "utf8")).toContain("statusUrl(");
-    expect(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")).toContain("BRAND.appUrl");
+    expect(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")).toContain("connect-src");
   });
 });

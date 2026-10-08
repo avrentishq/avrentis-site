@@ -25,6 +25,8 @@ import {
   useServerFieldErrors,
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { useHydrated } from "@/components/ui/form/hydrated";
+import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
@@ -225,6 +227,10 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
     submitContact,
     INITIAL_STATE,
   );
+  const hydrated = useHydrated();
+  // A refusal hands back what was posted. Fields start from it, which only
+  // matters for a page rendered without JavaScript (with it, state persists).
+  const posted = state.status === "error" ? (state.values ?? {}) : {};
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
   // After a failed send, focus the first field in error, else the alert.
@@ -264,13 +270,13 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   }, [renderTurnstile]);
 
   // ── Controlled field state for validity computation ─────────────────
-  const [nameValue, setNameValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [organisationValue, setOrganisationValue] = useState("");
-  const [messageValue, setMessageValue] = useState("");
-  const [sizeValue, setSizeValue] = useState("");
-  const [countryValue, setCountryValue] = useState("");
-  const [consentValue, setConsentValue] = useState(false);
+  const [nameValue, setNameValue] = useState(posted.name ?? "");
+  const [emailValue, setEmailValue] = useState(posted.email ?? "");
+  const [organisationValue, setOrganisationValue] = useState(posted.organisation ?? "");
+  const [messageValue, setMessageValue] = useState(posted.message ?? "");
+  const [sizeValue, setSizeValue] = useState(posted.size ?? "");
+  const [countryValue, setCountryValue] = useState(posted.country ?? "");
+  const [consentValue, setConsentValue] = useState(posted.consent === "on");
 
   // ── Validity derivation ─────────────────────────────────────────────
   const isValid = useMemo(
@@ -379,6 +385,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           onChange={switchIntent}
           options={CONTACT_TABS.map((t) => ({ value: t.value, label: t.label }))}
           ariaLabel="What are you contacting us about?"
+          noScriptFallback={false}
         />
       </m.div>
 
@@ -768,11 +775,12 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 onReady={renderTurnstile}
               />
               <div ref={turnstileRef} />
+              <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
             </>
           )}
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
-            <SubmitButton label={copy.cta} isValid={isValid} pending={isPending} />
+            <SubmitButton label={copy.cta} isValid={!hydrated || isValid} pending={isPending} />
           </div>
         </m.form>
       </div>

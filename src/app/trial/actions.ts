@@ -16,7 +16,8 @@
  * compiler check.
  */
 
-import type { TrialFormState } from "./state";
+import { TRIAL_FIELDS, type TrialFormState } from "./state";
+import { submittedValues } from "@/lib/submitted-values";
 import {
   mapTrialResponse,
   type TrialResponsePayload,
@@ -42,6 +43,13 @@ export async function submitTrialRequest(
   _previous: TrialFormState,
   formData: FormData,
 ): Promise<TrialFormState> {
+  const answer = await answerTrialRequest(formData);
+  return answer.status === "error"
+    ? { ...answer, values: submittedValues(formData, TRIAL_FIELDS) }
+    : answer;
+}
+
+async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
   // Honeypot — bots fill hidden fields. Silently mimic success without forwarding.
   const honeypot = formData.get("fax_number");
   if (typeof honeypot === "string" && honeypot.trim() !== "") {

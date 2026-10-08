@@ -13,6 +13,8 @@
 
 import { useRef } from "react";
 import type { LucideIcon } from "lucide-react";
+import { JS_ONLY } from "@/lib/no-script";
+import { NoScriptSelect } from "./no-script-select";
 
 const sans = "var(--font-sans)";
 
@@ -36,6 +38,13 @@ interface ChoiceGroupProps {
   invalid?: boolean;
   /** Space-separated ids of the error or hint text describing the group. */
   describedBy?: string;
+  /**
+   * Render a native <select> for when JavaScript is off (default true). Turn
+   * off only for a group outside any form, where a select would post nothing.
+   */
+  noScriptFallback?: boolean;
+  /** The empty first choice of that select when nothing is picked yet. */
+  noScriptPlaceholder?: string;
 }
 
 export function ChoiceGroup({
@@ -48,6 +57,8 @@ export function ChoiceGroup({
   columns = 3,
   invalid = false,
   describedBy,
+  noScriptFallback = true,
+  noScriptPlaceholder,
 }: ChoiceGroupProps) {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isCards = variant === "cards";
@@ -70,7 +81,18 @@ export function ChoiceGroup({
   };
 
   return (
+    <>
+    {noScriptFallback && (
+      <NoScriptSelect
+        name={name}
+        value={value}
+        options={options}
+        ariaLabel={ariaLabel}
+        placeholder={value ? undefined : noScriptPlaceholder ?? "Select…"}
+      />
+    )}
     <div
+      {...(noScriptFallback ? JS_ONLY : {})}
       role="radiogroup"
       aria-label={ariaLabel}
       aria-invalid={invalid || undefined}
@@ -175,5 +197,6 @@ export function ChoiceGroup({
       })}
       <input type="hidden" name={name} value={value} />
     </div>
+    </>
   );
 }

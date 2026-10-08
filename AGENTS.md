@@ -86,6 +86,11 @@ Run these locally before you claim anything is done.
   not oversights.** Read the header comment in the file first. This repo is public, so the specifics live in
   `guides/security-posture.md`, which is gitignored.
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
+- **Forms work without JavaScript.** Pass the server action itself to `useActionState` (never a
+  client wrapper), submit with `onSubmit={submitWithoutReset(action)}` next to `action`
+  (`form-submit.lock.test.ts`), gate buttons on `useHydrated()` so the server HTML never ships
+  them disabled, spread `JS_ONLY` / `FORM_STEP` (`src/lib/no-script.ts`) on script-only controls
+  and steps, and hand a refusal's posted values back (`src/lib/submitted-values.ts`).
 - **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css` as
   `var(--color-…)`, or `rgba(var(--color-…-rgb), alpha)` for a tint; add a role-named token
   for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.

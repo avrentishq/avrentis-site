@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { NO_SCRIPT_CSS, startsHidden } from "./no-script";
+import { FORM_STEP, JS_ONLY, NO_SCRIPT_CSS, startsHidden } from "./no-script";
 
 describe("no-script reveal", () => {
   it.each([
@@ -23,5 +23,14 @@ describe("no-script reveal", () => {
   it("the CSS uses the same two fragments the matcher checks", () => {
     expect(NO_SCRIPT_CSS).toContain('[style*="opacity:0;"]');
     expect(NO_SCRIPT_CSS).toContain('[style$="opacity:0"]');
+  });
+});
+
+describe("no-script markers", () => {
+  it("hides what is marked script-only and shows every form step", () => {
+    expect(Object.keys(JS_ONLY)).toEqual(["data-js-only"]);
+    expect(Object.keys(FORM_STEP)).toEqual(["data-form-step"]);
+    expect(NO_SCRIPT_CSS).toContain("[data-js-only]{display:none!important}");
+    expect(NO_SCRIPT_CSS).toContain("[data-form-step]{display:flex!important}");
   });
 });

@@ -9,6 +9,8 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
+import { JS_ONLY } from "@/lib/no-script";
+import { NoScriptSelect } from "./no-script-select";
 
 const sans = "var(--font-sans)";
 
@@ -94,10 +96,18 @@ export function SearchableSelect({
 
   return (
     <div ref={rootRef} style={{ position: "relative" }}>
+      <NoScriptSelect
+        name={name}
+        value={value}
+        options={options}
+        ariaLabel={ariaLabel}
+        placeholder={value ? undefined : "Select…"}
+      />
       <input type="hidden" name={name} value={value} />
       {/* Select-only combobox (WAI-ARIA APG): the trigger carries the field's
           name, value, invalid state and description; the listbox opens below. */}
       <button
+        {...JS_ONLY}
         type="button"
         role="combobox"
         aria-haspopup="listbox"

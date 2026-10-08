@@ -20,6 +20,9 @@ import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
 import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { useHydrated } from "@/components/ui/form/hydrated";
+import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
@@ -68,6 +71,7 @@ function NumberField({
   value,
   onChange,
   onBlur,
+  readOnly,
 }: {
   id: string;
   label: string;
@@ -76,6 +80,8 @@ function NumberField({
   value: string;
   onChange: (v: string) => void;
   onBlur: () => void;
+  /** Read-only until the page runs script: without it nothing recalculates. */
+  readOnly: boolean;
 }) {
   return (
     <div>
@@ -107,6 +113,7 @@ function NumberField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
+          readOnly={readOnly}
           style={{ ...inputStyle, paddingLeft: prefix ? "30px" : "14px" }}
         />
       </div>
@@ -193,7 +200,6 @@ export function SavingsEstimator() {
   const [approvalsStr, setApprovalsStr] = useState(String(BOUNDS.approvals.default));
   const [minutesStr, setMinutesStr] = useState(String(BOUNDS.minutes.default));
   const [costStr, setCostStr] = useState(String(BOUNDS.cost.default));
-  const [consent, setConsent] = useState(false);
 
   const inputs = useMemo(
     () => ({
@@ -211,6 +217,11 @@ export function SavingsEstimator() {
     set(String(clampInt(raw, BOUNDS[key])));
 
   const [state, action, isPending] = useActionState(emailEstimate, INITIAL_STATE);
+  const hydrated = useHydrated();
+  // A refusal hands back what was posted. Fields start from it, which only
+  // matters for a page rendered without JavaScript (with it, state persists).
+  const posted = state.status === "error" ? (state.values ?? {}) : {};
+  const [consent, setConsent] = useState(posted.consent === "on");
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
   const fieldError = fieldErrors.email ?? fieldErrors.consent;
@@ -258,6 +269,12 @@ export function SavingsEstimator() {
           gap: "18px",
         }}
       >
+        <noscript>
+          <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-secondary)", margin: 0 }}>
+            The calculator needs JavaScript to work with your own numbers. Without it, the estimate
+            below uses these typical figures, and that is the estimate we email you.
+          </p>
+        </noscript>
         <NumberField
           id="approvals"
           label="Approvals your team runs each month"
@@ -265,6 +282,7 @@ export function SavingsEstimator() {
           value={approvalsStr}
           onChange={setApprovalsStr}
           onBlur={snap(approvalsStr, "approvals", setApprovalsStr)}
+          readOnly={!hydrated}
         />
         <NumberField
           id="minutes"
@@ -273,6 +291,7 @@ export function SavingsEstimator() {
           value={minutesStr}
           onChange={setMinutesStr}
           onBlur={snap(minutesStr, "minutes", setMinutesStr)}
+          readOnly={!hydrated}
         />
         <NumberField
           id="cost"
@@ -282,6 +301,7 @@ export function SavingsEstimator() {
           value={costStr}
           onChange={setCostStr}
           onBlur={snap(costStr, "cost", setCostStr)}
+          readOnly={!hydrated}
         />
       </div>
 
@@ -360,6 +380,7 @@ export function SavingsEstimator() {
                 id="email"
                 name="email"
                 type="email"
+                defaultValue={posted.email}
                 required
                 autoComplete="email"
                 placeholder="you@company.com"
@@ -369,7 +390,7 @@ export function SavingsEstimator() {
                 onChange={() => clearFieldError("email")}
                 style={{ ...inputStyle, flex: 1, minWidth: "200px" }}
               />
-              <SubmitButton disabled={!consent} pending={isPending} />
+              <SubmitButton disabled={hydrated && !consent} pending={isPending} />
             </div>
 
             <label
@@ -426,6 +447,7 @@ export function SavingsEstimator() {
                   onReady={renderTurnstile}
                 />
                 <div ref={turnstileRef} />
+                <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
               </>
             )}
           </form>

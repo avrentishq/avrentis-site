@@ -16,7 +16,8 @@ import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { BOUNDS, clampInt, computeSavings, EFFICIENCY } from "./compute";
-import { type EstimateEmailState } from "./state";
+import { ESTIMATE_FIELDS, type EstimateEmailState } from "./state";
+import { submittedValues } from "@/lib/submitted-values";
 import { canonical } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
@@ -38,6 +39,13 @@ export async function emailEstimate(
   _previous: EstimateEmailState,
   formData: FormData,
 ): Promise<EstimateEmailState> {
+  const answer = await answerEstimateEmail(formData);
+  return answer.status === "error"
+    ? { ...answer, values: submittedValues(formData, ESTIMATE_FIELDS) }
+    : answer;
+}
+
+async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailState> {
   // Honeypot — bots fill hidden fields. Silently "succeed" without sending.
   const honeypot = formData.get("fax_number");
   if (typeof honeypot === "string" && honeypot.trim() !== "") {

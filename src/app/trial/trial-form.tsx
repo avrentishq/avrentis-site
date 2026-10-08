@@ -33,6 +33,10 @@ import {
   useServerFieldErrors,
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { useHydrated } from "@/components/ui/form/hydrated";
+import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { FORM_STEP, JS_ONLY } from "@/lib/no-script";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
@@ -194,18 +198,27 @@ function SubmitButton({ isValid, pending }: { isValid: boolean; pending: boolean
 
 export function TrialForm() {
   const [step, setStep] = useState<1 | 2>(1);
+  // The server action itself, not a wrapper: React can then post the form to
+  // it without JavaScript and render the answer on the server.
   const [state, action, isPending] = useActionState<TrialFormState, FormData>(
-    async (previous, formData) => {
-      const next = await submitTrialRequest(previous, formData);
-      // Role, size and country sit on step 1, hidden behind step 2's fields:
-      // show the step that holds the error rather than leave it out of sight.
-      if (next.status === "error" && STEP_ONE_FIELDS.some((field) => next.fieldErrors?.[field])) {
-        setStep(1);
-      }
-      return next;
-    },
+    submitTrialRequest,
     INITIAL_STATE,
   );
+  const hydrated = useHydrated();
+  // A refusal hands back what was posted. Fields start from it, which only
+  // matters for a page rendered without JavaScript (with it, state persists).
+  const posted = state.status === "error" ? (state.values ?? {}) : {};
+
+  // Role, size and country sit on step 1, hidden behind step 2's fields: when
+  // a new answer puts one in error, show that step rather than leave it out of
+  // sight. Adjusted during render on a new answer (no effect, no extra paint).
+  const [answerSeen, setAnswerSeen] = useState(state);
+  if (answerSeen !== state) {
+    setAnswerSeen(state);
+    if (state.status === "error" && STEP_ONE_FIELDS.some((field) => state.fieldErrors?.[field])) {
+      setStep(1);
+    }
+  }
 
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(
@@ -225,16 +238,16 @@ export function TrialForm() {
 
   // ── Controlled field state ──────────────────────────────────────────
   // Email: controlled for free-email hint + dupe check.
-  const [emailValue, setEmailValue] = useState("");
+  const [emailValue, setEmailValue] = useState(posted.email ?? "");
   // Remaining required fields lifted to state for validity computation.
-  const [nameValue, setNameValue] = useState("");
-  const [organisationValue, setOrganisationValue] = useState("");
-  const [roleValue, setRoleValue] = useState("");
-  const [roleOtherValue, setRoleOtherValue] = useState("");
-  const [orgSizeValue, setOrgSizeValue] = useState(DEFAULT_ORG_SIZE);
+  const [nameValue, setNameValue] = useState(posted.name ?? "");
+  const [organisationValue, setOrganisationValue] = useState(posted.organisation ?? "");
+  const [roleValue, setRoleValue] = useState(posted.role ?? "");
+  const [roleOtherValue, setRoleOtherValue] = useState(posted.roleOther ?? "");
+  const [orgSizeValue, setOrgSizeValue] = useState(posted.orgSize ?? DEFAULT_ORG_SIZE);
   // country defaults to "NG" which is a valid selection.
-  const [countryValue, setCountryValue] = useState("NG");
-  const [consentValue, setConsentValue] = useState(false);
+  const [countryValue, setCountryValue] = useState(posted.country ?? "NG");
+  const [consentValue, setConsentValue] = useState(posted.consent === "on");
 
   // Two-step split: step 1 is the quick tappable setup (role/size/country,
   // all defaulted except role), step 2 collects contact details. Leading with
@@ -440,6 +453,7 @@ export function TrialForm() {
         {/* Back to step 1 — the stepper above conveys the position. */}
         {step === 2 && (
           <button
+            {...JS_ONLY}
             type="button"
             onClick={() => setStep(1)}
             style={{ alignSelf: "flex-start", fontFamily: sans, fontSize: "13px", fontWeight: 500, color: "var(--color-text-muted)", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "2px" }}
@@ -449,7 +463,7 @@ export function TrialForm() {
         )}
 
         {/* ── Step 1: setup — tappable, already defaulted ─────────────── */}
-        <div style={{ display: step === 1 ? "flex" : "none", flexDirection: "column", gap: "18px" }}>
+        <div {...FORM_STEP} style={{ display: step === 1 ? "flex" : "none", flexDirection: "column", gap: "18px" }}>
           <div>
             <label style={labelStyle}>
               Your role
@@ -466,6 +480,7 @@ export function TrialForm() {
               }}
               options={ROLE_OPTIONS}
               ariaLabel="Your role"
+              noScriptPlaceholder="Select your role"
               invalid={!!fieldErrors.role}
               describedBy={fieldErrors.role ? "trial-role-error" : "trial-role-hint"}
             />
@@ -476,6 +491,18 @@ export function TrialForm() {
                 Helps us tailor your setup. You&apos;ll configure team roles after signing in.
               </span>
             )}
+            {/* Without JavaScript the "Other" box below never appears. */}
+            <noscript>
+              <input
+                type="text"
+                name="roleOther"
+                defaultValue={posted.roleOther}
+                maxLength={120}
+                placeholder="If you chose Other, your role"
+                aria-label="If you chose Other, your role"
+                style={{ ...inputStyle, marginTop: "10px" }}
+              />
+            </noscript>
             {roleValue === "Other" && (
               <div style={{ marginTop: "10px" }}>
                 <label style={labelStyle}>
@@ -554,7 +581,7 @@ export function TrialForm() {
             ) : null}
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
+          <div {...JS_ONLY} style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
             <button
               type="button"
               onClick={() => step1Valid && setStep(2)}
@@ -582,7 +609,7 @@ export function TrialForm() {
         </div>
 
         {/* ── Step 2: your details ────────────────────────────────────── */}
-        <div style={{ display: step === 2 ? "flex" : "none", flexDirection: "column", gap: "18px" }}>
+        <div {...FORM_STEP} style={{ display: step === 2 ? "flex" : "none", flexDirection: "column", gap: "18px" }}>
         <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
           <div>
             <label htmlFor="name" style={labelStyle}>
@@ -686,6 +713,7 @@ export function TrialForm() {
             id="source"
             name="source"
             type="text"
+            defaultValue={posted.source}
             style={inputStyle}
             placeholder="Referral, search, colleague, event…"
           />
@@ -799,11 +827,12 @@ export function TrialForm() {
               onReady={renderTurnstile}
             />
             <div ref={turnstileRef} />
+            <TurnstileNoScriptNote email={CONTACT_EMAIL.trials} />
           </>
         )}
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-          <SubmitButton isValid={isValid} pending={isPending} />
+          <SubmitButton isValid={!hydrated || isValid} pending={isPending} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
             No card on file — nothing to cancel · {TRIAL_LENGTH} trial · Data preserved for{" "}
             {READ_ONLY_GRACE_DAYS} days after trial end.

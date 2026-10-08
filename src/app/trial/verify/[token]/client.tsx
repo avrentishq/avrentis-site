@@ -19,6 +19,7 @@ import { reissueTrialToken } from "../../actions";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const REISSUE_ERROR_ID = "reissue-error";
@@ -93,7 +94,7 @@ export function VerifyResult({ status, message, token }: Props) {
         message={message}
       >
         <Link
-          href="/contact?intent=demo"
+          href={contactHref("demo")}
           style={{
             marginTop: "16px",
             fontFamily: sans,

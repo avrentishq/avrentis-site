@@ -23,6 +23,15 @@ export const CONTACT_TABS: ContactTab[] = [
   { value: "careers", label: "Careers", members: ["careers"] },
 ];
 
+/**
+ * The /contact URL for an intent: the one place that spells it. Tabs link to
+ * it (so they work without JavaScript), the form keeps the address bar in step
+ * with it, and other pages deep-link through it.
+ */
+export function contactHref(intent: ContactIntent): string {
+  return intent === "general" ? "/contact" : `/contact?intent=${intent}`;
+}
+
 /** The canonical tab intent that should be lit for a given (possibly deep-linked) intent. */
 export function tabForIntent(intent: ContactIntent): ContactIntent {
   const tab = CONTACT_TABS.find((t) => t.members.includes(intent));

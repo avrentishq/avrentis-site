@@ -50,6 +50,7 @@ import {
   TRIAL_SEAT_CAP,
   TRIAL_STORAGE,
 } from "@/lib/trial-terms";
+import { contactHref } from "@/app/contact/tabs";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
@@ -1084,7 +1085,7 @@ function HardBlockedCard({ message }: { message: string }) {
         {message}
       </p>
       <Link
-        href="/contact?intent=demo"
+        href={contactHref("demo")}
         style={{
           fontFamily: sans,
           fontSize: "13px",

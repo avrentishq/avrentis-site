@@ -8,6 +8,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND_COLORS } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
+import { contactHref } from "@/app/contact/tabs";
 
 // No testimonials and no invented metrics — the section states what the
 // platform enforces, which is verifiable, rather than borrowed credibility.
@@ -225,7 +226,7 @@ export function SocialProof() {
           </div>
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
             <Link
-              href="/contact?intent=demo"
+              href={contactHref("demo")}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,

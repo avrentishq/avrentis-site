@@ -34,6 +34,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -79,13 +80,13 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "First-tenant setup guide",
         body: "Step-by-step: creating your organisation, inviting admins, configuring roles.",
-        href: "/contact?intent=demo",
+        href: contactHref("demo"),
         status: "wip",
       },
       {
         title: "Importing existing vendors and documents",
         body: "CSV shapes, mapping columns, running a dry-run before import.",
-        href: "/contact?intent=demo",
+        href: contactHref("demo"),
         status: "wip",
       },
     ],
@@ -112,7 +113,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Querying and delegation",
         body: "Pausing an approval, asking the submitter a question, re-entering the chain.",
-        href: "/contact?intent=demo",
+        href: contactHref("demo"),
         status: "wip",
       },
     ],
@@ -168,7 +169,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "IP allowlist configuration",
         body: "Per-tenant CIDR rules for IPv4 and IPv6.",
-        href: "/contact?intent=security",
+        href: contactHref("security"),
         status: "wip",
       },
       {
@@ -192,9 +193,9 @@ const CATEGORIES: DocsCategory[] = [
         href: "/product/integrations",
         status: "live",
       },
-      { title: "Email notifications", body: "Configuring sender domains and templates.", href: "/contact?intent=demo", status: "wip" },
-      { title: "WhatsApp notifications", body: "Setting up business-account routing.", href: "/contact?intent=demo", status: "wip" },
-      { title: "SMS notifications", body: "Adding sender IDs and international routing.", href: "/contact?intent=demo", status: "wip" },
+      { title: "Email notifications", body: "Configuring sender domains and templates.", href: contactHref("demo"), status: "wip" },
+      { title: "WhatsApp notifications", body: "Setting up business-account routing.", href: contactHref("demo"), status: "wip" },
+      { title: "SMS notifications", body: "Adding sender IDs and international routing.", href: contactHref("demo"), status: "wip" },
     ],
   },
   {
@@ -210,8 +211,8 @@ const CATEGORIES: DocsCategory[] = [
         href: "/product/integrations#developer",
         status: "live",
       },
-      { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: "/contact?intent=demo", status: "wip" },
-      { title: "Audit export format", body: "The regulator-ready audit bundle schema.", href: "/contact?intent=security", status: "wip" },
+      { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: contactHref("demo"), status: "wip" },
+      { title: "Audit export format", body: "The regulator-ready audit bundle schema.", href: contactHref("security"), status: "wip" },
     ],
   },
   {
@@ -226,7 +227,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Board provisioning (maker-checker)",
         body: "How provisional access becomes confirmed access.",
-        href: "/contact?intent=security",
+        href: contactHref("security"),
         status: "wip",
       },
     ],
@@ -484,7 +485,7 @@ export function DocsHubPage() {
               Start here
             </a>
             <Link
-              href="/contact?intent=feedback"
+              href={contactHref("feedback")}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,
@@ -603,7 +604,7 @@ export function DocsHubPage() {
               </p>
             </div>
             <Link
-              href="/contact?intent=feedback"
+              href={contactHref("feedback")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

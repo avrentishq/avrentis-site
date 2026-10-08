@@ -28,6 +28,7 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { contactHref } from "@/app/contact/tabs";
 
 export type ModuleStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
@@ -148,17 +149,17 @@ function resolveCtas(config: ModuleConfig): {
       };
     case "coming_soon":
       return {
-        primary: config.primaryCta ?? { label: "Get notified at launch", href: "/contact?intent=notify" },
-        secondary: config.secondaryCta ?? { label: "See the full roadmap", href: "/contact?intent=roadmap" },
+        primary: config.primaryCta ?? { label: "Get notified at launch", href: contactHref("notify") },
+        secondary: config.secondaryCta ?? { label: "See the full roadmap", href: contactHref("roadmap") },
       };
     case "partial":
       return {
-        primary: config.primaryCta ?? { label: "Join the beta", href: "/contact?intent=beta" },
+        primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
         secondary: config.secondaryCta ?? { label: "Talk to us", href: "/contact" },
       };
     case "roadmap":
       return {
-        primary: config.primaryCta ?? { label: "Share your use case", href: "/contact?intent=roadmap" },
+        primary: config.primaryCta ?? { label: "Share your use case", href: contactHref("roadmap") },
         secondary: config.secondaryCta ?? { label: "Talk to us", href: "/contact" },
       };
   }

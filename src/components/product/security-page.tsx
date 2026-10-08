@@ -44,6 +44,7 @@ import {
   LifecycleMockup,
   InfraMockup,
 } from "./security-mockups";
+import { contactHref } from "@/app/contact/tabs";
 
 const PILLARS = [
   {
@@ -468,7 +469,7 @@ export function SecurityProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=security"
+              href={contactHref("security")}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
@@ -793,7 +794,7 @@ export function SecurityProductPage() {
             <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--color-border)", margin: 0, lineHeight: 1.7 }}>
               Found a vulnerability?{" "}
               <Link
-                href="/contact?intent=disclosure"
+                href={contactHref("disclosure")}
                 style={{ color: "var(--color-gold)", textDecoration: "none" }}
               >
                 Submit a responsible-disclosure report
@@ -935,7 +936,7 @@ export function SecurityProductPage() {
               </div>
             </div>
             <Link
-              href="/contact?intent=security"
+              href={contactHref("security")}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,

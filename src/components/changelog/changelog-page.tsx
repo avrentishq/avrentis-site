@@ -18,6 +18,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -413,7 +414,7 @@ export function ChangelogProductPage() {
               </div>
             </div>
             <Link
-              href="/contact?intent=subscribe"
+              href={contactHref("subscribe")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

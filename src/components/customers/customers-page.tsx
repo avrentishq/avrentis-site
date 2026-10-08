@@ -29,6 +29,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 
@@ -565,7 +566,7 @@ export function CustomersProductPage() {
                 this is the route.
               </p>
               <Link
-                href="/contact?intent=demo"
+                href={contactHref("demo")}
                 style={{
                   fontFamily: sans,
                   fontWeight: 600,
@@ -719,7 +720,7 @@ export function CustomersProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=demo"
+              href={contactHref("demo")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -802,7 +803,7 @@ export function CustomersProductPage() {
                 wait-times.
               </p>
               <Link
-                href="/contact?intent=security"
+                href={contactHref("security")}
                 style={{
                   fontFamily: sans,
                   fontSize: "13px",

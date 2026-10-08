@@ -37,7 +37,7 @@ import {
   type ContactFormState,
   type ContactIntent,
 } from "@/app/contact/state";
-import { CONTACT_TABS, tabForIntent } from "@/app/contact/tabs";
+import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 
 interface IntentCopy {
@@ -241,7 +241,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
     const value = next as ContactIntent;
     setIntent(value);
     // Keep the URL shareable/deep-linkable without a full navigation.
-    window.history.replaceState(null, "", value === "general" ? "/contact" : `/contact?intent=${value}`);
+    window.history.replaceState(null, "", contactHref(value));
   }, []);
 
   // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
@@ -385,7 +385,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           onChange={switchIntent}
           options={CONTACT_TABS.map((t) => ({ value: t.value, label: t.label }))}
           ariaLabel="What are you contacting us about?"
-          noScriptFallback={false}
+          hrefFor={(value) => contactHref(value as ContactIntent)}
         />
       </m.div>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
+import { contactHref } from "@/app/contact/tabs";
 
 export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
@@ -33,7 +34,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           For privacy questions, contact{" "}
-          <Link href="/contact?intent=privacy">our privacy enquiry form</Link>.
+          <Link href={contactHref("privacy")}>our privacy enquiry form</Link>.
         </p>
       </>
     ),
@@ -219,7 +220,7 @@ const SECTIONS: LegalSection[] = [
         </ul>
         <p>
           The specific named providers in each category are shared with prospective
-          customers through <Link href="/contact?intent=privacy">our privacy enquiry form</Link>, typically alongside a
+          customers through <Link href={contactHref("privacy")}>our privacy enquiry form</Link>, typically alongside a
           Data Processing Agreement.
         </p>
       </>
@@ -308,7 +309,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           Where Avrentis processes your data on behalf of your employer (most features of the platform), we will
           forward your request to the relevant administrator and assist with its fulfilment. For direct requests,
-          email <Link href="/contact?intent=privacy">our privacy enquiry form</Link>.
+          email <Link href={contactHref("privacy")}>our privacy enquiry form</Link>.
         </p>
       </>
     ),
@@ -325,7 +326,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           No system is perfectly secure; we operate a responsible-disclosure programme and welcome good-faith
-          reports through our <Link href="/contact?intent=disclosure">responsible-disclosure form</Link>.
+          reports through our <Link href={contactHref("disclosure")}>responsible-disclosure form</Link>.
         </p>
       </>
     ),
@@ -357,7 +358,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         For any question about this policy, or to exercise a right listed above, write to{" "}
-        <Link href="/contact?intent=privacy">our privacy enquiry form</Link>. We respond within one business day for
+        <Link href={contactHref("privacy")}>our privacy enquiry form</Link>. We respond within one business day for
         enterprise customers and otherwise within a reasonable time not exceeding the statutory deadline applicable
         to your jurisdiction.
       </p>
@@ -378,7 +379,7 @@ export default function PrivacyPage() {
           <strong>Note.</strong>{" "}This policy reflects our current practices. It is not legal advice. Organisations
           with bespoke compliance requirements (regulated industries, specific residency mandates, additional
           controller-processor clauses) should reach out through{" "}
-          <Link href="/contact?intent=privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+          <Link href={contactHref("privacy")} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
             our privacy enquiry form
           </Link>{" "}
           for a tailored Data Processing Agreement.

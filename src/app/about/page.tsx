@@ -6,6 +6,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@avrentishq/core/brand";
 import { canonical } from "@/lib/seo";
+import { contactHref } from "@/app/contact/tabs";
 
 const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
@@ -292,7 +293,7 @@ export default function AboutPage() {
               from you.
             </p>
             <Link
-              href="/contact?intent=careers"
+              href={contactHref("careers")}
               style={{
                 display: "inline-block",
                 border: "1px solid var(--color-gold)",

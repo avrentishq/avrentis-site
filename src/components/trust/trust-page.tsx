@@ -33,6 +33,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -97,7 +98,7 @@ const DOCUMENTS = [
     icon: Lock,
     title: "Data Processing Agreement",
     body: "GDPR + UK GDPR-aligned DPA with standard contractual clauses. Signable as-is or negotiated for enterprise.",
-    cta: { label: "Request the DPA", href: "/contact?intent=security" },
+    cta: { label: "Request the DPA", href: contactHref("security") },
   },
   {
     icon: FileText,
@@ -115,13 +116,13 @@ const DOCUMENTS = [
     icon: AlertOctagon,
     title: "Responsible disclosure",
     body: `Report security issues to ${CONTACT_EMAIL.security}. We triage within two business days.`,
-    cta: { label: "Report a vulnerability", href: "/contact?intent=disclosure" },
+    cta: { label: "Report a vulnerability", href: contactHref("disclosure") },
   },
   {
     icon: MapPin,
     title: "Data residency",
     body: "Primary data in the UK (London) today. Need it to stay in a specific country or region? Talk to us.",
-    cta: { label: "Talk to us about residency", href: "/contact?intent=security" },
+    cta: { label: "Talk to us about residency", href: contactHref("security") },
   },
 ];
 
@@ -230,7 +231,7 @@ export function TrustProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=security"
+              href={contactHref("security")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -529,7 +530,7 @@ export function TrustProductPage() {
               </div>
             </div>
             <Link
-              href="/contact?intent=privacy"
+              href={contactHref("privacy")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -564,7 +565,7 @@ export function TrustProductPage() {
             }}
           >
             Subscribe to sub-processor change notifications through our{" "}
-            <Link href="/contact?intent=subscribe" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+            <Link href={contactHref("subscribe")} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
               update subscription form
             </Link>
             .
@@ -943,7 +944,7 @@ export function TrustProductPage() {
               Open the status page
             </Link>
             <Link
-              href="/contact?intent=security"
+              href={contactHref("security")}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

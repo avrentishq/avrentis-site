@@ -39,12 +39,64 @@ interface ChoiceGroupProps {
   /** Space-separated ids of the error or hint text describing the group. */
   describedBy?: string;
   /**
-   * Render a native <select> for when JavaScript is off (default true). Turn
-   * off only for a group outside any form, where a select would post nothing.
+   * For a group that navigates rather than posts (e.g. page tabs outside any
+   * form): each option's URL. With JavaScript off the group then renders as
+   * links to them; otherwise it falls back to a native <select> that posts.
    */
-  noScriptFallback?: boolean;
-  /** The empty first choice of that select when nothing is picked yet. */
+  hrefFor?: (value: string) => string;
+  /** The empty first choice of the no-script select when nothing is picked yet. */
   noScriptPlaceholder?: string;
+}
+
+/** One option's look, shared by the buttons and the no-script links. */
+function optionStyle({
+  selected,
+  invalid,
+  isCards,
+  hasIcons,
+}: {
+  selected: boolean;
+  invalid: boolean;
+  isCards: boolean;
+  hasIcons: boolean;
+}): React.CSSProperties {
+  return {
+    position: "relative",
+    fontFamily: sans,
+    cursor: "pointer",
+    textAlign: "center",
+    display: isCards ? "flex" : "inline-flex",
+    flexDirection: isCards ? "column" : "row",
+    alignItems: "center",
+    justifyContent: "center",
+    // Chips grow to fill the row rather than clustering at the left.
+    flex: isCards ? undefined : "1 1 auto",
+    gap: isCards ? "8px" : "0",
+    padding: isCards ? (hasIcons ? "16px 10px" : "13px 14px") : "0 16px",
+    height: isCards ? "auto" : "40px",
+    minHeight: isCards ? (hasIcons ? "88px" : "48px") : undefined,
+    fontSize: "14px",
+    fontWeight: selected ? 600 : 500,
+    color: selected ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+    backgroundColor: selected ? "rgba(var(--color-gold-rgb), 0.08)" : "var(--color-white)",
+    border: `1px solid ${
+      selected
+        ? "var(--color-gold)"
+        : invalid
+          ? "rgba(var(--color-danger-rgb), 0.5)"
+          : "var(--color-border)"
+    }`,
+    borderRadius: isCards ? "10px" : "9999px",
+    boxShadow: selected ? "0 0 0 3px rgba(var(--color-gold-rgb), 0.10)" : "none",
+    transition: "border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease",
+  };
+}
+
+/** The row (chips) or grid (cards) the options sit in. */
+function groupStyle(isCards: boolean, columns: number): React.CSSProperties {
+  return isCards
+    ? { display: "grid", gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, gap: "10px" }
+    : { display: "flex", flexWrap: "wrap", gap: "8px" };
 }
 
 export function ChoiceGroup({
@@ -57,7 +109,7 @@ export function ChoiceGroup({
   columns = 3,
   invalid = false,
   describedBy,
-  noScriptFallback = true,
+  hrefFor,
   noScriptPlaceholder,
 }: ChoiceGroupProps) {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -82,7 +134,28 @@ export function ChoiceGroup({
 
   return (
     <>
-    {noScriptFallback && (
+    {hrefFor ? (
+      <noscript>
+        <nav aria-label={ariaLabel} style={groupStyle(isCards, columns)}>
+          {options.map((option) => {
+            const selected = option.value === value;
+            return (
+              <a
+                key={option.value}
+                href={hrefFor(option.value)}
+                aria-current={selected ? "page" : undefined}
+                style={{
+                  ...optionStyle({ selected, invalid: false, isCards, hasIcons: false }),
+                  textDecoration: "none",
+                }}
+              >
+                {option.label}
+              </a>
+            );
+          })}
+        </nav>
+      </noscript>
+    ) : (
       <NoScriptSelect
         name={name}
         value={value}
@@ -92,20 +165,12 @@ export function ChoiceGroup({
       />
     )}
     <div
-      {...(noScriptFallback ? JS_ONLY : {})}
+      {...JS_ONLY}
       role="radiogroup"
       aria-label={ariaLabel}
       aria-invalid={invalid || undefined}
       aria-describedby={describedBy}
-      style={
-        isCards
-          ? {
-              display: "grid",
-              gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-              gap: "10px",
-            }
-          : { display: "flex", flexWrap: "wrap", gap: "8px" }
-      }
+      style={groupStyle(isCards, columns)}
     >
       {options.map((opt, i) => {
         const selected = opt.value === value;
@@ -123,36 +188,7 @@ export function ChoiceGroup({
             tabIndex={tabIndex}
             onClick={() => onChange(opt.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            style={{
-              position: "relative",
-              fontFamily: sans,
-              cursor: "pointer",
-              textAlign: "center",
-              display: isCards ? "flex" : "inline-flex",
-              flexDirection: isCards ? "column" : "row",
-              alignItems: "center",
-              justifyContent: "center",
-              // Chips grow to fill the row rather than clustering at the left.
-              flex: isCards ? undefined : "1 1 auto",
-              gap: isCards ? "8px" : "0",
-              padding: isCards ? (hasIcons ? "16px 10px" : "13px 14px") : "0 16px",
-              height: isCards ? "auto" : "40px",
-              minHeight: isCards ? (hasIcons ? "88px" : "48px") : undefined,
-              fontSize: "14px",
-              fontWeight: selected ? 600 : 500,
-              color: selected ? "var(--color-text-primary)" : "var(--color-text-secondary)",
-              backgroundColor: selected ? "rgba(var(--color-gold-rgb), 0.08)" : "var(--color-white)",
-              border: `1px solid ${
-                selected
-                  ? "var(--color-gold)"
-                  : invalid
-                    ? "rgba(var(--color-danger-rgb), 0.5)"
-                    : "var(--color-border)"
-              }`,
-              borderRadius: isCards ? "10px" : "9999px",
-              boxShadow: selected ? "0 0 0 3px rgba(var(--color-gold-rgb), 0.10)" : "none",
-              transition: "border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease",
-            }}
+            style={optionStyle({ selected, invalid, isCards, hasIcons })}
             onMouseEnter={(e) => {
               if (!selected) e.currentTarget.style.borderColor = "var(--color-border-strong)";
             }}

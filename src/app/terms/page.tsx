@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
+import { contactHref } from "@/app/contact/tabs";
 
 export const metadata: Metadata = {
   title: "Terms of service — Avrentis",
@@ -85,7 +86,7 @@ const SECTIONS: LegalSection[] = [
           <li>Upload malware, transmit spam, or conduct fraud.</li>
           <li>
             Probe, scan, or test the vulnerability of the Service other than through our responsible-disclosure
-            programme via <Link href="/contact?intent=disclosure">our responsible-disclosure form</Link>.
+            programme via <Link href={contactHref("disclosure")}>our responsible-disclosure form</Link>.
           </li>
           <li>Attempt to bypass tenant isolation, rate limits, or authentication.</li>
           <li>Reverse-engineer the Service, except to the extent that applicable law prohibits such a restriction.</li>
@@ -333,7 +334,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Legal questions, requests for a signed agreement, or notices under these Terms should be sent to{" "}
-        <Link href="/contact?intent=legal">our legal enquiry form</Link>.
+        <Link href={contactHref("legal")}>our legal enquiry form</Link>.
       </p>
     ),
   },
@@ -352,7 +353,7 @@ export default function TermsPage() {
           <strong>Note.</strong>{" "}These standard Terms apply to self-serve customers. Enterprise customers typically
           operate under a negotiated order form that takes precedence over any conflicting provision here. To
           request that form, send a note through{" "}
-          <Link href="/contact?intent=legal" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+          <Link href={contactHref("legal")} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
             our legal enquiry form
           </Link>
           .

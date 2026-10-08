@@ -24,6 +24,7 @@ import {
   TRIAL_SEAT_CAP,
   TRIAL_STORAGE,
 } from "@/lib/trial-terms";
+import { contactHref } from "@/app/contact/tabs";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -868,7 +869,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
 
                 {/* CTA */}
                 <Link
-                  href={isQuotePriced ? "/contact?intent=demo" : "/trial"}
+                  href={isQuotePriced ? contactHref("demo") : "/trial"}
                   style={{
                     display: "flex",
                     alignItems: "center",

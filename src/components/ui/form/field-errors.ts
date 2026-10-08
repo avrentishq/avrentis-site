@@ -56,3 +56,17 @@ export function useServerFieldErrors<Field extends string>(
     clear: (field) => setDismissals((current) => dismissFieldError(serverErrors, current, field)),
   };
 }
+
+/**
+ * The `aria-describedby` value for a field: the ids of whichever of its error
+ * and hint texts are on screen, or `undefined` when neither is.
+ */
+export function describedBy(...ids: (string | false | null | undefined)[]): string | undefined {
+  const present = ids.filter((id): id is string => typeof id === "string" && id !== "");
+  return present.length > 0 ? present.join(" ") : undefined;
+}
+
+/** Whether any server error is still on screen (drives the form-level summary). */
+export function hasVisibleFieldErrors<Field extends string>(errors: FieldErrors<Field>): boolean {
+  return Object.values(errors).some(Boolean);
+}

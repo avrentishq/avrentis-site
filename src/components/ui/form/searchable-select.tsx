@@ -25,6 +25,8 @@ interface SearchableSelectProps {
   ariaLabel: string;
   placeholder?: string;
   invalid?: boolean;
+  /** Space-separated ids of the error or hint text describing the control. */
+  describedBy?: string;
 }
 
 export function SearchableSelect({
@@ -35,6 +37,7 @@ export function SearchableSelect({
   ariaLabel,
   placeholder = "Select…",
   invalid = false,
+  describedBy,
 }: SearchableSelectProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -92,11 +95,17 @@ export function SearchableSelect({
   return (
     <div ref={rootRef} style={{ position: "relative" }}>
       <input type="hidden" name={name} value={value} />
+      {/* Select-only combobox (WAI-ARIA APG): the trigger carries the field's
+          name, value, invalid state and description; the listbox opens below. */}
       <button
         type="button"
+        role="combobox"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
         aria-label={ariaLabel}
+        aria-invalid={invalid || undefined}
+        aria-describedby={describedBy}
         onClick={() => setOpen((o) => !o)}
         style={{
           fontFamily: sans,

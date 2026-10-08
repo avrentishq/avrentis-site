@@ -19,7 +19,8 @@ import { fadeUp, fadeUpTransition } from "@/lib/animations";
 import { BOUNDS, EFFICIENCY, clampInt, computeSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
-import { useServerFieldErrors } from "@/components/ui/form/field-errors";
+import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
+import { FormAlert } from "@/components/ui/form/form-alert";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
@@ -184,6 +185,9 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
     </button>
   );
 }
+
+/** The one message line under the form — a field's error or the form's. */
+const ESTIMATE_ERROR_ID = "estimate-form-error";
 
 export function SavingsEstimator() {
   const [approvalsStr, setApprovalsStr] = useState(String(BOUNDS.approvals.default));
@@ -355,6 +359,8 @@ export function SavingsEstimator() {
                 autoComplete="email"
                 placeholder="you@company.com"
                 aria-label="Your email"
+                aria-invalid={!!fieldErrors.email || undefined}
+                aria-describedby={describedBy(!!fieldErrors.email && ESTIMATE_ERROR_ID)}
                 onChange={() => clearFieldError("email")}
                 style={{ ...inputStyle, flex: 1, minWidth: "200px" }}
               />
@@ -379,6 +385,8 @@ export function SavingsEstimator() {
                 name="consent"
                 type="checkbox"
                 required
+                aria-invalid={!!fieldErrors.consent || undefined}
+                aria-describedby={describedBy(!!fieldErrors.consent && ESTIMATE_ERROR_ID)}
                 checked={consent}
                 onChange={(e) => {
                   setConsent(e.target.checked);
@@ -396,9 +404,12 @@ export function SavingsEstimator() {
             </label>
 
             {(fieldError || (state.status === "error" && !state.fieldErrors && state.message)) && (
-              <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}>
+              <FormAlert
+                id={ESTIMATE_ERROR_ID}
+                style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}
+              >
                 {fieldError ?? state.message}
-              </span>
+              </FormAlert>
             )}
 
             {turnstileSiteKey && (

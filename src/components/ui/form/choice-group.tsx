@@ -34,6 +34,8 @@ interface ChoiceGroupProps {
   /** Grid columns for the "cards" variant. */
   columns?: number;
   invalid?: boolean;
+  /** Space-separated ids of the error or hint text describing the group. */
+  describedBy?: string;
 }
 
 export function ChoiceGroup({
@@ -45,6 +47,7 @@ export function ChoiceGroup({
   variant = "chips",
   columns = 3,
   invalid = false,
+  describedBy,
 }: ChoiceGroupProps) {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isCards = variant === "cards";
@@ -70,6 +73,8 @@ export function ChoiceGroup({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
+      aria-invalid={invalid || undefined}
+      aria-describedby={describedBy}
       style={
         isCards
           ? {

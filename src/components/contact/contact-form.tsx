@@ -20,7 +20,12 @@ import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
-import { useServerFieldErrors } from "@/components/ui/form/field-errors";
+import {
+  describedBy,
+  hasVisibleFieldErrors,
+  useServerFieldErrors,
+} from "@/components/ui/form/field-errors";
+import { FormAlert } from "@/components/ui/form/form-alert";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
@@ -564,8 +569,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                   setNameValue(e.target.value);
                   clearFieldError("name");
                 }}
-                aria-invalid={!!fieldErrors.name}
-                aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
+                aria-invalid={!!fieldErrors.name || undefined}
+                aria-describedby={describedBy(!!fieldErrors.name && "contact-name-error")}
                 style={{
                   ...inputStyle,
                   borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
@@ -589,8 +594,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                   setEmailValue(e.target.value);
                   clearFieldError("email");
                 }}
-                aria-invalid={!!fieldErrors.email}
-                aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
+                aria-invalid={!!fieldErrors.email || undefined}
+                aria-describedby={describedBy(!!fieldErrors.email && "contact-email-error")}
                 style={{
                   ...inputStyle,
                   borderColor: fieldErrors.email ? "var(--color-danger)" : "var(--color-border)",
@@ -616,8 +621,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 setOrganisationValue(e.target.value);
                 clearFieldError("organisation");
               }}
-              aria-invalid={!!fieldErrors.organisation}
-              aria-describedby={fieldErrors.organisation ? "contact-org-error" : undefined}
+              aria-invalid={!!fieldErrors.organisation || undefined}
+              aria-describedby={describedBy(!!fieldErrors.organisation && "contact-org-error")}
               style={{
                 ...inputStyle,
                 borderColor: fieldErrors.organisation ? "var(--color-danger)" : "var(--color-border)",
@@ -665,8 +670,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 setMessageValue(e.target.value);
                 clearFieldError("message");
               }}
-              aria-invalid={!!fieldErrors.message}
-              aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
+              aria-invalid={!!fieldErrors.message || undefined}
+              aria-describedby={describedBy(!!fieldErrors.message && "contact-message-error")}
               style={{
                 ...textareaStyle,
                 borderColor: fieldErrors.message ? "var(--color-danger)" : "var(--color-border)",
@@ -695,6 +700,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 name="consent"
                 type="checkbox"
                 required
+                aria-invalid={!!fieldErrors.consent || undefined}
+                aria-describedby={describedBy(!!fieldErrors.consent && "contact-consent-error")}
                 checked={consentValue}
                 onChange={(e) => {
                   setConsentValue(e.target.checked);
@@ -711,12 +718,17 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
               </span>
             </label>
-            {fieldErrors.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
+            {fieldErrors.consent && (
+              <span id="contact-consent-error" style={errorStyle}>{fieldErrors.consent}</span>
+            )}
           </div>
 
-          {state.status === "error" && state.message && !state.fieldErrors && (
-            <div
-              role="alert"
+          {/* The summary stays while any field error is still on screen. */}
+          {state.status === "error" &&
+            state.message &&
+            (!state.fieldErrors || hasVisibleFieldErrors(fieldErrors)) && (
+            <FormAlert
+              id="contact-form-error"
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
@@ -728,7 +740,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               }}
             >
               {state.message}
-            </div>
+            </FormAlert>
           )}
 
           {turnstileSiteKey && (

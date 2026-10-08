@@ -28,7 +28,12 @@ import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
 import { hasEmailShape, trialEmailError } from "./email-check";
-import { useServerFieldErrors } from "@/components/ui/form/field-errors";
+import {
+  describedBy,
+  hasVisibleFieldErrors,
+  useServerFieldErrors,
+} from "@/components/ui/form/field-errors";
+import { FormAlert } from "@/components/ui/form/form-alert";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
@@ -156,6 +161,9 @@ const hintStyle: React.CSSProperties = {
   display: "block",
 };
 
+/** The fields that live on step 1 of the form. */
+const STEP_ONE_FIELDS = ["role", "orgSize", "country"] as const;
+
 function SubmitButton({ isValid }: { isValid: boolean }) {
   const { pending } = useFormStatus();
   const disabled = pending || !isValid;
@@ -185,8 +193,17 @@ function SubmitButton({ isValid }: { isValid: boolean }) {
 }
 
 export function TrialForm() {
+  const [step, setStep] = useState<1 | 2>(1);
   const [state, action] = useActionState<TrialFormState, FormData>(
-    submitTrialRequest,
+    async (previous, formData) => {
+      const next = await submitTrialRequest(previous, formData);
+      // Role, size and country sit on step 1, hidden behind step 2's fields:
+      // show the step that holds the error rather than leave it out of sight.
+      if (next.status === "error" && STEP_ONE_FIELDS.some((field) => next.fieldErrors?.[field])) {
+        setStep(1);
+      }
+      return next;
+    },
     INITIAL_STATE,
   );
 
@@ -218,7 +235,6 @@ export function TrialForm() {
   // Two-step split: step 1 is the quick tappable setup (role/size/country,
   // all defaulted except role), step 2 collects contact details. Leading with
   // taps builds momentum before the commitment of typing (IKEA + goal-gradient).
-  const [step, setStep] = useState<1 | 2>(1);
   // "Other" must be spelled out — otherwise the qualifying signal is lost.
   const step1Valid =
     roleValue !== "" &&
@@ -445,11 +461,12 @@ export function TrialForm() {
               options={ROLE_OPTIONS}
               ariaLabel="Your role"
               invalid={!!fieldErrors.role}
+              describedBy={fieldErrors.role ? "trial-role-error" : "trial-role-hint"}
             />
             {fieldErrors.role ? (
-              <span style={errorStyle}>{fieldErrors.role}</span>
+              <span id="trial-role-error" style={errorStyle}>{fieldErrors.role}</span>
             ) : (
-              <span style={hintStyle}>
+              <span id="trial-role-hint" style={hintStyle}>
                 Helps us tailor your setup. You&apos;ll configure team roles after signing in.
               </span>
             )}
@@ -492,9 +509,12 @@ export function TrialForm() {
                 options={ORG_SIZE_OPTIONS}
                 ariaLabel="Organisation size"
                 invalid={!!fieldErrors.orgSize}
+                describedBy={describedBy(!!fieldErrors.orgSize && "trial-orgSize-error")}
               />
             </div>
-            {fieldErrors.orgSize && <span style={errorStyle}>{fieldErrors.orgSize}</span>}
+            {fieldErrors.orgSize && (
+              <span id="trial-orgSize-error" style={errorStyle}>{fieldErrors.orgSize}</span>
+            )}
           </div>
 
           <div>
@@ -513,11 +533,14 @@ export function TrialForm() {
               ariaLabel="Country"
               placeholder="Search for your country…"
               invalid={!!fieldErrors.country}
+              describedBy={describedBy(
+                fieldErrors.country ? "trial-country-error" : !!countryValue && "trial-country-hint",
+              )}
             />
             {fieldErrors.country ? (
-              <span style={errorStyle}>{fieldErrors.country}</span>
+              <span id="trial-country-error" style={errorStyle}>{fieldErrors.country}</span>
             ) : countryValue ? (
-              <span style={hintStyle}>
+              <span id="trial-country-hint" style={hintStyle}>
                 {isServedCountry(countryValue)
                   ? "Your currency, tax and bank-account formats are set up for this country."
                   : "We don't set this country up automatically yet — our team will review your request and agree your setup with you."}
@@ -566,6 +589,8 @@ export function TrialForm() {
               type="text"
               required
               autoComplete="name"
+              aria-invalid={!!fieldErrors.name || undefined}
+              aria-describedby={describedBy(!!fieldErrors.name && "trial-name-error")}
               value={nameValue}
               onChange={(e) => {
                 setNameValue(e.target.value);
@@ -576,7 +601,7 @@ export function TrialForm() {
                 borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
-            {fieldErrors.name && <span style={errorStyle}>{fieldErrors.name}</span>}
+            {fieldErrors.name && <span id="trial-name-error" style={errorStyle}>{fieldErrors.name}</span>}
           </div>
           <div>
             <label htmlFor="email" style={labelStyle}>
@@ -589,6 +614,11 @@ export function TrialForm() {
               type="email"
               required
               autoComplete="email"
+              aria-invalid={!!emailError || undefined}
+              aria-describedby={describedBy(
+                !!emailError && "trial-email-error",
+                showFreeEmailHint && !emailError && "trial-email-hint",
+              )}
               value={emailValue}
               onChange={(e) => {
                 setEmailValue(e.target.value);
@@ -599,11 +629,15 @@ export function TrialForm() {
                 borderColor: emailError ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
-            {emailError && <span style={errorStyle}>{emailError}</span>}
+            {/* Polite live region: the error appears as the visitor types, while
+                the field already has focus — describedby alone is not re-read. */}
+            <div aria-live="polite">
+              {emailError && <span id="trial-email-error" style={errorStyle}>{emailError}</span>}
+            </div>
             {/* Free-email nudge — shown when domain matches a personal provider.
                 Not a block; the submit button remains enabled. */}
             {showFreeEmailHint && !emailError && (
-              <span style={hintStyle}>
+              <span id="trial-email-hint" style={hintStyle}>
                 Tip: work emails get the fastest setup. Personal emails work too.
               </span>
             )}
@@ -621,6 +655,8 @@ export function TrialForm() {
             type="text"
             required
             autoComplete="organization"
+            aria-invalid={!!fieldErrors.organisation || undefined}
+            aria-describedby={describedBy(!!fieldErrors.organisation && "trial-organisation-error")}
             value={organisationValue}
             onChange={(e) => {
               setOrganisationValue(e.target.value);
@@ -632,7 +668,7 @@ export function TrialForm() {
             }}
           />
           {fieldErrors.organisation && (
-            <span style={errorStyle}>{fieldErrors.organisation}</span>
+            <span id="trial-organisation-error" style={errorStyle}>{fieldErrors.organisation}</span>
           )}
         </div>
 
@@ -668,6 +704,8 @@ export function TrialForm() {
               name="consent"
               type="checkbox"
               required
+              aria-invalid={!!fieldErrors.consent || undefined}
+              aria-describedby={describedBy(!!fieldErrors.consent && "trial-consent-error")}
               checked={consentValue}
               onChange={(e) => {
                 setConsentValue(e.target.checked);
@@ -685,12 +723,17 @@ export function TrialForm() {
               <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
             </span>
           </label>
-          {fieldErrors.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
+          {fieldErrors.consent && (
+            <span id="trial-consent-error" style={errorStyle}>{fieldErrors.consent}</span>
+          )}
         </div>
 
-        {state.status === "error" && !state.fieldErrors && state.message && (
-          <div
-            role="alert"
+        {/* The summary stays while any field error is still on screen. */}
+        {state.status === "error" &&
+          state.message &&
+          (!state.fieldErrors || hasVisibleFieldErrors(fieldErrors)) && (
+          <FormAlert
+            id="trial-form-error"
             style={{
               fontFamily: sans,
               fontSize: "13px",
@@ -704,9 +747,9 @@ export function TrialForm() {
               alignItems: "flex-start",
             }}
           >
-            <AlertCircle size={14} strokeWidth={2} style={{ marginTop: "2px", flexShrink: 0 }} />
+            <AlertCircle size={14} strokeWidth={2} style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
             <span>{state.message}</span>
-          </div>
+          </FormAlert>
         )}
 
         {/* Duplicate-submission warning — informational, not blocking. */}

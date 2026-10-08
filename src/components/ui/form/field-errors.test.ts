@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import {
   NO_DISMISSALS,
+  describedBy,
+  hasVisibleFieldErrors,
   dismissFieldError,
   visibleFieldErrors,
   type Dismissals,
@@ -50,5 +52,27 @@ describe("server field errors clear when their field is edited", () => {
 
   it("shows nothing when the server sent no field errors", () => {
     expect(visibleFieldErrors<Field>(undefined, none)).toEqual({});
+  });
+});
+
+describe("describedBy", () => {
+  it("joins the ids of the texts on screen", () => {
+    expect(describedBy("trial-email-error", "trial-email-hint")).toBe("trial-email-error trial-email-hint");
+    expect(describedBy(false, "trial-role-hint")).toBe("trial-role-hint");
+  });
+
+  it("is undefined when nothing describes the field, so no dangling reference", () => {
+    expect(describedBy(undefined, false, null, "")).toBeUndefined();
+  });
+});
+
+describe("hasVisibleFieldErrors", () => {
+  it("is true while any server error is still shown", () => {
+    expect(hasVisibleFieldErrors({ name: "Please share your full name." })).toBe(true);
+  });
+
+  it("is false once every error has been cleared or none came back", () => {
+    expect(hasVisibleFieldErrors({})).toBe(false);
+    expect(hasVisibleFieldErrors({ name: undefined })).toBe(false);
   });
 });

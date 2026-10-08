@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { reissueTrialToken } from "../../actions";
+import { FormAlert } from "@/components/ui/form/form-alert";
 
 const sans = "var(--font-sans)";
 
@@ -55,7 +56,7 @@ export function VerifyResult({ status, message, token }: Props) {
           <input type="hidden" name="token" value={token} />
           <ReissueButton />
           {reissueState.status === "error" && reissueState.message && (
-            <p
+            <FormAlert
               style={{
                 fontFamily: sans,
                 fontSize: "12px",
@@ -64,7 +65,7 @@ export function VerifyResult({ status, message, token }: Props) {
               }}
             >
               {reissueState.message}
-            </p>
+            </FormAlert>
           )}
         </form>
       </Card>

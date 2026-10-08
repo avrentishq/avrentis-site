@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { BRAND } from "@avrentishq/core/brand";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -33,7 +34,7 @@ const contentSecurityPolicy = [
   "font-src 'self'",
   "style-src 'self' 'unsafe-inline'",
   `script-src 'self' 'unsafe-inline' ${TURNSTILE_ORIGIN}${isDev ? " 'unsafe-eval'" : ""}`,
-  `connect-src 'self' https://app.avrentis.com ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
+  `connect-src 'self' ${BRAND.appUrl} ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
   "form-action 'self'",
 ].join("; ");
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
-import { LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES, SITE_HOST } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
@@ -27,9 +27,9 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           Avrentis (&ldquo;Avrentis&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
-          records platform available at <Link href="/">avrentis.com</Link> and{" "}
-          <a href="https://app.avrentis.com" rel="noreferrer">
-            app.avrentis.com
+          records platform available at <Link href="/">{SITE_HOST}</Link> and{" "}
+          <a href={BRAND.appUrl} rel="noreferrer">
+            {new URL(BRAND.appUrl).host}
           </a>
           . This policy explains how we handle personal data in that service and on this marketing website.
         </p>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
-import { LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Terms of service — Avrentis",
@@ -28,7 +28,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           These terms (&ldquo;Terms&rdquo;) form a contract between Avrentis (&ldquo;Avrentis&rdquo;,
           &ldquo;we&rdquo;) and the organisation (&ldquo;Customer&rdquo;, &ldquo;you&rdquo;) that uses the Avrentis
-          platform at <a href="https://app.avrentis.com" rel="noreferrer">app.avrentis.com</a> (the &ldquo;Service&rdquo;).
+          platform at <a href={BRAND.appUrl} rel="noreferrer">{new URL(BRAND.appUrl).host}</a> (the &ldquo;Service&rdquo;).
         </p>
         <p>
           By creating an Avrentis workspace, accessing the Service, or accepting these Terms through an order form,

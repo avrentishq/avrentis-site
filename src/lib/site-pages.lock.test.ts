@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { STATIC_ROUTES } from "@/app/sitemap";
 import { LEGAL_PAGES, SITE_PAGE_ROUTES, type LegalPageKey } from "@/lib/brand";
@@ -105,5 +105,43 @@ describe("pages core owns are never linked by a hand-typed path", () => {
     // Guards against a vacuous pass: the footer links to every legal page.
     const footer = readFileSync(join(SRC, "components", "layout", "footer.tsx"), "utf8");
     expect(footer).toContain("LEGAL_PAGES.privacy");
+  });
+});
+
+/**
+ * Core owns every Avrentis origin — the app (`BRAND.appUrl`), the status page
+ * (`statusUrl`) and the docs site (`docsUrl`) — all built from `SITE_HOST`. A
+ * retyped `status.`/`docs.`/`app.` host is how a link quietly keeps pointing
+ * at the old place after the domain moves. Email addresses are not hosts here
+ * (they have their own home, `contacts.ts`), so `@…` is not matched.
+ */
+const HAND_TYPED_HOST = /(?<![@\w.-])(?:[a-z0-9-]+\.)+avrentis\.com\b/i;
+/** Files outside `src/` that build origins (the CSP in `next.config.ts`). */
+const ROOT_FILES = ["next.config.ts"];
+
+describe("Avrentis hosts are never typed by hand", () => {
+  it("the detector catches a typed subdomain host and ignores emails and the bare site host", () => {
+    expect(HAND_TYPED_HOST.test('const url = "https://status.avrentis.com/";')).toBe(true);
+    expect(HAND_TYPED_HOST.test('href="https://docs.avrentis.com/scim"')).toBe(true);
+    expect(HAND_TYPED_HOST.test("`connect-src 'self' https://app.avrentis.com`")).toBe(true);
+    expect(HAND_TYPED_HOST.test("<a>app.avrentis.com</a>")).toBe(true);
+    expect(HAND_TYPED_HOST.test('"mailto:status@avrentis.com"')).toBe(false);
+    expect(HAND_TYPED_HOST.test("the site at avrentis.com")).toBe(false);
+  });
+
+  it("no source file (or next.config.ts) types one; it comes from core", () => {
+    const sourceFiles = readdirSync(SRC, { recursive: true, encoding: "utf8" })
+      .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file))
+      .map((file) => join(SRC, file));
+    const offenders = [...sourceFiles, ...ROOT_FILES.map((file) => join(process.cwd(), file))]
+      .filter((file) => HAND_TYPED_HOST.test(readFileSync(file, "utf8")))
+      .map((file) => relative(process.cwd(), file));
+    expect(offenders, "use BRAND.appUrl / statusUrl() / docsUrl() from @/lib/brand").toEqual([]);
+  });
+
+  it("the scan reads the files that build these origins", () => {
+    // Guards against a vacuous pass: both read core's builders, not a literal.
+    expect(readFileSync(join(APP, "status", "page.tsx"), "utf8")).toContain("statusUrl(");
+    expect(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")).toContain("BRAND.appUrl");
   });
 });

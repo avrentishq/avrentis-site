@@ -86,6 +86,10 @@ Run these locally before you claim anything is done.
   not oversights.** Read the header comment in the file first. This repo is public, so the specifics live in
   `guides/security-posture.md`, which is gitignored.
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
+- **The focus ring comes from the surface, never the component.** `src/lib/surfaces.ts` maps each
+  background (token, or a strong translucent layer with what it sits on) to its ring; a new
+  background must be registered there or `focus-ring-contrast.lock.test.ts` fails, and every
+  pairing is held at 3:1. Never set `outline` on a component.
 - **Forms work without JavaScript.** Pass the server action itself to `useActionState` (never a
   client wrapper), submit with `onSubmit={submitWithoutReset(action)}` next to `action`
   (`form-submit.lock.test.ts`), gate buttons on `useHydrated()` so the server HTML never ships

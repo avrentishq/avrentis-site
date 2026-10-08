@@ -9,6 +9,7 @@ import { AUDIT_TRAIL_KEPT, SITE_DESCRIPTION } from "@/lib/record-keeping";
 import "./globals.css";
 import { SITE_URL } from "@/lib/seo";
 import { NO_SCRIPT_CSS } from "@/lib/no-script";
+import { SURFACE_FOCUS_CSS } from "@/lib/surfaces";
 
 const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
 const OG_DESCRIPTION = `Replace scattered approvals with structured authority — a tamper-evident audit trail of every decision, approval, and process your organisation runs, ${AUDIT_TRAIL_KEPT}.`;
@@ -72,6 +73,8 @@ export default function RootLayout({
         <JsonLd data={organizationSchema()} />
       </head>
       <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
+        {/* Each painted surface's focus-ring colour (src/lib/surfaces.ts). */}
+        <style>{SURFACE_FOCUS_CSS}</style>
         {/* Only when JavaScript is off: show what script would otherwise reveal. */}
         <noscript>
           <style>{NO_SCRIPT_CSS}</style>

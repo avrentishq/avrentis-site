@@ -1,4 +1,4 @@
-import { CONTACT_EMAIL, DISCLOSURE_POLICY_PATH } from "@/lib/contacts";
+import { CONTACT_EMAIL, disclosurePolicyPath } from "@/lib/contacts";
 import { canonical } from "@/lib/seo";
 
 /**
@@ -8,7 +8,8 @@ import { canonical } from "@/lib/seo";
  * lapse unnoticed: the standard says a reader should treat an expired file as
  * stale, and a hand-typed date silently goes past after a year. It is rebuilt
  * daily and always points one year ahead; every value comes from the same
- * constants the trust page shows.
+ * constants the trust page shows. The Policy line names a page a reader can
+ * open today (`disclosurePolicyPath`), never one the launch gate hides.
  */
 
 export const dynamic = "force-static";
@@ -23,7 +24,7 @@ export function securityTxt(now: Date = new Date()): string {
     `Expires: ${expires.toISOString()}`,
     "Preferred-Languages: en",
     `Canonical: ${canonical("/.well-known/security.txt")}`,
-    `Policy: ${canonical(DISCLOSURE_POLICY_PATH)}`,
+    `Policy: ${canonical(disclosurePolicyPath())}`,
     "",
   ].join("\n");
 }

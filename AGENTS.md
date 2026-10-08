@@ -112,7 +112,9 @@ Run these locally before you claim anything is done.
   `isContactIntent`. `site-pages.lock.test.ts` proves every path core publishes is a real,
   sitemapped page here (moving one fails this build, not a customer's click) and forbids a
   hand-typed copy outside the route inventories (`sitemap.ts`, `launch.ts`). The trust
-  centre is a named exception there while it is launch-hidden.
+  centre is a named exception there while it is launch-hidden; meanwhile security.txt's
+  Policy line (`disclosurePolicyPath()`) names the security overview, and switches to the
+  trust centre by itself once the gate shows it.
 - **Prices and limits are formatted on the site from the numbers.** A price goes through
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).

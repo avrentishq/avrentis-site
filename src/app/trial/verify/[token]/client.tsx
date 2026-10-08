@@ -11,15 +11,17 @@
  *   error       — network / platform error; try again later
  */
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { reissueTrialToken } from "../../actions";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
+import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 
 const sans = "var(--font-sans)";
+const REISSUE_ERROR_ID = "reissue-error";
 
 interface Props {
   status: string;
@@ -32,6 +34,9 @@ export function VerifyResult({ status, message, token }: Props) {
     reissueTrialToken,
     { status: "idle" as const },
   );
+  // After a failed resend, focus the message (the form has no fields to fix).
+  const reissueFormRef = useRef<HTMLFormElement>(null);
+  useFocusAfterFailure(reissueFormRef, reissueState, reissueState.status === "error", REISSUE_ERROR_ID);
 
   if (reissueState.status === "sent") {
     return (
@@ -53,6 +58,7 @@ export function VerifyResult({ status, message, token }: Props) {
         message={message}
       >
         <form
+          ref={reissueFormRef}
           action={reissueAction}
           onSubmit={submitWithoutReset(reissueAction)}
           style={{ marginTop: "16px" }}
@@ -61,6 +67,7 @@ export function VerifyResult({ status, message, token }: Props) {
           <ReissueButton pending={reissuePending} />
           {reissueState.status === "error" && reissueState.message && (
             <FormAlert
+              id={REISSUE_ERROR_ID}
               pending={reissuePending}
               style={{
                 fontFamily: sans,

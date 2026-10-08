@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
+import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
@@ -210,6 +211,10 @@ export function TrialForm() {
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(
     state.status === "error" ? state.fieldErrors : undefined,
   );
+
+  // After a failed send, focus the first field in error, else the alert.
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusAfterFailure(formRef, state, state.status === "error", "trial-form-error");
 
   // ── Duplicate-submission detection ──────────────────────────────
   const [recentSubmission, setRecentSubmission] = useState<RecentSubmission | null>(null);
@@ -398,6 +403,7 @@ export function TrialForm() {
       >
       {/* Form — first on mobile; right column on desktop */}
       <m.form
+        ref={formRef}
         action={action}
         onSubmit={submitWithoutReset(action)}
         className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"

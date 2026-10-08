@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
+import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
@@ -226,6 +227,9 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   );
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
+  // After a failed send, focus the first field in error, else the alert.
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusAfterFailure(formRef, state, state.status === "error", "contact-form-error");
 
   const switchIntent = useCallback((next: string) => {
     const value = next as ContactIntent;
@@ -530,6 +534,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
 
         {/* Form — first on mobile; right column on desktop */}
         <m.form
+          ref={formRef}
           action={action}
           onSubmit={submitWithoutReset(action)}
           className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"

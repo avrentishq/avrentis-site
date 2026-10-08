@@ -21,6 +21,7 @@ import { INITIAL_STATE } from "./state";
 import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
+import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
@@ -213,6 +214,9 @@ export function SavingsEstimator() {
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
   const fieldError = fieldErrors.email ?? fieldErrors.consent;
+  // After a failed send, focus the field in error, else the message line.
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusAfterFailure(formRef, state, state.status === "error", ESTIMATE_ERROR_ID);
 
   // Cloudflare Turnstile — same optional pattern as the contact form.
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -319,6 +323,7 @@ export function SavingsEstimator() {
           </div>
         ) : (
           <form
+            ref={formRef}
             action={action}
             onSubmit={submitWithoutReset(action)}
             style={{

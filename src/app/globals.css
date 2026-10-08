@@ -167,6 +167,18 @@ body {
   border-radius: 3px;
 }
 
+/* Inside a form the ring uses the darker gold. Every form sits on a light
+   card, where plain gold measures 2.94:1 against white, under the 3:1 minimum
+   for non-text contrast (WCAG 1.4.11). gold-on-light measures 5.62:1. The
+   form alert takes focus from script after a failed send
+   (focus-after-failure.ts); after a mouse click `:focus-visible` does not
+   match that, so the alert gets the same ring on plain `:focus`. */
+form :focus-visible,
+form [role="alert"]:focus {
+  outline: 2px solid var(--color-gold-on-light);
+  outline-offset: 2px;
+}
+
 /* Skip-to-content link — off-screen until focused (WCAG 2.4.1). */
 .skip-link {
   position: absolute;

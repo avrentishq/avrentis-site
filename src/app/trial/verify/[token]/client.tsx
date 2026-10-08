@@ -12,12 +12,12 @@
  */
 
 import { useActionState, useEffect, useState } from "react";
-import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { reissueTrialToken } from "../../actions";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { submitWithoutReset } from "@/components/ui/form/submit";
 
 const sans = "var(--font-sans)";
 
@@ -28,7 +28,7 @@ interface Props {
 }
 
 export function VerifyResult({ status, message, token }: Props) {
-  const [reissueState, reissueAction] = useActionState(
+  const [reissueState, reissueAction, reissuePending] = useActionState(
     reissueTrialToken,
     { status: "idle" as const },
   );
@@ -52,11 +52,16 @@ export function VerifyResult({ status, message, token }: Props) {
         title="This link has expired."
         message={message}
       >
-        <form action={reissueAction} style={{ marginTop: "16px" }}>
+        <form
+          action={reissueAction}
+          onSubmit={submitWithoutReset(reissueAction)}
+          style={{ marginTop: "16px" }}
+        >
           <input type="hidden" name="token" value={token} />
-          <ReissueButton />
+          <ReissueButton pending={reissuePending} />
           {reissueState.status === "error" && reissueState.message && (
             <FormAlert
+              pending={reissuePending}
               style={{
                 fontFamily: sans,
                 fontSize: "12px",
@@ -122,8 +127,7 @@ export function VerifyResult({ status, message, token }: Props) {
   );
 }
 
-function ReissueButton() {
-  const { pending } = useFormStatus();
+function ReissueButton({ pending }: { pending: boolean }) {
   // Cooldown guards against spam-clicking: each press disables the button
   // for ~3s. Combined with `pending`, this debounces rapid re-issues.
   const [cooldown, setCooldown] = useState(false);

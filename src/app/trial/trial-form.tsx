@@ -15,7 +15,6 @@
  */
 
 import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Script from "next/script";
 import { m } from "framer-motion";
@@ -34,6 +33,7 @@ import {
   useServerFieldErrors,
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { submitWithoutReset } from "@/components/ui/form/submit";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
@@ -164,8 +164,7 @@ const hintStyle: React.CSSProperties = {
 /** The fields that live on step 1 of the form. */
 const STEP_ONE_FIELDS = ["role", "orgSize", "country"] as const;
 
-function SubmitButton({ isValid }: { isValid: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ isValid, pending }: { isValid: boolean; pending: boolean }) {
   const disabled = pending || !isValid;
   return (
     <button
@@ -194,7 +193,7 @@ function SubmitButton({ isValid }: { isValid: boolean }) {
 
 export function TrialForm() {
   const [step, setStep] = useState<1 | 2>(1);
-  const [state, action] = useActionState<TrialFormState, FormData>(
+  const [state, action, isPending] = useActionState<TrialFormState, FormData>(
     async (previous, formData) => {
       const next = await submitTrialRequest(previous, formData);
       // Role, size and country sit on step 1, hidden behind step 2's fields:
@@ -400,6 +399,7 @@ export function TrialForm() {
       {/* Form — first on mobile; right column on desktop */}
       <m.form
         action={action}
+        onSubmit={submitWithoutReset(action)}
         className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
         variants={fadeUp}
         initial="hidden"
@@ -734,6 +734,7 @@ export function TrialForm() {
           (!state.fieldErrors || hasVisibleFieldErrors(fieldErrors)) && (
           <FormAlert
             id="trial-form-error"
+            pending={isPending}
             style={{
               fontFamily: sans,
               fontSize: "13px",
@@ -796,7 +797,7 @@ export function TrialForm() {
         )}
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-          <SubmitButton isValid={isValid} />
+          <SubmitButton isValid={isValid} pending={isPending} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
             No card on file — nothing to cancel · {TRIAL_LENGTH} trial · Data preserved for{" "}
             {READ_ONLY_GRACE_DAYS} days after trial end.

@@ -12,7 +12,6 @@
  */
 
 import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Script from "next/script";
 import { m } from "framer-motion";
@@ -26,6 +25,7 @@ import {
   useServerFieldErrors,
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { submitWithoutReset } from "@/components/ui/form/submit";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
@@ -176,8 +176,15 @@ const errorStyle: React.CSSProperties = {
   display: "block",
 };
 
-function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({
+  label,
+  isValid,
+  pending,
+}: {
+  label: string;
+  isValid: boolean;
+  pending: boolean;
+}) {
   const disabled = pending || !isValid;
   return (
     <button
@@ -213,7 +220,10 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   // via the topic tabs. It only drives copy + the hidden `intent` field.
   const [intent, setIntent] = useState<ContactIntent>(initialIntent);
   const copy = INTENT_COPY[intent];
-  const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+  const [state, action, isPending] = useActionState<ContactFormState, FormData>(
+    submitContact,
+    INITIAL_STATE,
+  );
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
 
@@ -521,6 +531,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         {/* Form — first on mobile; right column on desktop */}
         <m.form
           action={action}
+          onSubmit={submitWithoutReset(action)}
           className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
           variants={fadeUp}
           initial="hidden"
@@ -729,6 +740,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             (!state.fieldErrors || hasVisibleFieldErrors(fieldErrors)) && (
             <FormAlert
               id="contact-form-error"
+              pending={isPending}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
@@ -755,7 +767,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           )}
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
-            <SubmitButton label={copy.cta} isValid={isValid} />
+            <SubmitButton label={copy.cta} isValid={isValid} pending={isPending} />
           </div>
         </m.form>
       </div>

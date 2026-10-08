@@ -10,7 +10,6 @@
  */
 
 import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import Script from "next/script";
 import Link from "next/link";
 import { m } from "framer-motion";
@@ -21,6 +20,7 @@ import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
 import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { submitWithoutReset } from "@/components/ui/form/submit";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
@@ -158,8 +158,7 @@ function StatTile({
   );
 }
 
-function SubmitButton({ disabled }: { disabled: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ disabled, pending }: { disabled: boolean; pending: boolean }) {
   const off = pending || disabled;
   return (
     <button
@@ -210,7 +209,7 @@ export function SavingsEstimator() {
   const snap = (raw: string, key: keyof typeof BOUNDS, set: (v: string) => void) => () =>
     set(String(clampInt(raw, BOUNDS[key])));
 
-  const [state, action] = useActionState(emailEstimate, INITIAL_STATE);
+  const [state, action, isPending] = useActionState(emailEstimate, INITIAL_STATE);
   // A server error steps aside once its field is edited (field-errors.ts).
   const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
   const fieldError = fieldErrors.email ?? fieldErrors.consent;
@@ -321,6 +320,7 @@ export function SavingsEstimator() {
         ) : (
           <form
             action={action}
+            onSubmit={submitWithoutReset(action)}
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
@@ -364,7 +364,7 @@ export function SavingsEstimator() {
                 onChange={() => clearFieldError("email")}
                 style={{ ...inputStyle, flex: 1, minWidth: "200px" }}
               />
-              <SubmitButton disabled={!consent} />
+              <SubmitButton disabled={!consent} pending={isPending} />
             </div>
 
             <label
@@ -406,6 +406,7 @@ export function SavingsEstimator() {
             {(fieldError || (state.status === "error" && !state.fieldErrors && state.message)) && (
               <FormAlert
                 id={ESTIMATE_ERROR_ID}
+                pending={isPending}
                 style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}
               >
                 {fieldError ?? state.message}

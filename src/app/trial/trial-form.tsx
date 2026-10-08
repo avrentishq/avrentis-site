@@ -406,7 +406,11 @@ export function TrialForm() {
         </p>
       </m.div>
 
-      <TrialStepper current={step + 1} />
+      {/* Without JavaScript both steps show as one page, so a step counter
+          ("Your setup", 33%) would describe a layout that isn't there. */}
+      <div {...JS_ONLY}>
+        <TrialStepper current={step + 1} />
+      </div>
       <m.div
         variants={fadeUp}
         initial="hidden"

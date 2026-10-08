@@ -9,35 +9,6 @@
 
 import type { SubmittedValues } from "@/lib/submitted-values";
 
-export type ContactIntent =
-  | "demo"
-  | "security"
-  | "disclosure"
-  | "privacy"
-  | "legal"
-  | "careers"
-  | "feedback"
-  | "subscribe"
-  | "notify"
-  | "beta"
-  | "roadmap"
-  | "general";
-
-export const VALID_INTENTS: ContactIntent[] = [
-  "demo",
-  "security",
-  "disclosure",
-  "privacy",
-  "legal",
-  "careers",
-  "feedback",
-  "subscribe",
-  "notify",
-  "beta",
-  "roadmap",
-  "general",
-];
-
 /** The fields an enquiry posts; a refusal hands them back (submitted-values.ts). */
 export const CONTACT_FIELDS = [
   "name",

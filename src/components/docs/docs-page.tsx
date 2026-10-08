@@ -13,7 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, moduleName } from "@/lib/brand";
+import { BRAND_COLORS, moduleName, LEGAL_PAGES } from "@/lib/brand";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -101,7 +101,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Roles, permissions, and approval rules",
         body: "A fine-grained permission system with extra rules for department scope and amount thresholds.",
-        href: "/product/security",
+        href: LEGAL_PAGES.security,
         status: "live",
       },
       {
@@ -141,10 +141,10 @@ const CATEGORIES: DocsCategory[] = [
     lede:
       "Isolation, authority, session integrity, audit trail, lifecycle, encryption. The same content your CISO will read during a review.",
     items: [
-      { title: "Security overview", body: "The six-layer stack with diagrams.", href: "/product/security", status: "live" },
-      { title: "Trust centre", body: "Controls framework, sub-processors, data residency, DPA.", href: "/trust", status: "live" },
-      { title: "Privacy policy", body: "What we collect, why, and your data-subject rights.", href: "/privacy", status: "live" },
-      { title: "Terms of service", body: "The contract governing use of the service.", href: "/terms", status: "live" },
+      { title: "Security overview", body: "The six-layer stack with diagrams.", href: LEGAL_PAGES.security, status: "live" },
+      { title: "Trust centre", body: "Controls framework, sub-processors, data residency, DPA.", href: LEGAL_PAGES.trust, status: "live" },
+      { title: "Privacy policy", body: "What we collect, why, and your data-subject rights.", href: LEGAL_PAGES.privacy, status: "live" },
+      { title: "Terms of service", body: "The contract governing use of the service.", href: LEGAL_PAGES.terms, status: "live" },
     ],
   },
   {
@@ -175,7 +175,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "MFA enforcement",
         body: "Two-factor sign-in with secured recovery codes.",
-        href: "/product/security",
+        href: LEGAL_PAGES.security,
         status: "live",
       },
     ],
@@ -223,7 +223,7 @@ const CATEGORIES: DocsCategory[] = [
       "How Avrentis surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.",
     items: [
       { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: "/product/audit", status: "live" },
-      { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: "/product/security", status: "live" },
+      { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: LEGAL_PAGES.security, status: "live" },
       {
         title: "Board provisioning (maker-checker)",
         body: "How provisional access becomes confirmed access.",

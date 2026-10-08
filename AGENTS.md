@@ -100,10 +100,19 @@ Run these locally before you claim anything is done.
   for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.
   `colour-tokens.lock.test.ts` enforces it. This codebase styles with inline `style={{}}`
   objects, not Tailwind classes.
-- **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`),
-  the site URL in `src/lib/seo.tsx` (`SITE_URL`, `canonical(path)`); `contacts.lock.test.ts`
-  enforces both. `/.well-known/security.txt` is generated from them (expiry always a year
-  ahead, rebuilt daily) — never replace it with a static file.
+- **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`);
+  the site URL is core's `BRAND.siteUrl`, used through `src/lib/seo.tsx` (`SITE_URL`,
+  `canonical(path)`); `contacts.lock.test.ts` enforces both. `/.well-known/security.txt` is
+  generated from them (expiry always a year ahead, rebuilt daily) — never replace it with a
+  static file.
+- **Never type a path core owns.** Other surfaces (product emails, trial screens, billing)
+  link to this site through core's `@avrentishq/core/brand`, so the site links the same way:
+  legal pages via `LEGAL_PAGES`, the trial via `SITE_PAGES.trial()`, contact via
+  `contactHref(intent?)` (= `SITE_PAGES.contact`), topics from `CONTACT_INTENTS` /
+  `isContactIntent`. `site-pages.lock.test.ts` proves every path core publishes is a real,
+  sitemapped page here (moving one fails this build, not a customer's click) and forbids a
+  hand-typed copy outside the route inventories (`sitemap.ts`, `launch.ts`). The trust
+  centre is a named exception there while it is launch-hidden.
 - **Prices and limits are formatted on the site from the numbers.** A price goes through
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).

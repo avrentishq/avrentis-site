@@ -5,7 +5,7 @@
  * to any member lights that tab, and clicking a tab selects its canonical
  * intent. Pure data + lookup so it can be unit-tested without the client form.
  */
-import type { ContactIntent } from "./state";
+import { SITE_PAGES, type ContactIntent } from "@/lib/brand";
 
 export interface ContactTab {
   /** Intent posted (and copy shown) when the tab itself is clicked. */
@@ -24,13 +24,13 @@ export const CONTACT_TABS: ContactTab[] = [
 ];
 
 /**
- * The /contact URL for an intent: the one place that spells it. Tabs link to
- * it (so they work without JavaScript), the form keeps the address bar in step
- * with it, and other pages deep-link through it.
+ * The /contact URL for an intent (no argument: the general enquiry). Core
+ * spells it (`SITE_PAGES.contact`), so the site's tabs and every other surface
+ * that links here build the same address. Tabs link to it (so they work without
+ * JavaScript), the form keeps the address bar in step with it, and other pages
+ * deep-link through it.
  */
-export function contactHref(intent: ContactIntent): string {
-  return intent === "general" ? "/contact" : `/contact?intent=${intent}`;
-}
+export const contactHref = SITE_PAGES.contact;
 
 /** The canonical tab intent that should be lit for a given (possibly deep-linked) intent. */
 export function tabForIntent(intent: ContactIntent): ContactIntent {

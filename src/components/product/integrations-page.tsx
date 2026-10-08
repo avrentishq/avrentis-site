@@ -11,7 +11,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -767,7 +767,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
               Scope a custom connector
             </Link>
             <Link
-              href="/product/security"
+              href={LEGAL_PAGES.security}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

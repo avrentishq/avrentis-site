@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, ArrowRight } from "lucide-react";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 import { SUITE_NAV } from "@/lib/product-suites";
 import { isLaunchVisible } from "@/lib/launch";
 import { LOGIN_URL } from "@/lib/platform";
@@ -21,8 +21,8 @@ const NAV_LINKS = [
 
 const PLATFORM = [
   { name: "How it works", href: "/product/how-it-works" },
-  { name: "Security", href: "/product/security" },
-  { name: "Trust centre", href: "/trust" },
+  { name: "Security", href: LEGAL_PAGES.security },
+  { name: "Trust centre", href: LEGAL_PAGES.trust },
   { name: "Integrations catalogue", href: "/product/integrations" },
 ];
 
@@ -454,7 +454,7 @@ export function Navbar() {
             )}
 
             <a
-              href="/trial"
+              href={SITE_PAGES.trial()}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,

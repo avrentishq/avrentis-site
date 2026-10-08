@@ -6,7 +6,7 @@ import { ShieldCheck, Database, Landmark, MapPin } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
 
@@ -244,7 +244,7 @@ export function SocialProof() {
               Talk to us
             </Link>
             <Link
-              href="/product/security"
+              href={LEGAL_PAGES.security}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,

@@ -7,20 +7,17 @@
  * the email is the record.
  *
  * `"use server"` modules can only export async functions in Next.js 16
- * — the form-state shape, INITIAL_STATE, and the ContactIntent enum
- * live in `./state` so the client form and this module can share them.
+ * — the form-state shape and INITIAL_STATE live in `./state` so the client
+ * form and this module can share them. The topics themselves (ContactIntent)
+ * are core's, so a link built anywhere lands on a topic this form knows.
  */
 
 import { sendContactEmail } from "@/lib/email";
 import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
-import {
-  CONTACT_FIELDS,
-  type ContactFormState,
-  type ContactIntent,
-  VALID_INTENTS,
-} from "./state";
+import { CONTACT_FIELDS, type ContactFormState } from "./state";
+import { isContactIntent, type ContactIntent } from "@/lib/brand";
 import { submittedValues } from "@/lib/submitted-values";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 
@@ -101,9 +98,7 @@ async function answerContact(formData: FormData): Promise<ContactFormState> {
   const message = String(formData.get("message") ?? "").trim();
   const consent = formData.get("consent") === "on";
   const rawIntent = String(formData.get("intent") ?? "general");
-  const intent: ContactIntent = (VALID_INTENTS as string[]).includes(rawIntent)
-    ? (rawIntent as ContactIntent)
-    : "general";
+  const intent: ContactIntent = isContactIntent(rawIntent) ? rawIntent : "general";
 
   const fieldErrors: ContactFormState["fieldErrors"] = {};
   if (!name) fieldErrors.name = "Please share your name.";

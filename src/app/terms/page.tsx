@@ -3,17 +3,18 @@ import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
+import { LEGAL_PAGES } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Terms of service — Avrentis",
   description:
     "The terms that govern your organisation's use of Avrentis — service description, acceptable use, data ownership, fees, liability, and termination.",
-  alternates: { canonical: "/terms" },
+  alternates: { canonical: LEGAL_PAGES.terms },
   openGraph: {
     title: "Avrentis terms of service",
     description:
       "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
-    url: canonical("/terms"),
+    url: canonical(LEGAL_PAGES.terms),
     type: "website",
   },
 };
@@ -104,11 +105,11 @@ const SECTIONS: LegalSection[] = [
         <p>
           <strong>You own your data.</strong>{" "}Content you or your users submit to the Service remains the
           Customer&rsquo;s property. We process it under these Terms and our{" "}
-          <Link href="/privacy">Privacy Policy</Link>, and, where required, under a Data Processing Agreement.
+          <Link href={LEGAL_PAGES.privacy}>Privacy Policy</Link>, and, where required, under a Data Processing Agreement.
         </p>
         <p>
           <strong>We protect your data.</strong>{" "}A summary of the technical and organisational measures we apply is
-          at <Link href="/product/security">/product/security</Link>. Audit logs are tamper-evident by design: entries cannot be edited
+          at <Link href={LEGAL_PAGES.security}>{LEGAL_PAGES.security}</Link>. Audit logs are tamper-evident by design: entries cannot be edited
           through the Service, and the only deletions permitted are lawful retention or erasure, each of which leaves a
           verifiable record. This is a deliberate product commitment, not an optional feature.
         </p>

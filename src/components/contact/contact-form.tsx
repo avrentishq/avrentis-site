@@ -32,13 +32,10 @@ import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
-import {
-  INITIAL_STATE,
-  type ContactFormState,
-  type ContactIntent,
-} from "@/app/contact/state";
+import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
 import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
 
 interface IntentCopy {
   eyebrow: string;
@@ -734,7 +731,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               />
               <span>
                 I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
-                <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+                <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
                 .{" "}

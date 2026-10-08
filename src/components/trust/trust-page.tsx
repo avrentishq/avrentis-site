@@ -25,7 +25,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
@@ -92,7 +92,7 @@ const DOCUMENTS = [
     icon: ShieldCheck,
     title: "Security overview",
     body: "The full posture — tenant isolation, role and request-level authority, session integrity, audit, encryption.",
-    cta: { label: "Read the stack", href: "/product/security" },
+    cta: { label: "Read the stack", href: LEGAL_PAGES.security },
   },
   {
     icon: Lock,
@@ -104,13 +104,13 @@ const DOCUMENTS = [
     icon: FileText,
     title: "Privacy policy",
     body: "What we collect, why, how long we keep it, and your rights as a data subject.",
-    cta: { label: "Read the policy", href: "/privacy" },
+    cta: { label: "Read the policy", href: LEGAL_PAGES.privacy },
   },
   {
     icon: ScrollText,
     title: "Terms of service",
     body: "Service description, acceptable use, data ownership, liability, termination.",
-    cta: { label: "Read the terms", href: "/terms" },
+    cta: { label: "Read the terms", href: LEGAL_PAGES.terms },
   },
   {
     icon: AlertOctagon,
@@ -249,7 +249,7 @@ export function TrustProductPage() {
               Request a DPA or security review
             </Link>
             <Link
-              href="/product/security"
+              href={LEGAL_PAGES.security}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

@@ -14,7 +14,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
 import { reissueTrialToken } from "../../actions";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
@@ -119,7 +119,7 @@ export function VerifyResult({ status, message, token }: Props) {
       message={message}
     >
       <Link
-        href="/trial"
+        href={SITE_PAGES.trial()}
         style={{
           marginTop: "16px",
           fontFamily: sans,

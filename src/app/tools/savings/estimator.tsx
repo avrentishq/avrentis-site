@@ -26,6 +26,7 @@ import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
+import { LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 
 const sans = "var(--font-sans)";
 const pct = Math.round(EFFICIENCY * 100);
@@ -422,7 +423,7 @@ export function SavingsEstimator() {
               />
               <span>
                 Email me this estimate and occasional Avrentis updates, per the{" "}
-                <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+                <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
                 .
@@ -454,7 +455,7 @@ export function SavingsEstimator() {
         )}
 
         <Link
-          href="/trial"
+          href={SITE_PAGES.trial()}
           style={{
             fontFamily: sans,
             fontSize: "13px",

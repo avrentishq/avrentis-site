@@ -20,6 +20,7 @@ import { ESTIMATE_FIELDS, type EstimateEmailState } from "./state";
 import { submittedValues } from "@/lib/submitted-values";
 import { canonical } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { SITE_PAGES } from "@/lib/brand";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -105,7 +106,7 @@ async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailSta
       <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Based on your inputs</td></tr>
       <tr><td style="padding:0 0 16px;">${approvals.toLocaleString()} approvals/month &middot; ${minutes} min coordination each &middot; ${naira(cost)}/hour</td></tr>
       <tr><td style="padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textSubtle};line-height:1.5;">Assumes structured approvals remove about ${pct}% of coordination time — a conservative estimate. Your inputs, your numbers.</td></tr>
-      <tr><td style="padding:8px 0 0;"><a href="${canonical("/trial")}" style="color:${STATIC_COLORS.gold};text-decoration:none;font-weight:600;">${START_TRIAL_CTA} →</a></td></tr>
+      <tr><td style="padding:8px 0 0;"><a href="${canonical(SITE_PAGES.trial())}" style="color:${STATIC_COLORS.gold};text-decoration:none;font-weight:600;">${START_TRIAL_CTA} →</a></td></tr>
     </table>
   `;
 

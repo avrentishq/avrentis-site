@@ -15,7 +15,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, MODULES, type ModuleKey } from "@/lib/brand";
+import { BRAND_COLORS, MODULES, type ModuleKey, SITE_PAGES } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
@@ -144,7 +144,7 @@ function resolveCtas(config: ModuleConfig): {
   switch (config.status) {
     case "available":
       return {
-        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: "/trial" },
+        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
         secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
       };
     case "coming_soon":
@@ -155,12 +155,12 @@ function resolveCtas(config: ModuleConfig): {
     case "partial":
       return {
         primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: "/contact" },
+        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
       };
     case "roadmap":
       return {
         primary: config.primaryCta ?? { label: "Share your use case", href: contactHref("roadmap") },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: "/contact" },
+        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
       };
   }
 }

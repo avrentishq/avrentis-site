@@ -7,7 +7,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND } from "@avrentishq/core/brand";
+import { BRAND, SITE_PAGES } from "@avrentishq/core/brand";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 const slideInFromRight = {
@@ -718,7 +718,7 @@ export function Hero() {
             style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}
           >
             <a
-              href="/trial"
+              href={SITE_PAGES.trial()}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,
@@ -985,7 +985,7 @@ export function Hero() {
                     Recorded &mdash; on an audit trail kept for the life of your account.
                     That&rsquo;s the core loop.{" "}
                     <a
-                      href="/trial"
+                      href={SITE_PAGES.trial()}
                       style={{
                         color: "var(--color-gold-on-light)",
                         fontWeight: 600,

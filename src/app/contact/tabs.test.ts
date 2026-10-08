@@ -2,13 +2,13 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { CONTACT_TABS, contactHref, tabForIntent } from "./tabs";
-import { VALID_INTENTS, type ContactIntent } from "./state";
+import { CONTACT_INTENTS, type ContactIntent } from "@/lib/brand";
 
 describe("contact tabs", () => {
-  // The load-bearing invariant: a new intent added to state.ts without a tab
+  // The load-bearing invariant: a new intent added to core without a tab
   // would fall through to "Talk to us" silently — this fails instead.
   it("maps every intent to exactly one tab", () => {
-    for (const intent of VALID_INTENTS) {
+    for (const intent of CONTACT_INTENTS) {
       const owners = CONTACT_TABS.filter((t) => t.members.includes(intent));
       expect(owners, `intent "${intent}" must belong to exactly one tab`).toHaveLength(1);
     }

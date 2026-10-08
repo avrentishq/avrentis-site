@@ -18,6 +18,7 @@ import {
   moduleSuite,
   SUITES,
   type ModuleKey,
+  SITE_PAGES,
 } from "@/lib/brand";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -224,7 +225,7 @@ export default function ProductOverviewPage() {
           </p>
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
             <Link
-              href="/trial"
+              href={SITE_PAGES.trial()}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,

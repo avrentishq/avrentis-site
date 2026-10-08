@@ -14,7 +14,7 @@ import type {
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/money";
 import { priceTaxNote } from "@/lib/price-tax";
-import { isModulePublic } from "@/lib/brand";
+import { isModulePublic, SITE_PAGES } from "@/lib/brand";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 import {
   READ_ONLY_GRACE_DAYS,
@@ -478,7 +478,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               ))}
             </ul>
             <Link
-              href="/trial"
+              href={SITE_PAGES.trial()}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -869,7 +869,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
 
                 {/* CTA */}
                 <Link
-                  href={isQuotePriced ? contactHref("demo") : "/trial"}
+                  href={isQuotePriced ? contactHref("demo") : SITE_PAGES.trial()}
                   style={{
                     display: "flex",
                     alignItems: "center",

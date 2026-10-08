@@ -22,7 +22,7 @@ import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
 import { ORG_SIZE_OPTIONS, DEFAULT_ORG_SIZE } from "@/lib/org-size";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
@@ -755,7 +755,7 @@ export function TrialForm() {
             <span>
               I agree that Avrentis may use the details above to provision and run my trial
               workspace, in line with the{" "}
-              <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+              <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                 privacy policy
               </Link>
               .{" "}

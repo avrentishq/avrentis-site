@@ -354,7 +354,7 @@ export default function AboutPage() {
               can work for your organisation, or need support — we are here.
             </p>
             <Link
-              href="/contact"
+              href={contactHref()}
               style={{
                 display: "inline-block",
                 color: "var(--color-gold)",

@@ -222,7 +222,7 @@ export function CustomersProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact"
+              href={contactHref()}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

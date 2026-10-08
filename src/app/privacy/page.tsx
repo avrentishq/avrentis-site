@@ -3,17 +3,18 @@ import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
+import { LEGAL_PAGES } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
   description:
     "How Avrentis collects, uses, shares, and protects personal data. Plain-language summary of our practices under the GDPR, the Nigeria Data Protection Act 2023, and equivalent data-protection laws.",
-  alternates: { canonical: "/privacy" },
+  alternates: { canonical: LEGAL_PAGES.privacy },
   openGraph: {
     title: "Avrentis privacy policy",
     description:
       "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
-    url: canonical("/privacy"),
+    url: canonical(LEGAL_PAGES.privacy),
     type: "website",
   },
 };
@@ -322,7 +323,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           Security is a structural feature of the platform, not a bolt-on. The full stack — tenant isolation,
           role-based authority, session integrity, audit trail, access lifecycle, encryption — is documented at{" "}
-          <Link href="/product/security">/product/security</Link>.
+          <Link href={LEGAL_PAGES.security}>{LEGAL_PAGES.security}</Link>.
         </p>
         <p>
           No system is perfectly secure; we operate a responsible-disclosure programme and welcome good-faith

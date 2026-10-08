@@ -4,10 +4,11 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 import { SUITE_NAV } from "@/lib/product-suites";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { isLaunchVisible } from "@/lib/launch";
+import { contactHref } from "@/app/contact/tabs";
 
 interface MobileMenuProps {
   open: boolean;
@@ -27,8 +28,8 @@ const PRODUCT_SUITES = [
 
 const PRODUCT_PLATFORM = [
   { name: "How it works", href: "/product/how-it-works" },
-  { name: "Security", href: "/product/security" },
-  { name: "Trust centre", href: "/trust" },
+  { name: "Security", href: LEGAL_PAGES.security },
+  { name: "Trust centre", href: LEGAL_PAGES.trust },
 ];
 
 const FONT = "var(--font-sans)";
@@ -254,7 +255,7 @@ export function MobileMenu({
               Login
             </a>
             <Link
-              href="/contact"
+              href={contactHref()}
               onClick={onClose}
               style={{
                 fontFamily: FONT,
@@ -276,7 +277,7 @@ export function MobileMenu({
               Contact us
             </Link>
             <Link
-              href="/trial"
+              href={SITE_PAGES.trial()}
               onClick={onClose}
               style={{
                 fontFamily: FONT,

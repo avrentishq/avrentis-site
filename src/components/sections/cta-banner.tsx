@@ -3,12 +3,13 @@
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Lock, Check, Zap, Globe } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA, TRIAL_DURATION_DAYS } from "@/lib/trial-terms";
+import { contactHref } from "@/app/contact/tabs";
 
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
@@ -105,7 +106,7 @@ export function CtaBanner() {
           }}
         >
           <Link
-            href="/trial"
+            href={SITE_PAGES.trial()}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 600,
@@ -133,7 +134,7 @@ export function CtaBanner() {
             {START_TRIAL_CTA}
           </Link>
           <Link
-            href="/contact"
+            href={contactHref()}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 500,

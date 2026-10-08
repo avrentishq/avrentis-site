@@ -49,8 +49,9 @@ Run these locally before you claim anything is done.
   `security/` does not, so it is admitted module by module, never as `security/*`).
   Tests may also import the dependency-free `modules/catalog`, `security/dependency-floors` and
   `brand/copy-guardrails`
-  — they back the parity lock tests and never ship. `src/lib/core-imports.lock.test.ts`
-  enforces this list AND walks each allowed subpath's value-import graph, failing on any
+  — they back the parity lock tests and never ship. "Runtime" includes `next.config.ts`
+  (Node loads it at build and start). `src/lib/core-imports.lock.test.ts` scans `src/` and
+  `next.config.ts`, enforces this list AND walks each allowed subpath's value-import graph, failing on any
   package the site does not install; extend both together.
 - **Never type a trial term.** The trial's length, read-only grace, seat cap, storage and
   message caps and the plan it runs on come from core via `src/lib/trial-terms.ts`

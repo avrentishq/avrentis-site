@@ -7,7 +7,8 @@ import { dirname, join } from "node:path";
  * most subpaths need peer dependencies this repo does not install (database,
  * auth, cloud SDKs), and importing one breaks the build or the bundle.
  *
- * Runtime code may import:
+ * Runtime code — everything under `src/`, plus `next.config.ts`, which Node
+ * loads at build and at start, so the same peer rules apply — may import:
  *   - `brand` — the wordmark, fonts and BRAND constants.
  *   - `region/countries` — type-only imports, no peers.
  *   - `security/rate-limit` and `security/rate-limit-tiers` — the shared
@@ -66,6 +67,8 @@ const TEST_ONLY_ALLOWED = new Set([
 ]);
 
 const SRC = join(process.cwd(), "src");
+/** Runtime files outside `src/`, checked against `RUNTIME_ALLOWED` too. */
+const ROOT_RUNTIME_FILES = ["next.config.ts"];
 // This file's own detector fixtures name disallowed subpaths on purpose.
 const SELF = join("lib", "core-imports.lock.test.ts");
 const CORE_IMPORT = /(?:from\s+|import\s*\(\s*|import\s+)["']@avrentishq\/core(?:\/([^"']+))?["']/g;
@@ -95,8 +98,17 @@ describe("core imports stay inside the site's allowlist", () => {
     expect(coreSubpaths(readFileSync(join(SRC, hero), "utf8"))).toContain("brand");
   });
 
+  it("scans next.config.ts too (proves the root file is read)", () => {
+    expect(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")).toContain("Content-Security-Policy");
+  });
+
   it("no file imports a core subpath outside its allowlist", () => {
-    const offenders = sourceFiles().flatMap((file) => {
+    const rootOffenders = ROOT_RUNTIME_FILES.flatMap((file) =>
+      coreSubpaths(readFileSync(join(process.cwd(), file), "utf8"))
+        .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
+        .map((subpath) => `${file}  @avrentishq/core/${subpath}`),
+    );
+    const sourceOffenders = sourceFiles().flatMap((file) => {
       const isTest = /\.test\.tsx?$/.test(file);
       return coreSubpaths(readFileSync(join(SRC, file), "utf8"))
         .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
@@ -104,6 +116,7 @@ describe("core imports stay inside the site's allowlist", () => {
         .filter((subpath) => !(BUILD_FILES.has(file) && BUILD_ONLY_ALLOWED.has(subpath)))
         .map((subpath) => `src/${file}  @avrentishq/core/${subpath}`);
     });
+    const offenders = [...rootOffenders, ...sourceOffenders];
     expect(
       offenders,
       "Check the subpath's import graph for peers the site does not install, then extend the " +

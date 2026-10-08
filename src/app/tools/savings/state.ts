@@ -7,7 +7,7 @@
 export interface EstimateEmailState {
   status: "idle" | "success" | "error";
   message?: string;
-  fieldError?: string;
+  fieldErrors?: Partial<Record<"email" | "consent", string>>;
 }
 
 export const INITIAL_STATE: EstimateEmailState = { status: "idle" };

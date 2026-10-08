@@ -20,6 +20,7 @@ import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
+import { useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
@@ -208,6 +209,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   const [intent, setIntent] = useState<ContactIntent>(initialIntent);
   const copy = INTENT_COPY[intent];
   const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+  // A server error steps aside once its field is edited (field-errors.ts).
+  const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
 
   const switchIntent = useCallback((next: string) => {
     const value = next as ContactIntent;
@@ -557,15 +560,18 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 required
                 autoComplete="name"
                 value={nameValue}
-                onChange={(e) => setNameValue(e.target.value)}
-                aria-invalid={!!state.fieldErrors?.name}
-                aria-describedby={state.fieldErrors?.name ? "contact-name-error" : undefined}
+                onChange={(e) => {
+                  setNameValue(e.target.value);
+                  clearFieldError("name");
+                }}
+                aria-invalid={!!fieldErrors.name}
+                aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
                 style={{
                   ...inputStyle,
-                  borderColor: state.fieldErrors?.name ? "var(--color-danger)" : "var(--color-border)",
+                  borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
                 }}
               />
-              {state.fieldErrors?.name && <span id="contact-name-error" style={errorStyle}>{state.fieldErrors.name}</span>}
+              {fieldErrors.name && <span id="contact-name-error" style={errorStyle}>{fieldErrors.name}</span>}
             </div>
             <div>
               <label htmlFor="email" style={labelStyle}>
@@ -579,15 +585,18 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 required
                 autoComplete="email"
                 value={emailValue}
-                onChange={(e) => setEmailValue(e.target.value)}
-                aria-invalid={!!state.fieldErrors?.email}
-                aria-describedby={state.fieldErrors?.email ? "contact-email-error" : undefined}
+                onChange={(e) => {
+                  setEmailValue(e.target.value);
+                  clearFieldError("email");
+                }}
+                aria-invalid={!!fieldErrors.email}
+                aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
                 style={{
                   ...inputStyle,
-                  borderColor: state.fieldErrors?.email ? "var(--color-danger)" : "var(--color-border)",
+                  borderColor: fieldErrors.email ? "var(--color-danger)" : "var(--color-border)",
                 }}
               />
-              {state.fieldErrors?.email && <span id="contact-email-error" style={errorStyle}>{state.fieldErrors.email}</span>}
+              {fieldErrors.email && <span id="contact-email-error" style={errorStyle}>{fieldErrors.email}</span>}
             </div>
           </div>
 
@@ -603,15 +612,18 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               required
               autoComplete="organization"
               value={organisationValue}
-              onChange={(e) => setOrganisationValue(e.target.value)}
-              aria-invalid={!!state.fieldErrors?.organisation}
-              aria-describedby={state.fieldErrors?.organisation ? "contact-org-error" : undefined}
+              onChange={(e) => {
+                setOrganisationValue(e.target.value);
+                clearFieldError("organisation");
+              }}
+              aria-invalid={!!fieldErrors.organisation}
+              aria-describedby={fieldErrors.organisation ? "contact-org-error" : undefined}
               style={{
                 ...inputStyle,
-                borderColor: state.fieldErrors?.organisation ? "var(--color-danger)" : "var(--color-border)",
+                borderColor: fieldErrors.organisation ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
-            {state.fieldErrors?.organisation && <span id="contact-org-error" style={errorStyle}>{state.fieldErrors.organisation}</span>}
+            {fieldErrors.organisation && <span id="contact-org-error" style={errorStyle}>{fieldErrors.organisation}</span>}
           </div>
 
           <div>
@@ -649,16 +661,19 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               required
               minLength={10}
               value={messageValue}
-              onChange={(e) => setMessageValue(e.target.value)}
-              aria-invalid={!!state.fieldErrors?.message}
-              aria-describedby={state.fieldErrors?.message ? "contact-message-error" : undefined}
+              onChange={(e) => {
+                setMessageValue(e.target.value);
+                clearFieldError("message");
+              }}
+              aria-invalid={!!fieldErrors.message}
+              aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
               style={{
                 ...textareaStyle,
-                borderColor: state.fieldErrors?.message ? "var(--color-danger)" : "var(--color-border)",
+                borderColor: fieldErrors.message ? "var(--color-danger)" : "var(--color-border)",
               }}
               placeholder="What approvals or records are you trying to structure? How many people, how often?"
             />
-            {state.fieldErrors?.message && <span id="contact-message-error" style={errorStyle}>{state.fieldErrors.message}</span>}
+            {fieldErrors.message && <span id="contact-message-error" style={errorStyle}>{fieldErrors.message}</span>}
           </div>
 
           <div>
@@ -681,7 +696,10 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 type="checkbox"
                 required
                 checked={consentValue}
-                onChange={(e) => setConsentValue(e.target.checked)}
+                onChange={(e) => {
+                  setConsentValue(e.target.checked);
+                  clearFieldError("consent");
+                }}
                 style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
               />
               <span>
@@ -693,7 +711,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
               </span>
             </label>
-            {state.fieldErrors?.consent && <span style={errorStyle}>{state.fieldErrors.consent}</span>}
+            {fieldErrors.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
           </div>
 
           {state.status === "error" && state.message && !state.fieldErrors && (

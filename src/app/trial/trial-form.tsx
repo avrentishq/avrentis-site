@@ -28,6 +28,7 @@ import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, type TrialFormState } from "./state";
 import { hasEmailShape, trialEmailError } from "./email-check";
+import { useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
@@ -189,6 +190,11 @@ export function TrialForm() {
     INITIAL_STATE,
   );
 
+  // A server error steps aside once its field is edited (field-errors.ts).
+  const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(
+    state.status === "error" ? state.fieldErrors : undefined,
+  );
+
   // ── Duplicate-submission detection ──────────────────────────────
   const [recentSubmission, setRecentSubmission] = useState<RecentSubmission | null>(null);
   // Read from localStorage once on mount (browser-only API).
@@ -280,15 +286,13 @@ export function TrialForm() {
     return <HardBlockedCard message={state.message} />;
   }
 
-  const fieldErrors = state.status === "error" ? state.fieldErrors : undefined;
-
   // ── Email: refused before submit ────────────────────────────────
   // Only once the value has an address's shape, so a half-typed domain
   // ("you@test" on its way to "you@testco.ng") never flashes an error.
   // The server action asks the same rule; its error shows otherwise.
   const trimmedEmail = emailValue.trim();
   const emailError =
-    (hasEmailShape(trimmedEmail) ? trialEmailError(trimmedEmail) : undefined) ?? fieldErrors?.email;
+    (hasEmailShape(trimmedEmail) ? trialEmailError(trimmedEmail) : undefined) ?? fieldErrors.email;
 
   // ── Free-email hint ─────────────────────────────────────────────
   const emailDomain = emailValue.includes("@")
@@ -434,12 +438,15 @@ export function TrialForm() {
               variant="cards"
               columns={2}
               value={roleValue}
-              onChange={setRoleValue}
+              onChange={(value) => {
+                setRoleValue(value);
+                clearFieldError("role");
+              }}
               options={ROLE_OPTIONS}
               ariaLabel="Your role"
-              invalid={!!fieldErrors?.role}
+              invalid={!!fieldErrors.role}
             />
-            {fieldErrors?.role ? (
+            {fieldErrors.role ? (
               <span style={errorStyle}>{fieldErrors.role}</span>
             ) : (
               <span style={hintStyle}>
@@ -478,13 +485,16 @@ export function TrialForm() {
                 name="orgSize"
                 variant="chips"
                 value={orgSizeValue}
-                onChange={setOrgSizeValue}
+                onChange={(value) => {
+                  setOrgSizeValue(value);
+                  clearFieldError("orgSize");
+                }}
                 options={ORG_SIZE_OPTIONS}
                 ariaLabel="Organisation size"
-                invalid={!!fieldErrors?.orgSize}
+                invalid={!!fieldErrors.orgSize}
               />
             </div>
-            {fieldErrors?.orgSize && <span style={errorStyle}>{fieldErrors.orgSize}</span>}
+            {fieldErrors.orgSize && <span style={errorStyle}>{fieldErrors.orgSize}</span>}
           </div>
 
           <div>
@@ -495,13 +505,16 @@ export function TrialForm() {
             <SearchableSelect
               name="country"
               value={countryValue}
-              onChange={setCountryValue}
+              onChange={(value) => {
+                setCountryValue(value);
+                clearFieldError("country");
+              }}
               options={COUNTRIES.map((c) => ({ value: c.code, label: c.name }))}
               ariaLabel="Country"
               placeholder="Search for your country…"
-              invalid={!!fieldErrors?.country}
+              invalid={!!fieldErrors.country}
             />
-            {fieldErrors?.country ? (
+            {fieldErrors.country ? (
               <span style={errorStyle}>{fieldErrors.country}</span>
             ) : countryValue ? (
               <span style={hintStyle}>
@@ -554,13 +567,16 @@ export function TrialForm() {
               required
               autoComplete="name"
               value={nameValue}
-              onChange={(e) => setNameValue(e.target.value)}
+              onChange={(e) => {
+                setNameValue(e.target.value);
+                clearFieldError("name");
+              }}
               style={{
                 ...inputStyle,
-                borderColor: fieldErrors?.name ? "var(--color-danger)" : "var(--color-border)",
+                borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
-            {fieldErrors?.name && <span style={errorStyle}>{fieldErrors.name}</span>}
+            {fieldErrors.name && <span style={errorStyle}>{fieldErrors.name}</span>}
           </div>
           <div>
             <label htmlFor="email" style={labelStyle}>
@@ -574,7 +590,10 @@ export function TrialForm() {
               required
               autoComplete="email"
               value={emailValue}
-              onChange={(e) => setEmailValue(e.target.value)}
+              onChange={(e) => {
+                setEmailValue(e.target.value);
+                clearFieldError("email");
+              }}
               style={{
                 ...inputStyle,
                 borderColor: emailError ? "var(--color-danger)" : "var(--color-border)",
@@ -603,13 +622,16 @@ export function TrialForm() {
             required
             autoComplete="organization"
             value={organisationValue}
-            onChange={(e) => setOrganisationValue(e.target.value)}
+            onChange={(e) => {
+              setOrganisationValue(e.target.value);
+              clearFieldError("organisation");
+            }}
             style={{
               ...inputStyle,
-              borderColor: fieldErrors?.organisation ? "var(--color-danger)" : "var(--color-border)",
+              borderColor: fieldErrors.organisation ? "var(--color-danger)" : "var(--color-border)",
             }}
           />
-          {fieldErrors?.organisation && (
+          {fieldErrors.organisation && (
             <span style={errorStyle}>{fieldErrors.organisation}</span>
           )}
         </div>
@@ -647,7 +669,10 @@ export function TrialForm() {
               type="checkbox"
               required
               checked={consentValue}
-              onChange={(e) => setConsentValue(e.target.checked)}
+              onChange={(e) => {
+                setConsentValue(e.target.checked);
+                clearFieldError("consent");
+              }}
               style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
             />
             <span>
@@ -660,7 +685,7 @@ export function TrialForm() {
               <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
             </span>
           </label>
-          {fieldErrors?.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
+          {fieldErrors.consent && <span style={errorStyle}>{fieldErrors.consent}</span>}
         </div>
 
         {state.status === "error" && !state.fieldErrors && state.message && (

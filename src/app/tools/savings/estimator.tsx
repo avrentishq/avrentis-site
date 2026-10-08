@@ -19,6 +19,7 @@ import { fadeUp, fadeUpTransition } from "@/lib/animations";
 import { BOUNDS, EFFICIENCY, clampInt, computeSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
+import { useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
@@ -206,6 +207,9 @@ export function SavingsEstimator() {
     set(String(clampInt(raw, BOUNDS[key])));
 
   const [state, action] = useActionState(emailEstimate, INITIAL_STATE);
+  // A server error steps aside once its field is edited (field-errors.ts).
+  const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
+  const fieldError = fieldErrors.email ?? fieldErrors.consent;
 
   // Cloudflare Turnstile — same optional pattern as the contact form.
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -351,6 +355,7 @@ export function SavingsEstimator() {
                 autoComplete="email"
                 placeholder="you@company.com"
                 aria-label="Your email"
+                onChange={() => clearFieldError("email")}
                 style={{ ...inputStyle, flex: 1, minWidth: "200px" }}
               />
               <SubmitButton disabled={!consent} />
@@ -375,7 +380,10 @@ export function SavingsEstimator() {
                 type="checkbox"
                 required
                 checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
+                onChange={(e) => {
+                  setConsent(e.target.checked);
+                  clearFieldError("consent");
+                }}
                 style={{ marginTop: "2px", accentColor: "var(--color-gold)", width: "15px", height: "15px" }}
               />
               <span>
@@ -387,9 +395,9 @@ export function SavingsEstimator() {
               </span>
             </label>
 
-            {(state.fieldError || (state.status === "error" && state.message)) && (
+            {(fieldError || (state.status === "error" && !state.fieldErrors && state.message)) && (
               <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}>
-                {state.fieldError ?? state.message}
+                {fieldError ?? state.message}
               </span>
             )}
 

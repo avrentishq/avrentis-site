@@ -61,13 +61,13 @@ export async function emailEstimate(
   const consent = formData.get("consent") === "on";
 
   if (!email || !EMAIL_RE.test(email)) {
-    return { status: "error", fieldError: "Enter a valid email so we can send it." };
+    return { status: "error", fieldErrors: { email: "Enter a valid email so we can send it." } };
   }
   if (email.length > 320) {
-    return { status: "error", fieldError: "That email is too long." };
+    return { status: "error", fieldErrors: { email: "That email is too long." } };
   }
   if (!consent) {
-    return { status: "error", fieldError: "We need your consent to email you." };
+    return { status: "error", fieldErrors: { consent: "We need your consent to email you." } };
   }
 
   // Bot defence — verified when Turnstile is configured.

@@ -284,7 +284,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "all 150ms ease",
+                transition: "background-color 150ms ease, color 150ms ease",
                 backgroundColor:
                   billing === "monthly" ? "var(--color-navy-primary)" : "transparent",
                 color: billing === "monthly" ? "var(--color-white)" : "var(--color-text-muted)",
@@ -303,7 +303,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "all 150ms ease",
+                transition: "background-color 150ms ease, color 150ms ease",
                 backgroundColor:
                   billing === "annual" ? "var(--color-gold)" : "transparent",
                 color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
@@ -336,7 +336,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     cursor: "pointer",
                     border: "none",
-                    transition: "all 150ms ease",
+                    transition: "background-color 150ms ease, color 150ms ease",
                     backgroundColor: currency === c ? "var(--color-navy-primary)" : "transparent",
                     color: currency === c ? "var(--color-white)" : "var(--color-text-muted)",
                   }}
@@ -490,7 +490,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontWeight: 600,
                 fontFamily: "var(--font-sans)",
                 textDecoration: "none",
-                transition: "all 150ms ease",
+                transition: "border-color 150ms ease",
                 backgroundColor: "transparent",
                 color: "var(--color-text-primary)",
                 border: "1px solid var(--color-border)",
@@ -881,7 +881,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontWeight: 600,
                     fontFamily: "var(--font-sans)",
                     textDecoration: "none",
-                    transition: "all 150ms ease",
+                    transition: "background-color 150ms ease, border-color 150ms ease",
                     ...(isFeatured
                       ? {
                           backgroundColor: "var(--color-gold)",

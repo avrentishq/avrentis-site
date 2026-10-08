@@ -157,3 +157,23 @@ describe("every background in the code is a known surface or fill", () => {
     expect([...unregistered], "Register it in SURFACE_FOCUS_RINGS with the surface it sits on").toEqual([]);
   });
 });
+
+describe("no focus ring fades in", () => {
+  // `transition: all` (or Tailwind's transition-all) also animates outline-color
+  // and outline-width, so a ring fades in from the text colour on focus. Name
+  // the properties that actually change instead.
+  const ANIMATES_EVERYTHING = /transition:\s*["'`]all\b|\btransition-all\b/;
+
+  it("the detector catches both spellings", () => {
+    expect(ANIMATES_EVERYTHING.test('transition: "all 150ms ease",')).toBe(true);
+    expect(ANIMATES_EVERYTHING.test('className="transition-all"')).toBe(true);
+    expect(ANIMATES_EVERYTHING.test('transition: "background-color 150ms ease",')).toBe(false);
+  });
+
+  it("nothing animates every property", () => {
+    const offenders = readdirSync(SRC, { recursive: true, encoding: "utf8" })
+      .filter((file) => /\.(tsx?|css)$/.test(file) && !/\.test\.ts$/.test(file))
+      .filter((file) => ANIMATES_EVERYTHING.test(readFileSync(join(SRC, file), "utf8")));
+    expect(offenders).toEqual([]);
+  });
+});

@@ -13,7 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, moduleName } from "@/lib/brand";
+import { BRAND_COLORS, moduleName, LEGAL_PAGES } from "@/lib/brand";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -34,6 +34,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -79,13 +80,13 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "First-tenant setup guide",
         body: "Step-by-step: creating your organisation, inviting admins, configuring roles.",
-        href: "/contact?intent=demo",
+        href: contactHref("demo"),
         status: "wip",
       },
       {
         title: "Importing existing vendors and documents",
         body: "CSV shapes, mapping columns, running a dry-run before import.",
-        href: "/contact?intent=demo",
+        href: contactHref("demo"),
         status: "wip",
       },
     ],
@@ -100,7 +101,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Roles, permissions, and approval rules",
         body: "A fine-grained permission system with extra rules for department scope and amount thresholds.",
-        href: "/product/security",
+        href: LEGAL_PAGES.security,
         status: "live",
       },
       {
@@ -112,7 +113,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Querying and delegation",
         body: "Pausing an approval, asking the submitter a question, re-entering the chain.",
-        href: "/contact?intent=demo",
+        href: contactHref("demo"),
         status: "wip",
       },
     ],
@@ -140,10 +141,10 @@ const CATEGORIES: DocsCategory[] = [
     lede:
       "Isolation, authority, session integrity, audit trail, lifecycle, encryption. The same content your CISO will read during a review.",
     items: [
-      { title: "Security overview", body: "The six-layer stack with diagrams.", href: "/product/security", status: "live" },
-      { title: "Trust centre", body: "Controls framework, sub-processors, data residency, DPA.", href: "/trust", status: "live" },
-      { title: "Privacy policy", body: "What we collect, why, and your data-subject rights.", href: "/privacy", status: "live" },
-      { title: "Terms of service", body: "The contract governing use of the service.", href: "/terms", status: "live" },
+      { title: "Security overview", body: "The six-layer stack with diagrams.", href: LEGAL_PAGES.security, status: "live" },
+      { title: "Trust centre", body: "Controls framework, sub-processors, data residency, DPA.", href: LEGAL_PAGES.trust, status: "live" },
+      { title: "Privacy policy", body: "What we collect, why, and your data-subject rights.", href: LEGAL_PAGES.privacy, status: "live" },
+      { title: "Terms of service", body: "The contract governing use of the service.", href: LEGAL_PAGES.terms, status: "live" },
     ],
   },
   {
@@ -151,7 +152,7 @@ const CATEGORIES: DocsCategory[] = [
     eyebrow: "ADMINISTRATION",
     title: "Running Avrentis inside your organisation.",
     lede:
-      "User provisioning, SSO configuration, IP allowlisting, MFA, custom domains. Written for admins and internal IT.",
+      "User provisioning, SSO configuration, IP allowlisting and MFA. Written for admins and internal IT.",
     items: [
       {
         title: "SSO configuration (OIDC; SAML on the roadmap)",
@@ -168,13 +169,13 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "IP allowlist configuration",
         body: "Per-tenant CIDR rules for IPv4 and IPv6.",
-        href: "/contact?intent=security",
+        href: contactHref("security"),
         status: "wip",
       },
       {
         title: "MFA enforcement",
         body: "Two-factor sign-in with secured recovery codes.",
-        href: "/product/security",
+        href: LEGAL_PAGES.security,
         status: "live",
       },
     ],
@@ -192,9 +193,9 @@ const CATEGORIES: DocsCategory[] = [
         href: "/product/integrations",
         status: "live",
       },
-      { title: "Email notifications", body: "Configuring sender domains and templates.", href: "/contact?intent=demo", status: "wip" },
-      { title: "WhatsApp notifications", body: "Setting up business-account routing.", href: "/contact?intent=demo", status: "wip" },
-      { title: "SMS notifications", body: "Adding sender IDs and international routing.", href: "/contact?intent=demo", status: "wip" },
+      { title: "Email notifications", body: "Configuring sender domains and templates.", href: contactHref("demo"), status: "wip" },
+      { title: "WhatsApp notifications", body: "Setting up business-account routing.", href: contactHref("demo"), status: "wip" },
+      { title: "SMS notifications", body: "Adding sender IDs and international routing.", href: contactHref("demo"), status: "wip" },
     ],
   },
   {
@@ -210,8 +211,8 @@ const CATEGORIES: DocsCategory[] = [
         href: "/product/integrations#developer",
         status: "live",
       },
-      { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: "/contact?intent=demo", status: "wip" },
-      { title: "Audit export format", body: "The regulator-ready audit bundle schema.", href: "/contact?intent=security", status: "wip" },
+      { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: contactHref("demo"), status: "wip" },
+      { title: "Audit export format", body: "The regulator-ready audit bundle schema.", href: contactHref("security"), status: "wip" },
     ],
   },
   {
@@ -222,11 +223,11 @@ const CATEGORIES: DocsCategory[] = [
       "How Avrentis surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.",
     items: [
       { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: "/product/audit", status: "live" },
-      { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: "/product/security", status: "live" },
+      { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: LEGAL_PAGES.security, status: "live" },
       {
         title: "Board provisioning (maker-checker)",
         body: "How provisional access becomes confirmed access.",
-        href: "/contact?intent=security",
+        href: contactHref("security"),
         status: "wip",
       },
     ],
@@ -484,7 +485,7 @@ export function DocsHubPage() {
               Start here
             </a>
             <Link
-              href="/contact?intent=feedback"
+              href={contactHref("feedback")}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,
@@ -603,7 +604,7 @@ export function DocsHubPage() {
               </p>
             </div>
             <Link
-              href="/contact?intent=feedback"
+              href={contactHref("feedback")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

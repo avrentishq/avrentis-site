@@ -7,19 +7,18 @@
  * the email is the record.
  *
  * `"use server"` modules can only export async functions in Next.js 16
- * — the form-state shape, INITIAL_STATE, and the ContactIntent enum
- * live in `./state` so the client form and this module can share them.
+ * — the form-state shape and INITIAL_STATE live in `./state` so the client
+ * form and this module can share them. The topics themselves (ContactIntent)
+ * are core's, so a link built anywhere lands on a topic this form knows.
  */
 
 import { sendContactEmail } from "@/lib/email";
 import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
-import {
-  type ContactFormState,
-  type ContactIntent,
-  VALID_INTENTS,
-} from "./state";
+import { CONTACT_FIELDS, type ContactFormState } from "./state";
+import { isContactIntent, type ContactIntent } from "@/lib/brand";
+import { submittedValues } from "@/lib/submitted-values";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -66,6 +65,13 @@ export async function submitContact(
   _previous: ContactFormState,
   formData: FormData,
 ): Promise<ContactFormState> {
+  const answer = await answerContact(formData);
+  return answer.status === "error"
+    ? { ...answer, values: submittedValues(formData, CONTACT_FIELDS) }
+    : answer;
+}
+
+async function answerContact(formData: FormData): Promise<ContactFormState> {
   // Honeypot — bots fill every field they can see. If this is set, silently succeed.
   // Field name is deliberately non-obvious so naive form crawlers fill it anyway.
   const honeypot = formData.get("fax_number");
@@ -92,9 +98,7 @@ export async function submitContact(
   const message = String(formData.get("message") ?? "").trim();
   const consent = formData.get("consent") === "on";
   const rawIntent = String(formData.get("intent") ?? "general");
-  const intent: ContactIntent = (VALID_INTENTS as string[]).includes(rawIntent)
-    ? (rawIntent as ContactIntent)
-    : "general";
+  const intent: ContactIntent = isContactIntent(rawIntent) ? rawIntent : "general";
 
   const fieldErrors: ContactFormState["fieldErrors"] = {};
   if (!name) fieldErrors.name = "Please share your name.";

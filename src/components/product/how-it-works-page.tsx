@@ -30,7 +30,7 @@ import {
   Check,
   X,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { RoleBadge } from "@/components/ui/role-badge";
@@ -470,7 +470,7 @@ export function HowItWorksProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/trial"
+              href={SITE_PAGES.trial()}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 600,

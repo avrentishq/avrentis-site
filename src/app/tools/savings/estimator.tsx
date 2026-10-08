@@ -10,7 +10,6 @@
  */
 
 import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import Script from "next/script";
 import Link from "next/link";
 import { m } from "framer-motion";
@@ -19,7 +18,15 @@ import { fadeUp, fadeUpTransition } from "@/lib/animations";
 import { BOUNDS, EFFICIENCY, clampInt, computeSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
+import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
+import { FormAlert } from "@/components/ui/form/form-alert";
+import { useHydrated } from "@/components/ui/form/hydrated";
+import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { CONTACT_EMAIL } from "@/lib/contacts";
+import { submitWithoutReset } from "@/components/ui/form/submit";
+import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { TRIAL_LENGTH } from "@/lib/trial-terms";
+import { LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 
 const sans = "var(--font-sans)";
 const pct = Math.round(EFFICIENCY * 100);
@@ -65,6 +72,7 @@ function NumberField({
   value,
   onChange,
   onBlur,
+  readOnly,
 }: {
   id: string;
   label: string;
@@ -73,6 +81,8 @@ function NumberField({
   value: string;
   onChange: (v: string) => void;
   onBlur: () => void;
+  /** Read-only until the page runs script: without it nothing recalculates. */
+  readOnly: boolean;
 }) {
   return (
     <div>
@@ -104,6 +114,7 @@ function NumberField({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
+          readOnly={readOnly}
           style={{ ...inputStyle, paddingLeft: prefix ? "30px" : "14px" }}
         />
       </div>
@@ -156,8 +167,7 @@ function StatTile({
   );
 }
 
-function SubmitButton({ disabled }: { disabled: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ disabled, pending }: { disabled: boolean; pending: boolean }) {
   const off = pending || disabled;
   return (
     <button
@@ -184,11 +194,13 @@ function SubmitButton({ disabled }: { disabled: boolean }) {
   );
 }
 
+/** The one message line under the form — a field's error or the form's. */
+const ESTIMATE_ERROR_ID = "estimate-form-error";
+
 export function SavingsEstimator() {
   const [approvalsStr, setApprovalsStr] = useState(String(BOUNDS.approvals.default));
   const [minutesStr, setMinutesStr] = useState(String(BOUNDS.minutes.default));
   const [costStr, setCostStr] = useState(String(BOUNDS.cost.default));
-  const [consent, setConsent] = useState(false);
 
   const inputs = useMemo(
     () => ({
@@ -205,7 +217,18 @@ export function SavingsEstimator() {
   const snap = (raw: string, key: keyof typeof BOUNDS, set: (v: string) => void) => () =>
     set(String(clampInt(raw, BOUNDS[key])));
 
-  const [state, action] = useActionState(emailEstimate, INITIAL_STATE);
+  const [state, action, isPending] = useActionState(emailEstimate, INITIAL_STATE);
+  const hydrated = useHydrated();
+  // A refusal hands back what was posted. Fields start from it, which only
+  // matters for a page rendered without JavaScript (with it, state persists).
+  const posted = state.status === "error" ? (state.values ?? {}) : {};
+  const [consent, setConsent] = useState(posted.consent === "on");
+  // A server error steps aside once its field is edited (field-errors.ts).
+  const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
+  const fieldError = fieldErrors.email ?? fieldErrors.consent;
+  // After a failed send, focus the field in error, else the message line.
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusAfterFailure(formRef, state, state.status === "error", ESTIMATE_ERROR_ID);
 
   // Cloudflare Turnstile — same optional pattern as the contact form.
   const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -247,6 +270,12 @@ export function SavingsEstimator() {
           gap: "18px",
         }}
       >
+        <noscript>
+          <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-secondary)", margin: 0 }}>
+            The calculator needs JavaScript to work with your own numbers. Without it, the estimate
+            below uses these typical figures, and that is the estimate we email you.
+          </p>
+        </noscript>
         <NumberField
           id="approvals"
           label="Approvals your team runs each month"
@@ -254,6 +283,7 @@ export function SavingsEstimator() {
           value={approvalsStr}
           onChange={setApprovalsStr}
           onBlur={snap(approvalsStr, "approvals", setApprovalsStr)}
+          readOnly={!hydrated}
         />
         <NumberField
           id="minutes"
@@ -262,6 +292,7 @@ export function SavingsEstimator() {
           value={minutesStr}
           onChange={setMinutesStr}
           onBlur={snap(minutesStr, "minutes", setMinutesStr)}
+          readOnly={!hydrated}
         />
         <NumberField
           id="cost"
@@ -271,6 +302,7 @@ export function SavingsEstimator() {
           value={costStr}
           onChange={setCostStr}
           onBlur={snap(costStr, "cost", setCostStr)}
+          readOnly={!hydrated}
         />
       </div>
 
@@ -312,7 +344,9 @@ export function SavingsEstimator() {
           </div>
         ) : (
           <form
+            ref={formRef}
             action={action}
+            onSubmit={submitWithoutReset(action)}
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
@@ -347,13 +381,17 @@ export function SavingsEstimator() {
                 id="email"
                 name="email"
                 type="email"
+                defaultValue={posted.email}
                 required
                 autoComplete="email"
                 placeholder="you@company.com"
                 aria-label="Your email"
+                aria-invalid={!!fieldErrors.email || undefined}
+                aria-describedby={describedBy(!!fieldErrors.email && ESTIMATE_ERROR_ID)}
+                onChange={() => clearFieldError("email")}
                 style={{ ...inputStyle, flex: 1, minWidth: "200px" }}
               />
-              <SubmitButton disabled={!consent} />
+              <SubmitButton disabled={hydrated && !consent} pending={isPending} />
             </div>
 
             <label
@@ -374,23 +412,32 @@ export function SavingsEstimator() {
                 name="consent"
                 type="checkbox"
                 required
+                aria-invalid={!!fieldErrors.consent || undefined}
+                aria-describedby={describedBy(!!fieldErrors.consent && ESTIMATE_ERROR_ID)}
                 checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
+                onChange={(e) => {
+                  setConsent(e.target.checked);
+                  clearFieldError("consent");
+                }}
                 style={{ marginTop: "2px", accentColor: "var(--color-gold)", width: "15px", height: "15px" }}
               />
               <span>
                 Email me this estimate and occasional Avrentis updates, per the{" "}
-                <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+                <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
                 .
               </span>
             </label>
 
-            {(state.fieldError || (state.status === "error" && state.message)) && (
-              <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}>
-                {state.fieldError ?? state.message}
-              </span>
+            {(fieldError || (state.status === "error" && !state.fieldErrors && state.message)) && (
+              <FormAlert
+                id={ESTIMATE_ERROR_ID}
+                pending={isPending}
+                style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}
+              >
+                {fieldError ?? state.message}
+              </FormAlert>
             )}
 
             {turnstileSiteKey && (
@@ -401,13 +448,14 @@ export function SavingsEstimator() {
                   onReady={renderTurnstile}
                 />
                 <div ref={turnstileRef} />
+                <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
               </>
             )}
           </form>
         )}
 
         <Link
-          href="/trial"
+          href={SITE_PAGES.trial()}
           style={{
             fontFamily: sans,
             fontSize: "13px",

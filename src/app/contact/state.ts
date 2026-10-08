@@ -7,39 +7,26 @@
  * (contact-form.tsx) and the action (actions.ts) import from here.
  */
 
-export type ContactIntent =
-  | "demo"
-  | "security"
-  | "disclosure"
-  | "privacy"
-  | "legal"
-  | "careers"
-  | "feedback"
-  | "subscribe"
-  | "notify"
-  | "beta"
-  | "roadmap"
-  | "general";
+import type { SubmittedValues } from "@/lib/submitted-values";
 
-export const VALID_INTENTS: ContactIntent[] = [
-  "demo",
-  "security",
-  "disclosure",
-  "privacy",
-  "legal",
-  "careers",
-  "feedback",
-  "subscribe",
-  "notify",
-  "beta",
-  "roadmap",
-  "general",
-];
+/** The fields an enquiry posts; a refusal hands them back (submitted-values.ts). */
+export const CONTACT_FIELDS = [
+  "name",
+  "email",
+  "organisation",
+  "size",
+  "country",
+  "message",
+  "consent",
+] as const;
+export type ContactField = (typeof CONTACT_FIELDS)[number];
 
 export interface ContactFormState {
   status: "idle" | "success" | "error";
   message?: string;
   fieldErrors?: Partial<Record<"name" | "email" | "organisation" | "message" | "consent", string>>;
+  /** What the visitor posted, so a page rendered without JavaScript keeps it. */
+  values?: SubmittedValues<ContactField>;
 }
 
 export const INITIAL_STATE: ContactFormState = { status: "idle" };

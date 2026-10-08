@@ -16,9 +16,11 @@ import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { BOUNDS, clampInt, computeSavings, EFFICIENCY } from "./compute";
-import { type EstimateEmailState } from "./state";
+import { ESTIMATE_FIELDS, type EstimateEmailState } from "./state";
+import { submittedValues } from "@/lib/submitted-values";
 import { canonical } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { SITE_PAGES } from "@/lib/brand";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,6 +40,13 @@ export async function emailEstimate(
   _previous: EstimateEmailState,
   formData: FormData,
 ): Promise<EstimateEmailState> {
+  const answer = await answerEstimateEmail(formData);
+  return answer.status === "error"
+    ? { ...answer, values: submittedValues(formData, ESTIMATE_FIELDS) }
+    : answer;
+}
+
+async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailState> {
   // Honeypot — bots fill hidden fields. Silently "succeed" without sending.
   const honeypot = formData.get("fax_number");
   if (typeof honeypot === "string" && honeypot.trim() !== "") {
@@ -61,13 +70,13 @@ export async function emailEstimate(
   const consent = formData.get("consent") === "on";
 
   if (!email || !EMAIL_RE.test(email)) {
-    return { status: "error", fieldError: "Enter a valid email so we can send it." };
+    return { status: "error", fieldErrors: { email: "Enter a valid email so we can send it." } };
   }
   if (email.length > 320) {
-    return { status: "error", fieldError: "That email is too long." };
+    return { status: "error", fieldErrors: { email: "That email is too long." } };
   }
   if (!consent) {
-    return { status: "error", fieldError: "We need your consent to email you." };
+    return { status: "error", fieldErrors: { consent: "We need your consent to email you." } };
   }
 
   // Bot defence — verified when Turnstile is configured.
@@ -97,7 +106,7 @@ export async function emailEstimate(
       <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Based on your inputs</td></tr>
       <tr><td style="padding:0 0 16px;">${approvals.toLocaleString()} approvals/month &middot; ${minutes} min coordination each &middot; ${naira(cost)}/hour</td></tr>
       <tr><td style="padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textSubtle};line-height:1.5;">Assumes structured approvals remove about ${pct}% of coordination time — a conservative estimate. Your inputs, your numbers.</td></tr>
-      <tr><td style="padding:8px 0 0;"><a href="${canonical("/trial")}" style="color:${STATIC_COLORS.gold};text-decoration:none;font-weight:600;">${START_TRIAL_CTA} →</a></td></tr>
+      <tr><td style="padding:8px 0 0;"><a href="${canonical(SITE_PAGES.trial())}" style="color:${STATIC_COLORS.gold};text-decoration:none;font-weight:600;">${START_TRIAL_CTA} →</a></td></tr>
     </table>
   `;
 

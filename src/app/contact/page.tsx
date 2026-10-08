@@ -4,41 +4,26 @@ import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/contact/contact-form";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import type { ContactIntent } from "./state";
+import { isContactIntent, type ContactIntent } from "@/lib/brand";
 import { canonical } from "@/lib/seo";
+import { contactHref } from "@/app/contact/tabs";
 
 export const metadata: Metadata = {
   title: "Contact — Avrentis",
   description:
     "Talk to Avrentis. Contact us for a walkthrough, request a security review, or share a use case. A real person replies within one business day. To start a trial, use /trial.",
-  alternates: { canonical: "/contact" },
+  alternates: { canonical: contactHref() },
   openGraph: {
     title: "Contact Avrentis",
     description:
       "Contact us or talk to our team. Real humans, one-business-day reply.",
-    url: canonical("/contact"),
+    url: canonical(contactHref()),
     type: "website",
   },
 };
 
-const VALID_INTENTS: ContactIntent[] = [
-  "demo",
-  "security",
-  "disclosure",
-  "privacy",
-  "legal",
-  "careers",
-  "feedback",
-  "subscribe",
-  "notify",
-  "beta",
-  "roadmap",
-  "general",
-];
-
 function resolveIntent(raw: string | string[] | undefined): ContactIntent {
-  if (typeof raw !== "string") return "general";
-  return (VALID_INTENTS as string[]).includes(raw) ? (raw as ContactIntent) : "general";
+  return isContactIntent(raw) ? raw : "general";
 }
 
 export default async function ContactPage({

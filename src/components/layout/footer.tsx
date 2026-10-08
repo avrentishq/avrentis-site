@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 import { SUITE_NAV } from "@/lib/product-suites";
 import { isLaunchVisible } from "@/lib/launch";
 import { LOGIN_URL } from "@/lib/platform";
+import { contactHref } from "@/app/contact/tabs";
 
 // The PRODUCT column lists the four SUITES, not the eight modules — the same
 // grouping the navbar uses. Every module page stays one click further on (from
@@ -18,7 +19,7 @@ const PRODUCT_LINKS = [
 
 const PLATFORM_LINKS = [
   { label: "How it works", href: "/product/how-it-works" },
-  { label: "Security", href: "/product/security" },
+  { label: "Security", href: LEGAL_PAGES.security },
   { label: "Integrations", href: "/product/integrations" },
   { label: "Pricing", href: "/pricing" },
 ];
@@ -33,14 +34,14 @@ const RESOURCES_LINKS = [
 const COMPANY_LINKS = [
   { label: "About", href: "/about" },
   { label: "Careers", href: "/careers" },
-  { label: "Trust centre", href: "/trust" },
-  { label: "Privacy policy", href: "/privacy" },
-  { label: "Terms of service", href: "/terms" },
+  { label: "Trust centre", href: LEGAL_PAGES.trust },
+  { label: "Privacy policy", href: LEGAL_PAGES.privacy },
+  { label: "Terms of service", href: LEGAL_PAGES.terms },
 ];
 
 const START_LINKS = [
-  { label: "Start trial", href: "/trial" },
-  { label: "Contact us", href: "/contact" },
+  { label: "Start trial", href: SITE_PAGES.trial() },
+  { label: "Contact us", href: contactHref() },
   { label: "Login", href: LOGIN_URL },
 ];
 

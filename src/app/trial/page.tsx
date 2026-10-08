@@ -6,15 +6,16 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { TrialForm } from "./trial-form";
 import { canonical } from "@/lib/seo";
 import { TRIAL_LENGTH, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP } from "@/lib/trial-terms";
+import { SITE_PAGES } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: `Start your ${TRIAL_LENGTH} trial — Avrentis`,
   description: `Provision an Avrentis workspace in under two minutes. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace, no credit card, your real organisational data.`,
-  alternates: { canonical: "/trial" },
+  alternates: { canonical: SITE_PAGES.trial() },
   openGraph: {
     title: `Start your ${TRIAL_LENGTH} Avrentis trial`,
     description: `Provision in under two minutes. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace. Your organisation's data, not a demo.`,
-    url: canonical("/trial"),
+    url: canonical(SITE_PAGES.trial()),
     type: "website",
   },
 };

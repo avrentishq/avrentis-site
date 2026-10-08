@@ -4,12 +4,13 @@ import { describe, expect, it } from "vitest";
 
 /**
  * Published addresses have one home each: contact emails in `contacts.ts`, the
- * site's own URL in `seo.tsx`. A retyped copy is how the security contact on a
+ * site's own URL in core (`BRAND.siteUrl`, re-exported as `SITE_URL` by
+ * `seo.tsx`). A retyped copy is how the security contact on a
  * page and the one in `security.txt` end up different.
  */
 
 const SRC = join(process.cwd(), "src");
-const HOMES = new Set(["lib/contacts.ts", "lib/seo.tsx"]);
+const HOMES = new Set(["lib/contacts.ts"]);
 const EMAIL = /\b[a-z0-9._-]+@avrentis\.com\b/i;
 const SITE_URL_LITERAL = /["'`]https:\/\/avrentis\.com["'`/]/;
 
@@ -35,7 +36,7 @@ describe("published addresses live in one place", () => {
     expect(offenders(EMAIL)).toEqual([]);
   });
 
-  it("no file outside seo.tsx types the site URL", () => {
+  it("no file types the site URL; it comes from core", () => {
     expect(offenders(SITE_URL_LITERAL)).toEqual([]);
   });
 });

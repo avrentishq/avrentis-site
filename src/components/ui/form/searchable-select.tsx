@@ -9,6 +9,8 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
+import { JS_ONLY } from "@/lib/no-script";
+import { NoScriptSelect } from "./no-script-select";
 
 const sans = "var(--font-sans)";
 
@@ -25,6 +27,8 @@ interface SearchableSelectProps {
   ariaLabel: string;
   placeholder?: string;
   invalid?: boolean;
+  /** Space-separated ids of the error or hint text describing the control. */
+  describedBy?: string;
 }
 
 export function SearchableSelect({
@@ -35,6 +39,7 @@ export function SearchableSelect({
   ariaLabel,
   placeholder = "Select…",
   invalid = false,
+  describedBy,
 }: SearchableSelectProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -91,12 +96,26 @@ export function SearchableSelect({
 
   return (
     <div ref={rootRef} style={{ position: "relative" }}>
+      <NoScriptSelect
+        name={name}
+        value={value}
+        options={options}
+        ariaLabel={ariaLabel}
+        placeholder={value ? undefined : "Select…"}
+      />
       <input type="hidden" name={name} value={value} />
+      {/* Select-only combobox (WAI-ARIA APG): the trigger carries the field's
+          name, value, invalid state and description; the listbox opens below. */}
       <button
+        {...JS_ONLY}
         type="button"
+        role="combobox"
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
         aria-label={ariaLabel}
+        aria-invalid={invalid || undefined}
+        aria-describedby={describedBy}
         onClick={() => setOpen((o) => !o)}
         style={{
           fontFamily: sans,

@@ -14,7 +14,7 @@ import type {
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/money";
 import { priceTaxNote } from "@/lib/price-tax";
-import { isModulePublic } from "@/lib/brand";
+import { isModulePublic, SITE_PAGES } from "@/lib/brand";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 import {
   READ_ONLY_GRACE_DAYS,
@@ -24,6 +24,7 @@ import {
   TRIAL_SEAT_CAP,
   TRIAL_STORAGE,
 } from "@/lib/trial-terms";
+import { contactHref } from "@/app/contact/tabs";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -283,7 +284,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "all 150ms ease",
+                transition: "background-color 150ms ease, color 150ms ease",
                 backgroundColor:
                   billing === "monthly" ? "var(--color-navy-primary)" : "transparent",
                 color: billing === "monthly" ? "var(--color-white)" : "var(--color-text-muted)",
@@ -302,7 +303,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "all 150ms ease",
+                transition: "background-color 150ms ease, color 150ms ease",
                 backgroundColor:
                   billing === "annual" ? "var(--color-gold)" : "transparent",
                 color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
@@ -335,7 +336,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     cursor: "pointer",
                     border: "none",
-                    transition: "all 150ms ease",
+                    transition: "background-color 150ms ease, color 150ms ease",
                     backgroundColor: currency === c ? "var(--color-navy-primary)" : "transparent",
                     color: currency === c ? "var(--color-white)" : "var(--color-text-muted)",
                   }}
@@ -477,7 +478,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               ))}
             </ul>
             <Link
-              href="/trial"
+              href={SITE_PAGES.trial()}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -489,7 +490,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontWeight: 600,
                 fontFamily: "var(--font-sans)",
                 textDecoration: "none",
-                transition: "all 150ms ease",
+                transition: "border-color 150ms ease",
                 backgroundColor: "transparent",
                 color: "var(--color-text-primary)",
                 border: "1px solid var(--color-border)",
@@ -546,8 +547,9 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 ? priceData.monthly * 12 - priceData.annualTotal
                 : 0;
 
-            // Prices are before tax: naira adds VAT on top ("+ <rate> VAT"), rate
-            // from the API's numeric field or core — never typed. None for USD.
+            // Prices are before tax. A tax line ("+ <rate> VAT") shows only where
+            // core says tax is charged (registered); the API's rate only formats
+            // it — never typed. None for USD.
             const taxNote = priceData ? priceTaxNote(currency, priceData.taxRate) : null;
 
             const features = getHighlights(plan);
@@ -867,7 +869,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
 
                 {/* CTA */}
                 <Link
-                  href={isQuotePriced ? "/contact?intent=demo" : "/trial"}
+                  href={isQuotePriced ? contactHref("demo") : SITE_PAGES.trial()}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -879,7 +881,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontWeight: 600,
                     fontFamily: "var(--font-sans)",
                     textDecoration: "none",
-                    transition: "all 150ms ease",
+                    transition: "background-color 150ms ease, border-color 150ms ease",
                     ...(isFeatured
                       ? {
                           backgroundColor: "var(--color-gold)",

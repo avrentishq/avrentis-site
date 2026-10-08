@@ -25,7 +25,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
@@ -33,6 +33,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -91,37 +92,37 @@ const DOCUMENTS = [
     icon: ShieldCheck,
     title: "Security overview",
     body: "The full posture — tenant isolation, role and request-level authority, session integrity, audit, encryption.",
-    cta: { label: "Read the stack", href: "/product/security" },
+    cta: { label: "Read the stack", href: LEGAL_PAGES.security },
   },
   {
     icon: Lock,
     title: "Data Processing Agreement",
     body: "GDPR + UK GDPR-aligned DPA with standard contractual clauses. Signable as-is or negotiated for enterprise.",
-    cta: { label: "Request the DPA", href: "/contact?intent=security" },
+    cta: { label: "Request the DPA", href: contactHref("security") },
   },
   {
     icon: FileText,
     title: "Privacy policy",
     body: "What we collect, why, how long we keep it, and your rights as a data subject.",
-    cta: { label: "Read the policy", href: "/privacy" },
+    cta: { label: "Read the policy", href: LEGAL_PAGES.privacy },
   },
   {
     icon: ScrollText,
     title: "Terms of service",
     body: "Service description, acceptable use, data ownership, liability, termination.",
-    cta: { label: "Read the terms", href: "/terms" },
+    cta: { label: "Read the terms", href: LEGAL_PAGES.terms },
   },
   {
     icon: AlertOctagon,
     title: "Responsible disclosure",
     body: `Report security issues to ${CONTACT_EMAIL.security}. We triage within two business days.`,
-    cta: { label: "Report a vulnerability", href: "/contact?intent=disclosure" },
+    cta: { label: "Report a vulnerability", href: contactHref("disclosure") },
   },
   {
     icon: MapPin,
     title: "Data residency",
     body: "Primary data in the UK (London) today. Need it to stay in a specific country or region? Talk to us.",
-    cta: { label: "Talk to us about residency", href: "/contact?intent=security" },
+    cta: { label: "Talk to us about residency", href: contactHref("security") },
   },
 ];
 
@@ -230,7 +231,7 @@ export function TrustProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=security"
+              href={contactHref("security")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -248,7 +249,7 @@ export function TrustProductPage() {
               Request a DPA or security review
             </Link>
             <Link
-              href="/product/security"
+              href={LEGAL_PAGES.security}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,
@@ -529,7 +530,7 @@ export function TrustProductPage() {
               </div>
             </div>
             <Link
-              href="/contact?intent=privacy"
+              href={contactHref("privacy")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -564,7 +565,7 @@ export function TrustProductPage() {
             }}
           >
             Subscribe to sub-processor change notifications through our{" "}
-            <Link href="/contact?intent=subscribe" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+            <Link href={contactHref("subscribe")} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
               update subscription form
             </Link>
             .
@@ -943,7 +944,7 @@ export function TrustProductPage() {
               Open the status page
             </Link>
             <Link
-              href="/contact?intent=security"
+              href={contactHref("security")}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

@@ -11,13 +11,14 @@
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT, DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -103,12 +104,11 @@ const ENTRIES: Entry[] = [
     tag: "platform",
     title: "Platform tools for enterprise operations teams.",
     body:
-      "A set of capabilities for larger customers who need tighter control. Subscribe to what's happening inside Avrentis from your own systems, track incidents in one place, restrict sign-in to your office IP addresses, use your own domain, and import users in bulk.",
+      "A set of capabilities for larger customers who need tighter control. Subscribe to what's happening inside Avrentis from your own systems, track incidents in one place, restrict sign-in to your office IP addresses, and import users in bulk.",
     bullets: [
       "Subscribe to events inside Avrentis from your own systems",
       "Track incidents directly from the admin dashboard",
       "Restrict sign-in to your organisation's approved IP addresses",
-      "Use your own domain for the Avrentis portal",
       "Import large numbers of users in a single upload",
     ],
     link: { label: "Integrations catalogue", href: "/product/integrations" },
@@ -126,7 +126,7 @@ const ENTRIES: Entry[] = [
       "Two-factor sign-in with recovery codes, required for platform admins",
       "Once an action is recorded, no one can quietly edit or delete it — any change would show",
     ],
-    link: { label: "Read the security stack", href: "/product/security" },
+    link: { label: "Read the security stack", href: LEGAL_PAGES.security },
   },
   {
     date: "December 2025",
@@ -414,7 +414,7 @@ export function ChangelogProductPage() {
               </div>
             </div>
             <Link
-              href="/contact?intent=subscribe"
+              href={contactHref("subscribe")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

@@ -12,7 +12,6 @@
  */
 
 import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import Script from "next/script";
 import { m } from "framer-motion";
@@ -20,16 +19,23 @@ import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
+import {
+  describedBy,
+  hasVisibleFieldErrors,
+  useServerFieldErrors,
+} from "@/components/ui/form/field-errors";
+import { FormAlert } from "@/components/ui/form/form-alert";
+import { useHydrated } from "@/components/ui/form/hydrated";
+import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { submitWithoutReset } from "@/components/ui/form/submit";
+import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
-import {
-  INITIAL_STATE,
-  type ContactFormState,
-  type ContactIntent,
-} from "@/app/contact/state";
-import { CONTACT_TABS, tabForIntent } from "@/app/contact/tabs";
+import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
+import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
 
 interface IntentCopy {
   eyebrow: string;
@@ -170,8 +176,15 @@ const errorStyle: React.CSSProperties = {
   display: "block",
 };
 
-function SubmitButton({ label, isValid }: { label: string; isValid: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({
+  label,
+  isValid,
+  pending,
+}: {
+  label: string;
+  isValid: boolean;
+  pending: boolean;
+}) {
   const disabled = pending || !isValid;
   return (
     <button
@@ -207,13 +220,25 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   // via the topic tabs. It only drives copy + the hidden `intent` field.
   const [intent, setIntent] = useState<ContactIntent>(initialIntent);
   const copy = INTENT_COPY[intent];
-  const [state, action] = useActionState<ContactFormState, FormData>(submitContact, INITIAL_STATE);
+  const [state, action, isPending] = useActionState<ContactFormState, FormData>(
+    submitContact,
+    INITIAL_STATE,
+  );
+  const hydrated = useHydrated();
+  // A refusal hands back what was posted. Fields start from it, which only
+  // matters for a page rendered without JavaScript (with it, state persists).
+  const posted = state.status === "error" ? (state.values ?? {}) : {};
+  // A server error steps aside once its field is edited (field-errors.ts).
+  const { errors: fieldErrors, clear: clearFieldError } = useServerFieldErrors(state.fieldErrors);
+  // After a failed send, focus the first field in error, else the alert.
+  const formRef = useRef<HTMLFormElement>(null);
+  useFocusAfterFailure(formRef, state, state.status === "error", "contact-form-error");
 
   const switchIntent = useCallback((next: string) => {
     const value = next as ContactIntent;
     setIntent(value);
     // Keep the URL shareable/deep-linkable without a full navigation.
-    window.history.replaceState(null, "", value === "general" ? "/contact" : `/contact?intent=${value}`);
+    window.history.replaceState(null, "", contactHref(value));
   }, []);
 
   // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
@@ -242,13 +267,13 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   }, [renderTurnstile]);
 
   // ── Controlled field state for validity computation ─────────────────
-  const [nameValue, setNameValue] = useState("");
-  const [emailValue, setEmailValue] = useState("");
-  const [organisationValue, setOrganisationValue] = useState("");
-  const [messageValue, setMessageValue] = useState("");
-  const [sizeValue, setSizeValue] = useState("");
-  const [countryValue, setCountryValue] = useState("");
-  const [consentValue, setConsentValue] = useState(false);
+  const [nameValue, setNameValue] = useState(posted.name ?? "");
+  const [emailValue, setEmailValue] = useState(posted.email ?? "");
+  const [organisationValue, setOrganisationValue] = useState(posted.organisation ?? "");
+  const [messageValue, setMessageValue] = useState(posted.message ?? "");
+  const [sizeValue, setSizeValue] = useState(posted.size ?? "");
+  const [countryValue, setCountryValue] = useState(posted.country ?? "");
+  const [consentValue, setConsentValue] = useState(posted.consent === "on");
 
   // ── Validity derivation ─────────────────────────────────────────────
   const isValid = useMemo(
@@ -357,6 +382,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           onChange={switchIntent}
           options={CONTACT_TABS.map((t) => ({ value: t.value, label: t.label }))}
           ariaLabel="What are you contacting us about?"
+          hrefFor={(value) => contactHref(value as ContactIntent)}
         />
       </m.div>
 
@@ -512,7 +538,9 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
 
         {/* Form — first on mobile; right column on desktop */}
         <m.form
+          ref={formRef}
           action={action}
+          onSubmit={submitWithoutReset(action)}
           className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
           variants={fadeUp}
           initial="hidden"
@@ -557,15 +585,18 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 required
                 autoComplete="name"
                 value={nameValue}
-                onChange={(e) => setNameValue(e.target.value)}
-                aria-invalid={!!state.fieldErrors?.name}
-                aria-describedby={state.fieldErrors?.name ? "contact-name-error" : undefined}
+                onChange={(e) => {
+                  setNameValue(e.target.value);
+                  clearFieldError("name");
+                }}
+                aria-invalid={!!fieldErrors.name || undefined}
+                aria-describedby={describedBy(!!fieldErrors.name && "contact-name-error")}
                 style={{
                   ...inputStyle,
-                  borderColor: state.fieldErrors?.name ? "var(--color-danger)" : "var(--color-border)",
+                  borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
                 }}
               />
-              {state.fieldErrors?.name && <span id="contact-name-error" style={errorStyle}>{state.fieldErrors.name}</span>}
+              {fieldErrors.name && <span id="contact-name-error" style={errorStyle}>{fieldErrors.name}</span>}
             </div>
             <div>
               <label htmlFor="email" style={labelStyle}>
@@ -579,15 +610,18 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 required
                 autoComplete="email"
                 value={emailValue}
-                onChange={(e) => setEmailValue(e.target.value)}
-                aria-invalid={!!state.fieldErrors?.email}
-                aria-describedby={state.fieldErrors?.email ? "contact-email-error" : undefined}
+                onChange={(e) => {
+                  setEmailValue(e.target.value);
+                  clearFieldError("email");
+                }}
+                aria-invalid={!!fieldErrors.email || undefined}
+                aria-describedby={describedBy(!!fieldErrors.email && "contact-email-error")}
                 style={{
                   ...inputStyle,
-                  borderColor: state.fieldErrors?.email ? "var(--color-danger)" : "var(--color-border)",
+                  borderColor: fieldErrors.email ? "var(--color-danger)" : "var(--color-border)",
                 }}
               />
-              {state.fieldErrors?.email && <span id="contact-email-error" style={errorStyle}>{state.fieldErrors.email}</span>}
+              {fieldErrors.email && <span id="contact-email-error" style={errorStyle}>{fieldErrors.email}</span>}
             </div>
           </div>
 
@@ -603,15 +637,18 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               required
               autoComplete="organization"
               value={organisationValue}
-              onChange={(e) => setOrganisationValue(e.target.value)}
-              aria-invalid={!!state.fieldErrors?.organisation}
-              aria-describedby={state.fieldErrors?.organisation ? "contact-org-error" : undefined}
+              onChange={(e) => {
+                setOrganisationValue(e.target.value);
+                clearFieldError("organisation");
+              }}
+              aria-invalid={!!fieldErrors.organisation || undefined}
+              aria-describedby={describedBy(!!fieldErrors.organisation && "contact-org-error")}
               style={{
                 ...inputStyle,
-                borderColor: state.fieldErrors?.organisation ? "var(--color-danger)" : "var(--color-border)",
+                borderColor: fieldErrors.organisation ? "var(--color-danger)" : "var(--color-border)",
               }}
             />
-            {state.fieldErrors?.organisation && <span id="contact-org-error" style={errorStyle}>{state.fieldErrors.organisation}</span>}
+            {fieldErrors.organisation && <span id="contact-org-error" style={errorStyle}>{fieldErrors.organisation}</span>}
           </div>
 
           <div>
@@ -649,16 +686,19 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               required
               minLength={10}
               value={messageValue}
-              onChange={(e) => setMessageValue(e.target.value)}
-              aria-invalid={!!state.fieldErrors?.message}
-              aria-describedby={state.fieldErrors?.message ? "contact-message-error" : undefined}
+              onChange={(e) => {
+                setMessageValue(e.target.value);
+                clearFieldError("message");
+              }}
+              aria-invalid={!!fieldErrors.message || undefined}
+              aria-describedby={describedBy(!!fieldErrors.message && "contact-message-error")}
               style={{
                 ...textareaStyle,
-                borderColor: state.fieldErrors?.message ? "var(--color-danger)" : "var(--color-border)",
+                borderColor: fieldErrors.message ? "var(--color-danger)" : "var(--color-border)",
               }}
               placeholder="What approvals or records are you trying to structure? How many people, how often?"
             />
-            {state.fieldErrors?.message && <span id="contact-message-error" style={errorStyle}>{state.fieldErrors.message}</span>}
+            {fieldErrors.message && <span id="contact-message-error" style={errorStyle}>{fieldErrors.message}</span>}
           </div>
 
           <div>
@@ -680,25 +720,36 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 name="consent"
                 type="checkbox"
                 required
+                aria-invalid={!!fieldErrors.consent || undefined}
+                aria-describedby={describedBy(!!fieldErrors.consent && "contact-consent-error")}
                 checked={consentValue}
-                onChange={(e) => setConsentValue(e.target.checked)}
+                onChange={(e) => {
+                  setConsentValue(e.target.checked);
+                  clearFieldError("consent");
+                }}
                 style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
               />
               <span>
                 I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
-                <Link href="/privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+                <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
                 .{" "}
                 <span style={{ color: "var(--color-required)" }} aria-hidden="true">*</span>
               </span>
             </label>
-            {state.fieldErrors?.consent && <span style={errorStyle}>{state.fieldErrors.consent}</span>}
+            {fieldErrors.consent && (
+              <span id="contact-consent-error" style={errorStyle}>{fieldErrors.consent}</span>
+            )}
           </div>
 
-          {state.status === "error" && state.message && !state.fieldErrors && (
-            <div
-              role="alert"
+          {/* The summary stays while any field error is still on screen. */}
+          {state.status === "error" &&
+            state.message &&
+            (!state.fieldErrors || hasVisibleFieldErrors(fieldErrors)) && (
+            <FormAlert
+              id="contact-form-error"
+              pending={isPending}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",
@@ -710,7 +761,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               }}
             >
               {state.message}
-            </div>
+            </FormAlert>
           )}
 
           {turnstileSiteKey && (
@@ -721,11 +772,12 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 onReady={renderTurnstile}
               />
               <div ref={turnstileRef} />
+              <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
             </>
           )}
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
-            <SubmitButton label={copy.cta} isValid={isValid} />
+            <SubmitButton label={copy.cta} isValid={!hydrated || isValid} pending={isPending} />
           </div>
         </m.form>
       </div>

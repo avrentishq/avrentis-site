@@ -26,6 +26,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -560,7 +561,7 @@ export function CareersProductPage() {
             }}
           >
             Send a short note through our{" "}
-            <Link href="/contact?intent=careers" style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+            <Link href={contactHref("careers")} style={{ color: "var(--color-gold)", textDecoration: "none" }}>
               register-interest form
             </Link>{" "}
             telling us what you&rsquo;re drawn to, a link to something
@@ -576,7 +577,7 @@ export function CareersProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=careers"
+              href={contactHref("careers")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

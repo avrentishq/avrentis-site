@@ -161,10 +161,24 @@ body {
    `:focus-visible` is pointer-aware, so mouse clicks don't show the ring.
    Inline `outline: none` on an element overrides this — such elements set their
    own `:focus-visible` styling at the call site instead. */
+:root {
+  /* The ring for the page itself; a painted surface sets its own
+     (src/lib/surfaces.ts). Keep in step with DEFAULT_FOCUS_RING. */
+  --focus-ring: var(--color-gold-on-light);
+}
+
 :focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
   border-radius: 3px;
+}
+
+/* The form alert takes focus from script after a failed send
+   (focus-after-failure.ts). After a mouse click `:focus-visible` does not
+   match that, so the alert gets the surface's ring on plain `:focus`. */
+form [role="alert"]:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* Skip-to-content link — off-screen until focused (WCAG 2.4.1). */

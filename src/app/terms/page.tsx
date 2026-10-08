@@ -2,17 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
+import { contactHref } from "@/app/contact/tabs";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Terms of service — Avrentis",
   description:
     "The terms that govern your organisation's use of Avrentis — service description, acceptable use, data ownership, fees, liability, and termination.",
-  alternates: { canonical: "/terms" },
+  alternates: { canonical: LEGAL_PAGES.terms },
   openGraph: {
     title: "Avrentis terms of service",
     description:
       "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
-    url: canonical("/terms"),
+    url: canonical(LEGAL_PAGES.terms),
     type: "website",
   },
 };
@@ -26,7 +28,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           These terms (&ldquo;Terms&rdquo;) form a contract between Avrentis (&ldquo;Avrentis&rdquo;,
           &ldquo;we&rdquo;) and the organisation (&ldquo;Customer&rdquo;, &ldquo;you&rdquo;) that uses the Avrentis
-          platform at <a href="https://app.avrentis.com" rel="noreferrer">app.avrentis.com</a> (the &ldquo;Service&rdquo;).
+          platform at <a href={BRAND.appUrl} rel="noreferrer">{new URL(BRAND.appUrl).host}</a> (the &ldquo;Service&rdquo;).
         </p>
         <p>
           By creating an Avrentis workspace, accessing the Service, or accepting these Terms through an order form,
@@ -85,7 +87,7 @@ const SECTIONS: LegalSection[] = [
           <li>Upload malware, transmit spam, or conduct fraud.</li>
           <li>
             Probe, scan, or test the vulnerability of the Service other than through our responsible-disclosure
-            programme via <Link href="/contact?intent=disclosure">our responsible-disclosure form</Link>.
+            programme via <Link href={contactHref("disclosure")}>our responsible-disclosure form</Link>.
           </li>
           <li>Attempt to bypass tenant isolation, rate limits, or authentication.</li>
           <li>Reverse-engineer the Service, except to the extent that applicable law prohibits such a restriction.</li>
@@ -103,11 +105,11 @@ const SECTIONS: LegalSection[] = [
         <p>
           <strong>You own your data.</strong>{" "}Content you or your users submit to the Service remains the
           Customer&rsquo;s property. We process it under these Terms and our{" "}
-          <Link href="/privacy">Privacy Policy</Link>, and, where required, under a Data Processing Agreement.
+          <Link href={LEGAL_PAGES.privacy}>Privacy Policy</Link>, and, where required, under a Data Processing Agreement.
         </p>
         <p>
           <strong>We protect your data.</strong>{" "}A summary of the technical and organisational measures we apply is
-          at <Link href="/product/security">/product/security</Link>. Audit logs are tamper-evident by design: entries cannot be edited
+          at <Link href={LEGAL_PAGES.security}>{LEGAL_PAGES.security}</Link>. Audit logs are tamper-evident by design: entries cannot be edited
           through the Service, and the only deletions permitted are lawful retention or erasure, each of which leaves a
           verifiable record. This is a deliberate product commitment, not an optional feature.
         </p>
@@ -333,7 +335,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         Legal questions, requests for a signed agreement, or notices under these Terms should be sent to{" "}
-        <Link href="/contact?intent=legal">our legal enquiry form</Link>.
+        <Link href={contactHref("legal")}>our legal enquiry form</Link>.
       </p>
     ),
   },
@@ -352,7 +354,7 @@ export default function TermsPage() {
           <strong>Note.</strong>{" "}These standard Terms apply to self-serve customers. Enterprise customers typically
           operate under a negotiated order form that takes precedence over any conflicting provision here. To
           request that form, send a note through{" "}
-          <Link href="/contact?intent=legal" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+          <Link href={contactHref("legal")} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
             our legal enquiry form
           </Link>
           .

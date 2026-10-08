@@ -15,7 +15,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, MODULES, type ModuleKey } from "@/lib/brand";
+import { BRAND_COLORS, MODULES, type ModuleKey, SITE_PAGES } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
@@ -28,6 +28,7 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { contactHref } from "@/app/contact/tabs";
 
 export type ModuleStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
@@ -143,23 +144,23 @@ function resolveCtas(config: ModuleConfig): {
   switch (config.status) {
     case "available":
       return {
-        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: "/trial" },
+        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
         secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
       };
     case "coming_soon":
       return {
-        primary: config.primaryCta ?? { label: "Get notified at launch", href: "/contact?intent=notify" },
-        secondary: config.secondaryCta ?? { label: "See the full roadmap", href: "/contact?intent=roadmap" },
+        primary: config.primaryCta ?? { label: "Get notified at launch", href: contactHref("notify") },
+        secondary: config.secondaryCta ?? { label: "See the full roadmap", href: contactHref("roadmap") },
       };
     case "partial":
       return {
-        primary: config.primaryCta ?? { label: "Join the beta", href: "/contact?intent=beta" },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: "/contact" },
+        primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
+        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
       };
     case "roadmap":
       return {
-        primary: config.primaryCta ?? { label: "Share your use case", href: "/contact?intent=roadmap" },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: "/contact" },
+        primary: config.primaryCta ?? { label: "Share your use case", href: contactHref("roadmap") },
+        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
       };
   }
 }

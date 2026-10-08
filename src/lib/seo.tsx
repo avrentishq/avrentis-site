@@ -6,15 +6,16 @@
  * bodies. Keep emitted facts truthful and in lockstep with the visible copy.
  */
 
-import { BRAND } from "@/lib/brand";
+import { BRAND, siteUrl } from "@/lib/brand";
 import type { PricingData } from "@/lib/pricing";
 import { SITE_DESCRIPTION } from "@/lib/record-keeping";
 
-export const SITE_URL = "https://avrentis.com";
+/** The site's canonical origin — core's, the same one every other surface links to. */
+export const SITE_URL = BRAND.siteUrl;
 
 /** Absolute canonical URL for a route path ("/" → site root). */
 export function canonical(path: string): string {
-  return path === "/" ? `${SITE_URL}/` : `${SITE_URL}${path}`;
+  return siteUrl(path);
 }
 
 /** Renders a JSON-LD script tag. Safe in server or client components.

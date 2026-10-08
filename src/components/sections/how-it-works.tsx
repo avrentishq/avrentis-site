@@ -927,7 +927,7 @@ export function HowItWorks() {
                       justifyContent: "center",
                       position: "relative",
                       zIndex: 1,
-                      transition: "all 0.3s ease",
+                      transition: "background-color 0.3s ease, border-color 0.3s ease",
                     }}
                   >
                     <span

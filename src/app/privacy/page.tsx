@@ -2,17 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
 import { canonical } from "@/lib/seo";
+import { contactHref } from "@/app/contact/tabs";
+import { BRAND, LEGAL_PAGES, SITE_HOST } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
   description:
     "How Avrentis collects, uses, shares, and protects personal data. Plain-language summary of our practices under the GDPR, the Nigeria Data Protection Act 2023, and equivalent data-protection laws.",
-  alternates: { canonical: "/privacy" },
+  alternates: { canonical: LEGAL_PAGES.privacy },
   openGraph: {
     title: "Avrentis privacy policy",
     description:
       "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
-    url: canonical("/privacy"),
+    url: canonical(LEGAL_PAGES.privacy),
     type: "website",
   },
 };
@@ -25,15 +27,15 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           Avrentis (&ldquo;Avrentis&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
-          records platform available at <Link href="/">avrentis.com</Link> and{" "}
-          <a href="https://app.avrentis.com" rel="noreferrer">
-            app.avrentis.com
+          records platform available at <Link href="/">{SITE_HOST}</Link> and{" "}
+          <a href={BRAND.appUrl} rel="noreferrer">
+            {new URL(BRAND.appUrl).host}
           </a>
           . This policy explains how we handle personal data in that service and on this marketing website.
         </p>
         <p>
           For privacy questions, contact{" "}
-          <Link href="/contact?intent=privacy">our privacy enquiry form</Link>.
+          <Link href={contactHref("privacy")}>our privacy enquiry form</Link>.
         </p>
       </>
     ),
@@ -58,6 +60,14 @@ const SECTIONS: LegalSection[] = [
         <p>
           <strong>Support correspondence.</strong>{" "}Messages, phone numbers (if shared), and any information you
           voluntarily include when contacting us.
+        </p>
+        <p>
+          <strong>Free-trial record.</strong>{" "}When an organisation starts a free trial, we keep a one-way scrambled
+          code derived from the billing email address the trial was started with &mdash; never the address itself
+          &mdash; together with the date and which organisation started the trial. If that organisation later replaces
+          its billing email address, the same kind of code is kept for the address it replaced. The code cannot be
+          turned back into an email address; it only lets us check whether an address we are given has already been
+          used for a free trial. See <a href="#how-long">How long we keep it</a>.
         </p>
         <p>
           <strong>Marketing-site analytics.</strong>{" "}We do not run third-party analytics on this website, and we do
@@ -211,7 +221,7 @@ const SECTIONS: LegalSection[] = [
         </ul>
         <p>
           The specific named providers in each category are shared with prospective
-          customers through <Link href="/contact?intent=privacy">our privacy enquiry form</Link>, typically alongside a
+          customers through <Link href={contactHref("privacy")}>our privacy enquiry form</Link>, typically alongside a
           Data Processing Agreement.
         </p>
       </>
@@ -259,6 +269,16 @@ const SECTIONS: LegalSection[] = [
           reasonable record-keeping.
         </p>
         <p>
+          <strong>Free-trial record.</strong>{" "}Kept indefinitely, so that each email address can start only one
+          free trial. It is not deleted when the organisation&rsquo;s account is deleted (only its link to that
+          organisation is removed), and it is not deleted when you ask us to erase your personal data. We keep it on
+          the basis of our legitimate interest in preventing fraud and abuse of the free trial (GDPR Article 6(1)(f),
+          read with Recital 47, and the legitimate-interest basis in section 25 of the Nigeria Data Protection Act
+          2023). It holds only the scrambled code described under{" "}
+          <a href="#what-we-collect">What we collect</a>, the date it was recorded, and &mdash; until that
+          account is deleted &mdash; which organisation started the trial.
+        </p>
+        <p>
           <strong>De-identified and aggregated information.</strong>{" "}Retained indefinitely. It contains no personal
           data and no identifier of any customer, so it is not deleted when an account closes and cannot be deleted on
           request &mdash; it cannot be traced to any customer or individual.
@@ -278,7 +298,10 @@ const SECTIONS: LegalSection[] = [
         <ul>
           <li>Access the personal data we hold about you.</li>
           <li>Request correction of inaccurate data.</li>
-          <li>Request deletion, subject to legal and contractual retention obligations.</li>
+          <li>
+            Request deletion, subject to legal and contractual retention obligations and to the free-trial record
+            described under <a href="#how-long">How long we keep it</a>.
+          </li>
           <li>Receive a portable copy of your data.</li>
           <li>Object to or restrict certain processing.</li>
           <li>Withdraw consent where consent is the lawful basis.</li>
@@ -287,7 +310,7 @@ const SECTIONS: LegalSection[] = [
         <p>
           Where Avrentis processes your data on behalf of your employer (most features of the platform), we will
           forward your request to the relevant administrator and assist with its fulfilment. For direct requests,
-          email <Link href="/contact?intent=privacy">our privacy enquiry form</Link>.
+          email <Link href={contactHref("privacy")}>our privacy enquiry form</Link>.
         </p>
       </>
     ),
@@ -300,11 +323,11 @@ const SECTIONS: LegalSection[] = [
         <p>
           Security is a structural feature of the platform, not a bolt-on. The full stack — tenant isolation,
           role-based authority, session integrity, audit trail, access lifecycle, encryption — is documented at{" "}
-          <Link href="/product/security">/product/security</Link>.
+          <Link href={LEGAL_PAGES.security}>{LEGAL_PAGES.security}</Link>.
         </p>
         <p>
           No system is perfectly secure; we operate a responsible-disclosure programme and welcome good-faith
-          reports through our <Link href="/contact?intent=disclosure">responsible-disclosure form</Link>.
+          reports through our <Link href={contactHref("disclosure")}>responsible-disclosure form</Link>.
         </p>
       </>
     ),
@@ -336,7 +359,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         For any question about this policy, or to exercise a right listed above, write to{" "}
-        <Link href="/contact?intent=privacy">our privacy enquiry form</Link>. We respond within one business day for
+        <Link href={contactHref("privacy")}>our privacy enquiry form</Link>. We respond within one business day for
         enterprise customers and otherwise within a reasonable time not exceeding the statutory deadline applicable
         to your jurisdiction.
       </p>
@@ -350,14 +373,14 @@ export default function PrivacyPage() {
       eyebrow="PRIVACY POLICY"
       title="How we handle your data."
       lede="This policy is a plain-language summary of how Avrentis collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords."
-      effectiveDate="26 September 2026"
+      effectiveDate="7 October 2026"
       sections={SECTIONS}
       footerNote={
         <>
           <strong>Note.</strong>{" "}This policy reflects our current practices. It is not legal advice. Organisations
           with bespoke compliance requirements (regulated industries, specific residency mandates, additional
           controller-processor clauses) should reach out through{" "}
-          <Link href="/contact?intent=privacy" style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
+          <Link href={contactHref("privacy")} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
             our privacy enquiry form
           </Link>{" "}
           for a tailored Data Processing Agreement.

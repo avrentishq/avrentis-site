@@ -11,7 +11,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -28,6 +28,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -437,7 +438,7 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
               Explore the catalogue
             </Link>
             <Link
-              href="/contact?intent=demo"
+              href={contactHref("demo")}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,
@@ -566,7 +567,7 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
                 Launch partners get access today.
               </p>
               <Link
-                href="/contact?intent=demo"
+                href={contactHref("demo")}
                 style={{
                   fontFamily: sans,
                   fontSize: "13px",
@@ -748,7 +749,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/contact?intent=demo"
+              href={contactHref("demo")}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,
@@ -766,7 +767,7 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
               Scope a custom connector
             </Link>
             <Link
-              href="/product/security"
+              href={LEGAL_PAGES.security}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

@@ -7,6 +7,22 @@
  * (trial-form.tsx) and the action (actions.ts) import from here.
  */
 
+import type { SubmittedValues } from "@/lib/submitted-values";
+
+/** The fields a trial request posts; a refusal hands them back (submitted-values.ts). */
+export const TRIAL_FIELDS = [
+  "name",
+  "email",
+  "organisation",
+  "role",
+  "roleOther",
+  "orgSize",
+  "country",
+  "source",
+  "consent",
+] as const;
+export type TrialField = (typeof TRIAL_FIELDS)[number];
+
 export type TrialFormState =
   | { status: "idle" }
   | {
@@ -42,6 +58,8 @@ export type TrialFormState =
           string
         >
       >;
+      /** What the visitor posted, so a page rendered without JavaScript keeps it. */
+      values?: SubmittedValues<TrialField>;
     };
 
 export const INITIAL_STATE: TrialFormState = { status: "idle" };

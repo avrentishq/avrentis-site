@@ -7,7 +7,8 @@ import { dirname, join } from "node:path";
  * most subpaths need peer dependencies this repo does not install (database,
  * auth, cloud SDKs), and importing one breaks the build or the bundle.
  *
- * Runtime code may import:
+ * Runtime code — everything under `src/`, plus `next.config.ts`, which Node
+ * loads at build and at start, so the same peer rules apply — may import:
  *   - `brand` — the wordmark, fonts and BRAND constants.
  *   - `region/countries` — type-only imports, no peers.
  *   - `security/rate-limit` and `security/rate-limit-tiers` — the shared
@@ -25,8 +26,11 @@ import { dirname, join } from "node:path";
  *   - `billing/features` — `SERVICE_COMMITMENT_KEYS` for the comparison table's
  *     service group (server-side, in `fetchPricingData`). Reaches only
  *     `modules/catalog`; its `db/schema` and role imports are type-only.
- *   - `billing/platform-tax` + `region/sales-tax` — the VAT added on top of a
- *     naira price. A small rate table; country types are type-only imports.
+ *   - `billing/platform-tax` + `region/sales-tax` — whether tax is added on top
+ *     of a naira price (only where core lists a registration) and at what rate.
+ *     A small rate table; country types are type-only imports.
+ *   - `billing/reserved-mail-domain` — the trial form refuses an address that
+ *     can never receive mail, by the rule core shares with the app and console. No imports.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
@@ -52,6 +56,7 @@ const RUNTIME_ALLOWED = new Set([
   "billing/features",
   "billing/platform-tax",
   "region/sales-tax",
+  "billing/reserved-mail-domain",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
 const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog", "sectors"]);
@@ -62,6 +67,8 @@ const TEST_ONLY_ALLOWED = new Set([
 ]);
 
 const SRC = join(process.cwd(), "src");
+/** Runtime files outside `src/`, checked against `RUNTIME_ALLOWED` too. */
+const ROOT_RUNTIME_FILES = ["next.config.ts"];
 // This file's own detector fixtures name disallowed subpaths on purpose.
 const SELF = join("lib", "core-imports.lock.test.ts");
 const CORE_IMPORT = /(?:from\s+|import\s*\(\s*|import\s+)["']@avrentishq\/core(?:\/([^"']+))?["']/g;
@@ -91,8 +98,17 @@ describe("core imports stay inside the site's allowlist", () => {
     expect(coreSubpaths(readFileSync(join(SRC, hero), "utf8"))).toContain("brand");
   });
 
+  it("scans next.config.ts too (proves the root file is read)", () => {
+    expect(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")).toContain("Content-Security-Policy");
+  });
+
   it("no file imports a core subpath outside its allowlist", () => {
-    const offenders = sourceFiles().flatMap((file) => {
+    const rootOffenders = ROOT_RUNTIME_FILES.flatMap((file) =>
+      coreSubpaths(readFileSync(join(process.cwd(), file), "utf8"))
+        .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
+        .map((subpath) => `${file}  @avrentishq/core/${subpath}`),
+    );
+    const sourceOffenders = sourceFiles().flatMap((file) => {
       const isTest = /\.test\.tsx?$/.test(file);
       return coreSubpaths(readFileSync(join(SRC, file), "utf8"))
         .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
@@ -100,6 +116,7 @@ describe("core imports stay inside the site's allowlist", () => {
         .filter((subpath) => !(BUILD_FILES.has(file) && BUILD_ONLY_ALLOWED.has(subpath)))
         .map((subpath) => `src/${file}  @avrentishq/core/${subpath}`);
     });
+    const offenders = [...rootOffenders, ...sourceOffenders];
     expect(
       offenders,
       "Check the subpath's import graph for peers the site does not install, then extend the " +

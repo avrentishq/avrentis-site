@@ -53,8 +53,9 @@ interface Category {
   integrations: Integration[];
 }
 
-/** The plan features this page names plans for. SCIM provisioning rides on `sso`. */
-export type PlanFeature = "sso" | "apiAccess";
+/** The plan features this page names plans for. SCIM provisioning rides on `sso`;
+ *  the chart of accounts and journal export ride on `budgetCodes`. */
+export type PlanFeature = "sso" | "apiAccess" | "budgetCodes";
 /** "Business and Enterprise" per feature, read from the pricing API by the route
  *  (formatted server-side so this client bundle never imports the pricing module).
  *  Empty string = unknown; the sentence is then left off rather than guessed. */
@@ -67,15 +68,17 @@ const CATEGORIES: Category[] = [
     eyebrow: "IDENTITY & SINGLE SIGN-ON",
     title: "Sign in with the identity provider you already run.",
     lede:
-      "Avrentis speaks the standard identity protocols — no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace.",
+      "Avrentis speaks the standard identity protocols — OpenID Connect and SAML 2.0 — with no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace, and each person keeps one sign-in across every company they work in.",
     planFeature: "sso",
     integrations: [
-      { name: "SAML 2.0", summary: "Federated sign-in for any SAML-compliant IdP — on the enterprise roadmap.", availability: "request" },
+      { name: "SAML 2.0", summary: "Federated sign-in with signed assertions, for any SAML identity provider.", availability: "available" },
       { name: "OpenID Connect (OIDC)", summary: "OIDC flow for modern identity providers.", availability: "available" },
-      { name: "Okta", summary: "Pre-configured OIDC flows (SAML on the roadmap).", availability: "available" },
-      { name: "Microsoft Entra ID", summary: "OIDC setup (SAML app-gallery entry on the roadmap).", availability: "available" },
+      { name: "Okta", summary: "Sign-in over OIDC or SAML 2.0.", availability: "available" },
+      { name: "Microsoft Entra ID", summary: "Sign-in over OIDC or SAML 2.0.", availability: "available" },
       { name: "Google Workspace", summary: "OIDC federation with Workspace directory.", availability: "available" },
       { name: "Apple Business Manager", summary: "OIDC sign-in for Apple-managed workforces.", availability: "request" },
+      { name: "Required single sign-on", summary: "Make your identity provider the way your people sign in, with a password kept for administrators.", availability: "available" },
+      { name: "One provider for a group", summary: "Companies in a group can accept the sign-in of the group's identity provider.", availability: "available" },
     ],
   },
   {
@@ -84,14 +87,15 @@ const CATEGORIES: Category[] = [
     eyebrow: "DIRECTORY PROVISIONING",
     title: "Users flow from your IdP — and leave when they should.",
     lede:
-      "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds.",
+      "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.",
     planFeature: "sso",
     integrations: [
       { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
-      { name: "Okta SCIM", summary: "Verified integration with Okta's lifecycle engine.", availability: "available" },
+      { name: "Okta SCIM", summary: "Tested against Okta's lifecycle provisioning.", availability: "available" },
       { name: "Entra ID SCIM", summary: "User provisioning from Entra.", availability: "available" },
       { name: "Google Workspace SCIM", summary: "User provisioning from Workspace.", availability: "available" },
-      { name: "JumpCloud", summary: "Standard SCIM integration.", availability: "available" },
+      { name: "Groups mapped to roles", summary: "Directory groups request roles; anything beyond staff waits for a person to approve it.", availability: "available" },
+      { name: "JumpCloud", summary: "Standard SCIM integration.", availability: "request" },
       { name: "Rippling / BambooHR", summary: "HRIS-first provisioning bridges.", availability: "request" },
     ],
   },
@@ -115,12 +119,17 @@ const CATEGORIES: Category[] = [
     id: "accounting",
     icon: Receipt,
     eyebrow: "ACCOUNTING & ERP",
-    title: "Vouchers and POs flow into the system of record.",
+    title: "Approved spending lands in your ledger, coded your way.",
     lede:
-      "Avrentis owns the approval chain. The final record flows into the ledger or ERP of your choice through CSV export or the documented API — the named connectors below are delivered on request.",
+      "Avrentis owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.",
+    planFeature: "budgetCodes",
     integrations: [
+      { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line.", availability: "available" },
+      { name: "QuickBooks Online", summary: "Journal entries in QuickBooks Online's import layout.", availability: "available" },
+      { name: "Zoho Books", summary: "Journal entries in Zoho Books' manual-journal import.", availability: "available" },
+      { name: "Sage Accounting", summary: "Journal entries in Sage Accounting's journal import template.", availability: "available" },
+      { name: "Standard CSV journal", summary: "Every field, for any ledger that reads a CSV.", availability: "available" },
       { name: "CSV export", summary: "Period-bounded exports with full approval trail per line.", availability: "available" },
-      { name: "QuickBooks Online", summary: "Voucher + PO sync with account mapping.", availability: "request" },
       { name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks.", availability: "request" },
       { name: "Sage Intacct", summary: "API bridge for mid-market finance teams.", availability: "request" },
       { name: "SAP Business One", summary: "Connector for SAP-led procurement.", availability: "request" },
@@ -131,11 +140,15 @@ const CATEGORIES: Category[] = [
     id: "banking",
     icon: Landmark,
     eyebrow: "BANKING",
-    title: "Bank-ready documents today. Live banking next.",
+    title: "Bank files and letters today. Live banking next.",
     lede:
-      "Every sanctioned voucher produces a formally formatted bank letter with the MD's signature, accepted by commercial banks across the region. Native banking APIs are on the roadmap.",
+      "Every sanctioned voucher produces a formally formatted bank letter with the MD's signature, and approved payments go out as a payment file in your bank's own scheme — upload it, and the money moves on your rails. Native banking APIs are on the roadmap.",
     integrations: [
       { name: "Bank-ready PDF letter", summary: "Per-voucher letter with MD signature + letterhead.", availability: "available" },
+      { name: "NIBSS Direct Credit", summary: "Naira batch files accepted by most Nigerian banks, plus GTBank and Access Bank portal imports.", availability: "available" },
+      { name: "SEPA Credit Transfer", summary: "Euro payments to any IBAN, as an ISO 20022 file.", availability: "available" },
+      { name: "Bacs Direct Credit (Standard 18)", summary: "Sterling payments to UK sort codes and account numbers.", availability: "available" },
+      { name: "ACH credits (NACHA)", summary: "US dollar payments, each marked checking or savings from the payee's account.", availability: "available" },
       { name: "SWIFT-format payment batches", summary: "Batched export for treasury teams.", availability: "request" },
       {
         name: "Nigerian bank connectors (GTBank, Zenith, Access)",
@@ -156,10 +169,10 @@ const CATEGORIES: Category[] = [
     eyebrow: "DEVELOPER PLATFORM",
     title: "Build on top of your approval record.",
     lede:
-      "A read-access REST API exposes your documents, users, vendors, audit events, and reports, with webhooks for every state transition and tenant-scoped API keys.",
+      "A read-access REST API exposes your documents, users, vendors, budgets, accounting codes, journal entries, audit events, and reports, with webhooks for every state transition. Each API key permission opens exactly the endpoints it names, and long lists come back a page at a time.",
     planFeature: "apiAccess",
     integrations: [
-      { name: "REST API (v1)", summary: "Read access to documents, users, vendors, audit events, and reports.", availability: "available" },
+      { name: "REST API (v1)", summary: "Read access to documents, users, vendors, budgets, journal entries, audit events, and reports.", availability: "available" },
       { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },
       { name: "Audit export", summary: "Regulator-ready audit bundles, downloadable for any period.", availability: "available" },
       { name: "Zapier", summary: "No-code workflow bridge into 6,000+ apps.", availability: "request" },

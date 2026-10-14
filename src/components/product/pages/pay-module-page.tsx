@@ -9,12 +9,20 @@
  */
 
 import { FileCheck, Workflow, Banknote, ShieldCheck, Receipt, Scale } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import {
+  ProductModuleLayout,
+  withPlanNotes,
+  type ModuleConfig,
+  type ModulePlan,
+} from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
+import { SUPPORTED_CURRENCY_NAMES } from "@/lib/languages-and-currencies";
 import { PayPreview } from "@/components/product/previews/pay-preview";
 
 const BANK_LETTER_PILLAR = "Bank-ready payment instructions";
+const LEDGER_USE_CASE = "Give your accounting system entries, not paperwork";
+const GROUP_USE_CASE = "Settle what your group's companies owe each other";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "pay",
@@ -94,7 +102,22 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "Work in more than one currency",
       body:
-        "Raise documents in Naira, US Dollars, Pounds or Euros. Each one carries the rate it was measured at, so a total is never quietly recomputed at today's rate, and budgets are held against the rate the period was planned on.",
+        `Raise documents in ${SUPPORTED_CURRENCY_NAMES}. Each one carries the rate it was measured at, so a total is never quietly recomputed at today's rate, and budgets are held against the rate the period was planned on. Where the European Central Bank publishes a daily reference rate for the pair, the rate box starts with it as a suggestion you check and can change.`,
+    },
+    {
+      title: "Pay in your bank's own file format",
+      body:
+        "Approved payments go out as one file your bank accepts: NIBSS Direct Credit for naira, SEPA Credit Transfer for euros, Bacs Standard 18 for sterling, or ACH for US dollars — with each ACH payment marked as going to a checking or savings account, as the payee's details say.",
+    },
+    {
+      title: LEDGER_USE_CASE,
+      body:
+        "Approved vouchers and the payments against them become balanced journal entries, coded with your own accounts and cost centres. Export them in the layout QuickBooks Online, Zoho Books or Sage Accounting imports, or as a standard CSV. Each entry leaves once, so nothing is posted twice.",
+    },
+    {
+      title: GROUP_USE_CASE,
+      body:
+        "When one company in your group approves a payment it owes a sister company, the sister company confirms the amount or disputes it with a note. Where two companies owe each other, one proposes netting the debts and the other accepts — the settlement is then recorded in both companies' books, and only the difference has to move.",
     },
   ],
 
@@ -106,23 +129,29 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
 };
 
 /**
- * `bankLetterPlans` — "Business and Enterprise", the plans carrying
- * `bankLetterGeneration`, read from the pricing API by the route (the same
- * pattern as the integrations page). Empty = unknown, and the sentence is left
- * off rather than guessed. Statement reconciliation names no plan: it is part
- * of Payables on every tier, so the availability table already says it.
+ * `bankLetterPlans`, `ledgerPlans`, `groupPlans` — "Business and Enterprise",
+ * the plans carrying `bankLetterGeneration`, `budgetCodes` (the chart of
+ * accounts and journal export) and `multiCompanyGroup`, read from the pricing
+ * API by the route (the same pattern as the integrations page). Empty =
+ * unknown, and the sentence is left off rather than guessed. Statement
+ * reconciliation names no plan: it is part of Payables on every tier, so the
+ * availability table already says it.
  */
 export function PayModulePage({
   planAvailability,
   bankLetterPlans,
+  ledgerPlans,
+  groupPlans,
 }: {
   planAvailability: ModulePlan[];
   bankLetterPlans: string;
+  ledgerPlans: string;
+  groupPlans: string;
 }) {
-  const pillars = config.pillars.map((pillar) =>
-    pillar.title === BANK_LETTER_PILLAR && bankLetterPlans
-      ? { ...pillar, body: `${pillar.body} Available on ${bankLetterPlans}.` }
-      : pillar,
-  );
-  return <ProductModuleLayout config={{ ...config, pillars, planAvailability }} />;
+  const pillars = withPlanNotes(config.pillars, { [BANK_LETTER_PILLAR]: bankLetterPlans });
+  const useCases = withPlanNotes(config.useCases, {
+    [LEDGER_USE_CASE]: ledgerPlans,
+    [GROUP_USE_CASE]: groupPlans,
+  });
+  return <ProductModuleLayout config={{ ...config, pillars, useCases, planAvailability }} />;
 }

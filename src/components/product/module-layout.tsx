@@ -43,6 +43,22 @@ export interface ModuleUseCase {
   body: string;
 }
 
+/**
+ * Append "Available on <plans>." to the pillars or use cases a plan feature
+ * gates. `plansByTitle` maps an item's title to the plan list the route read
+ * from the pricing API ("Business and Enterprise"); an empty list means
+ * unknown, and the sentence is left off rather than guessed.
+ */
+export function withPlanNotes<Item extends { title: string; body: string }>(
+  items: Item[],
+  plansByTitle: Record<string, string>,
+): Item[] {
+  return items.map((item) => {
+    const plans = plansByTitle[item.title];
+    return plans ? { ...item, body: `${item.body} Available on ${plans}.` } : item;
+  });
+}
+
 export interface ModulePlan {
   plan: string;
   included: boolean;
@@ -560,7 +576,11 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             What changes operationally.
           </m.h2>
 
-          <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2">
+          {/* An odd last card spans both columns, so the row fills the width at any count. */}
+          <div
+            style={{ display: "grid", gap: "16px" }}
+            className="grid-cols-1 md:grid-cols-2 md:[&>*:last-child:nth-child(odd)]:col-span-2"
+          >
             {config.useCases.map((uc, i) => (
               <m.div
                 key={uc.title}

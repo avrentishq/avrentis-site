@@ -1,9 +1,16 @@
 "use client";
 
 import { SlidersHorizontal, Users, ShieldAlert, Clock } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import {
+  ProductModuleLayout,
+  withPlanNotes,
+  type ModuleConfig,
+  type ModulePlan,
+} from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { AuthorityPreview } from "@/components/product/previews/authority-preview";
+
+const GROUP_USE_CASE = "One approval route, offered to every company in the group";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "authority",
@@ -58,6 +65,16 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       body:
         "New department, new subsidiary, new finance lead — authority is a policy you edit, not a process you rebuild. The rules follow the org chart instead of trailing behind it.",
     },
+    {
+      title: GROUP_USE_CASE,
+      body:
+        "Save a route that already works in one company as a group template. Each company in the group can propose its own route from it, and that company's own reviewer approves the change — the template is a recommendation, never imposed.",
+    },
+    {
+      title: "Try a new route in a test company first",
+      body:
+        "Your administrator can create a test company: a separate copy of your settings where colleagues sign in as themselves to try a new approval route, a bank file format or an integration. Nothing leaves it — no email, SMS or WhatsApp, no bank files or letters — its documents are stamped as test documents, and it costs nothing extra. Delete it, or start it again, whenever you like.",
+    },
   ],
 
   relatedModules: [
@@ -67,6 +84,15 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function AuthorityModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+/** `groupPlans` — the plans carrying `multiCompanyGroup`, read from the pricing
+ *  API by the route; empty = unknown, and the sentence is left off. */
+export function AuthorityModulePage({
+  planAvailability,
+  groupPlans,
+}: {
+  planAvailability: ModulePlan[];
+  groupPlans: string;
+}) {
+  const useCases = withPlanNotes(config.useCases, { [GROUP_USE_CASE]: groupPlans });
+  return <ProductModuleLayout config={{ ...config, useCases, planAvailability }} />;
 }

@@ -121,7 +121,8 @@ const STACK = [
       "Two-factor sign-in by passkey, authenticator app, email code or SMS, with recovery codes — and your organisation decides which of those its people may enrol",
       "Require two-factor for everyone, or only for the roles you name. Single sign-on can count as that second factor, or be told not to when you would rather verify in-app. Platform administrators are always required, regardless",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
-      "Single sign-on via OpenID Connect (OIDC); SAML 2.0 on the enterprise roadmap. Sensitive tokens encrypted at rest",
+      "Single sign-on via OpenID Connect (OIDC) or SAML 2.0, which a company can require for its people; companies in a group can share one identity provider. Sensitive tokens encrypted at rest",
+      "One sign-in per person across every company they work in — one password, one set of two-step methods",
     ],
     Mockup: SessionMockup,
     previewUrl: "session revocation · identity controls",
@@ -153,6 +154,7 @@ const STACK = [
     icon: KeyRound,
     bullets: [
       "Automated user provisioning (SCIM) with Okta, Microsoft Entra, and Google Workspace",
+      "Directory groups mapped to roles — anything beyond staff access waits for a person in your organisation to approve it",
       "Time-bound access for auditors and provisional board members, with automatic revocation",
       "Per-plan document retention, with the audit trail itself never purged",
       "Attachments served through short-lived, per-upload URLs",

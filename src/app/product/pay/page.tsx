@@ -25,6 +25,8 @@ export default async function ProductPayPage() {
     <PayModulePage
       planAvailability={planAvailabilityFor("pay", pricingData)}
       bankLetterPlans={formatPlanList(planNames(pricingData, "bankLetterGeneration"))}
+      ledgerPlans={formatPlanList(planNames(pricingData, "budgetCodes"))}
+      groupPlans={formatPlanList(planNames(pricingData, "multiCompanyGroup"))}
     />
   );
 }

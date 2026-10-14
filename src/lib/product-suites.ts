@@ -216,13 +216,13 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
         icon: Link2,
         title: "Your record, where it needs to go next",
         body:
-          "Sanctioned vouchers into accounting, issued orders into the ERP, role changes into the HR system — through typed webhooks and a documented API rather than a monthly export somebody assembles by hand.",
+          "Approved vouchers and payments into your ledger as journal entries, issued orders into the ERP, role changes into the HR system — through typed webhooks, a documented API and ready-to-import files rather than a monthly export somebody assembles by hand.",
       },
       {
         icon: FileLock2,
         title: "Sign-in that matches your policy",
         body:
-          "Single sign-on with your existing identity provider, enforced multi-factor policy, and access restricted to the networks you nominate.",
+          "Single sign-on with your existing identity provider — required, if you choose — one sign-in per person across all your companies, enforced multi-factor policy, and access restricted to the networks you nominate.",
       },
       {
         icon: Banknote,

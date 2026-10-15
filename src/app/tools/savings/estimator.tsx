@@ -15,7 +15,8 @@ import Link from "next/link";
 import { m } from "framer-motion";
 import { Check } from "lucide-react";
 import { fadeUp, fadeUpTransition } from "@/lib/animations";
-import { BOUNDS, EFFICIENCY, clampInt, computeSavings } from "./compute";
+import { currencySymbol, formatCount, formatCurrencyAmount } from "@/lib/money";
+import { BOUNDS, EFFICIENCY, SAVINGS_CURRENCY, clampInt, computeSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
 import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
@@ -61,8 +62,8 @@ const hintStyle: React.CSSProperties = {
   display: "block",
 };
 
-const nairaFmt = (n: number) => `₦${Math.round(n).toLocaleString()}`;
-const hrsFmt = (n: number) => Math.round(n).toLocaleString();
+const nairaFmt = (n: number) => formatCurrencyAmount(n, SAVINGS_CURRENCY);
+const hrsFmt = formatCount;
 
 function NumberField({
   id,
@@ -297,7 +298,7 @@ export function SavingsEstimator() {
         <NumberField
           id="cost"
           label="Loaded cost per hour"
-          prefix="₦"
+          prefix={currencySymbol(SAVINGS_CURRENCY)}
           hint="A rough blended rate for the people involved. Your number."
           value={costStr}
           onChange={setCostStr}

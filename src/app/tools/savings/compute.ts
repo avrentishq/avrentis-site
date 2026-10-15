@@ -13,6 +13,9 @@
 
 export const EFFICIENCY = 0.6;
 
+/** The currency the estimate is in — the loaded hourly cost and the money saved. */
+export const SAVINGS_CURRENCY = "NGN";
+
 export interface Bound {
   min: number;
   max: number;

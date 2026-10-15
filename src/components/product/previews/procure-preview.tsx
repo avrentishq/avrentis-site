@@ -4,6 +4,8 @@
  * card with bank info, line-item table, and the "Issue to vendor" export.
  */
 
+import { formatCount } from "@/lib/money";
+
 export function ProcurePreview() {
   const lineItems = [
     { description: "Industrial diesel · 10,000L", qty: 10000, unit: "₦720", total: "₦7,200,000" },
@@ -136,7 +138,7 @@ export function ProcurePreview() {
           >
             <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.description}</span>
             <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', color: "var(--color-text-muted)" }}>
-              {item.qty.toLocaleString()}
+              {formatCount(item.qty)}
             </span>
             <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', fontWeight: 500 }}>{item.total}</span>
           </div>

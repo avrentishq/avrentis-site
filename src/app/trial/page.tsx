@@ -5,15 +5,15 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { TrialForm } from "./trial-form";
 import { pageMetadata } from "@/lib/seo";
-import { TRIAL_LENGTH, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP } from "@/lib/trial-terms";
+import { TRIAL_LENGTH, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { SITE_PAGES, BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_PAGES.trial(),
   title: `Start your ${TRIAL_LENGTH} trial`,
-  description: `Provision an ${BRAND.name} workspace in under two minutes. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace, no credit card, your real organisational data.`,
+  description: `Provision an ${BRAND.name} workspace ${TRIAL_SETUP_TIME}. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace, with your real organisational data. ${NO_CARD_REQUIRED}.`,
   socialTitle: `Start your ${TRIAL_LENGTH} ${BRAND.name} trial`,
-  socialDescription: `Provision in under two minutes. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace. Your organisation's data, not a demo.`,
+  socialDescription: `Provision ${TRIAL_SETUP_TIME}. Full ${TRIAL_PLAN_NAME} features on a ${TRIAL_SEAT_CAP}-seat pilot workspace. Your organisation's data, not a demo.`,
 });
 
 export default function TrialPage() {

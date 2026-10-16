@@ -14,13 +14,7 @@
 
 import { m } from "framer-motion";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import {
-  READ_ONLY_GRACE_DAYS,
-  TRIAL_CLOSE_DAY,
-  TRIAL_DURATION_DAYS,
-  TRIAL_PLAN_NAME,
-  TRIAL_SEAT_CAP,
-} from "@/lib/trial-terms";
+import { READ_ONLY_GRACE_DAYS, TRIAL_CLOSE_DAY, TRIAL_DURATION_DAYS, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
 
@@ -34,7 +28,7 @@ const MILESTONES: Milestone[] = [
   {
     when: "Today",
     title: `Full ${TRIAL_PLAN_NAME} features, instantly`,
-    detail: `Full ${TRIAL_PLAN_NAME} features on your own data — a ${TRIAL_SEAT_CAP}-seat pilot workspace, with a sample approval already waiting. No card.`,
+    detail: `Full ${TRIAL_PLAN_NAME} features on your own data — a ${TRIAL_SEAT_CAP}-seat pilot workspace, with a sample approval already waiting. ${NO_CARD_REQUIRED}.`,
   },
   {
     when: `Days 1–${TRIAL_DURATION_DAYS - 1}`,

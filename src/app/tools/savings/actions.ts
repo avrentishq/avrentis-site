@@ -15,8 +15,8 @@ import { sendEmail } from "@/lib/email";
 import { STATIC_COLORS } from "@/lib/static-colors";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
-import { formatCount, formatCurrencyAmount } from "@/lib/money";
-import { BOUNDS, clampInt, computeSavings, EFFICIENCY, SAVINGS_CURRENCY } from "./compute";
+import { formatCount } from "@/lib/money";
+import { BOUNDS, clampInt, computeSavings, EFFICIENCY, formatSavings } from "./compute";
 import { ESTIMATE_FIELDS, type EstimateEmailState } from "./state";
 import { submittedValues } from "@/lib/submitted-values";
 import { canonical } from "@/lib/seo";
@@ -34,8 +34,6 @@ function escape(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-const naira = (n: number) => formatCurrencyAmount(n, SAVINGS_CURRENCY);
-const hrs = formatCount;
 
 export async function emailEstimate(
   _previous: EstimateEmailState,
@@ -101,11 +99,11 @@ async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailSta
   const reportHtml = `
     <table role="presentation" cellpadding="0" cellspacing="0" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};max-width:560px;">
       <tr><td style="padding:0 0 8px;font-size:12px;color:${STATIC_COLORS.textMuted};letter-spacing:0.08em;text-transform:uppercase;">Your Avrentis savings estimate</td></tr>
-      <tr><td style="padding:0 0 16px;font-size:20px;font-weight:700;">${naira(result.nairaPerYear)} <span style="font-size:14px;font-weight:400;color:${STATIC_COLORS.textMuted};">saved per year</span></td></tr>
+      <tr><td style="padding:0 0 16px;font-size:20px;font-weight:700;">${formatSavings(result.moneyPerYear)} <span style="font-size:14px;font-weight:400;color:${STATIC_COLORS.textMuted};">saved per year</span></td></tr>
       <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Time back</td></tr>
-      <tr><td style="padding:0 0 16px;">${hrs(result.hoursPerMonth)} hours / month &middot; ${hrs(result.hoursPerYear)} hours / year</td></tr>
+      <tr><td style="padding:0 0 16px;">${formatCount(result.hoursPerMonth)} hours / month &middot; ${formatCount(result.hoursPerYear)} hours / year</td></tr>
       <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Based on your inputs</td></tr>
-      <tr><td style="padding:0 0 16px;">${formatCount(approvals)} approvals/month &middot; ${minutes} min coordination each &middot; ${naira(cost)}/hour</td></tr>
+      <tr><td style="padding:0 0 16px;">${formatCount(approvals)} approvals/month &middot; ${minutes} min coordination each &middot; ${formatSavings(cost)}/hour</td></tr>
       <tr><td style="padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textSubtle};line-height:1.5;">Assumes structured approvals remove about ${pct}% of coordination time — a conservative estimate. Your inputs, your numbers.</td></tr>
       <tr><td style="padding:8px 0 0;"><a href="${canonical(SITE_PAGES.trial())}" style="color:${STATIC_COLORS.gold};text-decoration:none;font-weight:600;">${START_TRIAL_CTA} →</a></td></tr>
     </table>
@@ -121,7 +119,7 @@ async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailSta
     // Notify the internal inbox of the lead.
     await sendEmail({
       subject: `[Avrentis — Savings estimate] ${safeEmail}`,
-      html: `<p style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};">Estimate requested by <strong>${safeEmail}</strong>: ${naira(result.nairaPerYear)}/yr, ${hrs(result.hoursPerYear)} hrs/yr — from ${formatCount(approvals)} approvals/mo, ${minutes} min each, ${naira(cost)}/hr.</p>`,
+      html: `<p style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};">Estimate requested by <strong>${safeEmail}</strong>: ${formatSavings(result.moneyPerYear)}/yr, ${formatCount(result.hoursPerYear)} hrs/yr — from ${formatCount(approvals)} approvals/mo, ${minutes} min each, ${formatSavings(cost)}/hr.</p>`,
       replyTo: email,
     });
   } catch (err) {

@@ -36,6 +36,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
+import { TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -61,7 +62,7 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: Compass,
     eyebrow: "GETTING STARTED",
-    title: "Set up your workspace in under ten minutes.",
+    title: `Set up your workspace ${TRIAL_SETUP_TIME}.`,
     lede:
       "A quick orientation for the first admin: create the tenant, provision users, configure your first approval chain, and sanction your first document.",
     items: [

@@ -17,6 +17,7 @@ import { PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 const SRC = join(process.cwd(), "src");
 const EXEMPT = new Set([
   join("lib", "trial-terms.ts"),
+  join("lib", "market.ts"),
   join("components", "changelog", "changelog-page.tsx"),
 ]);
 
@@ -27,6 +28,9 @@ const TYPED_TERMS: { name: string; pattern: RegExp }[] = [
   { name: "a grace count after a trial", pattern: /\b\d+ days? after (?:your |the )?trial/i },
   { name: "a trial seat count", pattern: /\b\d+-seat\b/i },
   { name: "the trial plan's name", pattern: new RegExp(`\\b(?:${PLAN_NAMES}) (?:tier|features|trial)\\b`) },
+  { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno (?:credit )?card\b|\bcard on file\b/i },
+  { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less than|within) (?:\d+|one|two|ten) minutes?\b|\bsetup in minutes\b/i },
+  { name: "the market typed out (MARKET_SCOPE)", pattern: /across Nigeria and Africa|Nigerian and African organisations|Pan-African platform/i },
 ];
 
 function sourceFiles(): string[] {
@@ -38,12 +42,17 @@ function sourceFiles(): string[] {
 
 describe("trial terms come from core, never from copy", () => {
   it("the detectors catch typed terms", () => {
-    const [dayCount, graceCount, seatCount, planNameDetector] = TYPED_TERMS.map((term) => term.pattern);
+    const [dayCount, graceCount, seatCount, planNameDetector, noCard, setupTime, market] = TYPED_TERMS.map((term) => term.pattern);
     expect(dayCount!.test("Start your 30-day trial")).toBe(true);
     expect(dayCount!.test("30-DAY TRIAL")).toBe(true);
     expect(graceCount!.test("Data preserved for 30 days after trial end")).toBe(true);
     expect(seatCount!.test("a 5-seat pilot workspace")).toBe(true);
     expect(planNameDetector!.test("Full Business features on your own data")).toBe(true);
+    expect(noCard!.test("No credit card required")).toBe(true);
+    expect(noCard!.test("no card on file")).toBe(true);
+    expect(setupTime!.test("Setup takes less than 10 minutes")).toBe(true);
+    expect(setupTime!.test("in under two minutes")).toBe(true);
+    expect(market!.test("Organisations across Nigeria and Africa")).toBe(true);
     // And stay quiet on the interpolated form.
     expect(dayCount!.test("Start your {trialDays}-day trial")).toBe(false);
   });

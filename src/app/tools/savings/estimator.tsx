@@ -15,8 +15,8 @@ import Link from "next/link";
 import { m } from "framer-motion";
 import { Check } from "lucide-react";
 import { fadeUp, fadeUpTransition } from "@/lib/animations";
-import { currencySymbol, formatCount, formatCurrencyAmount } from "@/lib/money";
-import { BOUNDS, EFFICIENCY, SAVINGS_CURRENCY, clampInt, computeSavings } from "./compute";
+import { currencySymbol, formatCount } from "@/lib/money";
+import { BOUNDS, EFFICIENCY, SAVINGS_CURRENCY, clampInt, computeSavings, formatSavings } from "./compute";
 import { emailEstimate } from "./actions";
 import { INITIAL_STATE } from "./state";
 import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
@@ -26,7 +26,7 @@ import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-
 import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
-import { TRIAL_LENGTH } from "@/lib/trial-terms";
+import { TRIAL_LENGTH, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 
 const sans = "var(--font-sans)";
@@ -62,8 +62,6 @@ const hintStyle: React.CSSProperties = {
   display: "block",
 };
 
-const nairaFmt = (n: number) => formatCurrencyAmount(n, SAVINGS_CURRENCY);
-const hrsFmt = formatCount;
 
 function NumberField({
   id,
@@ -314,10 +312,10 @@ export function SavingsEstimator() {
           className="grid-cols-1 sm:grid-cols-2"
         >
           <div className="sm:col-span-2">
-            <StatTile value={`${nairaFmt(result.nairaPerYear)} / yr`} label="Estimated cost recovered per year" featured />
+            <StatTile value={`${formatSavings(result.moneyPerYear)} / yr`} label="Estimated cost recovered per year" featured />
           </div>
-          <StatTile value={`${hrsFmt(result.hoursPerMonth)} hrs`} label="Time back per month" />
-          <StatTile value={`${hrsFmt(result.hoursPerYear)} hrs`} label="Time back per year" />
+          <StatTile value={`${formatCount(result.hoursPerMonth)} hrs`} label="Time back per month" />
+          <StatTile value={`${formatCount(result.hoursPerYear)} hrs`} label="Time back per year" />
         </div>
 
         <p style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0 }}>
@@ -360,7 +358,7 @@ export function SavingsEstimator() {
             noValidate
           >
             <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
-              Want a copy? We&rsquo;ll email your {nairaFmt(result.nairaPerYear)}/yr estimate — no sales call required.
+              Want a copy? We&rsquo;ll email your {formatSavings(result.moneyPerYear)}/yr estimate — no sales call required.
             </span>
 
             {/* Server recomputes from these; hidden so the emailed copy matches. */}
@@ -466,7 +464,7 @@ export function SavingsEstimator() {
             marginTop: "2px",
           }}
         >
-          Or just start the {TRIAL_LENGTH} trial &mdash; no card, nothing to cancel &rarr;
+          Or just start the {TRIAL_LENGTH} trial &mdash; {NO_CARD_REQUIRED}, nothing to cancel &rarr;
         </Link>
       </div>
     </m.div>

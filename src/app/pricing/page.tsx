@@ -9,12 +9,13 @@ import { formatPlanList, planNames } from "@/lib/plan-names";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { pageMetadata } from "@/lib/seo";
 import { BRAND } from "@/lib/brand";
+import { MARKET_SCOPE } from "@/lib/market";
 
 export async function generateMetadata(): Promise<Metadata> {
   // Tier names come from the pricing API (same cached fetch the page renders),
   // so the description cannot name a plan that is not sold.
   const names = planNames(await fetchPricingData());
-  const description = `Simple, transparent plans for Nigerian and African organisations — ${formatPlanList(names)}. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
+  const description = `Simple, transparent plans for ${MARKET_SCOPE} — ${formatPlanList(names)}. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
   return pageMetadata({
     path: "/pricing",
     title: "Pricing",

@@ -18,15 +18,9 @@ import { TRUST_SIGNALS } from "@/lib/compliance-posture";
 import { priceTaxNote } from "@/lib/price-tax";
 import { isModulePublic, SITE_PAGES } from "@/lib/brand";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
-import {
-  READ_ONLY_GRACE_DAYS,
-  TRIAL_DURATION_DAYS,
-  TRIAL_PLAN,
-  TRIAL_PLAN_NAME,
-  TRIAL_SEAT_CAP,
-  TRIAL_STORAGE,
-} from "@/lib/trial-terms";
+import { READ_ONLY_GRACE_DAYS, TRIAL_DURATION_DAYS, TRIAL_PLAN, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
+import { LEAD_CURRENCY } from "@/lib/market";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -48,7 +42,7 @@ function getPriceForCurrency(
 
 function getAvailableCurrencies(data: PricingData): string[] {
   const first = data.plans[0];
-  if (!first) return ["NGN"];
+  if (!first) return [LEAD_CURRENCY];
   return first.pricing.map((p) => p.currency);
 }
 
@@ -94,7 +88,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   const currencies = getAvailableCurrencies(data);
   // Nigeria-first market — lead with Naira; fall back to whatever the API offers.
   const [currency, setCurrency] = useState<string>(
-    currencies.includes("NGN") ? "NGN" : currencies[0],
+    currencies.includes(LEAD_CURRENCY) ? LEAD_CURRENCY : currencies[0],
   );
 
   // Contrast / anchoring: render plans in ascending price so the premium tier
@@ -246,8 +240,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             maxWidth: "500px",
           }}
         >
-          Every plan starts with a {trialDays}-day trial &mdash; no card on file,
-          nothing to cancel. Scale as your organisation grows. No hidden fees.
+          Every plan starts with a {trialDays}-day trial. {NO_CARD_REQUIRED}, nothing
+          to cancel. Scale as your organisation grows. No hidden fees.
         </m.p>
 
         {/* Controls row */}
@@ -428,7 +422,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 minHeight: "16px",
               }}
             >
-              No credit card required
+              {NO_CARD_REQUIRED}
             </p>
             <div
               style={{

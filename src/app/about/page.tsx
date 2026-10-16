@@ -8,8 +8,9 @@ import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { MARKET_SCOPE } from "@/lib/market";
 
-const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
+const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
 export const metadata: Metadata = pageMetadata({
   path: "/about",

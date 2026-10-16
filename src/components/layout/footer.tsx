@@ -7,6 +7,7 @@ import { SUITE_NAV } from "@/lib/product-suites";
 import { isLaunchVisible } from "@/lib/launch";
 import { LOGIN_URL } from "@/lib/platform";
 import { contactHref } from "@/app/contact/tabs";
+import { MARKET_SCOPE } from "@/lib/market";
 
 // The PRODUCT column lists the four SUITES, not the eight modules — the same
 // grouping the navbar uses. Every module page stays one click further on (from
@@ -144,7 +145,7 @@ export function Footer() {
                 maxWidth: "200px",
               }}
             >
-              {BRAND.positioningStatement} for organisations across Nigeria and Africa.
+              {BRAND.positioningStatement} for {MARKET_SCOPE}.
             </span>
           </div>
 

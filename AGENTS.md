@@ -60,6 +60,12 @@ Run these locally before you claim anything is done.
   block reads `days`/`seatCap` from it. `trial-terms.lock.test.ts` fails on a typed
   "30-day trial", "N-seat", "N days after trial" or "<Plan> tier". The changelog is exempt —
   an entry records what was true on its date.
+- **The market and the trial's promises are stated once.** "Organisations across Nigeria and
+  Africa", its region and the lead currency come from `src/lib/market.ts` (`MARKET_SCOPE`,
+  `MARKET_REGION`, `LEAD_CURRENCY` = core's currency for `LEAD_MARKET`); "No card required" and
+  the setup time from `src/lib/trial-terms.ts` (`NO_CARD_REQUIRED`, `TRIAL_SETUP_TIME`).
+  `trial-terms.lock.test.ts` fails on a typed copy of any of them. Copy never implies existing
+  customers before there are any.
 - **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per
   Server Action (core tier, identifier, numbers, fail mode) and `limitVisitor(action)`; never
   build an Upstash client or limiter in this repo. Every limiter carries a `site_*` tier from

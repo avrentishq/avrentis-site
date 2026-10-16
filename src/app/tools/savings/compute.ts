@@ -1,3 +1,6 @@
+import { LEAD_CURRENCY } from "@/lib/market";
+import { formatCurrencyAmount } from "@/lib/money";
+
 /**
  * Approval time-saved estimator — pure math, shared by the on-page calculator
  * and the server action that emails the result, so the two can never drift.
@@ -14,7 +17,12 @@
 export const EFFICIENCY = 0.6;
 
 /** The currency the estimate is in — the loaded hourly cost and the money saved. */
-export const SAVINGS_CURRENCY = "NGN";
+export const SAVINGS_CURRENCY = LEAD_CURRENCY;
+
+/** An amount in the estimate's currency, the way the product prints money. */
+export function formatSavings(amount: number): string {
+  return formatCurrencyAmount(amount, SAVINGS_CURRENCY);
+}
 
 export interface Bound {
   min: number;
@@ -37,7 +45,7 @@ export interface SavingsInputs {
 export interface SavingsResult {
   hoursPerMonth: number;
   hoursPerYear: number;
-  nairaPerYear: number;
+  moneyPerYear: number;
 }
 
 /** Coerce anything to an integer inside [min, max]; non-finite → min. */
@@ -51,6 +59,6 @@ export function computeSavings({ approvals, minutes, cost }: SavingsInputs): Sav
   const coordinationHoursPerMonth = (approvals * minutes) / 60;
   const hoursPerMonth = coordinationHoursPerMonth * EFFICIENCY;
   const hoursPerYear = hoursPerMonth * 12;
-  const nairaPerYear = hoursPerYear * cost;
-  return { hoursPerMonth, hoursPerYear, nairaPerYear };
+  const moneyPerYear = hoursPerYear * cost;
+  return { hoursPerMonth, hoursPerYear, moneyPerYear };
 }

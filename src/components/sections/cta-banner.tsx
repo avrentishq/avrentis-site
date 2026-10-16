@@ -8,12 +8,13 @@ import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { START_TRIAL_CTA, TRIAL_DURATION_DAYS } from "@/lib/trial-terms";
+import { START_TRIAL_CTA, TRIAL_DURATION_DAYS, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { TRUST_SIGNALS } from "@/lib/compliance-posture";
+import { MARKET_REGION } from "@/lib/market";
 
 const trustSignals = [
-  { icon: Globe, label: "Pan-African platform" },
+  { icon: Globe, label: `Built for ${MARKET_REGION}` },
   { icon: Lock, label: TRUST_SIGNALS.security },
   { icon: Zap, label: TRUST_SIGNALS.auditTrail },
   { icon: Check, label: TRUST_SIGNALS.dataProtection },
@@ -88,8 +89,8 @@ export function CtaBanner() {
             margin: "0 0 32px",
           }}
         >
-          Join the organisations across Africa that have replaced paper,
-          email, and assumption with structure, authority, and an audit trail that lasts.
+          Replace paper, email, and assumption with structure, authority, and an
+          audit trail that lasts.
         </m.p>
 
         {/* CTAs */}
@@ -179,8 +180,8 @@ export function CtaBanner() {
             marginTop: "20px",
           }}
         >
-          {TRIAL_DURATION_DAYS} days. No credit card required. Setup takes less than 10
-          minutes &mdash; your first approval can happen today.
+          {TRIAL_DURATION_DAYS} days. {NO_CARD_REQUIRED}. Set up {TRIAL_SETUP_TIME} &mdash; your
+          first approval can happen today.
         </m.p>
 
         {/* Trust signals */}

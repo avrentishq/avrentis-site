@@ -43,14 +43,7 @@ import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { SECTORS } from "@avrentishq/core/sectors";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
-import {
-  READ_ONLY_GRACE_DAYS,
-  TRIAL_LENGTH,
-  TRIAL_MESSAGE_CAP,
-  TRIAL_PLAN_NAME,
-  TRIAL_SEAT_CAP,
-  TRIAL_STORAGE,
-} from "@/lib/trial-terms";
+import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 
 // ────────────────────────────────────────────────────────────────────
@@ -683,7 +676,7 @@ export function TrialForm() {
               Continue →
             </button>
             <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
-              No card required · about a minute
+              {NO_CARD_REQUIRED} · about a minute
             </span>
           </div>
         </div>
@@ -914,7 +907,7 @@ export function TrialForm() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={!hydrated || isValid} pending={isPending} />
           <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
-            No card on file — nothing to cancel · {TRIAL_LENGTH} trial · Data preserved for{" "}
+            {NO_CARD_REQUIRED} — nothing to cancel · {TRIAL_LENGTH} trial · Data preserved for{" "}
             {READ_ONLY_GRACE_DAYS} days after trial end.
           </span>
         </div>

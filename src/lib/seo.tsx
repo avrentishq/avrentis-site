@@ -12,6 +12,7 @@ import { BRAND, siteUrl } from "@/lib/brand";
 import type { PricingData } from "@/lib/pricing";
 import { SITE_DESCRIPTION } from "@/lib/record-keeping";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { MARKET_SCOPE } from "@/lib/market";
 
 /** The site's canonical origin — core's, the same one every other surface links to. */
 export const SITE_URL = BRAND.siteUrl;
@@ -88,7 +89,7 @@ export function organizationSchema(): Record<string, unknown> {
     name: BRAND.name,
     url: SITE_URL,
     logo: `${SITE_URL}/apple-touch-icon.png`,
-    description: `${BRAND.positioningStatement} for organisations across Nigeria and Africa.`,
+    description: `${BRAND.positioningStatement} for ${MARKET_SCOPE}.`,
     slogan: SITE_SLOGAN,
     contactPoint: {
       "@type": "ContactPoint",

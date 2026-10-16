@@ -8,7 +8,8 @@ import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND, SITE_PAGES } from "@/lib/brand";
-import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { START_TRIAL_CTA, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
+import { MARKET_SCOPE } from "@/lib/market";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -801,8 +802,8 @@ export function Hero() {
               lineHeight: 1.5,
             }}
           >
-            No credit card required &middot; Setup in minutes &middot;
-            Organisations across Nigeria and Africa
+            {NO_CARD_REQUIRED} &middot; Set up {TRIAL_SETUP_TIME} &middot; Built for{" "}
+            {MARKET_SCOPE}
           </m.p>
         </div>
 

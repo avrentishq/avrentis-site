@@ -54,7 +54,7 @@ const PRINCIPLES = [
     icon: Globe,
     title: "Built for Africa, standard-setting globally.",
     body:
-      "Our first customers are African organisations that have been under-served for decades. We build for their reality — and we hold the engineering standard as high as anywhere in the world.",
+      "We build first for African organisations that have been under-served for decades. We build for their reality — and we hold the engineering standard as high as anywhere in the world.",
   },
 ];
 

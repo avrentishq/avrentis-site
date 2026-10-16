@@ -13,6 +13,7 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/money";
+import { EVERY_PLAN_LEAD } from "@/lib/plan-names";
 import { priceTaxNote } from "@/lib/price-tax";
 import { isModulePublic, SITE_PAGES } from "@/lib/brand";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
@@ -935,7 +936,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           }}
         >
           {platformNames.length > 0
-            ? `Included on every plan: ${platformNames.join(" · ")} — the always-on approval engine, tamper-evident audit trail and enterprise-grade security.`
+            ? `${EVERY_PLAN_LEAD}: ${platformNames.join(" · ")} — the always-on approval engine, tamper-evident audit trail and enterprise-grade security.`
             : "All plans include: Multi-level approvals · Enterprise-grade security · Designed for GDPR & NDPR"}
         </m.p>
 

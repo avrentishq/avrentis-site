@@ -40,38 +40,60 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
+import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
+import { EVERY_PLAN_NOTE, planScopeNote, type FeaturePlans } from "@/lib/plan-names";
 
-export interface ModulePillar {
+/**
+ * Which plans a card's capability is on. `planFeature` names the plan feature
+ * that gates it, and the layout says which plans carry it, from the pricing
+ * API — unless that is exactly the module's own plans, which the table already
+ * shows. `everyPlan` marks a capability no feature gates, so it is on every plan
+ * the module is; say it only where it is worth stressing.
+ */
+interface PlanScoped {
+  planFeature?: PlanFeatureKey;
+  everyPlan?: true;
+}
+
+export interface ModulePillar extends PlanScoped {
   icon: LucideIcon;
   title: string;
   body: string;
 }
 
-export interface ModuleUseCase {
+export interface ModuleUseCase extends PlanScoped {
   title: string;
   body: string;
-}
-
-/**
- * Append "Available on <plans>." to the pillars or use cases a plan feature
- * gates. `plansByTitle` maps an item's title to the plan list the route read
- * from the pricing API ("Business and Enterprise"); an empty list means
- * unknown, and the sentence is left off rather than guessed.
- */
-export function withPlanNotes<Item extends { title: string; body: string }>(
-  items: Item[],
-  plansByTitle: Record<string, string>,
-): Item[] {
-  return items.map((item) => {
-    const plans = plansByTitle[item.title];
-    return plans ? { ...item, body: `${item.body} Available on ${plans}.` } : item;
-  });
 }
 
 export interface ModulePlan {
   plan: string;
   included: boolean;
   note?: string;
+  /** The trial row, which is not a plan of its own. */
+  isTrial?: boolean;
+}
+
+/** Each item's body with its plan sentence appended, where one says something the table does not. */
+function withPlanScope<Item extends PlanScoped & { body: string }>(
+  items: Item[],
+  featurePlans: FeaturePlans,
+  planAvailability: ModulePlan[],
+): Item[] {
+  const planRows = planAvailability.filter((row) => !row.isTrial);
+  const allPlanNames = planRows.map((row) => row.plan);
+  const modulePlanNames = planRows.filter((row) => row.included).map((row) => row.plan);
+  const sameSet = (left: readonly string[], right: readonly string[]) =>
+    left.length === right.length && left.every((name) => right.includes(name));
+  return items.map((item) => {
+    let note = "";
+    if (item.everyPlan) note = EVERY_PLAN_NOTE;
+    else if (item.planFeature) {
+      const names = featurePlans[item.planFeature] ?? [];
+      if (!sameSet(names, modulePlanNames)) note = planScopeNote(names, allPlanNames);
+    }
+    return note ? { ...item, body: `${item.body} ${note}` } : item;
+  });
 }
 
 export interface ModuleRelated {
@@ -94,7 +116,6 @@ export interface ModuleConfig {
   preview: React.ReactNode;
   pillars: ModulePillar[];
   useCases: ModuleUseCase[];
-  planAvailability: ModulePlan[];
   relatedModules: ModuleRelated[];
   /** Overrides the default CTA based on status. */
   primaryCta?: { label: string; href: string };
@@ -164,7 +185,24 @@ function resolveCtas(config: ModuleConfig, status: ModuleStatus): {
   };
 }
 
-export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
+/**
+ * What the pricing API says about a module page — which plans include the
+ * module, and which plans carry each plan feature. Every module route builds it
+ * with `modulePageData(key, pricingData)`; never written by hand.
+ */
+export interface ModulePageData {
+  planAvailability: ModulePlan[];
+  featurePlans: FeaturePlans;
+}
+
+/** A module page: its own words (`config`) plus the derived `ModulePageData`. */
+export function ProductModuleLayout({
+  config,
+  planAvailability,
+  featurePlans,
+}: ModulePageData & { config: ModuleConfig }) {
+  const pillars = withPlanScope(config.pillars, featurePlans, planAvailability);
+  const useCases = withPlanScope(config.useCases, featurePlans, planAvailability);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -454,7 +492,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             style={{ display: "grid", gap: "20px" }}
             className="grid-cols-1 md:grid-cols-2"
           >
-            {config.pillars.map((pillar, i) => {
+            {pillars.map((pillar, i) => {
               const Icon = pillar.icon;
               return (
                 <m.div
@@ -565,7 +603,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
             style={{ display: "grid", gap: "16px" }}
             className="grid-cols-1 md:grid-cols-2 md:[&>*:last-child:nth-child(odd)]:col-span-2"
           >
-            {config.useCases.map((uc, i) => (
+            {useCases.map((uc, i) => (
               <m.div
                 key={uc.title}
                 variants={fadeUp}
@@ -655,7 +693,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 borderRadius: "6px",
               }}
             >
-              {config.planAvailability.map((p, i) => (
+              {planAvailability.map((p, i) => (
                 <div
                   key={p.plan}
                   style={{

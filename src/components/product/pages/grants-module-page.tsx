@@ -1,10 +1,10 @@
 "use client";
 
 import { Wallet, Gauge, Share2, FileText, Banknote, CalendarClock } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { GrantsPreview } from "@/components/product/previews/grants-preview";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
+const config: ModuleConfig = {
   moduleKey: "grants",
   headline: "Prove where every donor naira went.",
   description:
@@ -76,6 +76,6 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function GrantsModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function GrantsModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

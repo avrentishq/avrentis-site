@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { IntegrationsCataloguePage, type PlansByFeature } from "@/components/product/integrations-page";
-import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
+import { IntegrationsCataloguePage } from "@/components/product/integrations-page";
+import { fetchPricingData } from "@/lib/pricing";
+import { featurePlans, planNames } from "@/lib/plan-names";
 import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -19,11 +20,5 @@ export const metadata: Metadata = {
 
 export default async function IntegrationsPage() {
   const pricingData = await fetchPricingData();
-  const plansFor = (featureKey: string) => formatPlanList(planNames(pricingData, featureKey));
-  const plansByFeature: PlansByFeature = {
-    sso: plansFor("sso"),
-    apiAccess: plansFor("apiAccess"),
-    budgetCodes: plansFor("budgetCodes"),
-  };
-  return <IntegrationsCataloguePage plansByFeature={plansByFeature} />;
+  return <IntegrationsCataloguePage featurePlans={featurePlans(pricingData)} allPlanNames={planNames(pricingData)} />;
 }

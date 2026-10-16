@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AuthorityModulePage } from "@/components/product/pages/authority-module-page";
-import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
-import { planAvailabilityFor } from "@/lib/module-availability";
+import { fetchPricingData } from "@/lib/pricing";
+import { modulePageData } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${moduleName("authority")} — your approval rules, enforced automatically`,
     description:
-      "Approval limits per role, approver groups and quorum, separation of duties, and cover for absence — on every plan.",
+      "Approval limits per role, approver groups and quorum, separation of duties, and cover for absence — enforced on every request.",
     url: canonical("/product/authority"),
     type: "website",
   },
@@ -25,10 +25,5 @@ export const metadata: Metadata = {
 export default async function ProductAuthorityPage() {
   notFoundUnlessPublic("authority");
   const pricingData = await fetchPricingData();
-  return (
-    <AuthorityModulePage
-      planAvailability={planAvailabilityFor("authority", pricingData)}
-      groupPlans={formatPlanList(planNames(pricingData, "multiCompanyGroup"))}
-    />
-  );
+  return <AuthorityModulePage {...modulePageData("authority", pricingData)} />;
 }

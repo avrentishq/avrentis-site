@@ -3,15 +3,13 @@
 import { SlidersHorizontal, Users, ShieldAlert, Clock } from "lucide-react";
 import {
   ProductModuleLayout,
-  withPlanNotes,
   type ModuleConfig,
-  type ModulePlan,
+  type ModulePageData,
 } from "@/components/product/module-layout";
 import { AuthorityPreview } from "@/components/product/previews/authority-preview";
 
-const GROUP_USE_CASE = "One approval route, offered to every company in the group";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
+const config: ModuleConfig = {
   moduleKey: "authority",
   headline: "Who can approve what, up to how much.",
   description:
@@ -29,6 +27,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       icon: Users,
       title: "Approver groups and quorum",
+      planFeature: "advancedApprovalWorkflows",
       body:
         "Some decisions shouldn't rest on one signature. Name a group of eligible approvers and require two of them, or a specific pair, before anything moves. Being in the group makes you eligible to approve — it grants no other access.",
     },
@@ -41,6 +40,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       icon: Clock,
       title: "Cover for absence, without shortcuts",
+      planFeature: "delegation",
       body:
         "When an approver is away, delegate their authority for a fixed window. The stand-in approves under their own name with the delegation on record — instead of the password-sharing that usually fills the gap.",
     },
@@ -63,7 +63,8 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
         "New department, new subsidiary, new finance lead — authority is a policy you edit, not a process you rebuild. The rules follow the org chart instead of trailing behind it.",
     },
     {
-      title: GROUP_USE_CASE,
+      title: "One approval route, offered to every company in the group",
+      planFeature: "multiCompanyGroup",
       body:
         "Save a route that already works in one company as a group template. Each company in the group can propose its own route from it, and that company's own reviewer approves the change — the template is a recommendation, never imposed.",
     },
@@ -81,15 +82,6 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-/** `groupPlans` — the plans carrying `multiCompanyGroup`, read from the pricing
- *  API by the route; empty = unknown, and the sentence is left off. */
-export function AuthorityModulePage({
-  planAvailability,
-  groupPlans,
-}: {
-  planAvailability: ModulePlan[];
-  groupPlans: string;
-}) {
-  const useCases = withPlanNotes(config.useCases, { [GROUP_USE_CASE]: groupPlans });
-  return <ProductModuleLayout config={{ ...config, useCases, planAvailability }} />;
+export function AuthorityModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

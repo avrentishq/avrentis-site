@@ -1,10 +1,10 @@
 "use client";
 
 import { Copy, Landmark, Split, ListChecks } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { GuardPreview } from "@/components/product/previews/guard-preview";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
+const config: ModuleConfig = {
   moduleKey: "guard",
   headline: "Catch the bad payment before the money moves.",
   description:
@@ -64,6 +64,6 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function GuardModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function GuardModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

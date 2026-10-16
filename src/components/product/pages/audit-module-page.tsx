@@ -1,10 +1,10 @@
 "use client";
 
 import { ShieldCheck, FileSearch, Download, LockKeyhole, UserSearch } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
+const config: ModuleConfig = {
   moduleKey: "audit",
   headline: "Compliance without the scramble.",
   description:
@@ -28,20 +28,23 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       icon: Download,
       title: "Regulator-ready PDF + CSV exports",
+      planFeature: "fullAuditExport",
       body:
         "Export a period-scoped bundle as a formatted PDF for auditors or one CSV per section for analysts, or deliver the trail to your SIEM every night. Every export is itself logged, so you always know who received which snapshot.",
     },
     {
       icon: ShieldCheck,
       title: "Policies that follow SOC 2 structure",
+      planFeature: "controlsAttestation",
       body:
         "Separation of duties enforced as work moves, with a report of every exception; access reviews and control sign-offs signed by a named officer and kept on the record; role-based access and time-bound grants. No bolt-on compliance theatre.",
     },
     {
       icon: UserSearch,
       title: "Data-subject requests, handled on a clock",
+      everyPlan: true,
       body:
-        "Someone can ask what personal data you hold on them, have it corrected, take a copy, or ask you to erase it. Requests arrive through your organisation's own link, identity is verified before anything is disclosed, and the statutory deadline is tracked with warnings before it is missed rather than after. Included on every plan.",
+        "Someone can ask what personal data you hold on them, have it corrected, take a copy, or ask you to erase it. Requests arrive through your organisation's own link, identity is verified before anything is disclosed, and the statutory deadline is tracked with warnings before it is missed rather than after.",
     },
   ],
 
@@ -63,6 +66,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     },
     {
       title: "Board-ready operational reports",
+      planFeature: "fullAuditExport",
       body:
         "Monthly and quarterly exports feed board packs with volume, turnaround, and exception data — pulled from the trail, not hand-assembled from spreadsheets.",
     },
@@ -75,6 +79,6 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function AuditModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function AuditModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

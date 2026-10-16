@@ -4,7 +4,8 @@ import { Footer } from "@/components/layout/footer";
 import { Pricing } from "@/components/sections/pricing";
 import { PlanComparison } from "@/components/sections/plan-comparison";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
+import { fetchPricingData } from "@/lib/pricing";
+import { formatPlanList, planNames } from "@/lib/plan-names";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { canonical } from "@/lib/seo";
 

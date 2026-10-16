@@ -1,7 +1,6 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
 import { platformFetch } from "@/lib/platform-fetch";
-import { formatEnglishList } from "@/lib/english-list";
 import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
 /** One plan's price in one currency. Amounts are MAJOR units; the site formats
@@ -173,20 +172,4 @@ async function fetchRawPricingData(): Promise<PricingData> {
   } catch {
     return fallback as unknown as PricingData;
   }
-}
-
-/* ── Plan-name helpers — copy names tiers from the API, never by hand ── */
-
-/** Plan names in display order (`planOrder`), optionally only those with `featureKey` on. */
-export function planNames(data: PricingData, featureKey?: string): string[] {
-  return data.planOrder
-    .map((key) => data.plans.find((plan) => plan.key === key))
-    .filter((plan): plan is Plan => plan !== undefined)
-    .filter((plan) => featureKey === undefined || plan.features[featureKey] === true)
-    .map((plan) => plan.name);
-}
-
-/** "Enterprise", "Business and Enterprise", "Starter, Business and Enterprise". */
-export function formatPlanList(names: string[]): string {
-  return formatEnglishList(names);
 }

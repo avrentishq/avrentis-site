@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PayModulePage } from "@/components/product/pages/pay-module-page";
-import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
-import { planAvailabilityFor } from "@/lib/module-availability";
+import { fetchPricingData } from "@/lib/pricing";
+import { modulePageData } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
@@ -23,12 +23,5 @@ export const metadata: Metadata = {
 export default async function ProductPayPage() {
   notFoundUnlessPublic("pay");
   const pricingData = await fetchPricingData();
-  return (
-    <PayModulePage
-      planAvailability={planAvailabilityFor("pay", pricingData)}
-      bankLetterPlans={formatPlanList(planNames(pricingData, "bankLetterGeneration"))}
-      ledgerPlans={formatPlanList(planNames(pricingData, "budgetCodes"))}
-      groupPlans={formatPlanList(planNames(pricingData, "multiCompanyGroup"))}
-    />
-  );
+  return <PayModulePage {...modulePageData("pay", pricingData)} />;
 }

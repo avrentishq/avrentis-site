@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ConnectModulePage } from "@/components/product/pages/connect-module-page";
 import { fetchPricingData } from "@/lib/pricing";
-import { planAvailabilityFor } from "@/lib/module-availability";
+import { modulePageData } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
@@ -23,5 +23,5 @@ export const metadata: Metadata = {
 export default async function ProductConnectPage() {
   notFoundUnlessPublic("connect");
   const pricingData = await fetchPricingData();
-  return <ConnectModulePage planAvailability={planAvailabilityFor("connect", pricingData)} />;
+  return <ConnectModulePage {...modulePageData("connect", pricingData)} />;
 }

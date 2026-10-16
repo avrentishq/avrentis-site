@@ -1,10 +1,10 @@
 "use client";
 
 import { Archive, Search, FingerprintPattern, Share2, Gavel, CalendarClock, ShieldCheck } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
+const config: ModuleConfig = {
   moduleKey: "vault",
   headline: "Your financial records, in one place.",
   description:
@@ -92,6 +92,6 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function VaultModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function VaultModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

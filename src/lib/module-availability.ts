@@ -1,9 +1,15 @@
 /* ── Per-module plan availability, DERIVED ────────────────────── */
 
-import type { PricingData } from "@/lib/pricing";
+import { MODULE_CATALOG } from "@avrentishq/core/modules/catalog";
+import type { PlanKey } from "@avrentishq/core/billing/catalog";
+
+import type { ModuleKey } from "@/lib/brand";
+import { retentionLimitLine, storageLimitLine } from "@/lib/plan-limits";
+import type { Plan, PricingData } from "@/lib/pricing";
 // Type-only: erased at compile time, so pulling the row shape from the client
 // component does not drag the client bundle into a server route.
-import type { ModulePlan } from "@/components/product/module-layout";
+import type { ModulePageData, ModulePlan } from "@/components/product/module-layout";
+import { featurePlans } from "@/lib/plan-names";
 
 /**
  * Which plans include a module, derived from the pricing API's per-plan module
@@ -35,6 +41,11 @@ import type { ModulePlan } from "@/components/product/module-layout";
  * module starts ("From <tier>" / "<tier> tier only"), derived from the
  * same membership — tier names are never typed into a note.
  */
+/** Everything a module route hands its page from the pricing API. */
+export function modulePageData(moduleKey: ModuleKey, data: PricingData): ModulePageData {
+  return { planAvailability: planAvailabilityFor(moduleKey, data), featurePlans: featurePlans(data) };
+}
+
 export function planAvailabilityFor(
   moduleKey: string,
   data: PricingData,
@@ -52,7 +63,7 @@ export function planAvailabilityFor(
   const includes = (planKey: string) =>
     isPlatformModule || (planFor(planKey)?.modules.some((m) => m.key === moduleKey) ?? false);
 
-  const notes = MODULE_PLAN_NOTES[moduleKey] ?? {};
+  const notes = MODULE_PLAN_NOTES[moduleKey as ModuleKey] ?? {};
   const rows: ModulePlan[] = [];
 
   // Where the module starts, for the rows that do not include it: "From
@@ -67,10 +78,41 @@ export function planAvailabilityFor(
       ? `${lowestIncluding.name} tier only`
       : `From ${lowestIncluding.name}`
     : undefined;
+  // An unknown key owns nothing — it fails closed to no inclusion and no lines.
+  const ownedFeatures: readonly string[] = Object.hasOwn(MODULE_CATALOG, moduleKey)
+    ? MODULE_CATALOG[moduleKey as keyof typeof MODULE_CATALOG].features
+    : [];
+  const featureLine = (prefix: string, keys: string[]) => {
+    const labels = keys.map((key) => data.featureLabels[key]).filter((label): label is string => Boolean(label));
+    return labels.length > 0 ? `${prefix}: ${labels.join(" · ")}` : undefined;
+  };
+  /**
+   * What the data says about this module on a plan that includes it: on the
+   * lowest such plan, the module's features it carries; on each plan above, the
+   * module's features it adds. Labels are the API's own, so a feature moving
+   * between plans moves its line with it.
+   */
+  const derivedNote = (planKey: string): string | undefined => {
+    const plan = planFor(planKey);
+    if (!plan) return undefined;
+    const on = (candidate: Plan | undefined) => ownedFeatures.filter((key) => candidate?.features[key] === true);
+    const index = includingPlans.indexOf(planKey);
+    if (index === 0) return featureLine("Includes", on(plan));
+    const previous = new Set(on(planFor(includingPlans[index - 1]!)));
+    return featureLine("Also unlocks", on(plan).filter((key) => !previous.has(key)));
+  };
   const noteFor = (key: string, included: boolean): string | undefined => {
-    const authored = notes[key];
-    if (typeof authored === "function") return authored(lowestIncluding?.name ?? "");
-    return authored ?? (included ? undefined : startsAt);
+    const authored = notes[key as PlanKey | "trial"];
+    const plan = planFor(key === "trial" ? (data.trial?.plan ?? "") : key);
+    const authoredText =
+      typeof authored === "function" && plan
+        ? authored({ plan, lowestIncludingPlanName: lowestIncluding?.name ?? "" })
+        : typeof authored === "string"
+          ? authored
+          : undefined;
+    if (authoredText) return authoredText;
+    if (!included) return startsAt;
+    return key === "trial" ? undefined : derivedNote(key);
   };
 
   // Trial row first — a trialist is on a real tier, so its inclusion is that
@@ -83,6 +125,7 @@ export function planAvailabilityFor(
       plan: `${trial.days}-day ${trialPlan.name} trial`,
       included: includes(trial.plan),
       note: noteFor("trial", includes(trial.plan)),
+      isTrial: true,
     });
   }
 
@@ -100,61 +143,55 @@ export function planAvailabilityFor(
 }
 
 /**
- * Editorial colour only — what a tier adds BEYOND inclusion, or what a buyer
- * still gets when the module itself is not in their tier.
+ * Editorial colour only — what the data cannot say: what a buyer still gets
+ * when the module is not in their tier, or a module whose depth is not a list
+ * of plan features. Everything else is derived above from the API's own feature
+ * labels and limits.
  *
- * Deliberately holds no inclusion claim: "Included" / "Not included" notes were
- * dropped because the row's tick already says it, and a note that restates the
- * tick is a second copy that can contradict the first. Keyed by module, then by
- * plan key (or `trial`). A missing entry renders no note, which is fine.
- *
- * Do not restate numbers the API already publishes (seats, storage, retention)
- * — those live in `Plan.limits` and would drift here. Never name a tier either:
- * "From <tier>" is derived for every row that lacks the module, and a note that
- * must name one is a function handed the lowest tier that includes the module.
+ * Deliberately holds no inclusion claim: the row's tick already says it, and a
+ * note that restates the tick is a second copy that can contradict the first.
+ * Keyed by module, then by plan key (or `trial`). Never a typed number or tier
+ * name: a note that needs one is a function handed the plan (its limits and
+ * features) and the lowest tier that includes the module.
  */
-type PlanNote = string | ((lowestIncludingPlanName: string) => string);
+interface PlanNoteContext {
+  plan: Plan;
+  lowestIncludingPlanName: string;
+}
 
-const MODULE_PLAN_NOTES: Record<string, Record<string, PlanNote>> = {
-  pay: {
-    business: "Adds custom approval chains",
-    enterprise: "Adds SLA tracking and advanced routing",
-  },
-  procure: {
-    business: "Adds custom approval chains",
-    enterprise: "Adds SLA tracking and advanced routing",
-  },
+type PlanNote = string | ((context: PlanNoteContext) => string | undefined);
+
+const MODULE_PLAN_NOTES: Partial<Record<ModuleKey, Partial<Record<PlanKey | "trial", PlanNote>>>> = {
   vault: {
-    enterprise: "Unlimited storage and retention",
-  },
-  authority: {
-    // On every tier by definition; the depth is what moves. Base engine
-    // (approval chains, multi-level routing) is universal — see the app's
-    // module catalog, which gates only the depth behind plan features.
-    starter: "Approval chains and multi-level routing",
-    business: "Adds custom chains, SLA tracking and delegation",
-    enterprise: "Adds approver groups, quorum gates and condition-based routing",
+    // Records is about keeping things; how much and for how long is its depth.
+    starter: ({ plan }) => storageAndRetention(plan),
+    business: ({ plan }) => storageAndRetention(plan),
+    enterprise: ({ plan }) => storageAndRetention(plan),
   },
   audit: {
     // The honesty fix. Starter does not carry Compliance, but the tamper-evident
     // trail and data-subject request handling are foundation and run for
     // everyone — say both, claim neither.
-    starter: (from) =>
-      `Trail still recorded and data-subject requests handled — reporting and exports from ${from}`,
-    business: "Full trail history and regulator-ready export",
-    enterprise: "Unlimited retention, plus a live SIEM feed through the API",
+    starter: ({ lowestIncludingPlanName }) =>
+      `Trail still recorded and data-subject requests handled — reporting and exports from ${lowestIncludingPlanName}`,
+    // The live SIEM feed rides the API, so it is named only where the plan has it.
+    enterprise: ({ plan }) =>
+      plan.features.apiAccess === true
+        ? `${retentionLimitLine(plan.limits.documentRetentionDays)}, plus a live SIEM feed through the API`
+        : retentionLimitLine(plan.limits.documentRetentionDays),
   },
   guard: {
+    // Guard's rules are not separate plan features, so the data has no list to show.
     business: "All rule-based flags and the review queue",
   },
   grants: {
-    // No enterprise line. Sub-grantee oversight is part of the module, and the
-    // module is Business+ in its entirety — "Adds sub-grantees at scale" sold
-    // an upgrade for something the Business buyer already has.
+    // Grants carries no plan features of its own: the module is the whole offer.
     business:
       "Donors, awards and budget lines, partner sub-awards, donor receipts and cash position, matching contributions, reporting deadlines and donor-ready reports",
   },
-  connect: {
-    enterprise: "Unlimited API keys and priority support",
-  },
 };
+
+/** "10 GiB storage · 7 years retention", from the plan's own limits. */
+function storageAndRetention(plan: Plan): string {
+  return `${storageLimitLine(plan.limits.maxStorageBytes)} · ${retentionLimitLine(plan.limits.documentRetentionDays)}`;
+}

@@ -7,6 +7,10 @@
  * to the platform's actual capability, not marketing ambition.
  */
 
+import { PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import { PLAN_CAPACITY } from "@avrentishq/core/billing/capacity";
+import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
+import { planScopeNote, type FeaturePlans } from "@/lib/plan-names";
 import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
@@ -49,17 +53,12 @@ interface Category {
   title: string;
   lede: string;
   /** Plan feature that gates this category; its plans are named after the lede. */
-  planFeature?: PlanFeature;
+  planFeature?: PlanFeatureKey;
   integrations: Integration[];
 }
 
-/** The plan features this page names plans for. SCIM provisioning rides on `sso`;
- *  the chart of accounts and journal export ride on `budgetCodes`. */
-export type PlanFeature = "sso" | "apiAccess" | "budgetCodes";
-/** "Business and Enterprise" per feature, read from the pricing API by the route
- *  (formatted server-side so this client bundle never imports the pricing module).
- *  Empty string = unknown; the sentence is then left off rather than guessed. */
-export type PlansByFeature = Record<PlanFeature, string>;
+/** WhatsApp and SMS ride every plan's monthly message allowance (core's capacity), so say so only while every plan has one. */
+const MESSAGING_ON_EVERY_PLAN = PLAN_ORDER.every((planKey) => PLAN_CAPACITY[planKey].monthlyMessageCap > 0);
 
 const CATEGORIES: Category[] = [
   {
@@ -108,7 +107,7 @@ const CATEGORIES: Category[] = [
       "Every stage of the approval lifecycle can dispatch to the channels your approvers actually check. Multi-channel by default, all tracked to the audit trail.",
     integrations: [
       { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider.", availability: "available" },
-      { name: "WhatsApp", summary: "Approval alerts with a secure review link, on every plan.", availability: "available" },
+      { name: "WhatsApp", summary: `Approval alerts with a secure review link${MESSAGING_ON_EVERY_PLAN ? ", on every plan" : ""}.`, availability: "available" },
       { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
       { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
       { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "request" },
@@ -231,7 +230,7 @@ function Badge({ availability }: { availability: Availability }) {
   );
 }
 
-function CategoryBlock({ category, index, plans }: { category: Category; index: number; plans?: string }) {
+function CategoryBlock({ category, index, planNote }: { category: Category; index: number; planNote: string }) {
   const Icon = category.icon;
   return (
     <m.section
@@ -287,7 +286,7 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
           </h2>
           <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "440px" }}>
             {category.lede}
-            {plans ? ` Available on ${plans}.` : null}
+            {planNote ? ` ${planNote}` : null}
           </p>
         </div>
 
@@ -330,7 +329,15 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
   );
 }
 
-export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: PlansByFeature }) {
+/** `featurePlans` and `allPlanNames` come from the pricing API through the route. SCIM
+ *  provisioning rides on `sso`; the chart of accounts and journal export on `budgetCodes`. */
+export function IntegrationsCataloguePage({
+  featurePlans,
+  allPlanNames,
+}: {
+  featurePlans: FeaturePlans;
+  allPlanNames: string[];
+}) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -523,7 +530,12 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategories} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {CATEGORIES.map((c, i) => (
-            <CategoryBlock key={c.id} category={c} index={i} plans={c.planFeature ? plansByFeature[c.planFeature] : undefined} />
+            <CategoryBlock
+              key={c.id}
+              category={c}
+              index={i}
+              planNote={c.planFeature ? planScopeNote(featurePlans[c.planFeature] ?? [], allPlanNames) : ""}
+            />
           ))}
         </div>
       </section>
@@ -748,10 +760,10 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
               maxWidth: "600px",
             }}
           >
-            Enterprise customers get purpose-built connectors for the systems
-            already in production at their organisation — banking rails,
-            regional HRIS, in-house document stores. Tell us what you run; we
-            scope, build, and ship.
+            Running a system we do not list? We build purpose-built connectors
+            for the systems already in production at your organisation —
+            banking rails, regional HRIS, in-house document stores. Tell us what
+            you run; we scope, build, and ship.
           </m.p>
           <m.div
             variants={fadeUp}

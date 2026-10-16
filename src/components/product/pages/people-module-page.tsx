@@ -1,10 +1,10 @@
 "use client";
 
 import { Receipt, ShieldCheck, Tags } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
+const config: ModuleConfig = {
   moduleKey: "people",
   headline: "Staff expenses, on the same rails as payments.",
   description:
@@ -58,6 +58,6 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function PeopleModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function PeopleModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

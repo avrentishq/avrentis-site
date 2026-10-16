@@ -110,6 +110,9 @@ Run these locally before you claim anything is done.
   `failClosed`), `src/lib/turnstile.ts` and `next.config.ts` encodes deliberate tradeoffs,
   not oversights.** Read the header comment in the file first. This repo is public, so the specifics live in
   `guides/security-posture.md`, which is gitignored.
+- **Only `main` and `staging` build on Vercel.** `vercel.json`'s `git.deploymentEnabled` skips
+  every other branch: work is reviewed by fast-forwarding `staging` to it, never on a per-branch
+  preview (`deploy-config.lock.test.ts`).
 - **Blocked-content reports go to Sentry.** `next.config.ts` adds `report-uri` / `report-to`
   and a `Reporting-Endpoints` header only when `CSP_REPORT_URI` (a Sentry project's security
   endpoint, https) is set at BUILD time — headers are fixed into the build, so a change needs

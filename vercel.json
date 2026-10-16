@@ -1,4 +1,11 @@
 {
   "installCommand": "sh scripts/vercel-install.sh",
-  "buildCommand": "pnpm build"
+  "buildCommand": "pnpm build",
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "main": true,
+      "staging": true
+    }
+  }
 }

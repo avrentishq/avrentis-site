@@ -12,6 +12,7 @@ import {
 } from "@avrentishq/core/billing/capacity";
 import { planName } from "@avrentishq/core/billing/catalog";
 import { formatByteSize } from "@avrentishq/core/billing/limit-format";
+import { MAGIC_LINK_EXPIRY_MS } from "@avrentishq/core/trial/request-terms";
 
 /**
  * Every number the site states about a trial — its length, the read-only grace
@@ -57,3 +58,8 @@ export const NO_CARD_REQUIRED = "No card required";
  * provisioning; this is the one that holds on a slow day.
  */
 export const TRIAL_SETUP_TIME = "in minutes";
+
+const MILLISECONDS_PER_MINUTE = 60 * 1000;
+
+/** How long a trial's verification link stays valid — "30 minutes", from core's lifetime. */
+export const MAGIC_LINK_LIFETIME = `${Math.round(MAGIC_LINK_EXPIRY_MS / MILLISECONDS_PER_MINUTE)} minutes`;

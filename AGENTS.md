@@ -42,7 +42,7 @@ Run these locally before you claim anything is done.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
-  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain`, `billing/retention`, `locales`, `sectors`, `modules/catalog` and `ui/card-grid` (+ its stylesheet, imported by `globals.css`).**
+  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain`, `billing/retention`, `locales`, `sectors`, `modules/catalog`, `region/iso-3166`, `domains/public-email`, `trial/request-terms` and `ui/card-grid` (+ its stylesheet, imported by `globals.css`).**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; `region/phone` needs a phone library the site does
   not install, so subpaths are admitted one by one; the two rate-limit modules need only the
@@ -55,7 +55,10 @@ Run these locally before you claim anything is done.
   `next.config.ts`, enforces this list AND walks each allowed subpath's value-import graph, failing on any
   package the site does not install; extend both together.
 - **Never type a trial term.** The trial's length, read-only grace, seat cap, storage and
-  message caps and the plan it runs on come from core via `src/lib/trial-terms.ts`
+  message caps, the plan it runs on and the verification link's lifetime
+  (`MAGIC_LINK_LIFETIME`) come from core via `src/lib/trial-terms.ts`; the trial request's
+  field bounds, size bands and country codes are core's too (`trial/request-terms`,
+  `region/iso-3166`), and the free-mail hint is core's `looksLikePublicEmailDomain`
   (`START_TRIAL_CTA`, `TRIAL_LENGTH`, …); a page that renders the pricing API's `trial`
   block reads `days`/`seatCap` from it. `trial-terms.lock.test.ts` fails on a typed
   "30-day trial", "N-seat", "N days after trial" or "<Plan> tier". The changelog is exempt —

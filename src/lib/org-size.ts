@@ -1,22 +1,14 @@
 /**
  * Organisation-size options — single source of truth for the whole site.
  *
- * The trial form, its server action and the contact form all present and
- * accept these bands. (The platform stores the trial's band as text and does
- * not check it against a list of its own.) "21–50" carries an honest "Most common" marker and
+ * The bands are core's (`trial/request-terms`), the list the app's trial API
+ * accepts; the trial form, its server action and the contact form present them. "21–50" carries an honest "Most common" marker and
  * is the trial's pre-selected default.
  */
 
-export const ORG_SIZES = ["1–20", "21–50", "51–200", "200+"] as const;
+import { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize } from "@avrentishq/core/trial/request-terms";
 
-export type OrgSize = (typeof ORG_SIZES)[number];
-
-export const DEFAULT_ORG_SIZE: OrgSize = "21–50";
-
-/** Whether a posted value is one of the bands. */
-export function isOrgSize(value: string): value is OrgSize {
-  return (ORG_SIZES as readonly string[]).includes(value);
-}
+export { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize };
 
 interface OrgSizeOption {
   value: string;

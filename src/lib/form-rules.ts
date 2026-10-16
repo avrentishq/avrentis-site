@@ -10,20 +10,24 @@
  * in `src/app` or `src/components`.
  */
 
+import { TRIAL_REQUEST_LIMITS, TRIAL_TOKEN_LENGTH } from "@avrentishq/core/trial/request-terms";
+
 /**
  * The longest value each field accepts, in characters. Name, email,
- * organisation and source mirror the platform's bounds on a trial request;
- * `token` is the platform's bound on a magic-link token.
+ * organisation and source are core's bounds on a trial request and `token` its
+ * bound on a magic-link token — the same numbers the app's API enforces, so a
+ * form can never accept what the platform will refuse. The message and the
+ * "Other" detail are the site's own.
  */
 export const FORM_LIMITS = {
-  name: 200,
-  email: 320,
-  organisation: 200,
-  source: 200,
+  name: TRIAL_REQUEST_LIMITS.name,
+  email: TRIAL_REQUEST_LIMITS.email,
+  organisation: TRIAL_REQUEST_LIMITS.organisation,
+  source: TRIAL_REQUEST_LIMITS.source,
   message: 5000,
   /** The free-text detail behind an "Other" choice (role, industry). */
   otherDetail: 120,
-  token: 100,
+  token: TRIAL_TOKEN_LENGTH.max,
 } as const;
 
 export type LimitedField = keyof typeof FORM_LIMITS;

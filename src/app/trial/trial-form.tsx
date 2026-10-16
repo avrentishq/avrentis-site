@@ -47,35 +47,15 @@ import { SECTORS } from "@avrentishq/core/sectors";
 import { TRIAL_STEPS_DONE, TrialStepper } from "./stepper";
 import { LEAD_MARKET } from "@/lib/market";
 import { TrialTimeline } from "./timeline";
-import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
+import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED, TRIAL_SETUP_TIME, MAGIC_LINK_LIFETIME } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
+import { looksLikePublicEmailDomain } from "@avrentishq/core/domains/public-email";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
 // Free-email provider list used for the soft nudge below.
 // ────────────────────────────────────────────────────────────────────
-const FREE_EMAIL_DOMAINS = new Set([
-  "gmail.com",
-  "googlemail.com",
-  "yahoo.com",
-  "yahoo.co.uk",
-  "hotmail.com",
-  "outlook.com",
-  "live.com",
-  "icloud.com",
-  "me.com",
-  "mac.com",
-  "aol.com",
-  "protonmail.com",
-  "proton.me",
-  "mail.com",
-  "gmx.com",
-  "gmx.de",
-  "yandex.com",
-  "yandex.ru",
-]);
-
 /**
  * 15-minute window in milliseconds for duplicate-submission detection. The
  * address is kept in sessionStorage, so it also goes when the tab closes.
@@ -292,7 +272,7 @@ export function TrialForm() {
   const emailDomain = emailValue.includes("@")
     ? emailValue.split("@").pop()?.toLowerCase() ?? ""
     : "";
-  const showFreeEmailHint = emailDomain !== "" && FREE_EMAIL_DOMAINS.has(emailDomain);
+  const showFreeEmailHint = emailDomain !== "" && looksLikePublicEmailDomain(emailDomain);
 
   // ── Duplicate-submission warning ────────────────────────────────
   const showDuplicateWarning = recentSubmission !== null;
@@ -802,7 +782,7 @@ export function TrialForm() {
             <span>
               We already received a request from this browser at{" "}
               <strong style={{ color: "var(--color-warning-strong)" }}>{recentSubmission!.email}</strong> a few minutes
-              ago. Check that inbox first — the verification link expires in 30 minutes.
+              ago. Check that inbox first — the verification link expires in {MAGIC_LINK_LIFETIME}.
             </span>
           </div>
         )}
@@ -885,7 +865,7 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       >
         We sent a verification link to{" "}
         <strong style={{ color: "var(--color-text-primary)" }}>{email}</strong>. Check your inbox —
-        it expires in 30 minutes.
+        it expires in {MAGIC_LINK_LIFETIME}.
       </p>
       <p
         style={{

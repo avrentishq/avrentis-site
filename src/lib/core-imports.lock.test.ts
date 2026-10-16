@@ -37,6 +37,10 @@ import { dirname, join } from "node:path";
  *     validates a submitted industry with. Its only import is type-only.
  *   - `modules/catalog` — each module's name, short name, suite and maturity,
  *     which `brand.ts` reads instead of re-typing them. Its only import is type-only.
+ *   - `region/iso-3166`, `domains/public-email` and `trial/request-terms` —
+ *     the country codes, personal-mailbox list (and its
+ *     dependency-free form hint), the trial request's bounds, size bands and
+ *     link lifetime, shared with the app's API. No package imports.
  *   - `billing/retention` — the statutory record-retention floor a page states
  *     (the platform floor or the country's own, whichever is longer). Reaches
  *     only `region/countries` and its own floor constant.
@@ -75,6 +79,9 @@ const RUNTIME_ALLOWED = new Set([
   "ui/card-grid",
   "ui/card-grid.css",
   "billing/retention",
+  "region/iso-3166",
+  "domains/public-email",
+  "trial/request-terms",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
 const BUILD_ONLY_ALLOWED = new Set<string>([]);

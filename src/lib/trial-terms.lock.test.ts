@@ -30,6 +30,8 @@ const TYPED_TERMS: { name: string; pattern: RegExp }[] = [
   { name: "the trial plan's name", pattern: new RegExp(`\\b(?:${PLAN_NAMES}) (?:tier|features|trial)\\b`) },
   { name: "a day count after 'trial'", pattern: /\btrial\b[^\n.]{0,30}?\b(?:\d+|seven|fourteen|thirty|sixty)\s+days?\b/i },
   { name: "a spelled-out day count before 'trial'", pattern: /\b(?:seven|fourteen|thirty|sixty)[- ]day\b[^\n]{0,30}\btrial\b/i },
+  { name: "a typed link lifetime (MAGIC_LINK_LIFETIME)", pattern: /\bexpires?\s+in\s+(?:\d+|thirty|fifteen)\s+minutes?\b/i },
+  { name: "a typed personal-mailbox list (core's domains/public-email)", pattern: /["'](?:gmail|yahoo|hotmail|outlook)\.com["']/i },
   { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno\s+(?:credit\s+)?card\b|\bcard\s+on\s+file\b/i },
   { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less\s+than|within)\s+(?:\d+|one|two|three|five|ten|fifteen|twenty|thirty)\s+minutes?\b|\bsetup\s+in\s+minutes\b/i },
   { name: "the market typed out (MARKET_SCOPE)", pattern: /\bNigeria\s+and\s+Africa\b|\bNigerian\s+and\s+African\b|\bPan-African\s+platform\b/i },
@@ -44,8 +46,18 @@ function sourceFiles(): string[] {
 
 describe("trial terms come from core, never from copy", () => {
   it("the detectors catch typed terms", () => {
-    const [dayCount, graceCount, seatCount, planNameDetector, dayCountAfter, spelledDayCount, noCard, setupTime, market] =
-      TYPED_TERMS.map((term) => term.pattern);
+    const detector = (fragment: string) => TYPED_TERMS.find((term) => term.name.includes(fragment))!.pattern;
+    const [dayCount, graceCount, seatCount, planNameDetector, dayCountAfter, spelledDayCount, noCard, setupTime, market] = [
+      "a day count before",
+      "grace count",
+      "seat count",
+      "plan's name",
+      "a day count after",
+      "spelled-out",
+      "NO_CARD_REQUIRED",
+      "TRIAL_SETUP_TIME",
+      "MARKET_SCOPE",
+    ].map(detector);
     expect(dayCountAfter!.test("Your trial lasts 30 days")).toBe(true);
     expect(spelledDayCount!.test("a thirty-day trial")).toBe(true);
     expect(dayCountAfter!.test("trial ${TRIAL_LENGTH}")).toBe(false);
@@ -55,6 +67,10 @@ describe("trial terms come from core, never from copy", () => {
     expect(seatCount!.test("a 5-seat pilot workspace")).toBe(true);
     expect(planNameDetector!.test("Full Business features on your own data")).toBe(true);
     expect(noCard!.test("No credit card required")).toBe(true);
+    const linkLifetime = detector("MAGIC_LINK_LIFETIME");
+    const mailboxList = detector("public-email");
+    expect(linkLifetime.test("the verification link expires in 30 minutes.")).toBe(true);
+    expect(mailboxList.test('const FREE = new Set(["gmail.com", "yahoo.com"]);')).toBe(true);
     expect(noCard!.test("no card on file")).toBe(true);
     expect(setupTime!.test("Setup takes less than 10 minutes")).toBe(true);
     expect(setupTime!.test("in under two minutes")).toBe(true);

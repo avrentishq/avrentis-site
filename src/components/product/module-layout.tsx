@@ -15,13 +15,24 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, MODULES, type ModuleKey, SITE_PAGES } from "@/lib/brand";
+import {
+  MODULE_STATUS_LABELS,
+  MODULES,
+  isModulePublic,
+  moduleHref,
+  moduleName,
+  type ModuleKey,
+  type ModuleStatus,
+  SITE_PAGES,
+} from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
-import { useIsMobile } from "@/lib/hooks/use-is-mobile";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { BrowserFrame, appCaption } from "./previews/preview-primitives";
+import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
+import { ButtonLink } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -29,110 +40,120 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
+import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
+import { EVERY_PLAN_NOTE, planScopeNote, type FeaturePlans } from "@/lib/plan-names";
+import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
-export type ModuleStatus = "available" | "coming_soon" | "partial" | "roadmap";
+/**
+ * Which plans a card's capability is on. `planFeature` names the plan feature
+ * that gates it, and the layout says which plans carry it, from the pricing
+ * API — unless that is exactly the module's own plans, which the table already
+ * shows. `everyPlan` marks a capability no feature gates, so it is on every plan
+ * the module is; say it only where it is worth stressing.
+ */
+interface PlanScoped {
+  planFeature?: PlanFeatureKey;
+  everyPlan?: true;
+}
 
-export interface ModulePillar {
+export interface ModulePillar extends PlanScoped {
   icon: LucideIcon;
   title: string;
   body: string;
 }
 
-export interface ModuleUseCase {
+export interface ModuleUseCase extends PlanScoped {
   title: string;
   body: string;
-}
-
-/**
- * Append "Available on <plans>." to the pillars or use cases a plan feature
- * gates. `plansByTitle` maps an item's title to the plan list the route read
- * from the pricing API ("Business and Enterprise"); an empty list means
- * unknown, and the sentence is left off rather than guessed.
- */
-export function withPlanNotes<Item extends { title: string; body: string }>(
-  items: Item[],
-  plansByTitle: Record<string, string>,
-): Item[] {
-  return items.map((item) => {
-    const plans = plansByTitle[item.title];
-    return plans ? { ...item, body: `${item.body} Available on ${plans}.` } : item;
-  });
 }
 
 export interface ModulePlan {
   plan: string;
   included: boolean;
   note?: string;
+  /** The trial row, which is not a plan of its own. */
+  isTrial?: boolean;
+}
+
+/** Each item's body with its plan sentence appended, where one says something the table does not. */
+function withPlanScope<Item extends PlanScoped & { body: string }>(
+  items: Item[],
+  featurePlans: FeaturePlans,
+  planAvailability: ModulePlan[],
+): Item[] {
+  const planRows = planAvailability.filter((row) => !row.isTrial);
+  const allPlanNames = planRows.map((row) => row.plan);
+  const modulePlanNames = planRows.filter((row) => row.included).map((row) => row.plan);
+  const sameSet = (left: readonly string[], right: readonly string[]) =>
+    left.length === right.length && left.every((name) => right.includes(name));
+  return items.map((item) => {
+    let note = "";
+    if (item.everyPlan) note = EVERY_PLAN_NOTE;
+    else if (item.planFeature) {
+      const names = featurePlans[item.planFeature] ?? [];
+      if (!sameSet(names, modulePlanNames)) note = planScopeNote(names, allPlanNames);
+    }
+    return note ? { ...item, body: `${item.body} ${note}` } : item;
+  });
 }
 
 export interface ModuleRelated {
-  slug: string;
-  name: string;
+  moduleKey: ModuleKey;
+  /** How that module completes this one — the name and link come from the key. */
   desc: string;
 }
 
+/**
+ * A module page's own words. Its name, status, link and breadcrumb all follow
+ * from `moduleKey`, so a page cannot disagree with the catalogue about any of them.
+ */
 export interface ModuleConfig {
-  slug: string;
-  eyebrow: string;
+  moduleKey: ModuleKey;
   headline: string;
   description: string;
-  status: ModuleStatus;
-  /** Small caption above the preview frame, e.g. `Avrentis / vouchers / PV-2026-0184`. */
-  previewUrl: string;
-  /** React node for the browser-frame preview. Rendered inside a `MockupShell`-style container. */
+  /** Caption path above the preview frame, after the brand name: `vouchers / new`. */
+  previewPath: string;
+  /** React node for the browser-frame preview. Rendered inside a `BrowserFrame`. */
   preview: React.ReactNode;
   pillars: ModulePillar[];
   useCases: ModuleUseCase[];
-  planAvailability: ModulePlan[];
   relatedModules: ModuleRelated[];
   /** Overrides the default CTA based on status. */
   primaryCta?: { label: string; href: string };
   secondaryCta?: { label: string; href: string };
 }
 
+const STATUS_RIBBON_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
+  available: {
+    bg: "rgba(var(--color-available-rgb), 0.12)",
+    color: "var(--color-available-on-dark)",
+    border: "1px solid rgba(var(--color-available-rgb), 0.3)",
+  },
+  partial: {
+    bg: "var(--color-gold-tint)",
+    color: "var(--color-gold)",
+    border: "1px solid var(--color-gold-border)",
+  },
+};
+
 function StatusRibbon({ status }: { status: ModuleStatus }) {
-  const config: Record<ModuleStatus, { label: string; bg: string; color: string; border: string }> = {
-    available: {
-      label: "Available now",
-      bg: "rgba(var(--color-available-rgb), 0.12)",
-      color: "var(--color-available-on-dark)",
-      border: "1px solid rgba(var(--color-available-rgb), 0.3)",
-    },
-    coming_soon: {
-      label: "Coming soon",
-      bg: "rgba(var(--color-gold-rgb), 0.12)",
-      color: "var(--color-gold)",
-      border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
-    },
-    partial: {
-      label: "Currently in beta",
-      bg: "rgba(var(--color-gold-rgb), 0.12)",
-      color: "var(--color-gold)",
-      border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
-    },
-    roadmap: {
-      label: "On the roadmap",
-      bg: "rgba(var(--color-text-subtle-rgb), 0.10)",
-      color: "var(--color-text-subtle)",
-      border: "1px solid rgba(var(--color-text-subtle-rgb), 0.25)",
-    },
-  };
-  const c = config[status];
+  const style = STATUS_RIBBON_STYLES[status];
   return (
     <span
       style={{
         display: "inline-flex",
         alignItems: "center",
         gap: "6px",
-        fontFamily: "var(--font-sans)",
-        fontSize: "11px",
+        fontSize: "var(--text-2xs)",
         fontWeight: 600,
         letterSpacing: "0.06em",
         textTransform: "uppercase",
-        color: c.color,
-        backgroundColor: c.bg,
-        border: c.border,
-        borderRadius: "3px",
+        color: style.color,
+        backgroundColor: style.bg,
+        border: style.border,
+        borderRadius: "var(--radius-xs)",
         padding: "4px 10px",
       }}
     >
@@ -140,65 +161,67 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
         style={{
           width: "5px",
           height: "5px",
-          borderRadius: "50%",
-          backgroundColor: c.color,
+          borderRadius: "var(--radius-circle)",
+          backgroundColor: style.color,
           display: "inline-block",
         }}
       />
-      {c.label}
+      {MODULE_STATUS_LABELS[status]}
     </span>
   );
 }
 
-function resolveCtas(config: ModuleConfig): {
+function resolveCtas(config: ModuleConfig, status: ModuleStatus): {
   primary: { label: string; href: string };
   secondary: { label: string; href: string };
 } {
-  if (config.primaryCta && config.secondaryCta) {
-    return { primary: config.primaryCta, secondary: config.secondaryCta };
+  if (status === "partial") {
+    return {
+      primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
+      secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
+    };
   }
-  switch (config.status) {
-    case "available":
-      return {
-        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
-        secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
-      };
-    case "coming_soon":
-      return {
-        primary: config.primaryCta ?? { label: "Get notified at launch", href: contactHref("notify") },
-        secondary: config.secondaryCta ?? { label: "See the full roadmap", href: contactHref("roadmap") },
-      };
-    case "partial":
-      return {
-        primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
-      };
-    case "roadmap":
-      return {
-        primary: config.primaryCta ?? { label: "Share your use case", href: contactHref("roadmap") },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
-      };
-  }
+  return {
+    primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
+    secondary: config.secondaryCta ?? { label: "See how it works", href: SITE_ROUTES.howItWorks },
+  };
 }
 
-export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
+/**
+ * What the pricing API says about a module page — which plans include the
+ * module, and which plans carry each plan feature. Every module route builds it
+ * with `modulePageData(key, pricingData)`; never written by hand.
+ */
+export interface ModulePageData {
+  planAvailability: ModulePlan[];
+  featurePlans: FeaturePlans;
+}
+
+/** A module page: its own words (`config`) plus the derived `ModulePageData`. */
+export function ProductModuleLayout({
+  config,
+  planAvailability,
+  featurePlans,
+}: ModulePageData & { config: ModuleConfig }) {
+  const pillars = withPlanScope(config.pillars, featurePlans, planAvailability);
+  const useCases = withPlanScope(config.useCases, featurePlans, planAvailability);
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const isMobile = useIsMobile();
-  const { primary, secondary } = resolveCtas(config);
-  const moduleName = MODULES[config.slug as ModuleKey]?.name ?? config.headline;
+  const { name, status } = MODULES[config.moduleKey];
+  const { primary, secondary } = resolveCtas(config, status);
+  const relatedModules = config.relatedModules.filter((related) => isModulePublic(related.moduleKey));
 
   return (
     <>
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Platform", path: "/product" },
-          { name: moduleName, path: `/product/${config.slug}` },
+          { name: "Platform", path: SITE_ROUTES.product },
+          { name, path: moduleHref(config.moduleKey) },
         ])}
       />
       <Navbar />
@@ -216,208 +239,76 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.moduleHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: isMobile ? 0 : gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div
           style={{
-            maxWidth: "1200px",
+            maxWidth: "var(--layout-max-width)",
             margin: "0 auto",
             display: "grid",
             gap: "56px",
             alignItems: "center",
             position: "relative",
-            zIndex: 2,
+            zIndex: Z_INDEX.content,
           }}
           className="grid-cols-1 lg:grid-cols-[1fr_minmax(0,1.1fr)]"
         >
           {/* Left: copy */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <m.span
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--color-gold)",
-              }}
-            >
-              {config.eyebrow}
-            </m.span>
+            <Eyebrow surface="dark" reveal="scroll">
+              {name}
+            </Eyebrow>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
             >
-              <StatusRibbon status={config.status} />
+              <StatusRibbon status={status} />
             </m.div>
 
             <m.h1
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(2)}
+              {...fadeUpOnScroll(2)}
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 700,
-                fontSize: "34px",
+                fontSize: "var(--text-heading-3xl)",
                 color: "var(--color-white)",
                 lineHeight: 1.15,
                 margin: 0,
               }}
-              className="lg:!text-[48px]"
+              className="lg:!text-display-2xl"
             >
               {config.headline}
             </m.h1>
 
             <m.p
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(3)}
+              {...fadeUpOnScroll(3)}
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "17px",
+                fontSize: "var(--text-2xl)",
                 color: "var(--color-text-subtle)",
                 lineHeight: 1.7,
                 margin: 0,
-                maxWidth: "480px",
+                maxWidth: "var(--measure-tight)",
               }}
             >
               {config.description}
             </m.p>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(4)}
+              {...fadeUpOnScroll(4)}
               style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "8px" }}
             >
-              <Link
-                href={primary.href}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 600,
-                  fontSize: "14px",
-                  backgroundColor: "var(--color-gold)",
-                  color: "var(--color-text-primary)",
-                  borderRadius: "6px",
-                  padding: "0 22px",
-                  height: "44px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  textDecoration: "none",
-                }}
-              >
-                {primary.label}
-              </Link>
-              <Link
-                href={secondary.href}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  color: "var(--color-white)",
-                  border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                  borderRadius: "6px",
-                  padding: "0 22px",
-                  height: "44px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  textDecoration: "none",
-                }}
-              >
+              <ButtonLink href={primary.href}>{primary.label}</ButtonLink>
+              <ButtonLink href={secondary.href} variant="secondary" surface="dark">
                 {secondary.label} →
-              </Link>
+              </ButtonLink>
             </m.div>
           </div>
 
           {/* Right: preview */}
-          <m.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ ...fadeUpTransition, delay: 0.3 }}
-          >
-            <div
-              style={{
-                borderRadius: "10px",
-                border: "1px solid rgba(var(--color-white-rgb), 0.10)",
-                backgroundColor: "var(--color-bg-light)",
-                boxShadow: "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.45)",
-                overflow: "hidden",
-              }}
-            >
-              {/* Browser chrome */}
-              <div
-                style={{
-                  backgroundColor: "var(--color-navy-primary)",
-                  padding: "10px 14px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
-                }}
-              >
-                <div style={{ display: "flex", gap: "6px" }}>
-                  {[0, 1, 2].map((i) => (
-                    <span
-                      key={i}
-                      style={{
-                        width: "10px",
-                        height: "10px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                      }}
-                    />
-                  ))}
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-                    borderRadius: "5px",
-                    padding: "4px 10px",
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "11px",
-                    color: "var(--color-text-subtle)",
-                    textAlign: "center",
-                  }}
-                >
-                  {config.previewUrl}
-                </div>
-              </div>
-              <div>{config.preview}</div>
-            </div>
+          <m.div {...fadeUpOnScroll(4)}>
+            <BrowserFrame caption={appCaption(config.previewPath)} surface="dark">
+              {config.preview}
+            </BrowserFrame>
           </m.div>
         </div>
       </section>
@@ -425,65 +316,33 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePillars} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            CAPABILITIES
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
+          <SectionIntro
+            eyebrow="CAPABILITIES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="What this module does for your organisation."
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-text-primary)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "560px",
+              maxWidth: "var(--measure-narrow)",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            What this module does for your organisation.
-          </m.h2>
+            titleClassName="lg:!text-display-sm"
+          />
 
-          <div
-            style={{ display: "grid", gap: "20px" }}
-            className="grid-cols-1 md:grid-cols-2"
-          >
-            {config.pillars.map((pillar, i) => {
+          <div {...cardGridProps(pillars.length, { max: 2 }, { gap: "20px" })}>
+            {pillars.map((pillar, i) => {
               const Icon = pillar.icon;
               return (
                 <m.div
                   key={pillar.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     flexDirection: "column",
@@ -494,20 +353,19 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                     style={{
                       width: "36px",
                       height: "36px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "var(--text-3xl)",
                       color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
@@ -516,8 +374,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
@@ -535,72 +392,42 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       {/* ── USE CASES ────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.moduleUseCases} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            OUTCOMES
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
+          <SectionIntro
+            eyebrow="OUTCOMES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="What changes operationally."
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-text-primary)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "560px",
+              maxWidth: "var(--measure-narrow)",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            What changes operationally.
-          </m.h2>
+            titleClassName="lg:!text-display-sm"
+          />
 
           {/* An odd last card spans both columns, so the row fills the width at any count. */}
           <div
             style={{ display: "grid", gap: "16px" }}
             className="grid-cols-1 md:grid-cols-2 md:[&>*:last-child:nth-child(odd)]:col-span-2"
           >
-            {config.useCases.map((uc, i) => (
+            {useCases.map((uc, i) => (
               <m.div
                 key={uc.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 2)}
+                {...fadeUpOnScroll(i + 2)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "6px",
+                  borderRadius: "var(--radius-md)",
                   padding: "24px",
                 }}
               >
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "15px",
+                    fontSize: "var(--text-lg)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 6px",
                   }}
@@ -609,8 +436,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.65,
                     margin: 0,
@@ -628,50 +454,29 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePlan} scrim="light" />
         <div
-          style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gap: "48px" }}
+          style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "grid", gap: "48px" }}
           className="grid-cols-1 lg:grid-cols-2"
         >
           {/* Plans */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
           >
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "12px",
-              }}
-            >
-              AVAILABILITY
-            </span>
-            <h3
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 400,
-                fontSize: "24px",
-                color: "var(--color-text-primary)",
-                margin: "0 0 24px",
-              }}
-            >
-              Included in these plans.
-            </h3>
+            <SectionIntro
+              reveal="none"
+              eyebrow="AVAILABILITY"
+              eyebrowStyle={{ marginBottom: "12px" }}
+              titleAs="h3"
+              title="Included in these plans."
+              titleStyle={{ fontWeight: 400, fontSize: "var(--text-heading-md)", margin: "0 0 24px" }}
+            />
             <div
               style={{
                 backgroundColor: "var(--color-bg-light)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius-md)",
               }}
             >
-              {config.planAvailability.map((p, i) => (
+              {planAvailability.map((p, i) => (
                 <div
                   key={p.plan}
                   style={{
@@ -685,8 +490,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 >
                   <span
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       fontWeight: 500,
                       color: "var(--color-text-primary)",
                       flexShrink: 0,
@@ -697,8 +501,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   {p.included ? (
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         fontWeight: 500,
                         color: "var(--color-success)",
                         display: "inline-flex",
@@ -710,7 +513,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                         style={{
                           width: "5px",
                           height: "5px",
-                          borderRadius: "50%",
+                          borderRadius: "var(--radius-circle)",
                           backgroundColor: "var(--color-success)",
                         }}
                       />
@@ -719,8 +522,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                   ) : (
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         color: "var(--color-text-subtle)",
                       }}
                     >
@@ -731,10 +533,9 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               ))}
             </div>
             <Link
-              href="/pricing"
+              href={SITE_ROUTES.pricing}
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 textDecoration: "none",
@@ -750,79 +551,56 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
 
           {/* Related modules */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
           >
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "12px",
-              }}
-            >
-              PAIRS WELL WITH
-            </span>
-            <h3
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 400,
-                fontSize: "24px",
-                color: "var(--color-text-primary)",
-                margin: "0 0 24px",
-              }}
-            >
-              Other modules that complete the picture.
-            </h3>
+            <SectionIntro
+              reveal="none"
+              eyebrow="PAIRS WELL WITH"
+              eyebrowStyle={{ marginBottom: "12px" }}
+              titleAs="h3"
+              title="Other modules that complete the picture."
+              titleStyle={{ fontWeight: 400, fontSize: "var(--text-heading-md)", margin: "0 0 24px" }}
+            />
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {config.relatedModules.map((rm) => (
+              {relatedModules.map((related) => (
                 <Link
-                  key={rm.slug}
-                  href={`/product/${rm.slug}`}
+                  key={related.moduleKey}
+                  href={moduleHref(related.moduleKey)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "6px",
+                    borderRadius: "var(--radius-md)",
                     padding: "16px 18px",
                     textDecoration: "none",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
                     gap: "12px",
-                    transition: "border-color 150ms ease, background-color 150ms ease",
+                    transition: cssTransition(["border-color", "background-color"]),
                   }}
                 >
                   <div>
                     <p
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "14px",
+                        fontSize: "var(--text-md)",
                         fontWeight: 500,
                         color: "var(--color-text-primary)",
                         margin: "0 0 2px",
                       }}
                     >
-                      {rm.name}
+                      {moduleName(related.moduleKey)}
                     </p>
                     <p
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         color: "var(--color-text-muted)",
                         margin: 0,
                       }}
                     >
-                      {rm.desc}
+                      {related.desc}
                     </p>
                   </div>
-                  <ArrowRight size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                  <ArrowRight size={16} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                 </Link>
               ))}
             </div>

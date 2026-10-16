@@ -1,4 +1,5 @@
 {
-  "installCommand": "git config --file /tmp/gc url.\"https://x-access-token:${GITHUB_TOKEN}@github.com/\".insteadOf \"git@github.com:\" && GIT_CONFIG_GLOBAL=/tmp/gc pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm build"
+  "installCommand": "sh scripts/vercel-install.sh",
+  "buildCommand": "pnpm build",
+  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != main ] && [ \"$VERCEL_GIT_COMMIT_REF\" != staging ]"
 }

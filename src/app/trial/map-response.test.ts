@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { mapTrialResponse } from "./map-response";
+import { FORM_MESSAGES } from "@/lib/form-rules";
 
 /**
  * Pins the platform contract for POST /api/v1/public/trial/request.
@@ -78,6 +79,7 @@ describe("mapTrialResponse", () => {
     );
     expect(state.status).toBe("queued_for_review");
     expect(state).toHaveProperty("message", "We'll be in touch.");
+    expect(state).toHaveProperty("email", EMAIL);
   });
 
   it("maps 422 field errors, keeping only fields the form renders", () => {
@@ -89,8 +91,10 @@ describe("mapTrialResponse", () => {
           fieldErrors: {
             email: ["Enter a valid work email."],
             organisation: ["Required."],
+            // The industry is on the form, so its error is shown under it.
+            sector: ["Choose an industry, or pick Other and describe it."],
             // Not rendered by the form — must be dropped, not shown blank.
-            sector: ["Unknown sector."],
+            referrer: ["Unknown referrer."],
           },
         },
       },
@@ -100,6 +104,7 @@ describe("mapTrialResponse", () => {
     expect(state).toHaveProperty("fieldErrors", {
       email: "Enter a valid work email.",
       organisation: "Required.",
+      sector: "Choose an industry, or pick Other and describe it.",
     });
   });
 
@@ -108,7 +113,7 @@ describe("mapTrialResponse", () => {
     // still get feedback rather than a suppressed banner showing nothing.
     const state = mapTrialResponse(
       422,
-      { errors: { fieldErrors: { sector: ["Unknown sector."] } } },
+      { errors: { fieldErrors: { referrer: ["Unknown referrer."] } } },
       EMAIL,
     );
     expect(state.status).toBe("error");
@@ -119,7 +124,7 @@ describe("mapTrialResponse", () => {
   it("maps 429 to a wait-and-retry message", () => {
     const state = mapTrialResponse(429, {}, EMAIL);
     expect(state.status).toBe("error");
-    expect((state as { message: string }).message).toMatch(/short window/i);
+    expect((state as { message: string }).message).toBe(FORM_MESSAGES.rateLimited);
   });
 
   it("maps unhandled statuses to a generic error", () => {

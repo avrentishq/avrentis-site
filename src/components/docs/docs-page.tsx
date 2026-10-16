@@ -13,7 +13,8 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, moduleName, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -28,16 +29,19 @@ import {
   ArrowRight,
   Clock,
 } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
+import { TRIAL_SETUP_TIME } from "@/lib/trial-terms";
+import { SITE_ROUTES } from "@/lib/routes";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { Z_INDEX } from "@/lib/layers";
 
-const sans = "var(--font-sans)";
-const mono = "'IBM Plex Mono', monospace";
 
 type ItemStatus = "live" | "wip";
 
@@ -60,21 +64,21 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: Compass,
     eyebrow: "GETTING STARTED",
-    title: "Set up your workspace in under ten minutes.",
+    title: `Set up your workspace ${TRIAL_SETUP_TIME}.`,
     lede:
       "A quick orientation for the first admin: create the tenant, provision users, configure your first approval chain, and sanction your first document.",
     items: [
       {
         title: "The complete approval lifecycle",
         body: "Submit → Review → Sanction → Record, with mockups of every stage.",
-        href: "/product/how-it-works",
+        href: SITE_ROUTES.howItWorks,
         status: "live",
       },
       {
         title: "Platform overview",
         body:
           "The four suites, the modules inside them, and the approval engine they share.",
-        href: "/product",
+        href: SITE_ROUTES.product,
         status: "live",
       },
       {
@@ -107,7 +111,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Document state machines",
         body: "Every transition a voucher or PO can take, and the roles that can cause them.",
-        href: "/product/how-it-works",
+        href: SITE_ROUTES.howItWorks,
         status: "live",
       },
       {
@@ -124,15 +128,12 @@ const CATEGORIES: DocsCategory[] = [
     title: "How each module operates.",
     lede:
       "Deep-dive pages for every module — capabilities, use cases, plan availability, pairs-well-with.",
-    items: [
-      { title: moduleName("pay"), body: "Structured payment approvals.", href: "/product/pay", status: "live" },
-      { title: moduleName("procure"), body: "Procurement on record.", href: "/product/procure", status: "live" },
-      { title: moduleName("guard"), body: "Fraud & anomaly detection.", href: "/product/guard", status: "live" },
-      { title: moduleName("grants"), body: "Grant & fund accounting.", href: "/product/grants", status: "live" },
-      { title: moduleName("audit"), body: "Compliance & accountability.", href: "/product/audit", status: "live" },
-      { title: moduleName("vault"), body: "Financial records in one place.", href: "/product/vault", status: "live" },
-      { title: moduleName("connect"), body: "External systems.", href: "/product/connect", status: "live" },
-    ],
+    items: publicModuleKeys().map((moduleKey) => ({
+      title: moduleName(moduleKey),
+      body: `${MODULE_COPY[moduleKey].tagline}.`,
+      href: moduleHref(moduleKey),
+      status: MODULES[moduleKey].status === "available" ? ("live" as const) : ("wip" as const),
+    })),
   },
   {
     icon: ShieldCheck,
@@ -150,20 +151,20 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: ClipboardCheck,
     eyebrow: "ADMINISTRATION",
-    title: "Running Avrentis inside your organisation.",
+    title: `Running ${BRAND.name} inside your organisation.`,
     lede:
       "User provisioning, SSO configuration, IP allowlisting and MFA. Written for admins and internal IT.",
     items: [
       {
         title: "SSO configuration (OIDC and SAML)",
         body: "Okta, Entra, Google Workspace setup walk-throughs.",
-        href: "/product/integrations#identity",
+        href: `${SITE_ROUTES.integrations}#identity`,
         status: "wip",
       },
       {
         title: "SCIM 2.0 provisioning",
         body: "Automated user lifecycle from your IdP.",
-        href: "/product/integrations#provisioning",
+        href: `${SITE_ROUTES.integrations}#provisioning`,
         status: "wip",
       },
       {
@@ -183,14 +184,14 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: Plug,
     eyebrow: "INTEGRATIONS",
-    title: "Connecting Avrentis to your stack.",
+    title: `Connecting ${BRAND.name} to your stack.`,
     lede:
       "The catalogue page has the full list. These guides cover the configuration details for each one.",
     items: [
       {
         title: "Integrations catalogue",
         body: "Every integration with honest availability labels.",
-        href: "/product/integrations",
+        href: SITE_ROUTES.integrations,
         status: "live",
       },
       { title: "Email notifications", body: "Configuring sender domains and templates.", href: contactHref("demo"), status: "wip" },
@@ -201,14 +202,14 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: Webhook,
     eyebrow: "API & WEBHOOKS",
-    title: "Build on top of Avrentis.",
+    title: `Build on top of ${BRAND.name}.`,
     lede:
       "Authenticated REST API and per-tenant webhook subscriptions. Public API reference is being prepared — launch partners get early access.",
     items: [
       {
         title: "Webhook payload reference",
         body: "Event types, signing, retries.",
-        href: "/product/integrations#developer",
+        href: `${SITE_ROUTES.integrations}#developer`,
         status: "live",
       },
       { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: contactHref("demo"), status: "wip" },
@@ -220,9 +221,9 @@ const CATEGORIES: DocsCategory[] = [
     eyebrow: "GOVERNANCE",
     title: "Board views, auditor access, maker-checker.",
     lede:
-      "How Avrentis surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.",
+      `How ${BRAND.name} surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.`,
     items: [
-      { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: "/product/audit", status: "live" },
+      { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: moduleHref("audit"), status: "live" },
       { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: LEGAL_PAGES.security, status: "live" },
       {
         title: "Board provisioning (maker-checker)",
@@ -239,14 +240,14 @@ function StatusPill({ status }: { status: ItemStatus }) {
   return (
     <span
       style={{
-        fontFamily: mono,
-        fontSize: "9px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "var(--text-4xs)",
         letterSpacing: "0.08em",
         textTransform: "uppercase",
         color: "var(--color-gold-on-light)",
-        backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
-        border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
-        borderRadius: "3px",
+        backgroundColor: "var(--color-gold-tint)",
+        border: "1px solid var(--color-gold-divider)",
+        borderRadius: "var(--radius-xs)",
         padding: "2px 6px",
         display: "inline-flex",
         alignItems: "center",
@@ -264,11 +265,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
   const Icon = category.icon;
   return (
     <m.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={fadeUpTransition}
+      {...fadeUpOnScroll()}
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
       id={category.eyebrow.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
     >
@@ -280,34 +277,33 @@ function Category({ category, index }: { category: DocsCategory; index: number }
               style={{
                 width: "40px",
                 height: "40px",
-                borderRadius: "8px",
-                backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                borderRadius: "var(--radius-card)",
+                backgroundColor: "var(--color-gold-tint)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+              <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
             </div>
-            <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold-on-light)", letterSpacing: "0.08em" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--color-gold-on-light)", letterSpacing: "0.08em" }}>
               {String(index + 1).padStart(2, "0")} · {category.eyebrow}
             </span>
           </div>
           <h2
             style={{
-              fontFamily: sans,
               fontWeight: 400,
-              fontSize: "24px",
+              fontSize: "var(--text-heading-md)",
               color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 10px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[28px]"
+            className="lg:!text-heading-lg"
           >
             {category.title}
           </h2>
-          <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "400px" }}>
+          <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "var(--measure-compact)" }}>
             {category.lede}
           </p>
         </div>
@@ -316,7 +312,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-lg)",
             overflow: "hidden",
           }}
         >
@@ -326,16 +322,16 @@ function Category({ category, index }: { category: DocsCategory; index: number }
               <>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "4px" }}>
-                    <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                    <span style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
                       {item.title}
                     </span>
                     <StatusPill status={item.status} />
                   </div>
-                  <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
+                  <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
                     {item.body}
                   </p>
                 </div>
-                <ArrowRight size={14} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" style={{ flexShrink: 0 }} />
+                <ArrowRight size={14} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" style={{ flexShrink: 0 }} />
               </>
             );
             const style: React.CSSProperties = {
@@ -388,122 +384,60 @@ export function DocsHubPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.docsHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
-        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="DOCUMENTATION"
+            eyebrowStyle={{
               display: "inline-block",
               marginBottom: "20px",
             }}
-          >
-            DOCUMENTATION
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+            title={`Everything you need to run ${BRAND.name} — in one place.`}
+            titleStyle={{
               fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[52px]"
-          >
-            Everything you need to run Avrentis — in one place.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "17px",
+            titleClassName="lg:!text-display-3xl"
+            lede={
+              <>
+                A hub for admins, developers, and internal IT. Pointers to the
+                deep-dive pages we already publish, and honest signals for the
+                guides we&rsquo;re still writing — with a direct line to a human
+                where a guide would have lived.
+              </>
+            }
+            ledeStyle={{
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
-          >
-            A hub for admins, developers, and internal IT. Pointers to the
-            deep-dive pages we already publish, and honest signals for the
-            guides we&rsquo;re still writing — with a direct line to a human
-            where a guide would have lived.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <a
               href="#getting-started"
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              {...buttonProps({ size: "md" })}
             >
               Start here
             </a>
-            <Link
+            <ButtonLink
               href={contactHref("feedback")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                textDecoration: "none",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
             >
               <Mail size={14} strokeWidth={1.8} aria-hidden="true" />
               Request a guide
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -513,7 +447,7 @@ export function DocsHubPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.docsCategoryNav} scrim="light" />
         <div
           style={{
-            maxWidth: "1200px",
+            maxWidth: "var(--layout-max-width)",
             margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
@@ -524,8 +458,8 @@ export function DocsHubPage() {
         >
           <span
             style={{
-              fontFamily: mono,
-              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-3xs)",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               color: "var(--color-text-muted)",
@@ -538,12 +472,11 @@ export function DocsHubPage() {
               key={c.eyebrow}
               href={`#${c.eyebrow.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
               style={{
-                fontFamily: sans,
-                fontSize: "12px",
+                fontSize: "var(--text-xs)",
                 color: "var(--color-text-primary)",
                 textDecoration: "none",
                 padding: "6px 12px",
-                borderRadius: "999px",
+                borderRadius: "var(--radius-pill)",
                 border: "1px solid var(--color-border)",
                 backgroundColor: "var(--color-bg-light)",
               }}
@@ -557,7 +490,7 @@ export function DocsHubPage() {
       {/* ── CATEGORIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg-light)", padding: "90px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsCategories} scrim="light" />
-        <div style={{ maxWidth: "1180px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "80px" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "80px" }}>
           {CATEGORIES.map((c, i) => (
             <Category key={c.eyebrow} category={c} index={i} />
           ))}
@@ -567,17 +500,13 @@ export function DocsHubPage() {
       {/* ── FEEDBACK FOOTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "80px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsFeedbackFooter} scrim="light" />
-        <div style={{ maxWidth: "820px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto" }}>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               backgroundColor: "var(--color-bg-light)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               padding: "28px 32px",
               display: "flex",
               gap: "16px",
@@ -589,38 +518,25 @@ export function DocsHubPage() {
             <div style={{ flex: 1, minWidth: "280px" }}>
               <h3
                 style={{
-                  fontFamily: sans,
                   fontWeight: 600,
-                  fontSize: "16px",
+                  fontSize: "var(--text-xl)",
                   color: "var(--color-text-primary)",
                   margin: "0 0 6px",
                 }}
               >
                 Couldn&rsquo;t find what you were looking for?
               </h3>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                 Tell us what guide would have helped. We write what customers
                 actually ask for, not what marketing thinks we should publish.
               </p>
             </div>
-            <Link
+            <ButtonLink
               href={contactHref("feedback")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "13px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 18px",
-                height: "40px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="sm"
             >
               Request a guide
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

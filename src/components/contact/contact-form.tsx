@@ -6,18 +6,20 @@
  * swaps into a success state without a full page navigation.
  *
  * The form is intent-aware — `?intent=<kind>` query parameters set the
- * intent field and adjust the headline micro-copy. Trial requests live
- * on the dedicated /trial page; this form handles sales, security,
- * legal, privacy, disclosure, careers, feedback, subscribe, and roadmap.
+ * topic, and the topic decides everything the visitor sees: the words, which
+ * fields appear (and which are required), the consent wording and the
+ * confirmation — all from `CONTACT_TOPICS` (topics.ts), the same table the
+ * Server Action validates against. Trial requests live on the /trial page.
  */
 
-import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useActionState, useCallback, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import Script from "next/script";
 import { m } from "framer-motion";
 import { Check, ArrowLeft } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll, fadeUpOnLoad, cssTransition } from "@/lib/animations";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
+import { buttonProps } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
 import {
   describedBy,
@@ -26,119 +28,79 @@ import {
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { useHydrated } from "@/components/ui/form/hydrated";
-import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { TurnstileWidget } from "@/components/ui/form/turnstile-widget";
+import { HoneypotField } from "@/components/ui/form/honeypot-field";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
-import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
-import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
-import { CONTACT_EMAIL } from "@/lib/contacts";
+import { INITIAL_STATE, type ContactField, type ContactFormState } from "@/app/contact/state";
+import { CONTACT_TABS, contactHref, tabForIntent, topicChoices } from "@/app/contact/tabs";
+import {
+  CONTACT_TOPICS,
+  inputRule,
+  topicEmail,
+  topicInputs,
+  type ContactInput,
+} from "@/app/contact/topics";
 import { LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
+import { FORM_LIMITS, hasEmailShape, isWebLink, MESSAGE_MIN_LENGTH } from "@/lib/form-rules";
+import { SITE_ROUTES } from "@/lib/routes";
 
-interface IntentCopy {
-  eyebrow: string;
-  headline: string;
-  lede: string;
-  cta: string;
-}
-
-const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
-  demo: {
-    eyebrow: "CONTACT US",
-    headline: "Talk to our team.",
-    lede:
-      "Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. A real person replies within one business day.",
-    cta: "Contact us",
-  },
-  security: {
-    eyebrow: "SECURITY REVIEW",
-    headline: "Talk to us about the security posture.",
-    lede:
-      "We'll walk your CISO or security team through the stack — isolation, authority, audit, access lifecycle, encryption — and answer anything the page hasn't.",
-    cta: "Book a security review",
-  },
-  disclosure: {
-    eyebrow: "RESPONSIBLE DISCLOSURE",
-    headline: "Report a security vulnerability.",
-    lede:
-      "Thank you for looking. Describe what you found, how to reproduce it, and what impact you think it has. We triage security reports within two business days and do not pursue legal action against good-faith research.",
-    cta: "Submit report",
-  },
-  privacy: {
-    eyebrow: "DATA-PROTECTION ENQUIRY",
-    headline: "Privacy, data-subject rights, or a DPA.",
-    lede:
-      "Whether you're exercising a right under GDPR / NDPR / CCPA, requesting our DPA, or asking a privacy-policy question — describe what you need and we'll route it to the right person.",
-    cta: "Send privacy enquiry",
-  },
-  legal: {
-    eyebrow: "LEGAL ENQUIRY",
-    headline: "Notices, agreements, and legal questions.",
-    lede:
-      "Contract redlines, notices under our Terms of Service, vendor onboarding paperwork — send it here and our team will respond promptly.",
-    cta: "Send legal enquiry",
-  },
-  careers: {
-    eyebrow: "REGISTER YOUR INTEREST",
-    headline: "Tell us what you\u2019d like to own.",
-    lede:
-      "We hire deliberately. Share a short note about what draws you to Avrentis, a link to something you're proud of, and the kind of work you want to do. We read every message.",
-    cta: "Register my interest",
-  },
-  feedback: {
-    eyebrow: "DOCS FEEDBACK",
-    headline: "What guide would have helped?",
-    lede:
-      "Tell us what you were looking for, what you couldn't find, and what you'd expect it to cover. We write docs that customers actually ask for.",
-    cta: "Send feedback",
-  },
-  subscribe: {
-    eyebrow: "SUBSCRIBE TO UPDATES",
-    headline: "Get notable changes in your inbox.",
-    lede:
-      "We send a short email when something material ships — release notes, security updates, and service-impacting incidents. No promotional material.",
-    cta: "Subscribe me",
-  },
-  notify: {
-    eyebrow: "LAUNCH NOTIFICATION",
-    headline: "Be the first to know when this launches.",
-    lede:
-      "Drop your details and we'll reach out as soon as this module is generally available — plus a chance to join an early-access cohort.",
-    cta: "Notify me at launch",
-  },
-  beta: {
-    eyebrow: "BETA ACCESS",
-    headline: "Join the beta.",
-    lede:
-      "Early-access users get hands-on support, a shorter feedback loop with our product team, and pricing locked at launch terms.",
-    cta: "Request beta access",
-  },
-  roadmap: {
-    eyebrow: "SHARE YOUR USE CASE",
-    headline: "Shape what we build next.",
-    lede:
-      "Tell us the approval or record-keeping problem you're trying to solve. We'll share where it sits on our roadmap and, where it fits, loop you in early.",
-    cta: "Share my use case",
-  },
-  general: {
-    eyebrow: "CONTACT US",
-    headline: "Let's talk.",
-    lede:
-      "Whether you're evaluating Avrentis, have a question our product pages didn't answer, or want to partner — we read every message and reply within one business day.",
-    cta: "Contact us",
-  },
-};
+/** The country picker posts the alpha-2 code (as the trial does); the label is the name. */
+const COUNTRY_OPTIONS = COUNTRIES.map((country) => ({ value: country.code, label: country.name }));
 
 // Same bands as the trial (shared SSOT); prepend an opt-out for this optional field.
 const SIZE_OPTIONS = [{ value: "", label: "Prefer not to say" }, ...ORG_SIZE_OPTIONS];
 
+/**
+ * A topic headline always sits on one line: its size is the display size, or
+ * smaller when the headline would not fit the space available (the header's
+ * width, less the page's side padding). `HEADLINE_EM_PER_CHARACTER` is the
+ * heading font's average character width, measured in a real browser; topic
+ * headlines are capped at `HEADLINE_MAX_CHARACTERS` (topics.test.ts) so the
+ * smallest phone still gets a heading-sized line.
+ */
+const HEADLINE_EM_PER_CHARACTER = 0.52;
+function oneLineHeadlineSize(headline: string): string {
+  const widthInEm = (headline.length * HEADLINE_EM_PER_CHARACTER).toFixed(2);
+  return `min(var(--text-display-md), calc((min(100vw, var(--measure-wide)) - 2 * var(--page-side-padding)) / ${widthInEm}))`;
+}
+
+/** Name and email share a row on wider screens when they sit next to each other. */
+function inputRows(inputs: readonly ContactInput[]): ContactInput[][] {
+  const rows: ContactInput[][] = [];
+  for (let index = 0; index < inputs.length; index += 1) {
+    if (inputs[index] === "name" && inputs[index + 1] === "email") {
+      rows.push(["name", "email"]);
+      index += 1;
+    } else {
+      rows.push([inputs[index]!]);
+    }
+  }
+  return rows;
+}
+
+/** The free-text inputs, their input type and the browser's autofill hint. */
+type TextInput = "name" | "email" | "organisation" | "link";
+const TEXT_INPUT_TYPES: Record<TextInput, "text" | "email" | "url"> = {
+  name: "text",
+  email: "email",
+  organisation: "text",
+  link: "url",
+};
+const AUTOCOMPLETE: Record<TextInput, string> = {
+  name: "name",
+  email: "email",
+  organisation: "organization",
+  link: "url",
+};
+
 /* ── Styling primitives ──────────────────────────────────────────── */
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   fontWeight: 500,
   color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
@@ -147,16 +109,15 @@ const labelStyle: React.CSSProperties = {
 };
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "14px",
+  fontSize: "var(--text-md)",
   color: "var(--color-text-primary)",
   width: "100%",
   height: "42px",
   border: "1px solid var(--color-border)",
-  borderRadius: "6px",
+  borderRadius: "var(--radius-md)",
   padding: "0 14px",
   backgroundColor: "var(--color-white)",
-  transition: "border-color 150ms ease, box-shadow 150ms ease",
+  transition: cssTransition(["border-color", "box-shadow"]),
 };
 
 const textareaStyle: React.CSSProperties = {
@@ -169,8 +130,7 @@ const textareaStyle: React.CSSProperties = {
 };
 
 const errorStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   color: "var(--color-danger)",
   marginTop: "6px",
   display: "block",
@@ -190,23 +150,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={disabled}
-      style={{
-        fontFamily: "var(--font-sans)",
-        fontWeight: 600,
-        fontSize: "14px",
-        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "var(--color-text-primary)",
-        border: "none",
-        borderRadius: "9999px",
-        padding: "0 24px",
-        height: "44px",
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.6 : 1,
-        transition: "background-color 150ms ease",
-      }}
+      {...buttonProps({ size: "md", shape: "pill", disabled })}
     >
       {pending ? "Sending…" : label}
     </button>
@@ -219,7 +163,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   // Intent starts from the ?intent= deep link, then becomes on-page switchable
   // via the topic tabs. It only drives copy + the hidden `intent` field.
   const [intent, setIntent] = useState<ContactIntent>(initialIntent);
-  const copy = INTENT_COPY[intent];
+  const copy = CONTACT_TOPICS[intent];
   const [state, action, isPending] = useActionState<ContactFormState, FormData>(
     submitContact,
     INITIAL_STATE,
@@ -234,69 +178,180 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   const formRef = useRef<HTMLFormElement>(null);
   useFocusAfterFailure(formRef, state, state.status === "error", "contact-form-error");
 
+  const [consentValue, setConsentValue] = useState(posted.consent === "on");
   const switchIntent = useCallback((next: string) => {
     const value = next as ContactIntent;
     setIntent(value);
+    // Each topic's consent says something different, so agreement never carries over.
+    setConsentValue(false);
     // Keep the URL shareable/deep-linkable without a full navigation.
     window.history.replaceState(null, "", contactHref(value));
   }, []);
 
-  // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
-  // Rendered only when NEXT_PUBLIC_TURNSTILE_SITE_KEY is set. Bot defence —
-  // verified when Turnstile is configured.
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const turnstileRendered = useRef(false);
-
-  const renderTurnstile = useCallback(() => {
-    if (!turnstileSiteKey || turnstileRendered.current || !turnstileRef.current) return;
-    const turnstile = (
-      window as unknown as {
-        turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => void };
-      }
-    ).turnstile;
-    if (!turnstile) return;
-    turnstile.render(turnstileRef.current, { sitekey: turnstileSiteKey, theme: "light" });
-    turnstileRendered.current = true;
-  }, [turnstileSiteKey]);
-
-  // Re-render on mount (handles client-side nav where the script is already loaded
-  // and onReady won't fire again).
-  useEffect(() => {
-    renderTurnstile();
-  }, [renderTurnstile]);
-
   // ── Controlled field state for validity computation ─────────────────
-  const [nameValue, setNameValue] = useState(posted.name ?? "");
-  const [emailValue, setEmailValue] = useState(posted.email ?? "");
-  const [organisationValue, setOrganisationValue] = useState(posted.organisation ?? "");
-  const [messageValue, setMessageValue] = useState(posted.message ?? "");
-  const [sizeValue, setSizeValue] = useState(posted.size ?? "");
-  const [countryValue, setCountryValue] = useState(posted.country ?? "");
-  const [consentValue, setConsentValue] = useState(posted.consent === "on");
+  // One value per input; a value survives a topic switch, but only the
+  // topic's own inputs render, post, or count towards validity.
+  const [values, setValues] = useState<Partial<Record<ContactInput, string>>>(posted);
+  const inputs = topicInputs(intent);
+  const setValue = useCallback(
+    (input: ContactInput, value: string) => {
+      setValues((current) => ({ ...current, [input]: value }));
+      clearFieldError(input);
+    },
+    [clearFieldError],
+  );
 
-  // ── Validity derivation ─────────────────────────────────────────────
+  // ── Validity derivation (mirrors the action's checks) ───────────────
   const isValid = useMemo(
     () =>
-      nameValue.trim().length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue) &&
-      organisationValue.trim().length > 0 &&
-      messageValue.trim().length >= 10 &&
-      consentValue === true,
-    [nameValue, emailValue, organisationValue, messageValue, consentValue],
+      consentValue &&
+      inputs.every((input) => {
+        const value = (values[input] ?? "").trim();
+        if (!value) return !inputRule(intent, input)!.required;
+        if (input === "email") return hasEmailShape(value);
+        if (input === "link") return isWebLink(value);
+        if (input === "message") return value.length >= MESSAGE_MIN_LENGTH;
+        return true;
+      }),
+    [consentValue, inputs, values, intent],
   );
+
+  const errorId = (input: string) => `contact-${input}-error`;
+  const fieldError = (input: ContactField) =>
+    fieldErrors[input] ? (
+      <span id={errorId(input)} style={errorStyle}>
+        {fieldErrors[input]}
+      </span>
+    ) : null;
+  const fieldLabel = (input: ContactInput, htmlFor?: string) => {
+    const rule = inputRule(intent, input)!;
+    return (
+      <label htmlFor={htmlFor} style={labelStyle}>
+        {rule.label}
+        {rule.required ? (
+          <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
+        ) : (
+          <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}> (optional)</span>
+        )}
+      </label>
+    );
+  };
+  const textInputStyle = (input: ContactInput) => ({
+    ...inputStyle,
+    borderColor: fieldErrors[input] ? "var(--color-danger)" : "var(--color-border)",
+  });
+
+  const renderInput = (input: ContactInput) => {
+    const rule = inputRule(intent, input)!;
+    const invalid = !!fieldErrors[input];
+    const described = describedBy(invalid && errorId(input));
+    switch (input) {
+      case "size":
+        return (
+          <div key={input}>
+            {fieldLabel(input)}
+            <ChoiceGroup
+              name="size"
+              variant="chips"
+              value={values.size ?? ""}
+              onChange={(value) => setValue("size", value)}
+              options={SIZE_OPTIONS}
+              ariaLabel={rule.label}
+              invalid={invalid}
+              describedBy={described}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      case "relationship":
+      case "requestType":
+        return (
+          <div key={input}>
+            {fieldLabel(input)}
+            <ChoiceGroup
+              name={input}
+              variant="chips"
+              value={values[input] ?? ""}
+              onChange={(value) => setValue(input, value)}
+              options={rule.options ?? []}
+              ariaLabel={rule.label}
+              invalid={invalid}
+              describedBy={described}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      case "country":
+      case "module":
+        return (
+          <div key={input}>
+            {fieldLabel(input)}
+            <SearchableSelect
+              name={input}
+              value={values[input] ?? ""}
+              onChange={(value) => setValue(input, value)}
+              options={input === "country" ? COUNTRY_OPTIONS : (rule.options ?? [])}
+              ariaLabel={rule.label}
+              placeholder={rule.placeholder ?? (input === "module" ? "Choose a module…" : undefined)}
+              searchLabel={input === "country" ? "countries" : "modules"}
+              invalid={invalid}
+              describedBy={described}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      case "message":
+        return (
+          <div key={input}>
+            {fieldLabel(input, "message")}
+            <textarea
+              id="message"
+              name="message"
+              required={rule.required}
+              minLength={MESSAGE_MIN_LENGTH}
+              maxLength={FORM_LIMITS.message}
+              value={values.message ?? ""}
+              onChange={(e) => setValue("message", e.target.value)}
+              aria-invalid={invalid || undefined}
+              aria-describedby={described}
+              style={{ ...textareaStyle, borderColor: textInputStyle(input).borderColor }}
+              placeholder={rule.placeholder}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      default:
+        return (
+          <div key={input}>
+            {fieldLabel(input, input)}
+            <input
+              id={input}
+              name={input}
+              type={TEXT_INPUT_TYPES[input]}
+              required={rule.required}
+              maxLength={FORM_LIMITS[input]}
+              autoComplete={AUTOCOMPLETE[input]}
+              placeholder={rule.placeholder}
+              value={values[input] ?? ""}
+              onChange={(e) => setValue(input, e.target.value)}
+              aria-invalid={invalid || undefined}
+              aria-describedby={described}
+              style={textInputStyle(input)}
+            />
+            {fieldError(input)}
+          </div>
+        );
+    }
+  };
 
   if (state.status === "success") {
     return (
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
+        {...fadeUpOnLoad()}
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "10px",
+          borderRadius: "var(--radius-lg)",
           padding: "48px 40px",
           textAlign: "center",
           display: "flex",
@@ -309,8 +364,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           style={{
             width: "56px",
             height: "56px",
-            borderRadius: "50%",
-            backgroundColor: "rgba(var(--color-success-rgb), 0.12)",
+            borderRadius: "var(--radius-circle)",
+            backgroundColor: "var(--color-success-tint)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -320,32 +375,29 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         </div>
         <h2
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 500,
-            fontSize: "22px",
+            fontSize: "var(--text-heading-sm)",
             color: "var(--color-text-primary)",
             margin: 0,
           }}
         >
-          Enquiry received.
+          {copy.successTitle}
         </h2>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.65,
             margin: 0,
-            maxWidth: "420px",
+            maxWidth: "var(--measure-compact)",
           }}
         >
-          {state.message ?? "Thanks — we'll reply within one business day."}
+          {state.message ?? copy.successMessage}
         </p>
         <Link
-          href="/"
+          href={SITE_ROUTES.home}
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             fontWeight: 500,
             color: "var(--color-gold-on-light)",
             textDecoration: "none",
@@ -370,11 +422,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           intent. Sits outside <form>, so its hidden input never posts —
           the specific intent posts via the hidden field inside the form. */}
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
-        style={{ maxWidth: "640px", margin: "0 auto 24px" }}
+        {...fadeUpOnLoad()}
+        style={{ maxWidth: "var(--measure)", margin: "0 auto 24px" }}
       >
         <ChoiceGroup
           name="contact_topic"
@@ -384,52 +433,47 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           ariaLabel="What are you contacting us about?"
           hrefFor={(value) => contactHref(value as ContactIntent)}
         />
+        {topicChoices(intent).length > 0 && (
+          <div style={{ marginTop: "14px", display: "flex", justifyContent: "center" }}>
+            <ChoiceGroup
+              name="contact_subtopic"
+              variant="underline"
+              value={intent}
+              onChange={switchIntent}
+              options={topicChoices(intent)}
+              ariaLabel="Which of these?"
+              hrefFor={(value) => contactHref(value as ContactIntent)}
+            />
+          </div>
+        )}
       </m.div>
 
       {/* Centered intro header — matches the trial layout */}
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
-        style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
+        {...fadeUpOnLoad()}
+        style={{ textAlign: "center", maxWidth: "var(--measure-wide)", margin: "0 auto 44px" }}
       >
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            marginBottom: "14px",
-          }}
-        >
-          {copy.eyebrow}
-        </span>
+        <Eyebrow style={{ display: "block", marginBottom: "14px" }}>{copy.eyebrow}</Eyebrow>
         <h1
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "32px",
+            fontSize: oneLineHeadlineSize(copy.headline),
+            whiteSpace: "nowrap",
             color: "var(--color-text-primary)",
             lineHeight: 1.2,
             margin: "0 0 12px",
             letterSpacing: "0.01em",
           }}
-          className="lg:!text-[40px]"
         >
           {copy.headline}
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto",
-            maxWidth: "520px",
+            maxWidth: "var(--measure-short)",
           }}
         >
           {copy.lede}
@@ -449,29 +493,20 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             vertically centred against the taller form. */}
         <div className="order-2 lg:order-none lg:col-start-1 lg:row-start-1 lg:self-center">
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
             style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "14px",
+              fontSize: "var(--text-md)",
               color: "var(--color-text-secondary)",
               lineHeight: 1.7,
-              borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
+              borderLeft: "2px solid var(--color-gold-border)",
               paddingLeft: "16px",
             }}
           >
-            <div style={{ marginBottom: "10px", color: "var(--color-text-primary)", fontWeight: 600, fontSize: "14px" }}>
+            <div style={{ marginBottom: "10px", color: "var(--color-text-primary)", fontWeight: 600, fontSize: "var(--text-md)" }}>
               What happens next
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
-              {[
-                "A real person reads every enquiry — no routing bots.",
-                "We reply within one business day.",
-                "For enterprise enquiries, we can sign an NDA before the first call.",
-              ].map((point) => (
+              {copy.nextSteps.map((point) => (
                 <li key={point} style={{ display: "flex", gap: "9px", alignItems: "baseline" }}>
                   <span
                     aria-hidden="true"
@@ -490,17 +525,12 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               cost of getting in touch. The address is the same one the action
               falls back to when Resend fails. */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ marginTop: "32px" }}
           >
             <div
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 color: "var(--color-text-primary)",
                 marginBottom: "8px",
@@ -509,29 +539,26 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               Prefer email?
             </div>
             <a
-              href={`mailto:${CONTACT_EMAIL.general}`}
+              href={`mailto:${topicEmail(intent)}`}
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "15px",
+                fontSize: "var(--text-lg)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 textDecoration: "none",
               }}
             >
-              {CONTACT_EMAIL.general}
+              {topicEmail(intent)}
             </a>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-text-muted)",
                 lineHeight: 1.7,
                 margin: "12px 0 0",
                 maxWidth: "300px",
               }}
             >
-              We only use your details to reply to this enquiry — never for
-              marketing lists.
+              {copy.emailNote}
             </p>
           </m.div>
         </div>
@@ -542,16 +569,12 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           action={action}
           onSubmit={submitWithoutReset(action)}
           className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
+          {...fadeUpOnScroll(2)}
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "14px",
-            padding: "32px",
+            borderRadius: "var(--radius-2xl)",
+            padding: "var(--form-card-padding)",
             display: "flex",
             flexDirection: "column",
             gap: "18px",
@@ -560,154 +583,24 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           noValidate
         >
           <input type="hidden" name="intent" value={intent} />
-          {/* Honeypot — hidden field that real users never fill in. Field
-              name is chosen to look plausible to naive form crawlers while
-              being unusual enough that browsers won't autofill it. */}
-          <input
-            type="text"
-            name="fax_number"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-            style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
-          />
+          <HoneypotField />
 
-          <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
-            <div>
-              <label htmlFor="name" style={labelStyle}>
-                Full name
-                <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                autoComplete="name"
-                value={nameValue}
-                onChange={(e) => {
-                  setNameValue(e.target.value);
-                  clearFieldError("name");
-                }}
-                aria-invalid={!!fieldErrors.name || undefined}
-                aria-describedby={describedBy(!!fieldErrors.name && "contact-name-error")}
-                style={{
-                  ...inputStyle,
-                  borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
-                }}
-              />
-              {fieldErrors.name && <span id="contact-name-error" style={errorStyle}>{fieldErrors.name}</span>}
-            </div>
-            <div>
-              <label htmlFor="email" style={labelStyle}>
-                Work email
-                <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                autoComplete="email"
-                value={emailValue}
-                onChange={(e) => {
-                  setEmailValue(e.target.value);
-                  clearFieldError("email");
-                }}
-                aria-invalid={!!fieldErrors.email || undefined}
-                aria-describedby={describedBy(!!fieldErrors.email && "contact-email-error")}
-                style={{
-                  ...inputStyle,
-                  borderColor: fieldErrors.email ? "var(--color-danger)" : "var(--color-border)",
-                }}
-              />
-              {fieldErrors.email && <span id="contact-email-error" style={errorStyle}>{fieldErrors.email}</span>}
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="organisation" style={labelStyle}>
-              Organisation
-              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-            </label>
-            <input
-              id="organisation"
-              name="organisation"
-              type="text"
-              required
-              autoComplete="organization"
-              value={organisationValue}
-              onChange={(e) => {
-                setOrganisationValue(e.target.value);
-                clearFieldError("organisation");
-              }}
-              aria-invalid={!!fieldErrors.organisation || undefined}
-              aria-describedby={describedBy(!!fieldErrors.organisation && "contact-org-error")}
-              style={{
-                ...inputStyle,
-                borderColor: fieldErrors.organisation ? "var(--color-danger)" : "var(--color-border)",
-              }}
-            />
-            {fieldErrors.organisation && <span id="contact-org-error" style={errorStyle}>{fieldErrors.organisation}</span>}
-          </div>
-
-          <div>
-            <label style={labelStyle}>Organisation size</label>
-            <ChoiceGroup
-              name="size"
-              variant="chips"
-              value={sizeValue}
-              onChange={setSizeValue}
-              options={SIZE_OPTIONS}
-              ariaLabel="Organisation size"
-            />
-          </div>
-
-          <div>
-            <label style={labelStyle}>Country (optional)</label>
-            <SearchableSelect
-              name="country"
-              value={countryValue}
-              onChange={setCountryValue}
-              options={COUNTRIES.map((c) => ({ value: c.name, label: c.name }))}
-              ariaLabel="Country"
-              placeholder="Search your country…"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="message" style={labelStyle}>
-              Tell us about your use case
-              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              minLength={10}
-              value={messageValue}
-              onChange={(e) => {
-                setMessageValue(e.target.value);
-                clearFieldError("message");
-              }}
-              aria-invalid={!!fieldErrors.message || undefined}
-              aria-describedby={describedBy(!!fieldErrors.message && "contact-message-error")}
-              style={{
-                ...textareaStyle,
-                borderColor: fieldErrors.message ? "var(--color-danger)" : "var(--color-border)",
-              }}
-              placeholder="What approvals or records are you trying to structure? How many people, how often?"
-            />
-            {fieldErrors.message && <span id="contact-message-error" style={errorStyle}>{fieldErrors.message}</span>}
-          </div>
+          {inputRows(inputs).map((row) =>
+            row.length === 1 ? (
+              renderInput(row[0]!)
+            ) : (
+              <div key={row.join("-")} style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
+                {row.map(renderInput)}
+              </div>
+            ),
+          )}
 
           <div>
             <label
               htmlFor="consent"
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
-                color: "var(--color-text-faint)",
+                fontSize: "var(--text-sm)",
+                color: "var(--color-text-body)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "10px",
@@ -730,7 +623,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
               />
               <span>
-                I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
+                {copy.consent}, in line with the{" "}
                 <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
@@ -751,12 +644,11 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               id="contact-form-error"
               pending={isPending}
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-danger)",
-                backgroundColor: "rgba(var(--color-danger-rgb), 0.06)",
-                border: "1px solid rgba(var(--color-danger-rgb), 0.2)",
-                borderRadius: "6px",
+                backgroundColor: "var(--color-danger-wash)",
+                border: "1px solid var(--color-danger-border)",
+                borderRadius: "var(--radius-md)",
                 padding: "10px 12px",
               }}
             >
@@ -764,17 +656,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             </FormAlert>
           )}
 
-          {turnstileSiteKey && (
-            <>
-              <Script
-                src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-                strategy="afterInteractive"
-                onReady={renderTurnstile}
-              />
-              <div ref={turnstileRef} />
-              <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
-            </>
-          )}
+          <TurnstileWidget fallbackEmail={topicEmail(intent)} />
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
             <SubmitButton label={copy.cta} isValid={!hydrated || isValid} pending={isPending} />

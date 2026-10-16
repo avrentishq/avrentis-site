@@ -4,26 +4,25 @@ import { Footer } from "@/components/layout/footer";
 import { Pricing } from "@/components/sections/pricing";
 import { PlanComparison } from "@/components/sections/plan-comparison";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
+import { fetchPricingData } from "@/lib/pricing";
+import { formatPlanList, planNames } from "@/lib/plan-names";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
+import { MARKET_SCOPE } from "@/lib/market";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export async function generateMetadata(): Promise<Metadata> {
   // Tier names come from the pricing API (same cached fetch the page renders),
   // so the description cannot name a plan that is not sold.
   const names = planNames(await fetchPricingData());
-  const description = `Simple, transparent plans for Nigerian and African organisations — ${formatPlanList(names)}. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
-  return {
-    title: "Pricing — Avrentis",
+  const description = `Simple, transparent plans for ${MARKET_SCOPE} — ${formatPlanList(names)}. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
+  return pageMetadata({
+    path: SITE_ROUTES.pricing,
+    title: "Pricing",
     description,
-    alternates: { canonical: "/pricing" },
-    openGraph: {
-      title: `Avrentis pricing — ${names.join(", ")}`,
-      description,
-      url: canonical("/pricing"),
-      type: "website",
-    },
-  };
+    socialTitle: `${BRAND.name} pricing — ${names.join(", ")}`,
+  });
 }
 
 export default async function PricingPage() {

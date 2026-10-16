@@ -9,10 +9,12 @@
  * them, in that one response; never log or store them.
  */
 
+import { FORM_LIMITS } from "@/lib/form-rules";
+
 export type SubmittedValues<Field extends string> = Partial<Record<Field, string>>;
 
-/** Bounds what is echoed back; a real field is far shorter (the actions cap at 200–5,000). */
-const ECHO_MAX_LENGTH = 5000;
+/** Bounds what is echoed back: no posted field may be longer than the longest field limit. */
+const ECHO_MAX_LENGTH = Math.max(...Object.values(FORM_LIMITS));
 
 /** The named fields' posted text (file uploads and empty fields left out). */
 export function submittedValues<Field extends string>(

@@ -3,24 +3,20 @@
 import { Workflow, Package, FileCheck, Truck, Store, PackageCheck } from "lucide-react";
 import {
   ProductModuleLayout,
-  withPlanNotes,
   type ModuleConfig,
-  type ModulePlan,
+  type ModulePageData,
 } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
+import { moduleName } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
+import { PURCHASE_ORDER } from "@/components/product/demo-fixtures";
 
-const LEDGER_USE_CASE = "Code every line the way your ledger does";
-const GROUP_USE_CASE = "One supplier record for the whole group";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "procure",
-  eyebrow: MODULES.procure.name,
+const config: ModuleConfig = {
+  moduleKey: "procure",
   headline: "Procurement on record. Vendor to issue.",
   description:
     "Every purchase order submitted, reviewed by the department head, sanctioned by the MD, and issued to the vendor through a single system of record. Line items, vendors, and delivery terms — all structured, all traceable.",
-  status: "available",
-  previewUrl: "Avrentis / purchase-orders / PO-2026-0091",
+  previewPath: `purchase-orders / ${PURCHASE_ORDER.reference}`,
   preview: <ProcurePreview />,
 
   pillars: [
@@ -39,6 +35,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       icon: FileCheck,
       title: "Vendor directory with bank + compliance",
+      planFeature: "vendorCompliance",
       body:
         "Vendors are first-class records with RC numbers, account details, and verified bank accounts. Reuse across POs and track spend per vendor.",
     },
@@ -51,14 +48,16 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       icon: Store,
       title: "Suppliers can see where their order stands",
+      everyPlan: true,
       body:
-        "Give a supplier their own login: the purchase orders you have sent them, whether each was accepted or declined, the invoice they submitted, and how far the payment has got. It removes the emails asking whether a PO arrived and when the money is coming. Included on every plan.",
+        "Give a supplier their own login: the purchase orders you have sent them, whether each was accepted or declined, the invoice they submitted, and how far the payment has got. It removes the emails asking whether a PO arrived and when the money is coming.",
     },
     {
       icon: PackageCheck,
       title: "Goods receipts, matched three ways",
+      everyPlan: true,
       body:
-        "Record what actually arrived against what was ordered, then match the purchase order, the goods receipt and the invoice before anything is paid. A quantity or price that does not line up is caught before the money moves, not at month-end. Included on every plan.",
+        "Record what actually arrived against what was ordered, then match the purchase order, the goods receipt and the invoice before anything is paid. A quantity or price that does not line up is caught before the money moves, not at month-end.",
     },
   ],
 
@@ -81,41 +80,29 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "From PO to invoice to payment — one continuous chain of authority",
       body:
-        `A PO sanctioned here becomes the vendor's reference. When the invoice arrives, ${MODULES.pay.name} references the same PO number. Full traceability from request to bank instruction.`,
+        `A PO sanctioned here becomes the vendor's reference. When the invoice arrives, ${moduleName("pay")} references the same PO number. Full traceability from request to bank instruction.`,
     },
     {
-      title: LEDGER_USE_CASE,
+      title: "Code every line the way your ledger does",
+      planFeature: "budgetCodes",
       body:
         "Each order line carries your own accounting codes — the account, the cost centre, the project or fund — so spend splits across cost centres the way it was ordered, and a required code is checked before the order is submitted.",
     },
     {
-      title: GROUP_USE_CASE,
+      title: "One supplier record for the whole group",
+      planFeature: "multiCompanyGroup",
       body:
         "A group keeps a supplier's name, sector and address once, and each company links its own supplier to it. A change reaches every company, and a block switches the supplier off everywhere — while bank accounts, contacts and history stay with the company that pays.",
     },
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Turn sanctioned POs into paid invoices on the same rails" },
-    { slug: "audit", name: MODULES.audit.name, desc: "Every PO decision, every signature — on the audit trail" },
-    { slug: "vault", name: MODULES.vault.name, desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
+    { moduleKey: "pay", desc: "Turn sanctioned POs into paid invoices on the same rails" },
+    { moduleKey: "audit", desc: "Every PO decision, every signature — on the audit trail" },
+    { moduleKey: "vault", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
   ],
 };
 
-/** `ledgerPlans` / `groupPlans` — the plans carrying `budgetCodes` and
- *  `multiCompanyGroup`, read from the pricing API by the route; empty = unknown. */
-export function ProcureModulePage({
-  planAvailability,
-  ledgerPlans,
-  groupPlans,
-}: {
-  planAvailability: ModulePlan[];
-  ledgerPlans: string;
-  groupPlans: string;
-}) {
-  const useCases = withPlanNotes(config.useCases, {
-    [LEDGER_USE_CASE]: ledgerPlans,
-    [GROUP_USE_CASE]: groupPlans,
-  });
-  return <ProductModuleLayout config={{ ...config, useCases, planAvailability }} />;
+export function ProcureModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

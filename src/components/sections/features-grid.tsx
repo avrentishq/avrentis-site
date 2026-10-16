@@ -1,216 +1,85 @@
 "use client";
 
 import { m } from "framer-motion";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import {
-  CreditCard,
-  ShoppingCart,
-  Archive,
-  ClipboardCheck,
-  ShieldAlert,
-  Wallet,
-  Users,
-  Link2,
-} from "lucide-react";
-import { BRAND_COLORS, moduleName, isModulePublic, type ModuleKey } from "@/lib/brand";
-import type { LucideIcon } from "lucide-react";
+  BRAND,
+  MODULE_STATUS_LABELS,
+  MODULES,
+  moduleName,
+  publicModuleKeys,
+  type ModuleStatus,
+} from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
+import { cardGridProps } from "@/lib/card-grid";
+import { Z_INDEX } from "@/lib/layers";
 
-type BadgeStatus = "available" | "coming_soon" | "partial" | "roadmap";
-
-// Marketing content per module. The customer-facing NAME is sourced from the
-// brand SSOT (`moduleName`); availability is driven by `isModulePublic` so a
-// non-public module (HR) never renders here.
-const MODULE_CARDS: {
-  key: ModuleKey;
-  icon: LucideIcon;
-  subtitle: string;
-  body: string;
-  status: BadgeStatus;
-}[] = [
-  {
-    key: "pay",
-    icon: CreditCard,
-    subtitle: "Payment & Approval Management",
-    body: "Structure every payment decision your organisation makes. Each request is routed to the right approver by amount, department, and risk — enforced automatically, with every decision tracked and kept on record.",
-    status: "available",
-  },
-  {
-    key: "procure",
-    icon: ShoppingCart,
-    subtitle: "Purchase Order Management",
-    body: "Bring structure and visibility to every procurement action. Generate, approve, and track purchase orders without email chains, manual paperwork, or process gaps.",
-    status: "available",
-  },
-  {
-    key: "vault",
-    icon: Archive,
-    subtitle: "Institutional Memory",
-    body: "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history, findable by reference, payee, department, status or date, and kept for at least seven years.",
-    status: "available",
-  },
-  {
-    key: "audit",
-    icon: ClipboardCheck,
-    subtitle: "Compliance & Accountability",
-    body: "A complete, tamper-evident log of every action across your organisation, sealed daily. Meet compliance requirements and face every audit with confidence — not scrambling.",
-    status: "available",
-  },
-  {
-    key: "guard",
-    icon: ShieldAlert,
-    subtitle: "Fraud & Anomaly Detection",
-    body: "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
-    status: "available",
-  },
-  {
-    key: "grants",
-    icon: Wallet,
-    subtitle: "Grant & Fund Accounting",
-    body: "Tie every payment to its grant and budget line, track burn against each donor's restrictions, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
-    status: "available",
-  },
-  {
-    // Requests is hidden (Enterprise-only, not led with) → filtered out by isModulePublic.
-    key: "people",
-    icon: Users,
-    subtitle: "Employee Requests",
-    body: "Staff expense requests routed through the same approval engine and audit trail as your payments — employee-initiated approvals, structured and on record.",
-    status: "available",
-  },
-  {
-    key: "connect",
-    icon: Link2,
-    subtitle: "External Systems",
-    body: "Connect Avrentis to the systems your organisation already uses. Your structured operational data flowing where it needs to go — without manual intervention.",
-    status: "available",
-  },
-];
-
-const BADGE_STYLES: Record<
-  BadgeStatus,
-  { label: string; bg: string; color: string; border: string }
-> = {
+const BADGE_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
   available: {
-    label: "Available now",
     bg: "rgba(var(--color-available-rgb), 0.1)",
     color: "var(--color-available)",
     border: "1px solid rgba(var(--color-available-rgb), 0.2)",
   },
-  coming_soon: {
-    label: "Coming soon",
-    bg: "rgba(var(--color-text-muted-rgb), 0.1)",
-    color: "var(--color-text-muted)",
-    border: "1px solid rgba(var(--color-text-muted-rgb), 0.2)",
-  },
   partial: {
-    label: "Partially available",
-    bg: "rgba(var(--color-gold-rgb), 0.1)",
+    bg: "var(--color-gold-tint)",
     color: "var(--color-gold-on-light)",
-    border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
-  },
-  roadmap: {
-    label: "On the roadmap",
-    bg: "rgba(var(--color-neutral-tint-rgb), 0.1)",
-    color: "var(--color-text-muted)",
-    border: "1px solid rgba(var(--color-neutral-tint-rgb), 0.2)",
+    border: "1px solid var(--color-gold-divider)",
   },
 };
 
 export function FeaturesGrid() {
+  const moduleKeys = publicModuleKeys();
   return (
     <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.featuresGrid} scrim="light" />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        <m.span
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            textAlign: "center",
-            marginBottom: "16px",
-          }}
-        >
-          THE PLATFORM
-        </m.span>
-
-        <m.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
-          style={{
-            fontFamily: "var(--font-sans)",
+      <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
+        <SectionIntro
+          align="center"
+          eyebrow="THE PLATFORM"
+          eyebrowStyle={{ marginBottom: "16px" }}
+          title="One approval engine. Every operational process."
+          titleStyle={{
             fontWeight: 400,
-            fontSize: "36px",
-            color: "var(--color-text-primary)",
+            fontSize: "var(--text-display-xs)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
-            textAlign: "center",
           }}
-          className="lg:!text-[42px]"
-        >
-          One approval engine. Every operational process.
-        </m.h2>
-
-        <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
-          style={{
-            fontFamily: "var(--font-sans)",
+          titleClassName="lg:!text-display-lg"
+          lede={
+            <>
+              {BRAND.name} is built as a suite of interconnected modules — each solving a
+              distinct operational challenge, all working together on one shared
+              approval engine. For any organisation. In any industry.
+            </>
+          }
+          ledeStyle={{
             fontWeight: 400,
-            fontSize: "16px",
-            color: "var(--color-text-muted)",
+            fontSize: "var(--text-xl)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
-            textAlign: "center",
-            maxWidth: "640px",
+            maxWidth: "var(--measure)",
           }}
-        >
-          Avrentis is built as a suite of interconnected modules — each solving a
-          distinct operational challenge, all working together on one shared
-          approval engine. For any organisation. In any industry.
-        </m.p>
+        />
 
-        <div
-          style={{
-            display: "grid",
-            gap: "20px",
-          }}
-          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-        >
-          {MODULE_CARDS.filter((mod) => isModulePublic(mod.key)).map((mod, i) => {
-            const Icon = mod.icon;
-            const badge = BADGE_STYLES[mod.status];
+        <div {...cardGridProps(moduleKeys.length, { min: "22rem" }, { gap: "20px" })}>
+          {moduleKeys.map((moduleKey, i) => {
+            const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
+            const { status } = MODULES[moduleKey];
+            const badge = BADGE_STYLES[status];
             return (
               <m.div
-                key={mod.key}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                key={moduleKey}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-card)",
                   padding: "24px",
                   transition:
-                    "box-shadow 150ms ease, border-left 150ms ease",
+                    cssTransition(["box-shadow", "border-left"]),
                   cursor: "default",
                 }}
                 onMouseEnter={(e) => {
@@ -227,7 +96,7 @@ export function FeaturesGrid() {
                   style={{
                     width: "36px",
                     height: "36px",
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-card)",
                     backgroundColor: "var(--color-navy-primary)",
                     display: "flex",
                     alignItems: "center",
@@ -238,26 +107,24 @@ export function FeaturesGrid() {
                   <Icon
                     size={18}
                     strokeWidth={1.5}
-                    color={BRAND_COLORS.gold}
+                    color="var(--color-gold)"
                     aria-hidden="true"
                   />
                 </div>
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                   }}
                 >
-                  {moduleName(mod.key)}
+                  {moduleName(moduleKey)}
                 </h3>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 500,
-                    fontSize: "12px",
+                    fontSize: "var(--text-xs)",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
                     color: "var(--color-text-muted)",
@@ -265,35 +132,33 @@ export function FeaturesGrid() {
                     marginBottom: "10px",
                   }}
                 >
-                  {mod.subtitle}
+                  {tagline}
                 </span>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.6,
                     margin: 0,
                   }}
                 >
-                  {mod.body}
+                  {summary}
                 </p>
                 <span
                   style={{
                     display: "inline-block",
                     marginTop: "16px",
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     fontWeight: 500,
-                    fontFamily: "var(--font-sans)",
                     padding: "4px 10px",
-                    borderRadius: "4px",
+                    borderRadius: "var(--radius-badge)",
                     backgroundColor: badge.bg,
                     color: badge.color,
                     border: badge.border,
                   }}
                 >
-                  {badge.label}
+                  {MODULE_STATUS_LABELS[status]}
                 </span>
               </m.div>
             );

@@ -1,18 +1,15 @@
 "use client";
 
 import { Copy, Landmark, Split, ListChecks } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { GuardPreview } from "@/components/product/previews/guard-preview";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "guard",
-  eyebrow: MODULES.guard.name,
+const config: ModuleConfig = {
+  moduleKey: "guard",
   headline: "Catch the bad payment before the money moves.",
   description:
     "Guard checks every payment and purchase order as it's submitted and flags the patterns that drain finance teams — duplicate payments, vendor bank-account switches, and amounts split to slip under an approval limit — so a reviewer sees the risk before it's approved, not after the money is gone.",
-  status: "available",
-  previewUrl: "Avrentis / guard / flags",
+  previewPath: "guard / flags",
   preview: <GuardPreview />,
 
   pillars: [
@@ -61,12 +58,12 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Guard checks every payment voucher as it enters the approval chain" },
-    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders and invoices are screened for duplicates too" },
-    { slug: "audit", name: MODULES.audit.name, desc: "Every flag raised or resolved is written to the tamper-evident trail" },
+    { moduleKey: "pay", desc: "Guard checks every payment voucher as it enters the approval chain" },
+    { moduleKey: "procure", desc: "Purchase orders and invoices are screened for duplicates too" },
+    { moduleKey: "audit", desc: "Every flag raised or resolved is written to the tamper-evident trail" },
   ],
 };
 
-export function GuardModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function GuardModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

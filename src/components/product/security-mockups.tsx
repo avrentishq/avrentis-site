@@ -6,20 +6,18 @@
  */
 
 import { Check, X, AlertTriangle, ShieldCheck, Clock } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
+import { FEATURED_VOUCHER, abbreviatedName, formatDemoTime, roleLabel } from "./demo-fixtures";
 
-const mono = "'IBM Plex Mono', monospace";
-const sans = "var(--font-sans)";
 
 function Label({ children }: { children: React.ReactNode }) {
   return (
     <span
       style={{
-        fontFamily: mono,
-        fontSize: "10px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "var(--text-3xs)",
         letterSpacing: "0.08em",
         textTransform: "uppercase",
-        color: "var(--color-text-subtle)",
+        color: "var(--color-text-muted)",
         fontWeight: 500,
       }}
     >
@@ -36,12 +34,12 @@ export function IsolationMockup() {
       <Label>DATABASE · EVERY REQUEST</Label>
       <div
         style={{
-          fontFamily: mono,
-          fontSize: "12px",
+          fontFamily: "var(--font-mono)",
+          fontSize: "var(--text-xs)",
           lineHeight: 1.65,
           color: "var(--color-text-primary)",
           backgroundColor: "var(--color-navy-primary)",
-          borderRadius: "8px",
+          borderRadius: "var(--radius-card)",
           padding: "18px",
           overflowX: "auto",
         }}
@@ -70,15 +68,15 @@ export function IsolationMockup() {
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "6px",
+            borderRadius: "var(--radius-md)",
             padding: "12px 14px",
             display: "flex",
             flexDirection: "column",
             gap: "4px",
           }}
         >
-          <span style={{ fontFamily: sans, fontSize: "11px", color: "var(--color-text-muted)" }}>Tenant A</span>
-          <span style={{ fontFamily: sans, fontSize: "13px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+          <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>Tenant A</span>
+          <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>
             182 vouchers · 47 users
           </span>
         </div>
@@ -86,15 +84,15 @@ export function IsolationMockup() {
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "6px",
+            borderRadius: "var(--radius-md)",
             padding: "12px 14px",
             display: "flex",
             flexDirection: "column",
             gap: "4px",
           }}
         >
-          <span style={{ fontFamily: sans, fontSize: "11px", color: "var(--color-text-muted)" }}>Tenant B</span>
-          <span style={{ fontFamily: sans, fontSize: "13px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+          <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>Tenant B</span>
+          <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>
             94 vouchers · 22 users
           </span>
         </div>
@@ -104,16 +102,15 @@ export function IsolationMockup() {
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          fontFamily: sans,
-          fontSize: "12px",
+          fontSize: "var(--text-xs)",
           color: "var(--color-text-secondary)",
-          backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-          border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
-          borderRadius: "6px",
+          backgroundColor: "var(--color-gold-ghost)",
+          border: "1px solid var(--color-gold-divider)",
+          borderRadius: "var(--radius-md)",
           padding: "10px 12px",
         }}
       >
-        <ShieldCheck size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" />
+        <ShieldCheck size={14} color="var(--color-gold)" strokeWidth={2} aria-hidden="true" />
         <span>
           A request that is not tied to an organisation gets no rows back.
         </span>
@@ -138,7 +135,7 @@ export function AuthorityMockup() {
     <div style={{ padding: "22px", backgroundColor: "var(--color-bg-light)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
         <Label>PERMISSION MATRIX · EXCERPT</Label>
-        <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-text-muted)", letterSpacing: "0.04em" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)", letterSpacing: "0.04em" }}>
           Fine-grained permissions · multi-role
         </span>
       </div>
@@ -146,7 +143,7 @@ export function AuthorityMockup() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "6px",
+          borderRadius: "var(--radius-md)",
           overflow: "hidden",
         }}
       >
@@ -159,15 +156,15 @@ export function AuthorityMockup() {
             borderBottom: "1px solid var(--color-border)",
           }}
         >
-          <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
             CAPABILITY
           </span>
           {["STAFF", "HOD", "FIN", "MD", "ADM"].map((r) => (
             <span
               key={r}
               style={{
-                fontFamily: mono,
-                fontSize: "10px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-3xs)",
                 color: "var(--color-text-muted)",
                 letterSpacing: "0.06em",
                 textAlign: "center",
@@ -188,7 +185,7 @@ export function AuthorityMockup() {
               alignItems: "center",
             }}
           >
-            <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-primary)" }}>{row.capability}</span>
+            <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>{row.capability}</span>
             {[row.staff, row.hod, row.finance, row.md, row.admin].map((v, j) => (
               <span key={j} style={{ display: "flex", justifyContent: "center" }}>
                 {v ? (
@@ -206,18 +203,17 @@ export function AuthorityMockup() {
           display: "flex",
           alignItems: "flex-start",
           gap: "8px",
-          fontFamily: sans,
-          fontSize: "12px",
+          fontSize: "var(--text-xs)",
           color: "var(--color-text-secondary)",
-          backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-          border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
-          borderRadius: "6px",
+          backgroundColor: "var(--color-gold-ghost)",
+          border: "1px solid var(--color-gold-divider)",
+          borderRadius: "var(--radius-md)",
           padding: "10px 12px",
           marginTop: "12px",
           lineHeight: 1.55,
         }}
       >
-        <AlertTriangle size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
+        <AlertTriangle size={14} color="var(--color-gold)" strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
         <span>
           <b>Separation of duties</b> — the submitter of a voucher cannot also approve it. Enforced in the state
           machine, not at the UI.
@@ -237,7 +233,7 @@ export function SessionMockup() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "8px",
+          borderRadius: "var(--radius-card)",
           padding: "16px 18px",
           display: "flex",
           flexDirection: "column",
@@ -250,23 +246,22 @@ export function SessionMockup() {
               style={{
                 width: "8px",
                 height: "8px",
-                borderRadius: "50%",
+                borderRadius: "var(--radius-circle)",
                 backgroundColor: "var(--color-gold)",
               }}
             />
-            <span style={{ fontFamily: sans, fontSize: "13px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+            <span style={{ fontSize: "var(--text-sm)", fontWeight: 600, color: "var(--color-text-primary)" }}>
               Role changed · Amaka Bello
             </span>
           </div>
-          <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-text-muted)" }}>14:32:08 UTC</span>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>14:32:08 UTC</span>
         </div>
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gap: "10px",
-            fontFamily: sans,
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
           }}
         >
           <div style={{ color: "var(--color-text-muted)" }}>
@@ -280,7 +275,7 @@ export function SessionMockup() {
           style={{
             backgroundColor: "var(--color-bg-light)",
             border: "1px solid var(--color-border)",
-            borderRadius: "6px",
+            borderRadius: "var(--radius-md)",
             padding: "10px 12px",
             display: "flex",
             alignItems: "center",
@@ -288,7 +283,7 @@ export function SessionMockup() {
           }}
         >
           <ShieldCheck size={14} style={{ color: "var(--color-success)" }} strokeWidth={2} aria-hidden="true" />
-          <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-primary)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>
             <b>12 active sessions revoked</b> in 0.8s · next request forces re-auth
           </span>
         </div>
@@ -298,14 +293,14 @@ export function SessionMockup() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "8px",
+          borderRadius: "var(--radius-card)",
           padding: "14px 18px",
           display: "flex",
           flexDirection: "column",
           gap: "8px",
         }}
       >
-        <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
           REVOKED ON
         </span>
         {[
@@ -316,8 +311,8 @@ export function SessionMockup() {
           "Tenant-wide revocation",
         ].map((t) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Check size={12} color={BRAND_COLORS.gold} strokeWidth={2.5} aria-hidden="true" />
-            <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-faint)" }}>{t}</span>
+            <Check size={12} color="var(--color-gold)" strokeWidth={2.5} aria-hidden="true" />
+            <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-body)" }}>{t}</span>
           </div>
         ))}
       </div>
@@ -327,18 +322,22 @@ export function SessionMockup() {
 
 /* ── 04. Audit trail ────────────────────────────────────────────── */
 
-const AUDIT_EVENTS = [
-  { time: "14:42:17", actor: "Adaeze O.", role: "MD", action: "sanctioned", entity: "PV-2026-0184" },
-  { time: "14:29:03", actor: "Tunde A.", role: "Finance", action: "approved", entity: "PV-2026-0184" },
-  { time: "11:05:41", actor: "Kemi L.", role: "Staff", action: "submitted", entity: "PV-2026-0184" },
-];
+// The featured voucher's own trail, newest first — the same people and times
+// every other page shows for it.
+const AUDIT_EVENTS = [...FEATURED_VOUCHER.trail].reverse().map((entry) => ({
+  time: formatDemoTime(entry.at, { seconds: true }),
+  actor: abbreviatedName(entry.person),
+  role: roleLabel(entry.person),
+  action: entry.label.toLowerCase(),
+  entity: FEATURED_VOUCHER.reference,
+}));
 
 export function AuditMockup() {
   return (
     <div style={{ padding: "22px", backgroundColor: "var(--color-bg-light)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-        <Label>AUDIT TRAIL · PV-2026-0184</Label>
-        <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold-on-light)", letterSpacing: "0.06em" }}>
+        <Label>AUDIT TRAIL · {FEATURED_VOUCHER.reference}</Label>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-gold-on-light)", letterSpacing: "0.06em" }}>
           TAMPER-EVIDENT
         </span>
       </div>
@@ -346,7 +345,7 @@ export function AuditMockup() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "6px",
+          borderRadius: "var(--radius-md)",
           overflow: "hidden",
         }}
       >
@@ -363,14 +362,14 @@ export function AuditMockup() {
           >
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-text-muted)" }}>{e.time}</span>
-                <span style={{ fontFamily: sans, fontSize: "12px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>{e.time}</span>
+                <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-text-primary)" }}>
                   {e.actor}
                 </span>
                 <span
                   style={{
-                    fontFamily: mono,
-                    fontSize: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-3xs)",
                     color: "var(--color-gold-on-light)",
                     letterSpacing: "0.04em",
                     textTransform: "uppercase",
@@ -381,18 +380,18 @@ export function AuditMockup() {
               </div>
               <span
                 style={{
-                  fontFamily: mono,
-                  fontSize: "11px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-2xs)",
                   color: "var(--color-text-primary)",
                   backgroundColor: "var(--color-bg-light)",
-                  borderRadius: "3px",
+                  borderRadius: "var(--radius-xs)",
                   padding: "2px 6px",
                 }}
               >
                 {e.action}
               </span>
             </div>
-            <span style={{ fontFamily: sans, fontSize: "11px", color: "var(--color-text-muted)" }}>
+            <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>
               entity · {e.entity} · IP 154.113.x.x · via web
             </span>
           </div>
@@ -403,18 +402,17 @@ export function AuditMockup() {
           display: "flex",
           alignItems: "flex-start",
           gap: "8px",
-          fontFamily: sans,
-          fontSize: "12px",
+          fontSize: "var(--text-xs)",
           color: "var(--color-text-secondary)",
-          backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-          border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
-          borderRadius: "6px",
+          backgroundColor: "var(--color-gold-ghost)",
+          border: "1px solid var(--color-gold-divider)",
+          borderRadius: "var(--radius-md)",
           padding: "10px 12px",
           marginTop: "12px",
           lineHeight: 1.55,
         }}
       >
-        <ShieldCheck size={14} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
+        <ShieldCheck size={14} color="var(--color-gold)" strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
         <span>
           Database triggers block <b>UPDATE</b> and <b>DELETE</b> on audit rows. Not even a platform administrator can
           edit history.
@@ -434,7 +432,7 @@ export function LifecycleMockup() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "8px",
+          borderRadius: "var(--radius-card)",
           padding: "18px",
           marginTop: "12px",
           display: "flex",
@@ -443,10 +441,10 @@ export function LifecycleMockup() {
         }}
       >
         <div>
-          <div style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+          <div style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
             Temidayo A. · External Auditor
           </div>
-          <div style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)", marginTop: "2px" }}>
+          <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)", marginTop: "2px" }}>
             temidayo@ext-auditors.com
           </div>
         </div>
@@ -455,35 +453,34 @@ export function LifecycleMockup() {
             style={{
               backgroundColor: "var(--color-bg-light)",
               border: "1px solid var(--color-border)",
-              borderRadius: "6px",
+              borderRadius: "var(--radius-md)",
               padding: "10px 12px",
             }}
           >
-            <div style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
               ACCESS GRANTED
             </div>
-            <div style={{ fontFamily: sans, fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", marginTop: "4px" }}>
+            <div style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--color-text-primary)", marginTop: "4px" }}>
               2026-04-01
             </div>
           </div>
           <div
             style={{
-              backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
-              border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
-              borderRadius: "6px",
+              backgroundColor: "var(--color-gold-tint)",
+              border: "1px solid var(--color-gold-divider)",
+              borderRadius: "var(--radius-md)",
               padding: "10px 12px",
               display: "flex",
               flexDirection: "column",
               gap: "4px",
             }}
           >
-            <div style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
               EXPIRES
             </div>
             <div
               style={{
-                fontFamily: sans,
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 color: "var(--color-text-primary)",
                 display: "inline-flex",
@@ -491,7 +488,7 @@ export function LifecycleMockup() {
                 gap: "6px",
               }}
             >
-              <Clock size={12} color={BRAND_COLORS.gold} strokeWidth={2} aria-hidden="true" />
+              <Clock size={12} color="var(--color-gold)" strokeWidth={2} aria-hidden="true" />
               2026-05-15 · auto-revoke
             </div>
           </div>
@@ -500,14 +497,14 @@ export function LifecycleMockup() {
           style={{
             backgroundColor: "var(--color-bg-light)",
             border: "1px solid var(--color-border)",
-            borderRadius: "6px",
+            borderRadius: "var(--radius-md)",
             padding: "10px 12px",
           }}
         >
           <div
             style={{
-              fontFamily: mono,
-              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-3xs)",
               color: "var(--color-text-muted)",
               letterSpacing: "0.06em",
               marginBottom: "6px",
@@ -517,8 +514,7 @@ export function LifecycleMockup() {
           </div>
           <div
             style={{
-              fontFamily: sans,
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               color: "var(--color-text-primary)",
               display: "inline-flex",
               alignItems: "center",
@@ -561,7 +557,7 @@ export function InfraMockup() {
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "6px",
+              borderRadius: "var(--radius-md)",
               padding: "12px 14px",
               display: "flex",
               justifyContent: "space-between",
@@ -571,8 +567,8 @@ export function InfraMockup() {
           >
             <span
               style={{
-                fontFamily: mono,
-                fontSize: "11px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-2xs)",
                 color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
@@ -581,7 +577,7 @@ export function InfraMockup() {
             >
               {layer.label}
             </span>
-            <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-faint)", textAlign: "right" }}>
+            <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-body)", textAlign: "right" }}>
               {layer.detail}
             </span>
           </div>

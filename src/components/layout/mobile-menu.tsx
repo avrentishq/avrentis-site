@@ -4,43 +4,25 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BRAND_COLORS, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
-import { SUITE_NAV } from "@/lib/product-suites";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { isLaunchVisible } from "@/lib/launch";
-import { contactHref } from "@/app/contact/tabs";
+import { ButtonLink } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/section-intro";
+import { MOTION_DURATION, MOTION_EASE, fadeUp } from "@/lib/animations";
+import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
+import { Z_INDEX } from "@/lib/layers";
 
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
-  navLinks: { label: string; href: string }[];
-  signinUrl: string;
   pathname: string;
 }
 
-// Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
-// Suites, not modules — mirroring the desktop dropdown. "All modules" keeps
-// the full catalogue one tap away.
-const PRODUCT_SUITES = [
-  ...SUITE_NAV.map((suite) => ({ name: suite.label, href: suite.href })),
-  { name: "All modules", href: "/product" },
-];
+// The same lists the desktop bar renders (`site-nav.ts`): suites, then "All
+// modules" so the full catalogue stays one tap away.
+const PRODUCT_SUITES = [...SUITE_NAV, NAV_LINKS.allModules];
 
-const PRODUCT_PLATFORM = [
-  { name: "How it works", href: "/product/how-it-works" },
-  { name: "Security", href: LEGAL_PAGES.security },
-  { name: "Trust centre", href: LEGAL_PAGES.trust },
-];
 
-const FONT = "var(--font-sans)";
-
-export function MobileMenu({
-  open,
-  onClose,
-  navLinks,
-  signinUrl,
-  pathname,
-}: MobileMenuProps) {
+export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -92,15 +74,16 @@ export function MobileMenu({
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          transition={{ duration: MOTION_DURATION.base, ease: MOTION_EASE }}
           style={{
             position: "fixed",
             inset: 0,
             backgroundColor: "var(--color-navy-primary)",
-            zIndex: 70,
+            zIndex: Z_INDEX.mobileMenu,
             display: "flex",
             flexDirection: "column",
             padding: "24px",
@@ -128,7 +111,7 @@ export function MobileMenu({
                 padding: "4px",
               }}
             >
-              <X size={24} color={BRAND_COLORS.gold} />
+              <X size={24} color="var(--color-gold)" />
             </button>
           </div>
 
@@ -145,19 +128,9 @@ export function MobileMenu({
             {/* Product section */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
               {/* Section header */}
-              <div
-                style={{
-                  fontFamily: FONT,
-                  fontWeight: 600,
-                  fontSize: "10px",
-                  color: "var(--color-gold)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.10em",
-                  marginBottom: "16px",
-                }}
-              >
+              <Eyebrow as="div" surface="dark" size="group" style={{ marginBottom: "16px" }}>
                 Product
-              </div>
+              </Eyebrow>
 
               {/* Module links */}
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -167,14 +140,13 @@ export function MobileMenu({
                     href={mod.href}
                     onClick={onClose}
                     style={{
-                      fontFamily: FONT,
                       fontWeight: 400,
-                      fontSize: "16px",
+                      fontSize: "var(--text-xl)",
                       color: isActive(mod.href) ? "var(--color-gold)" : "var(--color-white)",
                       textDecoration: "none",
                     }}
                   >
-                    {mod.name}
+                    {mod.label}
                   </Link>
                 ))}
               </div>
@@ -183,44 +155,40 @@ export function MobileMenu({
               <div
                 style={{
                   height: "1px",
-                  backgroundColor: "rgba(var(--color-gold-rgb), 0.15)",
+                  backgroundColor: "var(--color-gold-tint)",
                   margin: "8px 0",
                 }}
               />
 
               {/* Platform links */}
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                {PRODUCT_PLATFORM.filter((item) => isLaunchVisible(item.href)).map((item) => (
+                {PLATFORM_NAV.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
                     onClick={onClose}
                     style={{
-                      fontFamily: FONT,
                       fontWeight: 400,
-                      fontSize: "15px",
+                      fontSize: "var(--text-lg)",
                       color: isActive(item.href) ? "var(--color-gold)" : "var(--color-text-subtle)",
                       textDecoration: "none",
                     }}
                   >
-                    {item.name}
+                    {item.label}
                   </Link>
                 ))}
               </div>
             </div>
 
             {/* Top-level links other than Product (Product is expanded above) */}
-            {navLinks
-              .filter((link) => link.label !== "Product")
-              .map((link) => (
+            {TOP_NAV.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
                   onClick={onClose}
                   style={{
-                    fontFamily: FONT,
                     fontWeight: 400,
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     color: isActive(link.href) ? "var(--color-gold)" : "var(--color-white)",
                     textDecoration: "none",
                   }}
@@ -238,65 +206,34 @@ export function MobileMenu({
               flexDirection: "column",
               gap: "12px",
               paddingTop: "24px",
-              borderTop: "1px solid rgba(var(--color-gold-rgb), 0.15)",
+              borderTop: "1px solid var(--color-gold-tint)",
             }}
           >
             <a
-              href={signinUrl}
+              href={NAV_LINKS.login.href}
               style={{
-                fontFamily: FONT,
                 fontWeight: 400,
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 color: "var(--color-text-subtle)",
                 textDecoration: "none",
                 textAlign: "center",
               }}
             >
-              Login
+              {NAV_LINKS.login.label}
             </a>
-            <Link
-              href={contactHref()}
+            <ButtonLink
+              href={NAV_LINKS.contact.href}
               onClick={onClose}
-              style={{
-                fontFamily: FONT,
-                fontWeight: 500,
-                fontSize: "14px",
-                letterSpacing: "0.04em",
-                backgroundColor: "transparent",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                height: "44px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                width: "100%",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
+              fullWidth
             >
-              Contact us
-            </Link>
-            <Link
-              href={SITE_PAGES.trial()}
-              onClick={onClose}
-              style={{
-                fontFamily: FONT,
-                fontWeight: 500,
-                fontSize: "14px",
-                letterSpacing: "0.04em",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                height: "44px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                width: "100%",
-              }}
-            >
-              Start trial &rarr;
-            </Link>
+              {NAV_LINKS.contact.label}
+            </ButtonLink>
+            <ButtonLink href={NAV_LINKS.startTrial.href} onClick={onClose} size="md" fullWidth>
+              {NAV_LINKS.startTrial.label} &rarr;
+            </ButtonLink>
           </div>
         </m.div>
       )}

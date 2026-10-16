@@ -1,6 +1,7 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
 import { platformFetch } from "@/lib/platform-fetch";
+import { PLATFORM_API_PATHS } from "@/lib/platform";
 import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
 /** One plan's price in one currency. Amounts are MAJOR units; the site formats
@@ -21,7 +22,7 @@ export interface PricingCurrency {
 
 /** A plan's limits. `0` means unlimited for every figure (core's convention);
  *  the site formats its own lines from these numbers (`@/lib/plan-limits`). */
-export interface PlanLimits {
+interface PlanLimits {
   maxUsers: number;
   maxDocumentsPerMonth: number;
   maxStorageBytes: number;
@@ -79,7 +80,7 @@ export interface Plan {
   features: Record<string, boolean>;
 }
 
-export interface ModuleInfo {
+interface ModuleInfo {
   name: string;
   description: string;
   /** See `PlanModule.availableToSectors`. */
@@ -100,7 +101,7 @@ export interface FeatureGroup {
  *  real plan tier (`plan`), so what a trialist can actually use is that plan's
  *  entitlement — which is why the module pages derive their trial row from it
  *  rather than restating the trial's length and tier in eight places. */
-export interface TrialInfo {
+interface TrialInfo {
   enabled: boolean;
   days: number;
   /** Plan KEY the trial runs on (matches a `Plan.key`), not a display name. */
@@ -131,19 +132,23 @@ export interface PricingData {
   suiteOrder?: string[];
 }
 
-const PRICING_PATH = "/api/v1/public/pricing";
+
+import { cache } from "react";
 
 import fallback from "@/data/pricing-fallback.json";
 
 /** Every payload the page renders — live or fallback — shows service
- *  commitments as their own comparison group (see `@/lib/service-commitments`). */
-export async function fetchPricingData(): Promise<PricingData> {
+ *  commitments as their own comparison group (see `@/lib/service-commitments`).
+ *  Memoised per render with React's `cache`: the request carries a timeout
+ *  signal, which opts it out of Next's own fetch de-duplication, so a page and
+ *  its metadata would otherwise each make the call. */
+export const fetchPricingData = cache(async (): Promise<PricingData> => {
   return withServiceCommitmentGroup(await fetchRawPricingData());
-}
+});
 
 async function fetchRawPricingData(): Promise<PricingData> {
   try {
-    const res = await platformFetch(PRICING_PATH, {
+    const res = await platformFetch(PLATFORM_API_PATHS.pricing, {
       next: { revalidate: 3600 },
     });
 
@@ -172,20 +177,4 @@ async function fetchRawPricingData(): Promise<PricingData> {
   } catch {
     return fallback as unknown as PricingData;
   }
-}
-
-/* ── Plan-name helpers — copy names tiers from the API, never by hand ── */
-
-/** Plan names in display order (`planOrder`), optionally only those with `featureKey` on. */
-export function planNames(data: PricingData, featureKey?: string): string[] {
-  return data.planOrder
-    .map((key) => data.plans.find((plan) => plan.key === key))
-    .filter((plan): plan is Plan => plan !== undefined)
-    .filter((plan) => featureKey === undefined || plan.features[featureKey] === true)
-    .map((plan) => plan.name);
-}
-
-/** "Enterprise", "Business and Enterprise", "Starter, Business and Enterprise". */
-export function formatPlanList(names: string[]): string {
-  return new Intl.ListFormat("en-GB", { style: "long", type: "conjunction" }).format(names);
 }

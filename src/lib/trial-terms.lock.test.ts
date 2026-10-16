@@ -17,6 +17,7 @@ import { PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 const SRC = join(process.cwd(), "src");
 const EXEMPT = new Set([
   join("lib", "trial-terms.ts"),
+  join("lib", "market.ts"),
   join("components", "changelog", "changelog-page.tsx"),
 ]);
 
@@ -27,6 +28,13 @@ const TYPED_TERMS: { name: string; pattern: RegExp }[] = [
   { name: "a grace count after a trial", pattern: /\b\d+ days? after (?:your |the )?trial/i },
   { name: "a trial seat count", pattern: /\b\d+-seat\b/i },
   { name: "the trial plan's name", pattern: new RegExp(`\\b(?:${PLAN_NAMES}) (?:tier|features|trial)\\b`) },
+  { name: "a day count after 'trial'", pattern: /\btrial\b[^\n.]{0,30}?\b(?:\d+|seven|fourteen|thirty|sixty)\s+days?\b/i },
+  { name: "a spelled-out day count before 'trial'", pattern: /\b(?:seven|fourteen|thirty|sixty)[- ]day\b[^\n]{0,30}\btrial\b/i },
+  { name: "a typed link lifetime (MAGIC_LINK_LIFETIME)", pattern: /\bexpires?\s+in\s+(?:\d+|thirty|fifteen)\s+minutes?\b/i },
+  { name: "a typed personal-mailbox list (core's domains/public-email)", pattern: /["'](?:gmail|yahoo|hotmail|outlook)\.com["']/i },
+  { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno\s+(?:credit\s+)?card\b|\bcard\s+on\s+file\b/i },
+  { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less\s+than|within)\s+(?:\d+|one|two|three|five|ten|fifteen|twenty|thirty)\s+minutes?\b|\bsetup\s+in\s+minutes\b/i },
+  { name: "the market typed out (MARKET_SCOPE)", pattern: /\bNigeria\s+and\s+Africa\b|\bNigerian\s+and\s+African\b|\bPan-African\s+platform\b/i },
 ];
 
 function sourceFiles(): string[] {
@@ -38,12 +46,39 @@ function sourceFiles(): string[] {
 
 describe("trial terms come from core, never from copy", () => {
   it("the detectors catch typed terms", () => {
-    const [dayCount, graceCount, seatCount, planNameDetector] = TYPED_TERMS.map((term) => term.pattern);
+    const detector = (fragment: string) => TYPED_TERMS.find((term) => term.name.includes(fragment))!.pattern;
+    const [dayCount, graceCount, seatCount, planNameDetector, dayCountAfter, spelledDayCount, noCard, setupTime, market] = [
+      "a day count before",
+      "grace count",
+      "seat count",
+      "plan's name",
+      "a day count after",
+      "spelled-out",
+      "NO_CARD_REQUIRED",
+      "TRIAL_SETUP_TIME",
+      "MARKET_SCOPE",
+    ].map(detector);
+    expect(dayCountAfter!.test("Your trial lasts 30 days")).toBe(true);
+    expect(spelledDayCount!.test("a thirty-day trial")).toBe(true);
+    expect(dayCountAfter!.test("trial ${TRIAL_LENGTH}")).toBe(false);
     expect(dayCount!.test("Start your 30-day trial")).toBe(true);
     expect(dayCount!.test("30-DAY TRIAL")).toBe(true);
     expect(graceCount!.test("Data preserved for 30 days after trial end")).toBe(true);
     expect(seatCount!.test("a 5-seat pilot workspace")).toBe(true);
     expect(planNameDetector!.test("Full Business features on your own data")).toBe(true);
+    expect(noCard!.test("No credit card required")).toBe(true);
+    const linkLifetime = detector("MAGIC_LINK_LIFETIME");
+    const mailboxList = detector("public-email");
+    expect(linkLifetime.test("the verification link expires in 30 minutes.")).toBe(true);
+    expect(mailboxList.test('const FREE = new Set(["gmail.com", "yahoo.com"]);')).toBe(true);
+    expect(noCard!.test("no card on file")).toBe(true);
+    expect(setupTime!.test("Setup takes less than 10 minutes")).toBe(true);
+    expect(setupTime!.test("in under two minutes")).toBe(true);
+    // JSX wraps text across lines; the detectors read through the break.
+    expect(noCard!.test("No credit\n          card.")).toBe(true);
+    expect(setupTime!.test("within fifteen\n          minutes")).toBe(true);
+    expect(market!.test("Organisations across Nigeria and Africa")).toBe(true);
+    expect(market!.test("for every organisation, across\n              Nigeria and Africa.")).toBe(true);
     // And stay quiet on the interpolated form.
     expect(dayCount!.test("Start your {trialDays}-day trial")).toBe(false);
   });

@@ -12,9 +12,12 @@
  */
 
 import { Check } from "lucide-react";
+import { cssTransition } from "@/lib/animations";
 
 const STEPS = ["Started", "Your setup", "Your details"];
-const sans = "var(--font-sans)";
+
+/** `current` once every step is done (the request is sent) — the meter reads 100%. */
+export const TRIAL_STEPS_DONE = STEPS.length + 1;
 
 interface TrialStepperProps {
   current: number;
@@ -24,20 +27,20 @@ export function TrialStepper({ current }: TrialStepperProps) {
   const pct = Math.round(((current - 1) / STEPS.length) * 100);
 
   return (
-    <div style={{ margin: "0 auto 36px", maxWidth: "480px" }}>
+    <div style={{ margin: "0 auto 36px", maxWidth: "var(--measure-tight)" }}>
       {/* Header: label + live percentage */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "12px" }}>
-        <span style={{ fontFamily: sans, fontSize: "12px", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
           Your progress
         </span>
-        <span style={{ fontFamily: sans, fontSize: "12px", fontWeight: 600, color: "var(--color-gold-on-light)" }}>
+        <span style={{ fontSize: "var(--text-xs)", fontWeight: 600, color: "var(--color-gold-on-light)" }}>
           {pct}% complete
         </span>
       </div>
 
       {/* Track + circles: the track is the progress bar; circles ride on it */}
       <div style={{ position: "relative", height: "28px" }} aria-hidden="true">
-        <div style={{ position: "absolute", top: "12px", left: "14px", right: "14px", height: "4px", backgroundColor: "var(--color-border)", borderRadius: "9999px" }} />
+        <div style={{ position: "absolute", top: "12px", left: "14px", right: "14px", height: "4px", backgroundColor: "var(--color-border)", borderRadius: "var(--radius-pill)" }} />
         <div
           style={{
             position: "absolute",
@@ -46,8 +49,8 @@ export function TrialStepper({ current }: TrialStepperProps) {
             width: `calc((100% - 28px) * ${pct / 100})`,
             height: "4px",
             backgroundColor: "var(--color-gold)",
-            borderRadius: "9999px",
-            transition: "width 320ms ease",
+            borderRadius: "var(--radius-pill)",
+            transition: cssTransition("width", "slow"),
           }}
         />
         <div style={{ position: "relative", display: "flex", justifyContent: "space-between" }}>
@@ -61,18 +64,17 @@ export function TrialStepper({ current }: TrialStepperProps) {
                 style={{
                   width: "28px",
                   height: "28px",
-                  borderRadius: "50%",
+                  borderRadius: "var(--radius-circle)",
                   border: `1.5px solid ${done || active ? "var(--color-gold)" : "var(--color-step-idle)"}`,
                   backgroundColor: done ? "var(--color-gold)" : "var(--color-bg)",
-                  color: done ? "var(--color-text-primary)" : active ? "var(--color-gold-on-light)" : "var(--color-text-subtle)",
+                  color: done ? "var(--color-text-primary)" : active ? "var(--color-gold-on-light)" : "var(--color-text-secondary)",
                   display: "inline-flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  fontFamily: sans,
-                  fontSize: "12px",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 600,
-                  boxShadow: active ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)" : "none",
-                  transition: "border-color 320ms ease, background-color 320ms ease, box-shadow 320ms ease",
+                  boxShadow: active ? "0 0 0 4px var(--color-gold-tint)" : "none",
+                  transition: cssTransition(["border-color", "background-color", "box-shadow"], "slow"),
                 }}
               >
                 {done ? <Check size={14} strokeWidth={2.5} style={{ color: "var(--color-text-primary)" }} /> : step}
@@ -93,13 +95,12 @@ export function TrialStepper({ current }: TrialStepperProps) {
               key={label}
               aria-current={active ? "step" : undefined}
               style={{
-                fontFamily: sans,
-                fontSize: "12px",
+                fontSize: "var(--text-xs)",
                 fontWeight: active ? 600 : 400,
-                color: done || active ? "var(--color-text-primary)" : "var(--color-text-subtle)",
+                color: done || active ? "var(--color-text-primary)" : "var(--color-text-secondary)",
                 textAlign: i === 0 ? "left" : i === STEPS.length - 1 ? "right" : "center",
                 flex: 1,
-                transition: "color 320ms ease",
+                transition: cssTransition("color", "slow"),
               }}
             >
               {label}

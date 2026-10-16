@@ -1,17 +1,16 @@
 /**
  * Organisation-size options — single source of truth for the whole site.
  *
- * The bands mirror the platform's trial allow-list (the trial form is the SSOT),
- * so the trial UI, the trial server-action validation, and the contact form all
- * present the same choices. "21–50" carries an honest "Most common" marker and
+ * The bands are core's (`trial/request-terms`), the list the app's trial API
+ * accepts; the trial form, its server action and the contact form present them. "21–50" carries an honest "Most common" marker and
  * is the trial's pre-selected default.
  */
 
-export const ORG_SIZES = ["1–20", "21–50", "51–200", "200+"] as const;
+import { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize } from "@avrentishq/core/trial/request-terms";
 
-export const DEFAULT_ORG_SIZE: string = "21–50";
+export { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize };
 
-export interface OrgSizeOption {
+interface OrgSizeOption {
   value: string;
   label: string;
   badge?: string;

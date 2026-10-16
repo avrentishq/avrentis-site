@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
-import { planNames, formatPlanList, type PricingData } from "@/lib/pricing";
+import type { PricingData } from "@/lib/pricing";
+import { planNames, formatPlanList } from "@/lib/plan-names";
 import { formatCurrencyAmount } from "@/lib/money";
 import {
   documentLimitLine,

@@ -12,6 +12,7 @@ import {
 } from "@avrentishq/core/billing/capacity";
 import { planName } from "@avrentishq/core/billing/catalog";
 import { formatByteSize } from "@avrentishq/core/billing/limit-format";
+import { MAGIC_LINK_EXPIRY_MS } from "@avrentishq/core/trial/request-terms";
 
 /**
  * Every number the site states about a trial — its length, the read-only grace
@@ -44,3 +45,21 @@ export const TRIAL_CLOSE_DAY = TRIAL_DURATION_DAYS + READ_ONLY_GRACE_DAYS;
 
 /** The trial call to action, wherever a button or link offers one. */
 export const START_TRIAL_CTA = `Start your ${TRIAL_LENGTH} trial`;
+
+/**
+ * The trial asks for no payment card. One wording, so the hero, the price list,
+ * the trial page and the form cannot promise different things.
+ */
+export const NO_CARD_REQUIRED = "No card required";
+
+/**
+ * How soon a new workspace is ready, completing "set up …". The site had said
+ * "under two minutes", "less than 10 minutes" and "in minutes" about the same
+ * provisioning; this is the one that holds on a slow day.
+ */
+export const TRIAL_SETUP_TIME = "in minutes";
+
+const MILLISECONDS_PER_MINUTE = 60 * 1000;
+
+/** How long a trial's verification link stays valid — "30 minutes", from core's lifetime. */
+export const MAGIC_LINK_LIFETIME = `${Math.round(MAGIC_LINK_EXPIRY_MS / MILLISECONDS_PER_MINUTE)} minutes`;

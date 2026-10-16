@@ -7,11 +7,15 @@
  * to the platform's actual capability, not marketing ambition.
  */
 
+import { PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import { PLAN_CAPACITY } from "@avrentishq/core/billing/capacity";
+import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
+import { planScopeNote, type FeaturePlans } from "@/lib/plan-names";
 import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -22,16 +26,56 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
+import { ACCESS_ENDS } from "@/lib/compliance-posture";
+import { LEAD_CURRENCY } from "@/lib/market";
+import { toMinorUnits } from "@/lib/money";
+import { FEATURED_VOUCHER, featuredTrailEntry } from "./demo-fixtures";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { Z_INDEX } from "@/lib/layers";
 
-const sans = "var(--font-sans)";
-const mono = "'IBM Plex Mono', monospace";
+/**
+ * The sample delivery: the featured demo voucher being sanctioned. Every value
+ * that describes the voucher comes from the demo fixtures, so the sample's
+ * reference, amount, currency, approver and time match the mockups on every
+ * other page; the amount is in minor units, as the real payload carries it.
+ */
+const sanction = featuredTrailEntry("sanction");
+const sanctionedAt = new Date(sanction.at);
+const WEBHOOK_SAMPLE = [
+  "content-type: application/json",
+  "webhook-id: 6f1c2a9e-4b7d-4e21-9c55-0d3a8e7b1f42",
+  `webhook-timestamp: ${Math.floor(sanctionedAt.getTime() / 1000)}`,
+  "webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=",
+  "",
+  JSON.stringify(
+    {
+      eventId: "evt_8c1f0b6e2d4a…",
+      type: "document.sanctioned",
+      tenantId: "0d9e4c1a-…",
+      createdAt: sanctionedAt.toISOString(),
+      data: {
+        documentType: FEATURED_VOUCHER.documentType,
+        referenceNumber: FEATURED_VOUCHER.reference,
+        amountMinor: toMinorUnits(FEATURED_VOUCHER.amount, LEAD_CURRENCY),
+        currency: LEAD_CURRENCY,
+        sanctionedBy: { name: sanction.person.name, role: sanction.person.role },
+        sanctionedAt: sanctionedAt.toISOString(),
+        departmentName: FEATURED_VOUCHER.department,
+      },
+    },
+    null,
+    2,
+  ),
+].join("\n");
+
 
 type Availability = "available" | "request";
 
@@ -49,17 +93,12 @@ interface Category {
   title: string;
   lede: string;
   /** Plan feature that gates this category; its plans are named after the lede. */
-  planFeature?: PlanFeature;
+  planFeature?: PlanFeatureKey;
   integrations: Integration[];
 }
 
-/** The plan features this page names plans for. SCIM provisioning rides on `sso`;
- *  the chart of accounts and journal export ride on `budgetCodes`. */
-export type PlanFeature = "sso" | "apiAccess" | "budgetCodes";
-/** "Business and Enterprise" per feature, read from the pricing API by the route
- *  (formatted server-side so this client bundle never imports the pricing module).
- *  Empty string = unknown; the sentence is then left off rather than guessed. */
-export type PlansByFeature = Record<PlanFeature, string>;
+/** WhatsApp and SMS ride every plan's monthly message allowance (core's capacity), so say so only while every plan has one. */
+const MESSAGING_ON_EVERY_PLAN = PLAN_ORDER.every((planKey) => PLAN_CAPACITY[planKey].monthlyMessageCap > 0);
 
 const CATEGORIES: Category[] = [
   {
@@ -68,7 +107,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "IDENTITY & SINGLE SIGN-ON",
     title: "Sign in with the identity provider you already run.",
     lede:
-      "Avrentis speaks the standard identity protocols — OpenID Connect and SAML 2.0 — with no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace, and each person keeps one sign-in across every company they work in.",
+      `${BRAND.name} speaks the standard identity protocols — OpenID Connect and SAML 2.0 — with no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace, and each person keeps one sign-in across every company they work in.`,
     planFeature: "sso",
     integrations: [
       { name: "SAML 2.0", summary: "Federated sign-in with signed assertions, for any SAML identity provider.", availability: "available" },
@@ -87,7 +126,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "DIRECTORY PROVISIONING",
     title: "Users flow from your IdP — and leave when they should.",
     lede:
-      "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.",
+      `SCIM 2.0 keeps ${BRAND.name} in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked ${ACCESS_ENDS}. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.`,
     planFeature: "sso",
     integrations: [
       { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
@@ -108,7 +147,7 @@ const CATEGORIES: Category[] = [
       "Every stage of the approval lifecycle can dispatch to the channels your approvers actually check. Multi-channel by default, all tracked to the audit trail.",
     integrations: [
       { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider.", availability: "available" },
-      { name: "WhatsApp", summary: "Approval alerts with a secure review link, on every plan.", availability: "available" },
+      { name: "WhatsApp", summary: `Approval alerts with a secure review link${MESSAGING_ON_EVERY_PLAN ? ", on every plan" : ""}.`, availability: "available" },
       { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
       { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
       { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "request" },
@@ -121,7 +160,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "ACCOUNTING & ERP",
     title: "Approved spending lands in your ledger, coded your way.",
     lede:
-      "Avrentis owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.",
+      `${BRAND.name} owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.`,
     planFeature: "budgetCodes",
     integrations: [
       { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line.", availability: "available" },
@@ -185,14 +224,14 @@ const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: st
   available: {
     label: "Available",
     color: "var(--color-success)",
-    bg: "rgba(var(--color-success-rgb), 0.10)",
+    bg: "var(--color-success-tint)",
     border: "rgba(var(--color-success-rgb), 0.28)",
   },
   request: {
     label: "Talk to us",
     color: "var(--color-gold-on-light)",
-    bg: "rgba(var(--color-gold-rgb), 0.10)",
-    border: "rgba(var(--color-gold-rgb), 0.28)",
+    bg: "var(--color-gold-tint)",
+    border: "var(--color-gold-border)",
   },
 };
 
@@ -201,15 +240,15 @@ function Badge({ availability }: { availability: Availability }) {
   return (
     <span
       style={{
-        fontFamily: mono,
-        fontSize: "10px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         letterSpacing: "0.06em",
         textTransform: "uppercase",
         color: s.color,
         backgroundColor: s.bg,
         border: `1px solid ${s.border}`,
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "3px 8px",
         display: "inline-flex",
         alignItems: "center",
@@ -221,7 +260,7 @@ function Badge({ availability }: { availability: Availability }) {
         style={{
           width: "5px",
           height: "5px",
-          borderRadius: "50%",
+          borderRadius: "var(--radius-circle)",
           backgroundColor: s.color,
           display: "inline-block",
         }}
@@ -231,15 +270,11 @@ function Badge({ availability }: { availability: Availability }) {
   );
 }
 
-function CategoryBlock({ category, index, plans }: { category: Category; index: number; plans?: string }) {
+function CategoryBlock({ category, index, planNote }: { category: Category; index: number; planNote: string }) {
   const Icon = category.icon;
   return (
     <m.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={fadeUpTransition}
+      {...fadeUpOnScroll()}
       id={category.id}
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
@@ -251,19 +286,19 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
               style={{
                 width: "40px",
                 height: "40px",
-                borderRadius: "8px",
-                backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                borderRadius: "var(--radius-card)",
+                backgroundColor: "var(--color-gold-tint)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+              <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
             </div>
             <span
               style={{
-                fontFamily: mono,
-                fontSize: "11px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-2xs)",
                 color: "var(--color-gold-on-light)",
                 letterSpacing: "0.08em",
               }}
@@ -273,21 +308,20 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
           </div>
           <h2
             style={{
-              fontFamily: sans,
               fontWeight: 400,
-              fontSize: "26px",
+              fontSize: "var(--text-heading-md)",
               color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 12px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[30px]"
+            className="lg:!text-heading-xl"
           >
             {category.title}
           </h2>
-          <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "440px" }}>
+          <p style={{ fontSize: "var(--text-lg)", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "var(--measure-compact)" }}>
             {category.lede}
-            {plans ? ` Available on ${plans}.` : null}
+            {planNote ? ` ${planNote}` : null}
           </p>
         </div>
 
@@ -295,7 +329,7 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-lg)",
             overflow: "hidden",
           }}
         >
@@ -313,11 +347,11 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
             >
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
-                  <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                  <span style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
                     {integration.name}
                   </span>
                 </div>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
                   {integration.summary}
                 </p>
               </div>
@@ -330,7 +364,15 @@ function CategoryBlock({ category, index, plans }: { category: Category; index: 
   );
 }
 
-export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: PlansByFeature }) {
+/** `featurePlans` and `allPlanNames` come from the pricing API through the route. SCIM
+ *  provisioning rides on `sso`; the chart of accounts and journal export on `budgetCodes`. */
+export function IntegrationsCataloguePage({
+  featurePlans,
+  allPlanNames,
+}: {
+  featurePlans: FeaturePlans;
+  allPlanNames: string[];
+}) {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -355,119 +397,58 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
-        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="INTEGRATIONS"
+            eyebrowStyle={{
               display: "inline-block",
               marginBottom: "20px",
             }}
-          >
-            INTEGRATIONS
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+            title={`${BRAND.name} plugs into the stack you already run.`}
+            titleStyle={{
               fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[56px]"
-          >
-            Avrentis plugs into the stack you already run.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "17px",
+            titleClassName="lg:!text-display-4xl"
+            lede={
+              <>
+                Identity, provisioning, notifications, accounting, banking, and a
+                first-class developer platform. Each integration labelled honestly —
+                available today or delivered on request as part of a conversation.
+              </>
+            }
+            ledeStyle={{
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "660px",
+              maxWidth: "var(--measure)",
             }}
-          >
-            Identity, provisioning, notifications, accounting, banking, and a
-            first-class developer platform. Each integration labelled honestly —
-            available today or delivered on request as part of a conversation.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
+            <ButtonLink
               href="#identity"
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="md"
             >
               Explore the catalogue
-            </Link>
-            <Link
+            </ButtonLink>
+            <ButtonLink
               href={contactHref("demo")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
             >
               Request a custom connector →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -477,7 +458,7 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategoryNav} scrim="light" />
         <div
           style={{
-            maxWidth: "1200px",
+            maxWidth: "var(--layout-max-width)",
             margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
@@ -488,8 +469,8 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
         >
           <span
             style={{
-              fontFamily: mono,
-              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-3xs)",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               color: "var(--color-text-muted)",
@@ -502,12 +483,11 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
               key={c.id}
               href={`#${c.id}`}
               style={{
-                fontFamily: sans,
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-text-primary)",
                 textDecoration: "none",
                 padding: "6px 12px",
-                borderRadius: "999px",
+                borderRadius: "var(--radius-pill)",
                 border: "1px solid var(--color-border)",
                 backgroundColor: "var(--color-bg-light)",
               }}
@@ -521,9 +501,14 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
       {/* ── CATEGORIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg-light)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategories} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {CATEGORIES.map((c, i) => (
-            <CategoryBlock key={c.id} category={c} index={i} plans={c.planFeature ? plansByFeature[c.planFeature] : undefined} />
+            <CategoryBlock
+              key={c.id}
+              category={c}
+              index={i}
+              planNote={c.planFeature ? planScopeNote(featurePlans[c.planFeature] ?? [], allPlanNames) : ""}
+            />
           ))}
         </div>
       </section>
@@ -531,59 +516,42 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
       {/* ── DEV TEASER ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsDevTeaser} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
+              {...fadeUpOnScroll()}
             >
-              <span
-                style={{
-                  fontFamily: sans,
-                  fontWeight: 600,
-                  fontSize: "12px",
-                  letterSpacing: "0.10em",
-                  textTransform: "uppercase",
-                  color: "var(--color-gold-on-light)",
-                  display: "block",
+              <SectionIntro
+                reveal="none"
+                eyebrow="DEVELOPER PLATFORM"
+                eyebrowStyle={{
                   marginBottom: "12px",
                 }}
-              >
-                DEVELOPER PLATFORM
-              </span>
-              <h2
-                style={{
-                  fontFamily: sans,
+                title="Every transition is an event you can subscribe to."
+                titleStyle={{
                   fontWeight: 400,
-                  fontSize: "30px",
-                  color: "var(--color-text-primary)",
+                  fontSize: "var(--text-heading-xl)",
                   lineHeight: 1.2,
                   margin: "0 0 14px",
                   letterSpacing: "0.01em",
                 }}
-                className="lg:!text-[34px]"
-              >
-                Every transition is an event you can subscribe to.
-              </h2>
-              <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.75, margin: "0 0 16px" }}>
+                titleClassName="lg:!text-heading-3xl"
+              />
+              <p style={{ fontSize: "var(--text-lg)", color: "var(--color-text-muted)", lineHeight: 1.75, margin: "0 0 16px" }}>
                 Webhooks signed to the Standard Webhooks scheme, versioned
                 schemas, and retries with exponential backoff that keep the same
                 delivery id, so you can safely ignore repeats. Build the notifications your
                 team actually wants, or sync sanctioned vouchers to your ledger
                 the second the MD signs.
               </p>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-secondary)", lineHeight: 1.7, margin: "0 0 24px" }}>
+              <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-secondary)", lineHeight: 1.7, margin: "0 0 24px" }}>
                 Full API documentation is being finalised for public release.
                 Launch partners get access today.
               </p>
               <Link
                 href={contactHref("demo")}
                 style={{
-                  fontFamily: sans,
-                  fontSize: "13px",
+                  fontSize: "var(--text-sm)",
                   fontWeight: 600,
                   color: "var(--color-gold-on-light)",
                   textDecoration: "none",
@@ -597,14 +565,10 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
             </m.div>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
               style={{
                 backgroundColor: "var(--color-navy-primary)",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-lg)",
                 padding: "22px",
                 boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.18)",
               }}
@@ -612,8 +576,8 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
               <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
                 <span
                   style={{
-                    fontFamily: mono,
-                    fontSize: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-3xs)",
                     color: "var(--color-text-subtle)",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
@@ -624,8 +588,8 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
               </div>
               <pre
                 style={{
-                  fontFamily: mono,
-                  fontSize: "12px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-xs)",
                   color: "var(--color-border)",
                   lineHeight: 1.7,
                   margin: 0,
@@ -633,38 +597,18 @@ export function IntegrationsCataloguePage({ plansByFeature }: { plansByFeature: 
                   wordBreak: "break-word",
                 }}
               >
-{`content-type: application/json
-webhook-id: 6f1c2a9e-4b7d-4e21-9c55-0d3a8e7b1f42
-webhook-timestamp: 1776782537
-webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
-
-{
-  "eventId": "evt_8c1f0b6e2d4a…",
-  "type": "document.sanctioned",
-  "tenantId": "0d9e4c1a-…",
-  "createdAt": "2026-04-21T14:42:17.003Z",
-  "data": {
-    "documentType": "payment_voucher",
-    "referenceNumber": "PV-2026-0184",
-    "amountMinor": 1245000000,
-    "currency": "NGN",
-    "sanctionedBy": { "name": "Aisha Danjuma", "role": "md" },
-    "sanctionedAt": "2026-04-21T14:42:17Z",
-    "departmentName": "Operations"
-  }
-}`}
+{WEBHOOK_SAMPLE}
               </pre>
               <p
                 style={{
-                  fontFamily: sans,
-                  fontSize: "12px",
+                  fontSize: "var(--text-xs)",
                   color: "var(--color-text-subtle)",
                   lineHeight: 1.6,
                   margin: "14px 0 0",
                 }}
               >
-                Verify <code style={{ fontFamily: mono }}>webhook-signature</code> (HMAC-SHA256 over{" "}
-                <code style={{ fontFamily: mono }}>{"{webhook-id}.{webhook-timestamp}.{body}"}</code> with your
+                Verify <code style={{ fontFamily: "var(--font-mono)" }}>webhook-signature</code> (HMAC-SHA256 over{" "}
+                <code style={{ fontFamily: "var(--font-mono)" }}>{"{webhook-id}.{webhook-timestamp}.{body}"}</code> with your
                 subscription secret), reject timestamps more than five minutes off your clock, and ignore ids you have
                 already processed. These three Standard Webhooks headers are the only signature a delivery carries.
               </p>
@@ -684,29 +628,23 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCustomConnector} scrim="dark" />
-        <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
-        <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
+        <DarkHeroBackdrop glows="closing" />
 
-        <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content, textAlign: "center" }}>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               display: "inline-flex",
               alignItems: "center",
               gap: "8px",
-              fontFamily: sans,
-              fontSize: "12px",
+              fontSize: "var(--text-xs)",
               fontWeight: 600,
               letterSpacing: "0.10em",
               textTransform: "uppercase",
               color: "var(--color-gold)",
-              backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
-              border: "1px solid rgba(var(--color-gold-rgb), 0.28)",
-              borderRadius: "20px",
+              backgroundColor: "var(--color-gold-tint)",
+              border: "1px solid var(--color-gold-border)",
+              borderRadius: "var(--radius-3xl)",
               padding: "6px 14px",
               marginBottom: "20px",
             }}
@@ -715,88 +653,52 @@ webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
             Built for your stack
           </m.div>
           <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
             style={{
-              fontFamily: sans,
               fontWeight: 400,
-              fontSize: "30px",
+              fontSize: "var(--text-heading-xl)",
               color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[36px]"
+            className="lg:!text-display-xs"
           >
             Need something specific? We&rsquo;ll build it.
           </m.h2>
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
+            {...fadeUpOnScroll(2)}
             style={{
-              fontFamily: sans,
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 28px",
-              maxWidth: "600px",
+              maxWidth: "var(--measure-snug)",
             }}
           >
-            Enterprise customers get purpose-built connectors for the systems
-            already in production at their organisation — banking rails,
-            regional HRIS, in-house document stores. Tell us what you run; we
-            scope, build, and ship.
+            Running a system we do not list? We build purpose-built connectors
+            for the systems already in production at your organisation —
+            banking rails, regional HRIS, in-house document stores. Tell us what
+            you run; we scope, build, and ship.
           </m.p>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
+            <ButtonLink
               href={contactHref("demo")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="md"
             >
               Scope a custom connector
-            </Link>
-            <Link
+            </ButtonLink>
+            <ButtonLink
               href={LEGAL_PAGES.security}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
             >
               How we secure integrations →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

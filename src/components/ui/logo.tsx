@@ -14,14 +14,10 @@
  * All proportions derived from a single base unit: U = size × 0.10
  */
 
-import { BRAND } from "@/lib/brand";
-import { cn } from "@/lib/utils";
-import { type MarkVariant, getProps, WORDMARK_SPEC } from "@avrentishq/core/brand";
+import { BRAND, type MarkVariant, getProps, WORDMARK_SPEC } from "@/lib/brand";
 
 // The gate-mark geometry (getProps), the wordmark spec, and the variant type
-// come from the brand SSOT. The standalone SVG-string serializer is re-exported
-// so existing `@/components/ui/logo` importers keep working.
-export { avrentisMarkSvgString } from "@avrentishq/core/brand";
+// come from the brand SSOT.
 
 interface AvrentisMarkProps {
   size?: number;
@@ -84,7 +80,7 @@ function getColors(variant: MarkVariant) {
 
 // ── Mark component ────────────────────────────────────────────────────────────
 
-export function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMarkProps) {
+function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMarkProps) {
   const p = getProps(size);
   const c = getColors(variant);
 
@@ -95,7 +91,7 @@ export function AvrentisMark({ size = 44, variant = "primary", className }: Avre
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="AVRENTIS"
+      aria-label={BRAND.name.toUpperCase()}
       role="img"
     >
       {/* Container */}
@@ -152,7 +148,7 @@ export function AvrentisLogo({
 
   return (
     <div
-      className={cn("flex items-end", className)}
+      className={["flex items-end", className].filter(Boolean).join(" ")}
       style={{ gap: Math.round(size * WORDMARK_SPEC.gapFactor) }}
     >
       <AvrentisMark size={size} variant={variant} />
@@ -160,7 +156,7 @@ export function AvrentisLogo({
         <span
           className="av-wordmark"
           style={{
-            fontFamily: 'var(--font-wordmark, "Helvetica Neue"), Helvetica, Arial, sans-serif',
+            fontFamily: "var(--font-wordmark)",
             fontWeight: WORDMARK_SPEC.weight,
             fontSize: size * WORDMARK_SPEC.sizeFactor,
             letterSpacing: `${WORDMARK_SPEC.tracking}em`,

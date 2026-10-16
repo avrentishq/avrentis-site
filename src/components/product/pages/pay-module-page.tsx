@@ -11,27 +11,22 @@
 import { FileCheck, Workflow, Banknote, ShieldCheck, Receipt, Scale } from "lucide-react";
 import {
   ProductModuleLayout,
-  withPlanNotes,
   type ModuleConfig,
-  type ModulePlan,
+  type ModulePageData,
 } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { SUPPORTED_CURRENCY_NAMES } from "@/lib/languages-and-currencies";
 import { PayPreview } from "@/components/product/previews/pay-preview";
+import { FEATURED_VOUCHER } from "@/components/product/demo-fixtures";
+import { BRAND } from "@/lib/brand";
 
-const BANK_LETTER_PILLAR = "Bank-ready payment instructions";
-const LEDGER_USE_CASE = "Give your accounting system entries, not paperwork";
-const GROUP_USE_CASE = "Settle what your group's companies owe each other";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "pay",
-  eyebrow: MODULES.pay.name,
+const config: ModuleConfig = {
+  moduleKey: "pay",
   headline: "Every payment, on record. End-to-end.",
   description:
     "From submission through finance validation to MD sanction, every payment voucher travels a defined approval chain. No email threads, no lost approvals — and a bank-ready PDF the moment the MD signs.",
-  status: "available",
-  previewUrl: "Avrentis / vouchers / PV-2026-0184",
+  previewPath: `vouchers / ${FEATURED_VOUCHER.reference}`,
   preview: <PayPreview />,
 
   pillars: [
@@ -49,9 +44,10 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     },
     {
       icon: Banknote,
-      title: BANK_LETTER_PILLAR,
+      title: "Bank-ready payment instructions",
+      planFeature: "bankLetterGeneration",
       body:
-        "The moment the MD sanctions a voucher, Avrentis generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours.",
+        `The moment the MD sanctions a voucher, ${BRAND.name} generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours.`,
     },
     {
       icon: ShieldCheck,
@@ -110,48 +106,26 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
         "Approved payments go out as one file your bank accepts: NIBSS Direct Credit for naira, SEPA Credit Transfer for euros, Bacs Standard 18 for sterling, or ACH for US dollars — with each ACH payment marked as going to a checking or savings account, as the payee's details say.",
     },
     {
-      title: LEDGER_USE_CASE,
+      title: "Give your accounting system entries, not paperwork",
+      planFeature: "budgetCodes",
       body:
         "Approved vouchers and the payments against them become balanced journal entries, coded with your own accounts and cost centres. Export them in the layout QuickBooks Online, Zoho Books or Sage Accounting imports, or as a standard CSV. Each entry leaves once, so nothing is posted twice.",
     },
     {
-      title: GROUP_USE_CASE,
+      title: "Settle what your group's companies owe each other",
+      planFeature: "multiCompanyGroup",
       body:
         "When one company in your group approves a payment it owes a sister company, the sister company confirms the amount or disputes it with a note. Where two companies owe each other, one proposes netting the debts and the other accepts — the settlement is then recorded in both companies' books, and only the difference has to move.",
     },
   ],
 
   relatedModules: [
-    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders on the same approval rails" },
-    { slug: "audit", name: MODULES.audit.name, desc: "The full compliance trail across every payment" },
-    { slug: "connect", name: MODULES.connect.name, desc: "Push payment events into your accounting system" },
+    { moduleKey: "procure", desc: "Purchase orders on the same approval rails" },
+    { moduleKey: "audit", desc: "The full compliance trail across every payment" },
+    { moduleKey: "connect", desc: "Push payment events into your accounting system" },
   ],
 };
 
-/**
- * `bankLetterPlans`, `ledgerPlans`, `groupPlans` — "Business and Enterprise",
- * the plans carrying `bankLetterGeneration`, `budgetCodes` (the chart of
- * accounts and journal export) and `multiCompanyGroup`, read from the pricing
- * API by the route (the same pattern as the integrations page). Empty =
- * unknown, and the sentence is left off rather than guessed. Statement
- * reconciliation names no plan: it is part of Payables on every tier, so the
- * availability table already says it.
- */
-export function PayModulePage({
-  planAvailability,
-  bankLetterPlans,
-  ledgerPlans,
-  groupPlans,
-}: {
-  planAvailability: ModulePlan[];
-  bankLetterPlans: string;
-  ledgerPlans: string;
-  groupPlans: string;
-}) {
-  const pillars = withPlanNotes(config.pillars, { [BANK_LETTER_PILLAR]: bankLetterPlans });
-  const useCases = withPlanNotes(config.useCases, {
-    [LEDGER_USE_CASE]: ledgerPlans,
-    [GROUP_USE_CASE]: groupPlans,
-  });
-  return <ProductModuleLayout config={{ ...config, pillars, useCases, planAvailability }} />;
+export function PayModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

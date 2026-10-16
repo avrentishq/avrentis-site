@@ -13,16 +13,10 @@
  */
 
 import { m } from "framer-motion";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import {
-  READ_ONLY_GRACE_DAYS,
-  TRIAL_CLOSE_DAY,
-  TRIAL_DURATION_DAYS,
-  TRIAL_PLAN_NAME,
-  TRIAL_SEAT_CAP,
-} from "@/lib/trial-terms";
+import { fadeUpOnScroll } from "@/lib/animations";
+import { Eyebrow } from "@/components/ui/section-intro";
+import { READ_ONLY_GRACE_DAYS, TRIAL_CLOSE_DAY, TRIAL_DURATION_DAYS, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 
-const sans = "var(--font-sans)";
 
 interface Milestone {
   when: string;
@@ -34,7 +28,7 @@ const MILESTONES: Milestone[] = [
   {
     when: "Today",
     title: `Full ${TRIAL_PLAN_NAME} features, instantly`,
-    detail: `Full ${TRIAL_PLAN_NAME} features on your own data — a ${TRIAL_SEAT_CAP}-seat pilot workspace, with a sample approval already waiting. No card.`,
+    detail: `Full ${TRIAL_PLAN_NAME} features on your own data — a ${TRIAL_SEAT_CAP}-seat pilot workspace, with a sample approval already waiting. ${NO_CARD_REQUIRED}.`,
   },
   {
     when: `Days 1–${TRIAL_DURATION_DAYS - 1}`,
@@ -58,25 +52,9 @@ const MILESTONES: Milestone[] = [
 export function TrialTimeline() {
   return (
     <section>
-      <m.span
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-        transition={fadeUpTransition}
-        style={{
-          fontFamily: sans,
-          fontWeight: 600,
-          fontSize: "12px",
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          color: "var(--color-gold-on-light)",
-          display: "block",
-          marginBottom: "20px",
-        }}
-      >
+      <Eyebrow reveal="scroll" style={{ display: "block", marginBottom: "20px" }}>
         How the {TRIAL_DURATION_DAYS} days work
-      </m.span>
+      </Eyebrow>
 
       <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
         {MILESTONES.map((ms, i) => {
@@ -85,11 +63,7 @@ export function TrialTimeline() {
           return (
             <m.li
               key={ms.when}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(Math.min(i, 4))}
+              {...fadeUpOnScroll(i)}
               style={{
                 display: "grid",
                 gridTemplateColumns: "auto 1fr",
@@ -110,14 +84,14 @@ export function TrialTimeline() {
                   style={{
                     width: "12px",
                     height: "12px",
-                    borderRadius: "50%",
+                    borderRadius: "var(--radius-circle)",
                     marginTop: "4px",
                     flexShrink: 0,
                     // Today is "now" — filled. Future days stay hollow.
                     backgroundColor: isNow ? "var(--color-gold)" : "var(--color-white)",
                     border: isNow ? "none" : "1.5px solid var(--color-border-strong)",
                     boxShadow: isNow
-                      ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)"
+                      ? "0 0 0 4px var(--color-gold-tint)"
                       : "none",
                   }}
                 />
@@ -137,24 +111,10 @@ export function TrialTimeline() {
 
               {/* Content */}
               <div style={{ paddingBottom: isLast ? 0 : "22px" }}>
-                <span
-                  style={{
-                    fontFamily: sans,
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                    color: "var(--color-gold-on-light)",
-                    display: "block",
-                    marginBottom: "3px",
-                  }}
-                >
-                  {ms.when}
-                </span>
+                <Eyebrow style={{ display: "block", marginBottom: "3px" }}>{ms.when}</Eyebrow>
                 <h3
                   style={{
-                    fontFamily: sans,
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     fontWeight: 600,
                     color: "var(--color-text-primary)",
                     margin: "0 0 5px",
@@ -165,8 +125,7 @@ export function TrialTimeline() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: sans,
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: 0,

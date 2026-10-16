@@ -1,31 +1,20 @@
 import type { Metadata } from "next";
 import { ProcureModulePage } from "@/components/product/pages/procure-module-page";
-import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
-import { planAvailabilityFor } from "@/lib/module-availability";
-import { canonical } from "@/lib/seo";
-import { moduleName } from "@/lib/brand";
+import { fetchPricingData } from "@/lib/pricing";
+import { modulePageData } from "@/lib/module-availability";
+import { pageMetadata } from "@/lib/seo";
+import { notFoundUnlessPublic } from "@/lib/module-route";
+import { moduleName, moduleHref } from "@/lib/brand";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: moduleHref("procure"),
   title: `${moduleName("procure")} — Procurement on record`,
-  description:
-    "Every purchase order submitted, approved, and issued through a structured vendor and approval system. Line items, vendor directory, and a tamper-evident audit trail of every procurement decision.",
-  alternates: { canonical: "/product/procure" },
-  openGraph: {
-    title: `${moduleName("procure")} — Procurement on record`,
-    description:
-      "Submit, approve, and issue purchase orders through a single system of record. Vendor directory + line items + approval chain.",
-    url: canonical("/product/procure"),
-    type: "website",
-  },
-};
+  description: "Every purchase order submitted, approved, and issued through a structured vendor and approval system. Line items, vendor directory, and a tamper-evident audit trail of every procurement decision.",
+  socialDescription: "Submit, approve, and issue purchase orders through a single system of record. Vendor directory + line items + approval chain.",
+});
 
 export default async function ProductProcurePage() {
+  notFoundUnlessPublic("procure");
   const pricingData = await fetchPricingData();
-  return (
-    <ProcureModulePage
-      planAvailability={planAvailabilityFor("procure", pricingData)}
-      ledgerPlans={formatPlanList(planNames(pricingData, "budgetCodes"))}
-      groupPlans={formatPlanList(planNames(pricingData, "multiCompanyGroup"))}
-    />
-  );
+  return <ProcureModulePage {...modulePageData("procure", pricingData)} />;
 }

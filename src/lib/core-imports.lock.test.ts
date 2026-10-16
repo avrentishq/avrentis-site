@@ -33,11 +33,25 @@ import { dirname, join } from "node:path";
  *     can never receive mail, by the rule core shares with the app and console. No imports.
  *   - `locales` — the product's interface languages, named in the site's copy.
  *     No imports.
+ *   - `sectors` — the industry list the trial form offers, and the rule the app
+ *     validates a submitted industry with. Its only import is type-only.
+ *   - `modules/catalog` — each module's name, short name, suite and maturity,
+ *     which `brand.ts` reads instead of re-typing them. Its only import is type-only.
+ *   - `region/iso-3166`, `domains/public-email` and `trial/request-terms` —
+ *     the country codes, personal-mailbox list (and its
+ *     dependency-free form hint), the trial request's bounds, size bands and
+ *     link lifetime, shared with the app's API. No package imports.
+ *   - `billing/retention` — the statutory record-retention floor a page states
+ *     (the platform floor or the country's own, whichever is longer). Reaches
+ *     only `region/countries` and its own floor constant.
+ *   - `ui/card-grid` + `ui/card-grid.css` — card rows that fill the width at any
+ *     count, the same rule the product apps use. No imports; the stylesheet is
+ *     pulled into `globals.css`, which is why `.css` files are scanned too.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
  * at build time and by its test; never imported by a page) may also read
- * `billing/retention`, `modules/catalog` and `sectors`; so may
+ * `billing/retention`, `modules/catalog` and `sectors` (all runtime-allowed above); so may
  * tests, which check the generator's output against core.
  *
  * The last test below walks each allowed subpath's VALUE import graph inside
@@ -60,11 +74,18 @@ const RUNTIME_ALLOWED = new Set([
   "region/sales-tax",
   "billing/reserved-mail-domain",
   "locales",
+  "sectors",
+  "modules/catalog",
+  "ui/card-grid",
+  "ui/card-grid.css",
+  "billing/retention",
+  "region/iso-3166",
+  "domains/public-email",
+  "trial/request-terms",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
-const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog", "sectors"]);
+const BUILD_ONLY_ALLOWED = new Set<string>([]);
 const TEST_ONLY_ALLOWED = new Set([
-  "modules/catalog",
   "security/dependency-floors",
   "brand/copy-guardrails",
 ]);
@@ -78,7 +99,7 @@ const CORE_IMPORT = /(?:from\s+|import\s*\(\s*|import\s+)["']@avrentishq\/core(?
 
 function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
-    .filter((file) => /\.(tsx?|mjs)$/.test(file))
+    .filter((file) => /\.(tsx?|mjs|css)$/.test(file))
     .filter((file) => file !== SELF);
 }
 
@@ -96,9 +117,9 @@ describe("core imports stay inside the site's allowlist", () => {
   });
 
   it("scans the site (proves the walk sees a known importer)", () => {
-    const hero = join("components", "sections", "hero.tsx");
-    expect(sourceFiles()).toContain(hero);
-    expect(coreSubpaths(readFileSync(join(SRC, hero), "utf8"))).toContain("brand");
+    const brand = join("lib", "brand.ts");
+    expect(sourceFiles()).toContain(brand);
+    expect(coreSubpaths(readFileSync(join(SRC, brand), "utf8"))).toContain("brand");
   });
 
   it("scans next.config.ts too (proves the root file is read)", () => {
@@ -200,6 +221,17 @@ describe("every allowed core subpath reaches only packages the site installs", (
       (name) => !SITE_PACKAGES.has(name),
     );
     expect(missing, `@avrentishq/core/${subpath} needs packages the site does not install`).toEqual([]);
+  });
+});
+
+describe("brand values come through the site's re-export", () => {
+  it("only brand.ts imports @avrentishq/core/brand", () => {
+    // brand.ts is where the site adds its own view (modules, suites) on top of
+    // core's brand; a file importing core directly skips it and splits the import graph.
+    const importers = sourceFiles()
+      .filter((file) => !/\.test\.tsx?$/.test(file) && file !== join("lib", "brand.ts"))
+      .filter((file) => coreSubpaths(readFileSync(join(SRC, file), "utf8")).includes("brand"));
+    expect(importers, 'import from "@/lib/brand"').toEqual([]);
   });
 });
 

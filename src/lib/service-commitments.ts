@@ -20,7 +20,7 @@ import type { PricingData } from "./pricing";
  */
 
 export const SERVICE_GROUP_KEY = "service";
-export const SERVICE_GROUP_LABEL = "Service & support";
+const SERVICE_GROUP_LABEL = "Service & support";
 
 const SERVICE_KEYS: readonly string[] = SERVICE_COMMITMENT_KEYS;
 

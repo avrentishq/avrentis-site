@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Card rows that fill the width at any count — pair with cardGridColumns(n). */
+@import "@avrentishq/core/ui/card-grid.css";
 
 /* `static` emits every token below whether or not a utility uses it. Inline
    styles read these as var(--color-…); without `static` Tailwind drops any token
@@ -21,21 +23,31 @@
      borders, icons, and fills (non-text, 3:1 bar). */
   --color-gold-on-light: #8a5f1e;
   --color-gold-surface: #fdf8ef;
+  /* Gold tints, faintest to strongest — washes and chip fills behind content,
+     then hairlines and borders. A tint below surfaces.ts's TINT_MAX_ALPHA is
+     never a surface: the focus ring reads off what lies beneath it. */
+  --color-gold-ghost: rgba(var(--color-gold-rgb), 0.08);
+  --color-gold-tint: rgba(var(--color-gold-rgb), 0.12);
   --color-gold-divider: rgba(var(--color-gold-rgb), 0.2);
-  --color-gold-ghost: rgba(var(--color-gold-rgb), 0.07);
+  --color-gold-border: rgba(var(--color-gold-rgb), 0.28);
+  --color-gold-border-strong: rgba(var(--color-gold-rgb), 0.4);
 
   /* Logo tokens — mirror the platform app (source of truth) so the shared
      AvrentisLogo component renders identically here. accent === gold,
      primary-800/shell === navy; primary lockup = gold container + navy mark. */
-  --color-accent: #c68b2f;
-  --color-primary-800: #0f172a;
-  --color-shell: #0f172a;
+  --color-accent: var(--color-gold);
+  --color-primary-800: var(--color-navy-primary);
+  --color-shell: var(--color-navy-primary);
   --color-logo-container: var(--color-accent);
   --color-logo-mark: var(--color-shell);
 
   /* Surfaces */
   --color-white: #ffffff;
   --color-white-rgb: 255, 255, 255;
+  /* White tints on navy: a faint wash, hairlines, and a visible border. */
+  --color-white-wash: rgba(var(--color-white-rgb), 0.04);
+  --color-white-border: rgba(var(--color-white-rgb), 0.08);
+  --color-white-border-strong: rgba(var(--color-white-rgb), 0.2);
   --color-bg: #f1f5f9;
   --color-bg-rgb: 241, 245, 249;
   --color-bg-light: #f8fafc;
@@ -49,6 +61,8 @@
   --color-step-idle: #d8dee7;
   /* Drop shadows (paired with an alpha). */
   --color-shadow-rgb: 0, 0, 0;
+  /* A hairline between regions on a light surface. */
+  --color-navy-hairline: rgba(var(--color-navy-primary-rgb), 0.08);
 
   /* Text */
   --color-text-primary: #0f172a;
@@ -58,7 +72,9 @@
   --color-text-muted-rgb: 100, 116, 139;
   --color-text-subtle: #94a3b8;
   --color-text-subtle-rgb: 148, 163, 184;
-  --color-text-faint: #334155;
+  /* Body copy that needs more weight than secondary: legal prose, bullet
+     lists, consent labels. Light surfaces only (10:1 on white). */
+  --color-text-body: #334155;
   /* Secondary text on navy surfaces. */
   --color-text-inverse-muted: #cbd5e1;
   /* Keyword colour in the dark code samples. */
@@ -68,6 +84,9 @@
      alpha for the matching tint and border. */
   --color-success: #047857;
   --color-success-rgb: 4, 120, 87;
+  --color-success-wash: rgba(var(--color-success-rgb), 0.08);
+  --color-success-tint: rgba(var(--color-success-rgb), 0.12);
+  --color-success-border: rgba(var(--color-success-rgb), 0.2);
   --color-info: #0369a1;
   --color-info-rgb: 3, 105, 161;
   --color-caution: #7c2d12;
@@ -76,6 +95,11 @@
   /* Errors and required-field marks. */
   --color-danger: #b91c1c;
   --color-danger-rgb: 185, 28, 28;
+  --color-danger-wash: rgba(var(--color-danger-rgb), 0.06);
+  --color-danger-tint: rgba(var(--color-danger-rgb), 0.1);
+  --color-danger-border: rgba(var(--color-danger-rgb), 0.2);
+  /* The border of a field that failed validation. */
+  --color-danger-invalid: rgba(var(--color-danger-rgb), 0.5);
   --color-required: #dc2626;
   /* Pending / needs attention — the amber family. */
   --color-warning: #92400e;
@@ -100,16 +124,75 @@
   /* Neutral tint for roadmap / inactive badges. */
   --color-neutral-tint-rgb: 132, 146, 166;
 
-  /* Typography */
+  /* Typography. Elements inherit --font-sans from <body> (Tailwind's preflight
+     makes form controls inherit too), so a component names a family only to
+     switch away from it. */
   --font-sans: var(--font-archivo), system-ui, sans-serif;
-  --font-mono: var(--font-ibm-plex-mono), "Courier New", monospace;
+  /* Glyphs Plex Mono's subset lacks (arrows) fall to the platform's own monospace, not Courier. */
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --font-wordmark: var(--font-cabinet-grotesk), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* The handwritten signature in the voucher mockup (no web font loaded). */
+  --font-signature: "Dancing Script", cursive;
+
+  /* Type scale — the closed set of sizes the site uses. The reset drops
+     Tailwind's default scale so a text-* utility can only mean one of these. */
+  --text-*: initial;
+  --text-4xs: 9px;
+  --text-3xs: 10px;
+  --text-2xs: 11px;
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-md: 14px;
+  --text-lg: 15px;
+  --text-xl: 16px;
+  --text-2xl: 17px;
+  --text-3xl: 18px;
+  --text-heading-xs: 20px;
+  --text-heading-sm: 22px;
+  --text-heading-md: 24px;
+  --text-heading-lg: 28px;
+  --text-heading-xl: 30px;
+  --text-heading-2xl: 32px;
+  --text-heading-3xl: 34px;
+  --text-display-xs: 36px;
+  --text-display-sm: 38px;
+  --text-display-md: 40px;
+  --text-display-lg: 42px;
+  --text-display-xl: 44px;
+  --text-display-2xl: 48px;
+  --text-display-3xl: 52px;
+  --text-display-4xl: 56px;
 
   /* Radii */
+  --radius-2xs: 2px;
   --radius-xs: 3px;
   --radius-badge: 4px;
   --radius-md: 6px;
   --radius-card: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-2xl: 14px;
+  --radius-3xl: 20px;
+  --radius-pill: 9999px;
+  --radius-circle: 50%;
+
+  /* Layout widths — the page container, a narrower container, and text
+     measures (how wide a column of copy may run). */
+  --layout-max-width: 1200px;
+  --layout-narrow-width: 1000px;
+  --layout-reading-width: 820px;
+  --layout-prose-width: 760px;
+  --measure-wide: 900px;
+  --measure: 640px;
+  --measure-snug: 600px;
+  --measure-narrow: 560px;
+  --measure-short: 520px;
+  --measure-tight: 480px;
+  --measure-compact: 420px;
+  /* A form card's inner padding: narrower on phones, where every pixel of field width counts. */
+  --form-card-padding: clamp(20px, 5vw, 32px);
+  /* The horizontal padding of a full-width page section (e.g. /contact's main). */
+  --page-side-padding: clamp(16px, 5vw, 40px);
 }
 
 /* framer-motion's useScroll({ target }) measures the target's offset against
@@ -170,7 +253,7 @@ body {
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: 3px;
+  border-radius: var(--radius-xs);
 }
 
 /* The form alert takes focus from script after a failed send
@@ -189,10 +272,9 @@ form [role="alert"]:focus {
   z-index: 100;
   background: var(--color-navy-primary);
   color: var(--color-white);
-  font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: var(--text-md);
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   transition: top 150ms ease;
 }
 .skip-link:focus {
@@ -222,3 +304,17 @@ form [role="alert"]:focus {
 .pc-group[open] > .pc-group-summary::before { transform: rotate(90deg); }
 
 .pc-row:hover { background: var(--color-gold-ghost); }
+
+/* ── Call-to-action hover (src/components/ui/button.tsx) ────────────────────
+   Inline styles cannot express :hover, so the button's resting look is inline
+   and only the hover swap lives here, keyed on `data-button`. !important is
+   what lets a stylesheet rule beat the inline resting colour. */
+[data-button="primary"]:not(:disabled):hover {
+  background-color: var(--color-gold-hover) !important;
+}
+[data-button="secondary-on-dark"]:hover {
+  border-color: rgba(var(--color-white-rgb), 0.5) !important;
+}
+[data-button="secondary-on-light"]:hover {
+  border-color: var(--color-navy-primary) !important;
+}

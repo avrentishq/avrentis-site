@@ -3,22 +3,19 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
+import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
 
-export const metadata: Metadata = {
-  title: "Approval savings estimator — Avrentis",
-  description:
-    "Estimate the hours and money structured approvals give your team back. Free, instant, no signup — your numbers, a transparent formula.",
-  alternates: { canonical: "/tools/savings" },
-  openGraph: {
-    title: "What would structured approvals save you?",
-    description:
-      "A free, instant estimate of the time and cost you recover with structured approvals. No signup required.",
-    url: canonical("/tools/savings"),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: SITE_ROUTES.savingsEstimator,
+  title: "Approval savings estimator",
+  description: "Estimate the hours and money structured approvals give your team back. Free, instant, no signup — your numbers, a transparent formula.",
+  socialTitle: "What would structured approvals save you?",
+  socialDescription: "A free, instant estimate of the time and cost you recover with structured approvals. No signup required.",
+});
 
 export default function SavingsToolPage() {
   return (
@@ -35,40 +32,25 @@ export default function SavingsToolPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.savingsHeader} scrim="light" />
-        <div style={{ maxWidth: "1080px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <div style={{ maxWidth: "640px", margin: "0 auto 48px", textAlign: "center" }}>
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "16px",
-              }}
-            >
-              Free tool · No signup
-            </span>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
+          <div style={{ maxWidth: "var(--measure)", margin: "0 auto 48px", textAlign: "center" }}>
+            <Eyebrow style={{ display: "block", marginBottom: "16px" }}>Free tool · No signup</Eyebrow>
             <h1
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "34px",
+                fontSize: "var(--text-heading-3xl)",
                 color: "var(--color-text-primary)",
                 lineHeight: 1.2,
                 margin: "0 0 16px",
                 letterSpacing: "0.01em",
               }}
-              className="lg:!text-[42px]"
+              className="lg:!text-display-lg"
             >
               What would structured approvals give you back?
             </h1>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "16px",
+                fontSize: "var(--text-xl)",
                 color: "var(--color-text-muted)",
                 lineHeight: 1.7,
                 margin: 0,

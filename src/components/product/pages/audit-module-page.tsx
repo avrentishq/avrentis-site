@@ -1,26 +1,25 @@
 "use client";
 
 import { ShieldCheck, FileSearch, Download, LockKeyhole, UserSearch } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
+import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
+import { TRAIL_SEALED, TRAIL_SEALED_WITH_FINGERPRINT } from "@/lib/record-keeping";
+import { AUDIT_QUERY_THRESHOLD, demoAmount } from "@/components/product/demo-fixtures";
 
-const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "audit",
-  eyebrow: MODULES.audit.name,
+const config: ModuleConfig = {
+  moduleKey: "audit",
   headline: "Compliance without the scramble.",
   description:
-    "Every submission, approval, query, signature, and access event — recorded to a tamper-evident audit trail, sealed daily, that no user — superadmins included — can edit. Export a regulator-ready bundle for any period up to a year, in one click.",
-  status: "available",
-  previewUrl: "Avrentis / audit",
+    `Every submission, approval, query, signature, and access event — recorded to a tamper-evident audit trail, ${TRAIL_SEALED}, that no user — superadmins included — can edit. Export a regulator-ready bundle for any period up to a year, in one click.`,
+  previewPath: "audit",
   preview: <AuditPreview />,
 
   pillars: [
     {
       icon: LockKeyhole,
-      title: "Tamper-evident, sealed daily",
+      title: `Tamper-evident, ${TRAIL_SEALED}`,
       body:
-        "Database triggers refuse edits and deletions of audit entries, and the platform has no API surface that can alter a historical entry. Each entry is chained to the one before it and the chain is sealed every night with a signed fingerprint, so any change would show — and you can check it yourself.",
+        `Database triggers refuse edits and deletions of audit entries, and the platform has no API surface that can alter a historical entry. Each entry is chained to the one before it and the chain is ${TRAIL_SEALED_WITH_FINGERPRINT}, so any change would show — and you can check it yourself.`,
     },
     {
       icon: FileSearch,
@@ -31,20 +30,23 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       icon: Download,
       title: "Regulator-ready PDF + CSV exports",
+      planFeature: "fullAuditExport",
       body:
         "Export a period-scoped bundle as a formatted PDF for auditors or one CSV per section for analysts, or deliver the trail to your SIEM every night. Every export is itself logged, so you always know who received which snapshot.",
     },
     {
       icon: ShieldCheck,
       title: "Policies that follow SOC 2 structure",
+      planFeature: "controlsAttestation",
       body:
         "Separation of duties enforced as work moves, with a report of every exception; access reviews and control sign-offs signed by a named officer and kept on the record; role-based access and time-bound grants. No bolt-on compliance theatre.",
     },
     {
       icon: UserSearch,
       title: "Data-subject requests, handled on a clock",
+      everyPlan: true,
       body:
-        "Someone can ask what personal data you hold on them, have it corrected, take a copy, or ask you to erase it. Requests arrive through your organisation's own link, identity is verified before anything is disclosed, and the statutory deadline is tracked with warnings before it is missed rather than after. Included on every plan.",
+        "Someone can ask what personal data you hold on them, have it corrected, take a copy, or ask you to erase it. Requests arrive through your organisation's own link, identity is verified before anything is disclosed, and the statutory deadline is tracked with warnings before it is missed rather than after.",
     },
   ],
 
@@ -52,7 +54,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "External audit preparation in hours, not weeks",
       body:
-        "When an auditor asks for \"all approvals in Q3 over ₦1M\", a saved-view + export delivers the answer — with signatures, chains, and timestamps — before the meeting starts.",
+        `When an auditor asks for "all approvals in Q3 over ${demoAmount(AUDIT_QUERY_THRESHOLD)}", a saved-view + export delivers the answer — with signatures, chains, and timestamps — before the meeting starts.`,
     },
     {
       title: "Investigate \"who changed this?\" with certainty",
@@ -66,18 +68,19 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     },
     {
       title: "Board-ready operational reports",
+      planFeature: "fullAuditExport",
       body:
         "Monthly and quarterly exports feed board packs with volume, turnaround, and exception data — pulled from the trail, not hand-assembled from spreadsheets.",
     },
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Every payment event lands in the audit trail automatically" },
-    { slug: "procure", name: MODULES.procure.name, desc: "PO lifecycle events — from submission to issue — all tracked" },
-    { slug: "vault", name: MODULES.vault.name, desc: "Document access and download events logged to the compliance trail" },
+    { moduleKey: "pay", desc: "Every payment event lands in the audit trail automatically" },
+    { moduleKey: "procure", desc: "PO lifecycle events — from submission to issue — all tracked" },
+    { moduleKey: "vault", desc: "Document access and download events logged to the compliance trail" },
   ],
 };
 
-export function AuditModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+export function AuditModulePage(data: ModulePageData) {
+  return <ProductModuleLayout config={config} {...data} />;
 }

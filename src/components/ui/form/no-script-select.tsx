@@ -7,16 +7,14 @@
  * a <noscript> body is inert, so only the hidden input posts.
  */
 
-const sans = "var(--font-sans)";
 
 const selectStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "14px",
+  fontSize: "var(--text-md)",
   color: "var(--color-text-primary)",
   width: "100%",
   height: "42px",
   border: "1px solid var(--color-border)",
-  borderRadius: "6px",
+  borderRadius: "var(--radius-md)",
   padding: "0 12px",
   backgroundColor: "var(--color-white)",
 };

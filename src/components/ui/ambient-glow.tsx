@@ -21,6 +21,7 @@
 import { m } from "framer-motion";
 import { useReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { Z_INDEX } from "@/lib/layers";
 
 interface AmbientGlowProps {
   /** Pixel size of the square glow. Defaults to 480. */
@@ -99,7 +100,7 @@ export function AmbientGlow({
         opacity: intensity,
         filter: "blur(80px)",
         pointerEvents: "none",
-        zIndex: 0,
+        zIndex: Z_INDEX.base,
         willChange: "transform",
       }}
     />

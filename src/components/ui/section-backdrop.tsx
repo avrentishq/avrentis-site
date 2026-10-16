@@ -1,5 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import type { SectionBackdropSource } from "@/lib/section-backdrops";
+import { Z_INDEX } from "@/lib/layers";
 
 /**
  * SectionBackdrop — full-bleed image backdrop + legibility scrim for a landing
@@ -86,13 +87,13 @@ export function SectionBackdrop({
             objectFit: "cover",
             objectPosition: resolvedObjectPosition,
             opacity: resolvedOpacity,
-            zIndex: -1,
+            zIndex: Z_INDEX.backdrop,
           }}
         />
       )}
       <div
         aria-hidden="true"
-        style={{ position: "absolute", inset: 0, zIndex: -1, background: SCRIM[scrim] }}
+        style={{ position: "absolute", inset: 0, zIndex: Z_INDEX.backdrop, background: SCRIM[scrim] }}
       />
     </>
   );

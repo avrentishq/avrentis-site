@@ -72,6 +72,30 @@ describe("planAvailabilityFor — inclusion comes from the API, never from prose
     expect(data.plans.every((p) => !p.modules.some((m) => m.key === "authority"))).toBe(true);
   });
 
+  it("derives each tier's extra depth from the API's feature labels", () => {
+    // Authority's depth moves by plan: the lines name what each tier adds, in
+    // the API's words, so they cannot claim a feature the tier does not carry.
+    const business = data.plans.find((plan) => plan.key === "business")!;
+    const enterprise = data.plans.find((plan) => plan.key === "enterprise")!;
+    const enterpriseNote = row("authority", enterprise.name)?.note ?? "";
+    expect(enterpriseNote).toContain(data.featureLabels.advancedApprovalWorkflows!);
+    expect(enterpriseNote).not.toContain(data.featureLabels.delegation!);
+    expect(row("authority", business.name)?.note ?? "").toContain(data.featureLabels.delegation!);
+  });
+
+  it("states storage and retention from the plan's own limits", () => {
+    for (const plan of data.plans) {
+      expect(row("vault", plan.name)?.note ?? "").toMatch(/storage · .*retention/);
+    }
+  });
+
+  it("names the SIEM feed only where the plan carries API access", () => {
+    for (const plan of data.plans) {
+      const note = row("audit", plan.name)?.note ?? "";
+      if (/SIEM/.test(note)) expect(plan.features.apiAccess).toBe(true);
+    }
+  });
+
   it("carries no note that restates the tick", () => {
     for (const moduleKey of data.moduleOrder) {
       for (const r of planAvailabilityFor(moduleKey, data)) {

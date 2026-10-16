@@ -8,7 +8,8 @@
  * The platform does the real validation, eligibility routing, and
  * magic-link dispatch. This module is a thin adapter that keeps the
  * platform URL out of the client bundle and normalises the response
- * shape.
+ * shape. The verify page's button (`confirmTrialVerification`) and the
+ * expired-link resend (`reissueTrialToken`) live here too.
  *
  * `"use server"` modules can only export async functions in Next.js 16
  * — the form-state type + INITIAL_STATE live in `./state` so the
@@ -16,28 +17,29 @@
  * compiler check.
  */
 
-import { TRIAL_FIELDS, type TrialFormState } from "./state";
+import { redirect } from "next/navigation";
+import {
+  isTrialRole,
+  OTHER_ROLE,
+  TRIAL_FIELDS,
+  type TrialFieldErrors,
+  type TrialFormState,
+} from "./state";
 import { submittedValues } from "@/lib/submitted-values";
 import {
   mapTrialResponse,
   type TrialResponsePayload,
 } from "./map-response";
-import { ORG_SIZES as SIZES } from "@/lib/org-size";
+import { isOrgSize } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { platformFetch } from "@/lib/platform-fetch";
-import { verifyTurnstile } from "@/lib/turnstile";
-import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
+import { PLATFORM_API_PATHS, PLATFORM_ORIGIN } from "@/lib/platform";
+import { buildSectorValue, isStorableSector } from "@avrentishq/core/sectors";
+import { humanCheckRefusal, rateLimitRefusal, screenSubmission } from "@/lib/submission-guard";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { exceedsLimit, FORM_MESSAGES, tooLongMessage, withinLimit } from "@/lib/form-rules";
 import { trialEmailError } from "./email-check";
-
-const ROLES = [
-  "CFO",
-  "Finance Director",
-  "MD",
-  "Finance Manager",
-  "Operations Manager",
-  "Other",
-] as const;
+import { VERIFY_FAILED_MESSAGE, type VerifyState } from "./verify/[token]/state";
 
 export async function submitTrialRequest(
   _previous: TrialFormState,
@@ -50,22 +52,12 @@ export async function submitTrialRequest(
 }
 
 async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
-  // Honeypot — bots fill hidden fields. Silently mimic success without forwarding.
-  const honeypot = formData.get("fax_number");
-  if (typeof honeypot === "string" && honeypot.trim() !== "") {
+  const screen = await screenSubmission(formData, "trialRequest");
+  // A filled decoy field: answer as if it succeeded, and forward nothing.
+  if (screen.outcome === "decoy") {
     return { status: "queued_for_review", message: "Thanks — we'll be in touch shortly." };
   }
-
-  const rateLimit = await limitVisitor("trialRequest");
-  if (!rateLimit.ok) {
-    return {
-      status: "error",
-      message:
-        rateLimit.status === 503
-          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
-          : "You've submitted a few requests in a short window. Please wait a moment and try again.",
-    };
-  }
+  if (screen.outcome === "refused") return { status: "error", message: screen.message };
 
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
@@ -73,28 +65,32 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
   const role = String(formData.get("role") ?? "").trim();
   const orgSize = String(formData.get("orgSize") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
+  const sectorChoice = String(formData.get("sector") ?? "").trim();
+  const sectorOther = withinLimit(String(formData.get("sectorOther") ?? "").trim(), "otherDetail");
+  // The app requires one storable industry: a listed one, or "Other: <text>".
+  const sector = buildSectorValue(sectorChoice, sectorOther);
   const source = String(formData.get("source") ?? "").trim();
-  const roleOther = String(formData.get("roleOther") ?? "").trim().slice(0, 120);
+  const roleOther = withinLimit(String(formData.get("roleOther") ?? "").trim(), "otherDetail");
   const consent = formData.get("consent") === "on";
 
   // Light client-side validation so we fail fast before hitting the
   // platform. Platform re-validates and is the source of truth.
-  type FieldErrors = Partial<
-    Record<
-      "name" | "email" | "organisation" | "role" | "orgSize" | "country" | "consent",
-      string
-    >
-  >;
-  const fieldErrors: FieldErrors = {};
+  const fieldErrors: TrialFieldErrors = {};
   if (!name) fieldErrors.name = "Please share your full name.";
   const emailError = trialEmailError(email);
   if (emailError) fieldErrors.email = emailError;
   if (!organisation) fieldErrors.organisation = "Please share your organisation.";
-  if (!role || !ROLES.includes(role as (typeof ROLES)[number])) {
+  if (!isTrialRole(role)) {
     fieldErrors.role = "Please select your role.";
   }
-  if (!orgSize || !SIZES.includes(orgSize as (typeof SIZES)[number])) {
+  if (!isOrgSize(orgSize)) {
     fieldErrors.orgSize = "Please select your organisation size.";
+  }
+  if (!sectorChoice) fieldErrors.sector = "Please select your industry.";
+  else if (sectorChoice === "Other" && !sectorOther) {
+    fieldErrors.sector = "Please describe your industry.";
+  } else if (!isStorableSector(sector)) {
+    fieldErrors.sector = "Please choose your industry from the list.";
   }
   if (!country) fieldErrors.country = "Please select your country.";
   else if (!isSelectableCountry(country.toUpperCase())) {
@@ -104,27 +100,22 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
 
   // Length bounds — mirror the platform's Zod limits so we fail fast and never
   // forward unbounded input into the request body.
-  if (name.length > 200) fieldErrors.name = "That name is too long (200 character max).";
-  if (organisation.length > 200)
-    fieldErrors.organisation = "That organisation name is too long (200 character max).";
+  if (exceedsLimit(name, "name")) fieldErrors.name = tooLongMessage("name", "name");
+  if (exceedsLimit(organisation, "organisation")) {
+    fieldErrors.organisation = tooLongMessage("organisation name", "organisation");
+  }
 
   if (Object.keys(fieldErrors).length > 0) {
-    return { status: "error", message: "Please fix the highlighted fields.", fieldErrors };
+    return { status: "error", message: FORM_MESSAGES.fixHighlighted, fieldErrors };
   }
 
-  // Bot defence — enforced only when Turnstile is fully configured.
-  const turnstile = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
-  if (!turnstile.ok) {
-    return {
-      status: "error",
-      message: "We couldn't verify that you're human. Please complete the challenge and try again.",
-    };
-  }
+  const humanRefusal = await humanCheckRefusal(formData);
+  if (humanRefusal) return { status: "error", message: humanRefusal };
 
   // A typed "Other" role rides along in `source` — the platform's `role` field
   // is an allow-list, so the free-text detail can't go there directly.
   const sourceOut =
-    role === "Other" && roleOther
+    role === OTHER_ROLE && roleOther
       ? source
         ? `Role: ${roleOther} · ${source}`
         : `Role: ${roleOther}`
@@ -132,7 +123,7 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
 
   let response: Response;
   try {
-    response = await platformFetch("/api/v1/public/trial/request", {
+    response = await platformFetch(PLATFORM_API_PATHS.trialRequest, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -142,7 +133,8 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
         role,
         orgSize,
         country: country.toUpperCase(),
-        source: sourceOut ? sourceOut.slice(0, 200) : undefined,
+        sector,
+        source: sourceOut ? withinLimit(sourceOut, "source") : undefined,
         consent: true,
       }),
     });
@@ -168,22 +160,14 @@ export async function reissueTrialToken(
   formData: FormData,
 ): Promise<{ status: "idle" | "sent" | "error"; message?: string }> {
   const token = String(formData.get("token") ?? "").trim();
-  if (!token || token.length > 512) return { status: "error", message: "Missing or invalid token." };
+  if (!token || exceedsLimit(token, "token")) return { status: "error", message: "Missing or invalid token." };
 
-  const rateLimit = await limitVisitor("trialResend");
-  if (!rateLimit.ok) {
-    return {
-      status: "error",
-      message:
-        rateLimit.status === 503
-          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
-          : "Please wait a moment before requesting another link.",
-    };
-  }
+  const refusal = await rateLimitRefusal("trialResend");
+  if (refusal) return { status: "error", message: refusal };
 
   let response: Response;
   try {
-    response = await platformFetch("/api/v1/public/trial/reissue", {
+    response = await platformFetch(PLATFORM_API_PATHS.trialReissue, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
@@ -206,5 +190,73 @@ export async function reissueTrialToken(
     message:
       payload.message ??
       "Could not issue a new link. Please fill in the form again to start fresh.",
+  };
+}
+
+interface VerifyResponse {
+  status?: string;
+  message?: string;
+  /** Preferred field returned by the current platform API. */
+  inviteUrl?: string;
+  /** Legacy field — kept for backward compatibility. */
+  loginUrl?: string;
+}
+
+/**
+ * Spends a magic-link token: asks the platform to verify it and, on success,
+ * sends the visitor to the workspace invite. Runs only when the visitor
+ * presses the button on the verify page — never on page load — because email
+ * link scanners open links before the person does, and a token spent by a
+ * scanner leaves the person with no invite.
+ */
+export async function confirmTrialVerification(
+  _previous: VerifyState,
+  formData: FormData,
+): Promise<VerifyState> {
+  const token = String(formData.get("token") ?? "").trim();
+  // Guard against absurd token input before forwarding to the platform.
+  if (!token || exceedsLimit(token, "token")) {
+    return { status: "not_found", message: VERIFY_FAILED_MESSAGE };
+  }
+
+  let response: Response;
+  let payload: VerifyResponse;
+  try {
+    response = await platformFetch(PLATFORM_API_PATHS.trialVerify, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+      cache: "no-store",
+    });
+    payload = (await response.json().catch(() => ({}))) as VerifyResponse;
+  } catch {
+    // Network failure or timeout — the error card.
+    return { status: "error", message: VERIFY_FAILED_MESSAGE };
+  }
+
+  // Success — the platform has provisioned (or found an existing) tenant.
+  // Prefer inviteUrl; fall back to loginUrl when it is absent.
+  // SECURITY (open-redirect guard): this is a token-bearing flow, so only ever
+  // redirect to the trusted platform origin — never to an arbitrary URL echoed
+  // back in the response.
+  const successUrl = payload.inviteUrl ?? payload.loginUrl;
+  if (response.ok && payload.status === "provisioned" && successUrl) {
+    const appOrigin = new URL(PLATFORM_ORIGIN).origin;
+    let target: URL | null = null;
+    try {
+      target = new URL(successUrl);
+    } catch {
+      target = null;
+    }
+    if (target && target.origin === appOrigin) {
+      redirect(target.toString());
+    }
+    // Untrusted or malformed target — fall through to the error card.
+    return { status: "error", message: VERIFY_FAILED_MESSAGE };
+  }
+
+  return {
+    status: payload.status && payload.status !== "provisioned" ? payload.status : "error",
+    message: payload.message ?? VERIFY_FAILED_MESSAGE,
   };
 }

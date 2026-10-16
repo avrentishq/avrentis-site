@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES } from "@/lib/brand";
+import { SITE_ROUTES } from "@/lib/routes";
 
-export const metadata: Metadata = {
-  title: "Terms of service — Avrentis",
-  description:
-    "The terms that govern your organisation's use of Avrentis — service description, acceptable use, data ownership, fees, liability, and termination.",
-  alternates: { canonical: LEGAL_PAGES.terms },
-  openGraph: {
-    title: "Avrentis terms of service",
-    description:
-      "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
-    url: canonical(LEGAL_PAGES.terms),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: LEGAL_PAGES.terms,
+  title: "Terms of service",
+  description: `The terms that govern your organisation's use of ${BRAND.name} — service description, acceptable use, data ownership, fees, liability, and termination.`,
+  socialTitle: `${BRAND.name} terms of service`,
+  socialDescription: "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
+});
 
 const SECTIONS: LegalSection[] = [
   {
@@ -26,12 +21,12 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          These terms (&ldquo;Terms&rdquo;) form a contract between Avrentis (&ldquo;Avrentis&rdquo;,
-          &ldquo;we&rdquo;) and the organisation (&ldquo;Customer&rdquo;, &ldquo;you&rdquo;) that uses the Avrentis
+          These terms (&ldquo;Terms&rdquo;) form a contract between {BRAND.name} (&ldquo;{BRAND.name}&rdquo;,
+          &ldquo;we&rdquo;) and the organisation (&ldquo;Customer&rdquo;, &ldquo;you&rdquo;) that uses the {BRAND.name}{" "}
           platform at <a href={BRAND.appUrl} rel="noreferrer">{new URL(BRAND.appUrl).host}</a> (the &ldquo;Service&rdquo;).
         </p>
         <p>
-          By creating an Avrentis workspace, accessing the Service, or accepting these Terms through an order form,
+          By creating an {BRAND.name} workspace, accessing the Service, or accepting these Terms through an order form,
           you agree to be bound by them on behalf of the organisation you represent. If you do not agree, do not use
           the Service.
         </p>
@@ -44,7 +39,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Avrentis is a multi-tenant platform for structuring, approving, and recording operational
+          {BRAND.name} is a multi-tenant platform for structuring, approving, and recording operational
           documents — payment vouchers, purchase orders, personnel actions, and related records. The Service
           includes workflow automation, notifications, PDF generation, audit trails, administrative tooling, and
           supporting APIs. We may release new features, retire features that no longer serve the product, or
@@ -53,7 +48,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           A detailed, current description of capabilities lives at{" "}
-          <Link href="/product">/product</Link> and is authoritative over any earlier marketing material.
+          <Link href={SITE_ROUTES.product}>{SITE_ROUTES.product}</Link> and is authoritative over any earlier marketing material.
         </p>
       </>
     ),
@@ -135,14 +130,14 @@ const SECTIONS: LegalSection[] = [
           supplier, vendor, and payee identity and payment details across organisations using Aggregated Insights only.
         </p>
         <p>
-          <strong>What you grant us.</strong>{" "}You grant Avrentis a perpetual, worldwide, royalty-free right to create
+          <strong>What you grant us.</strong>{" "}You grant {BRAND.name} a perpetual, worldwide, royalty-free right to create
           and use Aggregated Insights from Customer Data and Service Data to: detect, investigate, and prevent fraud,
-          financial crime, and abuse of the Service, including in the interests of other Avrentis customers; verify and
+          financial crime, and abuse of the Service, including in the interests of other {BRAND.name} customers; verify and
           corroborate the identity, tax registration, banking details, and compliance status of suppliers, vendors, and
           payees; operate, maintain, and improve the security and integrity of the Service; produce aggregate
           benchmarks, statistics, and industry research; develop, test, and improve features and analytical models,
-          using Aggregated Insights only; and operate the Verification Network for the benefit of Avrentis customers
-          generally. Avrentis owns the Aggregated Insights and any models or aggregates derived from them. Nothing here
+          using Aggregated Insights only; and operate the Verification Network for the benefit of {BRAND.name} customers
+          generally. {BRAND.name} owns the Aggregated Insights and any models or aggregates derived from them. Nothing here
           transfers ownership of Customer Data, and we claim no rights in it beyond those needed to provide the Service.
         </p>
         <p>
@@ -186,7 +181,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Paid plans and their fees are described at <Link href="/pricing">/pricing</Link> and any order form you
+          Paid plans and their fees are described at <Link href={SITE_ROUTES.pricing}>{SITE_ROUTES.pricing}</Link> and any order form you
           execute. Unless otherwise stated, fees are charged in advance for the subscription term, are
           non-refundable, and are exclusive of taxes.
         </p>
@@ -224,7 +219,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Avrentis owns all intellectual-property rights in the Service, its interfaces, and its underlying code.
+          {BRAND.name} owns all intellectual-property rights in the Service, its interfaces, and its underlying code.
           These Terms grant you a limited, non-exclusive, non-transferable right to access and use the Service for
           your internal business purposes during the subscription term. No other rights are granted by implication
           or estoppel.
@@ -251,7 +246,7 @@ const SECTIONS: LegalSection[] = [
           — including merchantability, fitness for a particular purpose, and non-infringement.
         </p>
         <p>
-          Avrentis is a tool that records and routes approvals; it does not replace your organisation&rsquo;s
+          {BRAND.name} is a tool that records and routes approvals; it does not replace your organisation&rsquo;s
           responsibility for legal, financial, or regulatory decisions made inside it.
         </p>
       </>
@@ -266,7 +261,7 @@ const SECTIONS: LegalSection[] = [
           To the fullest extent permitted by law, neither party is liable for indirect, consequential, incidental,
           special, or punitive damages, or for lost profits, revenues, or data, even if advised of the possibility.
           Each party&rsquo;s aggregate liability arising out of or related to these Terms is capped at the fees paid
-          by the Customer to Avrentis in the twelve months preceding the event giving rise to liability.
+          by the Customer to {BRAND.name} in the twelve months preceding the event giving rise to liability.
         </p>
         <p>
           The cap does not apply to breaches of confidentiality obligations, misuse of intellectual property,
@@ -295,8 +290,8 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           Either party may terminate for material breach that is not cured within 30 days of written notice.
-          Customer may terminate for convenience at the end of a subscription term per its plan or order form.
-          Avrentis may suspend or terminate access to address severe misuse, non-payment, or legal requirement.
+          Customer may terminate for convenience at the end of a subscription term per its plan or order form.{" "}
+          {BRAND.name} may suspend or terminate access to address severe misuse, non-payment, or legal requirement.
         </p>
         <p>
           On termination, access to the Service ends. Customer may, for a reasonable period, export data through
@@ -346,7 +341,7 @@ export default function TermsPage() {
     <LegalPageShell
       eyebrow="TERMS OF SERVICE"
       title="The terms of our agreement."
-      lede="These terms describe what Avrentis commits to, what we expect of our customers, how data is handled, and how the agreement can end. Written for people, not just lawyers."
+      lede={`These terms describe what ${BRAND.name} commits to, what we expect of our customers, how data is handled, and how the agreement can end. Written for people, not just lawyers.`}
       effectiveDate="21 April 2026"
       sections={SECTIONS}
       footerNote={

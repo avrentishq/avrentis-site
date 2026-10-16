@@ -4,23 +4,19 @@ import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/contact/contact-form";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { isContactIntent, type ContactIntent } from "@/lib/brand";
-import { canonical } from "@/lib/seo";
+import { isContactIntent, SITE_PAGES, type ContactIntent, BRAND } from "@/lib/brand";
+import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
+import { ENQUIRY_PROMISE } from "@/lib/contacts";
+import { Z_INDEX } from "@/lib/layers";
 
-export const metadata: Metadata = {
-  title: "Contact — Avrentis",
-  description:
-    "Talk to Avrentis. Contact us for a walkthrough, request a security review, or share a use case. A real person replies within one business day. To start a trial, use /trial.",
-  alternates: { canonical: contactHref() },
-  openGraph: {
-    title: "Contact Avrentis",
-    description:
-      "Contact us or talk to our team. Real humans, one-business-day reply.",
-    url: canonical(contactHref()),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: contactHref(),
+  title: "Contact",
+  description: `Talk to ${BRAND.name}. Contact us for a walkthrough, request a security review, or share a use case. ${ENQUIRY_PROMISE} To start a trial, use ${SITE_PAGES.trial()}.`,
+  socialTitle: `Contact ${BRAND.name}`,
+  socialDescription: `Contact us or talk to our team. ${ENQUIRY_PROMISE}`,
+});
 
 function resolveIntent(raw: string | string[] | undefined): ContactIntent {
   return isContactIntent(raw) ? raw : "general";
@@ -41,7 +37,7 @@ export default async function ContactPage({
         id="main"
         style={{
           backgroundColor: "var(--color-bg)",
-          padding: "56px 40px 96px",
+          padding: "56px var(--page-side-padding) 96px",
           minHeight: "70vh",
           position: "relative",
           overflow: "hidden",
@@ -49,7 +45,7 @@ export default async function ContactPage({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.contactForm} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <ContactForm intent={intent} />
         </div>
       </main>

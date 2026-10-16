@@ -17,11 +17,54 @@ export const TRIAL_FIELDS = [
   "role",
   "roleOther",
   "orgSize",
+  "sector",
+  "sectorOther",
   "country",
   "source",
   "consent",
 ] as const;
 export type TrialField = (typeof TRIAL_FIELDS)[number];
+
+/**
+ * The fields the form can show an error on — the action's own checks and the
+ * platform's 422 answer are both narrowed to these (map-response.ts), so an
+ * error is never raised on a field the visitor cannot see.
+ */
+export const TRIAL_ERROR_FIELDS = [
+  "name",
+  "email",
+  "organisation",
+  "role",
+  "orgSize",
+  "sector",
+  "country",
+  "consent",
+] as const satisfies readonly TrialField[];
+export type TrialErrorField = (typeof TRIAL_ERROR_FIELDS)[number];
+export type TrialFieldErrors = Partial<Record<TrialErrorField, string>>;
+
+/**
+ * The job titles a trial request may name — the platform's `role` field is an
+ * allow-list of these values. Ordered likeliest-first, the order the form
+ * shows them; `label` is what the visitor reads.
+ */
+export const TRIAL_ROLES = [
+  { value: "Finance Manager", label: "Finance Manager" },
+  { value: "Finance Director", label: "Finance Director" },
+  { value: "CFO", label: "CFO" },
+  { value: "Operations Manager", label: "Operations Manager" },
+  { value: "MD", label: "MD / CEO" },
+  { value: "Other", label: "Other" },
+] as const;
+export type TrialRole = (typeof TRIAL_ROLES)[number]["value"];
+
+/** The role whose free-text detail rides along with the request. */
+export const OTHER_ROLE: TrialRole = "Other";
+
+/** Whether `value` is one of the trial's roles. */
+export function isTrialRole(value: string): value is TrialRole {
+  return TRIAL_ROLES.some((role) => role.value === value);
+}
 
 export type TrialFormState =
   | { status: "idle" }
@@ -33,6 +76,8 @@ export type TrialFormState =
   | {
       status: "queued_for_review";
       message: string;
+      /** The address the request was made with, when known. */
+      email?: string;
     }
   | {
       /**
@@ -52,12 +97,7 @@ export type TrialFormState =
   | {
       status: "error";
       message: string;
-      fieldErrors?: Partial<
-        Record<
-          "name" | "email" | "organisation" | "role" | "orgSize" | "country" | "consent",
-          string
-        >
-      >;
+      fieldErrors?: TrialFieldErrors;
       /** What the visitor posted, so a page rendered without JavaScript keeps it. */
       values?: SubmittedValues<TrialField>;
     };

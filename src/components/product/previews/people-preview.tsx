@@ -4,160 +4,83 @@
  * approver decision panel.
  */
 
+import { EXPENSE_CLAIM, demoAmount } from "@/components/product/demo-fixtures";
+import { formatCount } from "@/lib/money";
+import { DetailGrid, DocumentHeading, MockButton, PreviewBody, PreviewCard, PreviewLabel } from "./preview-primitives";
+
+/** "IN" for "Ifeoma Nwachukwu". */
+function initials(name: string): string {
+  return name
+    .split(" ")
+    .map((part) => part.charAt(0))
+    .join("")
+    .toUpperCase();
+}
+
 export function PeoplePreview() {
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Reference + badges */}
-      <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-          ER-2026-0042
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-gold)",
-            borderRadius: "3px",
-            padding: "1px 5px",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-          }}
-        >
-          EXPENSE
-        </span>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "4px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-            color: "var(--color-warning)",
-            borderRadius: "3px",
-            padding: "2px 6px",
-          }}
-        >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)" }} />
-          Pending approval
-        </span>
-      </div>
+    <PreviewBody>
+      <DocumentHeading
+        reference={EXPENSE_CLAIM.reference}
+        typeTag="EXPENSE"
+        status={{ label: "Pending approval", tone: "pending" }}
+      />
 
       {/* Employee block */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-          marginBottom: "12px",
-          display: "flex",
-          alignItems: "center",
-          gap: "14px",
-        }}
-      >
+      <PreviewCard marginBottom="12px" style={{ display: "flex", alignItems: "center", gap: "14px" }}>
         <div
           style={{
             width: "40px",
             height: "40px",
-            borderRadius: "50%",
+            borderRadius: "var(--radius-circle)",
             backgroundColor: "var(--color-navy-primary)",
             color: "var(--color-white)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             fontWeight: 600,
           }}
         >
-          IN
+          {initials(EXPENSE_CLAIM.claimant)}
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
-            Ifeoma Nwachukwu
+          <p style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
+            {EXPENSE_CLAIM.claimant}
           </p>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
-            Administrator · Operations · Joined Feb 2024
+          <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: 0 }}>
+            {EXPENSE_CLAIM.claimantDetail}
           </p>
         </div>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)" }}>
-          2 receipts
+        <span style={{ fontSize: "var(--text-3xs)", fontWeight: 500, color: "var(--color-text-muted)" }}>
+          {formatCount(EXPENSE_CLAIM.receiptCount)} receipts
         </span>
-      </div>
+      </PreviewCard>
 
-      {/* Request details */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-          marginBottom: "12px",
-        }}
-      >
-        <div style={{ display: "grid", gridTemplateColumns: "90px 1fr", rowGap: "6px", fontFamily: "var(--font-sans)", fontSize: "11px" }}>
-          <span style={{ color: "var(--color-text-muted)" }}>Type</span>
-          <span style={{ color: "var(--color-text-primary)" }}>Travel</span>
-          <span style={{ color: "var(--color-text-muted)" }}>Amount</span>
-          <span style={{ color: "var(--color-text-primary)", fontFeatureSettings: '"tnum" 1' }}>₦84,500</span>
-          <span style={{ color: "var(--color-text-muted)" }}>Purpose</span>
-          <span style={{ color: "var(--color-text-primary)" }}>Client site visit, Abuja</span>
-          <span style={{ color: "var(--color-text-muted)" }}>Paid to</span>
-          <span style={{ color: "var(--color-text-primary)" }}>Ifeoma Nwachukwu (employee payee)</span>
-        </div>
-      </div>
+      <PreviewCard marginBottom="12px">
+        <DetailGrid
+          labelWidth="90px"
+          rowGap="6px"
+          items={[
+            { label: "Type", value: EXPENSE_CLAIM.category },
+            { label: "Amount", value: demoAmount(EXPENSE_CLAIM.amount), numeric: true },
+            { label: "Purpose", value: EXPENSE_CLAIM.purpose },
+            { label: "Paid to", value: `${EXPENSE_CLAIM.claimant} (employee payee)` },
+          ]}
+        />
+      </PreviewCard>
 
-      {/* Action panel */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-        }}
-      >
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 0 10px" }}>
-          Your decision
-        </p>
+      <PreviewCard>
+        <PreviewLabel>Your decision</PreviewLabel>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-navy-primary)",
-              color: "var(--color-white)",
-              border: "none",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
+          <MockButton variant="primary" fill>
             Approve
-          </button>
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-white)",
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
+          </MockButton>
+          <MockButton variant="secondary" fill>
             Request changes
-          </button>
+          </MockButton>
         </div>
-      </div>
-    </div>
+      </PreviewCard>
+    </PreviewBody>
   );
 }

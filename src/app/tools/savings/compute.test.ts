@@ -6,7 +6,7 @@ describe("savings compute (money path)", () => {
     const r = computeSavings({ approvals: 120, minutes: 25, cost: 5000 });
     expect(Math.round(r.hoursPerMonth)).toBe(30);
     expect(Math.round(r.hoursPerYear)).toBe(360);
-    expect(Math.round(r.nairaPerYear)).toBe(1_800_000);
+    expect(Math.round(r.moneyPerYear)).toBe(1_800_000);
   });
 
   it("clamps out-of-range and non-numeric input", () => {

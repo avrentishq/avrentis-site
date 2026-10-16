@@ -2,8 +2,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const sendEmail = vi.fn();
 vi.mock("@/lib/email", () => ({ sendEmail: (...args: unknown[]) => sendEmail(...args) }));
+vi.mock("server-only", () => ({}));
 vi.mock("@/lib/rate-limit", () => ({
   limitVisitor: async () => ({ ok: true }),
+  visitorIp: async () => "203.0.113.7",
+  UNKNOWN_VISITOR_IP: "unknown",
   RATE_LIMIT_UNAVAILABLE_MESSAGE: "This form is temporarily unavailable.",
 }));
 vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: async () => ({ ok: true, skipped: true }) }));

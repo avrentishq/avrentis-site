@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * Every form submits through `submitWithoutReset` (submit.ts), never through
@@ -15,7 +16,6 @@ const SELF = join("components", "ui", "form", "form-submit.lock.test.ts");
 
 // A JSX form opening carries attributes; "<form>" in prose comments does not match.
 const FORM_OPEN = /<(?:m\.)?form\s/g;
-const HANDLED = /onSubmit=\{submitWithoutReset\(/g;
 
 function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
@@ -23,11 +23,34 @@ function sourceFiles(): string[] {
     .filter((file) => file !== SELF);
 }
 
-/** Forms in `text` that do not submit through the handler (0 when every form does). */
+/** Each form's opening tag — up to the `>` that closes it, skipping braces and their contents. */
+function formOpenings(text: string): string[] {
+  const openings: string[] = [];
+  for (const match of text.matchAll(FORM_OPEN)) {
+    let depth = 0;
+    let end = match.index!;
+    for (; end < text.length; end++) {
+      const character = text[end];
+      if (character === "{") depth++;
+      else if (character === "}") depth--;
+      else if (character === ">" && depth === 0) break;
+    }
+    openings.push(text.slice(match.index!, end + 1));
+  }
+  return openings;
+}
+
+/**
+ * Forms in `text` that do not submit through the handler — checked per form,
+ * and the handler must wrap the same action the form posts to (a handler
+ * around a different action submits the wrong thing).
+ */
 function unhandledForms(text: string): number {
-  const forms = text.match(FORM_OPEN)?.length ?? 0;
-  const handled = text.match(HANDLED)?.length ?? 0;
-  return Math.max(0, forms - handled);
+  return formOpenings(stripComments(text)).filter((opening) => {
+    const action = opening.match(/\baction=\{([^}]+)\}/)?.[1]?.trim();
+    const handled = opening.match(/\bonSubmit=\{submitWithoutReset\(([^)]+)\)\}/)?.[1]?.trim();
+    return !handled || (action !== undefined && action !== handled);
+  }).length;
 }
 
 describe("forms submit without React's automatic reset", () => {
@@ -37,6 +60,10 @@ describe("forms submit without React's automatic reset", () => {
     expect(unhandledForms("<form action={action} onSubmit={submitWithoutReset(action)}>")).toBe(0);
     expect(unhandledForms("<formatted />")).toBe(0);
     expect(unhandledForms("// posts with the surrounding <form>/server action")).toBe(0);
+    // One handled form cannot vouch for another, nor can a comment, nor a handler around the wrong action.
+    expect(unhandledForms("<form action={a} onSubmit={submitWithoutReset(a)}>\n<form action={b}>")).toBe(1);
+    expect(unhandledForms("{/* onSubmit={submitWithoutReset(a)} */}<form action={a}>")).toBe(1);
+    expect(unhandledForms("<form action={save} onSubmit={submitWithoutReset(other)}>")).toBe(1);
   });
 
   it("scans the site (proves the walk sees a known form)", () => {

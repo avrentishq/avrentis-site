@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { PLATFORM_ORIGIN, trimOrigin } from "@/lib/platform";
 import { platformFetch } from "@/lib/platform-fetch";
 
 const BYPASS_HEADER = "x-vercel-protection-bypass";
@@ -39,5 +39,13 @@ describe("platformFetch", () => {
     vi.stubEnv("VERCEL_ENV", "production");
     await platformFetch("/api/v1/public/trial/request", { method: "POST" });
     expect(sentHeaders().has(BYPASS_HEADER)).toBe(false);
+  });
+});
+
+describe("trimOrigin", () => {
+  it("drops trailing slashes so a path is never joined with two", () => {
+    expect(trimOrigin("https://app.example.com/")).toBe("https://app.example.com");
+    expect(trimOrigin("https://app.example.com//")).toBe("https://app.example.com");
+    expect(trimOrigin("https://app.example.com")).toBe("https://app.example.com");
   });
 });

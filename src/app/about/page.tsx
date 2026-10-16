@@ -3,24 +3,25 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND } from "@avrentishq/core/brand";
-import { canonical } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
+import { pageMetadata } from "@/lib/seo";
+import { ButtonLink } from "@/components/ui/button";
 import { contactHref } from "@/app/contact/tabs";
+import { ENQUIRY_PROMISE } from "@/lib/contacts";
+import { MARKET_REGION, MARKET_SCOPE } from "@/lib/market";
+import { SITE_ROUTES } from "@/lib/routes";
+import { cardGridProps } from "@/lib/card-grid";
 
-const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
+const ABOUT_DESCRIPTION = `Why we built ${BRAND.name} — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
-export const metadata: Metadata = {
-  title: "About — Avrentis",
+export const metadata: Metadata = pageMetadata({
+  path: SITE_ROUTES.about,
+  title: "About",
   description: ABOUT_DESCRIPTION,
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About Avrentis",
-    description: ABOUT_DESCRIPTION,
-    url: canonical("/about"),
-    type: "website",
-  },
-};
+  socialTitle: `About ${BRAND.name}`,
+});
 
 const VALUES = [
   {
@@ -64,39 +65,17 @@ export default function AboutPage() {
               textAlign: "center",
             }}
           >
-            <p
-              style={{
-                color: "var(--color-gold)",
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                margin: "0 0 16px",
-              }}
-            >
-              About Avrentis
-            </p>
-            <h1
-              style={{
-                color: "var(--color-white)",
-                fontSize: 36,
-                fontWeight: 400,
-                margin: "0 0 16px",
-                lineHeight: 1.3,
-              }}
-            >
-              We believe every organisation deserves operational structure.
-            </h1>
-            <p
-              style={{
-                color: "var(--color-text-muted)",
-                fontSize: 18,
-                fontWeight: 400,
-                margin: 0,
-              }}
-            >
-              Regardless of industry, size, or geography.
-            </p>
+            <SectionIntro
+              surface="dark"
+              reveal="none"
+              titleAs="h1"
+              eyebrow={`About ${BRAND.name}`}
+              eyebrowStyle={{ margin: "0 0 16px" }}
+              title="We believe every organisation deserves operational structure."
+              titleStyle={{ fontSize: "var(--text-display-xs)", fontWeight: 400, margin: "0 0 16px", lineHeight: 1.3 }}
+              lede="Regardless of industry, size, or geography."
+              ledeStyle={{ color: "var(--color-text-muted)", fontSize: "var(--text-3xl)", fontWeight: 400, margin: 0 }}
+            />
           </div>
         </section>
 
@@ -115,13 +94,13 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 400,
                 lineHeight: 1.8,
                 margin: "0 0 24px",
               }}
             >
-              Avrentis was built after watching capable organisations operate
+              {BRAND.name} was built after watching capable organisations operate
               below their potential — not because of a lack of talent or
               ambition, but because their internal processes had no structure.
               Decisions were made over email. Approvals were lost in inboxes.
@@ -130,32 +109,23 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 400,
                 lineHeight: 1.8,
                 margin: "0 0 48px",
               }}
             >
-              We built Avrentis to change that — for every organisation, across
-              Nigeria and Africa.
+              We built {BRAND.name} to change that — for every organisation, across{" "}
+              {MARKET_REGION}.
             </p>
 
-            <p
-              style={{
-                color: "var(--color-gold-on-light)",
-                fontSize: 10,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                margin: "0 0 12px",
-              }}
-            >
+            <Eyebrow as="p" size="group" style={{ margin: "0 0 12px" }}>
               THE VISION
-            </p>
+            </Eyebrow>
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 400,
                 lineHeight: 1.8,
                 margin: 0,
@@ -181,38 +151,25 @@ export default function AboutPage() {
           }}
         >
           <SectionBackdrop src={SECTION_BACKDROPS.aboutValues} scrim="light" />
-          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <p
-              style={{
-                color: "var(--color-gold-on-light)",
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                textAlign: "center",
-                margin: "0 0 32px",
-              }}
-            >
+          <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
+            <Eyebrow as="p" style={{ textAlign: "center", margin: "0 0 32px" }}>
               OUR VALUES
-            </p>
-            <div
-              className="grid grid-cols-1 md:grid-cols-2"
-              style={{ gap: 20 }}
-            >
+            </Eyebrow>
+            <div {...cardGridProps(VALUES.length, { max: 2 }, { gap: "20px" })}>
               {VALUES.map((v) => (
                 <div
                   key={v.title}
                   style={{
                     backgroundColor: "var(--color-white)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: 8,
+                    borderRadius: "var(--radius-card)",
                     padding: 24,
                   }}
                 >
                   <p
                     style={{
                       color: "var(--color-text-primary)",
-                      fontSize: 16,
+                      fontSize: "var(--text-xl)",
                       fontWeight: 600,
                       margin: "0 0 8px",
                     }}
@@ -222,7 +179,7 @@ export default function AboutPage() {
                   <p
                     style={{
                       color: "var(--color-text-muted)",
-                      fontSize: 14,
+                      fontSize: "var(--text-md)",
                       fontWeight: 400,
                       lineHeight: 1.6,
                       margin: 0,
@@ -249,67 +206,35 @@ export default function AboutPage() {
           <SectionBackdrop src={SECTION_BACKDROPS.aboutJoinUs} scrim="light" />
           <div
             style={{
-              maxWidth: 640,
+              maxWidth: "var(--measure)",
               margin: "0 auto",
               textAlign: "center",
             }}
           >
-            <p
-              style={{
-                color: "var(--color-gold-on-light)",
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                margin: "0 0 16px",
-              }}
-            >
-              JOIN THE TEAM
-            </p>
-            <h2
-              style={{
-                color: "var(--color-text-primary)",
-                fontSize: 24,
-                fontWeight: 400,
-                lineHeight: 1.4,
-                margin: "0 0 16px",
-              }}
-            >
-              We are building the team that will bring operational structure to
-              organisations everywhere.
-            </h2>
-            <p
-              style={{
-                color: "var(--color-text-muted)",
-                fontSize: 15,
-                fontWeight: 400,
-                lineHeight: 1.7,
-                margin: "0 0 24px",
-              }}
-            >
-              No open roles right now — but we are always interested in
-              exceptional people. If you are passionate about building enterprise
-              software that solves real operational problems, we want to hear
-              from you.
-            </p>
-            <Link
-              href={contactHref("careers")}
-              style={{
-                display: "inline-block",
-                border: "1px solid var(--color-gold)",
-                color: "var(--color-gold-on-light)",
-                backgroundColor: "transparent",
-                padding: "10px 24px",
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                borderRadius: 4,
-              }}
-            >
-              GET IN TOUCH
-            </Link>
+            <SectionIntro
+              reveal="none"
+              eyebrow="JOIN THE TEAM"
+              eyebrowStyle={{ margin: "0 0 16px" }}
+              title={
+                <>
+                  We are building the team that will bring operational structure to
+                  organisations everywhere.
+                </>
+              }
+              titleStyle={{ fontSize: "var(--text-heading-md)", fontWeight: 400, lineHeight: 1.4, margin: "0 0 16px" }}
+              lede={
+                <>
+                  No open roles right now — but we are always interested in
+                  exceptional people. If you are passionate about building enterprise
+                  software that solves real operational problems, we want to hear
+                  from you.
+                </>
+              }
+              ledeStyle={{ fontSize: "var(--text-lg)", fontWeight: 400, lineHeight: 1.7, margin: "0 0 24px" }}
+            />
+            <ButtonLink href={contactHref("careers")} variant="secondary" surface="light" size="sm">
+              Get in touch
+            </ButtonLink>
           </div>
         </section>
 
@@ -326,7 +251,7 @@ export default function AboutPage() {
           <SectionBackdrop src={SECTION_BACKDROPS.aboutContact} scrim="dark" />
           <div
             style={{
-              maxWidth: 640,
+              maxWidth: "var(--measure)",
               margin: "0 auto",
               textAlign: "center",
             }}
@@ -334,7 +259,7 @@ export default function AboutPage() {
             <h2
               style={{
                 color: "var(--color-white)",
-                fontSize: 28,
+                fontSize: "var(--text-heading-lg)",
                 fontWeight: 400,
                 margin: "0 0 16px",
               }}
@@ -344,13 +269,13 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-muted)",
-                fontSize: 15,
+                fontSize: "var(--text-lg)",
                 fontWeight: 400,
                 lineHeight: 1.7,
                 margin: 0,
               }}
             >
-              Whether you have questions about Avrentis, want to discuss how it
+              Whether you have questions about {BRAND.name}, want to discuss how it
               can work for your organisation, or need support — we are here.
             </p>
             <Link
@@ -358,7 +283,7 @@ export default function AboutPage() {
               style={{
                 display: "inline-block",
                 color: "var(--color-gold)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 500,
                 marginTop: 20,
                 textDecoration: "none",
@@ -369,13 +294,13 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 13,
+                fontSize: "var(--text-sm)",
                 fontWeight: 400,
                 marginTop: 8,
                 marginBottom: 0,
               }}
             >
-              We respond to all inquiries within one business day.
+              {ENQUIRY_PROMISE}
             </p>
           </div>
         </section>

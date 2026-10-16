@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { MODULE_ORDER, MODULES } from "@/lib/brand";
+import { MODULE_ORDER } from "@/lib/brand";
 
 /**
  * Plan inclusion must stay DERIVED. Two of the eight product module pages had
@@ -46,42 +46,49 @@ describe("product module pages — plan availability stays derived", () => {
     ).toEqual([]);
   });
 
-  it("every page takes planAvailability as a prop", () => {
+  it("every page takes the derived page data and hands it to the layout", () => {
     const missing = modulePageFiles().filter((file) => {
-      const source = readFileSync(join(process.cwd(), PAGES_DIR, file), "utf8");
-      // Whitespace-collapsed, and tolerant of the trailing comma/semicolon a
-      // formatter adds when it breaks this signature across lines. A lock test
-      // that fails on reformatting is noise, and noise gets deleted. Other props
-      // may sit beside it (Pay also takes the plans its bank letter is on).
-      const flat = source.replace(/\s+/g, " ");
-      return !/\{[^{}]*\bplanAvailability\b[^{}]*\}: \{[^{}]*\bplanAvailability: ModulePlan\[\];?[^{}]*\}/.test(flat);
+      const flat = readFileSync(join(process.cwd(), PAGES_DIR, file), "utf8").replace(/\s+/g, " ");
+      return !/ModulePage\(data: ModulePageData\)/.test(flat) || !/<ProductModuleLayout [^>]*\{\.\.\.data\}/.test(flat);
     });
-
     expect(
       missing,
-      `These pages neither derive nor receive plan availability:\n` +
+      `These pages neither receive ModulePageData nor pass it on:\n` +
         missing.map((f) => `  ${PAGES_DIR}/${f}`).join("\n"),
     ).toEqual([]);
   });
 
-  it("every product route feeds the derivation", () => {
+  it("every product route builds it from live pricing data", () => {
     // A page taking the prop is only half the wiring — the route must supply it
-    // from live pricing data, not from a literal at the call site.
+    // from the pricing API, not from a literal at the call site. Derived from the
+    // module catalog, not listed here: a hardcoded expectation in the test that
+    // polices hardcoding is the same bug wearing a lab coat.
     const routesDir = join(process.cwd(), "src/app/product");
-    const slugs = readdirSync(routesDir, { withFileTypes: true })
-      .filter((e) => e.isDirectory())
-      .map((e) => e.name);
-
-    const wired = slugs.filter((slug) => {
-      const source = readFileSync(join(routesDir, slug, "page.tsx"), "utf8");
-      return source.includes("planAvailabilityFor(");
+    const unwired = MODULE_ORDER.filter((moduleKey) => {
+      const source = readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8");
+      return !source.includes(`modulePageData("${moduleKey}", pricingData)`);
     });
+    expect(unwired).toEqual([]);
+  });
 
-    // Derived from the module catalog, not listed here: a hardcoded expectation
-    // in the test that polices hardcoding is the same bug wearing a lab coat.
-    // Every module in the catalog owns a /product/<slug> route (including the
-    // ones hidden from nav, which are launch-gated rather than absent);
-    // /security, /how-it-works and /integrations are narrative pages, not modules.
-    expect(wired.sort()).toEqual(MODULE_ORDER.map((key) => MODULES[key].slug).sort());
+  it("no route writes plan availability inline", () => {
+    // The route hands over modulePageData(); a literal list at the call site
+    // would pass every other check here.
+    const routesDir = join(process.cwd(), "src/app/product");
+    const inline = MODULE_ORDER.filter((moduleKey) =>
+      /\bplanAvailability\s*[:=]/.test(readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8")),
+    );
+    expect(inline).toEqual([]);
+  });
+
+  it("every module route 404s when its module is hidden", () => {
+    // The visibility flag is the one switch; a route that forgets to ask it is
+    // served while every list hides it.
+    const routesDir = join(process.cwd(), "src/app/product");
+    const unguarded = MODULE_ORDER.filter((moduleKey) => {
+      const source = readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8");
+      return !source.includes(`notFoundUnlessPublic("${moduleKey}")`);
+    });
+    expect(unguarded, "routes missing notFoundUnlessPublic(<their own key>)").toEqual([]);
   });
 });

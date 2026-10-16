@@ -212,7 +212,7 @@ function featureGroups(plans: Plan[], moduleOrder: ModuleKey[]): FeatureGroup[] 
   ];
 }
 
-export function buildPricingFallback(): PricingData {
+function buildPricingFallback(): PricingData {
   const plans = PLAN_ORDER.map(buildPlan);
 
   // Fail closed: a feature core sells with no label here would silently vanish

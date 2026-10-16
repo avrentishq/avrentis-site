@@ -47,18 +47,16 @@ const LIMIT_ROWS: { label: string; get: (plan: Plan) => string }[] = [
 
 // Structural + colour styles, inline per the site convention. CSS custom
 // properties resolve here too, so theme tokens stay the source of truth.
-const SANS = "var(--font-sans)";
 const S = {
   section: {
     background: "var(--color-bg-light)",
     borderTop: "1px solid var(--color-border)",
     padding: "56px 0",
   },
-  inner: { maxWidth: "1000px", margin: "0 auto", padding: "0 24px" },
+  inner: { maxWidth: "var(--layout-narrow-width)", margin: "0 auto", padding: "0 24px" },
   title: {
-    fontFamily: SANS,
     fontWeight: 600,
-    fontSize: "24px",
+    fontSize: "var(--text-heading-md)",
     color: "var(--color-text-primary)",
     textAlign: "center",
     margin: "0 0 24px",
@@ -73,7 +71,6 @@ const S = {
   summaryBase: {
     cursor: "pointer",
     listStyle: "none",
-    fontFamily: SANS,
     fontWeight: 600,
     color: "var(--color-text-primary)",
     display: "flex",
@@ -83,12 +80,12 @@ const S = {
   },
   toggleSummary: {
     padding: "16px 20px",
-    fontSize: "16px",
+    fontSize: "var(--text-xl)",
     background: "var(--color-gold-surface)",
   },
   groupSummary: {
     padding: "12px 20px",
-    fontSize: "13px",
+    fontSize: "var(--text-sm)",
     letterSpacing: "0.04em",
     textTransform: "uppercase",
     color: "var(--color-text-muted)",
@@ -102,24 +99,22 @@ const S = {
   plan: {
     padding: "14px 12px",
     textAlign: "center",
-    fontFamily: SANS,
     fontWeight: 600,
-    fontSize: "15px",
+    fontSize: "var(--text-lg)",
     color: "var(--color-navy-primary)",
   },
   group: { borderTop: "1px solid var(--color-border)" },
   feat: {
     padding: "11px 20px",
     textAlign: "left",
-    fontFamily: SANS,
     fontWeight: 400,
-    fontSize: "14px",
+    fontSize: "var(--text-md)",
     color: "var(--color-text-secondary)",
   },
   cell: { padding: "11px 12px", textAlign: "center", verticalAlign: "middle" },
-  yes: { color: "var(--color-gold-on-light)", fontWeight: 700, fontSize: "15px" },
+  yes: { color: "var(--color-gold-on-light)", fontWeight: 700, fontSize: "var(--text-lg)" },
   no: { color: "var(--color-text-subtle)" },
-  limit: { fontSize: "13px", color: "var(--color-text-primary)", fontWeight: 500 },
+  limit: { fontSize: "var(--text-sm)", color: "var(--color-text-primary)", fontWeight: 500 },
   picker: {
     display: "flex",
     alignItems: "center",
@@ -132,13 +127,11 @@ const S = {
     display: "flex",
     alignItems: "center",
     gap: "6px",
-    fontFamily: SANS,
-    fontSize: "13px",
+    fontSize: "var(--text-sm)",
     color: "var(--color-text-muted)",
   },
   pickerSelect: {
-    fontFamily: SANS,
-    fontSize: "14px",
+    fontSize: "var(--text-md)",
     fontWeight: 600,
     color: "var(--color-navy-primary)",
     padding: "6px 10px",
@@ -146,7 +139,7 @@ const S = {
     borderRadius: "var(--radius-md)",
     background: "var(--color-white)",
   },
-  pickerVs: { fontSize: "13px", color: "var(--color-text-subtle)" },
+  pickerVs: { fontSize: "var(--text-sm)", color: "var(--color-text-subtle)" },
   sr: {
     position: "absolute",
     width: "1px",
@@ -172,13 +165,12 @@ const tableStyle: CSSProperties = {
   width: "100%",
   tableLayout: "fixed",
   borderCollapse: "collapse",
-  fontFamily: SANS,
 };
 
 export function PlanComparison({ data }: { data: PricingData }) {
   const groups = data.featureGroups ?? [];
   const planKeys = data.planOrder;
-  const isMobile = useMediaQuery("(max-width: 720px)");
+  const isMobile = useMediaQuery("compact");
   // Default the mobile picker to the two most-differentiated tiers (top two).
   const [planA, setPlanA] = useState(() => planKeys[Math.max(0, planKeys.length - 2)]);
   const [planB, setPlanB] = useState(() => planKeys[planKeys.length - 1]);

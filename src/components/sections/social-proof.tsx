@@ -1,15 +1,19 @@
 "use client";
 
 import { m } from "framer-motion";
-import Link from "next/link";
 import { ShieldCheck, Database, Landmark, MapPin } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { ButtonLink } from "@/components/ui/button";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
 import { INTERFACE_LANGUAGE_NAMES, SUPPORTED_CURRENCY_COUNT } from "@/lib/languages-and-currencies";
+import { TRAIL_SEALED } from "@/lib/record-keeping";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 // No testimonials and no invented metrics — the section states what the
 // platform enforces, which is verifiable, rather than borrowed credibility.
@@ -19,7 +23,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: ShieldCheck,
     title: "Every action on a tamper-evident record",
-    body: "Submissions, approvals, queries, and signatures are written to a tamper-evident audit trail, sealed daily. No user — not even an administrator — can edit or remove an entry, and you can check the seal yourself.",
+    body: `Submissions, approvals, queries, and signatures are written to a tamper-evident audit trail, ${TRAIL_SEALED}. No user — not even an administrator — can edit or remove an entry, and you can check the seal yourself.`,
   },
   {
     icon: Database,
@@ -29,7 +33,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Landmark,
     title: "We govern the authority to pay — your bank moves the money",
-    body: "Avrentis governs who is allowed to approve a payment, and proves it. Your licensed bank moves the money. That clean separation — clear authority on our side, settlement on theirs — is the point.",
+    body: `${BRAND.name} governs who is allowed to approve a payment, and proves it. Your licensed bank moves the money. That clean separation — clear authority on our side, settlement on theirs — is the point.`,
   },
   {
     icon: MapPin,
@@ -42,92 +46,42 @@ export function SocialProof() {
   return (
     <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.socialProof} scrim="light" />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Eyebrow */}
-        <m.span
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            textAlign: "center",
-            marginBottom: "16px",
-          }}
-        >
-          WHY TEAMS TRUST AVRENTIS
-        </m.span>
-
-        {/* Headline */}
-        <m.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
-          style={{
-            fontFamily: "var(--font-sans)",
+      <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
+        <SectionIntro
+          align="center"
+          eyebrow={`WHY TEAMS TRUST ${BRAND.name.toUpperCase()}`}
+          eyebrowStyle={{ marginBottom: "16px" }}
+          title="Authority you can verify — down to the database."
+          titleStyle={{ fontWeight: 400, fontSize: "var(--text-display-xs)", lineHeight: 1.3, margin: "0 auto 12px" }}
+          titleClassName="lg:!text-display-lg"
+          lede={
+            <>
+              No fabricated metrics, no borrowed logos. Here is what actually protects
+              your organisation&rsquo;s decisions — the things your security, finance,
+              and audit teams can check for themselves.
+            </>
+          }
+          ledeStyle={{
             fontWeight: 400,
-            fontSize: "36px",
-            color: "var(--color-text-primary)",
-            lineHeight: 1.3,
-            margin: "0 auto 12px",
-            textAlign: "center",
-          }}
-          className="lg:!text-[42px]"
-        >
-          Authority you can verify — down to the database.
-        </m.h2>
-
-        {/* Subheadline */}
-        <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "16px",
-            color: "var(--color-text-muted)",
+            fontSize: "var(--text-xl)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
-            maxWidth: "620px",
-            textAlign: "center",
+            maxWidth: "var(--measure)",
           }}
-        >
-          No fabricated metrics, no borrowed logos. Here is what actually protects
-          your organisation&rsquo;s decisions — the things your security, finance,
-          and audit teams can check for themselves.
-        </m.p>
+        />
 
         {/* Trust pillars */}
-        <div
-          style={{ display: "grid", gap: "20px", marginBottom: "40px" }}
-          className="grid-cols-1 md:grid-cols-2"
-        >
+        <div {...cardGridProps(TRUST_PILLARS.length, { max: 2 }, { gap: "20px", marginBottom: "40px" })}>
           {TRUST_PILLARS.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
               <m.div
                 key={pillar.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-card)",
                   padding: "28px",
                   display: "flex",
                   gap: "16px",
@@ -140,21 +94,20 @@ export function SocialProof() {
                     width: "40px",
                     height: "40px",
                     flexShrink: 0,
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-card)",
                     backgroundColor: "var(--color-navy-primary)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <Icon size={20} strokeWidth={1.6} color={BRAND_COLORS.gold} aria-hidden="true" />
+                  <Icon size={20} strokeWidth={1.6} color="var(--color-gold)" aria-hidden="true" />
                 </div>
                 <div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "17px",
+                      fontSize: "var(--text-2xl)",
                       color: "var(--color-text-primary)",
                       margin: "0 0 6px",
                       lineHeight: 1.35,
@@ -164,9 +117,8 @@ export function SocialProof() {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 400,
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.6,
                       margin: 0,
@@ -182,14 +134,10 @@ export function SocialProof() {
 
         {/* Founding-partner band — honest, in place of customer proof */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(6)}
+          {...fadeUpOnScroll(6)}
           style={{
             backgroundColor: "var(--color-navy-primary)",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-lg)",
             padding: "32px",
             display: "flex",
             flexWrap: "wrap",
@@ -198,12 +146,11 @@ export function SocialProof() {
             justifyContent: "space-between",
           }}
         >
-          <div style={{ maxWidth: "640px" }}>
+          <div style={{ maxWidth: "var(--measure)" }}>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 600,
-                fontSize: "18px",
+                fontSize: "var(--text-3xl)",
                 color: "var(--color-white)",
                 margin: "0 0 6px",
                 lineHeight: 1.4,
@@ -213,55 +160,22 @@ export function SocialProof() {
             </p>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 color: "var(--color-text-subtle)",
                 margin: 0,
                 lineHeight: 1.6,
               }}
             >
-              Work directly with the team building Avrentis and help shape what
+              Work directly with the team building {BRAND.name} and help shape what
               ships next. Honest about where we are — serious about where we&rsquo;re going.
             </p>
           </div>
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            <Link
-              href={contactHref("demo")}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              Talk to us
-            </Link>
-            <Link
-              href={LEGAL_PAGES.security}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={contactHref("demo")}>Talk to us</ButtonLink>
+            <ButtonLink href={LEGAL_PAGES.security} variant="secondary" surface="dark">
               See the security stack →
-            </Link>
+            </ButtonLink>
           </div>
         </m.div>
       </div>

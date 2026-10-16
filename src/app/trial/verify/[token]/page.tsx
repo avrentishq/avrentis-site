@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { VerifyResult } from "./client";
-import { TrialStepper } from "../../stepper";
+import { VerifyConfirm, VerifyResult } from "./client";
+import { TRIAL_STEPS_DONE, TrialStepper } from "../../stepper";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { PLATFORM_ORIGIN } from "@/lib/platform";
-import { platformFetch } from "@/lib/platform-fetch";
+import { BRAND } from "@/lib/brand";
+import { exceedsLimit } from "@/lib/form-rules";
+import { VERIFY_FAILED_MESSAGE } from "./state";
+import { Z_INDEX } from "@/lib/layers";
 
 export const metadata: Metadata = {
-  title: "Verifying your Avrentis trial",
+  title: `Verifying your ${BRAND.name} trial`,
   robots: { index: false, follow: false },
 };
 
@@ -18,55 +19,17 @@ interface PageProps {
   params: Promise<{ token: string }>;
 }
 
-interface VerifyResponse {
-  status?: string;
-  message?: string;
-  /** Preferred field returned by the current platform API. */
-  inviteUrl?: string;
-  /** Legacy field — kept for backward compatibility. */
-  loginUrl?: string;
-  tenantSlug?: string;
-}
-
+/**
+ * The magic link's landing page. Opening it spends nothing: it shows a confirm
+ * button, and only pressing that (a POST to `confirmTrialVerification`) spends
+ * the token. Email link scanners open links before the person does — had the
+ * page spent the token on load, a scanner would receive the one-time invite and
+ * the person would find their link already used.
+ */
 export default async function VerifyPage({ params }: PageProps) {
   const { token } = await params;
-
-  let response: Response | null = null;
-  let payload: VerifyResponse = {};
-  // Guard against absurd token input before forwarding to the platform.
-  if (token && token.length <= 512) {
-    try {
-      response = await platformFetch("/api/v1/public/trial/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-        cache: "no-store",
-      });
-      payload = (await response.json().catch(() => ({}))) as VerifyResponse;
-    } catch {
-      // Network failure — fall through to the error card.
-    }
-  }
-
-  // Success — the platform has provisioned (or found an existing) tenant.
-  // Prefer inviteUrl; fall back to loginUrl when it is absent.
-  // SECURITY (open-redirect guard): this is a token-bearing flow, so only ever
-  // redirect to the trusted platform origin — never to an arbitrary URL echoed
-  // back in the response.
-  const successUrl = payload.inviteUrl ?? payload.loginUrl;
-  if (response?.ok && payload.status === "provisioned" && successUrl) {
-    const appOrigin = new URL(PLATFORM_ORIGIN).origin;
-    let target: URL | null = null;
-    try {
-      target = new URL(successUrl);
-    } catch {
-      target = null;
-    }
-    if (target && target.origin === appOrigin) {
-      redirect(target.toString());
-    }
-    // Untrusted or malformed target — fall through to the error card.
-  }
+  // An absurd token is never offered to the platform.
+  const plausible = token.length > 0 && !exceedsLimit(token, "token");
 
   return (
     <>
@@ -82,13 +45,13 @@ export default async function VerifyPage({ params }: PageProps) {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trialVerify} scrim="light" />
-        <div style={{ maxWidth: "560px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <TrialStepper current={4} />
-          <VerifyResult
-            status={payload.status ?? "error"}
-            message={payload.message ?? "We couldn't verify this link."}
-            token={token}
-          />
+        <div style={{ maxWidth: "var(--measure-narrow)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
+          <TrialStepper current={TRIAL_STEPS_DONE} />
+          {plausible ? (
+            <VerifyConfirm token={token} />
+          ) : (
+            <VerifyResult status="not_found" message={VERIFY_FAILED_MESSAGE} token={token} />
+          )}
         </div>
       </main>
       <Footer />

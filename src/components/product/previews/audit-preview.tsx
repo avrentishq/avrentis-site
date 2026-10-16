@@ -1,168 +1,139 @@
 /**
  * AuditPreview — browser-frame for /product/audit. Shows the audit trail
- * table with action labels, actor names, entity refs, IP + user-agent, and
- * timestamps, plus an export panel.
+ * table with action labels, actor names, entity refs and timestamps, plus an
+ * export action. The featured voucher's events come from its trail, so the
+ * times and people match every other page that shows it.
  */
 
+import {
+  AUDIT_DAY_EVENTS,
+  FEATURED_VOUCHER,
+  featuredTrailEntry,
+  formatDemoTime,
+  personWithRole,
+  type DemoPerson,
+} from "@/components/product/demo-fixtures";
+import { CodeTag, FilterChips, HeaderAction, PreviewBody, PreviewHeader, PreviewList, PreviewTable } from "./preview-primitives";
+
+interface AuditRow {
+  action: string;
+  person: DemoPerson;
+  entity: string;
+  at: string;
+  actionBackground: string;
+  actionColour: string;
+}
+
+const sanctioned = featuredTrailEntry("sanction");
+const reviewed = featuredTrailEntry("review");
+const submitted = featuredTrailEntry("submit");
+
+const ROWS: readonly AuditRow[] = [
+  {
+    action: sanctioned.auditAction,
+    person: sanctioned.person,
+    entity: FEATURED_VOUCHER.reference,
+    at: sanctioned.at,
+    actionBackground: "var(--color-success-wash)",
+    actionColour: "var(--color-success)",
+  },
+  {
+    action: reviewed.auditAction,
+    person: reviewed.person,
+    entity: FEATURED_VOUCHER.reference,
+    at: reviewed.at,
+    actionBackground: "var(--color-gold-ghost)",
+    actionColour: "var(--color-warning)",
+  },
+  {
+    action: AUDIT_DAY_EVENTS.voucherQueried.auditAction,
+    person: AUDIT_DAY_EVENTS.voucherQueried.person,
+    entity: AUDIT_DAY_EVENTS.voucherQueried.document,
+    at: AUDIT_DAY_EVENTS.voucherQueried.at,
+    actionBackground: "rgba(var(--color-queried-accent-rgb), 0.08)",
+    actionColour: "var(--color-queried)",
+  },
+  {
+    action: AUDIT_DAY_EVENTS.roleChanged.auditAction,
+    person: AUDIT_DAY_EVENTS.roleChanged.person,
+    entity: AUDIT_DAY_EVENTS.roleChanged.document,
+    at: AUDIT_DAY_EVENTS.roleChanged.at,
+    actionBackground: "rgba(var(--color-identity-tint-rgb), 0.08)",
+    actionColour: "var(--color-identity)",
+  },
+  {
+    action: submitted.auditAction,
+    person: submitted.person,
+    entity: FEATURED_VOUCHER.reference,
+    at: submitted.at,
+    actionBackground: "rgba(var(--color-warning-accent-rgb), 0.08)",
+    actionColour: "var(--color-warning-strong)",
+  },
+];
+
 export function AuditPreview() {
-  const rows = [
-    {
-      action: "PV_SANCTIONED",
-      actor: "Aisha Danjuma · MD",
-      entity: "PV-2026-0184",
-      when: "14:32",
-      actionBg: "rgba(var(--color-success-rgb), 0.08)",
-      actionColor: "var(--color-success)",
-    },
-    {
-      action: "PV_APPROVED",
-      actor: "Chinedu Okafor · Finance",
-      entity: "PV-2026-0184",
-      when: "11:02",
-      actionBg: "rgba(var(--color-gold-rgb), 0.08)",
-      actionColor: "var(--color-warning)",
-    },
-    {
-      action: "PV_QUERIED",
-      actor: "Chinedu Okafor · Finance",
-      entity: "PV-2026-0182",
-      when: "10:48",
-      actionBg: "rgba(var(--color-queried-accent-rgb), 0.08)",
-      actionColor: "var(--color-queried)",
-    },
-    {
-      action: "USER_ROLE_CHANGED",
-      actor: "Tunde Bello · Admin",
-      entity: "user:ifeoma.n@acme.ng",
-      when: "09:15",
-      actionBg: "rgba(var(--color-identity-tint-rgb), 0.08)",
-      actionColor: "var(--color-identity)",
-    },
-    {
-      action: "PV_SUBMITTED",
-      actor: "Fatima Abubakar · Staff",
-      entity: "PV-2026-0184",
-      when: "09:14",
-      actionBg: "rgba(var(--color-warning-accent-rgb), 0.08)",
-      actionColor: "var(--color-warning-strong)",
-    },
-  ];
-
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Header */}
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "12px" }}>
-        <div>
-          <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 2px" }}>
-            Audit trail
-          </h3>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
-            1,284 events · Tamper-evident
-          </p>
-        </div>
-        <button
-          type="button"
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-white)",
-            border: "none",
-            borderRadius: "3px",
-            padding: "6px 14px",
-            cursor: "default",
-          }}
-        >
-          Export PDF
-        </button>
+    <PreviewBody>
+      <PreviewHeader title="Audit trail" subtitle="1,284 events · Tamper-evident" action={<HeaderAction>Export PDF</HeaderAction>} />
+
+      <FilterChips options={["All events", "Payments", "Procurement", "Access", "Compliance"]} size="compact" />
+
+      {/* A phone-width frame cannot hold four columns, so it reads the same
+          events as a two-line log: what happened and when, then to what. */}
+      <div className="sm:hidden">
+        <PreviewList
+          rows={ROWS.map((row) => ({
+            key: `${row.action}-${row.at}`,
+            content: (
+              <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: "4px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
+                  <CodeTag background={row.actionBackground} color={row.actionColour}>
+                    {row.action}
+                  </CodeTag>
+                  <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
+                    {formatDemoTime(row.at)}
+                  </span>
+                </div>
+                <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  {row.entity} · {personWithRole(row.person)}
+                </span>
+              </div>
+            ),
+          }))}
+        />
       </div>
 
-      {/* Filters row */}
-      <div style={{ display: "flex", gap: "6px", marginBottom: "10px", flexWrap: "wrap" }}>
-        {["All events", "Payments", "Procurement", "Access", "Compliance"].map((f, i) => (
-          <span
-            key={f}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-              fontWeight: 500,
-              padding: "3px 8px",
-              borderRadius: "3px",
-              backgroundColor: i === 0 ? "var(--color-navy-primary)" : "var(--color-white)",
-              color: i === 0 ? "var(--color-white)" : "var(--color-navy-primary)",
-              border: i === 0 ? "1px solid var(--color-navy-primary)" : "1px solid var(--color-border)",
-            }}
-          >
-            {f}
-          </span>
-        ))}
+      <div className="max-sm:hidden">
+      <PreviewTable
+        columns={[{ label: "Action" }, { label: "Actor" }, { label: "Entity" }, { label: "Time", align: "right" }]}
+        gridTemplateColumns="minmax(124px, 1.1fr) minmax(0, 1.2fr) minmax(86px, 0.9fr) 44px"
+        rows={ROWS.map((row) => ({
+          key: `${row.action}-${row.at}`,
+          cells: (
+            <>
+              <CodeTag background={row.actionBackground} color={row.actionColour}>
+                {row.action}
+              </CodeTag>
+              <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{personWithRole(row.person)}</span>
+              <span
+                style={{
+                  color: "var(--color-text-muted)",
+                  fontFeatureSettings: '"tnum" 1',
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {row.entity}
+              </span>
+              <span style={{ color: "var(--color-text-muted)", textAlign: "right", fontFeatureSettings: '"tnum" 1' }}>
+                {formatDemoTime(row.at)}
+              </span>
+            </>
+          ),
+        }))}
+      />
       </div>
-
-      {/* Audit rows */}
-      <div style={{ backgroundColor: "var(--color-white)", border: "1px solid var(--color-border)", borderRadius: "4px" }}>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1.2fr 1.2fr 0.9fr 50px",
-            gap: "10px",
-            padding: "8px 14px",
-            backgroundColor: "var(--color-bg-light)",
-            borderBottom: "1px solid var(--color-border)",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-          }}
-        >
-          <span>Action</span>
-          <span>Actor</span>
-          <span>Entity</span>
-          <span style={{ textAlign: "right" }}>Time</span>
-        </div>
-        {rows.map((row, i) => (
-          <div
-            key={`${row.action}-${i}`}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1.2fr 1.2fr 0.9fr 50px",
-              gap: "10px",
-              padding: "8px 14px",
-              borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
-              alignItems: "center",
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-            }}
-          >
-            <span
-              style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "10px",
-                fontWeight: 500,
-                padding: "2px 6px",
-                borderRadius: "3px",
-                backgroundColor: row.actionBg,
-                color: row.actionColor,
-                justifySelf: "start",
-                letterSpacing: "0.02em",
-              }}
-            >
-              {row.action}
-            </span>
-            <span style={{ color: "var(--color-text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {row.actor}
-            </span>
-            <span style={{ color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1', overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-              {row.entity}
-            </span>
-            <span style={{ color: "var(--color-text-muted)", textAlign: "right", fontFeatureSettings: '"tnum" 1' }}>
-              {row.when}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
+    </PreviewBody>
   );
 }

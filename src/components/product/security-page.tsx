@@ -27,10 +27,8 @@ import {
   Check,
   Mail,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+
 import { SECURITY_FAQS } from "@/lib/security-faqs";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
@@ -44,7 +42,18 @@ import {
   LifecycleMockup,
   InfraMockup,
 } from "./security-mockups";
+import { BrowserFrame } from "./previews/preview-primitives";
 import { contactHref } from "@/app/contact/tabs";
+import { ENQUIRY_PROMISE, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { COMPLIANCE_FRAMEWORKS, COMPLIANCE_STATUS_LABELS, ACCESS_ENDS } from "@/lib/compliance-posture";
+import { TRAIL_SEALED_WITH_FINGERPRINT } from "@/lib/record-keeping";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
+import { fadeUpOnScroll } from "@/lib/animations";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
+import { BRAND } from "@/lib/brand";
 
 const PILLARS = [
   {
@@ -63,13 +72,13 @@ const PILLARS = [
     icon: FileSearch,
     title: "Every action is on the record",
     body:
-      "Every submission, approval, question, and role change is recorded in a tamper-evident chain and sealed daily with a signed fingerprint you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.",
+      `Every submission, approval, question, and role change is recorded in a tamper-evident chain and ${TRAIL_SEALED_WITH_FINGERPRINT} you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.`,
   },
   {
     icon: KeyRound,
     title: "Access that keeps up with your people",
     body:
-      "When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends within seconds. Auditors and board-level guests get a clear start date and expiry.",
+      `When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends ${ACCESS_ENDS}. Auditors and board-level guests get a clear start date and expiry.`,
   },
 ];
 
@@ -89,7 +98,7 @@ const STACK = [
       "An automated check fails the build if any customer table loses its isolation rule",
     ],
     Mockup: IsolationMockup,
-    previewUrl: "tenant isolation · database layer",
+    caption: "tenant isolation · database layer",
   },
   {
     number: "02",
@@ -106,18 +115,18 @@ const STACK = [
       "Amount thresholds — high-value requests auto-escalate to the MD",
     ],
     Mockup: AuthorityMockup,
-    previewUrl: "role-based authority · attribute overlays",
+    caption: "role-based authority · attribute overlays",
   },
   {
     number: "03",
     key: "session",
     title: "Session integrity",
-    subtitle: "When a role changes or a user leaves, their active sessions are invalid within seconds.",
+    subtitle: `When a role changes or a user leaves, their active sessions are invalid ${ACCESS_ENDS}.`,
     body:
       "Every active session is checked against a revocation signal on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation forces re-authentication on the next request. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
     icon: ShieldCheck,
     bullets: [
-      "Active sessions end within seconds of a role change, deactivation, or password change",
+      `Active sessions end ${ACCESS_ENDS} of a role change, deactivation, or password change`,
       "Two-factor sign-in by passkey, authenticator app, email code or SMS, with recovery codes — and your organisation decides which of those its people may enrol",
       "Require two-factor for everyone, or only for the roles you name. Single sign-on can count as that second factor, or be told not to when you would rather verify in-app. Platform administrators are always required, regardless",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
@@ -125,7 +134,7 @@ const STACK = [
       "One sign-in per person across every company they work in — one password, one set of two-step methods",
     ],
     Mockup: SessionMockup,
-    previewUrl: "session revocation · identity controls",
+    caption: "session revocation · identity controls",
   },
   {
     number: "04",
@@ -133,7 +142,7 @@ const STACK = [
     title: "Audit trail",
     subtitle: "Every action recorded and sealed. Every export, regulator-ready.",
     body:
-      "The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting Avrentis.",
+      `The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting ${BRAND.name}.`,
     icon: FileSearch,
     bullets: [
       "Every approval, query, and role change written to an append-only log",
@@ -142,13 +151,13 @@ const STACK = [
       "One-click regulator-ready export for any period",
     ],
     Mockup: AuditMockup,
-    previewUrl: "tamper-evident audit trail · role-change log",
+    caption: "tamper-evident audit trail · role-change log",
   },
   {
     number: "05",
     key: "lifecycle",
     title: "Access lifecycle",
-    subtitle: "People come and go — access keeps up. Joiners get what they need; leavers lose access within seconds.",
+    subtitle: `People come and go — access keeps up. Joiners get what they need; leavers lose access ${ACCESS_ENDS}.`,
     body:
       "User provisioning flows in automatically from your identity provider (Okta, Microsoft Entra, Google Workspace). Auditor and board-level guests get a clear start date and expiry — access is withdrawn on the dot without manual clean-up. Document retention follows your plan; the audit trail itself is never purged while the account is active.",
     icon: KeyRound,
@@ -160,7 +169,7 @@ const STACK = [
       "Attachments served through short-lived, per-upload URLs",
     ],
     Mockup: LifecycleMockup,
-    previewUrl: "access lifecycle · SCIM provisioning",
+    caption: "access lifecycle · SCIM provisioning",
   },
   {
     number: "06",
@@ -177,32 +186,9 @@ const STACK = [
       "Encrypted object storage with short-lived, per-upload delivery URLs",
     ],
     Mockup: InfraMockup,
-    previewUrl: "encryption · platform infrastructure",
+    caption: "encryption · platform infrastructure",
   },
 ];
-
-const COMPLIANCE = [
-  {
-    framework: "SOC 2",
-    status: "On our roadmap",
-    body:
-      "Our policies for access, audit, change management and encryption follow SOC 2 structure. A SOC 2 Type II audit and an independent penetration test are on our roadmap; neither is done yet.",
-  },
-  {
-    framework: "ISO 27001",
-    status: "Not certified",
-    body:
-      "Avrentis is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how our controls cover the areas you need.",
-  },
-  {
-    framework: "GDPR & NDPR",
-    status: "Designed-for",
-    body:
-      "Data-subject rights (access, rectification, deletion, export) are supported through the audit-log export and admin tooling. A DPA is available for signature on request.",
-  },
-];
-
-const FAQS = SECURITY_FAQS;
 
 function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: number }) {
   const reverse = index % 2 === 1;
@@ -210,11 +196,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
   const Icon = stage.icon;
   return (
     <m.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={fadeUpTransition}
+      {...fadeUpOnScroll()}
       style={{ display: "grid", gap: "56px", alignItems: "center" }}
       className={`grid-cols-1 lg:grid-cols-2 ${reverse ? "lg:[direction:rtl] [&>*]:[direction:ltr]" : ""}`}
     >
@@ -225,21 +207,21 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
             style={{
               width: "44px",
               height: "44px",
-              borderRadius: "8px",
-              backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+              borderRadius: "var(--radius-card)",
+              backgroundColor: "var(--color-gold-tint)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+            <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <span
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "12px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
@@ -249,15 +231,14 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
             </span>
             <h2
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "28px",
+                fontSize: "var(--text-heading-lg)",
                 color: "var(--color-text-primary)",
                 margin: 0,
                 letterSpacing: "0.01em",
                 lineHeight: 1.2,
               }}
-              className="lg:!text-[36px]"
+              className="lg:!text-display-xs"
             >
               {stage.title}
             </h2>
@@ -265,8 +246,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
         </div>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "17px",
+            fontSize: "var(--text-2xl)",
             fontWeight: 500,
             color: "var(--color-text-primary)",
             lineHeight: 1.5,
@@ -277,8 +257,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
         </p>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.75,
             margin: "0 0 20px",
@@ -294,13 +273,12 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 display: "flex",
                 gap: "10px",
                 alignItems: "flex-start",
-                fontFamily: "var(--font-sans)",
-                fontSize: "14px",
-                color: "var(--color-text-faint)",
+                fontSize: "var(--text-md)",
+                color: "var(--color-text-body)",
                 lineHeight: 1.6,
               }}
             >
-              <Check size={16} strokeWidth={2} color={BRAND_COLORS.gold} style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
+              <Check size={16} strokeWidth={2} color="var(--color-gold)" style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
               <span>{b}</span>
             </li>
           ))}
@@ -308,54 +286,9 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
       </div>
 
       {/* Mockup */}
-      <div
-        style={{
-          borderRadius: "10px",
-          border: "1px solid var(--color-border)",
-          backgroundColor: "var(--color-bg-light)",
-          boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.08), 0 4px 10px rgba(var(--color-navy-primary-rgb), 0.04)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "var(--color-navy-primary)",
-            padding: "10px 14px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          <div style={{ display: "flex", gap: "6px" }}>
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                }}
-              />
-            ))}
-          </div>
-          <div
-            style={{
-              flex: 1,
-              backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-              borderRadius: "5px",
-              padding: "4px 10px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-              color: "var(--color-text-subtle)",
-              textAlign: "center",
-            }}
-          >
-            {stage.previewUrl}
-          </div>
-        </div>
+      <BrowserFrame caption={stage.caption} surface="light">
         <Mockup />
-      </div>
+      </BrowserFrame>
     </m.div>
   );
 }
@@ -385,124 +318,60 @@ export function SecurityProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.securityHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
-        <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
+          <SectionIntro
+            surface="dark"
+            titleAs="h1"
+            eyebrow="SECURITY"
+            eyebrowStyle={{
               display: "inline-block",
               marginBottom: "20px",
             }}
-          >
-            SECURITY
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            title={
+              <>
+                Authority at every layer.
+                <br />
+                By design.
+              </>
+            }
+            titleStyle={{
               fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[56px]"
-          >
-            Authority at every layer.
-            <br />
-            By design.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "17px",
+            titleClassName="lg:!text-display-4xl"
+            lede={
+              <>
+                {BRAND.name} is built for organisations where every approval carries
+                weight. Security is not a feature bolted on later — it is the
+                structural premise of the platform. Here is exactly what that
+                means, layer by layer.
+              </>
+            }
+            ledeStyle={{
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
-          >
-            Avrentis is built for organisations where every approval carries
-            weight. Security is not a feature bolted on later — it is the
-            structural premise of the platform. Here is exactly what that
-            means, layer by layer.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
+            <ButtonLink
               href={contactHref("security")}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="md"
             >
               Book a security review
-            </Link>
+            </ButtonLink>
             <a
               href="#stack"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              {...buttonProps({ variant: "secondary", surface: "dark", size: "md" })}
             >
               Read the stack →
             </a>
@@ -513,62 +382,35 @@ export function SecurityProductPage() {
       {/* ── PILLARS ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityPillars} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
+          <SectionIntro
+            eyebrow="TRUST POSTURE"
+            eyebrowStyle={{
               marginBottom: "12px",
             }}
-          >
-            TRUST POSTURE
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            title="Four foundations. Each built in at the deepest level — not just something the app tries to do."
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-text-primary)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "620px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Four foundations. Each built in at the deepest level — not just something the app tries to do.
-          </m.h2>
+            titleClassName="lg:!text-display-sm"
+          />
 
-          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
+          <div {...cardGridProps(PILLARS.length, { max: 2 }, { gap: "20px" })}>
             {PILLARS.map((p, i) => {
               const Icon = p.icon;
               return (
                 <m.div
                   key={p.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     flexDirection: "column",
@@ -579,20 +421,19 @@ export function SecurityProductPage() {
                     style={{
                       width: "36px",
                       height: "36px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "var(--text-3xl)",
                       color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
@@ -601,8 +442,7 @@ export function SecurityProductPage() {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
@@ -620,7 +460,7 @@ export function SecurityProductPage() {
       {/* ── STACK ──────────────────────────────────────────── */}
       <section id="stack" style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityStack} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
             <StackRow key={s.key} stage={s} index={i} />
           ))}
@@ -638,122 +478,90 @@ export function SecurityProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.securityCompliance} scrim="dark" />
-        <AmbientGlow top="20%" left="-120px" size={460} intensity={0.15} duration={34} />
-        <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
+        <DarkHeroBackdrop glows="closing" />
 
-        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "block",
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
+          <SectionIntro
+            surface="dark"
+            eyebrow="COMPLIANCE POSTURE"
+            eyebrowStyle={{
               marginBottom: "16px",
             }}
-          >
-            COMPLIANCE POSTURE
-          </m.span>
-
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            title={
+              <>
+                Honest about what we are — and what we&rsquo;re working toward.
+              </>
+            }
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-white)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 16px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Honest about what we are — and what we&rsquo;re working toward.
-          </m.h2>
-
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "15px",
+            titleClassName="lg:!text-display-sm"
+            lede={
+              <>
+                {BRAND.name} does not hold SOC 2 or ISO 27001 certification today. Our
+                policies follow SOC 2 structure, a SOC 2 Type II audit and an
+                independent penetration test are on our roadmap, and we can walk you
+                through each control on a security review.
+              </>
+            }
+            ledeStyle={{
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 0 48px",
               maxWidth: "680px",
             }}
-          >
-            Avrentis does not hold SOC 2 or ISO 27001 certification today. Our
-            policies follow SOC 2 structure, a SOC 2 Type II audit and an
-            independent penetration test are on our roadmap, and we can walk you
-            through each control on a security review.
-          </m.p>
+          />
 
-          <div
-            style={{ display: "grid", gap: "16px" }}
-            className="grid-cols-1 md:grid-cols-3"
-          >
-            {COMPLIANCE.map((c, i) => (
+          {/* Wrapping flex, not a 3-column grid: five frameworks would strand two
+              cards in a part-empty row; here every row's cards grow to fill it. */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            {COMPLIANCE_FRAMEWORKS.map((c, i) => (
               <m.div
-                key={c.framework}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                key={c.key}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
-                  backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
-                  border: "1px solid rgba(var(--color-white-rgb), 0.10)",
-                  borderRadius: "10px",
+                  flex: "1 1 300px",
+                  backgroundColor: "var(--color-white-wash)",
+                  border: "1px solid var(--color-white-border)",
+                  borderRadius: "var(--radius-lg)",
                   padding: "24px",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
                   <span
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "15px",
+                      fontSize: "var(--text-lg)",
                       color: "var(--color-white)",
                     }}
                   >
-                    {c.framework}
+                    {c.name}
                   </span>
                   <span
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "10px",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--text-3xs)",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       color: "var(--color-gold)",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
-                      border: "1px solid rgba(var(--color-gold-rgb), 0.28)",
-                      borderRadius: "3px",
+                      backgroundColor: "var(--color-gold-tint)",
+                      border: "1px solid var(--color-gold-border)",
+                      borderRadius: "var(--radius-xs)",
                       padding: "3px 8px",
                     }}
                   >
-                    {c.status}
+                    {COMPLIANCE_STATUS_LABELS[c.status].chip}
                   </span>
                 </div>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-subtle)",
                     lineHeight: 1.6,
                     margin: 0,
@@ -766,17 +574,13 @@ export function SecurityProductPage() {
           </div>
 
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(6)}
+            {...fadeUpOnScroll(6)}
             style={{
               marginTop: "40px",
               padding: "22px 26px",
-              backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
-              border: "1px solid rgba(var(--color-white-rgb), 0.08)",
-              borderRadius: "10px",
+              backgroundColor: "var(--color-white-wash)",
+              border: "1px solid var(--color-white-border)",
+              borderRadius: "var(--radius-lg)",
               display: "flex",
               flexDirection: "column",
               gap: "8px",
@@ -784,8 +588,8 @@ export function SecurityProductPage() {
           >
             <span
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "10px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-3xs)",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "var(--color-gold)",
@@ -793,7 +597,7 @@ export function SecurityProductPage() {
             >
               RESPONSIBLE DISCLOSURE
             </span>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--color-border)", margin: 0, lineHeight: 1.7 }}>
+            <p style={{ fontSize: "var(--text-md)", color: "var(--color-border)", margin: 0, lineHeight: 1.7 }}>
               Found a vulnerability?{" "}
               <Link
                 href={contactHref("disclosure")}
@@ -801,7 +605,7 @@ export function SecurityProductPage() {
               >
                 Submit a responsible-disclosure report
               </Link>
-              . We triage within two business days and welcome good-faith
+              . We triage {SECURITY_TRIAGE_TIME} and welcome good-faith
               research. A DPA and sub-processor list are available on request.
             </p>
           </m.div>
@@ -811,63 +615,40 @@ export function SecurityProductPage() {
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityFaq} scrim="light" />
-        <div style={{ maxWidth: "980px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
+        <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
+          <SectionIntro
+            eyebrow="QUESTIONS YOUR SECURITY TEAM WILL ASK"
+            eyebrowStyle={{
               marginBottom: "12px",
             }}
-          >
-            QUESTIONS YOUR SECURITY TEAM WILL ASK
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            title={
+              <>
+                Direct answers — the kind you&rsquo;ll want to forward to your CISO.
+              </>
+            }
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-text-primary)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 40px",
-              maxWidth: "620px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Direct answers — the kind you&rsquo;ll want to forward to your CISO.
-          </m.h2>
+            titleClassName="lg:!text-display-sm"
+          />
 
           <div
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               overflow: "hidden",
             }}
           >
-            {FAQS.map((f, i) => (
+            {SECURITY_FAQS.map((f, i) => (
               <m.details
                 key={f.q}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 2)}
+                {...fadeUpOnScroll(i + 2)}
                 style={{
                   borderTop: i === 0 ? "none" : "1px solid var(--color-border)",
                   padding: "18px 22px",
@@ -877,8 +658,7 @@ export function SecurityProductPage() {
                   style={{
                     cursor: "pointer",
                     listStyle: "none",
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "15px",
+                    fontSize: "var(--text-lg)",
                     fontWeight: 500,
                     color: "var(--color-text-primary)",
                     display: "flex",
@@ -888,14 +668,13 @@ export function SecurityProductPage() {
                   }}
                 >
                   {f.q}
-                  <span style={{ color: "var(--color-gold-on-light)", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
+                  <span style={{ color: "var(--color-gold-on-light)", fontSize: "var(--text-3xl)", lineHeight: 1 }} aria-hidden="true">
                     +
                   </span>
                 </summary>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: "12px 0 0",
@@ -908,17 +687,13 @@ export function SecurityProductPage() {
           </div>
 
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(FAQS.length + 2)}
+            {...fadeUpOnScroll(SECURITY_FAQS.length + 2)}
             style={{
               marginTop: "32px",
               padding: "22px 26px",
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               display: "flex",
               flexWrap: "wrap",
               gap: "16px",
@@ -927,34 +702,22 @@ export function SecurityProductPage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <Mail size={18} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
+              <Mail size={18} color="var(--color-gold)" strokeWidth={1.8} aria-hidden="true" />
               <div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                <div style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
                   Got a question we haven&rsquo;t answered?
                 </div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--color-text-muted)" }}>
-                  Talk directly with our team — we respond within one business day.
+                <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>
+                  Talk directly with our team. {ENQUIRY_PROMISE}
                 </div>
               </div>
             </div>
-            <Link
+            <ButtonLink
               href={contactHref("security")}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "13px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 18px",
-                height: "40px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="sm"
             >
               Book a security review
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

@@ -1,20 +1,27 @@
 import "server-only";
+import { TURNSTILE_SITE_KEY } from "@/lib/turnstile-config";
 
 /**
- * Server-side Cloudflare Turnstile verification for the contact form.
+ * Server-side Cloudflare Turnstile verification for the public forms.
  *
- * Enforced when a key is configured; skipped only when no key is set
- * (local/preview), and a production warning is emitted if the key is missing.
- * To enforce the challenge, set both `TURNSTILE_SECRET_KEY` (server) and
- * `NEXT_PUBLIC_TURNSTILE_SITE_KEY` (client widget). With the secret present a
- * missing, invalid, or unverifiable token is rejected.
+ * `verifyTurnstile` answers `{ ok }` for a widget token, and `skipped: true`
+ * when the bot check is not configured (it needs both TURNSTILE_SECRET_KEY and
+ * NEXT_PUBLIC_TURNSTILE_SITE_KEY). When it is configured, a missing, invalid
+ * or unverifiable token is refused.
+ *
+ * This repository is PUBLIC. Why the check behaves as it does is abuse-defence
+ * detail and lives in `guides/security-posture.md`, which is gitignored. Read
+ * that before changing this file.
  */
 
 const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
-export interface TurnstileResult {
+/** How long the verification call may take before it counts as unverifiable. */
+const TURNSTILE_VERIFY_TIMEOUT_MS = 5_000;
+
+interface TurnstileResult {
   ok: boolean;
-  /** True when verification was skipped because no secret is configured. */
+  /** True when verification was skipped because the check is not configured. */
   skipped?: boolean;
 }
 
@@ -23,15 +30,8 @@ export async function verifyTurnstile(
   remoteIp?: string,
 ): Promise<TurnstileResult> {
   const secret = process.env.TURNSTILE_SECRET_KEY;
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
-  // Enforce ONLY when both keys are present, so the client widget and the
-  // server check are always in the same state. A half-configured deployment
-  // (one key set, the other not) skips verification instead of either failing
-  // open silently or bricking every form with an un-satisfiable challenge —
-  // and logs loudly in production so the misconfig is caught. When both are
-  // set, a missing/invalid/unverifiable token is rejected (fail closed).
-  if (!secret || !siteKey) {
+  if (!secret || !TURNSTILE_SITE_KEY) {
     if (process.env.NODE_ENV === "production") {
       console.error(
         "[turnstile] Not fully configured (need both TURNSTILE_SECRET_KEY and NEXT_PUBLIC_TURNSTILE_SITE_KEY) — bot verification SKIPPED.",
@@ -45,17 +45,18 @@ export async function verifyTurnstile(
     const body = new URLSearchParams({ secret, response: token });
     if (remoteIp) body.set("remoteip", remoteIp);
 
-    const res = await fetch(VERIFY_URL, {
+    const response = await fetch(VERIFY_URL, {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
       body,
+      signal: AbortSignal.timeout(TURNSTILE_VERIFY_TIMEOUT_MS),
     });
-    if (!res.ok) return { ok: false };
+    if (!response.ok) return { ok: false };
 
-    const data = (await res.json()) as { success?: boolean };
+    const data = (await response.json()) as { success?: boolean };
     return { ok: data.success === true };
   } catch {
-    // Fail closed — if we can't verify, don't let the submission through.
+    // Unverifiable (network failure or timeout) is refused.
     return { ok: false };
   }
 }

@@ -2,8 +2,10 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { STATIC_ROUTES } from "@/app/sitemap";
-import { LEGAL_PAGES, SITE_PAGE_ROUTES, type LegalPageKey } from "@/lib/brand";
+import { LEGAL_PAGES, MODULE_ORDER, SITE_PAGE_ROUTES, SUITES, moduleHref, suiteHref, type LegalPageKey } from "@/lib/brand";
+import { SITE_ROUTES } from "@/lib/routes";
 import { isLaunchHidden } from "@/lib/launch";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * Core owns the paths other surfaces link to on this site — the legal pages
@@ -69,14 +71,21 @@ describe("every page core links to is a page the site serves", () => {
 });
 
 /**
- * The route inventories list paths on purpose — the sitemap and the launch
- * gate — and the tests above hold them to core. Every other file links
- * through `LEGAL_PAGES`, `SITE_PAGES` or `contactHref`.
+ * The site's own paths are typed once, in `routes.ts`; module and suite pages
+ * are built from their key. Every other file links through `SITE_ROUTES`,
+ * `moduleHref`/`suiteHref`, `LEGAL_PAGES`, `SITE_PAGES` or `contactHref` — and
+ * so does `next.config.ts`, whose redirect used to type core's paths.
  */
-const ROUTE_INVENTORIES = new Set([join("app", "sitemap.ts"), join("lib", "launch.ts")]);
+const ROUTE_INVENTORIES = new Set([join("lib", "routes.ts")]);
 
 const STATIC_SITE_ROUTES = Object.values(SITE_PAGE_ROUTES).filter((route) => !route.includes("["));
-const LINKED_PATHS = [...Object.values(LEGAL_PAGES), ...STATIC_SITE_ROUTES];
+const LINKED_PATHS = [
+  ...Object.values(LEGAL_PAGES),
+  ...STATIC_SITE_ROUTES,
+  ...Object.values(SITE_ROUTES).filter((route) => route !== SITE_ROUTES.home),
+  ...MODULE_ORDER.map(moduleHref),
+  ...SUITES.map((suite) => suiteHref(suite.key)),
+];
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 /** A quoted path core owns: "/privacy", '/terms#x', `/contact?intent=…` and the like. */
 const HAND_TYPED_PATH = new RegExp(`["'\`](?:${LINKED_PATHS.map(escapeRegExp).join("|")})(?=["'\`#?])`);
@@ -88,23 +97,33 @@ describe("pages core owns are never linked by a hand-typed path", () => {
     expect(HAND_TYPED_PATH.test("canonical('/terms')")).toBe(true);
     expect(HAND_TYPED_PATH.test('href="/trust#dpa"')).toBe(true);
     expect(HAND_TYPED_PATH.test('href="/trial"')).toBe(true);
+    expect(HAND_TYPED_PATH.test('href="/pricing"')).toBe(true);
+    expect(HAND_TYPED_PATH.test('href: "/product/integrations#identity"')).toBe(true);
+    expect(HAND_TYPED_PATH.test('path: "/product/pay"')).toBe(true);
     expect(HAND_TYPED_PATH.test('href="/privacy-notice"')).toBe(false);
     expect(HAND_TYPED_PATH.test('href="/product/security-stack"')).toBe(false);
     expect(HAND_TYPED_PATH.test("// see /privacy for the policy")).toBe(false);
   });
 
-  it("no source file outside the route inventories types one", () => {
+  it("no source file outside the route inventory types one (nor next.config.ts)", () => {
     const offenders = readdirSync(SRC, { recursive: true, encoding: "utf8" })
       .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file))
       .filter((file) => !ROUTE_INVENTORIES.has(file))
-      .filter((file) => HAND_TYPED_PATH.test(readFileSync(join(SRC, file), "utf8")));
-    expect(offenders, "link through LEGAL_PAGES / SITE_PAGES / contactHref").toEqual([]);
+      .filter((file) => HAND_TYPED_PATH.test(stripComments(readFileSync(join(SRC, file), "utf8"))));
+    if (HAND_TYPED_PATH.test(stripComments(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")))) offenders.push("next.config.ts");
+    // The home page is "/", too common a string to match everywhere; a link to it is not.
+    const HOME_LINK = /\bhref(?:=|:\s*)["']\/["']/;
+    expect(HOME_LINK.test('<Link href="/">')).toBe(true);
+    for (const file of readdirSync(SRC, { recursive: true, encoding: "utf8" })) {
+      if (/\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file) && HOME_LINK.test(stripComments(readFileSync(join(SRC, file), "utf8")))) offenders.push(file);
+    }
+    expect(offenders, "link through SITE_ROUTES / moduleHref / suiteHref / LEGAL_PAGES / SITE_PAGES / contactHref").toEqual([]);
   });
 
   it("the scan reads the files that link to these pages", () => {
-    // Guards against a vacuous pass: the footer links to every legal page.
-    const footer = readFileSync(join(SRC, "components", "layout", "footer.tsx"), "utf8");
-    expect(footer).toContain("LEGAL_PAGES.privacy");
+    // Guards against a vacuous pass: the chrome's link list names every legal page.
+    const nav = readFileSync(join(SRC, "lib", "site-nav.ts"), "utf8");
+    expect(nav).toContain("LEGAL_PAGES.privacy");
   });
 });
 

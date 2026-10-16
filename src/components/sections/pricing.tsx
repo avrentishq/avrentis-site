@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { m } from "framer-motion";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import Link from "next/link";
 import type {
@@ -13,23 +15,25 @@ import type {
   PricingCurrency,
 } from "@/lib/pricing";
 import { formatCurrencyAmount } from "@/lib/money";
+import { EVERY_PLAN_LEAD } from "@/lib/plan-names";
+import { TRUST_SIGNALS } from "@/lib/compliance-posture";
 import { priceTaxNote } from "@/lib/price-tax";
-import { isModulePublic, SITE_PAGES } from "@/lib/brand";
+import { BRAND, isModulePublic, moduleShortNameFor, SITE_PAGES } from "@/lib/brand";
+import { formatEnglishList } from "@/lib/english-list";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
-import {
-  READ_ONLY_GRACE_DAYS,
-  TRIAL_DURATION_DAYS,
-  TRIAL_PLAN,
-  TRIAL_PLAN_NAME,
-  TRIAL_SEAT_CAP,
-  TRIAL_STORAGE,
-} from "@/lib/trial-terms";
+import { READ_ONLY_GRACE_DAYS, TRIAL_DURATION_DAYS, TRIAL_PLAN, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
+import { LEAD_CURRENCY } from "@/lib/market";
+import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 type BillingCycle = "monthly" | "annual";
 
 /** The plan the card row features — core's recommended tier, never a typed key. */
 const FEATURED_PLAN = PLAN_ORDER.find((key) => PLAN_CATALOG[key].recommended);
+
+/** API module names carry the brand ("<brand> Payables"); cards show the bare name. */
 
 /** Months an annual plan does not charge for ("2 months free"), from core. */
 const ANNUAL_FREE_MONTHS = 12 - ANNUAL_BILLED_MONTHS;
@@ -46,7 +50,7 @@ function getPriceForCurrency(
 
 function getAvailableCurrencies(data: PricingData): string[] {
   const first = data.plans[0];
-  if (!first) return ["NGN"];
+  if (!first) return [LEAD_CURRENCY];
   return first.pricing.map((p) => p.currency);
 }
 
@@ -83,7 +87,6 @@ interface PricingProps {
 }
 
 export function Pricing({ data, headingAs = "h2" }: PricingProps) {
-  const Headline = headingAs === "h1" ? m.h1 : m.h2;
   // Default to annual — the higher-value cycle we already frame as "N months
   // free". The card keeps the monthly-equivalent and annual total visible so
   // the default informs rather than tricks.
@@ -92,7 +95,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   const currencies = getAvailableCurrencies(data);
   // Nigeria-first market — lead with Naira; fall back to whatever the API offers.
   const [currency, setCurrency] = useState<string>(
-    currencies.includes("NGN") ? "NGN" : currencies[0],
+    currencies.includes(LEAD_CURRENCY) ? LEAD_CURRENCY : currencies[0],
   );
 
   // Contrast / anchoring: render plans in ascending price so the premium tier
@@ -114,7 +117,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   // paid modules and appear as badges. Empty on a stale/pre-deploy API → the
   // strip falls back to generic always-on copy (no module over-claim).
   const platformNames = (data.platformModules ?? []).map((m) =>
-    m.name.replace("Avrentis ", ""),
+    moduleShortNameFor(m),
   );
 
   // A module badge shows a plan's publicly-marketed modules from the API's
@@ -139,11 +142,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
       .filter((m) => m.availableToSectors?.length)
       .map((m) => {
         const sectors = m.availableToSectors as string[];
-        const list =
-          sectors.length > 1
-            ? `${sectors.slice(0, -1).join(", ")} and ${sectors[sectors.length - 1]}`
-            : sectors[0];
-        return `${m.name.replace("Avrentis ", "")} is for ${list}`;
+        return `${moduleShortNameFor(m)} is for ${formatEnglishList(sectors)}`;
       });
 
   // "All modules included" when a plan carries every module the site markets
@@ -161,7 +160,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   const trialDays = data.trial?.days ?? TRIAL_DURATION_DAYS;
   const trialSeatCap = data.trial?.seatCap ?? TRIAL_SEAT_CAP;
   const trialModuleLabel = (trialPlan ? publicPlanModules(trialPlan) : [])
-    .map((m) => m.name.replace("Avrentis ", ""))
+    .map((m) => moduleShortNameFor(m))
     .join(" + ");
 
   return (
@@ -177,84 +176,43 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
       <SectionBackdrop src={SECTION_BACKDROPS.pricing} scrim="light" />
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "var(--layout-max-width)",
           margin: "0 auto",
           position: "relative",
-          zIndex: 1,
+          zIndex: Z_INDEX.raised,
         }}
       >
-        {/* Eyebrow */}
-        <m.span
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            textAlign: "center",
-            marginBottom: "16px",
-          }}
-        >
-          PRICING
-        </m.span>
-
-        {/* Headline */}
-        <Headline
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
-          style={{
-            fontFamily: "var(--font-sans)",
+        <SectionIntro
+          align="center"
+          eyebrow="PRICING"
+          eyebrowStyle={{ marginBottom: "16px" }}
+          titleAs={headingAs}
+          title="Structured pricing for every stage of growth."
+          titleStyle={{
             fontWeight: 400,
-            fontSize: "36px",
-            color: "var(--color-text-primary)",
+            fontSize: "var(--text-display-xs)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
-            textAlign: "center",
           }}
-          className="lg:!text-[42px]"
-        >
-          Structured pricing for every stage of growth.
-        </Headline>
-
-        {/* Subheadline */}
-        <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
-          style={{
-            fontFamily: "var(--font-sans)",
+          titleClassName="lg:!text-display-lg"
+          lede={
+            <>
+              Every plan starts with a {trialDays}-day trial. {NO_CARD_REQUIRED}, nothing
+              to cancel. Scale as your organisation grows. No hidden fees.
+            </>
+          }
+          ledeStyle={{
             fontWeight: 400,
-            fontSize: "16px",
-            color: "var(--color-text-muted)",
+            fontSize: "var(--text-xl)",
             lineHeight: 1.7,
             margin: "0 auto 32px",
-            textAlign: "center",
-            maxWidth: "500px",
+            maxWidth: "var(--measure-short)",
           }}
-        >
-          Every plan starts with a {trialDays}-day trial &mdash; no card on file,
-          nothing to cancel. Scale as your organisation grows. No hidden fees.
-        </m.p>
+        />
 
         {/* Controls row */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(3)}
+          {...fadeUpOnScroll(3)}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -269,7 +227,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             style={{
               display: "inline-flex",
               border: "1px solid var(--color-border)",
-              borderRadius: "8px",
+              borderRadius: "var(--radius-card)",
               padding: "4px",
             }}
           >
@@ -278,13 +236,12 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               onClick={() => setBilling("monthly")}
               style={{
                 padding: "8px 20px",
-                borderRadius: "6px",
-                fontSize: "14px",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-md)",
                 fontWeight: 500,
-                fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "background-color 150ms ease, color 150ms ease",
+                transition: cssTransition(["background-color", "color"]),
                 backgroundColor:
                   billing === "monthly" ? "var(--color-navy-primary)" : "transparent",
                 color: billing === "monthly" ? "var(--color-white)" : "var(--color-text-muted)",
@@ -297,13 +254,12 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               onClick={() => setBilling("annual")}
               style={{
                 padding: "8px 20px",
-                borderRadius: "6px",
-                fontSize: "14px",
+                borderRadius: "var(--radius-md)",
+                fontSize: "var(--text-md)",
                 fontWeight: 500,
-                fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "background-color 150ms ease, color 150ms ease",
+                transition: cssTransition(["background-color", "color"]),
                 backgroundColor:
                   billing === "annual" ? "var(--color-gold)" : "transparent",
                 color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
@@ -319,7 +275,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               style={{
                 display: "inline-flex",
                 border: "1px solid var(--color-border)",
-                borderRadius: "8px",
+                borderRadius: "var(--radius-card)",
                 padding: "4px",
               }}
             >
@@ -330,13 +286,12 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   onClick={() => setCurrency(c)}
                   style={{
                     padding: "8px 16px",
-                    borderRadius: "6px",
-                    fontSize: "14px",
+                    borderRadius: "var(--radius-md)",
+                    fontSize: "var(--text-md)",
                     fontWeight: 500,
-                    fontFamily: "var(--font-sans)",
                     cursor: "pointer",
                     border: "none",
-                    transition: "background-color 150ms ease, color 150ms ease",
+                    transition: cssTransition(["background-color", "color"]),
                     backgroundColor: currency === c ? "var(--color-navy-primary)" : "transparent",
                     color: currency === c ? "var(--color-white)" : "var(--color-text-muted)",
                   }}
@@ -349,21 +304,15 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
         </m.div>
 
         {/* Plan Cards */}
-        <div
-          style={{ display: "grid", gap: "20px" }}
-          className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4"
-        >
+        {/* The trial card plus one per plan the API returns. */}
+        <div {...cardGridProps(orderedPlans.length + 1, {}, { gap: "20px" })}>
           {/* Trial card — marketing-only, not a real plan */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(4)}
+            {...fadeUpOnScroll(4)}
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "12px",
+              borderRadius: "var(--radius-xl)",
               padding: "32px",
               display: "flex",
               flexDirection: "column",
@@ -371,20 +320,18 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           >
             <h3
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 600,
-                fontSize: "20px",
+                fontSize: "var(--text-heading-xs)",
                 color: "var(--color-text-primary)",
                 margin: "0 0 6px",
               }}
             >
-              Try Avrentis
+              Try {BRAND.name}
             </h3>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 color: "var(--color-text-muted)",
                 lineHeight: 1.5,
                 margin: "0 0 20px",
@@ -396,9 +343,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             <div style={{ marginBottom: "6px" }}>
               <span
                 style={{
-                  fontFamily: "var(--font-sans)",
                   fontWeight: 700,
-                  fontSize: "36px",
+                  fontSize: "var(--text-display-xs)",
                   color: "var(--color-text-primary)",
                 }}
               >
@@ -406,9 +352,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
               </span>
               <span
                 style={{
-                  fontFamily: "var(--font-sans)",
                   fontWeight: 400,
-                  fontSize: "14px",
+                  fontSize: "var(--text-md)",
                   color: "var(--color-text-muted)",
                 }}
               >
@@ -418,27 +363,25 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             </div>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "12px",
+                fontSize: "var(--text-xs)",
                 color: "var(--color-text-muted)",
                 margin: "0 0 20px",
                 minHeight: "16px",
               }}
             >
-              No credit card required
+              {NO_CARD_REQUIRED}
             </p>
             <div
               style={{
                 display: "inline-block",
-                fontSize: "11px",
+                fontSize: "var(--text-2xs)",
                 fontWeight: 500,
-                fontFamily: "var(--font-sans)",
                 padding: "4px 10px",
-                borderRadius: "4px",
-                backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+                borderRadius: "var(--radius-badge)",
+                backgroundColor: "var(--color-gold-ghost)",
                 color: "var(--color-gold-on-light)",
-                border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
+                border: "1px solid var(--color-gold-divider)",
                 marginBottom: "16px",
                 alignSelf: "flex-start",
               }}
@@ -457,9 +400,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 <li
                   key={feature}
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.5,
                     marginBottom: "10px",
@@ -485,12 +427,11 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 justifyContent: "center",
                 width: "100%",
                 height: "44px",
-                borderRadius: "9999px",
-                fontSize: "14px",
+                borderRadius: "var(--radius-pill)",
+                fontSize: "var(--text-md)",
                 fontWeight: 600,
-                fontFamily: "var(--font-sans)",
                 textDecoration: "none",
-                transition: "border-color 150ms ease",
+                transition: cssTransition("border-color"),
                 backgroundColor: "transparent",
                 color: "var(--color-text-primary)",
                 border: "1px solid var(--color-border)",
@@ -506,15 +447,14 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             </Link>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "11px",
+                fontSize: "var(--text-2xs)",
                 color: "var(--color-text-muted)",
                 lineHeight: 1.5,
                 margin: "12px 0 0",
               }}
             >
-              Exports carry an Avrentis Trial watermark until you upgrade. Data
+              Exports carry an {BRAND.name} Trial watermark until you upgrade. Data
               is preserved for {READ_ONLY_GRACE_DAYS} days after your trial ends.
             </p>
           </m.div>
@@ -565,7 +505,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             // on every plan" strip below; Requests is hidden by the site.
             const badgeModules = publicPlanModules(plan);
             const moduleNames = badgeModules
-              .map((m) => m.name.replace("Avrentis ", ""))
+              .map((m) => moduleShortNameFor(m))
               .join(" + ");
             // No hardcoded count in the label (it drifts — the same reason the
             // app's pricing lock test forbids "N modules" copy); a plan carrying
@@ -578,17 +518,13 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             return (
               <m.div
                 key={plan.key}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 4)}
+                {...fadeUpOnScroll(i + 4)}
                 style={{
                   backgroundColor: isFeatured ? "var(--color-navy-primary)" : "var(--color-white)",
                   border: isFeatured
-                    ? "1px solid rgba(var(--color-gold-rgb), 0.3)"
+                    ? "1px solid var(--color-gold-border)"
                     : "1px solid var(--color-border)",
-                  borderRadius: "12px",
+                  borderRadius: "var(--radius-xl)",
                   padding: "32px",
                   display: "flex",
                   flexDirection: "column",
@@ -601,12 +537,11 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                       display: "inline-block",
                       backgroundColor: "var(--color-gold)",
                       color: "var(--color-text-primary)",
-                      fontSize: "11px",
+                      fontSize: "var(--text-2xs)",
                       fontWeight: 600,
-                      fontFamily: "var(--font-sans)",
                       textTransform: "uppercase",
                       padding: "6px 14px",
-                      borderRadius: "4px",
+                      borderRadius: "var(--radius-badge)",
                       marginBottom: "8px",
                       alignSelf: "flex-start",
                     }}
@@ -618,9 +553,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 {/* Plan name */}
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "20px",
+                    fontSize: "var(--text-heading-xs)",
                     color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                     margin: "0 0 6px",
                   }}
@@ -631,9 +565,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 {/* Description */}
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                     lineHeight: 1.5,
                     margin: "0 0 20px",
@@ -655,9 +588,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   {isQuotePriced && (
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 400,
-                        fontSize: "16px",
+                        fontSize: "var(--text-xl)",
                         color: "var(--color-text-muted)",
                       }}
                     >
@@ -667,9 +599,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   {showStrike && priceData && (
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 500,
-                        fontSize: "18px",
+                        fontSize: "var(--text-3xl)",
                         textDecoration: "line-through",
                         color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                       }}
@@ -680,9 +611,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   <span style={{ whiteSpace: "nowrap" }}>
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 700,
-                        fontSize: "34px",
+                        fontSize: "var(--text-heading-3xl)",
                         color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                       }}
                     >
@@ -690,9 +620,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     </span>
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 400,
-                        fontSize: "14px",
+                        fontSize: "var(--text-md)",
                         color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                       }}
                     >
@@ -704,9 +633,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 {taxNote && (
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 400,
-                      fontSize: "12px",
+                      fontSize: "var(--text-xs)",
                       color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                       margin: "0 0 8px",
                     }}
@@ -719,9 +647,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 {annualSaving > 0 && (
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "12px",
+                      fontSize: "var(--text-xs)",
                       color: isFeatured
                         ? "var(--color-gold)"
                         : "var(--color-gold-on-light)",
@@ -735,9 +662,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 {/* Billing note */}
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: isFeatured ? "var(--color-text-inverse-muted)" : "var(--color-text-muted)",
                     margin: "0 0 20px",
                     minHeight: "18px",
@@ -776,18 +702,17 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   <div
                     style={{
                       display: "inline-block",
-                      fontSize: "11px",
+                      fontSize: "var(--text-2xs)",
                       fontWeight: 500,
-                      fontFamily: "var(--font-sans)",
                       padding: "4px 10px",
-                      borderRadius: "4px",
+                      borderRadius: "var(--radius-badge)",
                       backgroundColor: isFeatured
-                        ? "rgba(var(--color-gold-rgb), 0.15)"
-                        : "rgba(var(--color-gold-rgb), 0.08)",
+                        ? "var(--color-gold-tint)"
+                        : "var(--color-gold-ghost)",
                       color: isFeatured
                         ? "var(--color-gold)"
                         : "var(--color-gold-on-light)",
-                      border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
+                      border: "1px solid var(--color-gold-divider)",
                       marginBottom: "16px",
                       alignSelf: "flex-start",
                     }}
@@ -805,8 +730,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   <div
                     key={note}
                     style={{
-                      fontSize: "11px",
-                      fontFamily: "var(--font-sans)",
+                      fontSize: "var(--text-2xs)",
                       color: "var(--color-text-muted)",
                       margin: "-8px 0 16px",
                       alignSelf: "flex-start",
@@ -828,9 +752,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   {inheritFrom && (
                     <li
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 600,
-                        fontSize: "13px",
+                        fontSize: "var(--text-sm)",
                         color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                         marginBottom: "12px",
                       }}
@@ -842,9 +765,8 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     <li
                       key={feature}
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 400,
-                        fontSize: "13px",
+                        fontSize: "var(--text-sm)",
                         color: isFeatured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
                         lineHeight: 1.5,
                         marginBottom: "10px",
@@ -868,51 +790,16 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 </ul>
 
                 {/* CTA */}
-                <Link
+                <ButtonLink
                   href={isQuotePriced ? contactHref("demo") : SITE_PAGES.trial()}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    height: "44px",
-                    borderRadius: "9999px",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    fontFamily: "var(--font-sans)",
-                    textDecoration: "none",
-                    transition: "background-color 150ms ease, border-color 150ms ease",
-                    ...(isFeatured
-                      ? {
-                          backgroundColor: "var(--color-gold)",
-                          color: "var(--color-text-primary)",
-                          border: "none",
-                        }
-                      : {
-                          backgroundColor: "transparent",
-                          color: "var(--color-text-primary)",
-                          border: "1px solid var(--color-border)",
-                        }),
-                  }}
-                  onMouseEnter={(e) => {
-                    if (isFeatured) {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--color-gold-hover)";
-                    } else {
-                      e.currentTarget.style.borderColor = "var(--color-navy-primary)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (isFeatured) {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--color-gold)";
-                    } else {
-                      e.currentTarget.style.borderColor = "var(--color-border)";
-                    }
-                  }}
+                  variant={isFeatured ? "primary" : "secondary"}
+                  surface="light"
+                  size="md"
+                  shape="pill"
+                  fullWidth
                 >
                   {isQuotePriced ? "Talk to us" : "Start my trial"}
-                </Link>
+                </ButtonLink>
               </m.div>
             );
           })}
@@ -920,40 +807,30 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
 
         {/* Reassurance strip */}
         <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(8)}
+          {...fadeUpOnScroll(8)}
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             color: "var(--color-text-muted)",
             textAlign: "center",
             marginTop: "40px",
           }}
         >
           {platformNames.length > 0
-            ? `Included on every plan: ${platformNames.join(" · ")} — the always-on approval engine, tamper-evident audit trail and enterprise-grade security.`
-            : "All plans include: Multi-level approvals · Enterprise-grade security · Designed for GDPR & NDPR"}
+            ? `${EVERY_PLAN_LEAD}: ${platformNames.join(" · ")} — the always-on approval engine, tamper-evident audit trail and enterprise-grade security.`
+            : `${EVERY_PLAN_LEAD}: ${Object.values(TRUST_SIGNALS).join(" · ")}`}
         </m.p>
 
         <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(9)}
+          {...fadeUpOnScroll(9)}
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             textAlign: "center",
             marginTop: "12px",
           }}
         >
           <Link
-            href="/tools/savings"
+            href={SITE_ROUTES.savingsEstimator}
             style={{
               color: "var(--color-gold-on-light)",
               textDecoration: "none",

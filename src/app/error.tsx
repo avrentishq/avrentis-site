@@ -1,7 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
 import { BRAND } from "@/lib/brand";
+import { CONTACT_EMAIL } from "@/lib/contacts";
+import { SITE_ROUTES } from "@/lib/routes";
 
 /**
  * Branded route error boundary. Must be a Client Component (Next.js
@@ -21,12 +23,12 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         padding: "40px",
       }}
     >
-      <div style={{ maxWidth: "520px", textAlign: "center" }}>
+      <div style={{ maxWidth: "var(--measure-short)", textAlign: "center" }}>
         <p
           style={{
             fontFamily: "var(--font-mono)",
             fontWeight: 500,
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
             color: "var(--color-gold)",
@@ -38,9 +40,8 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         <h1
           data-page-title
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "32px",
+            fontSize: "var(--text-heading-2xl)",
             color: "var(--color-white)",
             lineHeight: 1.2,
             margin: "0 0 16px",
@@ -50,68 +51,35 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-subtle)",
             lineHeight: 1.7,
             margin: "0 auto 28px",
-            maxWidth: "440px",
+            maxWidth: "var(--measure-compact)",
           }}
         >
           Try again in a moment. If it keeps happening, email{" "}
-          <a href={`mailto:${BRAND.contactEmail}`} style={{ color: "var(--color-gold)", textDecoration: "none" }}>
-            {BRAND.contactEmail}
+          <a href={`mailto:${CONTACT_EMAIL.general}`} style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+            {CONTACT_EMAIL.general}
           </a>{" "}
           and we&rsquo;ll take a look.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <button
-            type="button"
-            onClick={reset}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "14px",
-              backgroundColor: "var(--color-gold)",
-              color: "var(--color-text-primary)",
-              border: "none",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-          >
+          <button type="button" onClick={reset} {...buttonProps({ size: "md" })}>
             Try again
           </button>
-          <Link
-            href="/"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "14px",
-              color: "var(--color-white)",
-              border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
-          >
+          <ButtonLink href={SITE_ROUTES.home} variant="secondary" surface="dark">
             Back to home
-          </Link>
+          </ButtonLink>
         </div>
         <p
           style={{
             fontFamily: "var(--font-mono)",
             fontWeight: 500,
-            fontSize: "9px",
+            fontSize: "var(--text-4xs)",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-text-faint)",
+            color: "var(--color-text-subtle)",
             margin: "40px 0 0",
           }}
         >

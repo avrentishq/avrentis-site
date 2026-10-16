@@ -6,11 +6,10 @@
  * the dropdown used to: it says what a group of modules is for, what they share,
  * and what each one adds on its own — then hands off to the module's own page.
  *
- * A SERVER component, deliberately, unlike `module-layout.tsx`. That one is
- * "use client" because it animates on scroll and embeds interactive previews;
- * this page has neither, and making it a client component would ship framer-
- * motion to render four headings and some prose. It borrows the same visual
- * language — navy hero, light body, gold eyebrow — without the machinery.
+ * A SERVER component, deliberately, unlike `module-layout.tsx`, which is
+ * "use client" because it animates on scroll and embeds interactive previews.
+ * This page renders its prose on the server; only the shared hero backdrop
+ * (its ambient glows) is a client island.
  *
  * Copy lives in `@/lib/product-suites`; nothing here is written inline, so the
  * lock test can hold a suite to having words for every module it contains.
@@ -18,13 +17,18 @@
 
 import Link from "next/link";
 
-import { BRAND_COLORS, MODULES, SUITES, moduleName, type ModuleSuite } from "@/lib/brand";
+import { SUITES, moduleHref, suiteHref, moduleName, moduleShortName, type ModuleSuite } from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
 import { SUITE_PAGES, suiteModuleKeys } from "@/lib/product-suites";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { SITE_ROUTES } from "@/lib/routes";
+import { cssTransition } from "@/lib/animations";
+import { Z_INDEX } from "@/lib/layers";
 
 export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
   const config = SUITE_PAGES[suite];
@@ -36,8 +40,8 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Platform", path: "/product" },
-          { name: meta.label, path: `/product/${suite}` },
+          { name: "Platform", path: SITE_ROUTES.product },
+          { name: meta.label, path: suiteHref(suite) },
         ])}
       />
       <Navbar />
@@ -53,64 +57,42 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
           isolation: "isolate",
         }}
       >
-        <AmbientGlow top="-140px" left="-110px" size={520} intensity={0.2} duration={34} />
-        <div style={{ maxWidth: "820px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "block",
-              marginBottom: "18px",
-            }}
-          >
-            {meta.label}
-          </span>
-          <h1
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 700,
-              fontSize: "34px",
-              color: "var(--color-white)",
-              lineHeight: 1.18,
-              margin: "0 0 22px",
-            }}
-            className="lg:!text-[46px]"
-          >
-            {config.headline}
-          </h1>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "17px",
+        <DarkHeroBackdrop glows="hero" />
+        <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
+          <SectionIntro
+            surface="dark"
+            reveal="none"
+            eyebrow={meta.label}
+            eyebrowStyle={{ marginBottom: "18px" }}
+            titleAs="h1"
+            title={config.headline}
+            titleStyle={{ fontWeight: 700, fontSize: "var(--text-heading-3xl)", lineHeight: 1.18, margin: "0 0 22px" }}
+            titleClassName="lg:!text-display-2xl"
+            lede={config.description}
+            ledeStyle={{
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: 0,
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
-          >
-            {config.description}
-          </p>
+          />
         </div>
       </section>
 
       {/* ── WHAT THEY SHARE ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "88px 40px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <h2
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "30px",
+              fontSize: "var(--text-heading-xl)",
               color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[36px]"
+            className="lg:!text-display-xs"
           >
             {config.sharedTitle}
           </h2>
@@ -129,7 +111,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                   style={{
                     backgroundColor: "var(--color-white)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     flexDirection: "column",
@@ -140,20 +122,19 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                     style={{
                       width: "40px",
                       height: "40px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "17px",
+                      fontSize: "var(--text-2xl)",
                       color: "var(--color-text-primary)",
                       margin: 0,
                     }}
@@ -162,8 +143,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
@@ -180,28 +160,26 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
 
       {/* ── WHAT EACH ONE ADDS ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "88px 40px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <h2
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "30px",
+              fontSize: "var(--text-heading-xl)",
               color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 8px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[36px]"
+            className="lg:!text-display-xs"
           >
             {moduleKeys.length === 1 ? "What it adds" : "What each one adds"}
           </h2>
           <p
             style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-muted)",
               margin: "0 0 40px",
-              maxWidth: "620px",
+              maxWidth: "var(--measure)",
             }}
           >
             Each is bought and switched on separately. Everything above is true of all of them.
@@ -212,44 +190,43 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
               const blurb = config.modules[key];
               // A module with no copy is a lock-test failure, not a blank card.
               if (!blurb) return null;
-              const Icon = blurb.icon;
+              const Icon = MODULE_COPY[key].icon;
               return (
                 <Link
                   key={key}
-                  href={`/product/${MODULES[key].slug}`}
+                  href={moduleHref(key)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     gap: "20px",
                     alignItems: "flex-start",
                     textDecoration: "none",
-                    transition: "border-color 200ms ease",
+                    transition: cssTransition("border-color", "base"),
                   }}
-                  className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
+                  className="hover:!border-[var(--color-gold-border-strong)]"
                 >
                   <div
                     style={{
                       width: "40px",
                       height: "40px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
                     }}
                   >
-                    <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <h3
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 600,
-                        fontSize: "18px",
+                        fontSize: "var(--text-3xl)",
                         color: "var(--color-text-primary)",
                         margin: "0 0 2px",
                       }}
@@ -258,8 +235,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                     </h3>
                     <p
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         color: "var(--color-gold-on-light)",
                         margin: "0 0 10px",
                         fontWeight: 500,
@@ -269,8 +245,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                     </p>
                     <p
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "14px",
+                        fontSize: "var(--text-md)",
                         color: "var(--color-text-muted)",
                         lineHeight: 1.65,
                         margin: "0 0 12px",
@@ -280,13 +255,12 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                     </p>
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "13px",
+                        fontSize: "var(--text-sm)",
                         fontWeight: 500,
                         color: "var(--color-text-primary)",
                       }}
                     >
-                      Explore {moduleName(key).replace("Avrentis ", "")}{" "}
+                      Explore {moduleShortName(key)}{" "}
                       &rarr;
                     </span>
                   </div>
@@ -297,12 +271,11 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
 
           <p
             style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "14px",
+              fontSize: "var(--text-md)",
               margin: "32px 0 0",
             }}
           >
-            <Link href="/product" style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>
+            <Link href={SITE_ROUTES.product} style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>
               See the whole platform &rarr;
             </Link>
           </p>

@@ -1,21 +1,24 @@
 "use client";
 
 /**
- * useMediaQuery — reactive boolean for a CSS media query.
+ * useMediaQuery — reactive boolean for one of the site's named media queries
+ * (`MEDIA_QUERIES`).
  *
- * Same `useSyncExternalStore` pattern as `useReducedMotion` (no React 19
- * "setState in effect" warning). SSR-safe: the server renders as `false`, then
- * the client hydrates to the real value on mount.
+ * `useSyncExternalStore`, so there is no React 19 "setState in effect" warning.
+ * SSR-safe: the server renders `false` (the full, desktop, motion-on
+ * experience paints first), then the client hydrates to the real value.
  */
 
 import { useCallback, useSyncExternalStore } from "react";
+import { MEDIA_QUERIES, type MediaQueryName } from "./media-queries";
 
-export function useMediaQuery(query: string): boolean {
+export function useMediaQuery(name: MediaQueryName): boolean {
+  const query = MEDIA_QUERIES[name];
   const subscribe = useCallback(
     (onChange: () => void) => {
-      const mq = window.matchMedia(query);
-      mq.addEventListener("change", onChange);
-      return () => mq.removeEventListener("change", onChange);
+      const mediaQueryList = window.matchMedia(query);
+      mediaQueryList.addEventListener("change", onChange);
+      return () => mediaQueryList.removeEventListener("change", onChange);
     },
     [query],
   );

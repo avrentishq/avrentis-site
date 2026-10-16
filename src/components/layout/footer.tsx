@@ -2,92 +2,36 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
-import { SUITE_NAV } from "@/lib/product-suites";
-import { isLaunchVisible } from "@/lib/launch";
-import { LOGIN_URL } from "@/lib/platform";
-import { contactHref } from "@/app/contact/tabs";
-
-// The PRODUCT column lists the four SUITES, not the eight modules — the same
-// grouping the navbar uses. Every module page stays one click further on (from
-// its suite page, or from the module index this column ends with), and stays in
-// the sitemap. Derived from the brand SSOT, so a suite added there appears here.
-const PRODUCT_LINKS = [
-  ...SUITE_NAV.map((suite) => ({ label: suite.label, href: suite.href })),
-  { label: "All modules", href: "/product" },
-];
-
-const PLATFORM_LINKS = [
-  { label: "How it works", href: "/product/how-it-works" },
-  { label: "Security", href: LEGAL_PAGES.security },
-  { label: "Integrations", href: "/product/integrations" },
-  { label: "Pricing", href: "/pricing" },
-];
-
-const RESOURCES_LINKS = [
-  { label: "Documentation", href: "/docs" },
-  { label: "Changelog", href: "/changelog" },
-  { label: "Status", href: "/status" },
-  { label: "Customers", href: "/customers" },
-];
-
-const COMPANY_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Careers", href: "/careers" },
-  { label: "Trust centre", href: LEGAL_PAGES.trust },
-  { label: "Privacy policy", href: LEGAL_PAGES.privacy },
-  { label: "Terms of service", href: LEGAL_PAGES.terms },
-];
-
-const START_LINKS = [
-  { label: "Start trial", href: SITE_PAGES.trial() },
-  { label: "Contact us", href: contactHref() },
-  { label: "Login", href: LOGIN_URL },
-];
-
-// Hidden-at-launch links are filtered out; fully-empty columns are dropped.
-const FOOTER_COLUMNS = [
-  { label: "PRODUCT", links: PRODUCT_LINKS },
-  { label: "PLATFORM", links: PLATFORM_LINKS },
-  { label: "RESOURCES", links: RESOURCES_LINKS },
-  { label: "COMPANY", links: COMPANY_LINKS },
-  { label: "GET STARTED", links: START_LINKS },
-]
-  .map((col) => ({ ...col, links: col.links.filter((link) => isLaunchVisible(link.href)) }))
-  .filter((col) => col.links.length > 0);
+import { Eyebrow } from "@/components/ui/section-intro";
+import { BRAND } from "@/lib/brand";
+import { FOOTER_COLUMNS } from "@/lib/site-nav";
+import { MARKET_SCOPE } from "@/lib/market";
+import { cssTransition } from "@/lib/animations";
 
 const linkStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
   fontWeight: 400,
-  fontSize: "12px",
-  color: "var(--color-text-muted)",
+  fontSize: "var(--text-xs)",
+  // text-subtle, not text-muted: muted reads 4.2:1 on the deep-navy footer, under AA for small text.
+  color: "var(--color-text-subtle)",
   textDecoration: "none",
   display: "block",
   marginBottom: "8px",
-  transition: "color 150ms ease",
-};
-
-const labelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontWeight: 500,
-  fontSize: "10px",
-  letterSpacing: "0.10em",
-  textTransform: "uppercase",
-  color: "var(--color-gold)",
-  marginBottom: "14px",
+  transition: cssTransition("color"),
 };
 
 function FooterColumn({ label, links }: { label: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <div style={labelStyle}>{label}</div>
+      <Eyebrow as="div" surface="dark" size="group" style={{ marginBottom: "14px" }}>
+        {label}
+      </Eyebrow>
       {links.map((link) => (
         <Link
           key={link.label}
           href={link.href}
           style={linkStyle}
           onMouseEnter={(e) => { e.currentTarget.style.color = "var(--color-gold)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-text-muted)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-text-subtle)"; }}
         >
           {link.label}
         </Link>
@@ -102,10 +46,10 @@ export function Footer() {
       style={{
         backgroundColor: "var(--color-navy-deep)",
         padding: "64px 40px 32px",
-        borderTop: "0.5px solid rgba(var(--color-gold-rgb), 0.1)",
+        borderTop: "0.5px solid var(--color-gold-tint)",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
         {/* Four-column grid */}
         <div
           style={{
@@ -126,7 +70,7 @@ export function Footer() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontWeight: 500,
-                fontSize: "10px",
+                fontSize: "var(--text-3xs)",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
                 color: "var(--color-gold)",
@@ -136,15 +80,14 @@ export function Footer() {
             </span>
             <span
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "12px",
-                color: "var(--color-text-muted)",
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-subtle)",
                 lineHeight: 1.6,
                 maxWidth: "200px",
               }}
             >
-              {BRAND.positioningStatement} for organisations across Nigeria and Africa.
+              {BRAND.positioningStatement} for {MARKET_SCOPE}.
             </span>
           </div>
 
@@ -156,7 +99,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div
           style={{
-            borderTop: "0.5px solid rgba(var(--color-white-rgb), 0.04)",
+            borderTop: "0.5px solid var(--color-white-wash)",
             paddingTop: "20px",
             display: "flex",
             justifyContent: "space-between",
@@ -167,13 +110,12 @@ export function Footer() {
         >
           <span
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "11px",
-              color: "var(--color-text-faint)",
+              fontSize: "var(--text-2xs)",
+              color: "var(--color-text-subtle)",
             }}
           >
-            &copy; 2026 {BRAND.name} All rights reserved.
+            {BRAND.copyrightChrome}
           </span>
         </div>
       </div>

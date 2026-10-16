@@ -1,141 +1,43 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  CreditCard,
-  ShoppingCart,
-  Archive,
-  ClipboardCheck,
-  ShieldAlert,
-  Wallet,
-  Users,
-  Link2,
-  type LucideIcon,
-} from "lucide-react";
-import {
-  BRAND_COLORS,
-  isModulePublic,
-  moduleName,
-  moduleSuite,
+  MODULE_STATUS_LABELS,
+  MODULES,
+  moduleHref,
+  moduleShortName,
   SUITES,
   type ModuleKey,
+  type ModuleStatus,
   SITE_PAGES,
+  BRAND,
 } from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
+import { suiteModuleKeys } from "@/lib/product-suites";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { ButtonLink } from "@/components/ui/button";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import type { ModuleStatus } from "@/components/product/module-layout";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { SITE_ROUTES } from "@/lib/routes";
+import { APPROVAL_LIFECYCLE, lifecycleStepNumber } from "@/lib/approval-lifecycle";
+import { cssTransition } from "@/lib/animations";
+import { Z_INDEX } from "@/lib/layers";
 
-export const metadata: Metadata = {
-  title: "The Avrentis platform — spend, oversight, evidence, on one record",
-  description:
-    "Avrentis structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.",
-  alternates: { canonical: "/product" },
-  openGraph: {
-    title: "The Avrentis platform — spend, oversight, evidence, on one record",
-    description:
-      "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
-    url: canonical("/product"),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: SITE_ROUTES.product,
+  title: `The ${BRAND.name} platform — spend, oversight, evidence, on one record`,
+  description: `${BRAND.name} structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.`,
+  socialDescription: "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
+});
 
-interface Module {
-  slug: string;
-  name: string;
-  subtitle: string;
-  body: string;
-  icon: LucideIcon;
-  status: ModuleStatus;
-}
-
-const MODULES: Module[] = [
-  {
-    slug: "pay",
-    name: moduleName("pay"),
-    subtitle: "Payment approvals & authorisation",
-    body:
-      "Every payment voucher submitted, reviewed, and sanctioned through a defined approval chain. Bank-ready PDFs the moment the MD signs.",
-    icon: CreditCard,
-    status: "available",
-  },
-  {
-    slug: "procure",
-    name: moduleName("procure"),
-    subtitle: "Purchase orders on record",
-    body:
-      "Structured purchase order workflow with vendor management, line-item tracking, and role-based approval chains. Procurement without the paperwork gap.",
-    icon: ShoppingCart,
-    status: "available",
-  },
-  {
-    slug: "vault",
-    name: moduleName("vault"),
-    subtitle: "Financial records in one place",
-    body:
-      "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history, findable by reference, payee, department, status or date.",
-    icon: Archive,
-    status: "available",
-  },
-  {
-    slug: "audit",
-    name: moduleName("audit"),
-    subtitle: "Compliance & accountability",
-    body:
-      "A tamper-evident log of every action — submissions, approvals, queries, signatures — sealed daily. Face internal and external audits without the manual scramble.",
-    icon: ClipboardCheck,
-    status: "available",
-  },
-  {
-    slug: "guard",
-    name: moduleName("guard"),
-    subtitle: "Fraud & anomaly detection",
-    body:
-      "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
-    icon: ShieldAlert,
-    status: "available",
-  },
-  {
-    slug: "grants",
-    name: moduleName("grants"),
-    subtitle: "Grant & fund accounting",
-    body:
-      "Tie every payment to its grant and budget line, track burn against each donor's restrictions, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
-    icon: Wallet,
-    status: "available",
-  },
-  {
-    slug: "people",
-    name: moduleName("people"),
-    subtitle: "Staff expense approvals",
-    body:
-      "Extend structured approvals to staff expense claims. The same approval engine and audit trail, shaped for people processes.",
-    icon: Users,
-    status: "available",
-  },
-  {
-    slug: "connect",
-    name: moduleName("connect"),
-    subtitle: "External systems & integrations",
-    body:
-      "Push Avrentis events into your accounting, HR, or data-warehouse stack via webhooks and a typed API. Your operational record flowing where it needs to go.",
-    icon: Link2,
-    status: "available",
-  },
-];
-
-const STATUS_BADGE: Record<
-  ModuleStatus,
-  { label: string; bg: string; color: string }
-> = {
-  available: { label: "Available", bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
-  coming_soon: { label: "Coming soon", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
-  partial: { label: "In beta", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
-  roadmap: { label: "Roadmap", bg: "rgba(var(--color-text-subtle-rgb), 0.12)", color: "var(--color-text-muted)" },
+const STATUS_BADGE: Record<ModuleStatus, { bg: string; color: string }> = {
+  available: { bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
+  partial: { bg: "var(--color-gold-tint)", color: "var(--color-gold-on-light)" },
 };
 
 export default function ProductOverviewPage() {
@@ -154,112 +56,53 @@ export default function ProductOverviewPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.productHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid />
 
         <div
           style={{
-            maxWidth: "900px",
+            maxWidth: "var(--measure-wide)",
             margin: "0 auto",
             position: "relative",
-            zIndex: 2,
+            zIndex: Z_INDEX.content,
             textAlign: "center",
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "20px",
-            }}
-          >
-            The Avrentis Platform
-          </span>
-          <h1
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
-              lineHeight: 1.15,
-              margin: "0 0 24px",
-            }}
-            className="lg:!text-[52px]"
-          >
-            Spend, oversight, evidence. One approval engine. One tamper-evident
-            record.
-          </h1>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "17px",
+          <SectionIntro
+            surface="dark"
+            reveal="none"
+            eyebrow={`The ${BRAND.name} Platform`}
+            eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
+            titleAs="h1"
+            title={
+              <>
+                Spend, oversight, evidence. One approval engine. One tamper-evident
+                record.
+              </>
+            }
+            titleStyle={{ fontWeight: 700, fontSize: "var(--text-display-xs)", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-display-3xl"
+            lede={
+              <>
+                {BRAND.name} is not a collection of unrelated tools — every financial
+                decision, procurement action, and compliance event flows through
+                one delegation-of-authority engine: routed to the
+                right approver by amount, department, and risk, enforced
+                automatically, and provable on the same tamper-evident record.
+              </>
+            }
+            ledeStyle={{
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 36px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
-          >
-            Avrentis is not a collection of unrelated tools — every financial
-            decision, procurement action, compliance event, and people process
-            flows through one delegation-of-authority engine: routed to the
-            right approver by amount, department, and risk, enforced
-            automatically, and provable on the same tamper-evident record.
-          </p>
+          />
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link
-              href={SITE_PAGES.trial()}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              {START_TRIAL_CTA}
-            </Link>
-            <Link
-              href="/product/how-it-works"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={SITE_PAGES.trial()}>{START_TRIAL_CTA}</ButtonLink>
+            <ButtonLink href={SITE_ROUTES.howItWorks} variant="secondary" surface="dark">
               See how it works →
-            </Link>
+            </ButtonLink>
           </div>
         </div>
       </section>
@@ -267,43 +110,25 @@ export default function ProductOverviewPage() {
       {/* ── MODULE GRID ─────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            THE FOUR SUITES
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-sans)",
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
+          <SectionIntro
+            reveal="none"
+            eyebrow="THE FOUR SUITES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="Four suites. Each module in them does one thing, precisely."
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-text-primary)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "560px",
+              maxWidth: "var(--measure-narrow)",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Four suites. Each module in them does one thing, precisely.
-          </h2>
+            titleClassName="lg:!text-display-sm"
+          />
 
           {SUITES.map((suite) => {
-            const modules = MODULES.filter(
-              (mod) =>
-                isModulePublic(mod.slug as ModuleKey) &&
-                moduleSuite(mod.slug as ModuleKey) === suite.key,
-            );
+            const modules = suiteModuleKeys(suite.key);
             // A suite the site markets nothing in renders nothing — no heading
             // over an empty row. (None today; true the day one is added.)
             if (modules.length === 0) return null;
@@ -311,9 +136,8 @@ export default function ProductOverviewPage() {
               <div key={suite.key} style={{ marginBottom: "56px" }}>
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "20px",
+                    fontSize: "var(--text-heading-xs)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                     letterSpacing: "0.01em",
@@ -323,19 +147,18 @@ export default function ProductOverviewPage() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     margin: "0 0 20px",
-                    maxWidth: "560px",
+                    maxWidth: "var(--measure-narrow)",
                   }}
                 >
                   {suite.blurb}
                 </p>
-                {/* auto-fit, not a fixed 3-up: the suites hold three, two, two and
-                    one module, so a fixed three-column grid would leave Evidence
-                    two-thirds empty and Infrastructure a third full. auto-fit
-                    stretches whatever a suite has across the full width. */}
+                {/* auto-fit, not a fixed 3-up: suites hold different numbers of
+                    modules, so a fixed three-column grid would leave the smaller
+                    ones part-empty. auto-fit stretches whatever a suite has
+                    across the full width. */}
                 <div
                   style={{
                     display: "grid",
@@ -343,8 +166,8 @@ export default function ProductOverviewPage() {
                     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                   }}
                 >
-                  {modules.map((mod) => (
-                    <ModuleCard key={mod.slug} mod={mod} />
+                  {modules.map((moduleKey) => (
+                    <ModuleCard key={moduleKey} moduleKey={moduleKey} />
                   ))}
                 </div>
               </div>
@@ -356,105 +179,76 @@ export default function ProductOverviewPage() {
       {/* ── PLATFORM RHYTHM (how modules share the engine) ─────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            ONE AUTHORITY ENGINE
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-sans)",
+        <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
+          <SectionIntro
+            reveal="none"
+            eyebrow="ONE AUTHORITY ENGINE"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="Every module runs on one delegation-of-authority engine."
+            titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
-              color: "var(--color-text-primary)",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.25,
               margin: "0 0 24px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Every module runs on one delegation-of-authority engine.
-          </h2>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "16px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 32px",
-              maxWidth: "640px",
-            }}
-          >
-            A payment voucher, a purchase order, an expense claim, and a vendor
-            onboarding all travel the same authority engine: routed to the right
+            titleClassName="lg:!text-display-sm"
+            lede={<>
+            A payment voucher, a purchase order, a grant disbursement, and a
+            vendor onboarding all travel the same authority engine: routed to the right
             approver by amount, department, and risk → enforced with no way
             around it → recorded on a tamper-evident trail. Define once who can
             approve what, up to how much, and under which conditions — every
-            module obeys it. And for any decision, Avrentis shows exactly which
+            module obeys it. And for any decision, {BRAND.name} shows exactly which
             rule applied and can prove what policy governed it, years later.
-          </p>
+            </>}
+            ledeStyle={{ fontSize: "var(--text-xl)", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "var(--measure)" }}
+          />
 
           <div
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "8px",
+              borderRadius: "var(--radius-card)",
               padding: "32px",
               display: "grid",
+              // One track per stage when they fit, so the strip fills the width at any stage count.
+              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
               gap: "24px",
             }}
-            className="grid-cols-1 md:grid-cols-4"
           >
-            {[
-              { step: "01", title: "Submit", body: "Any module, structured form." },
-              { step: "02", title: "Approve", body: "Role-based chain, any device." },
-              { step: "03", title: "Record", body: "Tamper-evident audit log entry." },
-              { step: "04", title: "Export", body: "Audit-ready PDF bundles." },
-            ].map((s) => (
-              <div key={s.step} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            {APPROVAL_LIFECYCLE.map((stage, index) => (
+              <div key={stage.key} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontFeatureSettings: '"tnum" 1',
-                    fontSize: "12px",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 600,
                     letterSpacing: "0.08em",
                     color: "var(--color-gold-on-light)",
                   }}
                 >
-                  {s.step}
+                  {lifecycleStepNumber(index)}
                 </span>
                 <h4
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     fontWeight: 600,
                     color: "var(--color-text-primary)",
                     margin: 0,
                   }}
                 >
-                  {s.title}
+                  {stage.title}
                 </h4>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-muted)",
                     margin: 0,
                     lineHeight: 1.6,
                   }}
                 >
-                  {s.body}
+                  {stage.summary}
                 </p>
               </div>
             ))}
@@ -473,104 +267,100 @@ export default function ProductOverviewPage() {
  * card is identical in every suite, so it is a component rather than the same
  * hundred lines repeated per bucket.
  */
-function ModuleCard({ mod }: { mod: Module }) {
-  const Icon = mod.icon;
-  const badge = STATUS_BADGE[mod.status];
+function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
+  const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
+  const { name, status } = MODULES[moduleKey];
+  const badge = STATUS_BADGE[status];
   return (
     <Link
-      href={`/product/${mod.slug}`}
+      href={moduleHref(moduleKey)}
       style={{
         backgroundColor: "var(--color-bg-light)",
         border: "1px solid var(--color-border)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         padding: "28px",
         display: "flex",
         flexDirection: "column",
         gap: "14px",
         textDecoration: "none",
-        transition: "border-color 200ms ease, transform 200ms ease",
+        transition: cssTransition(["border-color", "transform"], "base"),
       }}
-      className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
+      className="hover:!border-[var(--color-gold-border-strong)]"
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div
           style={{
             width: "40px",
             height: "40px",
-            borderRadius: "6px",
-            backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+            borderRadius: "var(--radius-md)",
+            backgroundColor: "var(--color-gold-tint)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+          <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
         </div>
         <span
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "11px",
+            fontSize: "var(--text-2xs)",
             fontWeight: 600,
             letterSpacing: "0.06em",
             textTransform: "uppercase",
             color: badge.color,
             backgroundColor: badge.bg,
-            borderRadius: "3px",
+            borderRadius: "var(--radius-xs)",
             padding: "3px 8px",
           }}
         >
-          {badge.label}
+          {MODULE_STATUS_LABELS[status]}
         </span>
       </div>
 
       <div>
         <h3
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 600,
-            fontSize: "18px",
+            fontSize: "var(--text-3xl)",
             color: "var(--color-text-primary)",
             margin: "0 0 2px",
           }}
         >
-          {mod.name}
+          {name}
         </h3>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
             color: "var(--color-gold-on-light)",
             margin: 0,
             fontWeight: 500,
           }}
         >
-          {mod.subtitle}
+          {tagline}
         </p>
       </div>
 
       <p
         style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "14px",
+          fontSize: "var(--text-md)",
           color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
           flex: 1,
         }}
       >
-        {mod.body}
+        {summary}
       </p>
 
       <span
         style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "13px",
+          fontSize: "var(--text-sm)",
           fontWeight: 500,
           color: "var(--color-text-primary)",
           marginTop: "4px",
         }}
       >
-        Explore {mod.name.replace("Avrentis ", "")} →
+        Explore {moduleShortName(moduleKey)} →
       </span>
     </Link>
   );

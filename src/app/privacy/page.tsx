@@ -1,23 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES, SITE_HOST } from "@/lib/brand";
+import { DATA_RESIDENCY, RESIDENCY_REQUEST_LINE, SUBPROCESSOR_CATEGORIES } from "@/lib/subprocessors";
+import { SITE_ROUTES } from "@/lib/routes";
 
-export const metadata: Metadata = {
-  title: "Privacy policy — Avrentis",
-  description:
-    "How Avrentis collects, uses, shares, and protects personal data. Plain-language summary of our practices under the GDPR, the Nigeria Data Protection Act 2023, and equivalent data-protection laws.",
-  alternates: { canonical: LEGAL_PAGES.privacy },
-  openGraph: {
-    title: "Avrentis privacy policy",
-    description:
-      "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
-    url: canonical(LEGAL_PAGES.privacy),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: LEGAL_PAGES.privacy,
+  title: "Privacy policy",
+  description: `How ${BRAND.name} collects, uses, shares, and protects personal data. Plain-language summary of our practices under the GDPR, the Nigeria Data Protection Act 2023, and equivalent data-protection laws.`,
+  socialTitle: `${BRAND.name} privacy policy`,
+  socialDescription: "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
+});
 
 const SECTIONS: LegalSection[] = [
   {
@@ -26,8 +22,8 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Avrentis (&ldquo;Avrentis&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
-          records platform available at <Link href="/">{SITE_HOST}</Link> and{" "}
+          {BRAND.name} (&ldquo;{BRAND.name}&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
+          records platform available at <Link href={SITE_ROUTES.home}>{SITE_HOST}</Link> and{" "}
           <a href={BRAND.appUrl} rel="noreferrer">
             {new URL(BRAND.appUrl).host}
           </a>
@@ -84,7 +80,7 @@ const SECTIONS: LegalSection[] = [
         <p>We process personal data only where we have a lawful basis to do so:</p>
         <ul>
           <li>
-            <strong>Contract.</strong>{" "}To provide the Avrentis service to your organisation — authenticating users,
+            <strong>Contract.</strong>{" "}To provide the {BRAND.name} service to your organisation — authenticating users,
             routing approvals, generating documents, maintaining audit records.
           </li>
           <li>
@@ -124,7 +120,7 @@ const SECTIONS: LegalSection[] = [
             over-broad requests and notify affected customers where law permits.
           </li>
           <li>
-            <strong>In a corporate transaction.</strong>{" "}If Avrentis is involved in a merger, acquisition, or asset
+            <strong>In a corporate transaction.</strong>{" "}If {BRAND.name} is involved in a merger, acquisition, or asset
             sale, data may transfer under equivalent privacy commitments.
           </li>
           <li>
@@ -151,7 +147,7 @@ const SECTIONS: LegalSection[] = [
           edit. Several organisations seeing the same change to the same supplier in the same period see a warning.
         </p>
         <p>
-          The Verification Network lets Avrentis surface that warning without any organisation disclosing anything
+          The Verification Network lets {BRAND.name} surface that warning without any organisation disclosing anything
           about itself or its records. It works as follows:
         </p>
         <ul>
@@ -199,25 +195,11 @@ const SECTIONS: LegalSection[] = [
           perform its function. The categories of provider we rely on today are:
         </p>
         <ul>
-          <li>Managed PostgreSQL for application data (UK, London).</li>
-          <li>Application hosting and compute (UK, London), with a global content-delivery edge.</li>
-          <li>Object storage for document attachments (European Union).</li>
-          <li>Encrypted off-site backups with an independent provider (European Union).</li>
-          <li>
-            Running the nightly backup job (US). The data is handled briefly, in memory, before it is encrypted, and
-            is not kept.
-          </li>
-          <li>Managed Redis for session state and rate-limiting (UK, London).</li>
-          <li>Background job processing (US).</li>
-          <li>Transactional email delivery (US).</li>
-          <li>WhatsApp and SMS notification delivery (Africa / international). WhatsApp is the primary real-time approval channel; recipient phone numbers and approval details are processed by this provider.</li>
-          <li>Payment processing, where enabled, for plan checkout and subscription billing.</li>
-          <li>
-            AI / large-language-model processing, where enabled. When you turn on optional AI features (such as
-            receipt and document extraction), the relevant document content is processed by a language model through a
-            model gateway configured for zero data retention.
-          </li>
-          <li>Error and performance monitoring (EU).</li>
+          {SUBPROCESSOR_CATEGORIES.map((category) => (
+            <li key={category.purpose}>
+              {category.purpose} — {category.region}.{category.detail ? ` ${category.detail}` : null}
+            </li>
+          ))}
         </ul>
         <p>
           The specific named providers in each category are shared with prospective
@@ -233,15 +215,13 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Primary application data is stored in the United Kingdom (London) on a managed PostgreSQL service. Document
-          attachments are stored in encrypted object storage in the European Union. Every night a full copy of the
-          data is encrypted with a key we hold offline and stored with an independent provider in the European Union,
-          locked against deletion: daily copies are kept for 30 days and monthly copies for 12 months.
+          Primary application data is stored in the {DATA_RESIDENCY.primary} on a managed PostgreSQL service. Document
+          attachments are stored in encrypted object storage in the {DATA_RESIDENCY.attachments}. Every night a full
+          copy of the data is encrypted with a key we hold offline and stored with an independent provider in the{" "}
+          {DATA_RESIDENCY.backups}, locked against deletion: daily copies are kept for 30 days and monthly copies for 12
+          months.
         </p>
-        <p>
-          If your data must stay in a specific country or region, contact us and we will tell you plainly what we can
-          support today.
-        </p>
+        <p>{RESIDENCY_REQUEST_LINE}</p>
       </>
     ),
   },
@@ -251,7 +231,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          <strong>Account data.</strong>{" "}Retained while your organisation is an Avrentis customer, plus a short
+          <strong>Account data.</strong>{" "}Retained while your organisation is an {BRAND.name} customer, plus a short
           grace period for reactivation, then deleted or anonymised.
         </p>
         <p>
@@ -308,7 +288,7 @@ const SECTIONS: LegalSection[] = [
           <li>Lodge a complaint with your local supervisory authority.</li>
         </ul>
         <p>
-          Where Avrentis processes your data on behalf of your employer (most features of the platform), we will
+          Where {BRAND.name} processes your data on behalf of your employer (most features of the platform), we will
           forward your request to the relevant administrator and assist with its fulfilment. For direct requests,
           email <Link href={contactHref("privacy")}>our privacy enquiry form</Link>.
         </p>
@@ -337,7 +317,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Children",
     body: (
       <p>
-        Avrentis is a business platform. It is not directed at children under 16 and we do not knowingly collect
+        {BRAND.name} is a business platform. It is not directed at children under 16 and we do not knowingly collect
         their personal data. If you believe a child has provided data to us, contact us and we will delete it.
       </p>
     ),
@@ -348,7 +328,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         We may update this policy as our service evolves or laws change. Material changes will be communicated to
-        account administrators and noted on this page with a new effective date. Continuing to use Avrentis after a
+        account administrators and noted on this page with a new effective date. Continuing to use {BRAND.name} after a
         change constitutes acceptance of the updated policy.
       </p>
     ),
@@ -372,8 +352,8 @@ export default function PrivacyPage() {
     <LegalPageShell
       eyebrow="PRIVACY POLICY"
       title="How we handle your data."
-      lede="This policy is a plain-language summary of how Avrentis collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords."
-      effectiveDate="7 October 2026"
+      lede={`This policy is a plain-language summary of how ${BRAND.name} collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords.`}
+      effectiveDate="16 October 2026"
       sections={SECTIONS}
       footerNote={
         <>

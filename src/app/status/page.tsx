@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { statusUrl } from "@/lib/brand";
+import { BRAND, statusUrl } from "@/lib/brand";
+import { pageTitle } from "@/lib/seo";
 
 // The live, externally-monitored status page is the source of truth. We redirect
 // rather than serve a hand-curated snapshot so status is never stale or faked.
@@ -8,9 +9,8 @@ import { statusUrl } from "@/lib/brand";
 const EXTERNAL_STATUS_URL = statusUrl();
 
 export const metadata: Metadata = {
-  title: "Status — Avrentis",
-  description:
-    "Live Avrentis platform status — subsystem health, incident history, and notification subscriptions.",
+  title: pageTitle("Status"),
+  description: `Live ${BRAND.name} platform status — subsystem health, incident history, and notification subscriptions.`,
   alternates: { canonical: EXTERNAL_STATUS_URL },
 };
 

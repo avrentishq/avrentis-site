@@ -83,17 +83,20 @@ export function limiterFor(action: SiteRateLimitedAction): Ratelimit | null {
 /** Check (and spend) one of this visitor's attempts at `action`. */
 export async function limitVisitor(action: SiteRateLimitedAction): Promise<RateLimitVerdict> {
   const { identifierPrefix, failClosed } = SITE_RATE_LIMITS[action];
-  return checkRateLimit(limiterFor(action), `${identifierPrefix}:${await clientIp()}`, {
+  return checkRateLimit(limiterFor(action), `${identifierPrefix}:${await visitorIp()}`, {
     failClosed,
   });
 }
 
-/** Best-effort client IP from proxy headers; "unknown" if unavailable. */
-async function clientIp(): Promise<string> {
+/** What `visitorIp()` answers when no proxy header names the visitor. */
+export const UNKNOWN_VISITOR_IP = "unknown";
+
+/** The visitor's IP, best effort, from the proxy headers; `UNKNOWN_VISITOR_IP` if unavailable. */
+export async function visitorIp(): Promise<string> {
   const requestHeaders = await headers();
   return (
     requestHeaders.get("x-forwarded-for")?.split(",")[0]?.trim() ||
     requestHeaders.get("x-real-ip")?.trim() ||
-    "unknown"
+    UNKNOWN_VISITOR_IP
   );
 }

@@ -25,6 +25,7 @@ import {
 import { ORG_SIZES as SIZES } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { platformFetch } from "@/lib/platform-fetch";
+import { buildSectorValue, isStorableSector } from "@avrentishq/core/sectors";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { CONTACT_EMAIL } from "@/lib/contacts";
@@ -73,6 +74,10 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
   const role = String(formData.get("role") ?? "").trim();
   const orgSize = String(formData.get("orgSize") ?? "").trim();
   const country = String(formData.get("country") ?? "").trim();
+  const sectorChoice = String(formData.get("sector") ?? "").trim();
+  const sectorOther = String(formData.get("sectorOther") ?? "").trim().slice(0, 120);
+  // The app requires one storable industry: a listed one, or "Other: <text>".
+  const sector = buildSectorValue(sectorChoice, sectorOther);
   const source = String(formData.get("source") ?? "").trim();
   const roleOther = String(formData.get("roleOther") ?? "").trim().slice(0, 120);
   const consent = formData.get("consent") === "on";
@@ -81,7 +86,7 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
   // platform. Platform re-validates and is the source of truth.
   type FieldErrors = Partial<
     Record<
-      "name" | "email" | "organisation" | "role" | "orgSize" | "country" | "consent",
+      "name" | "email" | "organisation" | "role" | "orgSize" | "sector" | "country" | "consent",
       string
     >
   >;
@@ -95,6 +100,12 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
   }
   if (!orgSize || !SIZES.includes(orgSize as (typeof SIZES)[number])) {
     fieldErrors.orgSize = "Please select your organisation size.";
+  }
+  if (!sectorChoice) fieldErrors.sector = "Please select your industry.";
+  else if (sectorChoice === "Other" && !sectorOther) {
+    fieldErrors.sector = "Please describe your industry.";
+  } else if (!isStorableSector(sector)) {
+    fieldErrors.sector = "Please choose your industry from the list.";
   }
   if (!country) fieldErrors.country = "Please select your country.";
   else if (!isSelectableCountry(country.toUpperCase())) {
@@ -142,6 +153,7 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
         role,
         orgSize,
         country: country.toUpperCase(),
+        sector,
         source: sourceOut ? sourceOut.slice(0, 200) : undefined,
         consent: true,
       }),

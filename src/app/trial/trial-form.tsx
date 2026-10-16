@@ -40,6 +40,7 @@ import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
+import { SECTORS } from "@avrentishq/core/sectors";
 import { TrialStepper } from "./stepper";
 import { TrialTimeline } from "./timeline";
 import {
@@ -168,7 +169,10 @@ const hintStyle: React.CSSProperties = {
 };
 
 /** The fields that live on step 1 of the form. */
-const STEP_ONE_FIELDS = ["role", "orgSize", "country"] as const;
+const STEP_ONE_FIELDS = ["role", "orgSize", "sector", "country"] as const;
+
+/** Core's industry list — the one the app validates a trial's industry against. */
+const SECTOR_OPTIONS = SECTORS.map((sector) => ({ value: sector, label: sector }));
 
 function SubmitButton({ isValid, pending }: { isValid: boolean; pending: boolean }) {
   const disabled = pending || !isValid;
@@ -246,17 +250,22 @@ export function TrialForm() {
   const [roleValue, setRoleValue] = useState(posted.role ?? "");
   const [roleOtherValue, setRoleOtherValue] = useState(posted.roleOther ?? "");
   const [orgSizeValue, setOrgSizeValue] = useState(posted.orgSize ?? DEFAULT_ORG_SIZE);
+  const [sectorValue, setSectorValue] = useState(posted.sector ?? "");
+  const [sectorOtherValue, setSectorOtherValue] = useState(posted.sectorOther ?? "");
+  const sectorComplete =
+    sectorValue !== "" && (sectorValue !== "Other" || sectorOtherValue.trim().length > 0);
   // country defaults to "NG" which is a valid selection.
   const [countryValue, setCountryValue] = useState(posted.country ?? "NG");
   const [consentValue, setConsentValue] = useState(posted.consent === "on");
 
-  // Two-step split: step 1 is the quick tappable setup (role/size/country,
-  // all defaulted except role), step 2 collects contact details. Leading with
+  // Two-step split: step 1 is the quick tappable setup (role/size/industry/
+  // country, size and country defaulted), step 2 collects contact details. Leading with
   // taps builds momentum before the commitment of typing (IKEA + goal-gradient).
   // "Other" must be spelled out — otherwise the qualifying signal is lost.
   const step1Valid =
     roleValue !== "" &&
     orgSizeValue !== "" &&
+    sectorComplete &&
     countryValue !== "" &&
     (roleValue !== "Other" || roleOtherValue.trim().length > 0);
 
@@ -287,9 +296,10 @@ export function TrialForm() {
       organisationValue.trim().length > 0 &&
       roleValue !== "" &&
       orgSizeValue !== "" &&
+      sectorComplete &&
       countryValue !== "" &&
       consentValue === true,
-    [nameValue, emailValue, organisationValue, roleValue, orgSizeValue, countryValue, consentValue],
+    [nameValue, emailValue, organisationValue, roleValue, orgSizeValue, sectorComplete, countryValue, consentValue],
   );
 
   // ── Persist to localStorage when a successful submission completes ──
@@ -557,6 +567,70 @@ export function TrialForm() {
 
           <div>
             <label style={labelStyle}>
+              Industry
+              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
+            </label>
+            <SearchableSelect
+              name="sector"
+              value={sectorValue}
+              onChange={(value) => {
+                setSectorValue(value);
+                clearFieldError("sector");
+              }}
+              options={SECTOR_OPTIONS}
+              ariaLabel="Industry"
+              placeholder="Search for your industry…"
+              searchLabel="industries"
+              invalid={!!fieldErrors.sector}
+              describedBy={fieldErrors.sector ? "trial-sector-error" : "trial-sector-hint"}
+            />
+            {fieldErrors.sector ? (
+              <span id="trial-sector-error" style={errorStyle}>{fieldErrors.sector}</span>
+            ) : (
+              <span id="trial-sector-hint" style={hintStyle}>
+                Sets up the modules and first steps that fit organisations like yours.
+              </span>
+            )}
+            {/* Without JavaScript the "Other" box below never appears. */}
+            <noscript>
+              <input
+                type="text"
+                name="sectorOther"
+                defaultValue={posted.sectorOther}
+                maxLength={120}
+                placeholder="If you chose Other, your industry"
+                aria-label="If you chose Other, your industry"
+                style={{ ...inputStyle, marginTop: "10px" }}
+              />
+            </noscript>
+            {sectorValue === "Other" && (
+              <div style={{ marginTop: "10px" }}>
+                <label style={labelStyle}>
+                  Describe your industry
+                  <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">
+                    *
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  name="sectorOther"
+                  value={sectorOtherValue}
+                  maxLength={120}
+                  onChange={(event) => {
+                    setSectorOtherValue(event.target.value);
+                    clearFieldError("sector");
+                  }}
+                  placeholder="Tell us your industry"
+                  aria-label="Describe your industry"
+                  aria-required="true"
+                  style={inputStyle}
+                />
+              </div>
+            )}
+          </div>
+
+          <div>
+            <label style={labelStyle}>
               Country
               <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
             </label>
@@ -570,6 +644,7 @@ export function TrialForm() {
               options={COUNTRIES.map((c) => ({ value: c.code, label: c.name }))}
               ariaLabel="Country"
               placeholder="Search for your country…"
+              searchLabel="countries"
               invalid={!!fieldErrors.country}
               describedBy={describedBy(
                 fieldErrors.country ? "trial-country-error" : !!countryValue && "trial-country-hint",

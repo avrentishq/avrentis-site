@@ -89,8 +89,10 @@ describe("mapTrialResponse", () => {
           fieldErrors: {
             email: ["Enter a valid work email."],
             organisation: ["Required."],
+            // The industry is on the form, so its error is shown under it.
+            sector: ["Choose an industry, or pick Other and describe it."],
             // Not rendered by the form — must be dropped, not shown blank.
-            sector: ["Unknown sector."],
+            referrer: ["Unknown referrer."],
           },
         },
       },
@@ -100,6 +102,7 @@ describe("mapTrialResponse", () => {
     expect(state).toHaveProperty("fieldErrors", {
       email: "Enter a valid work email.",
       organisation: "Required.",
+      sector: "Choose an industry, or pick Other and describe it.",
     });
   });
 
@@ -108,7 +111,7 @@ describe("mapTrialResponse", () => {
     // still get feedback rather than a suppressed banner showing nothing.
     const state = mapTrialResponse(
       422,
-      { errors: { fieldErrors: { sector: ["Unknown sector."] } } },
+      { errors: { fieldErrors: { referrer: ["Unknown referrer."] } } },
       EMAIL,
     );
     expect(state.status).toBe("error");

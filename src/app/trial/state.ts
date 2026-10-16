@@ -17,6 +17,8 @@ export const TRIAL_FIELDS = [
   "role",
   "roleOther",
   "orgSize",
+  "sector",
+  "sectorOther",
   "country",
   "source",
   "consent",
@@ -54,7 +56,7 @@ export type TrialFormState =
       message: string;
       fieldErrors?: Partial<
         Record<
-          "name" | "email" | "organisation" | "role" | "orgSize" | "country" | "consent",
+          "name" | "email" | "organisation" | "role" | "orgSize" | "sector" | "country" | "consent",
           string
         >
       >;

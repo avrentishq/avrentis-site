@@ -672,6 +672,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               options={COUNTRIES.map((c) => ({ value: c.name, label: c.name }))}
               ariaLabel="Country"
               placeholder="Search your country…"
+              searchLabel="countries"
             />
           </div>
 

@@ -22,6 +22,7 @@ function posted(overrides: Record<string, string | undefined> = {}): FormData {
     organisation: "Acme Ltd",
     role: "CFO",
     orgSize: "21–50",
+    sector: "Manufacturing",
     country: "NG",
     consent: "on",
     ...overrides,
@@ -48,7 +49,11 @@ describe("submitTrialRequest (the server path, with or without JavaScript)", () 
     const state = await submitTrialRequest(INITIAL_STATE, posted());
     expect(state.status).toBe("verification_sent");
     expect(platform).toHaveBeenCalledTimes(1);
-    expect(JSON.parse(platform.mock.calls[0]![1].body)).toMatchObject({ email: "ada@acme.com.ng", consent: true });
+    expect(JSON.parse(platform.mock.calls[0]![1].body)).toMatchObject({
+      email: "ada@acme.com.ng",
+      sector: "Manufacturing",
+      consent: true,
+    });
     expect("values" in state).toBe(false);
   });
 
@@ -60,9 +65,33 @@ describe("submitTrialRequest (the server path, with or without JavaScript)", () 
       organisation: "Acme Ltd",
       role: "CFO",
       orgSize: "21–50",
+      sector: "Manufacturing",
       country: "NG",
       source: "A colleague",
     });
+  });
+
+  // The app refuses a trial without a storable industry (core `isStorableSector`),
+  // so the site must always send one: a listed industry, or "Other: <text>".
+  it("refuses a post without an industry, on the industry field, and sends nothing", async () => {
+    const state = await submitTrialRequest(INITIAL_STATE, posted({ sector: undefined }));
+    expect(state.status === "error" && state.fieldErrors?.sector).toBe("Please select your industry.");
+    expect(platform).not.toHaveBeenCalled();
+  });
+
+  it("refuses 'Other' without a description, and an industry not on the list", async () => {
+    const other = await submitTrialRequest(INITIAL_STATE, posted({ sector: "Other" }));
+    expect(other.status === "error" && other.fieldErrors?.sector).toBe("Please describe your industry.");
+    const unknown = await submitTrialRequest(INITIAL_STATE, posted({ sector: "Space tourism" }));
+    expect(unknown.status === "error" && unknown.fieldErrors?.sector).toBe(
+      "Please choose your industry from the list.",
+    );
+    expect(platform).not.toHaveBeenCalled();
+  });
+
+  it("sends 'Other' with its description in the form the app stores", async () => {
+    await submitTrialRequest(INITIAL_STATE, posted({ sector: "Other", sectorOther: "  Space tourism " }));
+    expect(JSON.parse(platform.mock.calls[0]![1].body)).toMatchObject({ sector: "Other: Space tourism" });
   });
 
   it("refuses a post without consent, says why on the consent field, and sends nothing", async () => {

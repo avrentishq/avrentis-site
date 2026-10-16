@@ -33,11 +33,13 @@ import { dirname, join } from "node:path";
  *     can never receive mail, by the rule core shares with the app and console. No imports.
  *   - `locales` — the product's interface languages, named in the site's copy.
  *     No imports.
+ *   - `sectors` — the industry list the trial form offers, and the rule the app
+ *     validates a submitted industry with. Its only import is type-only.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
  * at build time and by its test; never imported by a page) may also read
- * `billing/retention`, `modules/catalog` and `sectors`; so may
+ * `billing/retention` and `modules/catalog` (and `sectors`, runtime-allowed above); so may
  * tests, which check the generator's output against core.
  *
  * The last test below walks each allowed subpath's VALUE import graph inside
@@ -60,9 +62,10 @@ const RUNTIME_ALLOWED = new Set([
   "region/sales-tax",
   "billing/reserved-mail-domain",
   "locales",
+  "sectors",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
-const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog", "sectors"]);
+const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog"]);
 const TEST_ONLY_ALLOWED = new Set([
   "modules/catalog",
   "security/dependency-floors",

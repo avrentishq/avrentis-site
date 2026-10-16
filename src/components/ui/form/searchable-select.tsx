@@ -26,6 +26,8 @@ interface SearchableSelectProps {
   options: SelectOption[];
   ariaLabel: string;
   placeholder?: string;
+  /** What the open list's search box searches, plural ("countries", "industries"). */
+  searchLabel: string;
   invalid?: boolean;
   /** Space-separated ids of the error or hint text describing the control. */
   describedBy?: string;
@@ -38,6 +40,7 @@ export function SearchableSelect({
   options,
   ariaLabel,
   placeholder = "Select…",
+  searchLabel,
   invalid = false,
   describedBy,
 }: SearchableSelectProps) {
@@ -170,8 +173,8 @@ export function SearchableSelect({
                 setActiveIdx(0);
               }}
               onKeyDown={onKeyDown}
-              placeholder="Search countries…"
-              aria-label="Search countries"
+              placeholder={`Search ${searchLabel}…`}
+              aria-label={`Search ${searchLabel}`}
               style={{
                 fontFamily: sans,
                 fontSize: "14px",

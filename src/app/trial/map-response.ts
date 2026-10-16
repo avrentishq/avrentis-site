@@ -37,6 +37,7 @@ const RENDERED_FIELDS = new Set([
   "organisation",
   "role",
   "orgSize",
+  "sector",
   "country",
   "consent",
 ]);

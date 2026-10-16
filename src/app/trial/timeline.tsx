@@ -17,7 +17,6 @@ import { fadeUpOnScroll } from "@/lib/animations";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { READ_ONLY_GRACE_DAYS, TRIAL_CLOSE_DAY, TRIAL_DURATION_DAYS, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 
-const sans = "var(--font-sans)";
 
 interface Milestone {
   when: string;
@@ -85,14 +84,14 @@ export function TrialTimeline() {
                   style={{
                     width: "12px",
                     height: "12px",
-                    borderRadius: "50%",
+                    borderRadius: "var(--radius-circle)",
                     marginTop: "4px",
                     flexShrink: 0,
                     // Today is "now" — filled. Future days stay hollow.
                     backgroundColor: isNow ? "var(--color-gold)" : "var(--color-white)",
                     border: isNow ? "none" : "1.5px solid var(--color-border-strong)",
                     boxShadow: isNow
-                      ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)"
+                      ? "0 0 0 4px var(--color-gold-tint)"
                       : "none",
                   }}
                 />
@@ -115,8 +114,7 @@ export function TrialTimeline() {
                 <Eyebrow style={{ display: "block", marginBottom: "3px" }}>{ms.when}</Eyebrow>
                 <h3
                   style={{
-                    fontFamily: sans,
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     fontWeight: 600,
                     color: "var(--color-text-primary)",
                     margin: "0 0 5px",
@@ -127,8 +125,7 @@ export function TrialTimeline() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: sans,
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: 0,

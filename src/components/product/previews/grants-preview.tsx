@@ -41,8 +41,7 @@ export function GrantsPreview() {
             <PreviewLabel marginBottom="4px">{stat.label}</PreviewLabel>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "16px",
+                fontSize: "var(--text-xl)",
                 fontWeight: 500,
                 color: stat.colour,
                 margin: 0,
@@ -61,12 +60,12 @@ export function GrantsPreview() {
         {GRANT.budgetLines.map((line) => (
           <div key={line.name} style={{ marginBottom: "10px" }}>
             <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-primary)" }}>{line.name}</span>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
+              <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-primary)" }}>{line.name}</span>
+              <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
                 {line.utilisedPercent}%
               </span>
             </div>
-            <div style={{ height: "6px", backgroundColor: "var(--color-bg)", borderRadius: "3px", overflow: "hidden" }}>
+            <div style={{ height: "6px", backgroundColor: "var(--color-bg)", borderRadius: "var(--radius-xs)", overflow: "hidden" }}>
               <div style={{ width: `${line.utilisedPercent}%`, height: "100%", backgroundColor: barColour(line.utilisedPercent) }} />
             </div>
           </div>

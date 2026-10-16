@@ -8,6 +8,7 @@ import { isContactIntent, SITE_PAGES, type ContactIntent, BRAND } from "@/lib/br
 import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { Z_INDEX } from "@/lib/layers";
 
 export const metadata: Metadata = pageMetadata({
   path: contactHref(),
@@ -44,7 +45,7 @@ export default async function ContactPage({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.contactForm} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <ContactForm intent={intent} />
         </div>
       </main>

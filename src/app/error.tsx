@@ -23,12 +23,12 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         padding: "40px",
       }}
     >
-      <div style={{ maxWidth: "520px", textAlign: "center" }}>
+      <div style={{ maxWidth: "var(--measure-short)", textAlign: "center" }}>
         <p
           style={{
             fontFamily: "var(--font-mono)",
             fontWeight: 500,
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
             color: "var(--color-gold)",
@@ -40,9 +40,8 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         <h1
           data-page-title
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "32px",
+            fontSize: "var(--text-heading-2xl)",
             color: "var(--color-white)",
             lineHeight: 1.2,
             margin: "0 0 16px",
@@ -52,12 +51,11 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-subtle)",
             lineHeight: 1.7,
             margin: "0 auto 28px",
-            maxWidth: "440px",
+            maxWidth: "var(--measure-compact)",
           }}
         >
           Try again in a moment. If it keeps happening, email{" "}
@@ -78,10 +76,10 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
           style={{
             fontFamily: "var(--font-mono)",
             fontWeight: 500,
-            fontSize: "9px",
+            fontSize: "var(--text-4xs)",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-text-faint)",
+            color: "var(--color-text-subtle)",
             margin: "40px 0 0",
           }}
         >

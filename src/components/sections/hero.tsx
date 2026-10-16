@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { FADE_UP_VIEWPORT, MOTION_DURATION, MOTION_EASE, STAGGER_STEP, fadeUp, fadeUpOnScroll, fadeUpTransition, staggerDelay, cssTransition } from "@/lib/animations";
 import { isMobileViewport } from "@/lib/hooks/use-is-mobile";
+import { isReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { buttonProps } from "@/components/ui/button";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { Eyebrow } from "@/components/ui/section-intro";
@@ -14,6 +15,7 @@ import { START_TRIAL_CTA, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial
 import { MARKET_SCOPE } from "@/lib/market";
 import { INBOX_DOCUMENTS, demoAmount, formatDemoRelative, type InboxStatus } from "@/components/product/demo-fixtures";
 import { BrowserFrame, TypeTag, appCaption } from "@/components/product/previews/preview-primitives";
+import { Z_INDEX } from "@/lib/layers";
 
 interface ApprovalRowStatus {
   label: string;
@@ -42,7 +44,7 @@ interface ApprovalRowProps {
 const STATUS = {
   underReview: {
     label: "Under review",
-    bg: "rgba(var(--color-gold-rgb), 0.08)",
+    bg: "var(--color-gold-ghost)",
     text: "var(--color-warning)",
     dot: "var(--color-gold)",
   },
@@ -60,7 +62,7 @@ const STATUS = {
   },
   recorded: {
     label: "Recorded",
-    bg: "rgba(var(--color-success-rgb), 0.08)",
+    bg: "var(--color-success-wash)",
     text: "var(--color-success)",
     dot: "var(--color-success)",
   },
@@ -99,12 +101,9 @@ function LiveInbox({
   const [engagedRow, setEngagedRow] = useState<number | null>(null);
 
   useEffect(() => {
-    const reducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     // Don't run the rotating demo on mobile — it stacks below the fold and the
     // interval just burns main-thread/battery. Static initial state instead.
-    if (reducedMotion || isMobileViewport() || approved) return;
+    if (isReducedMotion() || isMobileViewport() || approved) return;
 
     const timer = setInterval(() => {
       setTick((t) => (t + 1) % INBOX_DOCUMENTS.length);
@@ -133,7 +132,7 @@ function LiveInbox({
         backgroundColor: "rgba(var(--color-white-rgb), 0.64)",
         backdropFilter: "blur(22px) saturate(1.4)",
         WebkitBackdropFilter: "blur(22px) saturate(1.4)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         border: "1px solid rgba(var(--color-white-rgb), 0.55)",
         boxShadow:
           "inset 0 1px 0 rgba(var(--color-white-rgb), 0.6), 0 1px 2px rgba(var(--color-shadow-rgb), 0.05)",
@@ -209,7 +208,7 @@ function ApprovalRow({
         alignItems: "stretch",
         gap: "12px",
         padding: "14px 16px",
-        borderBottom: hideDivider ? "none" : "1px solid rgba(var(--color-navy-primary-rgb), 0.08)",
+        borderBottom: hideDivider ? "none" : "1px solid var(--color-navy-hairline)",
       }}
     >
       {/* Accent urgency bar */}
@@ -217,7 +216,7 @@ function ApprovalRow({
         style={{
           width: "4px",
           minHeight: "36px",
-          borderRadius: "2px",
+          borderRadius: "var(--radius-2xs)",
           backgroundColor: "var(--color-gold)",
           flexShrink: 0,
         }}
@@ -247,9 +246,8 @@ function ApprovalRow({
           >
             <span
               style={{
-                fontFamily: "var(--font-sans)",
                 fontFeatureSettings: '"tnum" 1',
-                fontSize: "12px",
+                fontSize: "var(--text-xs)",
                 fontWeight: 500,
                 color: "var(--color-text-primary)",
                 letterSpacing: "0.02em",
@@ -270,12 +268,11 @@ function ApprovalRow({
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "10px",
+                  fontSize: "var(--text-3xs)",
                   fontWeight: 500,
                   backgroundColor: status.bg,
                   color: status.text,
-                  borderRadius: "3px",
+                  borderRadius: "var(--radius-xs)",
                   padding: "2px 6px",
                   letterSpacing: "0.02em",
                   whiteSpace: "nowrap",
@@ -285,7 +282,7 @@ function ApprovalRow({
                   style={{
                     width: "5px",
                     height: "5px",
-                    borderRadius: "50%",
+                    borderRadius: "var(--radius-circle)",
                     backgroundColor: status.dot,
                     display: "inline-block",
                   }}
@@ -298,8 +295,7 @@ function ApprovalRow({
           {/* Label */}
           <p
             style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               fontWeight: 500,
               color: "var(--color-text-primary)",
               margin: "0 0 2px",
@@ -314,8 +310,7 @@ function ApprovalRow({
           {/* Submitter + time */}
           <p
             style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
+              fontSize: "var(--text-2xs)",
               color: "var(--color-text-muted)",
               margin: 0,
             }}
@@ -329,9 +324,8 @@ function ApprovalRow({
           <div style={{ textAlign: "right" }}>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontFeatureSettings: '"tnum" 1',
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 fontWeight: 500,
                 color: "var(--color-text-primary)",
                 margin: "0 0 2px",
@@ -342,8 +336,7 @@ function ApprovalRow({
             </p>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "11px",
+                fontSize: "var(--text-2xs)",
                 color: "var(--color-text-muted)",
                 margin: 0,
                 whiteSpace: "nowrap",
@@ -419,19 +412,19 @@ export function Hero() {
 
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "var(--layout-max-width)",
           margin: "0 auto",
           display: "grid",
           gap: "48px",
           alignItems: "center",
           position: "relative",
-          zIndex: 2,
+          zIndex: Z_INDEX.content,
         }}
         className="grid-cols-1 lg:grid-cols-2"
       >
         {/* Left — Copy */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <Eyebrow surface="dark" size={13} reveal="scroll" style={{ marginBottom: "20px" }}>
+          <Eyebrow surface="dark" size="hero" reveal="scroll" style={{ marginBottom: "20px" }}>
             {BRAND.positioningStatement}
           </Eyebrow>
 
@@ -441,14 +434,13 @@ export function Hero() {
             viewport={FADE_UP_VIEWPORT}
             variants={{ visible: { transition: { staggerChildren: STAGGER_STEP } } }}
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 700,
-              fontSize: "36px",
+              fontSize: "var(--text-display-xs)",
               color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[56px]"
+            className="lg:!text-display-4xl"
           >
             {/* Positioning line. Leads with the PROOF (what a buyer must be able
                 to show an auditor) and the SCOPE (across companies) — the part no
@@ -484,13 +476,12 @@ export function Hero() {
           <m.p
             {...fadeUpOnScroll(2)}
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "18px",
+              fontSize: "var(--text-3xl)",
               color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 36px",
-              maxWidth: "520px",
+              maxWidth: "var(--measure-short)",
             }}
           >
             Most organisations run on scattered emails, informal approvals, and
@@ -512,17 +503,16 @@ export function Hero() {
             <a
               href="#how-it-works"
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 500,
-                fontSize: "16px",
+                fontSize: "var(--text-xl)",
                 lineHeight: 1,
-                backgroundColor: "rgba(var(--color-white-rgb), 0.08)",
+                backgroundColor: "var(--color-white-border)",
                 backdropFilter: "blur(12px) saturate(1.4)",
                 WebkitBackdropFilter: "blur(12px) saturate(1.4)",
                 color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.22)",
+                border: "1px solid var(--color-white-border-strong)",
                 boxShadow: "inset 0 1px 0 rgba(var(--color-white-rgb), 0.18)",
-                borderRadius: "9999px",
+                borderRadius: "var(--radius-pill)",
                 height: "48px",
                 padding: "0 28px",
                 display: "inline-flex",
@@ -539,9 +529,9 @@ export function Hero() {
                   "rgba(var(--color-white-rgb), 0.14)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.22)";
+                e.currentTarget.style.borderColor = "var(--color-white-border-strong)";
                 e.currentTarget.style.backgroundColor =
-                  "rgba(var(--color-white-rgb), 0.08)";
+                  "var(--color-white-border)";
               }}
             >
               See how it works &rarr;
@@ -551,9 +541,8 @@ export function Hero() {
           <m.p
             {...fadeUpOnScroll(4)}
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               color: "var(--color-text-secondary)",
               marginTop: "24px",
               lineHeight: 1.5,
@@ -577,7 +566,7 @@ export function Hero() {
               surface that refracts the light-trails behind it, with a
               specular top edge. The inbox card inside stays opaque so the
               product UI reads crisply. */}
-          <BrowserFrame caption={appCaption("approvals")} surface="glass" style={{ width: "100%", maxWidth: "560px" }}>
+          <BrowserFrame caption={appCaption("approvals")} surface="glass" style={{ width: "100%", maxWidth: "var(--measure-narrow)" }}>
             {/* Page content — tighter side padding on a phone so the rows keep their width */}
             <div style={{ padding: "24px 16px" }} className="sm:!px-[28px]">
               {/* Page heading */}
@@ -592,9 +581,8 @@ export function Hero() {
                 <div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 400,
-                      fontSize: "20px",
+                      fontSize: "var(--text-heading-xs)",
                       color: "var(--color-text-primary)",
                       margin: 0,
                       letterSpacing: "0.01em",
@@ -604,8 +592,7 @@ export function Hero() {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "12px",
+                      fontSize: "var(--text-xs)",
                       color: "var(--color-text-muted)",
                       margin: "2px 0 0",
                     }}
@@ -615,13 +602,12 @@ export function Hero() {
                 </div>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     fontWeight: 500,
                     color: "var(--color-gold-on-light)",
-                    backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-                    border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
-                    borderRadius: "3px",
+                    backgroundColor: "var(--color-gold-ghost)",
+                    border: "1px solid var(--color-gold-divider)",
+                    borderRadius: "var(--radius-xs)",
                     padding: "3px 8px",
                   }}
                 >
@@ -651,9 +637,9 @@ export function Hero() {
                     gap: "8px",
                     margin: "14px 0 0",
                     padding: "10px 12px",
-                    backgroundColor: "rgba(var(--color-success-rgb), 0.07)",
-                    border: "1px solid rgba(var(--color-success-rgb), 0.20)",
-                    borderRadius: "8px",
+                    backgroundColor: "var(--color-success-wash)",
+                    border: "1px solid var(--color-success-border)",
+                    borderRadius: "var(--radius-card)",
                   }}
                 >
                   <span
@@ -664,9 +650,8 @@ export function Hero() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "12px",
-                      color: "var(--color-text-faint)",
+                      fontSize: "var(--text-xs)",
+                      color: "var(--color-text-body)",
                       lineHeight: 1.5,
                     }}
                   >
@@ -687,8 +672,7 @@ export function Hero() {
               ) : (
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     color: "var(--color-text-subtle)",
                     margin: "14px 0 0",
                     textAlign: "right",

@@ -6,7 +6,6 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import {
-  BRAND_COLORS,
   MODULE_STATUS_LABELS,
   MODULES,
   moduleName,
@@ -14,7 +13,8 @@ import {
   type ModuleStatus,
 } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
-import { cardGridColumns } from "@avrentishq/core/ui/card-grid";
+import { cardGridProps } from "@/lib/card-grid";
+import { Z_INDEX } from "@/lib/layers";
 
 const BADGE_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
   available: {
@@ -23,9 +23,9 @@ const BADGE_STYLES: Record<ModuleStatus, { bg: string; color: string; border: st
     border: "1px solid rgba(var(--color-available-rgb), 0.2)",
   },
   partial: {
-    bg: "rgba(var(--color-gold-rgb), 0.1)",
+    bg: "var(--color-gold-tint)",
     color: "var(--color-gold-on-light)",
-    border: "1px solid rgba(var(--color-gold-rgb), 0.2)",
+    border: "1px solid var(--color-gold-divider)",
   },
 };
 
@@ -34,7 +34,7 @@ export function FeaturesGrid() {
   return (
     <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.featuresGrid} scrim="light" />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
         <SectionIntro
           align="center"
           eyebrow="THE PLATFORM"
@@ -42,11 +42,11 @@ export function FeaturesGrid() {
           title="One approval engine. Every operational process."
           titleStyle={{
             fontWeight: 400,
-            fontSize: "36px",
+            fontSize: "var(--text-display-xs)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
           }}
-          titleClassName="lg:!text-[42px]"
+          titleClassName="lg:!text-display-lg"
           lede={
             <>
               Avrentis is built as a suite of interconnected modules — each solving a
@@ -56,14 +56,14 @@ export function FeaturesGrid() {
           }
           ledeStyle={{
             fontWeight: 400,
-            fontSize: "16px",
+            fontSize: "var(--text-xl)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
-            maxWidth: "640px",
+            maxWidth: "var(--measure)",
           }}
         />
 
-        <div className="card-grid" style={{ gap: "20px" }} {...cardGridColumns(moduleKeys.length, { min: "22rem" })}>
+        <div {...cardGridProps(moduleKeys.length, { min: "22rem" }, { gap: "20px" })}>
           {moduleKeys.map((moduleKey, i) => {
             const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
             const { status } = MODULES[moduleKey];
@@ -75,7 +75,7 @@ export function FeaturesGrid() {
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-card)",
                   padding: "24px",
                   transition:
                     cssTransition(["box-shadow", "border-left"]),
@@ -95,7 +95,7 @@ export function FeaturesGrid() {
                   style={{
                     width: "36px",
                     height: "36px",
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-card)",
                     backgroundColor: "var(--color-navy-primary)",
                     display: "flex",
                     alignItems: "center",
@@ -106,15 +106,14 @@ export function FeaturesGrid() {
                   <Icon
                     size={18}
                     strokeWidth={1.5}
-                    color={BRAND_COLORS.gold}
+                    color="var(--color-gold)"
                     aria-hidden="true"
                   />
                 </div>
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                   }}
@@ -123,9 +122,8 @@ export function FeaturesGrid() {
                 </h3>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 500,
-                    fontSize: "12px",
+                    fontSize: "var(--text-xs)",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
                     color: "var(--color-text-muted)",
@@ -137,9 +135,8 @@ export function FeaturesGrid() {
                 </span>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.6,
                     margin: 0,
@@ -151,11 +148,10 @@ export function FeaturesGrid() {
                   style={{
                     display: "inline-block",
                     marginTop: "16px",
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     fontWeight: 500,
-                    fontFamily: "var(--font-sans)",
                     padding: "4px 10px",
-                    borderRadius: "4px",
+                    borderRadius: "var(--radius-badge)",
                     backgroundColor: badge.bg,
                     color: badge.color,
                     border: badge.border,

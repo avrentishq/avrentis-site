@@ -29,7 +29,7 @@ export function AuthorityPreview() {
             cells: (
               <>
                 <span style={{ fontWeight: 500 }}>{row.role}</span>
-                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "10px" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)" }}>
                   {row.limit === null ? "No ceiling" : `Up to ${demoAmount(row.limit)}`}
                 </span>
                 {next ? (
@@ -46,8 +46,7 @@ export function AuthorityPreview() {
       {/* Separation-of-duties footnote — the rule people forget they need. */}
       <p
         style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "10px",
+          fontSize: "var(--text-3xs)",
           color: "var(--color-text-muted)",
           margin: "10px 2px 0",
         }}

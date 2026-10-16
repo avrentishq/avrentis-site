@@ -13,7 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
+import { MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
@@ -40,9 +40,8 @@ import { SITE_ROUTES } from "@/lib/routes";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
+import { Z_INDEX } from "@/lib/layers";
 
-const sans = "var(--font-sans)";
-const mono = "'IBM Plex Mono', monospace";
 
 type ItemStatus = "live" | "wip";
 
@@ -241,14 +240,14 @@ function StatusPill({ status }: { status: ItemStatus }) {
   return (
     <span
       style={{
-        fontFamily: mono,
-        fontSize: "9px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "var(--text-4xs)",
         letterSpacing: "0.08em",
         textTransform: "uppercase",
         color: "var(--color-gold-on-light)",
-        backgroundColor: "rgba(var(--color-gold-rgb), 0.10)",
-        border: "1px solid rgba(var(--color-gold-rgb), 0.22)",
-        borderRadius: "3px",
+        backgroundColor: "var(--color-gold-tint)",
+        border: "1px solid var(--color-gold-divider)",
+        borderRadius: "var(--radius-xs)",
         padding: "2px 6px",
         display: "inline-flex",
         alignItems: "center",
@@ -278,34 +277,33 @@ function Category({ category, index }: { category: DocsCategory; index: number }
               style={{
                 width: "40px",
                 height: "40px",
-                borderRadius: "8px",
-                backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                borderRadius: "var(--radius-card)",
+                backgroundColor: "var(--color-gold-tint)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
-              <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+              <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
             </div>
-            <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold-on-light)", letterSpacing: "0.08em" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--color-gold-on-light)", letterSpacing: "0.08em" }}>
               {String(index + 1).padStart(2, "0")} · {category.eyebrow}
             </span>
           </div>
           <h2
             style={{
-              fontFamily: sans,
               fontWeight: 400,
-              fontSize: "24px",
+              fontSize: "var(--text-heading-md)",
               color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 10px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[28px]"
+            className="lg:!text-heading-lg"
           >
             {category.title}
           </h2>
-          <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "400px" }}>
+          <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.7, margin: 0, maxWidth: "var(--measure-compact)" }}>
             {category.lede}
           </p>
         </div>
@@ -314,7 +312,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-lg)",
             overflow: "hidden",
           }}
         >
@@ -324,16 +322,16 @@ function Category({ category, index }: { category: DocsCategory; index: number }
               <>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", marginBottom: "4px" }}>
-                    <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                    <span style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
                       {item.title}
                     </span>
                     <StatusPill status={item.status} />
                   </div>
-                  <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
+                  <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
                     {item.body}
                   </p>
                 </div>
-                <ArrowRight size={14} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" style={{ flexShrink: 0 }} />
+                <ArrowRight size={14} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" style={{ flexShrink: 0 }} />
               </>
             );
             const style: React.CSSProperties = {
@@ -387,7 +385,7 @@ export function DocsHubPage() {
       >
         <SectionBackdrop src={SECTION_BACKDROPS.docsHero} scrim="dark" />
         <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
-        <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             reveal="load"
@@ -400,11 +398,11 @@ export function DocsHubPage() {
             title="Everything you need to run Avrentis — in one place."
             titleStyle={{
               fontWeight: 700,
-              fontSize: "36px",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            titleClassName="lg:!text-[52px]"
+            titleClassName="lg:!text-display-3xl"
             lede={
               <>
                 A hub for admins, developers, and internal IT. Pointers to the
@@ -414,11 +412,11 @@ export function DocsHubPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "17px",
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
           <m.div
@@ -449,7 +447,7 @@ export function DocsHubPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.docsCategoryNav} scrim="light" />
         <div
           style={{
-            maxWidth: "1200px",
+            maxWidth: "var(--layout-max-width)",
             margin: "0 auto",
             display: "flex",
             flexWrap: "wrap",
@@ -460,8 +458,8 @@ export function DocsHubPage() {
         >
           <span
             style={{
-              fontFamily: mono,
-              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "var(--text-3xs)",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
               color: "var(--color-text-muted)",
@@ -474,12 +472,11 @@ export function DocsHubPage() {
               key={c.eyebrow}
               href={`#${c.eyebrow.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
               style={{
-                fontFamily: sans,
-                fontSize: "12px",
+                fontSize: "var(--text-xs)",
                 color: "var(--color-text-primary)",
                 textDecoration: "none",
                 padding: "6px 12px",
-                borderRadius: "999px",
+                borderRadius: "var(--radius-pill)",
                 border: "1px solid var(--color-border)",
                 backgroundColor: "var(--color-bg-light)",
               }}
@@ -493,7 +490,7 @@ export function DocsHubPage() {
       {/* ── CATEGORIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg-light)", padding: "90px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsCategories} scrim="light" />
-        <div style={{ maxWidth: "1180px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "80px" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "80px" }}>
           {CATEGORIES.map((c, i) => (
             <Category key={c.eyebrow} category={c} index={i} />
           ))}
@@ -503,13 +500,13 @@ export function DocsHubPage() {
       {/* ── FEEDBACK FOOTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "80px 32px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.docsFeedbackFooter} scrim="light" />
-        <div style={{ maxWidth: "820px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto" }}>
           <m.div
             {...fadeUpOnScroll()}
             style={{
               backgroundColor: "var(--color-bg-light)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               padding: "28px 32px",
               display: "flex",
               gap: "16px",
@@ -521,16 +518,15 @@ export function DocsHubPage() {
             <div style={{ flex: 1, minWidth: "280px" }}>
               <h3
                 style={{
-                  fontFamily: sans,
                   fontWeight: 600,
-                  fontSize: "16px",
+                  fontSize: "var(--text-xl)",
                   color: "var(--color-text-primary)",
                   margin: "0 0 6px",
                 }}
               >
                 Couldn&rsquo;t find what you were looking for?
               </h3>
-              <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
+              <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                 Tell us what guide would have helped. We write what customers
                 actually ask for, not what marketing thinks we should publish.
               </p>

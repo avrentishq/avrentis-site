@@ -11,6 +11,7 @@
 
 import { m, useScroll, useSpring } from "framer-motion";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { Z_INDEX } from "@/lib/layers";
 
 export function ScrollProgress() {
   // Skip the scroll bar on mobile: low value, and mounting the inner component
@@ -43,7 +44,7 @@ function ScrollProgressBar() {
         backgroundColor: "var(--color-gold)",
         transformOrigin: "0 50%",
         scaleX,
-        zIndex: 50,
+        zIndex: Z_INDEX.header,
         pointerEvents: "none",
       }}
     />

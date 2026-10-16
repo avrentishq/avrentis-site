@@ -3,6 +3,7 @@
 import { m, type MotionValue } from "framer-motion";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { Z_INDEX } from "@/lib/layers";
 
 /**
  * DarkHeroBackdrop — the ambient layer behind every navy section: two drifting
@@ -75,7 +76,7 @@ export function DarkHeroBackdrop({ glows = "hero", grid = false, gridY }: DarkHe
             backgroundSize: "60px 60px",
             pointerEvents: "none",
             y: gridY && !isMobile ? gridY : 0,
-            zIndex: 1,
+            zIndex: Z_INDEX.raised,
           }}
         />
       )}

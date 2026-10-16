@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  BRAND_COLORS,
   MODULE_STATUS_LABELS,
   MODULES,
   moduleHref,
@@ -27,6 +26,7 @@ import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
 import { APPROVAL_LIFECYCLE, lifecycleStepNumber } from "@/lib/approval-lifecycle";
 import { cssTransition } from "@/lib/animations";
+import { Z_INDEX } from "@/lib/layers";
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_ROUTES.product,
@@ -37,7 +37,7 @@ export const metadata: Metadata = pageMetadata({
 
 const STATUS_BADGE: Record<ModuleStatus, { bg: string; color: string }> = {
   available: { bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
-  partial: { bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
+  partial: { bg: "var(--color-gold-tint)", color: "var(--color-gold-on-light)" },
 };
 
 export default function ProductOverviewPage() {
@@ -60,10 +60,10 @@ export default function ProductOverviewPage() {
 
         <div
           style={{
-            maxWidth: "900px",
+            maxWidth: "var(--measure-wide)",
             margin: "0 auto",
             position: "relative",
-            zIndex: 2,
+            zIndex: Z_INDEX.content,
             textAlign: "center",
           }}
         >
@@ -79,8 +79,8 @@ export default function ProductOverviewPage() {
                 record.
               </>
             }
-            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
-            titleClassName="lg:!text-[52px]"
+            titleStyle={{ fontWeight: 700, fontSize: "var(--text-display-xs)", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-display-3xl"
             lede={
               <>
                 Avrentis is not a collection of unrelated tools — every financial
@@ -91,11 +91,11 @@ export default function ProductOverviewPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "17px",
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 36px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
@@ -110,7 +110,7 @@ export default function ProductOverviewPage() {
       {/* ── MODULE GRID ─────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="none"
             eyebrow="THE FOUR SUITES"
@@ -118,13 +118,13 @@ export default function ProductOverviewPage() {
             title="Four suites. Each module in them does one thing, precisely."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "560px",
+              maxWidth: "var(--measure-narrow)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
           {SUITES.map((suite) => {
@@ -136,9 +136,8 @@ export default function ProductOverviewPage() {
               <div key={suite.key} style={{ marginBottom: "56px" }}>
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "20px",
+                    fontSize: "var(--text-heading-xs)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                     letterSpacing: "0.01em",
@@ -148,11 +147,10 @@ export default function ProductOverviewPage() {
                 </h3>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     margin: "0 0 20px",
-                    maxWidth: "560px",
+                    maxWidth: "var(--measure-narrow)",
                   }}
                 >
                   {suite.blurb}
@@ -181,7 +179,7 @@ export default function ProductOverviewPage() {
       {/* ── PLATFORM RHYTHM (how modules share the engine) ─────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
-        <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="none"
             eyebrow="ONE AUTHORITY ENGINE"
@@ -189,12 +187,12 @@ export default function ProductOverviewPage() {
             title="Every module runs on one delegation-of-authority engine."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.25,
               margin: "0 0 24px",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={<>
             A payment voucher, a purchase order, a grant disbursement, and a
             vendor onboarding all travel the same authority engine: routed to the right
@@ -204,14 +202,14 @@ export default function ProductOverviewPage() {
             module obeys it. And for any decision, Avrentis shows exactly which
             rule applied and can prove what policy governed it, years later.
             </>}
-            ledeStyle={{ fontSize: "16px", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "640px" }}
+            ledeStyle={{ fontSize: "var(--text-xl)", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "var(--measure)" }}
           />
 
           <div
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "8px",
+              borderRadius: "var(--radius-card)",
               padding: "32px",
               display: "grid",
               // One track per stage when they fit, so the strip fills the width at any stage count.
@@ -223,9 +221,8 @@ export default function ProductOverviewPage() {
               <div key={stage.key} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontFeatureSettings: '"tnum" 1',
-                    fontSize: "12px",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 600,
                     letterSpacing: "0.08em",
                     color: "var(--color-gold-on-light)",
@@ -235,8 +232,7 @@ export default function ProductOverviewPage() {
                 </span>
                 <h4
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     fontWeight: 600,
                     color: "var(--color-text-primary)",
                     margin: 0,
@@ -246,8 +242,7 @@ export default function ProductOverviewPage() {
                 </h4>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-muted)",
                     margin: 0,
                     lineHeight: 1.6,
@@ -282,7 +277,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
       style={{
         backgroundColor: "var(--color-bg-light)",
         border: "1px solid var(--color-border)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         padding: "28px",
         display: "flex",
         flexDirection: "column",
@@ -290,32 +285,31 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
         textDecoration: "none",
         transition: cssTransition(["border-color", "transform"], "base"),
       }}
-      className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
+      className="hover:!border-[var(--color-gold-border-strong)]"
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div
           style={{
             width: "40px",
             height: "40px",
-            borderRadius: "6px",
-            backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+            borderRadius: "var(--radius-md)",
+            backgroundColor: "var(--color-gold-tint)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+          <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
         </div>
         <span
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "11px",
+            fontSize: "var(--text-2xs)",
             fontWeight: 600,
             letterSpacing: "0.06em",
             textTransform: "uppercase",
             color: badge.color,
             backgroundColor: badge.bg,
-            borderRadius: "3px",
+            borderRadius: "var(--radius-xs)",
             padding: "3px 8px",
           }}
         >
@@ -326,9 +320,8 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
       <div>
         <h3
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 600,
-            fontSize: "18px",
+            fontSize: "var(--text-3xl)",
             color: "var(--color-text-primary)",
             margin: "0 0 2px",
           }}
@@ -337,8 +330,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
         </h3>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
             color: "var(--color-gold-on-light)",
             margin: 0,
             fontWeight: 500,
@@ -350,8 +342,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
 
       <p
         style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "14px",
+          fontSize: "var(--text-md)",
           color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
@@ -363,8 +354,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
 
       <span
         style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "13px",
+          fontSize: "var(--text-sm)",
           fontWeight: 500,
           color: "var(--color-text-primary)",
           marginTop: "4px",

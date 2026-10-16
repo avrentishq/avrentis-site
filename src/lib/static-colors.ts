@@ -20,7 +20,7 @@ export const STATIC_COLORS = {
   /** --color-gold (brand) */
   gold: BRAND_COLORS.gold,
   /** --color-navy-primary (brand) */
-  navy: BRAND_COLORS.navy,
+  navyPrimary: BRAND_COLORS.navy,
 } as const;
 
 /** The font stack outbound email HTML is set in — mail clients load no web fonts. */

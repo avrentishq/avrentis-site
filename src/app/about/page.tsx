@@ -12,6 +12,7 @@ import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 import { MARKET_SCOPE } from "@/lib/market";
 import { SITE_ROUTES } from "@/lib/routes";
+import { cardGridProps } from "@/lib/card-grid";
 
 const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
@@ -71,9 +72,9 @@ export default function AboutPage() {
               eyebrow="About Avrentis"
               eyebrowStyle={{ margin: "0 0 16px" }}
               title="We believe every organisation deserves operational structure."
-              titleStyle={{ fontSize: 36, fontWeight: 400, margin: "0 0 16px", lineHeight: 1.3 }}
+              titleStyle={{ fontSize: "var(--text-display-xs)", fontWeight: 400, margin: "0 0 16px", lineHeight: 1.3 }}
               lede="Regardless of industry, size, or geography."
-              ledeStyle={{ color: "var(--color-text-muted)", fontSize: 18, fontWeight: 400, margin: 0 }}
+              ledeStyle={{ color: "var(--color-text-muted)", fontSize: "var(--text-3xl)", fontWeight: 400, margin: 0 }}
             />
           </div>
         </section>
@@ -93,7 +94,7 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 400,
                 lineHeight: 1.8,
                 margin: "0 0 24px",
@@ -108,7 +109,7 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 400,
                 lineHeight: 1.8,
                 margin: "0 0 48px",
@@ -118,13 +119,13 @@ export default function AboutPage() {
               Nigeria and Africa.
             </p>
 
-            <Eyebrow as="p" size={10} style={{ margin: "0 0 12px" }}>
+            <Eyebrow as="p" size="group" style={{ margin: "0 0 12px" }}>
               THE VISION
             </Eyebrow>
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 400,
                 lineHeight: 1.8,
                 margin: 0,
@@ -150,28 +151,25 @@ export default function AboutPage() {
           }}
         >
           <SectionBackdrop src={SECTION_BACKDROPS.aboutValues} scrim="light" />
-          <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
             <Eyebrow as="p" style={{ textAlign: "center", margin: "0 0 32px" }}>
               OUR VALUES
             </Eyebrow>
-            <div
-              className="grid grid-cols-1 md:grid-cols-2"
-              style={{ gap: 20 }}
-            >
+            <div {...cardGridProps(VALUES.length, { max: 2 }, { gap: "20px" })}>
               {VALUES.map((v) => (
                 <div
                   key={v.title}
                   style={{
                     backgroundColor: "var(--color-white)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: 8,
+                    borderRadius: "var(--radius-card)",
                     padding: 24,
                   }}
                 >
                   <p
                     style={{
                       color: "var(--color-text-primary)",
-                      fontSize: 16,
+                      fontSize: "var(--text-xl)",
                       fontWeight: 600,
                       margin: "0 0 8px",
                     }}
@@ -181,7 +179,7 @@ export default function AboutPage() {
                   <p
                     style={{
                       color: "var(--color-text-muted)",
-                      fontSize: 14,
+                      fontSize: "var(--text-md)",
                       fontWeight: 400,
                       lineHeight: 1.6,
                       margin: 0,
@@ -208,7 +206,7 @@ export default function AboutPage() {
           <SectionBackdrop src={SECTION_BACKDROPS.aboutJoinUs} scrim="light" />
           <div
             style={{
-              maxWidth: 640,
+              maxWidth: "var(--measure)",
               margin: "0 auto",
               textAlign: "center",
             }}
@@ -223,7 +221,7 @@ export default function AboutPage() {
                   organisations everywhere.
                 </>
               }
-              titleStyle={{ fontSize: 24, fontWeight: 400, lineHeight: 1.4, margin: "0 0 16px" }}
+              titleStyle={{ fontSize: "var(--text-heading-md)", fontWeight: 400, lineHeight: 1.4, margin: "0 0 16px" }}
               lede={
                 <>
                   No open roles right now — but we are always interested in
@@ -232,7 +230,7 @@ export default function AboutPage() {
                   from you.
                 </>
               }
-              ledeStyle={{ fontSize: 15, fontWeight: 400, lineHeight: 1.7, margin: "0 0 24px" }}
+              ledeStyle={{ fontSize: "var(--text-lg)", fontWeight: 400, lineHeight: 1.7, margin: "0 0 24px" }}
             />
             <ButtonLink href={contactHref("careers")} variant="secondary" surface="light" size="sm">
               Get in touch
@@ -253,7 +251,7 @@ export default function AboutPage() {
           <SectionBackdrop src={SECTION_BACKDROPS.aboutContact} scrim="dark" />
           <div
             style={{
-              maxWidth: 640,
+              maxWidth: "var(--measure)",
               margin: "0 auto",
               textAlign: "center",
             }}
@@ -261,7 +259,7 @@ export default function AboutPage() {
             <h2
               style={{
                 color: "var(--color-white)",
-                fontSize: 28,
+                fontSize: "var(--text-heading-lg)",
                 fontWeight: 400,
                 margin: "0 0 16px",
               }}
@@ -271,7 +269,7 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-muted)",
-                fontSize: 15,
+                fontSize: "var(--text-lg)",
                 fontWeight: 400,
                 lineHeight: 1.7,
                 margin: 0,
@@ -285,7 +283,7 @@ export default function AboutPage() {
               style={{
                 display: "inline-block",
                 color: "var(--color-gold)",
-                fontSize: 16,
+                fontSize: "var(--text-xl)",
                 fontWeight: 500,
                 marginTop: 20,
                 textDecoration: "none",
@@ -296,7 +294,7 @@ export default function AboutPage() {
             <p
               style={{
                 color: "var(--color-text-secondary)",
-                fontSize: 13,
+                fontSize: "var(--text-sm)",
                 fontWeight: 400,
                 marginTop: 8,
                 marginBottom: 0,

@@ -30,7 +30,6 @@ interface LegalPageShellProps {
   footerNote?: React.ReactNode;
 }
 
-const sans = "var(--font-sans)";
 
 export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, footerNote }: LegalPageShellProps) {
   return (
@@ -43,7 +42,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
           minHeight: "70vh",
         }}
       >
-        <div style={{ maxWidth: "760px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-prose-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="load"
             eyebrow={eyebrow}
@@ -52,15 +51,15 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             title={title}
             titleStyle={{
               fontWeight: 500,
-              fontSize: "36px",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.2,
               margin: "0 0 18px",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[44px]"
+            titleClassName="lg:!text-display-xl"
             lede={lede}
             ledeStyle={{
-              fontSize: "16px",
+              fontSize: "var(--text-xl)",
               color: "var(--color-text-secondary)",
               lineHeight: 1.75,
               margin: "0 0 8px",
@@ -70,8 +69,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
           <m.p
             {...fadeUpOnLoad(3)}
             style={{
-              fontFamily: sans,
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               color: "var(--color-text-secondary)",
               margin: "0 0 40px",
             }}
@@ -86,12 +84,12 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               padding: "20px 24px",
               marginBottom: "56px",
             }}
           >
-            <Eyebrow size={11} style={{ display: "block", marginBottom: "12px" }}>
+            <Eyebrow size="legal" style={{ display: "block", marginBottom: "12px" }}>
               Contents
             </Eyebrow>
             <ol
@@ -110,8 +108,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                   <a
                     href={`#${s.id}`}
                     style={{
-                      fontFamily: sans,
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-primary)",
                       textDecoration: "none",
                       display: "inline-flex",
@@ -139,9 +136,8 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 <SectionBackdrop src={SECTION_BACKDROPS.legal} scrim="light" />
                 <h2
                   style={{
-                    fontFamily: sans,
                     fontWeight: 600,
-                    fontSize: "20px",
+                    fontSize: "var(--text-heading-xs)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 16px",
                     display: "flex",
@@ -151,8 +147,8 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 >
                   <span
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "12px",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--text-xs)",
                       letterSpacing: "0.06em",
                       color: "var(--color-gold-on-light)",
                       fontWeight: 500,
@@ -164,9 +160,8 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 </h2>
                 <div
                   style={{
-                    fontFamily: sans,
-                    fontSize: "15px",
-                    color: "var(--color-text-faint)",
+                    fontSize: "var(--text-lg)",
+                    color: "var(--color-text-body)",
                     lineHeight: 1.75,
                   }}
                   className="legal-prose"
@@ -185,9 +180,8 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 padding: "20px 24px",
                 backgroundColor: "var(--color-white)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "10px",
-                fontFamily: sans,
-                fontSize: "13px",
+                borderRadius: "var(--radius-lg)",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-text-muted)",
                 lineHeight: 1.65,
               }}
@@ -208,11 +202,11 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
           .legal-prose a:hover { text-decoration: underline; }
           .legal-prose strong { color: var(--color-text-primary); font-weight: 600; }
           .legal-prose code {
-            font-family: 'IBM Plex Mono', monospace;
+            font-family: var(--font-mono);
             font-size: 0.9em;
             background: var(--color-bg);
             padding: 1px 6px;
-            border-radius: 3px;
+            border-radius: var(--radius-xs);
           }
         `}</style>
       </main>

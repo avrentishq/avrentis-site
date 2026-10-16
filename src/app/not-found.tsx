@@ -18,12 +18,12 @@ export default function NotFound() {
         padding: "40px",
       }}
     >
-      <div style={{ maxWidth: "520px", textAlign: "center" }}>
+      <div style={{ maxWidth: "var(--measure-short)", textAlign: "center" }}>
         <p
           style={{
             fontFamily: "var(--font-mono)",
             fontWeight: 500,
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
             letterSpacing: "0.12em",
             textTransform: "uppercase",
             color: "var(--color-gold)",
@@ -35,9 +35,8 @@ export default function NotFound() {
         <h1
           data-page-title
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "32px",
+            fontSize: "var(--text-heading-2xl)",
             color: "var(--color-white)",
             lineHeight: 1.2,
             margin: "0 0 16px",
@@ -47,12 +46,11 @@ export default function NotFound() {
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-subtle)",
             lineHeight: 1.7,
             margin: "0 auto 28px",
-            maxWidth: "420px",
+            maxWidth: "var(--measure-compact)",
           }}
         >
           The link may be old or mistyped. Here are a few good places to pick
@@ -68,10 +66,10 @@ export default function NotFound() {
           style={{
             fontFamily: "var(--font-mono)",
             fontWeight: 500,
-            fontSize: "9px",
+            fontSize: "var(--text-4xs)",
             letterSpacing: "0.10em",
             textTransform: "uppercase",
-            color: "var(--color-text-faint)",
+            color: "var(--color-text-subtle)",
             margin: "40px 0 0",
           }}
         >

@@ -72,7 +72,7 @@ export default function RootLayout({
       <head>
         <JsonLd data={organizationSchema()} />
       </head>
-      <body className="antialiased" style={{ fontFamily: "var(--font-sans)" }}>
+      <body className="antialiased">
         {/* Each painted surface's focus-ring colour (src/lib/surfaces.ts). */}
         <style>{SURFACE_FOCUS_CSS}</style>
         {/* Only when JavaScript is off: show what script would otherwise reveal. */}

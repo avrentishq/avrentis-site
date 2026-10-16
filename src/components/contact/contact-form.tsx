@@ -51,8 +51,7 @@ const SIZE_OPTIONS = [{ value: "", label: "Prefer not to say" }, ...ORG_SIZE_OPT
 /* ── Styling primitives ──────────────────────────────────────────── */
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   fontWeight: 500,
   color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
@@ -61,13 +60,12 @@ const labelStyle: React.CSSProperties = {
 };
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "14px",
+  fontSize: "var(--text-md)",
   color: "var(--color-text-primary)",
   width: "100%",
   height: "42px",
   border: "1px solid var(--color-border)",
-  borderRadius: "6px",
+  borderRadius: "var(--radius-md)",
   padding: "0 14px",
   backgroundColor: "var(--color-white)",
   transition: cssTransition(["border-color", "box-shadow"]),
@@ -83,8 +81,7 @@ const textareaStyle: React.CSSProperties = {
 };
 
 const errorStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   color: "var(--color-danger)",
   marginTop: "6px",
   display: "block",
@@ -166,7 +163,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "10px",
+          borderRadius: "var(--radius-lg)",
           padding: "48px 40px",
           textAlign: "center",
           display: "flex",
@@ -179,8 +176,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           style={{
             width: "56px",
             height: "56px",
-            borderRadius: "50%",
-            backgroundColor: "rgba(var(--color-success-rgb), 0.12)",
+            borderRadius: "var(--radius-circle)",
+            backgroundColor: "var(--color-success-tint)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -190,9 +187,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         </div>
         <h2
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 500,
-            fontSize: "22px",
+            fontSize: "var(--text-heading-sm)",
             color: "var(--color-text-primary)",
             margin: 0,
           }}
@@ -201,12 +197,11 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         </h2>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.65,
             margin: 0,
-            maxWidth: "420px",
+            maxWidth: "var(--measure-compact)",
           }}
         >
           {state.message ?? `Thanks — we'll reply ${ENQUIRY_REPLY_TIME}.`}
@@ -214,8 +209,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
         <Link
           href={SITE_ROUTES.home}
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             fontWeight: 500,
             color: "var(--color-gold-on-light)",
             textDecoration: "none",
@@ -241,7 +235,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           the specific intent posts via the hidden field inside the form. */}
       <m.div
         {...fadeUpOnLoad()}
-        style={{ maxWidth: "640px", margin: "0 auto 24px" }}
+        style={{ maxWidth: "var(--measure)", margin: "0 auto 24px" }}
       >
         <ChoiceGroup
           name="contact_topic"
@@ -256,31 +250,29 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
       {/* Centered intro header — matches the trial layout */}
       <m.div
         {...fadeUpOnLoad()}
-        style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
+        style={{ textAlign: "center", maxWidth: "var(--measure)", margin: "0 auto 44px" }}
       >
         <Eyebrow style={{ display: "block", marginBottom: "14px" }}>{copy.eyebrow}</Eyebrow>
         <h1
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "32px",
+            fontSize: "var(--text-heading-2xl)",
             color: "var(--color-text-primary)",
             lineHeight: 1.2,
             margin: "0 0 12px",
             letterSpacing: "0.01em",
           }}
-          className="lg:!text-[40px]"
+          className="lg:!text-display-md"
         >
           {copy.headline}
         </h1>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto",
-            maxWidth: "520px",
+            maxWidth: "var(--measure-short)",
           }}
         >
           {copy.lede}
@@ -302,15 +294,14 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           <m.div
             {...fadeUpOnScroll(1)}
             style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "14px",
+              fontSize: "var(--text-md)",
               color: "var(--color-text-secondary)",
               lineHeight: 1.7,
-              borderLeft: "2px solid rgba(var(--color-gold-rgb), 0.28)",
+              borderLeft: "2px solid var(--color-gold-border)",
               paddingLeft: "16px",
             }}
           >
-            <div style={{ marginBottom: "10px", color: "var(--color-text-primary)", fontWeight: 600, fontSize: "14px" }}>
+            <div style={{ marginBottom: "10px", color: "var(--color-text-primary)", fontWeight: 600, fontSize: "var(--text-md)" }}>
               What happens next
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
@@ -342,8 +333,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           >
             <div
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 color: "var(--color-text-primary)",
                 marginBottom: "8px",
@@ -354,8 +344,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             <a
               href={`mailto:${CONTACT_EMAIL.general}`}
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "15px",
+                fontSize: "var(--text-lg)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 textDecoration: "none",
@@ -365,8 +354,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             </a>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-text-muted)",
                 lineHeight: 1.7,
                 margin: "12px 0 0",
@@ -389,7 +377,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "14px",
+            borderRadius: "var(--radius-2xl)",
             padding: "32px",
             display: "flex",
             flexDirection: "column",
@@ -553,9 +541,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             <label
               htmlFor="consent"
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
-                color: "var(--color-text-faint)",
+                fontSize: "var(--text-sm)",
+                color: "var(--color-text-body)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "10px",
@@ -599,12 +586,11 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               id="contact-form-error"
               pending={isPending}
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-danger)",
-                backgroundColor: "rgba(var(--color-danger-rgb), 0.06)",
-                border: "1px solid rgba(var(--color-danger-rgb), 0.2)",
-                borderRadius: "6px",
+                backgroundColor: "var(--color-danger-wash)",
+                border: "1px solid var(--color-danger-border)",
+                borderRadius: "var(--radius-md)",
                 padding: "10px 12px",
               }}
             >

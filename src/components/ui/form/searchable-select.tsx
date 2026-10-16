@@ -11,8 +11,8 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ChevronDown, Search } from "lucide-react";
 import { JS_ONLY } from "@/lib/no-script";
 import { NoScriptSelect } from "./no-script-select";
+import { Z_INDEX } from "@/lib/layers";
 
-const sans = "var(--font-sans)";
 
 export interface SelectOption {
   value: string;
@@ -121,12 +121,11 @@ export function SearchableSelect({
         aria-describedby={describedBy}
         onClick={() => setOpen((o) => !o)}
         style={{
-          fontFamily: sans,
-          fontSize: "14px",
+          fontSize: "var(--text-md)",
           width: "100%",
           height: "42px",
-          border: `1px solid ${invalid ? "rgba(var(--color-danger-rgb), 0.5)" : "var(--color-border)"}`,
-          borderRadius: "6px",
+          border: `1px solid ${invalid ? "var(--color-danger-invalid)" : "var(--color-border)"}`,
+          borderRadius: "var(--radius-md)",
           padding: "0 12px 0 14px",
           backgroundColor: "var(--color-white)",
           display: "flex",
@@ -149,10 +148,10 @@ export function SearchableSelect({
             top: "calc(100% + 6px)",
             left: 0,
             right: 0,
-            zIndex: 30,
+            zIndex: Z_INDEX.dropdown,
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
-            borderRadius: "8px",
+            borderRadius: "var(--radius-card)",
             boxShadow: "0 12px 32px rgba(var(--color-navy-primary-rgb), 0.14)",
             overflow: "hidden",
           }}
@@ -176,8 +175,7 @@ export function SearchableSelect({
               placeholder={`Search ${searchLabel}…`}
               aria-label={`Search ${searchLabel}`}
               style={{
-                fontFamily: sans,
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 border: "none",
                 width: "100%",
                 color: "var(--color-text-primary)",
@@ -187,7 +185,7 @@ export function SearchableSelect({
           </div>
           <ul id={listboxId} role="listbox" aria-label={ariaLabel} style={{ listStyle: "none", margin: 0, padding: "4px", maxHeight: "220px", overflowY: "auto" }}>
             {filtered.length === 0 ? (
-              <li style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", padding: "10px 12px" }}>
+              <li style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", padding: "10px 12px" }}>
                 No matches
               </li>
             ) : (
@@ -206,14 +204,13 @@ export function SearchableSelect({
                       choose(o.value);
                     }}
                     style={{
-                      fontFamily: sans,
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-primary)",
                       padding: "9px 12px",
-                      borderRadius: "6px",
+                      borderRadius: "var(--radius-md)",
                       cursor: "pointer",
                       backgroundColor: isActive
-                        ? "rgba(var(--color-gold-rgb), 0.08)"
+                        ? "var(--color-gold-ghost)"
                         : "transparent",
                       fontWeight: isSelected ? 600 : 400,
                     }}

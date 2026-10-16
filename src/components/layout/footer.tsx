@@ -9,10 +9,10 @@ import { MARKET_SCOPE } from "@/lib/market";
 import { cssTransition } from "@/lib/animations";
 
 const linkStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
   fontWeight: 400,
-  fontSize: "12px",
-  color: "var(--color-text-muted)",
+  fontSize: "var(--text-xs)",
+  // text-subtle, not text-muted: muted reads 4.2:1 on the deep-navy footer, under AA for small text.
+  color: "var(--color-text-subtle)",
   textDecoration: "none",
   display: "block",
   marginBottom: "8px",
@@ -22,7 +22,7 @@ const linkStyle: React.CSSProperties = {
 function FooterColumn({ label, links }: { label: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <Eyebrow as="div" surface="dark" size={10} style={{ marginBottom: "14px" }}>
+      <Eyebrow as="div" surface="dark" size="group" style={{ marginBottom: "14px" }}>
         {label}
       </Eyebrow>
       {links.map((link) => (
@@ -31,7 +31,7 @@ function FooterColumn({ label, links }: { label: string; links: { label: string;
           href={link.href}
           style={linkStyle}
           onMouseEnter={(e) => { e.currentTarget.style.color = "var(--color-gold)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-text-muted)"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "var(--color-text-subtle)"; }}
         >
           {link.label}
         </Link>
@@ -46,10 +46,10 @@ export function Footer() {
       style={{
         backgroundColor: "var(--color-navy-deep)",
         padding: "64px 40px 32px",
-        borderTop: "0.5px solid rgba(var(--color-gold-rgb), 0.1)",
+        borderTop: "0.5px solid var(--color-gold-tint)",
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+      <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
         {/* Four-column grid */}
         <div
           style={{
@@ -70,7 +70,7 @@ export function Footer() {
               style={{
                 fontFamily: "var(--font-mono)",
                 fontWeight: 500,
-                fontSize: "10px",
+                fontSize: "var(--text-3xs)",
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",
                 color: "var(--color-gold)",
@@ -80,10 +80,9 @@ export function Footer() {
             </span>
             <span
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "12px",
-                color: "var(--color-text-muted)",
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-subtle)",
                 lineHeight: 1.6,
                 maxWidth: "200px",
               }}
@@ -100,7 +99,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div
           style={{
-            borderTop: "0.5px solid rgba(var(--color-white-rgb), 0.04)",
+            borderTop: "0.5px solid var(--color-white-wash)",
             paddingTop: "20px",
             display: "flex",
             justifyContent: "space-between",
@@ -111,10 +110,9 @@ export function Footer() {
         >
           <span
             style={{
-              fontFamily: "var(--font-sans)",
               fontWeight: 400,
-              fontSize: "11px",
-              color: "var(--color-text-faint)",
+              fontSize: "var(--text-2xs)",
+              color: "var(--color-text-subtle)",
             }}
           >
             {BRAND.copyrightChrome}

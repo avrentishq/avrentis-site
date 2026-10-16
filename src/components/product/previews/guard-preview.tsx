@@ -46,7 +46,7 @@ const FLAGS: readonly {
     concerns: STIPEND_VOUCHER.reference,
     severity: "Medium",
     status: "Under review",
-    ruleBackground: "rgba(var(--color-gold-rgb), 0.08)",
+    ruleBackground: "var(--color-gold-ghost)",
     ruleColour: "var(--color-warning)",
   },
   {
@@ -54,7 +54,7 @@ const FLAGS: readonly {
     concerns: FLAGGED_SUBJECTS.duplicateInvoiceReference,
     severity: "Medium",
     status: "Cleared",
-    ruleBackground: "rgba(var(--color-success-rgb), 0.08)",
+    ruleBackground: "var(--color-success-wash)",
     ruleColour: "var(--color-success)",
   },
 ];

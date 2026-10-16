@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { isMobileViewport } from "@/lib/hooks/use-is-mobile";
+import { isReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { MOTION_DURATION, cssTransition, fadeUpOnScroll } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
 import { APPROVAL_LIFECYCLE, type LifecycleStageKey } from "@/lib/approval-lifecycle";
 import { capitalisedNumberInWords } from "@/lib/number-words";
 import { STAGE_MOCKUPS } from "@/components/product/stage-mockups";
 import { BrowserFrame, appCaption } from "@/components/product/previews/preview-primitives";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 /**
  * The homepage's own words for each lifecycle stage. The stages — titles,
@@ -52,11 +54,8 @@ export function HowItWorks() {
   // respects `prefers-reduced-motion`.
   useEffect(() => {
     if (!autoAdvance) return;
-    const reducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     // Skip auto-advance on mobile — same reasoning as the hero demo.
-    if (reducedMotion || isMobileViewport()) return;
+    if (isReducedMotion() || isMobileViewport()) return;
 
     const timer = setInterval(() => {
       setActive((i) => (i + 1) % APPROVAL_LIFECYCLE.length);
@@ -95,10 +94,10 @@ export function HowItWorks() {
 
       <div
         style={{
-          maxWidth: "1200px",
+          maxWidth: "var(--layout-max-width)",
           margin: "0 auto",
           position: "relative",
-          zIndex: 2,
+          zIndex: Z_INDEX.content,
         }}
       >
         <div
@@ -121,12 +120,12 @@ export function HowItWorks() {
               title={<>{capitalisedNumberInWords(APPROVAL_LIFECYCLE.length)} steps. Zero paper. Complete record.</>}
               titleStyle={{
                 fontWeight: 400,
-                fontSize: "24px",
+                fontSize: "var(--text-heading-md)",
                 lineHeight: 1.2,
                 margin: "0 0 16px",
-                maxWidth: "600px",
+                maxWidth: "var(--measure-snug)",
               }}
-              titleClassName="lg:!text-[42px]"
+              titleClassName="lg:!text-display-lg"
             />
 
             {/* Left — Text. Reserved height so the mode="wait" swap (old
@@ -144,13 +143,12 @@ export function HowItWorks() {
                 >
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "15px",
+                    fontSize: "var(--text-lg)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: 0,
-                    maxWidth: "480px",
+                    maxWidth: "var(--measure-tight)",
                   }}
                 >
                   {STAGE_BODY[activeStage.key]}
@@ -207,7 +205,7 @@ export function HowItWorks() {
                           i < active
                             ? "var(--color-gold)"
                             : "rgba(var(--color-neutral-tint-rgb), 0.25)",
-                        zIndex: 0,
+                        zIndex: Z_INDEX.base,
                         transition: cssTransition("background-color", "slow"),
                       }}
                     />
@@ -217,7 +215,7 @@ export function HowItWorks() {
                     style={{
                       width: "32px",
                       height: "32px",
-                      borderRadius: "50%",
+                      borderRadius: "var(--radius-circle)",
                       flexShrink: 0,
                       backgroundColor:
                         i === active ? "var(--color-gold)" : "transparent",
@@ -229,15 +227,14 @@ export function HowItWorks() {
                       alignItems: "center",
                       justifyContent: "center",
                       position: "relative",
-                      zIndex: 1,
+                      zIndex: Z_INDEX.raised,
                       transition: cssTransition(["background-color", "border-color"], "slow"),
                     }}
                   >
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
                         fontWeight: 600,
-                        fontSize: "13px",
+                        fontSize: "var(--text-sm)",
                         color: i === active ? "var(--color-navy-primary)" : "var(--color-text-muted)",
                         transition: cssTransition("color", "slow"),
                       }}
@@ -248,9 +245,8 @@ export function HowItWorks() {
                   {/* Title */}
                   <span
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: i === active ? 600 : 500,
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: i === active ? "var(--color-white)" : "var(--color-text-muted)",
                       marginLeft: "14px",
                       transition: cssTransition("color", "slow"),
@@ -290,7 +286,7 @@ export function HowItWorks() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: MOTION_DURATION.slow }}
-                style={{ maxWidth: "460px", width: "100%" }}
+                style={{ maxWidth: "var(--measure-tight)", width: "100%" }}
               >
                 <BrowserFrame caption={appCaption(previewPath)} surface="dark">
                   <ActiveMockup />
@@ -303,15 +299,13 @@ export function HowItWorks() {
         {/* ── Feature Callout Strip ───────────────────── */}
         <m.div
           {...fadeUpOnScroll(4)}
-          style={{
+          {...cardGridProps(FEATURES.length, { min: "7rem" }, {
             backgroundColor: "var(--color-navy-mid)",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-lg)",
             padding: "20px 32px",
             marginTop: "72px",
-            display: "grid",
             gap: "16px",
-          }}
-          className="grid-cols-2 lg:grid-cols-4"
+          })}
         >
           {FEATURES.map((feat) => {
             const Icon = feat.icon;
@@ -327,14 +321,13 @@ export function HowItWorks() {
                 <Icon
                   size={16}
                   strokeWidth={1.8}
-                  color={BRAND_COLORS.gold}
+                  color="var(--color-gold)"
                   aria-hidden="true"
                 />
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 500,
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-muted)",
                   }}
                 >

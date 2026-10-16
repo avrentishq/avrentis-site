@@ -7,6 +7,7 @@ import { TrialForm } from "./trial-form";
 import { pageMetadata } from "@/lib/seo";
 import { TRIAL_LENGTH, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { SITE_PAGES, BRAND } from "@/lib/brand";
+import { Z_INDEX } from "@/lib/layers";
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_PAGES.trial(),
@@ -32,7 +33,7 @@ export default function TrialPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trialForm} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <TrialForm />
         </div>
       </main>

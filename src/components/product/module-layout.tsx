@@ -16,7 +16,6 @@ import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
-  BRAND_COLORS,
   MODULE_STATUS_LABELS,
   MODULES,
   isModulePublic,
@@ -44,6 +43,8 @@ import { contactHref } from "@/app/contact/tabs";
 import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
 import { EVERY_PLAN_NOTE, planScopeNote, type FeaturePlans } from "@/lib/plan-names";
 import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 /**
  * Which plans a card's capability is on. `planFeature` names the plan feature
@@ -131,9 +132,9 @@ const STATUS_RIBBON_STYLES: Record<ModuleStatus, { bg: string; color: string; bo
     border: "1px solid rgba(var(--color-available-rgb), 0.3)",
   },
   partial: {
-    bg: "rgba(var(--color-gold-rgb), 0.12)",
+    bg: "var(--color-gold-tint)",
     color: "var(--color-gold)",
-    border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
+    border: "1px solid var(--color-gold-border)",
   },
 };
 
@@ -145,15 +146,14 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
         display: "inline-flex",
         alignItems: "center",
         gap: "6px",
-        fontFamily: "var(--font-sans)",
-        fontSize: "11px",
+        fontSize: "var(--text-2xs)",
         fontWeight: 600,
         letterSpacing: "0.06em",
         textTransform: "uppercase",
         color: style.color,
         backgroundColor: style.bg,
         border: style.border,
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "4px 10px",
       }}
     >
@@ -161,7 +161,7 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
         style={{
           width: "5px",
           height: "5px",
-          borderRadius: "50%",
+          borderRadius: "var(--radius-circle)",
           backgroundColor: style.color,
           display: "inline-block",
         }}
@@ -243,13 +243,13 @@ export function ProductModuleLayout({
 
         <div
           style={{
-            maxWidth: "1200px",
+            maxWidth: "var(--layout-max-width)",
             margin: "0 auto",
             display: "grid",
             gap: "56px",
             alignItems: "center",
             position: "relative",
-            zIndex: 2,
+            zIndex: Z_INDEX.content,
           }}
           className="grid-cols-1 lg:grid-cols-[1fr_minmax(0,1.1fr)]"
         >
@@ -268,14 +268,13 @@ export function ProductModuleLayout({
             <m.h1
               {...fadeUpOnScroll(2)}
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 700,
-                fontSize: "34px",
+                fontSize: "var(--text-heading-3xl)",
                 color: "var(--color-white)",
                 lineHeight: 1.15,
                 margin: 0,
               }}
-              className="lg:!text-[48px]"
+              className="lg:!text-display-2xl"
             >
               {config.headline}
             </m.h1>
@@ -283,13 +282,12 @@ export function ProductModuleLayout({
             <m.p
               {...fadeUpOnScroll(3)}
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "17px",
+                fontSize: "var(--text-2xl)",
                 color: "var(--color-text-subtle)",
                 lineHeight: 1.7,
                 margin: 0,
-                maxWidth: "480px",
+                maxWidth: "var(--measure-tight)",
               }}
             >
               {config.description}
@@ -318,26 +316,23 @@ export function ProductModuleLayout({
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePillars} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="CAPABILITIES"
             eyebrowStyle={{ marginBottom: "12px" }}
             title="What this module does for your organisation."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "560px",
+              maxWidth: "var(--measure-narrow)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
-          <div
-            style={{ display: "grid", gap: "20px" }}
-            className="grid-cols-1 md:grid-cols-2"
-          >
+          <div {...cardGridProps(pillars.length, { max: 2 }, { gap: "20px" })}>
             {pillars.map((pillar, i) => {
               const Icon = pillar.icon;
               return (
@@ -347,7 +342,7 @@ export function ProductModuleLayout({
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     flexDirection: "column",
@@ -358,20 +353,19 @@ export function ProductModuleLayout({
                     style={{
                       width: "36px",
                       height: "36px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "var(--text-3xl)",
                       color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
@@ -380,8 +374,7 @@ export function ProductModuleLayout({
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
@@ -399,20 +392,20 @@ export function ProductModuleLayout({
       {/* ── USE CASES ────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.moduleUseCases} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="OUTCOMES"
             eyebrowStyle={{ marginBottom: "12px" }}
             title="What changes operationally."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "560px",
+              maxWidth: "var(--measure-narrow)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
           {/* An odd last card spans both columns, so the row fills the width at any count. */}
@@ -427,15 +420,14 @@ export function ProductModuleLayout({
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "6px",
+                  borderRadius: "var(--radius-md)",
                   padding: "24px",
                 }}
               >
                 <h3
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 600,
-                    fontSize: "15px",
+                    fontSize: "var(--text-lg)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 6px",
                   }}
@@ -444,8 +436,7 @@ export function ProductModuleLayout({
                 </h3>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.65,
                     margin: 0,
@@ -463,7 +454,7 @@ export function ProductModuleLayout({
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePlan} scrim="light" />
         <div
-          style={{ maxWidth: "1200px", margin: "0 auto", display: "grid", gap: "48px" }}
+          style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "grid", gap: "48px" }}
           className="grid-cols-1 lg:grid-cols-2"
         >
           {/* Plans */}
@@ -476,13 +467,13 @@ export function ProductModuleLayout({
               eyebrowStyle={{ marginBottom: "12px" }}
               titleAs="h3"
               title="Included in these plans."
-              titleStyle={{ fontWeight: 400, fontSize: "24px", margin: "0 0 24px" }}
+              titleStyle={{ fontWeight: 400, fontSize: "var(--text-heading-md)", margin: "0 0 24px" }}
             />
             <div
               style={{
                 backgroundColor: "var(--color-bg-light)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "6px",
+                borderRadius: "var(--radius-md)",
               }}
             >
               {planAvailability.map((p, i) => (
@@ -499,8 +490,7 @@ export function ProductModuleLayout({
                 >
                   <span
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       fontWeight: 500,
                       color: "var(--color-text-primary)",
                       flexShrink: 0,
@@ -511,8 +501,7 @@ export function ProductModuleLayout({
                   {p.included ? (
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         fontWeight: 500,
                         color: "var(--color-success)",
                         display: "inline-flex",
@@ -524,7 +513,7 @@ export function ProductModuleLayout({
                         style={{
                           width: "5px",
                           height: "5px",
-                          borderRadius: "50%",
+                          borderRadius: "var(--radius-circle)",
                           backgroundColor: "var(--color-success)",
                         }}
                       />
@@ -533,8 +522,7 @@ export function ProductModuleLayout({
                   ) : (
                     <span
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         color: "var(--color-text-subtle)",
                       }}
                     >
@@ -547,8 +535,7 @@ export function ProductModuleLayout({
             <Link
               href={SITE_ROUTES.pricing}
               style={{
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 textDecoration: "none",
@@ -572,7 +559,7 @@ export function ProductModuleLayout({
               eyebrowStyle={{ marginBottom: "12px" }}
               titleAs="h3"
               title="Other modules that complete the picture."
-              titleStyle={{ fontWeight: 400, fontSize: "24px", margin: "0 0 24px" }}
+              titleStyle={{ fontWeight: 400, fontSize: "var(--text-heading-md)", margin: "0 0 24px" }}
             />
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {relatedModules.map((related) => (
@@ -582,7 +569,7 @@ export function ProductModuleLayout({
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "6px",
+                    borderRadius: "var(--radius-md)",
                     padding: "16px 18px",
                     textDecoration: "none",
                     display: "flex",
@@ -595,8 +582,7 @@ export function ProductModuleLayout({
                   <div>
                     <p
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "14px",
+                        fontSize: "var(--text-md)",
                         fontWeight: 500,
                         color: "var(--color-text-primary)",
                         margin: "0 0 2px",
@@ -606,8 +592,7 @@ export function ProductModuleLayout({
                     </p>
                     <p
                       style={{
-                        fontFamily: "var(--font-sans)",
-                        fontSize: "12px",
+                        fontSize: "var(--text-xs)",
                         color: "var(--color-text-muted)",
                         margin: 0,
                       }}
@@ -615,7 +600,7 @@ export function ProductModuleLayout({
                       {related.desc}
                     </p>
                   </div>
-                  <ArrowRight size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                  <ArrowRight size={16} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                 </Link>
               ))}
             </div>

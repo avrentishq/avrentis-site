@@ -28,8 +28,8 @@ const TYPED_TERMS: { name: string; pattern: RegExp }[] = [
   { name: "a grace count after a trial", pattern: /\b\d+ days? after (?:your |the )?trial/i },
   { name: "a trial seat count", pattern: /\b\d+-seat\b/i },
   { name: "the trial plan's name", pattern: new RegExp(`\\b(?:${PLAN_NAMES}) (?:tier|features|trial)\\b`) },
-  { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno (?:credit )?card\b|\bcard on file\b/i },
-  { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less than|within) (?:\d+|one|two|ten) minutes?\b|\bsetup in minutes\b/i },
+  { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno\s+(?:credit\s+)?card\b|\bcard\s+on\s+file\b/i },
+  { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less\s+than|within)\s+(?:\d+|one|two|three|five|ten|fifteen|twenty|thirty)\s+minutes?\b|\bsetup\s+in\s+minutes\b/i },
   { name: "the market typed out (MARKET_SCOPE)", pattern: /across Nigeria and Africa|Nigerian and African organisations|Pan-African platform/i },
 ];
 
@@ -52,6 +52,9 @@ describe("trial terms come from core, never from copy", () => {
     expect(noCard!.test("no card on file")).toBe(true);
     expect(setupTime!.test("Setup takes less than 10 minutes")).toBe(true);
     expect(setupTime!.test("in under two minutes")).toBe(true);
+    // JSX wraps text across lines; the detectors read through the break.
+    expect(noCard!.test("No credit\n          card.")).toBe(true);
+    expect(setupTime!.test("within fifteen\n          minutes")).toBe(true);
     expect(market!.test("Organisations across Nigeria and Africa")).toBe(true);
     // And stay quiet on the interpolated form.
     expect(dayCount!.test("Start your {trialDays}-day trial")).toBe(false);

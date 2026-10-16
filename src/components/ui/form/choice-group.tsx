@@ -17,7 +17,6 @@ import { JS_ONLY } from "@/lib/no-script";
 import { NoScriptSelect } from "./no-script-select";
 import { cssTransition } from "@/lib/animations";
 
-const sans = "var(--font-sans)";
 
 export interface ChoiceOption {
   value: string;
@@ -63,7 +62,6 @@ function optionStyle({
 }): React.CSSProperties {
   return {
     position: "relative",
-    fontFamily: sans,
     cursor: "pointer",
     textAlign: "center",
     display: isCards ? "flex" : "inline-flex",
@@ -76,19 +74,19 @@ function optionStyle({
     padding: isCards ? (hasIcons ? "16px 10px" : "13px 14px") : "0 16px",
     height: isCards ? "auto" : "40px",
     minHeight: isCards ? (hasIcons ? "88px" : "48px") : undefined,
-    fontSize: "14px",
+    fontSize: "var(--text-md)",
     fontWeight: selected ? 600 : 500,
     color: selected ? "var(--color-text-primary)" : "var(--color-text-secondary)",
-    backgroundColor: selected ? "rgba(var(--color-gold-rgb), 0.08)" : "var(--color-white)",
+    backgroundColor: selected ? "var(--color-gold-ghost)" : "var(--color-white)",
     border: `1px solid ${
       selected
         ? "var(--color-gold)"
         : invalid
-          ? "rgba(var(--color-danger-rgb), 0.5)"
+          ? "var(--color-danger-invalid)"
           : "var(--color-border)"
     }`,
-    borderRadius: isCards ? "10px" : "9999px",
-    boxShadow: selected ? "0 0 0 3px rgba(var(--color-gold-rgb), 0.10)" : "none",
+    borderRadius: isCards ? "var(--radius-lg)" : "var(--radius-pill)",
+    boxShadow: selected ? "0 0 0 3px var(--color-gold-tint)" : "none",
     transition: cssTransition(["border-color", "background-color", "box-shadow"]),
   };
 }
@@ -194,7 +192,7 @@ export function ChoiceGroup({
               if (!selected) e.currentTarget.style.borderColor = "var(--color-border-strong)";
             }}
             onMouseLeave={(e) => {
-              if (!selected) e.currentTarget.style.borderColor = invalid ? "rgba(var(--color-danger-rgb), 0.5)" : "var(--color-border)";
+              if (!selected) e.currentTarget.style.borderColor = invalid ? "var(--color-danger-invalid)" : "var(--color-border)";
             }}
           >
             {Icon && (
@@ -212,15 +210,14 @@ export function ChoiceGroup({
                   position: "absolute",
                   top: isCards ? "6px" : "-9px",
                   right: isCards ? "6px" : "8px",
-                  fontFamily: sans,
-                  fontSize: "9px",
+                  fontSize: "var(--text-4xs)",
                   fontWeight: 600,
                   letterSpacing: "0.04em",
                   textTransform: "uppercase",
                   color: "var(--color-gold-on-light)",
                   backgroundColor: "var(--color-gold-surface)",
-                  border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
-                  borderRadius: "9999px",
+                  border: "1px solid var(--color-gold-border)",
+                  borderRadius: "var(--radius-pill)",
                   padding: "1px 6px",
                   lineHeight: 1.4,
                   whiteSpace: "nowrap",

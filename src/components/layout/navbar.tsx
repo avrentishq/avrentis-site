@@ -12,6 +12,7 @@ import { BRAND } from "@/lib/brand";
 import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
 import { cssTransition } from "@/lib/animations";
 import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
 
@@ -80,7 +81,7 @@ export function Navbar() {
     // not inheriting a transparency that only works on a strip.
     panel: onLight ? "var(--color-nav-surface)" : "var(--color-navy-primary)",
     blur: "blur(12px)",
-    border: onLight ? "1px solid rgba(var(--color-navy-primary-rgb), 0.08)" : "1px solid rgba(var(--color-gold-rgb), 0.15)",
+    border: onLight ? "1px solid var(--color-navy-hairline)" : "1px solid var(--color-gold-tint)",
     text: onLight ? "var(--color-text-primary)" : "var(--color-white)",
     mutedText: onLight ? "var(--color-text-secondary)" : "var(--color-text-muted)",
     accent: onLight ? "var(--color-gold-on-light)" : "var(--color-gold)",
@@ -89,9 +90,8 @@ export function Navbar() {
   const activeLinkStyle = (href: string): React.CSSProperties => {
     const active = isActive(href);
     return {
-      fontFamily: "var(--font-sans)",
       fontWeight: 400,
-      fontSize: "14px",
+      fontSize: "var(--text-md)",
       color: active ? barSurface.accent : barSurface.text,
       textDecoration: "none",
       transition: cssTransition("color"),
@@ -119,8 +119,8 @@ export function Navbar() {
           backgroundColor: scrolled ? "transparent" : barSurface.background,
           borderBottom: scrolled
             ? "0.5px solid transparent"
-            : "0.5px solid rgba(var(--color-gold-rgb), 0.2)",
-          zIndex: 50,
+            : "0.5px solid var(--color-gold-divider)",
+          zIndex: Z_INDEX.header,
           transition: cssTransition(["background-color", "border-color"], "slow"),
         }}
       >
@@ -128,7 +128,7 @@ export function Navbar() {
           style={{
             // On scroll this container morphs into a centered frosted pill.
             width: "100%",
-            maxWidth: scrolled ? "920px" : "1200px",
+            maxWidth: scrolled ? "920px" : "var(--layout-max-width)",
             margin: "0 auto",
             padding: scrolled ? "0 24px" : "0 40px",
             height: scrolled ? "48px" : "64px",
@@ -147,7 +147,7 @@ export function Navbar() {
             backgroundColor: scrolled ? barSurface.background : "transparent",
             backdropFilter: scrolled ? barSurface.blur : "none",
             WebkitBackdropFilter: scrolled ? barSurface.blur : "none",
-            borderRadius: scrolled ? "9999px" : "0",
+            borderRadius: scrolled ? "var(--radius-pill)" : "0",
             border: scrolled ? barSurface.border : "1px solid transparent",
             boxShadow: scrolled ? "0 8px 32px rgba(var(--color-shadow-rgb), 0.28)" : "none",
             transition:
@@ -236,19 +236,19 @@ export function Navbar() {
                     // Matches the bar it hangs off, in both states.
                     backgroundColor: barSurface.panel,
                     border: barSurface.border,
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-card)",
                     padding: "24px",
                     boxShadow: onLight
                       ? "0 16px 40px rgba(var(--color-navy-primary-rgb), 0.14)"
                       : "0 16px 40px rgba(var(--color-shadow-rgb), 0.3)",
                     display: "flex",
                     gap: "24px",
-                    zIndex: 100,
+                    zIndex: Z_INDEX.overlay,
                   }}
                 >
                   {/* Left column — Modules */}
                   <div style={{ flex: "0 0 60%" }}>
-                    <Eyebrow as="div" size={10} style={{ color: barSurface.accent, marginBottom: "12px" }}>
+                    <Eyebrow as="div" size="group" style={{ color: barSurface.accent, marginBottom: "12px" }}>
                       Suites
                     </Eyebrow>
                     <div
@@ -266,13 +266,13 @@ export function Navbar() {
                           style={{
                             display: "block",
                             padding: "10px 8px",
-                            borderRadius: "6px",
+                            borderRadius: "var(--radius-md)",
                             textDecoration: "none",
                             transition: cssTransition("background-color"),
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor =
-                              "rgba(var(--color-gold-rgb), 0.06)";
+                              "var(--color-gold-ghost)";
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor = "transparent";
@@ -280,9 +280,8 @@ export function Navbar() {
                         >
                           <div
                             style={{
-                              fontFamily: "var(--font-sans)",
                               fontWeight: 500,
-                              fontSize: "14px",
+                              fontSize: "var(--text-md)",
                               color: barSurface.text,
                               lineHeight: 1.3,
                             }}
@@ -291,9 +290,8 @@ export function Navbar() {
                           </div>
                           <div
                             style={{
-                              fontFamily: "var(--font-sans)",
                               fontWeight: 400,
-                              fontSize: "12px",
+                              fontSize: "var(--text-xs)",
                               color: barSurface.mutedText,
                               lineHeight: 1.4,
                             }}
@@ -313,8 +311,7 @@ export function Navbar() {
                           gap: "6px",
                           marginTop: "8px",
                           padding: "8px",
-                          fontFamily: "var(--font-sans)",
-                          fontSize: "13px",
+                          fontSize: "var(--text-sm)",
                           fontWeight: 500,
                           color: barSurface.accent,
                           textDecoration: "none",
@@ -328,7 +325,7 @@ export function Navbar() {
 
                   {/* Right column — Platform */}
                   <div style={{ flex: "0 0 35%" }}>
-                    <Eyebrow as="div" size={10} style={{ color: barSurface.accent, marginBottom: "12px" }}>
+                    <Eyebrow as="div" size="group" style={{ color: barSurface.accent, marginBottom: "12px" }}>
                       Platform
                     </Eyebrow>
                     <div
@@ -344,18 +341,17 @@ export function Navbar() {
                           href={item.href}
                           onClick={closeDropdownImmediate}
                           style={{
-                            fontFamily: "var(--font-sans)",
                             fontWeight: 400,
-                            fontSize: "14px",
+                            fontSize: "var(--text-md)",
                             color: barSurface.text,
                             textDecoration: "none",
                             padding: "8px",
-                            borderRadius: "6px",
+                            borderRadius: "var(--radius-md)",
                             transition: cssTransition("background-color"),
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor =
-                              "rgba(var(--color-gold-rgb), 0.06)";
+                              "var(--color-gold-ghost)";
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.backgroundColor =
@@ -400,9 +396,8 @@ export function Navbar() {
                 <a
                   href={NAV_LINKS.login.href}
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontWeight: 400,
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-subtle)",
                     textDecoration: "none",
                     transition: cssTransition("color"),

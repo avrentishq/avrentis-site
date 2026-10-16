@@ -11,9 +11,8 @@
 
 import type { CSSProperties, ReactNode } from "react";
 import { BRAND } from "@/lib/brand";
+import { Z_INDEX } from "@/lib/layers";
 
-const SANS = "var(--font-sans)";
-const MONO = "'IBM Plex Mono', monospace";
 const TABULAR_FIGURES = '"tnum" 1';
 
 /* ── Browser frame ───────────────────────────────────────────────── */
@@ -31,26 +30,26 @@ type FrameSurface = "dark" | "light" | "glass";
 
 const FRAME_SURFACES: Record<FrameSurface, CSSProperties> = {
   dark: {
-    borderRadius: "10px",
-    border: "1px solid rgba(var(--color-white-rgb), 0.10)",
+    borderRadius: "var(--radius-lg)",
+    border: "1px solid var(--color-white-border)",
     backgroundColor: "var(--color-bg-light)",
-    boxShadow: "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.45)",
+    boxShadow: "0 0 60px var(--color-gold-ghost), 0 30px 60px rgba(var(--color-shadow-rgb), 0.45)",
   },
   light: {
-    borderRadius: "10px",
+    borderRadius: "var(--radius-lg)",
     border: "1px solid var(--color-border)",
     backgroundColor: "var(--color-bg-light)",
     boxShadow:
       "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.08), 0 4px 10px rgba(var(--color-navy-primary-rgb), 0.04)",
   },
   glass: {
-    borderRadius: "16px",
+    borderRadius: "var(--radius-2xl)",
     border: "1px solid rgba(var(--color-white-rgb), 0.45)",
     backgroundColor: "rgba(var(--color-bg-light-rgb), 0.72)",
     backdropFilter: "blur(24px) saturate(1.4)",
     WebkitBackdropFilter: "blur(24px) saturate(1.4)",
     boxShadow:
-      "inset 0 1px 0 rgba(var(--color-white-rgb), 0.65), 0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.5)",
+      "inset 0 1px 0 rgba(var(--color-white-rgb), 0.65), 0 0 60px var(--color-gold-ghost), 0 30px 60px rgba(var(--color-shadow-rgb), 0.5)",
   },
 };
 
@@ -75,14 +74,14 @@ export function BrowserFrame({
           display: "flex",
           alignItems: "center",
           gap: "12px",
-          borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
+          borderBottom: "1px solid var(--color-white-border)",
         }}
       >
         <div aria-hidden="true" style={{ display: "flex", gap: "6px" }}>
           {[0, 1, 2].map((dot) => (
             <span
               key={dot}
-              style={{ width: "10px", height: "10px", borderRadius: "50%", backgroundColor: "rgba(var(--color-white-rgb), 0.15)" }}
+              style={{ width: "10px", height: "10px", borderRadius: "var(--radius-circle)", backgroundColor: "rgba(var(--color-white-rgb), 0.15)" }}
             />
           ))}
         </div>
@@ -90,11 +89,10 @@ export function BrowserFrame({
           style={{
             flex: 1,
             minWidth: 0,
-            backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-            borderRadius: "5px",
+            backgroundColor: "var(--color-white-border)",
+            borderRadius: "var(--radius-md)",
             padding: "4px 10px",
-            fontFamily: SANS,
-            fontSize: "11px",
+            fontSize: "var(--text-2xs)",
             color: "var(--color-text-subtle)",
             textAlign: "center",
             // One line, like a real address bar: a long path is cut, never wrapped.
@@ -135,7 +133,7 @@ export function PreviewCard({
       style={{
         backgroundColor: "var(--color-white)",
         border: "1px solid var(--color-border)",
-        borderRadius: "4px",
+        borderRadius: "var(--radius-badge)",
         padding,
         marginBottom,
         ...style,
@@ -151,8 +149,7 @@ export function PreviewLabel({ children, marginBottom = "10px" }: { children: Re
   return (
     <p
       style={{
-        fontFamily: SANS,
-        fontSize: "10px",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         color: "var(--color-text-muted)",
         letterSpacing: "0.04em",
@@ -180,10 +177,10 @@ export function PreviewHeader({
   return (
     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px", marginBottom }}>
       <div style={{ minWidth: 0 }}>
-        <h3 style={{ fontFamily: SANS, fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 2px" }}>
+        <h3 style={{ fontWeight: 400, fontSize: "var(--text-3xl)", color: "var(--color-text-primary)", margin: "0 0 2px" }}>
           {title}
         </h3>
-        <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>{subtitle}</p>
+        <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: 0 }}>{subtitle}</p>
       </div>
       {action}
     </div>
@@ -195,12 +192,11 @@ export function HeaderAction({ children }: { children: ReactNode }) {
   return (
     <span
       style={{
-        fontFamily: SANS,
         fontWeight: 500,
-        fontSize: "12px",
+        fontSize: "var(--text-xs)",
         backgroundColor: "var(--color-navy-primary)",
         color: "var(--color-white)",
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "6px 14px",
         flexShrink: 0,
       }}
@@ -216,12 +212,12 @@ export type StatusTone = "success" | "pending";
 
 const STATUS_TONES: Record<StatusTone, { background: string; color: string; dot: string }> = {
   success: {
-    background: "rgba(var(--color-success-rgb), 0.08)",
+    background: "var(--color-success-wash)",
     color: "var(--color-success)",
     dot: "var(--color-success)",
   },
   pending: {
-    background: "rgba(var(--color-gold-rgb), 0.08)",
+    background: "var(--color-gold-ghost)",
     color: "var(--color-warning)",
     dot: "var(--color-gold)",
   },
@@ -236,16 +232,15 @@ export function StatusPill({ label, tone }: { label: string; tone: StatusTone })
         display: "inline-flex",
         alignItems: "center",
         gap: "4px",
-        fontFamily: SANS,
-        fontSize: "10px",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         backgroundColor: colours.background,
         color: colours.color,
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "2px 6px",
       }}
     >
-      <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: colours.dot }} />
+      <span style={{ width: "5px", height: "5px", borderRadius: "var(--radius-circle)", backgroundColor: colours.dot }} />
       {label}
     </span>
   );
@@ -256,12 +251,11 @@ export function TypeTag({ children }: { children: ReactNode }) {
   return (
     <span
       style={{
-        fontFamily: SANS,
-        fontSize: "10px",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         backgroundColor: "var(--color-navy-primary)",
         color: "var(--color-gold)",
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "1px 5px",
         letterSpacing: "0.04em",
         textTransform: "uppercase",
@@ -290,9 +284,8 @@ export function DocumentHeading({
     <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom }}>
       <span
         style={{
-          fontFamily: SANS,
           fontFeatureSettings: TABULAR_FIGURES,
-          fontSize: "13px",
+          fontSize: "var(--text-sm)",
           fontWeight: 500,
           color: "var(--color-text-primary)",
           whiteSpace: "nowrap",
@@ -303,7 +296,7 @@ export function DocumentHeading({
       {typeTag ? <TypeTag>{typeTag}</TypeTag> : null}
       <StatusPill label={status.label} tone={status.tone} />
       {note ? (
-        <span style={{ marginLeft: "auto", fontFamily: SANS, fontSize: "10px", color: "var(--color-text-muted)" }}>{note}</span>
+        <span style={{ marginLeft: "auto", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)" }}>{note}</span>
       ) : null}
     </div>
   );
@@ -316,12 +309,11 @@ export function Tag({ children, background, color }: { children: ReactNode; back
   return (
     <span
       style={{
-        fontFamily: SANS,
-        fontSize: "10px",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         backgroundColor: background,
         color,
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "2px 6px",
         flexShrink: 0,
       }}
@@ -336,11 +328,11 @@ export function CodeTag({ children, background, color }: { children: ReactNode; 
   return (
     <span
       style={{
-        fontFamily: MONO,
-        fontSize: "10px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         padding: "2px 6px",
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         backgroundColor: background,
         color,
         justifySelf: "start",
@@ -360,11 +352,10 @@ export function FilterChips({ options, size }: { options: readonly string[]; siz
         <span
           key={option}
           style={{
-            fontFamily: SANS,
-            fontSize: "11px",
+            fontSize: "var(--text-2xs)",
             fontWeight: 500,
             padding: size === "compact" ? "3px 8px" : "4px 10px",
-            borderRadius: "3px",
+            borderRadius: "var(--radius-xs)",
             backgroundColor: index === 0 ? "var(--color-navy-primary)" : "var(--color-white)",
             color: index === 0 ? "var(--color-white)" : "var(--color-navy-primary)",
             border: index === 0 ? "1px solid var(--color-navy-primary)" : "1px solid var(--color-border)",
@@ -393,7 +384,7 @@ export function PreviewTable({
   gridTemplateColumns,
   rows,
   rowPadding = "8px 14px",
-  fontSize = "11px",
+  fontSize = "var(--text-2xs)",
   marginBottom,
 }: {
   columns: readonly PreviewColumn[];
@@ -414,8 +405,7 @@ export function PreviewTable({
           padding: "8px 14px",
           backgroundColor: "var(--color-bg-light)",
           borderBottom: "1px solid var(--color-border)",
-          fontFamily: SANS,
-          fontSize: "10px",
+          fontSize: "var(--text-3xs)",
           fontWeight: 500,
           color: "var(--color-text-muted)",
           letterSpacing: "0.04em",
@@ -438,7 +428,6 @@ export function PreviewTable({
             padding: rowPadding,
             borderTop: index === 0 ? "none" : "1px solid var(--color-border)",
             alignItems: "center",
-            fontFamily: SANS,
             fontSize,
             color: "var(--color-text-primary)",
           }}
@@ -483,7 +472,7 @@ export function DetailGrid({
   rowGap: string;
 }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: `${labelWidth} 1fr`, rowGap, fontFamily: SANS, fontSize: "11px" }}>
+    <div style={{ display: "grid", gridTemplateColumns: `${labelWidth} 1fr`, rowGap, fontSize: "var(--text-2xs)" }}>
       {items.map((item) => (
         <DetailPair key={item.label} label={item.label} value={item.value} numeric={item.numeric} />
       ))}
@@ -513,10 +502,10 @@ export function ApprovalTimeline({ steps }: { steps: readonly { label: string; a
         <div key={step.label} style={{ position: "relative", display: "flex", gap: "12px", padding: "4px 0" }}>
           <CompletedMark size={20} />
           <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ fontFamily: SANS, fontSize: "12px", fontWeight: 500, color: "var(--color-text-primary)", margin: 0 }}>
+            <p style={{ fontSize: "var(--text-xs)", fontWeight: 500, color: "var(--color-text-primary)", margin: 0 }}>
               {step.label} <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>— {step.actor}</span>
             </p>
-            <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: "1px 0 0" }}>{step.when}</p>
+            <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: "1px 0 0" }}>{step.when}</p>
           </div>
         </div>
       ))}
@@ -531,14 +520,14 @@ export function CompletedMark({ size }: { size: number }) {
       style={{
         width: `${size}px`,
         height: `${size}px`,
-        borderRadius: "50%",
+        borderRadius: "var(--radius-circle)",
         backgroundColor: "var(--color-white)",
         border: "1.5px solid var(--color-success)",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         flexShrink: 0,
-        zIndex: 1,
+        zIndex: Z_INDEX.raised,
       }}
     >
       <span style={{ color: "var(--color-success)", fontSize: `${size / 2}px`, lineHeight: 1 }}>✓</span>
@@ -592,10 +581,9 @@ export function MockButton({
     <button
       type="button"
       style={{
-        fontFamily: SANS,
         fontWeight: 500,
-        fontSize: "12px",
-        borderRadius: "3px",
+        fontSize: "var(--text-xs)",
+        borderRadius: "var(--radius-xs)",
         padding: fill ? "8px 0" : "8px 16px",
         cursor: "default",
         ...(fill ? { flex: 1 } : null),

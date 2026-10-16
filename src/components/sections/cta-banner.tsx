@@ -2,7 +2,7 @@
 
 import { m } from "framer-motion";
 import { Lock, Check, Zap, Globe } from "lucide-react";
-import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
+import { SITE_PAGES } from "@/lib/brand";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { ButtonLink } from "@/components/ui/button";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
@@ -12,6 +12,7 @@ import { START_TRIAL_CTA, TRIAL_DURATION_DAYS, NO_CARD_REQUIRED, TRIAL_SETUP_TIM
 import { contactHref } from "@/app/contact/tabs";
 import { TRUST_SIGNALS } from "@/lib/compliance-posture";
 import { MARKET_REGION } from "@/lib/market";
+import { Z_INDEX } from "@/lib/layers";
 
 const trustSignals = [
   { icon: Globe, label: `Built for ${MARKET_REGION}` },
@@ -39,23 +40,22 @@ export function CtaBanner() {
 
       <div
         style={{
-          maxWidth: "640px",
+          maxWidth: "var(--measure)",
           margin: "0 auto",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           position: "relative",
-          zIndex: 2,
+          zIndex: Z_INDEX.content,
         }}
       >
         {/* Headline */}
         <m.h2
           {...fadeUpOnScroll()}
-          className="lg:!text-[42px]"
+          className="lg:!text-display-lg"
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 700,
-            fontSize: "36px",
+            fontSize: "var(--text-display-xs)",
             color: "var(--color-white)",
             lineHeight: 1.2,
             margin: "0 0 16px",
@@ -69,9 +69,8 @@ export function CtaBanner() {
         <m.p
           {...fadeUpOnScroll(1)}
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "16px",
+            fontSize: "var(--text-xl)",
             color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 0 32px",
@@ -103,9 +102,8 @@ export function CtaBanner() {
         <m.p
           {...fadeUpOnScroll(3)}
           style={{
-            fontFamily: "var(--font-sans)",
             fontWeight: 400,
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             color: "var(--color-text-secondary)",
             marginTop: "20px",
           }}
@@ -132,12 +130,11 @@ export function CtaBanner() {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "6px",
-                fontFamily: "var(--font-sans)",
-                fontSize: "13px",
+                fontSize: "var(--text-sm)",
                 color: "var(--color-text-muted)",
               }}
             >
-              <Icon size={14} color={BRAND_COLORS.gold} strokeWidth={2} />
+              <Icon size={14} color="var(--color-gold)" strokeWidth={2} />
               {label}
             </span>
           ))}

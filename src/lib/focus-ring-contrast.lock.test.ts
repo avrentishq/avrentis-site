@@ -110,32 +110,61 @@ describe("focus ring contrast, per surface", () => {
 });
 
 describe("every background in the code is a known surface or fill", () => {
-  const BACKGROUND_TOKEN = /background(?:Color)?:[^\n]*/g;
+  // A style object's `background`/`backgroundColor`, or a stylesheet's `background`/`background-color`.
+  const BACKGROUND_TOKEN = /background(?:Color|-color)?:[^\n]*/g;
   const OPAQUE_TOKEN = /var\(--color-([\w-]+?)\)/g;
+
+  /** Tint tokens (`--color-gold-ghost: rgba(…, 0.08)`): translucent like an inline tint, so not surfaces — when faint. */
+  const TINT_TOKENS = new Map(
+    [...themeBlock.matchAll(/--color-([\w-]+):\s*(rgba\([^;]+\));/g)].map((match) => [match[1]!, match[2]!.trim()]),
+  );
+  const isFaintTint = (name: string): boolean => {
+    const layer = TINT_TOKENS.get(name)?.match(TRANSLUCENT);
+    return !!layer && Number(layer[2]) < TINT_MAX_ALPHA;
+  };
 
   function backgroundTokens(text: string): string[] {
     return [...text.matchAll(BACKGROUND_TOKEN)].flatMap((line) =>
       [...line[0].matchAll(OPAQUE_TOKEN)]
         .map((match) => match[1]!)
         // `…-rgb` channels only appear inside rgba() tints, which are not surfaces.
-        .filter((name) => !name.endsWith("-rgb")),
+        .filter((name) => !name.endsWith("-rgb") && !isFaintTint(name)),
     );
   }
 
   it("the scan finds an opaque background and skips a translucent tint", () => {
     expect(backgroundTokens('backgroundColor: "var(--color-navy-primary)"')).toEqual(["navy-primary"]);
+    expect(backgroundTokens("  background-color: var(--color-navy-primary);")).toEqual(["navy-primary"]);
     expect(backgroundTokens('backgroundColor: "rgba(var(--color-gold-rgb), 0.08)"')).toEqual([]);
+    expect(backgroundTokens('backgroundColor: "var(--color-gold-ghost)"')).toEqual([]);
+    // A tint token at or above the surface threshold is a surface and must be registered.
+    expect(isFaintTint("danger-invalid")).toBe(false);
   });
 
-  it("no background token is unaccounted for", () => {
+  it("every tint token is a translucent layer of a defined colour", () => {
+    expect(TINT_TOKENS.size).toBeGreaterThan(0);
+    for (const [name, value] of TINT_TOKENS) {
+      const layer = value.match(TRANSLUCENT);
+      expect(layer, `--color-${name}: ${value}`).not.toBeNull();
+      expect(themeBlock, `--color-${name} layers --color-${layer![1]}-rgb`).toContain(`--color-${layer![1]}-rgb:`);
+    }
+  });
+
+  it("no background token is unaccounted for (components and stylesheets)", () => {
     const known = new Set<string>([...OPAQUE_SURFACES, ...NON_SURFACE_FILLS.map(tokenName)]);
     const unknown = new Set<string>();
+    const scanned: string[] = [];
     for (const file of readdirSync(SRC, { recursive: true, encoding: "utf8" })) {
-      if (!/\.tsx?$/.test(file) || /\.test\.ts$/.test(file)) continue;
-      for (const name of backgroundTokens(readFileSync(join(SRC, file), "utf8"))) {
+      if (!/\.(tsx?|css)$/.test(file) || /\.test\.ts$/.test(file)) continue;
+      scanned.push(file);
+      const text = readFileSync(join(SRC, file), "utf8");
+      // The @theme block defines tokens; it paints nothing.
+      const painted = file.endsWith(".css") ? text.replace(themeBlock, "") : text;
+      for (const name of backgroundTokens(painted)) {
         if (!known.has(name)) unknown.add(`${name} (${file})`);
       }
     }
+    expect(scanned).toContain(join("app", "globals.css"));
     expect(
       [...unknown],
       "Add the token to SURFACE_FOCUS_RINGS (with its ring) or NON_SURFACE_FILLS in src/lib/surfaces.ts",

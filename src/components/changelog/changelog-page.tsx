@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { LEGAL_PAGES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT, DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
@@ -23,8 +23,6 @@ import { SITE_ROUTES } from "@/lib/routes";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
 
-const sans = "var(--font-sans)";
-const mono = "'IBM Plex Mono', monospace";
 
 type Tag = "feature" | "improvement" | "security" | "pricing" | "platform";
 
@@ -40,9 +38,9 @@ interface Entry {
 // Every value is a literal @theme token from globals.css, spelled out in full so
 // the colour lock test can check each name exists.
 const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border: string }> = {
-  feature: { label: "FEATURE", color: "var(--color-gold-on-light)", bg: "rgba(var(--color-gold-rgb), 0.08)", border: "rgba(var(--color-gold-rgb), 0.24)" },
+  feature: { label: "FEATURE", color: "var(--color-gold-on-light)", bg: "var(--color-gold-ghost)", border: "var(--color-gold-divider)" },
   improvement: { label: "IMPROVEMENT", color: "var(--color-info)", bg: "rgba(var(--color-info-rgb), 0.08)", border: "rgba(var(--color-info-rgb), 0.24)" },
-  security: { label: "SECURITY", color: "var(--color-success)", bg: "rgba(var(--color-success-rgb), 0.08)", border: "rgba(var(--color-success-rgb), 0.24)" },
+  security: { label: "SECURITY", color: "var(--color-success)", bg: "var(--color-success-wash)", border: "var(--color-success-border)" },
   pricing: { label: "PRICING", color: "var(--color-caution)", bg: "rgba(var(--color-caution-rgb), 0.08)", border: "rgba(var(--color-caution-rgb), 0.24)" },
   platform: { label: "PLATFORM", color: "var(--color-text-secondary)", bg: "rgba(var(--color-text-secondary-rgb), 0.08)", border: "rgba(var(--color-text-secondary-rgb), 0.24)" },
 };
@@ -211,14 +209,14 @@ function Badge({ tag }: { tag: Tag }) {
   return (
     <span
       style={{
-        fontFamily: mono,
-        fontSize: "10px",
+        fontFamily: "var(--font-mono)",
+        fontSize: "var(--text-3xs)",
         fontWeight: 500,
         letterSpacing: "0.06em",
         color: s.color,
         backgroundColor: s.bg,
         border: `1px solid ${s.border}`,
-        borderRadius: "3px",
+        borderRadius: "var(--radius-xs)",
         padding: "3px 8px",
       }}
     >
@@ -236,7 +234,7 @@ export function ChangelogProductPage() {
       {/* ── HERO ───────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 32px 64px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.changelogHero} scrim="light" />
-        <div style={{ maxWidth: "760px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-prose-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="load"
             titleAs="h1"
@@ -251,12 +249,12 @@ export function ChangelogProductPage() {
             }
             titleStyle={{
               fontWeight: 500,
-              fontSize: "36px",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.2,
               margin: "0 0 18px",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[44px]"
+            titleClassName="lg:!text-display-xl"
             lede={
               <>
                 Notable changes, new capabilities, and platform-level shifts,
@@ -266,11 +264,11 @@ export function ChangelogProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "16px",
+              fontSize: "var(--text-xl)",
               color: "var(--color-text-secondary)",
               lineHeight: 1.75,
               margin: 0,
-              maxWidth: "600px",
+              maxWidth: "var(--measure-snug)",
             }}
           />
         </div>
@@ -279,7 +277,7 @@ export function ChangelogProductPage() {
       {/* ── TIMELINE ───────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg-light)", padding: "64px 32px 100px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.changelogTimeline} scrim="light" />
-        <div style={{ maxWidth: "820px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
+        <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
           {ENTRIES.map((entry) => (
             <m.article
               key={entry.title}
@@ -287,7 +285,7 @@ export function ChangelogProductPage() {
               style={{
                 backgroundColor: "var(--color-white)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-lg)",
                 padding: "28px 32px",
                 display: "flex",
                 flexDirection: "column",
@@ -295,16 +293,15 @@ export function ChangelogProductPage() {
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-                <span style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-text-muted)", letterSpacing: "0.04em" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", letterSpacing: "0.04em" }}>
                   {entry.date}
                 </span>
                 <Badge tag={entry.tag} />
               </div>
               <h2
                 style={{
-                  fontFamily: sans,
                   fontWeight: 500,
-                  fontSize: "20px",
+                  fontSize: "var(--text-heading-xs)",
                   color: "var(--color-text-primary)",
                   lineHeight: 1.3,
                   margin: 0,
@@ -312,7 +309,7 @@ export function ChangelogProductPage() {
               >
                 {entry.title}
               </h2>
-              <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-secondary)", lineHeight: 1.7, margin: 0 }}>
+              <p style={{ fontSize: "var(--text-lg)", color: "var(--color-text-secondary)", lineHeight: 1.7, margin: 0 }}>
                 {entry.body}
               </p>
               <ul
@@ -329,9 +326,8 @@ export function ChangelogProductPage() {
                   <li
                     key={b}
                     style={{
-                      fontFamily: sans,
-                      fontSize: "14px",
-                      color: "var(--color-text-faint)",
+                      fontSize: "var(--text-md)",
+                      color: "var(--color-text-body)",
                       lineHeight: 1.6,
                       paddingLeft: "16px",
                       position: "relative",
@@ -344,7 +340,7 @@ export function ChangelogProductPage() {
                         top: "10px",
                         width: "4px",
                         height: "4px",
-                        borderRadius: "50%",
+                        borderRadius: "var(--radius-circle)",
                         backgroundColor: "var(--color-gold)",
                       }}
                     />
@@ -356,8 +352,7 @@ export function ChangelogProductPage() {
                 <Link
                   href={entry.link.href}
                   style={{
-                    fontFamily: sans,
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     fontWeight: 600,
                     color: "var(--color-gold-on-light)",
                     textDecoration: "none",
@@ -380,7 +375,7 @@ export function ChangelogProductPage() {
               marginTop: "32px",
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               padding: "28px 32px",
               display: "flex",
               gap: "16px",
@@ -390,20 +385,19 @@ export function ChangelogProductPage() {
             }}
           >
             <div style={{ display: "flex", gap: "16px", alignItems: "flex-start" }}>
-              <Sparkles size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" style={{ marginTop: "3px", flexShrink: 0 }} />
+              <Sparkles size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" style={{ marginTop: "3px", flexShrink: 0 }} />
               <div>
                 <h3
                   style={{
-                    fontFamily: sans,
                     fontWeight: 600,
-                    fontSize: "15px",
+                    fontSize: "var(--text-lg)",
                     color: "var(--color-text-primary)",
                     margin: "0 0 4px",
                   }}
                 >
                   Want the release notes in your inbox?
                 </h3>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0, maxWidth: "420px" }}>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0, maxWidth: "var(--measure-compact)" }}>
                   We send a short email when something notable ships. No
                   promotions — just changelog.
                 </p>

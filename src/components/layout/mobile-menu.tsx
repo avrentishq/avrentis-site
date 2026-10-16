@@ -4,12 +4,12 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
 import { AvrentisLogo } from "@/components/ui/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { MOTION_DURATION, MOTION_EASE, fadeUp } from "@/lib/animations";
 import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
+import { Z_INDEX } from "@/lib/layers";
 
 interface MobileMenuProps {
   open: boolean;
@@ -21,7 +21,6 @@ interface MobileMenuProps {
 // modules" so the full catalogue stays one tap away.
 const PRODUCT_SUITES = [...SUITE_NAV, NAV_LINKS.allModules];
 
-const FONT = "var(--font-sans)";
 
 export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
@@ -84,7 +83,7 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
             position: "fixed",
             inset: 0,
             backgroundColor: "var(--color-navy-primary)",
-            zIndex: 70,
+            zIndex: Z_INDEX.mobileMenu,
             display: "flex",
             flexDirection: "column",
             padding: "24px",
@@ -112,7 +111,7 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
                 padding: "4px",
               }}
             >
-              <X size={24} color={BRAND_COLORS.gold} />
+              <X size={24} color="var(--color-gold)" />
             </button>
           </div>
 
@@ -129,7 +128,7 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
             {/* Product section */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
               {/* Section header */}
-              <Eyebrow as="div" surface="dark" size={10} style={{ marginBottom: "16px" }}>
+              <Eyebrow as="div" surface="dark" size="group" style={{ marginBottom: "16px" }}>
                 Product
               </Eyebrow>
 
@@ -141,9 +140,8 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
                     href={mod.href}
                     onClick={onClose}
                     style={{
-                      fontFamily: FONT,
                       fontWeight: 400,
-                      fontSize: "16px",
+                      fontSize: "var(--text-xl)",
                       color: isActive(mod.href) ? "var(--color-gold)" : "var(--color-white)",
                       textDecoration: "none",
                     }}
@@ -157,7 +155,7 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
               <div
                 style={{
                   height: "1px",
-                  backgroundColor: "rgba(var(--color-gold-rgb), 0.15)",
+                  backgroundColor: "var(--color-gold-tint)",
                   margin: "8px 0",
                 }}
               />
@@ -170,9 +168,8 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
                     href={item.href}
                     onClick={onClose}
                     style={{
-                      fontFamily: FONT,
                       fontWeight: 400,
-                      fontSize: "15px",
+                      fontSize: "var(--text-lg)",
                       color: isActive(item.href) ? "var(--color-gold)" : "var(--color-text-subtle)",
                       textDecoration: "none",
                     }}
@@ -190,9 +187,8 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
                   href={link.href}
                   onClick={onClose}
                   style={{
-                    fontFamily: FONT,
                     fontWeight: 400,
-                    fontSize: "16px",
+                    fontSize: "var(--text-xl)",
                     color: isActive(link.href) ? "var(--color-gold)" : "var(--color-white)",
                     textDecoration: "none",
                   }}
@@ -210,15 +206,14 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
               flexDirection: "column",
               gap: "12px",
               paddingTop: "24px",
-              borderTop: "1px solid rgba(var(--color-gold-rgb), 0.15)",
+              borderTop: "1px solid var(--color-gold-tint)",
             }}
           >
             <a
               href={NAV_LINKS.login.href}
               style={{
-                fontFamily: FONT,
                 fontWeight: 400,
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 color: "var(--color-text-subtle)",
                 textDecoration: "none",
                 textAlign: "center",

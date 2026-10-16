@@ -23,7 +23,7 @@ import { buttonProps } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
 import { ORG_SIZE_OPTIONS, DEFAULT_ORG_SIZE } from "@/lib/org-size";
-import { BRAND, BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import { fadeUpOnLoad } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, OTHER_ROLE, TRIAL_ROLES, type TrialFormState } from "./state";
@@ -47,7 +47,7 @@ import { SECTORS } from "@avrentishq/core/sectors";
 import { TRIAL_STEPS_DONE, TrialStepper } from "./stepper";
 import { LEAD_MARKET } from "@/lib/market";
 import { TrialTimeline } from "./timeline";
-import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
+import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
 
@@ -120,11 +120,9 @@ function persistSubmission(email: string) {
 
 // Org-size options + default come from the shared SSOT (@/lib/org-size).
 
-const sans = "var(--font-sans)";
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   fontWeight: 500,
   color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
@@ -133,20 +131,18 @@ const labelStyle: React.CSSProperties = {
 };
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "14px",
+  fontSize: "var(--text-md)",
   color: "var(--color-text-primary)",
   width: "100%",
   height: "42px",
   border: "1px solid var(--color-border)",
-  borderRadius: "6px",
+  borderRadius: "var(--radius-md)",
   padding: "0 14px",
   backgroundColor: "var(--color-white)",
 };
 
 const errorStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   color: "var(--color-danger)",
   marginTop: "6px",
   display: "block",
@@ -154,8 +150,7 @@ const errorStyle: React.CSSProperties = {
 
 /** Muted hint below a field — not a validation error. */
 const hintStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   color: "var(--color-text-muted)",
   marginTop: "5px",
   display: "block",
@@ -308,29 +303,27 @@ export function TrialForm() {
           subheading under the H1. */}
       <m.div
         {...fadeUpOnLoad()}
-        style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
+        style={{ textAlign: "center", maxWidth: "var(--measure)", margin: "0 auto 44px" }}
       >
         <Eyebrow style={{ display: "block", marginBottom: "14px" }}>{TRIAL_LENGTH} trial</Eyebrow>
         <h1
           style={{
-            fontFamily: sans,
             fontWeight: 400,
-            fontSize: "32px",
+            fontSize: "var(--text-heading-2xl)",
             color: "var(--color-text-primary)",
             lineHeight: 1.2,
             margin: "0 0 12px",
             letterSpacing: "0.01em",
           }}
-          className="lg:!text-[40px]"
+          className="lg:!text-display-md"
         >
           Start your {TRIAL_LENGTH} trial.
         </h1>
         <p
           style={{
-            fontFamily: sans,
             fontWeight: 400,
-            fontSize: "19px",
-            color: "var(--color-text-faint)",
+            fontSize: "var(--text-3xl)",
+            color: "var(--color-text-body)",
             lineHeight: 1.45,
             margin: "0 0 14px",
           }}
@@ -339,19 +332,17 @@ export function TrialForm() {
         </p>
         <p
           style={{
-            fontFamily: sans,
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto",
-            maxWidth: "560px",
+            maxWidth: "var(--measure-narrow)",
           }}
         >
           Full {TRIAL_PLAN_NAME} features on your own data — a {TRIAL_SEAT_CAP}-seat
           pilot workspace ({TRIAL_SEAT_CAP} users, {TRIAL_STORAGE} storage,{" "}
-          {TRIAL_MESSAGE_CAP} SMS/WhatsApp messages during the trial). No credit
-          card. Most teams run their first sanction within fifteen
-          minutes.
+          {TRIAL_MESSAGE_CAP} SMS/WhatsApp messages during the trial). {NO_CARD_REQUIRED}.
+          Your workspace is ready {TRIAL_SETUP_TIME}.
         </p>
       </m.div>
 
@@ -375,7 +366,7 @@ export function TrialForm() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "14px",
+          borderRadius: "var(--radius-2xl)",
           padding: "32px",
           display: "flex",
           flexDirection: "column",
@@ -396,7 +387,7 @@ export function TrialForm() {
             {...JS_ONLY}
             type="button"
             onClick={() => setStep(1)}
-            style={{ alignSelf: "flex-start", fontFamily: sans, fontSize: "13px", fontWeight: 500, color: "var(--color-text-muted)", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "2px" }}
+            style={{ alignSelf: "flex-start", fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--color-text-muted)", background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: "2px" }}
           >
             ← Back
           </button>
@@ -598,7 +589,7 @@ export function TrialForm() {
             >
               Continue →
             </button>
-            <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
+            <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)" }}>
               {NO_CARD_REQUIRED} · about a minute
             </span>
           </div>
@@ -723,9 +714,8 @@ export function TrialForm() {
           <label
             htmlFor="consent"
             style={{
-              fontFamily: sans,
-              fontSize: "13px",
-              color: "var(--color-text-faint)",
+              fontSize: "var(--text-sm)",
+              color: "var(--color-text-body)",
               display: "flex",
               alignItems: "flex-start",
               gap: "10px",
@@ -770,12 +760,11 @@ export function TrialForm() {
             id="trial-form-error"
             pending={isPending}
             style={{
-              fontFamily: sans,
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               color: "var(--color-danger)",
-              backgroundColor: "rgba(var(--color-danger-rgb), 0.06)",
-              border: "1px solid rgba(var(--color-danger-rgb), 0.2)",
-              borderRadius: "6px",
+              backgroundColor: "var(--color-danger-wash)",
+              border: "1px solid var(--color-danger-border)",
+              borderRadius: "var(--radius-md)",
               padding: "10px 12px",
               display: "flex",
               gap: "8px",
@@ -793,12 +782,11 @@ export function TrialForm() {
             role="status"
             aria-live="polite"
             style={{
-              fontFamily: sans,
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               color: "var(--color-warning)",
               backgroundColor: "rgba(var(--color-notice-rgb), 0.07)",
               border: "1px solid rgba(var(--color-notice-rgb), 0.25)",
-              borderRadius: "6px",
+              borderRadius: "var(--radius-md)",
               padding: "10px 12px",
               display: "flex",
               gap: "8px",
@@ -823,7 +811,7 @@ export function TrialForm() {
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={!hydrated || isValid} pending={isPending} />
-          <span style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)" }}>
+          <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)" }}>
             {NO_CARD_REQUIRED} — nothing to cancel · {TRIAL_LENGTH} trial · Data preserved for{" "}
             {READ_ONLY_GRACE_DAYS} days after trial end.
           </span>
@@ -850,11 +838,11 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       <TrialStepper current={TRIAL_STEPS_DONE} />
     <div
       style={{
-        maxWidth: "560px",
+        maxWidth: "var(--measure-narrow)",
         margin: "0 auto",
         backgroundColor: "var(--color-white)",
         border: "1px solid var(--color-border)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         padding: "48px 40px",
         textAlign: "center",
         display: "flex",
@@ -867,20 +855,19 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
         style={{
           width: "56px",
           height: "56px",
-          borderRadius: "50%",
-          backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+          borderRadius: "var(--radius-circle)",
+          backgroundColor: "var(--color-gold-tint)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Mail size={26} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+        <Mail size={26} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
       </div>
       <h2
         style={{
-          fontFamily: sans,
           fontWeight: 500,
-          fontSize: "22px",
+          fontSize: "var(--text-heading-sm)",
           color: "var(--color-text-primary)",
           margin: 0,
         }}
@@ -889,12 +876,11 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       </h2>
       <p
         style={{
-          fontFamily: sans,
-          fontSize: "15px",
+          fontSize: "var(--text-lg)",
           color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
-          maxWidth: "420px",
+          maxWidth: "var(--measure-compact)",
         }}
       >
         We sent a verification link to{" "}
@@ -903,17 +889,16 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
       </p>
       <p
         style={{
-          fontFamily: sans,
-          fontSize: "14px",
+          fontSize: "var(--text-md)",
           color: "var(--color-text-secondary)",
           lineHeight: 1.65,
           margin: 0,
-          maxWidth: "420px",
+          maxWidth: "var(--measure-compact)",
         }}
       >
         {message}
       </p>
-      <p style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)", marginTop: "12px" }}>
+      <p style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)", marginTop: "12px" }}>
         <Clock
           size={11}
           strokeWidth={2}
@@ -934,11 +919,11 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
       <TrialStepper current={TRIAL_STEPS_DONE} />
     <div
       style={{
-        maxWidth: "560px",
+        maxWidth: "var(--measure-narrow)",
         margin: "0 auto",
         backgroundColor: "var(--color-white)",
         border: "1px solid var(--color-border)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         padding: "48px 40px",
         textAlign: "center",
         display: "flex",
@@ -951,8 +936,8 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
         style={{
           width: "56px",
           height: "56px",
-          borderRadius: "50%",
-          backgroundColor: "rgba(var(--color-success-rgb), 0.12)",
+          borderRadius: "var(--radius-circle)",
+          backgroundColor: "var(--color-success-tint)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -962,9 +947,8 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
       </div>
       <h2
         style={{
-          fontFamily: sans,
           fontWeight: 500,
-          fontSize: "22px",
+          fontSize: "var(--text-heading-sm)",
           color: "var(--color-text-primary)",
           margin: 0,
         }}
@@ -974,12 +958,11 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
       {email && (
         <p
           style={{
-            fontFamily: sans,
-            fontSize: "14px",
+            fontSize: "var(--text-md)",
             color: "var(--color-text-secondary)",
             lineHeight: 1.65,
             margin: 0,
-            maxWidth: "440px",
+            maxWidth: "var(--measure-compact)",
           }}
         >
           We&rsquo;ll be in touch at{" "}
@@ -988,12 +971,11 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
       )}
       <p
         style={{
-          fontFamily: sans,
-          fontSize: "15px",
+          fontSize: "var(--text-lg)",
           color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
-          maxWidth: "440px",
+          maxWidth: "var(--measure-compact)",
         }}
       >
         {message}
@@ -1001,8 +983,7 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
       <Link
         href={SITE_ROUTES.home}
         style={{
-          fontFamily: sans,
-          fontSize: "13px",
+          fontSize: "var(--text-sm)",
           fontWeight: 500,
           color: "var(--color-gold-on-light)",
           textDecoration: "none",
@@ -1024,11 +1005,11 @@ function HardBlockedCard({ message }: { message: string }) {
   return (
     <div
       style={{
-        maxWidth: "560px",
+        maxWidth: "var(--measure-narrow)",
         margin: "0 auto",
         backgroundColor: "var(--color-white)",
         border: "1px solid var(--color-border)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         padding: "48px 40px",
         textAlign: "center",
         display: "flex",
@@ -1041,8 +1022,8 @@ function HardBlockedCard({ message }: { message: string }) {
         style={{
           width: "56px",
           height: "56px",
-          borderRadius: "50%",
-          backgroundColor: "rgba(var(--color-danger-rgb), 0.10)",
+          borderRadius: "var(--radius-circle)",
+          backgroundColor: "var(--color-danger-tint)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -1052,9 +1033,8 @@ function HardBlockedCard({ message }: { message: string }) {
       </div>
       <h2
         style={{
-          fontFamily: sans,
           fontWeight: 500,
-          fontSize: "20px",
+          fontSize: "var(--text-heading-xs)",
           color: "var(--color-text-primary)",
           margin: 0,
         }}
@@ -1063,12 +1043,11 @@ function HardBlockedCard({ message }: { message: string }) {
       </h2>
       <p
         style={{
-          fontFamily: sans,
-          fontSize: "14px",
+          fontSize: "var(--text-md)",
           color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
-          maxWidth: "420px",
+          maxWidth: "var(--measure-compact)",
         }}
       >
         {message}
@@ -1076,8 +1055,7 @@ function HardBlockedCard({ message }: { message: string }) {
       <Link
         href={contactHref("demo")}
         style={{
-          fontFamily: sans,
-          fontSize: "13px",
+          fontSize: "var(--text-sm)",
           fontWeight: 600,
           color: "var(--color-gold-on-light)",
           textDecoration: "none",

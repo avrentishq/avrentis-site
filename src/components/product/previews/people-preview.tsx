@@ -32,28 +32,27 @@ export function PeoplePreview() {
           style={{
             width: "40px",
             height: "40px",
-            borderRadius: "50%",
+            borderRadius: "var(--radius-circle)",
             backgroundColor: "var(--color-navy-primary)",
             color: "var(--color-white)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             fontWeight: 600,
           }}
         >
           {initials(EXPENSE_CLAIM.claimant)}
         </div>
         <div style={{ flex: 1 }}>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
+          <p style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
             {EXPENSE_CLAIM.claimant}
           </p>
-          <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
+          <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: 0 }}>
             {EXPENSE_CLAIM.claimantDetail}
           </p>
         </div>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)" }}>
+        <span style={{ fontSize: "var(--text-3xs)", fontWeight: 500, color: "var(--color-text-muted)" }}>
           {formatCount(EXPENSE_CLAIM.receiptCount)} receipts
         </span>
       </PreviewCard>

@@ -116,6 +116,12 @@ Run these locally before you claim anything is done.
   `dark-hero-backdrop.tsx`; scroll and load reveals from `fadeUpOnScroll()` / `fadeUpOnLoad()`
   and durations from `TRANSITION` in `src/lib/animations.ts` (staggers are capped).
   `ui-kit.lock.test.ts` fails on a hand-copied CTA style, eyebrow, grid overlay or reveal.
+- **Every design value is a token.** Font sizes (`--text-*`), radii (`--radius-*`), widths
+  (`--layout-*`, `--measure-*`) and recurring tints are `@theme` tokens in
+  `src/app/globals.css`; fonts are `var(--font-mono)` / inherited sans; stacking order is
+  `Z_INDEX` (`src/lib/layers.ts`); screen sizes are `MEDIA_QUERIES`
+  (`src/lib/hooks/media-queries.ts`); data-driven card rows use core's `.card-grid`.
+  `design-tokens.lock.test.ts` fails on a typed value; text must meet WCAG AA on its surface.
 - **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css` as
   `var(--color-…)`, or `rgba(var(--color-…-rgb), alpha)` for a tint; add a role-named token
   for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.

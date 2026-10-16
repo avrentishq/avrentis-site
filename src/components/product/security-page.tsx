@@ -27,7 +27,6 @@ import {
   Check,
   Mail,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
 
 import { SECURITY_FAQS } from "@/lib/security-faqs";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
@@ -52,6 +51,8 @@ import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { SectionIntro } from "@/components/ui/section-intro";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 const PILLARS = [
   {
@@ -207,21 +208,21 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
             style={{
               width: "44px",
               height: "44px",
-              borderRadius: "8px",
-              backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+              borderRadius: "var(--radius-card)",
+              backgroundColor: "var(--color-gold-tint)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+            <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <span
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "12px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
@@ -231,15 +232,14 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
             </span>
             <h2
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "28px",
+                fontSize: "var(--text-heading-lg)",
                 color: "var(--color-text-primary)",
                 margin: 0,
                 letterSpacing: "0.01em",
                 lineHeight: 1.2,
               }}
-              className="lg:!text-[36px]"
+              className="lg:!text-display-xs"
             >
               {stage.title}
             </h2>
@@ -247,8 +247,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
         </div>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "17px",
+            fontSize: "var(--text-2xl)",
             fontWeight: 500,
             color: "var(--color-text-primary)",
             lineHeight: 1.5,
@@ -259,8 +258,7 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
         </p>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.75,
             margin: "0 0 20px",
@@ -276,13 +274,12 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
                 display: "flex",
                 gap: "10px",
                 alignItems: "flex-start",
-                fontFamily: "var(--font-sans)",
-                fontSize: "14px",
-                color: "var(--color-text-faint)",
+                fontSize: "var(--text-md)",
+                color: "var(--color-text-body)",
                 lineHeight: 1.6,
               }}
             >
-              <Check size={16} strokeWidth={2} color={BRAND_COLORS.gold} style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
+              <Check size={16} strokeWidth={2} color="var(--color-gold)" style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
               <span>{b}</span>
             </li>
           ))}
@@ -324,7 +321,7 @@ export function SecurityProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.securityHero} scrim="dark" />
         <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
-        <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             titleAs="h1"
@@ -342,11 +339,11 @@ export function SecurityProductPage() {
             }
             titleStyle={{
               fontWeight: 700,
-              fontSize: "36px",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            titleClassName="lg:!text-[56px]"
+            titleClassName="lg:!text-display-4xl"
             lede={
               <>
                 Avrentis is built for organisations where every approval carries
@@ -356,11 +353,11 @@ export function SecurityProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "17px",
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
           <m.div
@@ -386,7 +383,7 @@ export function SecurityProductPage() {
       {/* ── PILLARS ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityPillars} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="TRUST POSTURE"
             eyebrowStyle={{
@@ -395,16 +392,16 @@ export function SecurityProductPage() {
             title="Four foundations. Each built in at the deepest level — not just something the app tries to do."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "620px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
-          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
+          <div {...cardGridProps(PILLARS.length, { max: 2 }, { gap: "20px" })}>
             {PILLARS.map((p, i) => {
               const Icon = p.icon;
               return (
@@ -414,7 +411,7 @@ export function SecurityProductPage() {
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     flexDirection: "column",
@@ -425,20 +422,19 @@ export function SecurityProductPage() {
                     style={{
                       width: "36px",
                       height: "36px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "18px",
+                      fontSize: "var(--text-3xl)",
                       color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
@@ -447,8 +443,7 @@ export function SecurityProductPage() {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.65,
                       margin: 0,
@@ -466,7 +461,7 @@ export function SecurityProductPage() {
       {/* ── STACK ──────────────────────────────────────────── */}
       <section id="stack" style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityStack} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
             <StackRow key={s.key} stage={s} index={i} />
           ))}
@@ -486,7 +481,7 @@ export function SecurityProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.securityCompliance} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
-        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             eyebrow="COMPLIANCE POSTURE"
@@ -500,13 +495,13 @@ export function SecurityProductPage() {
             }
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 16px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={
               <>
                 Avrentis does not hold SOC 2 or ISO 27001 certification today. Our
@@ -516,7 +511,7 @@ export function SecurityProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 0 48px",
@@ -533,18 +528,17 @@ export function SecurityProductPage() {
                 {...fadeUpOnScroll(i + 3)}
                 style={{
                   flex: "1 1 300px",
-                  backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
-                  border: "1px solid rgba(var(--color-white-rgb), 0.10)",
-                  borderRadius: "10px",
+                  backgroundColor: "var(--color-white-wash)",
+                  border: "1px solid var(--color-white-border)",
+                  borderRadius: "var(--radius-lg)",
                   padding: "24px",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
                   <span
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "15px",
+                      fontSize: "var(--text-lg)",
                       color: "var(--color-white)",
                     }}
                   >
@@ -552,14 +546,14 @@ export function SecurityProductPage() {
                   </span>
                   <span
                     style={{
-                      fontFamily: "'IBM Plex Mono', monospace",
-                      fontSize: "10px",
+                      fontFamily: "var(--font-mono)",
+                      fontSize: "var(--text-3xs)",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       color: "var(--color-gold)",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
-                      border: "1px solid rgba(var(--color-gold-rgb), 0.28)",
-                      borderRadius: "3px",
+                      backgroundColor: "var(--color-gold-tint)",
+                      border: "1px solid var(--color-gold-border)",
+                      borderRadius: "var(--radius-xs)",
                       padding: "3px 8px",
                     }}
                   >
@@ -568,8 +562,7 @@ export function SecurityProductPage() {
                 </div>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "13px",
+                    fontSize: "var(--text-sm)",
                     color: "var(--color-text-subtle)",
                     lineHeight: 1.6,
                     margin: 0,
@@ -586,9 +579,9 @@ export function SecurityProductPage() {
             style={{
               marginTop: "40px",
               padding: "22px 26px",
-              backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
-              border: "1px solid rgba(var(--color-white-rgb), 0.08)",
-              borderRadius: "10px",
+              backgroundColor: "var(--color-white-wash)",
+              border: "1px solid var(--color-white-border)",
+              borderRadius: "var(--radius-lg)",
               display: "flex",
               flexDirection: "column",
               gap: "8px",
@@ -596,8 +589,8 @@ export function SecurityProductPage() {
           >
             <span
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "10px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-3xs)",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 color: "var(--color-gold)",
@@ -605,7 +598,7 @@ export function SecurityProductPage() {
             >
               RESPONSIBLE DISCLOSURE
             </span>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "14px", color: "var(--color-border)", margin: 0, lineHeight: 1.7 }}>
+            <p style={{ fontSize: "var(--text-md)", color: "var(--color-border)", margin: 0, lineHeight: 1.7 }}>
               Found a vulnerability?{" "}
               <Link
                 href={contactHref("disclosure")}
@@ -623,7 +616,7 @@ export function SecurityProductPage() {
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.securityFaq} scrim="light" />
-        <div style={{ maxWidth: "980px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="QUESTIONS YOUR SECURITY TEAM WILL ASK"
             eyebrowStyle={{
@@ -636,20 +629,20 @@ export function SecurityProductPage() {
             }
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 40px",
-              maxWidth: "620px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
           <div
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               overflow: "hidden",
             }}
           >
@@ -666,8 +659,7 @@ export function SecurityProductPage() {
                   style={{
                     cursor: "pointer",
                     listStyle: "none",
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "15px",
+                    fontSize: "var(--text-lg)",
                     fontWeight: 500,
                     color: "var(--color-text-primary)",
                     display: "flex",
@@ -677,14 +669,13 @@ export function SecurityProductPage() {
                   }}
                 >
                   {f.q}
-                  <span style={{ color: "var(--color-gold-on-light)", fontSize: "18px", lineHeight: 1 }} aria-hidden="true">
+                  <span style={{ color: "var(--color-gold-on-light)", fontSize: "var(--text-3xl)", lineHeight: 1 }} aria-hidden="true">
                     +
                   </span>
                 </summary>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.7,
                     margin: "12px 0 0",
@@ -703,7 +694,7 @@ export function SecurityProductPage() {
               padding: "22px 26px",
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               display: "flex",
               flexWrap: "wrap",
               gap: "16px",
@@ -712,12 +703,12 @@ export function SecurityProductPage() {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <Mail size={18} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
+              <Mail size={18} color="var(--color-gold)" strokeWidth={1.8} aria-hidden="true" />
               <div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                <div style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
                   Got a question we haven&rsquo;t answered?
                 </div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--color-text-muted)" }}>
+                <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>
                   Talk directly with our team — we respond {ENQUIRY_REPLY_TIME}.
                 </div>
               </div>

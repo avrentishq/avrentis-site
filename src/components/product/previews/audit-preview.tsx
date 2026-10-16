@@ -34,7 +34,7 @@ const ROWS: readonly AuditRow[] = [
     person: sanctioned.person,
     entity: FEATURED_VOUCHER.reference,
     at: sanctioned.at,
-    actionBackground: "rgba(var(--color-success-rgb), 0.08)",
+    actionBackground: "var(--color-success-wash)",
     actionColour: "var(--color-success)",
   },
   {
@@ -42,7 +42,7 @@ const ROWS: readonly AuditRow[] = [
     person: reviewed.person,
     entity: FEATURED_VOUCHER.reference,
     at: reviewed.at,
-    actionBackground: "rgba(var(--color-gold-rgb), 0.08)",
+    actionBackground: "var(--color-gold-ghost)",
     actionColour: "var(--color-warning)",
   },
   {
@@ -90,11 +90,11 @@ export function AuditPreview() {
                   <CodeTag background={row.actionBackground} color={row.actionColour}>
                     {row.action}
                   </CodeTag>
-                  <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
+                  <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
                     {formatDemoTime(row.at)}
                   </span>
                 </div>
-                <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {row.entity} · {personWithRole(row.person)}
                 </span>
               </div>

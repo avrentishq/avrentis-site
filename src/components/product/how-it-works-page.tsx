@@ -31,7 +31,7 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
+import { SITE_PAGES } from "@/lib/brand";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
@@ -53,6 +53,8 @@ import {
 } from "@/lib/approval-lifecycle";
 import { numberInWords } from "@/lib/number-words";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 /**
  * This page's own words for each lifecycle stage. The stages themselves — their
@@ -169,21 +171,21 @@ function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
             style={{
               width: "44px",
               height: "44px",
-              borderRadius: "8px",
-              backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+              borderRadius: "var(--radius-card)",
+              backgroundColor: "var(--color-gold-tint)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               flexShrink: 0,
             }}
           >
-            <Icon size={20} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+            <Icon size={20} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
             <span
               style={{
-                fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: "12px",
+                fontFamily: "var(--font-mono)",
+                fontSize: "var(--text-xs)",
                 fontWeight: 500,
                 color: "var(--color-gold-on-light)",
                 letterSpacing: "0.06em",
@@ -193,15 +195,14 @@ function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
             </span>
             <h2
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "28px",
+                fontSize: "var(--text-heading-lg)",
                 color: "var(--color-text-primary)",
                 margin: 0,
                 letterSpacing: "0.01em",
                 lineHeight: 1.2,
               }}
-              className="lg:!text-[36px]"
+              className="lg:!text-display-xs"
             >
               {stage.title}
             </h2>
@@ -209,8 +210,7 @@ function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
         </div>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "17px",
+            fontSize: "var(--text-2xl)",
             fontWeight: 500,
             color: "var(--color-text-primary)",
             lineHeight: 1.5,
@@ -221,8 +221,7 @@ function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
         </p>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "15px",
+            fontSize: "var(--text-lg)",
             color: "var(--color-text-muted)",
             lineHeight: 1.75,
             margin: "0 0 20px",
@@ -238,13 +237,12 @@ function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
                 display: "flex",
                 gap: "10px",
                 alignItems: "flex-start",
-                fontFamily: "var(--font-sans)",
-                fontSize: "14px",
-                color: "var(--color-text-faint)",
+                fontSize: "var(--text-md)",
+                color: "var(--color-text-body)",
                 lineHeight: 1.6,
               }}
             >
-              <Check size={16} strokeWidth={2} color={BRAND_COLORS.gold} style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
+              <Check size={16} strokeWidth={2} color="var(--color-gold)" style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
               <span>{bullet}</span>
             </li>
           ))}
@@ -280,16 +278,16 @@ function ChainCard({
         flexDirection: "column",
         gap: "10px",
         background: "var(--color-navy-mid)",
-        border: active ? "1px solid rgba(var(--color-gold-rgb), 0.4)" : "1px solid rgba(var(--color-white-rgb), 0.08)",
-        borderRadius: "8px",
+        border: active ? "1px solid var(--color-gold-border-strong)" : "1px solid var(--color-white-border)",
+        borderRadius: "var(--radius-card)",
         padding: "20px 18px",
       }}
     >
       <span
         style={{
-          fontFamily: "'IBM Plex Mono', monospace",
+          fontFamily: "var(--font-mono)",
           fontWeight: 500,
-          fontSize: "10px",
+          fontSize: "var(--text-3xs)",
           letterSpacing: "0.08em",
           color: "var(--color-text-secondary)",
         }}
@@ -297,10 +295,10 @@ function ChainCard({
         STAGE {lifecycleStepNumber(index)}
       </span>
       <RoleBadge role={node.role} />
-      <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "14px", color: "var(--color-white)", margin: "2px 0 0" }}>
+      <h3 style={{ fontWeight: 500, fontSize: "var(--text-md)", color: "var(--color-white)", margin: "2px 0 0" }}>
         {node.label}
       </h3>
-      <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--color-text-subtle)", lineHeight: 1.5, margin: 0 }}>
+      <p style={{ fontSize: "var(--text-xs)", color: "var(--color-text-subtle)", lineHeight: 1.5, margin: 0 }}>
         {node.body}
       </p>
     </m.div>
@@ -334,7 +332,7 @@ export function HowItWorksProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.hiwHero} scrim="dark" />
         <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
-        <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             titleAs="h1"
@@ -349,11 +347,11 @@ export function HowItWorksProductPage() {
             }
             titleStyle={{
               fontWeight: 700,
-              fontSize: "36px",
+              fontSize: "var(--text-display-xs)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            titleClassName="lg:!text-[56px]"
+            titleClassName="lg:!text-display-4xl"
             lede={
               <>
                 Every {requestTypeList()} travels the same {numberInWords(APPROVAL_LIFECYCLE.length)}-stage lifecycle. Structured at submission, routed by
@@ -362,11 +360,11 @@ export function HowItWorksProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "17px",
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
           <m.div
@@ -389,7 +387,7 @@ export function HowItWorksProductPage() {
         style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.hiwLifecycle} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {APPROVAL_LIFECYCLE.map((stage, i) => (
             <StageRow key={stage.key} stage={stage} index={i} />
           ))}
@@ -409,7 +407,7 @@ export function HowItWorksProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.hiwApprovalChains} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
-        <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             eyebrow="ROLE-ENFORCED AUTHORITY"
@@ -417,13 +415,13 @@ export function HowItWorksProductPage() {
             title="Two document types. Two defined chains."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 16px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={
               <>
                 Payment vouchers follow one authority chain. Purchase orders follow
@@ -432,11 +430,11 @@ export function HowItWorksProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 0 48px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
 
@@ -469,20 +467,20 @@ export function HowItWorksProductPage() {
       {/* ── NOTIFICATIONS ──────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.hiwNotifications} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="NOTIFICATION CHOREOGRAPHY"
             eyebrowStyle={{ marginBottom: "16px" }}
             title="Approvers hear about requests wherever they are."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 14px",
-              maxWidth: "600px",
+              maxWidth: "var(--measure-snug)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={
               <>
                 Every stage of the lifecycle dispatches notifications through the
@@ -491,14 +489,14 @@ export function HowItWorksProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               lineHeight: 1.7,
               margin: "0 0 40px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
 
-          <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <div {...cardGridProps(NOTIFICATIONS.length, {}, { gap: "16px" })}>
             {NOTIFICATIONS.map((n, i) => {
               const Icon = n.icon;
               return (
@@ -508,7 +506,7 @@ export function HowItWorksProductPage() {
                   style={{
                     backgroundColor: "var(--color-white)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-card)",
                     padding: "22px",
                     display: "flex",
                     flexDirection: "column",
@@ -519,19 +517,19 @@ export function HowItWorksProductPage() {
                     style={{
                       width: "34px",
                       height: "34px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={16} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
-                  <h3 style={{ fontFamily: "var(--font-sans)", fontSize: "16px", fontWeight: 600, color: "var(--color-text-primary)", margin: 0 }}>
+                  <h3 style={{ fontSize: "var(--text-xl)", fontWeight: 600, color: "var(--color-text-primary)", margin: 0 }}>
                     {n.channel}
                   </h3>
-                  <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
+                  <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.55, margin: 0 }}>
                     {n.desc}
                   </p>
                 </m.div>
@@ -544,20 +542,20 @@ export function HowItWorksProductPage() {
       {/* ── BEFORE vs AFTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.hiwBeforeAfter} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="THE CONTRAST"
             eyebrowStyle={{ marginBottom: "14px" }}
             title="What actually changes day-to-day."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 48px",
-              maxWidth: "600px",
+              maxWidth: "var(--measure-snug)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
           <div
@@ -566,7 +564,7 @@ export function HowItWorksProductPage() {
               gridTemplateColumns: "1fr 1fr",
               gap: "0",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               overflow: "hidden",
             }}
           >
@@ -585,8 +583,7 @@ export function HowItWorksProductPage() {
               <X size={16} strokeWidth={2} style={{ color: "var(--color-danger)" }} aria-hidden="true" />
               <span
                 style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "12px",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 600,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
@@ -606,11 +603,10 @@ export function HowItWorksProductPage() {
                 gap: "8px",
               }}
             >
-              <ShieldCheck size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+              <ShieldCheck size={16} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
               <span
                 style={{
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "12px",
+                  fontSize: "var(--text-xs)",
                   fontWeight: 600,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
@@ -629,8 +625,7 @@ export function HowItWorksProductPage() {
                     padding: "20px 22px",
                     borderRight: "1px solid var(--color-border)",
                     borderBottom: i < COMPARISON.length - 1 ? "1px solid var(--color-border)" : "none",
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     color: "var(--color-text-muted)",
                     lineHeight: 1.6,
                   }}
@@ -642,8 +637,7 @@ export function HowItWorksProductPage() {
                   style={{
                     padding: "20px 22px",
                     borderBottom: i < COMPARISON.length - 1 ? "1px solid var(--color-border)" : "none",
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "14px",
+                    fontSize: "var(--text-md)",
                     fontWeight: 500,
                     color: "var(--color-text-primary)",
                     lineHeight: 1.6,

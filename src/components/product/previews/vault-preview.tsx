@@ -5,7 +5,6 @@
  */
 
 import { FileText, Search } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
 import { COMPLETED_PROCUREMENT, formatDemoRelative } from "@/components/product/demo-fixtures";
 import { FilterChips, PreviewBody, PreviewList, Tag } from "./preview-primitives";
 
@@ -21,7 +20,7 @@ const RECORDS = [
     files: "2 files",
     tag: "Paid",
     tagColour: "var(--color-success)",
-    tagBackground: "rgba(var(--color-success-rgb), 0.08)",
+    tagBackground: "var(--color-success-wash)",
     added: formatDemoRelative(paymentVoucher.at),
   },
   {
@@ -30,7 +29,7 @@ const RECORDS = [
     files: "1 file",
     tag: "Matched",
     tagColour: "var(--color-success)",
-    tagBackground: "rgba(var(--color-success-rgb), 0.08)",
+    tagBackground: "var(--color-success-wash)",
     added: formatDemoRelative(invoice.at),
   },
   {
@@ -48,7 +47,7 @@ const RECORDS = [
     files: "1 file",
     tag: "Issued",
     tagColour: "var(--color-gold)",
-    tagBackground: "rgba(var(--color-gold-rgb), 0.08)",
+    tagBackground: "var(--color-gold-ghost)",
     added: formatDemoRelative(purchaseOrder.at),
   },
 ] as const;
@@ -64,13 +63,13 @@ export function VaultPreview() {
           gap: "8px",
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "4px",
+          borderRadius: "var(--radius-badge)",
           padding: "8px 12px",
           marginBottom: "12px",
         }}
       >
         <Search size={14} strokeWidth={1.8} style={{ color: "var(--color-text-subtle)" }} aria-hidden="true" />
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--color-text-subtle)" }}>
+        <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-subtle)" }}>
           Filter by reference, payee, department…
         </span>
       </div>
@@ -86,21 +85,20 @@ export function VaultPreview() {
                 style={{
                   width: "28px",
                   height: "28px",
-                  borderRadius: "4px",
-                  backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
+                  borderRadius: "var(--radius-badge)",
+                  backgroundColor: "var(--color-gold-ghost)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   flexShrink: 0,
                 }}
               >
-                <FileText size={14} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                <FileText size={14} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <p
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "12px",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 500,
                     color: "var(--color-text-primary)",
                     margin: "0 0 1px",
@@ -111,7 +109,7 @@ export function VaultPreview() {
                 >
                   {record.name}
                 </p>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
+                <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: 0 }}>
                   {record.category} · {record.files} · {record.added}
                 </p>
               </div>
@@ -123,7 +121,7 @@ export function VaultPreview() {
         }))}
       />
 
-      <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-subtle)", margin: "10px 0 0", textAlign: "right" }}>
+      <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-subtle)", margin: "10px 0 0", textAlign: "right" }}>
         Showing 4 of 1,284 records
       </p>
     </PreviewBody>

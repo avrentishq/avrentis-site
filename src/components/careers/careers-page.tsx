@@ -19,7 +19,6 @@ import {
   Mail,
   ArrowRight,
 } from "lucide-react";
-import { BRAND_COLORS } from "@/lib/brand";
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
@@ -30,9 +29,9 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
-const sans = "var(--font-sans)";
-const mono = "'IBM Plex Mono', monospace";
 
 const PRINCIPLES = [
   {
@@ -100,7 +99,7 @@ export function CareersProductPage() {
       >
         <SectionBackdrop src={SECTION_BACKDROPS.careersHero} scrim="dark" />
         <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
-        <div style={{ maxWidth: "840px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             reveal="load"
@@ -108,8 +107,8 @@ export function CareersProductPage() {
             eyebrow="CAREERS"
             eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
             title="Build the platform that runs African organisations."
-            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
-            titleClassName="lg:!text-[56px]"
+            titleStyle={{ fontWeight: 700, fontSize: "var(--text-display-xs)", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-display-4xl"
             lede={
               <>
                 We are small, deliberate, and building for the long run. If
@@ -119,11 +118,11 @@ export function CareersProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "17px",
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
           <m.a {...fadeUpOnLoad(3)} href="#register-interest" {...buttonProps()}>
@@ -135,23 +134,23 @@ export function CareersProductPage() {
       {/* ── PRINCIPLES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersPrinciples} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="HOW WE WORK"
             eyebrowStyle={{ marginBottom: "12px" }}
             title="Four principles that shape every decision."
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 40px",
-              maxWidth: "620px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
-          <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
+          <div {...cardGridProps(PRINCIPLES.length, { max: 2 }, { gap: "20px" })}>
             {PRINCIPLES.map((p, i) => {
               const Icon = p.icon;
               return (
@@ -161,7 +160,7 @@ export function CareersProductPage() {
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "28px",
                     display: "flex",
                     flexDirection: "column",
@@ -172,27 +171,26 @@ export function CareersProductPage() {
                     style={{
                       width: "36px",
                       height: "36px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
                   <h3
                     style={{
-                      fontFamily: sans,
                       fontWeight: 600,
-                      fontSize: "17px",
+                      fontSize: "var(--text-2xl)",
                       color: "var(--color-text-primary)",
                       margin: "4px 0 0",
                     }}
                   >
                     {p.title}
                   </h3>
-                  <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
+                  <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                     {p.body}
                   </p>
                 </m.div>
@@ -205,13 +203,13 @@ export function CareersProductPage() {
       {/* ── WHO WE WANT ────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersWhoWeWant} scrim="light" />
-        <div style={{ maxWidth: "880px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="WHO WE WANT TO HEAR FROM"
             eyebrowStyle={{ marginBottom: "12px" }}
             title={<>We&rsquo;re deliberate about who joins — here&rsquo;s what we look for.</>}
-            titleStyle={{ fontWeight: 400, fontSize: "30px", lineHeight: 1.25, margin: "0 0 28px", letterSpacing: "0.01em" }}
-            titleClassName="lg:!text-[36px]"
+            titleStyle={{ fontWeight: 400, fontSize: "var(--text-heading-xl)", lineHeight: 1.25, margin: "0 0 28px", letterSpacing: "0.01em" }}
+            titleClassName="lg:!text-display-xs"
           />
 
           <ul
@@ -229,9 +227,8 @@ export function CareersProductPage() {
                 key={line}
                 {...fadeUpOnScroll(i + 2)}
                 style={{
-                  fontFamily: sans,
-                  fontSize: "15px",
-                  color: "var(--color-text-faint)",
+                  fontSize: "var(--text-lg)",
+                  color: "var(--color-text-body)",
                   lineHeight: 1.7,
                   paddingLeft: "20px",
                   position: "relative",
@@ -245,7 +242,7 @@ export function CareersProductPage() {
                     top: "12px",
                     width: "5px",
                     height: "5px",
-                    borderRadius: "50%",
+                    borderRadius: "var(--radius-circle)",
                     background: "var(--color-gold)",
                   }}
                 />
@@ -259,7 +256,7 @@ export function CareersProductPage() {
       {/* ── OPEN ROLES / HONEST NO-ROLES STATE ─────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersOpenRoles} scrim="light" />
-        <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto" }}>
           <Eyebrow reveal="scroll" style={{ display: "block", marginBottom: "12px" }}>
             OPEN ROLES
           </Eyebrow>
@@ -270,15 +267,14 @@ export function CareersProductPage() {
               style={{
                 backgroundColor: "var(--color-bg-light)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-lg)",
                 padding: "32px 36px",
               }}
             >
               <h2
                 style={{
-                  fontFamily: sans,
                   fontWeight: 500,
-                  fontSize: "22px",
+                  fontSize: "var(--text-heading-sm)",
                   color: "var(--color-text-primary)",
                   margin: "0 0 10px",
                   letterSpacing: "0.01em",
@@ -286,7 +282,7 @@ export function CareersProductPage() {
               >
                 No open roles right now.
               </h2>
-              <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.75, margin: 0 }}>
+              <p style={{ fontSize: "var(--text-lg)", color: "var(--color-text-muted)", lineHeight: 1.75, margin: 0 }}>
                 We open roles deliberately. When a seat is ready, we run a
                 short, respectful process — and we reach out to the people
                 who&rsquo;ve already registered interest first. Leave your
@@ -300,7 +296,7 @@ export function CareersProductPage() {
               style={{
                 backgroundColor: "var(--color-white)",
                 border: "1px solid var(--color-border)",
-                borderRadius: "10px",
+                borderRadius: "var(--radius-lg)",
                 overflow: "hidden",
               }}
             >
@@ -320,19 +316,18 @@ export function CareersProductPage() {
                   <div style={{ flex: 1, minWidth: 240 }}>
                     <h3
                       style={{
-                        fontFamily: sans,
                         fontWeight: 600,
-                        fontSize: "16px",
+                        fontSize: "var(--text-xl)",
                         color: "var(--color-text-primary)",
                         margin: "0 0 4px",
                       }}
                     >
                       {role.title}
                     </h3>
-                    <p style={{ fontFamily: mono, fontSize: "11px", color: "var(--color-gold-on-light)", margin: "0 0 8px" }}>
+                    <p style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-2xs)", color: "var(--color-gold-on-light)", margin: "0 0 8px" }}>
                       {role.location}
                     </p>
-                    <p style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
+                    <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                       {role.summary}
                     </p>
                   </div>
@@ -361,31 +356,29 @@ export function CareersProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.careersRegisterInterest} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
-        <div style={{ maxWidth: "780px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
+        <div style={{ maxWidth: "var(--layout-prose-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content, textAlign: "center" }}>
           <m.h2
             {...fadeUpOnScroll()}
             style={{
-              fontFamily: sans,
               fontWeight: 400,
-              fontSize: "30px",
+              fontSize: "var(--text-heading-xl)",
               color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[36px]"
+            className="lg:!text-display-xs"
           >
             Register your interest — it&rsquo;s how we hire.
           </m.h2>
           <m.p
             {...fadeUpOnScroll(1)}
             style={{
-              fontFamily: sans,
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.75,
               margin: "0 auto 28px",
-              maxWidth: "600px",
+              maxWidth: "var(--measure-snug)",
             }}
           >
             Send a short note through our{" "}

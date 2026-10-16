@@ -28,14 +28,13 @@ export function PayPreview() {
       />
 
       <PreviewCard marginBottom="12px">
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
+        <p style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
           {FEATURED_VOUCHER.payee}
         </p>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
             fontFeatureSettings: '"tnum" 1',
-            fontSize: "22px",
+            fontSize: "var(--text-heading-sm)",
             fontWeight: 500,
             color: "var(--color-text-primary)",
             margin: "0 0 12px",

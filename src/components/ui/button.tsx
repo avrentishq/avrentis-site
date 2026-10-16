@@ -39,30 +39,30 @@ export interface ButtonOptions {
 }
 
 const SIZES: Record<ButtonSize, CSSProperties> = {
-  xs: { height: "30px", padding: "0 16px", fontSize: "12px", lineHeight: 1 },
+  xs: { height: "30px", padding: "0 16px", fontSize: "var(--text-xs)", lineHeight: 1 },
   nav: {
     height: "32px",
     padding: "0 16px",
-    fontSize: "11px",
+    fontSize: "var(--text-2xs)",
     lineHeight: 1,
     textTransform: "uppercase",
     letterSpacing: "0.06em",
   },
-  sm: { height: "40px", padding: "0 18px", fontSize: "13px" },
-  md: { height: "44px", padding: "0 22px", fontSize: "14px" },
-  lg: { height: "48px", padding: "0 28px", fontSize: "16px", lineHeight: 1 },
-  xl: { height: "52px", padding: "0 32px", fontSize: "16px" },
+  sm: { height: "40px", padding: "0 18px", fontSize: "var(--text-sm)" },
+  md: { height: "44px", padding: "0 22px", fontSize: "var(--text-md)" },
+  lg: { height: "48px", padding: "0 28px", fontSize: "var(--text-xl)", lineHeight: 1 },
+  xl: { height: "52px", padding: "0 32px", fontSize: "var(--text-xl)" },
 };
 
 const PILL_BY_DEFAULT: ReadonlySet<ButtonSize> = new Set(["xs", "nav", "lg", "xl"]);
 
-const RADIUS: Record<ButtonShape, string> = { rounded: "6px", pill: "9999px" };
+const RADIUS: Record<ButtonShape, string> = { rounded: "var(--radius-md)", pill: "var(--radius-pill)" };
 
 const SECONDARY: Record<ButtonSurface, CSSProperties> = {
   dark: {
     backgroundColor: "transparent",
     color: "var(--color-white)",
-    border: "1px solid rgba(var(--color-white-rgb), 0.2)",
+    border: "1px solid var(--color-white-border-strong)",
   },
   light: {
     backgroundColor: "transparent",
@@ -97,7 +97,6 @@ export function buttonStyle({
         }
       : SECONDARY[surface];
   return {
-    fontFamily: "var(--font-sans)",
     // The navbar pill is set lighter: at 11px uppercase, 600 reads as shouting.
     fontWeight: variant === "primary" && size !== "nav" ? 600 : 500,
     display: fullWidth ? "flex" : "inline-flex",

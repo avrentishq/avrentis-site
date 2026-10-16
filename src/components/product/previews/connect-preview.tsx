@@ -10,14 +10,14 @@ const API_KEYS = [
   {
     name: "Accounting sync (prod)",
     status: "Active",
-    background: "rgba(var(--color-success-rgb), 0.08)",
+    background: "var(--color-success-wash)",
     colour: "var(--color-success)",
     used: "2m ago",
   },
   {
     name: "Data warehouse export",
     status: "Active",
-    background: "rgba(var(--color-success-rgb), 0.08)",
+    background: "var(--color-success-wash)",
     colour: "var(--color-success)",
     used: "18m ago",
   },
@@ -42,8 +42,7 @@ function SectionTitle({ title, action }: { title: string; action: ReactNode }) {
     <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: "8px" }}>
       <h4
         style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "12px",
+          fontSize: "var(--text-xs)",
           fontWeight: 500,
           color: "var(--color-text-muted)",
           letterSpacing: "0.04em",
@@ -53,7 +52,7 @@ function SectionTitle({ title, action }: { title: string; action: ReactNode }) {
       >
         {title}
       </h4>
-      <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", fontWeight: 500, color: "var(--color-text-primary)" }}>{action}</span>
+      <span style={{ fontSize: "var(--text-2xs)", fontWeight: 500, color: "var(--color-text-primary)" }}>{action}</span>
     </div>
   );
 }
@@ -70,8 +69,8 @@ export function ConnectPreview() {
               <>
                 <span
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    fontSize: "11px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-2xs)",
                     color: "var(--color-text-muted)",
                     width: "84px",
                     flexShrink: 0,
@@ -81,8 +80,7 @@ export function ConnectPreview() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "12px",
+                    fontSize: "var(--text-xs)",
                     fontWeight: 500,
                     color: "var(--color-text-primary)",
                     flex: 1,
@@ -98,8 +96,7 @@ export function ConnectPreview() {
                 </Tag>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     color: "var(--color-text-muted)",
                     minWidth: "64px",
                     textAlign: "right",
@@ -122,8 +119,8 @@ export function ConnectPreview() {
               <>
                 <span
                   style={{
-                    fontFamily: "'IBM Plex Mono', monospace",
-                    fontSize: "11px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-2xs)",
                     color: "var(--color-text-primary)",
                     fontWeight: 500,
                     minWidth: "140px",
@@ -133,8 +130,7 @@ export function ConnectPreview() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     color: "var(--color-text-muted)",
                     flex: 1,
                     overflow: "hidden",
@@ -146,9 +142,8 @@ export function ConnectPreview() {
                 </span>
                 <span
                   style={{
-                    fontFamily: "var(--font-sans)",
                     fontFeatureSettings: '"tnum" 1',
-                    fontSize: "11px",
+                    fontSize: "var(--text-2xs)",
                     color: "var(--color-success)",
                     fontWeight: 500,
                   }}

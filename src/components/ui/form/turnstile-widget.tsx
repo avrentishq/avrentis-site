@@ -43,8 +43,7 @@ export function TurnstileWidget({ fallbackEmail }: { fallbackEmail: string }) {
       <noscript>
         <p
           style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             color: "var(--color-text-secondary)",
             margin: 0,
           }}

@@ -18,7 +18,7 @@
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Mail, AlertCircle, Clock, RefreshCcw, ShieldCheck } from "lucide-react";
-import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
+import { SITE_PAGES } from "@/lib/brand";
 import { confirmTrialVerification, reissueTrialToken } from "../../actions";
 import { INITIAL_VERIFY_STATE } from "./state";
 import { FormAlert } from "@/components/ui/form/form-alert";
@@ -27,7 +27,6 @@ import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { contactHref } from "@/app/contact/tabs";
 
-const sans = "var(--font-sans)";
 const REISSUE_ERROR_ID = "reissue-error";
 
 interface Props {
@@ -47,7 +46,7 @@ export function VerifyConfirm({ token }: { token: string }) {
   return (
     <Card
       variant="warning"
-      icon={<ShieldCheck size={26} color={BRAND_COLORS.gold} strokeWidth={1.8} />}
+      icon={<ShieldCheck size={26} color="var(--color-gold)" strokeWidth={1.8} />}
       title="One step to your workspace."
       message="Press the button to confirm it's you and open your new workspace. The link works once."
     >
@@ -78,7 +77,7 @@ export function VerifyResult({ status, message, token }: Props) {
     return (
       <Card
         variant="success"
-        icon={<Mail size={26} color={BRAND_COLORS.gold} strokeWidth={1.8} />}
+        icon={<Mail size={26} color="var(--color-gold)" strokeWidth={1.8} />}
         title="A new link is on its way."
         message={reissueState.message ?? "Check your inbox in the next minute."}
       />
@@ -89,7 +88,7 @@ export function VerifyResult({ status, message, token }: Props) {
     return (
       <Card
         variant="warning"
-        icon={<Clock size={26} color={BRAND_COLORS.gold} strokeWidth={1.8} />}
+        icon={<Clock size={26} color="var(--color-gold)" strokeWidth={1.8} />}
         title="This link has expired."
         message={message}
       >
@@ -106,8 +105,7 @@ export function VerifyResult({ status, message, token }: Props) {
               id={REISSUE_ERROR_ID}
               pending={reissuePending}
               style={{
-                fontFamily: sans,
-                fontSize: "12px",
+                fontSize: "var(--text-xs)",
                 color: "var(--color-danger)",
                 marginTop: "10px",
               }}
@@ -132,8 +130,7 @@ export function VerifyResult({ status, message, token }: Props) {
           href={contactHref("demo")}
           style={{
             marginTop: "16px",
-            fontFamily: sans,
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             fontWeight: 600,
             color: "var(--color-gold-on-light)",
             textDecoration: "none",
@@ -157,8 +154,7 @@ export function VerifyResult({ status, message, token }: Props) {
         href={SITE_PAGES.trial()}
         style={{
           marginTop: "16px",
-          fontFamily: sans,
-          fontSize: "13px",
+          fontSize: "var(--text-sm)",
           fontWeight: 600,
           color: "var(--color-gold-on-light)",
           textDecoration: "none",
@@ -211,16 +207,16 @@ function Card({
 }) {
   const bg =
     variant === "success"
-      ? "rgba(var(--color-success-rgb), 0.10)"
+      ? "var(--color-success-tint)"
       : variant === "warning"
-        ? "rgba(var(--color-gold-rgb), 0.12)"
-        : "rgba(var(--color-danger-rgb), 0.10)";
+        ? "var(--color-gold-tint)"
+        : "var(--color-danger-tint)";
   return (
     <div
       style={{
         backgroundColor: "var(--color-white)",
         border: "1px solid var(--color-border)",
-        borderRadius: "10px",
+        borderRadius: "var(--radius-lg)",
         padding: "48px 40px",
         textAlign: "center",
         display: "flex",
@@ -233,7 +229,7 @@ function Card({
         style={{
           width: "56px",
           height: "56px",
-          borderRadius: "50%",
+          borderRadius: "var(--radius-circle)",
           backgroundColor: bg,
           display: "flex",
           alignItems: "center",
@@ -244,9 +240,8 @@ function Card({
       </div>
       <h2
         style={{
-          fontFamily: sans,
           fontWeight: 500,
-          fontSize: "20px",
+          fontSize: "var(--text-heading-xs)",
           color: "var(--color-text-primary)",
           margin: 0,
         }}
@@ -255,12 +250,11 @@ function Card({
       </h2>
       <p
         style={{
-          fontFamily: sans,
-          fontSize: "14px",
+          fontSize: "var(--text-md)",
           color: "var(--color-text-muted)",
           lineHeight: 1.65,
           margin: 0,
-          maxWidth: "420px",
+          maxWidth: "var(--measure-compact)",
         }}
       >
         {message}

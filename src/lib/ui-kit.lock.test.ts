@@ -93,7 +93,7 @@ function eyebrowObjects(source: string): string[] {
       /\bletterSpacing:/.test(object) &&
       /\bcolor:\s*"var\(--color-gold(?:-on-light)?\)"/.test(object) &&
       !/\b(?:background|backgroundColor|border):/.test(object) &&
-      !/fontFamily:\s*(?:mono|"var\(--font-mono\)"|"'IBM Plex Mono')/.test(object),
+      !/fontFamily:\s*"var\(--font-mono\)"/.test(object),
   );
 }
 
@@ -133,7 +133,7 @@ describe("detectors fire on a copy and stay silent on the shared form", () => {
     expect(eyebrowObjects(copy)).toHaveLength(1);
     // A tinted badge and a mono kicker are not eyebrows.
     expect(eyebrowObjects(`{ letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-gold)", backgroundColor: "x" }`)).toEqual([]);
-    expect(eyebrowObjects(`{ fontFamily: mono, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-gold)" }`)).toEqual([]);
+    expect(eyebrowObjects(`{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-gold)" }`)).toEqual([]);
     expect(eyebrowObjects(`<Eyebrow surface="dark">Product</Eyebrow>`)).toEqual([]);
   });
 

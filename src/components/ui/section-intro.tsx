@@ -39,11 +39,20 @@ const LEDE_COLOUR: Record<IntroSurface, string> = {
   dark: "var(--color-text-secondary)",
 };
 
-export function eyebrowStyle(surface: IntroSurface, size = 12): CSSProperties {
+/** Eyebrow sizes: a section's, a menu or card group's, a legal page's, the home hero's. */
+const EYEBROW_SIZE = {
+  section: "var(--text-xs)",
+  group: "var(--text-3xs)",
+  legal: "var(--text-2xs)",
+  hero: "var(--text-sm)",
+} as const;
+
+export type EyebrowSize = keyof typeof EYEBROW_SIZE;
+
+export function eyebrowStyle(surface: IntroSurface, size: EyebrowSize = "section"): CSSProperties {
   return {
-    fontFamily: "var(--font-sans)",
     fontWeight: 600,
-    fontSize: `${size}px`,
+    fontSize: EYEBROW_SIZE[size],
     letterSpacing: EYEBROW_LETTER_SPACING,
     textTransform: "uppercase",
     color: EYEBROW_COLOUR[surface],
@@ -99,8 +108,8 @@ interface EyebrowProps {
   children: ReactNode;
   surface?: IntroSurface;
   as?: IntroTag;
-  /** Font size in px (12 for a section, 10–11 for a menu or card group, 13 in the home hero). */
-  size?: number;
+  /** Which eyebrow size (EYEBROW_SIZE); a section's by default. */
+  size?: EyebrowSize;
   reveal?: IntroReveal;
   /** Stagger position; omitted = no delay. */
   index?: number;
@@ -189,7 +198,6 @@ export function SectionIntro({
         reveal={reveal}
         index={eyebrow != null ? 1 : undefined}
         style={{
-          fontFamily: "var(--font-sans)",
           color: TITLE_COLOUR[surface],
           ...alignment,
           ...titleStyle,
@@ -205,7 +213,6 @@ export function SectionIntro({
           reveal={reveal}
           index={eyebrow != null ? 2 : 1}
           style={{
-            fontFamily: "var(--font-sans)",
             color: LEDE_COLOUR[surface],
             ...alignment,
             ...ledeStyle,

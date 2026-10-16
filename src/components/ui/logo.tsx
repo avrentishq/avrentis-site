@@ -15,7 +15,6 @@
  */
 
 import { BRAND, type MarkVariant, getProps, WORDMARK_SPEC } from "@/lib/brand";
-import { cn } from "@/lib/utils";
 
 // The gate-mark geometry (getProps), the wordmark spec, and the variant type
 // come from the brand SSOT.
@@ -149,7 +148,7 @@ export function AvrentisLogo({
 
   return (
     <div
-      className={cn("flex items-end", className)}
+      className={["flex items-end", className].filter(Boolean).join(" ")}
       style={{ gap: Math.round(size * WORDMARK_SPEC.gapFactor) }}
     >
       <AvrentisMark size={size} variant={variant} />
@@ -157,7 +156,7 @@ export function AvrentisLogo({
         <span
           className="av-wordmark"
           style={{
-            fontFamily: 'var(--font-wordmark, "Helvetica Neue"), Helvetica, Arial, sans-serif',
+            fontFamily: "var(--font-wordmark)",
             fontWeight: WORDMARK_SPEC.weight,
             fontSize: size * WORDMARK_SPEC.sizeFactor,
             letterSpacing: `${WORDMARK_SPEC.tracking}em`,

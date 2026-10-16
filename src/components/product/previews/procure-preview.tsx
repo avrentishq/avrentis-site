@@ -28,19 +28,18 @@ export function ProcurePreview() {
 
       <PreviewCard marginBottom="12px">
         <PreviewLabel marginBottom="6px">Vendor</PreviewLabel>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
+        <p style={{ fontSize: "var(--text-sm)", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
           {PURCHASE_ORDER.vendor}
         </p>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "0 0 10px" }}>
+        <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: "0 0 10px" }}>
           {PURCHASE_ORDER.vendorRegistration} · {PURCHASE_ORDER.vendorBank} · {PURCHASE_ORDER.vendorAccountNumber}
         </p>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", borderTop: "1px solid var(--color-border)", paddingTop: "10px" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)" }}>Total</span>
+          <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>Total</span>
           <span
             style={{
-              fontFamily: "var(--font-sans)",
               fontFeatureSettings: '"tnum" 1',
-              fontSize: "18px",
+              fontSize: "var(--text-3xl)",
               fontWeight: 500,
               color: "var(--color-text-primary)",
             }}
@@ -54,7 +53,7 @@ export function ProcurePreview() {
         columns={[{ label: "Item" }, { label: "Qty", align: "right" }, { label: "Total", align: "right" }]}
         gridTemplateColumns="1fr 50px 80px"
         rowPadding="10px 14px"
-        fontSize="12px"
+        fontSize="var(--text-xs)"
         marginBottom="12px"
         rows={PURCHASE_ORDER.lineItems.map((line) => ({
           key: line.description,

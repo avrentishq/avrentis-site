@@ -32,7 +32,6 @@ import {
   PreviewLabel,
 } from "./previews/preview-primitives";
 
-const SANS = "var(--font-sans)";
 
 /** A filled form field: its label, and the value in an input-like box. */
 function FormField({
@@ -49,9 +48,9 @@ function FormField({
   monospace?: boolean;
 }) {
   const valueStyle = {
-    amount: { padding: "10px 12px", fontSize: "16px", fontWeight: 500, fontFeatureSettings: '"tnum" 1' },
-    regular: { padding: "10px 12px", fontSize: "13px", minHeight: "40px" },
-    compact: { padding: "8px 10px", fontSize: "12px" },
+    amount: { padding: "10px 12px", fontSize: "var(--text-xl)", fontWeight: 500, fontFeatureSettings: '"tnum" 1' },
+    regular: { padding: "10px 12px", fontSize: "var(--text-sm)", minHeight: "40px" },
+    compact: { padding: "8px 10px", fontSize: "var(--text-xs)" },
   }[emphasis];
   return (
     <div>
@@ -60,8 +59,8 @@ function FormField({
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "3px",
-          fontFamily: monospace ? "'IBM Plex Mono', monospace" : SANS,
+          borderRadius: "var(--radius-xs)",
+          fontFamily: monospace ? "var(--font-mono)" : undefined,
           color: "var(--color-text-primary)",
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -71,7 +70,7 @@ function FormField({
       >
         {value}
       </div>
-      {note ? <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: "4px 0 0" }}>{note}</p> : null}
+      {note ? <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: "4px 0 0" }}>{note}</p> : null}
     </div>
   );
 }
@@ -81,10 +80,10 @@ function FormField({
 export function SubmitStageMockup() {
   return (
     <PreviewBody>
-      <h3 style={{ fontFamily: SANS, fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 4px" }}>
+      <h3 style={{ fontWeight: 400, fontSize: "var(--text-3xl)", color: "var(--color-text-primary)", margin: "0 0 4px" }}>
         New payment voucher
       </h3>
-      <p style={{ fontFamily: SANS, fontSize: "12px", color: "var(--color-text-muted)", margin: "0 0 18px" }}>
+      <p style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)", margin: "0 0 18px" }}>
         Step 2 of 4 · Payment info
       </p>
 
@@ -96,7 +95,7 @@ export function SubmitStageMockup() {
             style={{
               flex: 1,
               height: "3px",
-              borderRadius: "2px",
+              borderRadius: "var(--radius-2xs)",
               backgroundColor: step <= 1 ? "var(--color-gold)" : "var(--color-border)",
             }}
           />
@@ -144,14 +143,14 @@ export function ReviewStageMockup() {
       {/* Summary */}
       <PreviewCard padding="12px 14px" marginBottom="12px">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "8px", marginBottom: "6px" }}>
-          <span style={{ fontFamily: SANS, fontSize: "12px", fontWeight: 500, color: "var(--color-text-primary)" }}>
+          <span style={{ fontSize: "var(--text-xs)", fontWeight: 500, color: "var(--color-text-primary)" }}>
             {FEATURED_VOUCHER.payee}
           </span>
-          <span style={{ fontFamily: SANS, fontFeatureSettings: '"tnum" 1', fontSize: "14px", fontWeight: 500, color: "var(--color-text-primary)" }}>
+          <span style={{ fontFeatureSettings: '"tnum" 1', fontSize: "var(--text-md)", fontWeight: 500, color: "var(--color-text-primary)" }}>
             {demoAmount(FEATURED_VOUCHER.amount)}
           </span>
         </div>
-        <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
+        <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: 0 }}>
           {FEATURED_VOUCHER.purpose} · {FEATURED_VOUCHER.department} · Submitted by {submitted.person.name}
         </p>
       </PreviewCard>
@@ -163,10 +162,9 @@ export function ReviewStageMockup() {
           style={{
             backgroundColor: "var(--color-bg-light)",
             border: "1px solid var(--color-border)",
-            borderRadius: "3px",
+            borderRadius: "var(--radius-xs)",
             padding: "10px 12px",
-            fontFamily: SANS,
-            fontSize: "12px",
+            fontSize: "var(--text-xs)",
             color: "var(--color-text-primary)",
             lineHeight: 1.55,
           }}
@@ -214,10 +212,10 @@ export function SanctionStageMockup() {
         {priorSteps.map((step) => (
           <div key={step.stage} style={{ display: "flex", gap: "10px", alignItems: "center", padding: "4px 0" }}>
             <CompletedMark size={18} />
-            <span style={{ flex: 1, fontFamily: SANS, fontSize: "12px", color: "var(--color-text-primary)" }}>
+            <span style={{ flex: 1, fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>
               {step.label} <span style={{ color: "var(--color-text-muted)" }}>— {personWithRole(step.person)}</span>
             </span>
-            <span style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
+            <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
               {formatDemoTime(step.at)}
             </span>
           </div>
@@ -231,7 +229,7 @@ export function SanctionStageMockup() {
           style={{
             backgroundColor: "var(--color-bg-light)",
             border: "1px dashed var(--color-border)",
-            borderRadius: "4px",
+            borderRadius: "var(--radius-badge)",
             padding: "16px 14px",
             marginBottom: "10px",
             display: "flex",
@@ -240,11 +238,11 @@ export function SanctionStageMockup() {
           }}
         >
           <div>
-            <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: "0 0 2px" }}>Saved signature</p>
+            <p style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)", margin: "0 0 2px" }}>Saved signature</p>
             <p
               style={{
-                fontFamily: "'Dancing Script', cursive",
-                fontSize: "22px",
+                fontFamily: "var(--font-signature)",
+                fontSize: "var(--text-heading-sm)",
                 color: "var(--color-text-primary)",
                 margin: 0,
                 fontStyle: "italic",
@@ -253,9 +251,9 @@ export function SanctionStageMockup() {
               {sanctioner.name}
             </p>
           </div>
-          <span style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-gold-on-light)", fontWeight: 500 }}>Change →</span>
+          <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-gold-on-light)", fontWeight: 500 }}>Change →</span>
         </div>
-        <MockButton variant="primary" style={{ width: "100%", fontSize: "13px", padding: "10px 0" }}>
+        <MockButton variant="primary" style={{ width: "100%", fontSize: "var(--text-sm)", padding: "10px 0" }}>
           Sanction {demoAmount(FEATURED_VOUCHER.amount)}
         </MockButton>
       </PreviewCard>

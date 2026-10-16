@@ -7,11 +7,13 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { ButtonLink } from "@/components/ui/button";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
 import { INTERFACE_LANGUAGE_NAMES, SUPPORTED_CURRENCY_COUNT } from "@/lib/languages-and-currencies";
 import { TRAIL_SEALED } from "@/lib/record-keeping";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
 // No testimonials and no invented metrics — the section states what the
 // platform enforces, which is verifiable, rather than borrowed credibility.
@@ -44,14 +46,14 @@ export function SocialProof() {
   return (
     <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.socialProof} scrim="light" />
-      <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
         <SectionIntro
           align="center"
           eyebrow="WHY TEAMS TRUST AVRENTIS"
           eyebrowStyle={{ marginBottom: "16px" }}
           title="Authority you can verify — down to the database."
-          titleStyle={{ fontWeight: 400, fontSize: "36px", lineHeight: 1.3, margin: "0 auto 12px" }}
-          titleClassName="lg:!text-[42px]"
+          titleStyle={{ fontWeight: 400, fontSize: "var(--text-display-xs)", lineHeight: 1.3, margin: "0 auto 12px" }}
+          titleClassName="lg:!text-display-lg"
           lede={
             <>
               No fabricated metrics, no borrowed logos. Here is what actually protects
@@ -61,18 +63,15 @@ export function SocialProof() {
           }
           ledeStyle={{
             fontWeight: 400,
-            fontSize: "16px",
+            fontSize: "var(--text-xl)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
-            maxWidth: "620px",
+            maxWidth: "var(--measure)",
           }}
         />
 
         {/* Trust pillars */}
-        <div
-          style={{ display: "grid", gap: "20px", marginBottom: "40px" }}
-          className="grid-cols-1 md:grid-cols-2"
-        >
+        <div {...cardGridProps(TRUST_PILLARS.length, { max: 2 }, { gap: "20px", marginBottom: "40px" })}>
           {TRUST_PILLARS.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
@@ -82,7 +81,7 @@ export function SocialProof() {
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "8px",
+                  borderRadius: "var(--radius-card)",
                   padding: "28px",
                   display: "flex",
                   gap: "16px",
@@ -95,21 +94,20 @@ export function SocialProof() {
                     width: "40px",
                     height: "40px",
                     flexShrink: 0,
-                    borderRadius: "8px",
+                    borderRadius: "var(--radius-card)",
                     backgroundColor: "var(--color-navy-primary)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <Icon size={20} strokeWidth={1.6} color={BRAND_COLORS.gold} aria-hidden="true" />
+                  <Icon size={20} strokeWidth={1.6} color="var(--color-gold)" aria-hidden="true" />
                 </div>
                 <div>
                   <h3
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 600,
-                      fontSize: "17px",
+                      fontSize: "var(--text-2xl)",
                       color: "var(--color-text-primary)",
                       margin: "0 0 6px",
                       lineHeight: 1.35,
@@ -119,9 +117,8 @@ export function SocialProof() {
                   </h3>
                   <p
                     style={{
-                      fontFamily: "var(--font-sans)",
                       fontWeight: 400,
-                      fontSize: "14px",
+                      fontSize: "var(--text-md)",
                       color: "var(--color-text-muted)",
                       lineHeight: 1.6,
                       margin: 0,
@@ -140,7 +137,7 @@ export function SocialProof() {
           {...fadeUpOnScroll(6)}
           style={{
             backgroundColor: "var(--color-navy-primary)",
-            borderRadius: "10px",
+            borderRadius: "var(--radius-lg)",
             padding: "32px",
             display: "flex",
             flexWrap: "wrap",
@@ -149,12 +146,11 @@ export function SocialProof() {
             justifyContent: "space-between",
           }}
         >
-          <div style={{ maxWidth: "640px" }}>
+          <div style={{ maxWidth: "var(--measure)" }}>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 600,
-                fontSize: "18px",
+                fontSize: "var(--text-3xl)",
                 color: "var(--color-white)",
                 margin: "0 0 6px",
                 lineHeight: 1.4,
@@ -164,9 +160,8 @@ export function SocialProof() {
             </p>
             <p
               style={{
-                fontFamily: "var(--font-sans)",
                 fontWeight: 400,
-                fontSize: "14px",
+                fontSize: "var(--text-md)",
                 color: "var(--color-text-subtle)",
                 margin: 0,
                 lineHeight: 1.6,

@@ -31,12 +31,10 @@ import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { TRIAL_LENGTH, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 
-const sans = "var(--font-sans)";
 const pct = Math.round(EFFICIENCY * 100);
 
 const labelStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   fontWeight: 500,
   color: "var(--color-text-primary)",
   letterSpacing: "0.02em",
@@ -45,20 +43,18 @@ const labelStyle: React.CSSProperties = {
 };
 
 const inputStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "15px",
+  fontSize: "var(--text-lg)",
   color: "var(--color-text-primary)",
   width: "100%",
   height: "44px",
   border: "1px solid var(--color-border)",
-  borderRadius: "8px",
+  borderRadius: "var(--radius-card)",
   padding: "0 14px",
   backgroundColor: "var(--color-white)",
 };
 
 const hintStyle: React.CSSProperties = {
-  fontFamily: sans,
-  fontSize: "12px",
+  fontSize: "var(--text-xs)",
   color: "var(--color-text-muted)",
   marginTop: "5px",
   display: "block",
@@ -99,8 +95,7 @@ function NumberField({
               left: "14px",
               top: "50%",
               transform: "translateY(-50%)",
-              fontFamily: sans,
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-muted)",
             }}
           >
@@ -137,16 +132,15 @@ function StatTile({
     <div
       style={{
         backgroundColor: featured ? "var(--color-navy-primary)" : "var(--color-white)",
-        border: featured ? "1px solid rgba(var(--color-gold-rgb), 0.3)" : "1px solid var(--color-border)",
-        borderRadius: "12px",
+        border: featured ? "1px solid var(--color-gold-border)" : "1px solid var(--color-border)",
+        borderRadius: "var(--radius-xl)",
         padding: "20px 22px",
       }}
     >
       <div
         style={{
-          fontFamily: sans,
           fontWeight: 700,
-          fontSize: featured ? "30px" : "24px",
+          fontSize: featured ? "var(--text-heading-xl)" : "var(--text-heading-md)",
           color: featured ? "var(--color-gold)" : "var(--color-text-primary)",
           lineHeight: 1.1,
           letterSpacing: "-0.01em",
@@ -156,8 +150,7 @@ function StatTile({
       </div>
       <div
         style={{
-          fontFamily: sans,
-          fontSize: "12px",
+          fontSize: "var(--text-xs)",
           color: featured ? "var(--color-text-subtle)" : "var(--color-text-muted)",
           marginTop: "6px",
         }}
@@ -228,7 +221,7 @@ export function SavingsEstimator() {
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
-          borderRadius: "14px",
+          borderRadius: "var(--radius-2xl)",
           padding: "28px",
           display: "flex",
           flexDirection: "column",
@@ -236,7 +229,7 @@ export function SavingsEstimator() {
         }}
       >
         <noscript>
-          <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-secondary)", margin: 0 }}>
+          <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)", margin: 0 }}>
             The calculator needs JavaScript to work with your own numbers. Without it, the estimate
             below uses these typical figures, and that is the estimate we email you.
           </p>
@@ -284,7 +277,7 @@ export function SavingsEstimator() {
           <StatTile value={`${formatCount(result.hoursPerYear)} hrs`} label="Time back per year" />
         </div>
 
-        <p style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0 }}>
+        <p style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)", lineHeight: 1.6, margin: 0 }}>
           Assumes structured approvals remove about {pct}% of coordination time — a
           conservative estimate. Every other number is yours.
         </p>
@@ -297,13 +290,13 @@ export function SavingsEstimator() {
               alignItems: "center",
               gap: "10px",
               padding: "14px 16px",
-              backgroundColor: "rgba(var(--color-success-rgb), 0.07)",
-              border: "1px solid rgba(var(--color-success-rgb), 0.20)",
-              borderRadius: "10px",
+              backgroundColor: "var(--color-success-wash)",
+              border: "1px solid var(--color-success-border)",
+              borderRadius: "var(--radius-lg)",
             }}
           >
             <Check size={18} strokeWidth={2.2} style={{ color: "var(--color-success)" }} aria-hidden="true" />
-            <span style={{ fontFamily: sans, fontSize: "14px", color: "var(--color-text-primary)" }}>
+            <span style={{ fontSize: "var(--text-md)", color: "var(--color-text-primary)" }}>
               {state.message}
             </span>
           </div>
@@ -315,7 +308,7 @@ export function SavingsEstimator() {
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "14px",
+              borderRadius: "var(--radius-2xl)",
               padding: "20px 22px",
               display: "flex",
               flexDirection: "column",
@@ -323,7 +316,7 @@ export function SavingsEstimator() {
             }}
             noValidate
           >
-            <span style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+            <span style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)" }}>
               Want a copy? We&rsquo;ll email your {formatSavings(result.moneyPerYear)}/yr estimate — no sales call required.
             </span>
 
@@ -355,9 +348,8 @@ export function SavingsEstimator() {
             <label
               htmlFor="consent"
               style={{
-                fontFamily: sans,
-                fontSize: "12px",
-                color: "var(--color-text-faint)",
+                fontSize: "var(--text-xs)",
+                color: "var(--color-text-body)",
                 display: "flex",
                 alignItems: "flex-start",
                 gap: "8px",
@@ -392,7 +384,7 @@ export function SavingsEstimator() {
               <FormAlert
                 id={ESTIMATE_ERROR_ID}
                 pending={isPending}
-                style={{ fontFamily: sans, fontSize: "12px", color: "var(--color-danger)" }}
+                style={{ fontSize: "var(--text-xs)", color: "var(--color-danger)" }}
               >
                 {fieldError ?? state.message}
               </FormAlert>
@@ -405,8 +397,7 @@ export function SavingsEstimator() {
         <Link
           href={SITE_PAGES.trial()}
           style={{
-            fontFamily: sans,
-            fontSize: "13px",
+            fontSize: "var(--text-sm)",
             fontWeight: 600,
             color: "var(--color-gold-on-light)",
             textDecoration: "none",

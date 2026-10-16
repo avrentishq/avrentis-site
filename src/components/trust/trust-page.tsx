@@ -25,7 +25,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { LEGAL_PAGES } from "@/lib/brand";
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink } from "@/components/ui/button";
@@ -44,9 +44,9 @@ import {
 } from "@/lib/subprocessors";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
+import { Z_INDEX } from "@/lib/layers";
+import { cardGridProps } from "@/lib/card-grid";
 
-const sans = "var(--font-sans)";
-const mono = "'IBM Plex Mono', monospace";
 
 const DOCUMENTS = [
   {
@@ -113,7 +113,7 @@ export function TrustProductPage() {
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trustHero} scrim="dark" />
         <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
-        <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
             reveal="load"
@@ -121,8 +121,8 @@ export function TrustProductPage() {
             eyebrow="TRUST CENTRE"
             eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
             title="Where the controls live."
-            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
-            titleClassName="lg:!text-[56px]"
+            titleStyle={{ fontWeight: 700, fontSize: "var(--text-display-xs)", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-display-4xl"
             lede={
               <>
                 Everything your security, legal, or procurement team usually asks for,
@@ -133,11 +133,11 @@ export function TrustProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "17px",
+              fontSize: "var(--text-2xl)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
             }}
           />
           <m.div
@@ -155,20 +155,20 @@ export function TrustProductPage() {
       {/* ── FRAMEWORKS ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustFrameworks} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="FRAMEWORKS WE ALIGN TO"
             eyebrowStyle={{ marginBottom: "12px" }}
             title={<>We don&rsquo;t hold certifications today. Here&rsquo;s what we do.</>}
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 14px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={
               <>
                 Avrentis has not yet completed a SOC 2 or ISO 27001 audit. Our
@@ -176,7 +176,7 @@ export function TrustProductPage() {
                 where we are with each framework.
               </>
             }
-            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "640px" }}
+            ledeStyle={{ fontSize: "var(--text-lg)", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "var(--measure)" }}
           />
 
           {/* Wrapping flex: every row's cards grow to fill it, whatever the count. */}
@@ -189,7 +189,7 @@ export function TrustProductPage() {
                   flex: "1 1 300px",
                   backgroundColor: "var(--color-bg-light)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-lg)",
                   padding: "24px",
                   display: "flex",
                   flexDirection: "column",
@@ -197,15 +197,15 @@ export function TrustProductPage() {
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
-                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "var(--color-text-primary)", margin: 0 }}>
+                  <h3 style={{ fontWeight: 600, fontSize: "var(--text-xl)", color: "var(--color-text-primary)", margin: 0 }}>
                     {f.name}
                   </h3>
-                  <CheckCircle2 size={16} color={BRAND_COLORS.gold} strokeWidth={1.8} aria-hidden="true" />
+                  <CheckCircle2 size={16} color="var(--color-gold)" strokeWidth={1.8} aria-hidden="true" />
                 </div>
                 <span
                   style={{
-                    fontFamily: mono,
-                    fontSize: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-3xs)",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
                     color: "var(--color-gold-on-light)",
@@ -213,7 +213,7 @@ export function TrustProductPage() {
                 >
                   {complianceStatusLine(f)}
                 </span>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                   {f.body}
                 </p>
               </m.div>
@@ -225,20 +225,20 @@ export function TrustProductPage() {
       {/* ── SUB-PROCESSORS ─────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustSubprocessors} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="SUB-PROCESSORS"
             eyebrowStyle={{ marginBottom: "12px" }}
             title={<>The providers that help us run the service.</>}
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 14px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={
               <>
                 We engage established infrastructure providers and limit each to
@@ -247,7 +247,7 @@ export function TrustProductPage() {
                 obligation under your contract.
               </>
             }
-            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "640px" }}
+            ledeStyle={{ fontSize: "var(--text-lg)", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "var(--measure)" }}
           />
 
           <m.div
@@ -255,7 +255,7 @@ export function TrustProductPage() {
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               overflow: "hidden",
             }}
           >
@@ -273,8 +273,8 @@ export function TrustProductPage() {
                 <span
                   key={h}
                   style={{
-                    fontFamily: mono,
-                    fontSize: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-3xs)",
                     color: "var(--color-text-muted)",
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
@@ -296,10 +296,10 @@ export function TrustProductPage() {
                   alignItems: "center",
                 }}
               >
-                <span style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
+                <span style={{ fontSize: "var(--text-sm)", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
                   {sp.purpose}
                 </span>
-                <span style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)" }}>{sp.region}</span>
+                <span style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>{sp.region}</span>
               </div>
             ))}
           </m.div>
@@ -311,7 +311,7 @@ export function TrustProductPage() {
               padding: "22px 26px",
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
+              borderRadius: "var(--radius-lg)",
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
@@ -320,10 +320,10 @@ export function TrustProductPage() {
             }}
           >
             <div>
-              <div style={{ fontFamily: sans, fontSize: "14px", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "4px" }}>
+              <div style={{ fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-text-primary)", marginBottom: "4px" }}>
                 Need the named vendor list?
               </div>
-              <div style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
+              <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
                 The specific providers in each category — and any changes — are
                 shared with prospective customers on request, typically
                 alongside a Data Processing Agreement.
@@ -337,8 +337,7 @@ export function TrustProductPage() {
           <m.p
             {...fadeUpOnScroll(5)}
             style={{
-              fontFamily: sans,
-              fontSize: "13px",
+              fontSize: "var(--text-sm)",
               color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "16px 0 0",
@@ -356,23 +355,23 @@ export function TrustProductPage() {
       {/* ── DOCUMENTS ──────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustDocuments} scrim="light" />
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="DOCUMENTS &amp; DIRECT LINES"
             eyebrowStyle={{ marginBottom: "12px" }}
             title={<>What to read and who to email.</>}
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 40px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
           />
 
-          <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div {...cardGridProps(DOCUMENTS.length, { max: 3 }, { gap: "16px" })}>
             {DOCUMENTS.map((d, i) => {
               const Icon = d.icon;
               const isExternal = d.cta.href.startsWith("mailto:");
@@ -383,7 +382,7 @@ export function TrustProductPage() {
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
-                    borderRadius: "10px",
+                    borderRadius: "var(--radius-lg)",
                     padding: "24px",
                     display: "flex",
                     flexDirection: "column",
@@ -394,27 +393,26 @@ export function TrustProductPage() {
                     style={{
                       width: "36px",
                       height: "36px",
-                      borderRadius: "6px",
-                      backgroundColor: "rgba(var(--color-gold-rgb), 0.12)",
+                      borderRadius: "var(--radius-md)",
+                      backgroundColor: "var(--color-gold-tint)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                     }}
                   >
-                    <Icon size={18} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />
+                    <Icon size={18} strokeWidth={1.8} color="var(--color-gold)" aria-hidden="true" />
                   </div>
-                  <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "16px", color: "var(--color-text-primary)", margin: "4px 0 0" }}>
+                  <h3 style={{ fontWeight: 600, fontSize: "var(--text-xl)", color: "var(--color-text-primary)", margin: "4px 0 0" }}>
                     {d.title}
                   </h3>
-                  <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0, flex: 1 }}>
+                  <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0, flex: 1 }}>
                     {d.body}
                   </p>
                   {isExternal ? (
                     <a
                       href={d.cta.href}
                       style={{
-                        fontFamily: sans,
-                        fontSize: "13px",
+                        fontSize: "var(--text-sm)",
                         fontWeight: 600,
                         color: "var(--color-gold-on-light)",
                         textDecoration: "none",
@@ -431,8 +429,7 @@ export function TrustProductPage() {
                     <Link
                       href={d.cta.href}
                       style={{
-                        fontFamily: sans,
-                        fontSize: "13px",
+                        fontSize: "var(--text-sm)",
                         fontWeight: 600,
                         color: "var(--color-gold-on-light)",
                         textDecoration: "none",
@@ -456,20 +453,20 @@ export function TrustProductPage() {
       {/* ── DATA RESIDENCY ─────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustDataResidency} scrim="light" />
-        <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="DATA RESIDENCY"
             eyebrowStyle={{ marginBottom: "12px" }}
             title={<>Where your data lives.</>}
             titleStyle={{
               fontWeight: 400,
-              fontSize: "32px",
+              fontSize: "var(--text-heading-2xl)",
               lineHeight: 1.2,
               margin: "0 0 14px",
-              maxWidth: "640px",
+              maxWidth: "var(--measure)",
               letterSpacing: "0.01em",
             }}
-            titleClassName="lg:!text-[38px]"
+            titleClassName="lg:!text-display-sm"
             lede={
               <>
                 Residency matters for regulated organisations and for customers
@@ -477,7 +474,7 @@ export function TrustProductPage() {
                 Here is the honest picture.
               </>
             }
-            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "680px" }}
+            ledeStyle={{ fontSize: "var(--text-lg)", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "680px" }}
           />
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
@@ -499,7 +496,7 @@ export function TrustProductPage() {
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
-                  borderRadius: "10px",
+                  borderRadius: "var(--radius-lg)",
                   padding: "24px",
                   display: "flex",
                   flexDirection: "column",
@@ -508,8 +505,8 @@ export function TrustProductPage() {
               >
                 <span
                   style={{
-                    fontFamily: mono,
-                    fontSize: "10px",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "var(--text-3xs)",
                     letterSpacing: "0.06em",
                     textTransform: "uppercase",
                     color: "var(--color-gold-on-light)",
@@ -517,10 +514,10 @@ export function TrustProductPage() {
                 >
                   {r.label}
                 </span>
-                <h3 style={{ fontFamily: sans, fontWeight: 600, fontSize: "17px", color: "var(--color-text-primary)", margin: "2px 0 0" }}>
+                <h3 style={{ fontWeight: 600, fontSize: "var(--text-2xl)", color: "var(--color-text-primary)", margin: "2px 0 0" }}>
                   {r.title}
                 </h3>
-                <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
+                <p style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                   {r.body}
                 </p>
               </m.div>
@@ -534,9 +531,8 @@ export function TrustProductPage() {
               padding: "20px 24px",
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
-              borderRadius: "10px",
-              fontFamily: sans,
-              fontSize: "13px",
+              borderRadius: "var(--radius-lg)",
+              fontSize: "var(--text-sm)",
               color: "var(--color-text-secondary)",
               lineHeight: 1.7,
             }}
@@ -562,14 +558,14 @@ export function TrustProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.trustStatusContact} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
-        <div style={{ maxWidth: "880px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
+        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content, textAlign: "center" }}>
           <SectionIntro
             surface="dark"
             eyebrow="OPERATIONAL TRANSPARENCY"
             eyebrowStyle={{ display: "inline-block", marginBottom: "16px" }}
             title="All systems operational."
-            titleStyle={{ fontWeight: 400, fontSize: "30px", lineHeight: 1.2, margin: "0 0 16px", letterSpacing: "0.01em" }}
-            titleClassName="lg:!text-[36px]"
+            titleStyle={{ fontWeight: 400, fontSize: "var(--text-heading-xl)", lineHeight: 1.2, margin: "0 0 16px", letterSpacing: "0.01em" }}
+            titleClassName="lg:!text-display-xs"
             lede={
               <>
                 Current subsystem status is published on the status page, with
@@ -579,11 +575,11 @@ export function TrustProductPage() {
               </>
             }
             ledeStyle={{
-              fontSize: "15px",
+              fontSize: "var(--text-lg)",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 28px",
-              maxWidth: "600px",
+              maxWidth: "var(--measure-snug)",
             }}
           />
           <m.div

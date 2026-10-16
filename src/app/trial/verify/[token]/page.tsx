@@ -8,6 +8,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@/lib/brand";
 import { exceedsLimit } from "@/lib/form-rules";
 import { VERIFY_FAILED_MESSAGE } from "./state";
+import { Z_INDEX } from "@/lib/layers";
 
 export const metadata: Metadata = {
   title: `Verifying your ${BRAND.name} trial`,
@@ -44,7 +45,7 @@ export default async function VerifyPage({ params }: PageProps) {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trialVerify} scrim="light" />
-        <div style={{ maxWidth: "560px", margin: "0 auto", position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: "var(--measure-narrow)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <TrialStepper current={TRIAL_STEPS_DONE} />
           {plausible ? (
             <VerifyConfirm token={token} />

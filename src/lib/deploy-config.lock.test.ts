@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -11,17 +12,18 @@ import { describe, expect, it } from "vitest";
  * GITHUB_TOKEN into a git URL, where a failed clone would print it in the log.
  *
  * Only `main` (production) and `staging` (the one review environment) build;
- * every other branch push is skipped, so a work branch never spends a build.
+ * every other branch push is skipped by `ignoreCommand` (exit 0 = skip, 1 =
+ * build). Not `git.deploymentEnabled`: its patterns are globs, `*` does not
+ * match a branch with a slash, and which of two matching patterns wins is
+ * unspecified — a wider pattern could switch off `main`.
  */
 const root = process.cwd();
-const vercel = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")) as Record<string, string> & {
-  git?: { deploymentEnabled?: Record<string, boolean> };
-};
+const vercel = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")) as Record<string, string>;
 const installScript = readFileSync(join(root, "scripts", "vercel-install.sh"), "utf8");
 
 describe("hosting config", () => {
   it("keeps every command within Vercel's 256-character limit", () => {
-    for (const key of ["installCommand", "buildCommand"]) {
+    for (const key of ["installCommand", "buildCommand", "ignoreCommand"]) {
       expect(vercel[key]!.length, key).toBeLessThanOrEqual(256);
     }
   });
@@ -38,6 +40,15 @@ describe("hosting config", () => {
   });
 
   it("builds only main and staging", () => {
-    expect(vercel.git?.deploymentEnabled).toEqual({ "*": false, main: true, staging: true });
+    const builds = (branch: string) =>
+      spawnSync("sh", ["-c", vercel.ignoreCommand!], {
+        env: { ...process.env, VERCEL_GIT_COMMIT_REF: branch },
+      }).status === 1;
+    expect(builds("main")).toBe(true);
+    expect(builds("staging")).toBe(true);
+    expect(builds("fix/platform-origin-trailing-slash")).toBe(false);
+    expect(builds("feature")).toBe(false);
+    expect(builds("staging-old")).toBe(false);
+    expect(builds("")).toBe(false);
   });
 });

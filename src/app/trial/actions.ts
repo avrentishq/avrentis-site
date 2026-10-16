@@ -30,7 +30,7 @@ import {
   mapTrialResponse,
   type TrialResponsePayload,
 } from "./map-response";
-import { ORG_SIZES as SIZES } from "@/lib/org-size";
+import { isOrgSize } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { platformFetch } from "@/lib/platform-fetch";
 import { PLATFORM_API_PATHS, PLATFORM_ORIGIN } from "@/lib/platform";
@@ -83,7 +83,7 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
   if (!isTrialRole(role)) {
     fieldErrors.role = "Please select your role.";
   }
-  if (!orgSize || !SIZES.includes(orgSize as (typeof SIZES)[number])) {
+  if (!isOrgSize(orgSize)) {
     fieldErrors.orgSize = "Please select your organisation size.";
   }
   if (!sectorChoice) fieldErrors.sector = "Please select your industry.";

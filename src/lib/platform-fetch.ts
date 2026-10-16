@@ -4,16 +4,10 @@ import { PLATFORM_ORIGIN } from "@/lib/platform";
  * Every server-side call to the product app goes through here — trial request,
  * reissue and verify, and the pricing API.
  *
- * A preview build of this site can point PLATFORM_API_URL at the app's private
- * staging deployment, which sits behind Vercel Authentication and answers a
- * server-to-server call with Vercel's login page. PLATFORM_BYPASS_SECRET is that
- * deployment's Protection Bypass for Automation secret; when set, it rides as
- * the documented `x-vercel-protection-bypass` header so the call reaches the app.
- *
- * Never sent from this site's production build, whatever the environment holds:
- * production talks to the public app, and a stray secret there would only leak
- * it to the origin it names. Server-only — never import into a client
- * component (`platform.ts` is the client-safe half).
+ * A preview build may add one header for a protected preview deployment; it is
+ * never sent from production. Setup is in guides/security-posture.md
+ * (gitignored). Server-only — never import into a client component
+ * (`platform.ts` is the client-safe half).
  *
  * Every call gives up after PLATFORM_REQUEST_TIMEOUT_MS (a caller's own
  * `signal` still applies too), so a slow platform rejects the promise instead

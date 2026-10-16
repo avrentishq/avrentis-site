@@ -19,13 +19,9 @@ const isDev = process.env.NODE_ENV !== "production";
  * server components, `src/lib/platform.ts`); the browser only navigates to the
  * app's login page, which `connect-src` does not govern.
  *
- * SECURITY DECISION — `script-src 'unsafe-inline'` is an ACCEPTED residual, not
- * an oversight. There is no user-controlled HTML sink anywhere on the site (the
- * only inline script is trusted JSON-LD from brand constants; all email/HTML
- * user input is escaped server-side), so inline-script CSP is defence-in-depth
- * only. Removing it requires a per-request nonce via middleware, which also has
- * to nonce Next's hydration scripts — a change that must be verified in a real
- * browser (a broken nonce silently kills hydration). Revisit with that testing.
+ * `script-src 'unsafe-inline'` is a deliberate, recorded decision; its rationale
+ * and upgrade path are in guides/security-posture.md (gitignored). Production
+ * also upgrades any stray http:// subresource to https.
  */
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 
@@ -41,6 +37,7 @@ const contentSecurityPolicy = [
   `script-src 'self' 'unsafe-inline' ${TURNSTILE_ORIGIN}${isDev ? " 'unsafe-eval'" : ""}`,
   `connect-src 'self' ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
   "form-action 'self'",
+  ...(isDev ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");
 
 const securityHeaders = [
@@ -52,6 +49,9 @@ const securityHeaders = [
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
   },
+  // Isolates the site's browsing context from cross-origin windows it opens or
+  // is opened by (no shared `window.opener`).
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   {
     key: "Permissions-Policy",
     value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",

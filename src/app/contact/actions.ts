@@ -20,7 +20,7 @@ import { CONTACT_TOPICS } from "./topics";
 import { BRAND, isContactIntent, type ContactIntent } from "@/lib/brand";
 import { submittedValues } from "@/lib/submitted-values";
 import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
-import { ORG_SIZES } from "@/lib/org-size";
+import { isOrgSize } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { errorSummary } from "@/lib/safe-log";
 import {
@@ -32,10 +32,6 @@ import {
 } from "@/lib/form-rules";
 
 const COUNTRY_NAMES = new Intl.DisplayNames(["en-GB"], { type: "region" });
-
-function isOrgSize(value: string): boolean {
-  return (ORG_SIZES as readonly string[]).includes(value);
-}
 
 export async function submitContact(
   _previous: ContactFormState,

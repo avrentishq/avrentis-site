@@ -67,12 +67,10 @@ Run these locally before you claim anything is done.
   `trial-terms.lock.test.ts` fails on a typed copy of any of them. Copy never implies existing
   customers before there are any.
 - **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per
-  Server Action (core tier, identifier, numbers, fail mode) and `limitVisitor(action)`; never
-  build an Upstash client or limiter in this repo. Every limiter carries a `site_*` tier from
-  `@avrentishq/core/security/rate-limit-tiers`, so refusals show up in the platform console.
-  Refusal counts reach the console only when the site uses the same Upstash database and
-  `RATE_LIMIT_KEY_PREFIX` as that environment's app; environments sharing one database each need
-  a distinct prefix. `RATE_LIMIT_DISABLED=true` bypasses limits in `next dev` only.
+  Server Action and `limitVisitor(action)`; never build a limiter client in this repo. Every
+  limiter carries a `site_*` tier from `@avrentishq/core/security/rate-limit-tiers`, so refusals
+  show up in the platform console. How the store is shared between environments, and the local
+  development switches, are in `guides/security-posture.md` (gitignored).
 - **Never hand-edit `src/data/pricing-fallback.json`.** It is generated from core's plan
   catalogue (prices, capacity, features, modules, trial) plus the site's own plan words in
   `src/data/plan-copy.ts`, by `src/lib/pricing-fallback-build.ts`, run through
@@ -168,8 +166,7 @@ Run these locally before you claim anything is done.
   Never print the API's `*Label` strings — their wording is not part of the contract.
 - **Listed prices are before tax, and a tax line shows only where core says tax is
   charged.** `priceTaxNote` (`src/lib/price-tax.ts`) asks core's `platformSalesTax`, which
-  adds tax only for a country in core's `PLATFORM_TAX_REGISTRATIONS` — empty until Avrentis
-  is registered, so no VAT line today. Core decides WHETHER; the API's numeric `taxRate`
+  adds tax only for a country in core's `PLATFORM_TAX_REGISTRATIONS`. Core decides WHETHER; the API's numeric `taxRate`
   only formats the rate once core says yes (else core's rate), and is ignored when core
   says no — so an app on an older core can never make the site advertise uncharged tax.
   Never a typed rate. Stripe currencies show no tax line (tax is computed at checkout).

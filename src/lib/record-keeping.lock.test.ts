@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { RECORD_KEEPING_FORBIDDEN, recordKeepingViolations } from "@avrentishq/core/brand/copy-guardrails";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * Copy must not promise to keep DOCUMENTS forever. The audit trail is kept for
@@ -89,8 +90,7 @@ describe("record-keeping facts are stated once", () => {
   ]);
   const TYPED_FACT = /\bsealed (?:daily|nightly|every night)\b|\b(?:seven|\d+)[ -]years?\b(?! ago)|\bwithin seconds\b/i;
   /** Code only: comments may explain the rule. The changelog records what was true on its date. */
-  const code = (file: string) =>
-    readFileSync(join(SRC, file), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
+  const code = (file: string) => stripComments(readFileSync(join(SRC, file), "utf8"));
 
   it("the detector catches the typed facts", () => {
     for (const typed of ["sealed daily", "kept for at least seven years", "7-year retention", "ends within seconds"]) {

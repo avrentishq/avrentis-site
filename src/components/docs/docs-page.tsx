@@ -13,7 +13,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
@@ -151,7 +151,7 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: ClipboardCheck,
     eyebrow: "ADMINISTRATION",
-    title: "Running Avrentis inside your organisation.",
+    title: `Running ${BRAND.name} inside your organisation.`,
     lede:
       "User provisioning, SSO configuration, IP allowlisting and MFA. Written for admins and internal IT.",
     items: [
@@ -184,7 +184,7 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: Plug,
     eyebrow: "INTEGRATIONS",
-    title: "Connecting Avrentis to your stack.",
+    title: `Connecting ${BRAND.name} to your stack.`,
     lede:
       "The catalogue page has the full list. These guides cover the configuration details for each one.",
     items: [
@@ -202,7 +202,7 @@ const CATEGORIES: DocsCategory[] = [
   {
     icon: Webhook,
     eyebrow: "API & WEBHOOKS",
-    title: "Build on top of Avrentis.",
+    title: `Build on top of ${BRAND.name}.`,
     lede:
       "Authenticated REST API and per-tenant webhook subscriptions. Public API reference is being prepared — launch partners get early access.",
     items: [
@@ -221,7 +221,7 @@ const CATEGORIES: DocsCategory[] = [
     eyebrow: "GOVERNANCE",
     title: "Board views, auditor access, maker-checker.",
     lede:
-      "How Avrentis surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.",
+      `How ${BRAND.name} surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.`,
     items: [
       { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: moduleHref("audit"), status: "live" },
       { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: LEGAL_PAGES.security, status: "live" },
@@ -395,7 +395,7 @@ export function DocsHubPage() {
               display: "inline-block",
               marginBottom: "20px",
             }}
-            title="Everything you need to run Avrentis — in one place."
+            title={`Everything you need to run ${BRAND.name} — in one place.`}
             titleStyle={{
               fontWeight: 700,
               fontSize: "var(--text-display-xs)",

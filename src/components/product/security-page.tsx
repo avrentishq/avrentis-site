@@ -53,6 +53,7 @@ import { fadeUpOnScroll } from "@/lib/animations";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Z_INDEX } from "@/lib/layers";
 import { cardGridProps } from "@/lib/card-grid";
+import { BRAND } from "@/lib/brand";
 
 const PILLARS = [
   {
@@ -141,7 +142,7 @@ const STACK = [
     title: "Audit trail",
     subtitle: "Every action recorded and sealed. Every export, regulator-ready.",
     body:
-      "The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting Avrentis.",
+      `The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting ${BRAND.name}.`,
     icon: FileSearch,
     bullets: [
       "Every approval, query, and role change written to an append-only log",
@@ -344,7 +345,7 @@ export function SecurityProductPage() {
             titleClassName="lg:!text-display-4xl"
             lede={
               <>
-                Avrentis is built for organisations where every approval carries
+                {BRAND.name} is built for organisations where every approval carries
                 weight. Security is not a feature bolted on later — it is the
                 structural premise of the platform. Here is exactly what that
                 means, layer by layer.
@@ -502,7 +503,7 @@ export function SecurityProductPage() {
             titleClassName="lg:!text-display-sm"
             lede={
               <>
-                Avrentis does not hold SOC 2 or ISO 27001 certification today. Our
+                {BRAND.name} does not hold SOC 2 or ISO 27001 certification today. Our
                 policies follow SOC 2 structure, a SOC 2 Type II audit and an
                 independent penetration test are on our roadmap, and we can walk you
                 through each control on a security review.

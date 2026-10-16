@@ -70,7 +70,7 @@ export default function ProductOverviewPage() {
           <SectionIntro
             surface="dark"
             reveal="none"
-            eyebrow="The Avrentis Platform"
+            eyebrow={`The ${BRAND.name} Platform`}
             eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
             titleAs="h1"
             title={
@@ -83,7 +83,7 @@ export default function ProductOverviewPage() {
             titleClassName="lg:!text-display-3xl"
             lede={
               <>
-                Avrentis is not a collection of unrelated tools — every financial
+                {BRAND.name} is not a collection of unrelated tools — every financial
                 decision, procurement action, and compliance event flows through
                 one delegation-of-authority engine: routed to the
                 right approver by amount, department, and risk, enforced
@@ -199,7 +199,7 @@ export default function ProductOverviewPage() {
             approver by amount, department, and risk → enforced with no way
             around it → recorded on a tamper-evident trail. Define once who can
             approve what, up to how much, and under which conditions — every
-            module obeys it. And for any decision, Avrentis shows exactly which
+            module obeys it. And for any decision, {BRAND.name} shows exactly which
             rule applied and can prove what policy governed it, years later.
             </>}
             ledeStyle={{ fontSize: "var(--text-xl)", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "var(--measure)" }}

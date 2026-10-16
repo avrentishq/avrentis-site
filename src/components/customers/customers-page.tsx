@@ -34,6 +34,7 @@ import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
 import { Z_INDEX } from "@/lib/layers";
 import { cardGridProps } from "@/lib/card-grid";
+import { BRAND } from "@/lib/brand";
 
 
 const INDUSTRIES = [
@@ -159,7 +160,7 @@ export function CustomersProductPage() {
             titleClassName="lg:!text-display-4xl"
             lede={
               <>
-                Avrentis is early. Rather than claim credit for logos we
+                {BRAND.name} is early. Rather than claim credit for logos we
                 haven&rsquo;t yet earned, here&rsquo;s an honest picture of who
                 we&rsquo;re built for, the patterns we hear in every discovery
                 call, and how our launch-partner programme works.
@@ -204,7 +205,7 @@ export function CustomersProductPage() {
             titleClassName="lg:!text-display-sm"
             lede={
               <>
-                Avrentis is deliberately narrow. We serve organisations where
+                {BRAND.name} is deliberately narrow. We serve organisations where
                 approval chains matter, audit trails are non-negotiable, and
                 authority cannot be left to email.
               </>
@@ -487,7 +488,7 @@ export function CustomersProductPage() {
           >
             <ButtonLink href={contactHref("demo")}>Become a launch partner</ButtonLink>
             <ButtonLink href={SITE_ROUTES.howItWorks} variant="secondary" surface="light">
-              See how Avrentis works →
+              See how {BRAND.name} works →
             </ButtonLink>
           </m.div>
         </div>
@@ -524,7 +525,7 @@ export function CustomersProductPage() {
                   margin: "0 0 6px",
                 }}
               >
-                Already reviewing Avrentis inside your organisation?
+                Already reviewing {BRAND.name} inside your organisation?
               </h3>
               <p style={{ fontSize: "var(--text-md)", color: "var(--color-text-muted)", lineHeight: 1.7, margin: "0 0 12px" }}>
                 We share a security review pack, a draft DPA, and a tailored

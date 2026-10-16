@@ -78,7 +78,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
   spend: {
     headline: "Nothing leaves the account without a decision behind it.",
     description:
-      `Payments, purchase orders and donor funds all start the same way — somebody asks for money to go out. Avrentis puts every one of those requests on the same path: routed to whoever is allowed to approve it, at the amount they are allowed to approve, with the answer ${AUDIT_TRAIL_KEPT}.`,
+      `Payments, purchase orders and donor funds all start the same way — somebody asks for money to go out. ${BRAND.name} puts every one of those requests on the same path: routed to whoever is allowed to approve it, at the amount they are allowed to approve, with the answer ${AUDIT_TRAIL_KEPT}.`,
     sharedTitle: "What they have in common",
     shared: [
       {
@@ -125,7 +125,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
   oversight: {
     headline: "The rules are written down, enforced, and watched.",
     description:
-      "Most organisations already have approval rules. They live in a policy document nobody opens and get applied by whoever is paying attention that week. Avrentis is where the rules are stated once, applied to every request automatically, and monitored for the patterns that mean somebody is working around them.",
+      `Most organisations already have approval rules. They live in a policy document nobody opens and get applied by whoever is paying attention that week. ${BRAND.name} is where the rules are stated once, applied to every request automatically, and monitored for the patterns that mean somebody is working around them.`,
     sharedTitle: "What they have in common",
     shared: [
       {
@@ -167,7 +167,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
   evidence: {
     headline: "What happened, and proof it was not edited afterwards.",
     description:
-      "A record is only worth having if nobody can quietly change it. Everything Avrentis approves lands in a record that the people who use it cannot alter — searchable when you need to find something, exportable when somebody official asks.",
+      `A record is only worth having if nobody can quietly change it. Everything ${BRAND.name} approves lands in a record that the people who use it cannot alter — searchable when you need to find something, exportable when somebody official asks.`,
     sharedTitle: "What they have in common",
     shared: [
       {
@@ -209,7 +209,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
   infrastructure: {
     headline: "It reaches your people, and it talks to your other systems.",
     description:
-      "A system of record is only useful if the right people are in it and the record does not stay trapped inside it. This is the layer that gets your organisation signed in securely and pushes what Avrentis approves into the systems that need it next.",
+      `A system of record is only useful if the right people are in it and the record does not stay trapped inside it. This is the layer that gets your organisation signed in securely and pushes what ${BRAND.name} approves into the systems that need it next.`,
     sharedTitle: "What it covers",
     shared: [
       {
@@ -233,14 +233,14 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
     ],
     modules: {
       connect: {
-        claim: "Connects Avrentis to everything around it.",
+        claim: `Connects ${BRAND.name} to everything around it.`,
         body:
           "Webhooks and a typed REST API for accounting, HR and data-warehouse systems, scoped API keys, single sign-on, and the notification delivery the rest of the platform runs on.",
       },
     },
     metaTitleTail: "access, alerts and integrations",
     metaDescription:
-      "Single sign-on, enforced access policy, and typed webhooks and APIs that push what Avrentis approves into your accounting, HR and data systems.",
+      `Single sign-on, enforced access policy, and typed webhooks and APIs that push what ${BRAND.name} approves into your accounting, HR and data systems.`,
   },
 };
 

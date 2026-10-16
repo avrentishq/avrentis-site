@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { Z_INDEX } from "@/lib/layers";
+import { stripComments, stripCommentsFor } from "@/lib/test-support/strip-comments";
 
 /**
  * Every repeated design value has one home, and a typed copy fails here:
@@ -33,20 +34,12 @@ const globalsCss = readFileSync(join(SRC, "app", "globals.css"), "utf8");
 const themeBlock = globalsCss.match(/@theme[^{]*\{([\s\S]*?)\n\}/)?.[1] ?? "";
 const definedTokens = new Set([...themeBlock.matchAll(/(--[\w-]+):/g)].map((match) => match[1]!));
 
-/** Source with comments removed, so prose about a value is not the value. */
-function stripComments(source: string): string {
-  return source
-    .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/(^|[^:"'`\\])\/\/.*$/gm, "$1");
-}
-
 const files = readdirSync(SRC, { recursive: true, encoding: "utf8" })
   .filter((file) => /\.(tsx?|css)$/.test(file) && !file.endsWith(".test.ts"))
   .map((file) => {
     const raw = readFileSync(join(SRC, file), "utf8");
     const withoutTheme = file === join("app", "globals.css") ? raw.replace(themeBlock, "") : raw;
-    return { file, source: stripComments(withoutTheme) };
+    return { file, source: stripCommentsFor(file, withoutTheme) };
   });
 
 /** The value expression after `property:` (or `property=` / `property =`), up to the end of the entry. */

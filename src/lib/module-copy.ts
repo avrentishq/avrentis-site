@@ -11,7 +11,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { publicModuleKeys, type ModuleKey } from "@/lib/brand";
+import { BRAND, publicModuleKeys, type ModuleKey } from "@/lib/brand";
 import { formatEnglishList } from "@/lib/english-list";
 import { TRAIL_SEALED } from "@/lib/record-keeping";
 
@@ -95,7 +95,7 @@ export const MODULE_COPY: Record<ModuleKey, ModuleCopy> = {
     icon: Link2,
     tagline: "External systems and integrations",
     summary:
-      "Push Avrentis events into your accounting, HR, or data-warehouse stack through webhooks and a typed API — your operational record flowing where it needs to go.",
+      `Push ${BRAND.name} events into your accounting, HR, or data-warehouse stack through webhooks and a typed API — your operational record flowing where it needs to go.`,
   },
 };
 

@@ -197,6 +197,10 @@ Run these locally before you claim anything is done.
   summary from `MODULE_COPY` (`src/lib/module-copy.ts`); a sentence naming request types
   uses `requestTypeList()`. `module-names.lock.test.ts` fails on a file that lists four or
   more modules by hand.
+- **Never type the brand name.** Copy reads `BRAND.name` (from `@/lib/brand`); a module's
+  short name is `moduleShortName(key)` / `moduleShortNameFor(apiModule)`, never a cut prefix.
+  `brand-name.lock.test.ts` fails on a typed "Avrentis" outside `brand.ts` and the changelog.
+  Lock tests strip comments with the shared `src/lib/test-support/strip-comments.ts`.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts` (`moduleName(key)` in titles and prose —
   `module-names.lock.test.ts` fails on a typed "Avrentis <Module>" anywhere else). This includes BRANCHING on a tier:

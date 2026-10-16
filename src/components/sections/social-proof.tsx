@@ -7,7 +7,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { ButtonLink } from "@/components/ui/button";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
 import { INTERFACE_LANGUAGE_NAMES, SUPPORTED_CURRENCY_COUNT } from "@/lib/languages-and-currencies";
@@ -33,7 +33,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: Landmark,
     title: "We govern the authority to pay — your bank moves the money",
-    body: "Avrentis governs who is allowed to approve a payment, and proves it. Your licensed bank moves the money. That clean separation — clear authority on our side, settlement on theirs — is the point.",
+    body: `${BRAND.name} governs who is allowed to approve a payment, and proves it. Your licensed bank moves the money. That clean separation — clear authority on our side, settlement on theirs — is the point.`,
   },
   {
     icon: MapPin,
@@ -49,7 +49,7 @@ export function SocialProof() {
       <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
         <SectionIntro
           align="center"
-          eyebrow="WHY TEAMS TRUST AVRENTIS"
+          eyebrow={`WHY TEAMS TRUST ${BRAND.name.toUpperCase()}`}
           eyebrowStyle={{ marginBottom: "16px" }}
           title="Authority you can verify — down to the database."
           titleStyle={{ fontWeight: 400, fontSize: "var(--text-display-xs)", lineHeight: 1.3, margin: "0 auto 12px" }}
@@ -167,7 +167,7 @@ export function SocialProof() {
                 lineHeight: 1.6,
               }}
             >
-              Work directly with the team building Avrentis and help shape what
+              Work directly with the team building {BRAND.name} and help shape what
               ships next. Honest about where we are — serious about where we&rsquo;re going.
             </p>
           </div>

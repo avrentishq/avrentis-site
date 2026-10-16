@@ -18,6 +18,7 @@ import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { SUPPORTED_CURRENCY_NAMES } from "@/lib/languages-and-currencies";
 import { PayPreview } from "@/components/product/previews/pay-preview";
 import { FEATURED_VOUCHER } from "@/components/product/demo-fixtures";
+import { BRAND } from "@/lib/brand";
 
 
 const config: ModuleConfig = {
@@ -46,7 +47,7 @@ const config: ModuleConfig = {
       title: "Bank-ready payment instructions",
       planFeature: "bankLetterGeneration",
       body:
-        "The moment the MD sanctions a voucher, Avrentis generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours.",
+        `The moment the MD sanctions a voucher, ${BRAND.name} generates a formatted bank payment instruction letter — addressed to the beneficiary's bank, signed with the MD's digital signature. Hand it to your bank; the money moves on your rails, not ours.`,
     },
     {
       icon: ShieldCheck,

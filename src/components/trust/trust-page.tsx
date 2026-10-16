@@ -25,7 +25,7 @@ import {
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
-import { LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink } from "@/components/ui/button";
@@ -171,7 +171,7 @@ export function TrustProductPage() {
             titleClassName="lg:!text-display-sm"
             lede={
               <>
-                Avrentis has not yet completed a SOC 2 or ISO 27001 audit. Our
+                {BRAND.name} has not yet completed a SOC 2 or ISO 27001 audit. Our
                 policies follow SOC 2 structure, and we&rsquo;re transparent about
                 where we are with each framework.
               </>

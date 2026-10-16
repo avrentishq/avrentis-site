@@ -3,12 +3,13 @@
 import { Webhook, KeyRound, Network, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { ConnectPreview } from "@/components/product/previews/connect-preview";
+import { BRAND } from "@/lib/brand";
 
 const config: ModuleConfig = {
   moduleKey: "connect",
-  headline: "Avrentis in your existing stack.",
+  headline: `${BRAND.name} in your existing stack.`,
   description:
-    "The operational record Avrentis builds doesn't have to stay inside Avrentis. Push sanctioned vouchers into your accounting system, issued POs into your ERP, or role-changes into your HRIS — using typed webhooks, scoped API keys, and a documented REST API.",
+    `The operational record ${BRAND.name} builds doesn't have to stay inside ${BRAND.name}. Push sanctioned vouchers into your accounting system, issued POs into your ERP, or role-changes into your HRIS — using typed webhooks, scoped API keys, and a documented REST API.`,
   previewPath: "settings / integrations",
   preview: <ConnectPreview />,
 
@@ -32,7 +33,7 @@ const config: ModuleConfig = {
       title: "Build any integration on a typed API",
       planFeature: "apiAccess",
       body:
-        "A documented REST API and typed webhooks let you connect Avrentis to your accounting system, ERP, or HRIS. Single sign-on via OpenID Connect (OIDC) or SAML 2.0, and automated user provisioning via SCIM, are built in.",
+        `A documented REST API and typed webhooks let you connect ${BRAND.name} to your accounting system, ERP, or HRIS. Single sign-on via OpenID Connect (OIDC) or SAML 2.0, and automated user provisioning via SCIM, are built in.`,
     },
     {
       icon: ShieldCheck,
@@ -44,16 +45,16 @@ const config: ModuleConfig = {
 
   useCases: [
     {
-      title: "Reconcile Avrentis payments into your accounting system",
+      title: `Reconcile ${BRAND.name} payments into your accounting system`,
       planFeature: "apiAccess",
       body:
-        "When the MD sanctions a voucher, Avrentis fires a signed document.sanctioned webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap. Or read the balanced journal entries for approved vouchers and payments straight from the API, coded with your own chart of accounts.",
+        `When the MD sanctions a voucher, ${BRAND.name} fires a signed document.sanctioned webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap. Or read the balanced journal entries for approved vouchers and payments straight from the API, coded with your own chart of accounts.`,
     },
     {
       title: "React to role changes in your own systems",
       planFeature: "apiAccess",
       body:
-        "Subscribe to the user.role_changed webhook and forward it wherever you need — an internal dashboard, a review queue, your data warehouse. (Avrentis emits the event; provisioning stays one-directional — your IdP remains the source of authority via inbound SCIM.)",
+        `Subscribe to the user.role_changed webhook and forward it wherever you need — an internal dashboard, a review queue, your data warehouse. (${BRAND.name} emits the event; provisioning stays one-directional — your IdP remains the source of authority via inbound SCIM.)`,
     },
     {
       title: "Notify the right Slack channel on every sanction",

@@ -15,7 +15,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -107,7 +107,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "IDENTITY & SINGLE SIGN-ON",
     title: "Sign in with the identity provider you already run.",
     lede:
-      "Avrentis speaks the standard identity protocols — OpenID Connect and SAML 2.0 — with no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace, and each person keeps one sign-in across every company they work in.",
+      `${BRAND.name} speaks the standard identity protocols — OpenID Connect and SAML 2.0 — with no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace, and each person keeps one sign-in across every company they work in.`,
     planFeature: "sso",
     integrations: [
       { name: "SAML 2.0", summary: "Federated sign-in with signed assertions, for any SAML identity provider.", availability: "available" },
@@ -126,7 +126,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "DIRECTORY PROVISIONING",
     title: "Users flow from your IdP — and leave when they should.",
     lede:
-      `SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked ${ACCESS_ENDS}. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.`,
+      `SCIM 2.0 keeps ${BRAND.name} in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked ${ACCESS_ENDS}. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.`,
     planFeature: "sso",
     integrations: [
       { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
@@ -160,7 +160,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "ACCOUNTING & ERP",
     title: "Approved spending lands in your ledger, coded your way.",
     lede:
-      "Avrentis owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.",
+      `${BRAND.name} owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.`,
     planFeature: "budgetCodes",
     integrations: [
       { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line.", availability: "available" },
@@ -408,7 +408,7 @@ export function IntegrationsCataloguePage({
               display: "inline-block",
               marginBottom: "20px",
             }}
-            title="Avrentis plugs into the stack you already run."
+            title={`${BRAND.name} plugs into the stack you already run.`}
             titleStyle={{
               fontWeight: 700,
               fontSize: "var(--text-display-xs)",

@@ -485,7 +485,7 @@ export function Hero() {
             }}
           >
             Most organisations run on scattered emails, informal approvals, and
-            no clear record of who was allowed to approve what. Avrentis makes
+            no clear record of who was allowed to approve what. {BRAND.name} makes
             authority explicit — every decision routed to the right approver,
             enforced, and on record permanently.
           </m.p>

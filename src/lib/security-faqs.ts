@@ -1,6 +1,7 @@
 import { CONTACT_EMAIL, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
 import { DATA_RESIDENCY_SUMMARY, RESIDENCY_REQUEST_LINE } from "@/lib/subprocessors";
 import { ACCESS_ENDS } from "@/lib/compliance-posture";
+import { BRAND } from "@/lib/brand";
 /**
  * Security FAQ content — the single source for both the visible accordion on
  * /product/security and the FAQPage JSON-LD on that route. Keeping them in one
@@ -14,8 +15,8 @@ interface SecurityFaq {
 
 export const SECURITY_FAQS: SecurityFaq[] = [
   {
-    q: "Who at Avrentis can access our data?",
-    a: "No Avrentis engineer can read customer data by default. Platform administrators can be granted audit-logged, permission-gated access to a specific tenant for support purposes — every action is written to the same tamper-evident audit trail the customer sees.",
+    q: `Who at ${BRAND.name} can access our data?`,
+    a: `No ${BRAND.name} engineer can read customer data by default. Platform administrators can be granted audit-logged, permission-gated access to a specific tenant for support purposes — every action is written to the same tamper-evident audit trail the customer sees.`,
   },
   {
     q: "What happens when someone leaves our organisation?",

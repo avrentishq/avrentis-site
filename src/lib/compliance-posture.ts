@@ -1,6 +1,7 @@
 import type { DataProtectionLaw } from "@avrentishq/core/region/countries";
 
 import { formatEnglishList } from "@/lib/english-list";
+import { BRAND } from "@/lib/brand";
 
 /**
  * Where Avrentis stands against each framework and law a buyer asks about —
@@ -67,7 +68,7 @@ export const COMPLIANCE_FRAMEWORKS: readonly ComplianceFramework[] = [
     name: "ISO 27001",
     status: "not_certified",
     body:
-      "Avrentis is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how we handle access, assets, encryption, operations and suppliers.",
+      `${BRAND.name} is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how we handle access, assets, encryption, operations and suppliers.`,
   },
   {
     key: "gdpr",
@@ -89,7 +90,7 @@ export const COMPLIANCE_FRAMEWORKS: readonly ComplianceFramework[] = [
     name: "CCPA / CPRA",
     status: "designed_for",
     body:
-      "If you operate in California, your customers' rights to know what you hold about them, delete it, and opt out of sale are supported. Avrentis does not sell personal data — full stop.",
+      `If you operate in California, your customers' rights to know what you hold about them, delete it, and opt out of sale are supported. ${BRAND.name} does not sell personal data — full stop.`,
   },
 ];
 

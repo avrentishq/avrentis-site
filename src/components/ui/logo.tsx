@@ -91,7 +91,7 @@ function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMar
       viewBox={`0 0 ${size} ${size}`}
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="AVRENTIS"
+      aria-label={BRAND.name.toUpperCase()}
       role="img"
     >
       {/* Container */}

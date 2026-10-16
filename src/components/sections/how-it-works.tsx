@@ -16,6 +16,7 @@ import { STAGE_MOCKUPS } from "@/components/product/stage-mockups";
 import { BrowserFrame, appCaption } from "@/components/product/previews/preview-primitives";
 import { Z_INDEX } from "@/lib/layers";
 import { cardGridProps } from "@/lib/card-grid";
+import { BRAND } from "@/lib/brand";
 
 /**
  * The homepage's own words for each lifecycle stage. The stages — titles,
@@ -24,13 +25,13 @@ import { cardGridProps } from "@/lib/card-grid";
  */
 const STAGE_BODY: Record<LifecycleStageKey, string> = {
   submit:
-    "Any team member raises a request directly in Avrentis — payment voucher, purchase order, or any operational approval. They complete a structured form, attach supporting documents, and submit. The request enters the defined approval chain immediately — no emails, no chasing, no ambiguity about where it goes next.",
+    `Any team member raises a request directly in ${BRAND.name} — payment voucher, purchase order, or any operational approval. They complete a structured form, attach supporting documents, and submit. The request enters the defined approval chain immediately — no emails, no chasing, no ambiguity about where it goes next.`,
   review:
     "The right person is notified instantly — via the platform, email, WhatsApp, or SMS. They review the complete request and approve, query, or return it with a single action from any device, anywhere in the world. Decision makers are never a bottleneck because they are never out of reach.",
   sanction:
     "Final authority signs it off. The Managing Director sees every approval collected along the way and sanctions with a saved signature, stamped onto every document the request produces. Authority becomes binding — and the record shows exactly who gave it.",
   record:
-    "The moment a decision is made, Avrentis creates a complete, timestamped, tamper-evident record. Supporting documents are generated automatically. Every action is permanently attributed to a person, a time, and a decision. Your organisation builds institutional memory with every transaction — across every department, every team, every location.",
+    `The moment a decision is made, ${BRAND.name} creates a complete, timestamped, tamper-evident record. Supporting documents are generated automatically. Every action is permanently attributed to a person, a time, and a decision. Your organisation builds institutional memory with every transaction — across every department, every team, every location.`,
 };
 
 const FEATURES = [

@@ -6,6 +6,7 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import {
+  BRAND,
   MODULE_STATUS_LABELS,
   MODULES,
   moduleName,
@@ -49,7 +50,7 @@ export function FeaturesGrid() {
           titleClassName="lg:!text-display-lg"
           lede={
             <>
-              Avrentis is built as a suite of interconnected modules — each solving a
+              {BRAND.name} is built as a suite of interconnected modules — each solving a
               distinct operational challenge, all working together on one shared
               approval engine. For any organisation. In any industry.
             </>

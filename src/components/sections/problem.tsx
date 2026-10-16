@@ -16,6 +16,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { Z_INDEX } from "@/lib/layers";
 import { cardGridProps } from "@/lib/card-grid";
+import { BRAND } from "@/lib/brand";
 
 const CARDS: { icon: LucideIcon; title: string; body: string }[] = [
   {
@@ -154,7 +155,7 @@ export function Problem() {
             marginBottom: 0,
           }}
         >
-          Avrentis was built to solve all of this — for every organisation, in
+          {BRAND.name} was built to solve all of this — for every organisation, in
           every industry.
         </m.p>
       </div>

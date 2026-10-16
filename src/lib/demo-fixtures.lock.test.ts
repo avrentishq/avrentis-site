@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, sep } from "node:path";
-import ts from "typescript";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * The demo organisation's figures and the lead currency are stated once.
@@ -34,37 +34,6 @@ const FORBIDDEN: readonly { name: string; pattern: RegExp; fix: string }[] = [
   { name: "typed lead currency code", pattern: /\bNGN\b/, fix: "use LEAD_CURRENCY from @/lib/market" },
   { name: "typed featured voucher reference", pattern: /PV-2026-0184/, fix: "use FEATURED_VOUCHER.reference from demo-fixtures" },
 ];
-
-/**
- * The source with every comment removed. Comment ranges come from TypeScript's
- * own parser (the trivia around every token), so a `//` inside a string
- * ("https://…") or an apostrophe in JSX text is never mistaken for a comment or
- * a string; JSX comments (`{/* … *\/}`) are trivia inside braces and go too.
- */
-function stripComments(source: string): string {
-  const sourceFile = ts.createSourceFile("scanned.tsx", source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const ranges = new Map<number, number>();
-  const collect = (commentRanges: ts.CommentRange[] | undefined) => {
-    for (const range of commentRanges ?? []) ranges.set(range.pos, range.end);
-  };
-  const visit = (node: ts.Node) => {
-    // JSX text is not trivia: "// like this" inside an element is visible copy.
-    if (node.kind !== ts.SyntaxKind.JsxText) {
-      collect(ts.getLeadingCommentRanges(source, node.pos));
-      collect(ts.getTrailingCommentRanges(source, node.end));
-    }
-    for (const child of node.getChildren(sourceFile)) visit(child);
-  };
-  visit(sourceFile);
-  let output = "";
-  let cursor = 0;
-  for (const [start, end] of [...ranges].sort(([first], [second]) => first - second)) {
-    if (start < cursor) continue;
-    output += source.slice(cursor, start);
-    cursor = end;
-  }
-  return output + source.slice(cursor);
-}
 
 function violations(source: string): string[] {
   const code = stripComments(source);

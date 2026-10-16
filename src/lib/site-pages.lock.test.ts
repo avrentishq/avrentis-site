@@ -5,6 +5,7 @@ import { STATIC_ROUTES } from "@/app/sitemap";
 import { LEGAL_PAGES, MODULE_ORDER, SITE_PAGE_ROUTES, SUITES, moduleHref, suiteHref, type LegalPageKey } from "@/lib/brand";
 import { SITE_ROUTES } from "@/lib/routes";
 import { isLaunchHidden } from "@/lib/launch";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * Core owns the paths other surfaces link to on this site — the legal pages
@@ -87,9 +88,6 @@ const LINKED_PATHS = [
 ];
 const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 /** A quoted path core owns: "/privacy", '/terms#x', `/contact?intent=…` and the like. */
-/** Code without comments: a comment naming a path explains it, it does not link to it. */
-const withoutComments = (source: string) =>
-  source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
 const HAND_TYPED_PATH = new RegExp(`["'\`](?:${LINKED_PATHS.map(escapeRegExp).join("|")})(?=["'\`#?])`);
 
 describe("pages core owns are never linked by a hand-typed path", () => {
@@ -111,13 +109,13 @@ describe("pages core owns are never linked by a hand-typed path", () => {
     const offenders = readdirSync(SRC, { recursive: true, encoding: "utf8" })
       .filter((file) => /\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file))
       .filter((file) => !ROUTE_INVENTORIES.has(file))
-      .filter((file) => HAND_TYPED_PATH.test(withoutComments(readFileSync(join(SRC, file), "utf8"))));
-    if (HAND_TYPED_PATH.test(withoutComments(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")))) offenders.push("next.config.ts");
+      .filter((file) => HAND_TYPED_PATH.test(stripComments(readFileSync(join(SRC, file), "utf8"))));
+    if (HAND_TYPED_PATH.test(stripComments(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")))) offenders.push("next.config.ts");
     // The home page is "/", too common a string to match everywhere; a link to it is not.
     const HOME_LINK = /\bhref(?:=|:\s*)["']\/["']/;
     expect(HOME_LINK.test('<Link href="/">')).toBe(true);
     for (const file of readdirSync(SRC, { recursive: true, encoding: "utf8" })) {
-      if (/\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file) && HOME_LINK.test(withoutComments(readFileSync(join(SRC, file), "utf8")))) offenders.push(file);
+      if (/\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file) && HOME_LINK.test(stripComments(readFileSync(join(SRC, file), "utf8")))) offenders.push(file);
     }
     expect(offenders, "link through SITE_ROUTES / moduleHref / suiteHref / LEGAL_PAGES / SITE_PAGES / contactHref").toEqual([]);
   });

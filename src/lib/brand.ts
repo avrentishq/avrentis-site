@@ -154,6 +154,15 @@ export function moduleShortName(key: ModuleKey): string {
   return MODULES[key].shortName;
 }
 
+/**
+ * The short name for a module the pricing API names — core's label when the
+ * site models the key, else the API's own name (a module the site does not
+ * model yet still reads correctly, never with a hand-cut prefix).
+ */
+export function moduleShortNameFor(module: { key: string; name: string }): string {
+  return Object.hasOwn(MODULES, module.key) ? moduleShortName(module.key as ModuleKey) : module.name;
+}
+
 /** A module's product page. */
 export function moduleHref(key: ModuleKey): string {
   return `/product/${key}`;

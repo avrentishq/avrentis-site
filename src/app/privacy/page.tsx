@@ -22,7 +22,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Avrentis (&ldquo;Avrentis&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
+          {BRAND.name} (&ldquo;{BRAND.name}&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
           records platform available at <Link href={SITE_ROUTES.home}>{SITE_HOST}</Link> and{" "}
           <a href={BRAND.appUrl} rel="noreferrer">
             {new URL(BRAND.appUrl).host}
@@ -80,7 +80,7 @@ const SECTIONS: LegalSection[] = [
         <p>We process personal data only where we have a lawful basis to do so:</p>
         <ul>
           <li>
-            <strong>Contract.</strong>{" "}To provide the Avrentis service to your organisation — authenticating users,
+            <strong>Contract.</strong>{" "}To provide the {BRAND.name} service to your organisation — authenticating users,
             routing approvals, generating documents, maintaining audit records.
           </li>
           <li>
@@ -120,7 +120,7 @@ const SECTIONS: LegalSection[] = [
             over-broad requests and notify affected customers where law permits.
           </li>
           <li>
-            <strong>In a corporate transaction.</strong>{" "}If Avrentis is involved in a merger, acquisition, or asset
+            <strong>In a corporate transaction.</strong>{" "}If {BRAND.name} is involved in a merger, acquisition, or asset
             sale, data may transfer under equivalent privacy commitments.
           </li>
           <li>
@@ -147,7 +147,7 @@ const SECTIONS: LegalSection[] = [
           edit. Several organisations seeing the same change to the same supplier in the same period see a warning.
         </p>
         <p>
-          The Verification Network lets Avrentis surface that warning without any organisation disclosing anything
+          The Verification Network lets {BRAND.name} surface that warning without any organisation disclosing anything
           about itself or its records. It works as follows:
         </p>
         <ul>
@@ -231,7 +231,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          <strong>Account data.</strong>{" "}Retained while your organisation is an Avrentis customer, plus a short
+          <strong>Account data.</strong>{" "}Retained while your organisation is an {BRAND.name} customer, plus a short
           grace period for reactivation, then deleted or anonymised.
         </p>
         <p>
@@ -288,7 +288,7 @@ const SECTIONS: LegalSection[] = [
           <li>Lodge a complaint with your local supervisory authority.</li>
         </ul>
         <p>
-          Where Avrentis processes your data on behalf of your employer (most features of the platform), we will
+          Where {BRAND.name} processes your data on behalf of your employer (most features of the platform), we will
           forward your request to the relevant administrator and assist with its fulfilment. For direct requests,
           email <Link href={contactHref("privacy")}>our privacy enquiry form</Link>.
         </p>
@@ -317,7 +317,7 @@ const SECTIONS: LegalSection[] = [
     heading: "Children",
     body: (
       <p>
-        Avrentis is a business platform. It is not directed at children under 16 and we do not knowingly collect
+        {BRAND.name} is a business platform. It is not directed at children under 16 and we do not knowingly collect
         their personal data. If you believe a child has provided data to us, contact us and we will delete it.
       </p>
     ),
@@ -328,7 +328,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <p>
         We may update this policy as our service evolves or laws change. Material changes will be communicated to
-        account administrators and noted on this page with a new effective date. Continuing to use Avrentis after a
+        account administrators and noted on this page with a new effective date. Continuing to use {BRAND.name} after a
         change constitutes acceptance of the updated policy.
       </p>
     ),
@@ -352,7 +352,7 @@ export default function PrivacyPage() {
     <LegalPageShell
       eyebrow="PRIVACY POLICY"
       title="How we handle your data."
-      lede="This policy is a plain-language summary of how Avrentis collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords."
+      lede={`This policy is a plain-language summary of how ${BRAND.name} collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords.`}
       effectiveDate="16 October 2026"
       sections={SECTIONS}
       footerNote={

@@ -10,11 +10,11 @@ import { pageMetadata } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
-import { MARKET_SCOPE } from "@/lib/market";
+import { MARKET_REGION, MARKET_SCOPE } from "@/lib/market";
 import { SITE_ROUTES } from "@/lib/routes";
 import { cardGridProps } from "@/lib/card-grid";
 
-const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
+const ABOUT_DESCRIPTION = `Why we built ${BRAND.name} — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_ROUTES.about,
@@ -69,7 +69,7 @@ export default function AboutPage() {
               surface="dark"
               reveal="none"
               titleAs="h1"
-              eyebrow="About Avrentis"
+              eyebrow={`About ${BRAND.name}`}
               eyebrowStyle={{ margin: "0 0 16px" }}
               title="We believe every organisation deserves operational structure."
               titleStyle={{ fontSize: "var(--text-display-xs)", fontWeight: 400, margin: "0 0 16px", lineHeight: 1.3 }}
@@ -100,7 +100,7 @@ export default function AboutPage() {
                 margin: "0 0 24px",
               }}
             >
-              Avrentis was built after watching capable organisations operate
+              {BRAND.name} was built after watching capable organisations operate
               below their potential — not because of a lack of talent or
               ambition, but because their internal processes had no structure.
               Decisions were made over email. Approvals were lost in inboxes.
@@ -115,8 +115,8 @@ export default function AboutPage() {
                 margin: "0 0 48px",
               }}
             >
-              We built Avrentis to change that — for every organisation, across
-              Nigeria and Africa.
+              We built {BRAND.name} to change that — for every organisation, across{" "}
+              {MARKET_REGION}.
             </p>
 
             <Eyebrow as="p" size="group" style={{ margin: "0 0 12px" }}>
@@ -275,7 +275,7 @@ export default function AboutPage() {
                 margin: 0,
               }}
             >
-              Whether you have questions about Avrentis, want to discuss how it
+              Whether you have questions about {BRAND.name}, want to discuss how it
               can work for your organisation, or need support — we are here.
             </p>
             <Link

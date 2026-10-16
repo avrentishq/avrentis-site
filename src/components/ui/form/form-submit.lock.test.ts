@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * Every form submits through `submitWithoutReset` (submit.ts), never through
@@ -20,11 +21,6 @@ function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
     .filter((file) => /\.tsx$/.test(file))
     .filter((file) => file !== SELF);
-}
-
-/** Source without comments, so a comment naming the handler cannot vouch for a form. */
-function withoutComments(text: string): string {
-  return text.replace(/\{\/\*[\s\S]*?\*\/\}/g, "").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
 }
 
 /** Each form's opening tag — up to the `>` that closes it, skipping braces and their contents. */
@@ -50,7 +46,7 @@ function formOpenings(text: string): string[] {
  * around a different action submits the wrong thing).
  */
 function unhandledForms(text: string): number {
-  return formOpenings(withoutComments(text)).filter((opening) => {
+  return formOpenings(stripComments(text)).filter((opening) => {
     const action = opening.match(/\baction=\{([^}]+)\}/)?.[1]?.trim();
     const handled = opening.match(/\bonSubmit=\{submitWithoutReset\(([^)]+)\)\}/)?.[1]?.trim();
     return !handled || (action !== undefined && action !== handled);

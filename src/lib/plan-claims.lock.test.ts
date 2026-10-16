@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * Which plans a capability is on is the pricing API's fact, not the copy's.
@@ -18,9 +19,7 @@ const MODULE_PAGES = join("components", "product", "pages");
 
 /** Source with comments removed, so a code comment explaining the rule is not a violation. */
 function code(file: string): string {
-  return readFileSync(join(SRC, file), "utf8")
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/(^|[^:])\/\/.*$/gm, "$1");
+  return stripComments(readFileSync(join(SRC, file), "utf8"));
 }
 
 function sourceFiles(): string[] {

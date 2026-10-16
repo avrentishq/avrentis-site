@@ -32,7 +32,7 @@ const TYPED_TERMS: { name: string; pattern: RegExp }[] = [
   { name: "a spelled-out day count before 'trial'", pattern: /\b(?:seven|fourteen|thirty|sixty)[- ]day\b[^\n]{0,30}\btrial\b/i },
   { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno\s+(?:credit\s+)?card\b|\bcard\s+on\s+file\b/i },
   { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less\s+than|within)\s+(?:\d+|one|two|three|five|ten|fifteen|twenty|thirty)\s+minutes?\b|\bsetup\s+in\s+minutes\b/i },
-  { name: "the market typed out (MARKET_SCOPE)", pattern: /across Nigeria and Africa|Nigerian and African organisations|Pan-African platform/i },
+  { name: "the market typed out (MARKET_SCOPE)", pattern: /\bNigeria\s+and\s+Africa\b|\bNigerian\s+and\s+African\b|\bPan-African\s+platform\b/i },
 ];
 
 function sourceFiles(): string[] {
@@ -62,6 +62,7 @@ describe("trial terms come from core, never from copy", () => {
     expect(noCard!.test("No credit\n          card.")).toBe(true);
     expect(setupTime!.test("within fifteen\n          minutes")).toBe(true);
     expect(market!.test("Organisations across Nigeria and Africa")).toBe(true);
+    expect(market!.test("for every organisation, across\n              Nigeria and Africa.")).toBe(true);
     // And stay quiet on the interpolated form.
     expect(dayCount!.test("Start your {trialDays}-day trial")).toBe(false);
   });

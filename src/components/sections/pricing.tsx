@@ -18,7 +18,8 @@ import { formatCurrencyAmount } from "@/lib/money";
 import { EVERY_PLAN_LEAD } from "@/lib/plan-names";
 import { TRUST_SIGNALS } from "@/lib/compliance-posture";
 import { priceTaxNote } from "@/lib/price-tax";
-import { isModulePublic, SITE_PAGES } from "@/lib/brand";
+import { BRAND, isModulePublic, moduleShortNameFor, SITE_PAGES } from "@/lib/brand";
+import { formatEnglishList } from "@/lib/english-list";
 import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
 import { READ_ONLY_GRACE_DAYS, TRIAL_DURATION_DAYS, TRIAL_PLAN, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
@@ -31,6 +32,8 @@ type BillingCycle = "monthly" | "annual";
 
 /** The plan the card row features — core's recommended tier, never a typed key. */
 const FEATURED_PLAN = PLAN_ORDER.find((key) => PLAN_CATALOG[key].recommended);
+
+/** API module names carry the brand ("<brand> Payables"); cards show the bare name. */
 
 /** Months an annual plan does not charge for ("2 months free"), from core. */
 const ANNUAL_FREE_MONTHS = 12 - ANNUAL_BILLED_MONTHS;
@@ -114,7 +117,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   // paid modules and appear as badges. Empty on a stale/pre-deploy API → the
   // strip falls back to generic always-on copy (no module over-claim).
   const platformNames = (data.platformModules ?? []).map((m) =>
-    m.name.replace("Avrentis ", ""),
+    moduleShortNameFor(m),
   );
 
   // A module badge shows a plan's publicly-marketed modules from the API's
@@ -139,11 +142,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
       .filter((m) => m.availableToSectors?.length)
       .map((m) => {
         const sectors = m.availableToSectors as string[];
-        const list =
-          sectors.length > 1
-            ? `${sectors.slice(0, -1).join(", ")} and ${sectors[sectors.length - 1]}`
-            : sectors[0];
-        return `${m.name.replace("Avrentis ", "")} is for ${list}`;
+        return `${moduleShortNameFor(m)} is for ${formatEnglishList(sectors)}`;
       });
 
   // "All modules included" when a plan carries every module the site markets
@@ -161,7 +160,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
   const trialDays = data.trial?.days ?? TRIAL_DURATION_DAYS;
   const trialSeatCap = data.trial?.seatCap ?? TRIAL_SEAT_CAP;
   const trialModuleLabel = (trialPlan ? publicPlanModules(trialPlan) : [])
-    .map((m) => m.name.replace("Avrentis ", ""))
+    .map((m) => moduleShortNameFor(m))
     .join(" + ");
 
   return (
@@ -327,7 +326,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 margin: "0 0 6px",
               }}
             >
-              Try Avrentis
+              Try {BRAND.name}
             </h3>
             <p
               style={{
@@ -455,7 +454,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 margin: "12px 0 0",
               }}
             >
-              Exports carry an Avrentis Trial watermark until you upgrade. Data
+              Exports carry an {BRAND.name} Trial watermark until you upgrade. Data
               is preserved for {READ_ONLY_GRACE_DAYS} days after your trial ends.
             </p>
           </m.div>
@@ -506,7 +505,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             // on every plan" strip below; Requests is hidden by the site.
             const badgeModules = publicPlanModules(plan);
             const moduleNames = badgeModules
-              .map((m) => m.name.replace("Avrentis ", ""))
+              .map((m) => moduleShortNameFor(m))
               .join(" + ");
             // No hardcoded count in the label (it drifts — the same reason the
             // app's pricing lock test forbids "N modules" copy); a plan carrying

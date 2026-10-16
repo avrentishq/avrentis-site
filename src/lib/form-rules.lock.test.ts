@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * The forms' shared rules live once, in `src/lib/form-rules.ts`: the decoy
@@ -25,11 +26,6 @@ const RULES: { name: string; pattern: RegExp }[] = [
   { name: "typed length cap", pattern: /\.length\s*>=?\s*\d{2,}\b/ },
   { name: "typed maxLength", pattern: /maxLength=\{?\s*["']?\d/ },
 ];
-
-/** Source with block and line comments removed (a `//` inside a string such as a URL is kept). */
-function stripComments(text: string): string {
-  return text.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:"'`\\])\/\/.*$/gm, "$1");
-}
 
 function violations(text: string): string[] {
   const code = stripComments(text);

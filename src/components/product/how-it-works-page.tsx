@@ -31,7 +31,7 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { SITE_PAGES } from "@/lib/brand";
+import { BRAND, SITE_PAGES } from "@/lib/brand";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
@@ -101,7 +101,7 @@ const STAGE_COPY: Record<
   record: {
     subtitle: "Every action recorded and sealed. Every document, bank-ready.",
     icon: Archive,
-    body: "The moment the MD signs, Avrentis generates the bank-ready PDF and a timeline of the decision ready for audit. Both are filed in Records automatically. The record — every question, every change, every signature — is now sealed in a tamper-evident chain. Nobody, not even the person who runs the account, can edit history after the fact, and a change made any other way would show when the record is verified.",
+    body: `The moment the MD signs, ${BRAND.name} generates the bank-ready PDF and a timeline of the decision ready for audit. Both are filed in Records automatically. The record — every question, every change, every signature — is now sealed in a tamper-evident chain. Nobody, not even the person who runs the account, can edit history after the fact, and a change made any other way would show when the record is verified.`,
     bullets: [
       "Bank-ready payment letter with the MD's signature and your company letterhead",
       "Voucher or PO PDF with the full approval chain printed on the document itself",
@@ -336,7 +336,7 @@ export function HowItWorksProductPage() {
           <SectionIntro
             surface="dark"
             titleAs="h1"
-            eyebrow="How Avrentis works"
+            eyebrow={`How ${BRAND.name} works`}
             eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
             title={
               <>
@@ -613,7 +613,7 @@ export function HowItWorksProductPage() {
                   color: "var(--color-text-primary)",
                 }}
               >
-                With Avrentis
+                With {BRAND.name}
               </span>
             </div>
 

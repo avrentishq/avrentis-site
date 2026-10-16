@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { STAGGER_MAX_TOTAL, STAGGER_STEP, fadeUpOnScroll, staggerDelay } from "@/lib/animations";
+import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
  * The shared UI kit holds four patterns that were once copied by hand, and
@@ -21,14 +22,6 @@ function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
     .filter((file) => /\.tsx?$/.test(file))
     .filter((file) => !file.endsWith(".test.ts"));
-}
-
-/** Source with comments removed, so prose about a pattern is not the pattern. */
-function stripComments(source: string): string {
-  return source
-    .replace(/\{\/\*[\s\S]*?\*\/\}/g, "")
-    .replace(/\/\*[\s\S]*?\*\//g, "")
-    .replace(/(^|[^:"'`])\/\/.*$/gm, "$1");
 }
 
 /** The `{ … }` object literal that encloses `index`. */

@@ -17,7 +17,7 @@
 
 import Link from "next/link";
 
-import { SUITES, moduleHref, suiteHref, moduleName, type ModuleSuite } from "@/lib/brand";
+import { SUITES, moduleHref, suiteHref, moduleName, moduleShortName, type ModuleSuite } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
 import { SUITE_PAGES, suiteModuleKeys } from "@/lib/product-suites";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
@@ -260,7 +260,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                         color: "var(--color-text-primary)",
                       }}
                     >
-                      Explore {moduleName(key).replace("Avrentis ", "")}{" "}
+                      Explore {moduleShortName(key)}{" "}
                       &rarr;
                     </span>
                   </div>

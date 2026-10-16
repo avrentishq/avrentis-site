@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { BRAND } from "@/lib/brand";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 /**
  * Branded route error boundary. Must be a Client Component (Next.js
@@ -59,8 +60,8 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
           }}
         >
           Try again in a moment. If it keeps happening, email{" "}
-          <a href={`mailto:${BRAND.contactEmail}`} style={{ color: "var(--color-gold)", textDecoration: "none" }}>
-            {BRAND.contactEmail}
+          <a href={`mailto:${CONTACT_EMAIL.general}`} style={{ color: "var(--color-gold)", textDecoration: "none" }}>
+            {CONTACT_EMAIL.general}
           </a>{" "}
           and we&rsquo;ll take a look.
         </p>

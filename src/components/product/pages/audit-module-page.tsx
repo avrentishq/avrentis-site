@@ -3,21 +3,22 @@
 import { ShieldCheck, FileSearch, Download, LockKeyhole, UserSearch } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
+import { TRAIL_SEALED, TRAIL_SEALED_WITH_FINGERPRINT } from "@/lib/record-keeping";
 
 const config: ModuleConfig = {
   moduleKey: "audit",
   headline: "Compliance without the scramble.",
   description:
-    "Every submission, approval, query, signature, and access event — recorded to a tamper-evident audit trail, sealed daily, that no user — superadmins included — can edit. Export a regulator-ready bundle for any period up to a year, in one click.",
+    `Every submission, approval, query, signature, and access event — recorded to a tamper-evident audit trail, ${TRAIL_SEALED}, that no user — superadmins included — can edit. Export a regulator-ready bundle for any period up to a year, in one click.`,
   previewPath: "audit",
   preview: <AuditPreview />,
 
   pillars: [
     {
       icon: LockKeyhole,
-      title: "Tamper-evident, sealed daily",
+      title: `Tamper-evident, ${TRAIL_SEALED}`,
       body:
-        "Database triggers refuse edits and deletions of audit entries, and the platform has no API surface that can alter a historical entry. Each entry is chained to the one before it and the chain is sealed every night with a signed fingerprint, so any change would show — and you can check it yourself.",
+        `Database triggers refuse edits and deletions of audit entries, and the platform has no API surface that can alter a historical entry. Each entry is chained to the one before it and the chain is ${TRAIL_SEALED_WITH_FINGERPRINT}, so any change would show — and you can check it yourself.`,
     },
     {
       icon: FileSearch,

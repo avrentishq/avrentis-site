@@ -32,60 +32,18 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { CONTACT_EMAIL } from "@/lib/contacts";
+import { CONTACT_EMAIL, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { COMPLIANCE_FRAMEWORKS, complianceStatusLine } from "@/lib/compliance-posture";
+import {
+  DATA_RESIDENCY,
+  DATA_RESIDENCY_SUMMARY,
+  RESIDENCY_REQUEST_LINE,
+  SUBPROCESSOR_CATEGORIES,
+} from "@/lib/subprocessors";
 import { contactHref } from "@/app/contact/tabs";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
-
-const FRAMEWORKS = [
-  {
-    name: "SOC 2 (Type II)",
-    status: "Policies follow SOC 2 structure · audit on our roadmap",
-    body:
-      "Our policies for access, change management, security, uptime and incident response follow SOC 2 structure. A SOC 2 Type II audit and an independent penetration test are on our roadmap; neither is done yet. We can walk your team through each area on a review call.",
-  },
-  {
-    name: "ISO 27001",
-    status: "Not certified",
-    body:
-      "Avrentis is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how we handle access, assets, encryption, operations and suppliers.",
-  },
-  {
-    name: "GDPR & UK GDPR",
-    status: "Designed-for · DPA available",
-    body:
-      "The rights your users have under GDPR — to see their data, correct it, delete it, and take it with them — are all supported directly in the product. A Data Processing Agreement is available to sign on request.",
-  },
-  {
-    name: "NDPR (Nigeria)",
-    status: "Designed-for",
-    body:
-      "The way the platform handles personal data follows what Nigeria's data protection regulation asks for — lawful reason for collecting it, keeping only what's needed, protecting it, and responding quickly if something goes wrong.",
-  },
-  {
-    name: "CCPA / CPRA",
-    status: "Designed-for",
-    body:
-      "If you operate in California, your customers' rights to know what you hold about them, delete it, and opt out of sale are supported. Avrentis does not sell personal data — full stop.",
-  },
-];
-
-const SUBPROCESSOR_CATEGORIES = [
-  { purpose: "Managed PostgreSQL for application data", region: "United Kingdom (London)" },
-  { purpose: "Application hosting and compute", region: "United Kingdom (London)" },
-  { purpose: "Object storage for document attachments", region: "European Union" },
-  { purpose: "Content delivery network", region: "Global edge" },
-  { purpose: "Encrypted off-site backups", region: "European Union" },
-  { purpose: "Running the nightly backup job (briefly, before encryption)", region: "US" },
-  { purpose: "Managed Redis for sessions and rate-limiting", region: "United Kingdom (London)" },
-  { purpose: "Background job processing", region: "US" },
-  { purpose: "Transactional email delivery", region: "US" },
-  { purpose: "WhatsApp and SMS notification delivery", region: "Africa / international" },
-  { purpose: "Payment processing (where enabled)", region: "Africa / international" },
-  { purpose: "AI / large-language-model processing (where enabled, zero retention)", region: "US / EU" },
-  { purpose: "Error and performance monitoring", region: "European Union" },
-];
 
 const DOCUMENTS = [
   {
@@ -115,13 +73,13 @@ const DOCUMENTS = [
   {
     icon: AlertOctagon,
     title: "Responsible disclosure",
-    body: `Report security issues to ${CONTACT_EMAIL.security}. We triage within two business days.`,
+    body: `Report security issues to ${CONTACT_EMAIL.security}. We triage ${SECURITY_TRIAGE_TIME}.`,
     cta: { label: "Report a vulnerability", href: contactHref("disclosure") },
   },
   {
     icon: MapPin,
     title: "Data residency",
-    body: "Primary data in the UK (London) today. Need it to stay in a specific country or region? Talk to us.",
+    body: `Primary data in the ${DATA_RESIDENCY.primary} today. Need it to stay in a specific country or region? Talk to us.`,
     cta: { label: "Talk to us about residency", href: contactHref("security") },
   },
 ];
@@ -333,8 +291,9 @@ export function TrustProductPage() {
             where we are with each framework.
           </m.p>
 
-          <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {FRAMEWORKS.map((f, i) => (
+          {/* Wrapping flex: every row's cards grow to fill it, whatever the count. */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            {COMPLIANCE_FRAMEWORKS.map((f, i) => (
               <m.div
                 key={f.name}
                 variants={fadeUp}
@@ -343,6 +302,7 @@ export function TrustProductPage() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
+                  flex: "1 1 300px",
                   backgroundColor: "var(--color-bg-light)",
                   border: "1px solid var(--color-border)",
                   borderRadius: "10px",
@@ -367,7 +327,7 @@ export function TrustProductPage() {
                     color: "var(--color-gold-on-light)",
                   }}
                 >
-                  {f.status}
+                  {complianceStatusLine(f)}
                 </span>
                 <p style={{ fontFamily: sans, fontSize: "13px", color: "var(--color-text-muted)", lineHeight: 1.65, margin: 0 }}>
                   {f.body}
@@ -769,15 +729,13 @@ export function TrustProductPage() {
             {[
               {
                 label: "Today · default",
-                title: "United Kingdom (London)",
-                body:
-                  "Primary application data is hosted in the UK (London region). Document attachments are stored in the European Union, and nightly encrypted backups are kept with an independent provider in the European Union. Email, background processing and notification delivery use providers outside the UK — see the categories below. The marketing site runs on a global edge network.",
+                title: DATA_RESIDENCY.primary,
+                body: `${DATA_RESIDENCY_SUMMARY} The categories are listed below.`,
               },
               {
                 label: "Other regions",
                 title: "Need your data somewhere else?",
-                body:
-                  "If your policy, regulator or customer contracts require your data to stay in a specific country or region, talk to us. We will tell you plainly what we can support today.",
+                body: RESIDENCY_REQUEST_LINE,
               },
             ].map((r, i) => (
               <m.div

@@ -13,7 +13,7 @@
  * The contract, verified against the platform route:
  *
  *   202 + status "verification_sent"  → magic link sent
- *   202 + status "queued_for_review"  → human review, 1 business day
+ *   202 + status "queued_for_review"  → human review; no time is promised
  *   403 + status "rejected"           → auto-policy rejection; `message` is
  *                                       user-facing copy explaining why
  *   422 + errors.fieldErrors          → Zod flatten() from parseJsonBody
@@ -77,9 +77,11 @@ export function mapTrialResponse(
   if (httpStatus === 202 && payload.status === "queued_for_review") {
     return {
       status: "queued_for_review",
+      // The platform's own words when it omits a message: it promises a review,
+      // never a time, and this fallback must not promise more than it does.
       message:
         payload.message ??
-        "We'll be in touch within 4 hours during business hours.",
+        "We have received your trial request. A member of our team will review it and be in touch to set up your trial.",
     };
   }
 

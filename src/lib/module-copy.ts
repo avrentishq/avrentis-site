@@ -13,6 +13,7 @@ import {
 
 import { publicModuleKeys, type ModuleKey } from "@/lib/brand";
 import { formatEnglishList } from "@/lib/english-list";
+import { TRAIL_SEALED } from "@/lib/record-keeping";
 
 /**
  * Each module's card words and icon — the one copy every module list reads.
@@ -68,7 +69,7 @@ export const MODULE_COPY: Record<ModuleKey, ModuleCopy> = {
     icon: ClipboardCheck,
     tagline: "Compliance and accountability",
     summary:
-      "A tamper-evident log of every action — submissions, approvals, queries, signatures — sealed daily. Face internal and external audits without the manual scramble.",
+      `A tamper-evident log of every action — submissions, approvals, queries, signatures — ${TRAIL_SEALED}. Face internal and external audits without the manual scramble.`,
   },
   guard: {
     icon: ShieldAlert,

@@ -1,4 +1,6 @@
-import { CONTACT_EMAIL } from "@/lib/contacts";
+import { CONTACT_EMAIL, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { DATA_RESIDENCY_SUMMARY, RESIDENCY_REQUEST_LINE } from "@/lib/subprocessors";
+import { ACCESS_ENDS } from "@/lib/compliance-posture";
 /**
  * Security FAQ content — the single source for both the visible accordion on
  * /product/security and the FAQPage JSON-LD on that route. Keeping them in one
@@ -17,7 +19,7 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "What happens when someone leaves our organisation?",
-    a: "Deactivation ends their active sessions within seconds. If they are deprovisioned through your identity provider (SCIM), this happens automatically when it marks the user inactive. Their historical actions remain in the audit trail — the record is preserved, not deleted.",
+    a: `Deactivation ends their active sessions ${ACCESS_ENDS}. If they are deprovisioned through your identity provider (SCIM), this happens automatically when it marks the user inactive. Their historical actions remain in the audit trail — the record is preserved, not deleted.`,
   },
   {
     q: "Can we export everything — for an auditor, regulator, or migration?",
@@ -29,7 +31,7 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Where is our data hosted and can it stay in a specific region?",
-    a: "Today, the application and its database run in the UK (London). Document attachments and nightly encrypted backups are stored in the European Union. Email, background processing and notification delivery use providers outside the UK, and a global edge network sits in front. If your data must stay in a specific country or region, talk to us and we will tell you plainly what we can support today.",
+    a: `${DATA_RESIDENCY_SUMMARY} ${RESIDENCY_REQUEST_LINE}`,
   },
   {
     q: "Can we sign a Data Processing Agreement?",
@@ -37,6 +39,6 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Do you have a responsible disclosure policy?",
-    a: `Yes. Security researchers can report vulnerabilities to ${CONTACT_EMAIL.security}. We triage within two business days and do not pursue legal action against good-faith researchers following standard responsible-disclosure practice.`,
+    a: `Yes. Security researchers can report vulnerabilities to ${CONTACT_EMAIL.security}. We triage ${SECURITY_TRIAGE_TIME} and do not pursue legal action against good-faith researchers following standard responsible-disclosure practice.`,
   },
 ];

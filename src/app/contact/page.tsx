@@ -4,19 +4,20 @@ import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/contact/contact-form";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { isContactIntent, type ContactIntent } from "@/lib/brand";
+import { isContactIntent, SITE_PAGES, type ContactIntent } from "@/lib/brand";
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
+import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 
 export const metadata: Metadata = {
   title: "Contact — Avrentis",
   description:
-    "Talk to Avrentis. Contact us for a walkthrough, request a security review, or share a use case. A real person replies within one business day. To start a trial, use /trial.",
+    `Talk to Avrentis. Contact us for a walkthrough, request a security review, or share a use case. A real person replies ${ENQUIRY_REPLY_TIME}. To start a trial, use ${SITE_PAGES.trial()}.`,
   alternates: { canonical: contactHref() },
   openGraph: {
     title: "Contact Avrentis",
     description:
-      "Contact us or talk to our team. Real humans, one-business-day reply.",
+      `Contact us or talk to our team. Real humans, a reply ${ENQUIRY_REPLY_TIME}.`,
     url: canonical(contactHref()),
     type: "website",
   },

@@ -19,7 +19,7 @@ import {
   type ModuleKey,
   type ModuleSuite,
 } from "@/lib/brand";
-import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
+import { AUDIT_TRAIL_KEPT, TRAIL_SEALED_WITH_FINGERPRINT, TRAIL_SEALED } from "@/lib/record-keeping";
 
 /**
  * Copy for the four SUITE pages (`/product/<suite>`).
@@ -165,7 +165,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
         icon: FileLock2,
         title: "Nobody can quietly edit history — including us",
         body:
-          "Approvals, signatures, queries and access events are written to a tamper-evident trail that no user can modify — not an administrator, not a superadmin — and sealed every night with a signed fingerprint you can check yourself.",
+          `Approvals, signatures, queries and access events are written to a tamper-evident trail that no user can modify — not an administrator, not a superadmin — and ${TRAIL_SEALED_WITH_FINGERPRINT} you can check yourself.`,
       },
       {
         icon: Archive,
@@ -193,7 +193,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
       },
     },
     metaDescription:
-      "A tamper-evident record of every approval and document, sealed daily, searchable years later and exportable for auditors and regulators in one step.",
+      `A tamper-evident record of every approval and document, ${TRAIL_SEALED}, searchable years later and exportable for auditors and regulators in one step.`,
   },
 
   infrastructure: {

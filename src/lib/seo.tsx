@@ -9,6 +9,7 @@
 import { BRAND, siteUrl } from "@/lib/brand";
 import type { PricingData } from "@/lib/pricing";
 import { SITE_DESCRIPTION } from "@/lib/record-keeping";
+import { CONTACT_EMAIL } from "@/lib/contacts";
 
 /** The site's canonical origin — core's, the same one every other surface links to. */
 export const SITE_URL = BRAND.siteUrl;
@@ -42,7 +43,7 @@ export function organizationSchema(): Record<string, unknown> {
     slogan: "Every organisation runs on decisions. Avrentis makes sure they stick.",
     contactPoint: {
       "@type": "ContactPoint",
-      email: BRAND.supportEmail,
+      email: CONTACT_EMAIL.support,
       contactType: "customer support",
     },
   };

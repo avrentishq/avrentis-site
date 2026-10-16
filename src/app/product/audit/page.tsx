@@ -5,16 +5,17 @@ import { modulePageData } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
+import { TRAIL_SEALED } from "@/lib/record-keeping";
 
 export const metadata: Metadata = {
   title: `${moduleName("audit")} — Compliance without the scramble`,
   description:
-    "A tamper-evident, regulator-ready audit trail of every action in your organisation, sealed daily and verifiable without trusting us. Structured events, one-click exports, and policies that follow SOC 2 structure.",
+    `A tamper-evident, regulator-ready audit trail of every action in your organisation, ${TRAIL_SEALED} and verifiable without trusting us. Structured events, one-click exports, and policies that follow SOC 2 structure.`,
   alternates: { canonical: "/product/audit" },
   openGraph: {
     title: `${moduleName("audit")} — Compliance without the scramble`,
     description:
-      "Tamper-evident audit trail sealed daily, structured events, regulator-ready PDF + CSV exports. Every action on record for the life of your account.",
+      `Tamper-evident audit trail ${TRAIL_SEALED}, structured events, regulator-ready PDF + CSV exports. Every action on record for the life of your account.`,
     url: canonical("/product/audit"),
     type: "website",
   },

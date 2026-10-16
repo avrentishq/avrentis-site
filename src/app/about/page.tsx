@@ -7,6 +7,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@avrentishq/core/brand";
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
+import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 
 const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
@@ -375,7 +376,7 @@ export default function AboutPage() {
                 marginBottom: 0,
               }}
             >
-              We respond to all inquiries within one business day.
+              We respond to all inquiries {ENQUIRY_REPLY_TIME}.
             </p>
           </div>
         </section>

@@ -75,3 +75,34 @@ describe("record-keeping copy — documents are not permanent", () => {
     ).toEqual([]);
   });
 });
+
+describe("record-keeping facts are stated once", () => {
+  // The seal cadence, a retention span and how fast access ends were each typed
+  // into a dozen sentences; one of them said "kept for at least seven years"
+  // about documents whose retention is the plan's. Copy reads the constants in
+  // record-keeping.ts / compliance-posture.ts; retention spans come from the
+  // plan's limits (plan-limits.ts).
+  const HOMES = new Set([
+    join("lib", "record-keeping.ts"),
+    join("lib", "compliance-posture.ts"),
+    join("lib", "plan-limits.ts"),
+  ]);
+  const TYPED_FACT = /\bsealed (?:daily|nightly|every night)\b|\b(?:seven|\d+)[ -]years?\b(?! ago)|\bwithin seconds\b/i;
+  /** Code only: comments may explain the rule. The changelog records what was true on its date. */
+  const code = (file: string) =>
+    readFileSync(join(SRC, file), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
+
+  it("the detector catches the typed facts", () => {
+    for (const typed of ["sealed daily", "kept for at least seven years", "7-year retention", "ends within seconds"]) {
+      expect(TYPED_FACT.test(typed), typed).toBe(true);
+    }
+    expect(TYPED_FACT.test("findable in seconds")).toBe(false);
+  });
+
+  it("no copy types them", () => {
+    const offenders = copyFiles()
+      .filter((file) => /\.tsx?$/.test(file) && !HOMES.has(file) && !file.includes("changelog"))
+      .filter((file) => TYPED_FACT.test(code(file)));
+    expect(offenders, "read TRAIL_SEALED / DOCUMENTS_KEPT / ACCESS_ENDS, or a plan-limits line").toEqual([]);
+  });
+});

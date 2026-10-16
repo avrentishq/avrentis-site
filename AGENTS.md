@@ -42,11 +42,12 @@ Run these locally before you claim anything is done.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
-  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain`, `locales`, `sectors` and `modules/catalog`.**
+  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain`, `billing/retention`, `locales`, `sectors`, `modules/catalog` and `ui/card-grid` (+ its stylesheet, imported by `globals.css`).**
   Every other subpath of that package needs peer dependencies this repo does not install
-  (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
-  two rate-limit modules need only the Upstash packages the site already has — the rest of
-  `security/` does not, so it is admitted module by module, never as `security/*`).
+  (`region/countries` has type-only imports; `region/phone` needs a phone library the site does
+  not install, so subpaths are admitted one by one; the two rate-limit modules need only the
+  Upstash packages the site already has — the rest of `security/` does not, so it is admitted
+  module by module, never as `security/*`).
   Tests may also import the dependency-free `security/dependency-floors` and
   `brand/copy-guardrails`
   — they back the parity lock tests and never ship. "Runtime" includes `next.config.ts`
@@ -101,6 +102,14 @@ Run these locally before you claim anything is done.
   for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.
   `colour-tokens.lock.test.ts` enforces it. This codebase styles with inline `style={{}}`
   objects, not Tailwind classes.
+- **Legal, security and promise statements have one home each.** Framework status and law
+  names (`COMPLIANCE_FRAMEWORKS`, `DATA_PROTECTION_LAW_NAMES` keyed by core's law key,
+  `TRUST_SIGNALS`) live in `src/lib/compliance-posture.ts`; sub-processor categories, regions
+  and the residency summary in `src/lib/subprocessors.ts` (changing it changes the privacy
+  policy — bump its effective date); reply-time promises in `src/lib/contacts.ts`
+  (`ENQUIRY_REPLY_TIME`, `SECURITY_TRIAGE_TIME`; the trial queue promises none, like the
+  platform); seal cadence and retention phrases in `src/lib/record-keeping.ts`.
+  `record-keeping.lock.test.ts` fails on a typed seal cadence, year count or "within seconds".
 - **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`);
   the site URL is core's `BRAND.siteUrl`, used through `src/lib/seo.tsx` (`SITE_URL`,
   `canonical(path)`); `contacts.lock.test.ts` enforces both. The other origins are core's

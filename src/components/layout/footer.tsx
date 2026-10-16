@@ -173,7 +173,7 @@ export function Footer() {
               color: "var(--color-text-faint)",
             }}
           >
-            &copy; 2026 {BRAND.name} All rights reserved.
+            {BRAND.copyrightChrome}
           </span>
         </div>
       </div>

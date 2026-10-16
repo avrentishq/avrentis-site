@@ -36,6 +36,19 @@ describe("published addresses live in one place", () => {
     expect(offenders(EMAIL)).toEqual([]);
   });
 
+  it("no file reads core's addresses around contacts.ts", () => {
+    // Core owns the mailboxes; contacts.ts is the one place the site reads them,
+    // so a page cannot pick a different address for the same purpose.
+    expect(offenders(/\bBRAND\.(?:contactEmail|supportEmail|securityEmail|trialsEmail|statusEmail)\b/)).toEqual([]);
+  });
+
+  it("contact addresses are core's", async () => {
+    const { BRAND } = await import("@/lib/brand");
+    const { CONTACT_EMAIL } = await import("@/lib/contacts");
+    expect(CONTACT_EMAIL.general).toBe(BRAND.contactEmail);
+    expect(CONTACT_EMAIL.security).toBe(BRAND.securityEmail);
+  });
+
   it("no file types the site URL; it comes from core", () => {
     expect(offenders(SITE_URL_LITERAL)).toEqual([]);
   });

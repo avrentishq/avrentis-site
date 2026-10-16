@@ -10,12 +10,13 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA, TRIAL_DURATION_DAYS } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
+import { TRUST_SIGNALS } from "@/lib/compliance-posture";
 
 const trustSignals = [
   { icon: Globe, label: "Pan-African platform" },
-  { icon: Lock, label: "Enterprise-grade security" },
-  { icon: Zap, label: "Tamper-evident audit trail" },
-  { icon: Check, label: "Designed for GDPR & NDPR" },
+  { icon: Lock, label: TRUST_SIGNALS.security },
+  { icon: Zap, label: TRUST_SIGNALS.auditTrail },
+  { icon: Check, label: TRUST_SIGNALS.dataProtection },
 ];
 
 export function CtaBanner() {

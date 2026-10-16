@@ -10,6 +10,7 @@ import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
 import { INTERFACE_LANGUAGE_NAMES, SUPPORTED_CURRENCY_COUNT } from "@/lib/languages-and-currencies";
+import { TRAIL_SEALED } from "@/lib/record-keeping";
 
 // No testimonials and no invented metrics — the section states what the
 // platform enforces, which is verifiable, rather than borrowed credibility.
@@ -19,7 +20,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: ShieldCheck,
     title: "Every action on a tamper-evident record",
-    body: "Submissions, approvals, queries, and signatures are written to a tamper-evident audit trail, sealed daily. No user — not even an administrator — can edit or remove an entry, and you can check the seal yourself.",
+    body: `Submissions, approvals, queries, and signatures are written to a tamper-evident audit trail, ${TRAIL_SEALED}. No user — not even an administrator — can edit or remove an entry, and you can check the seal yourself.`,
   },
   {
     icon: Database,

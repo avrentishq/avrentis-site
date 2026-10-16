@@ -3,6 +3,7 @@ import { VaultModulePage } from "@/components/product/pages/vault-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `${moduleName("vault")} — Institutional memory, searchable`,
     description:
-      "Every financial record in one list, with its files and history — findable in seconds and kept for at least seven years.",
+      `Every financial record in one list, with its files and history — findable in seconds and ${DOCUMENTS_KEPT}.`,
     url: canonical("/product/vault"),
     type: "website",
   },

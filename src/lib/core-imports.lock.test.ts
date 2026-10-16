@@ -37,6 +37,9 @@ import { dirname, join } from "node:path";
  *     validates a submitted industry with. Its only import is type-only.
  *   - `modules/catalog` — each module's name, short name, suite and maturity,
  *     which `brand.ts` reads instead of re-typing them. Its only import is type-only.
+ *   - `billing/retention` — the statutory record-retention floor a page states
+ *     (the platform floor or the country's own, whichever is longer). Reaches
+ *     only `region/countries` and its own floor constant.
  *   - `ui/card-grid` + `ui/card-grid.css` — card rows that fill the width at any
  *     count, the same rule the product apps use. No imports; the stylesheet is
  *     pulled into `globals.css`, which is why `.css` files are scanned too.
@@ -44,7 +47,7 @@ import { dirname, join } from "node:path";
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
  * at build time and by its test; never imported by a page) may also read
- * `billing/retention` (and `modules/catalog` and `sectors`, runtime-allowed above); so may
+ * `billing/retention`, `modules/catalog` and `sectors` (all runtime-allowed above); so may
  * tests, which check the generator's output against core.
  *
  * The last test below walks each allowed subpath's VALUE import graph inside
@@ -71,9 +74,10 @@ const RUNTIME_ALLOWED = new Set([
   "modules/catalog",
   "ui/card-grid",
   "ui/card-grid.css",
+  "billing/retention",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
-const BUILD_ONLY_ALLOWED = new Set(["billing/retention"]);
+const BUILD_ONLY_ALLOWED = new Set<string>([]);
 const TEST_ONLY_ALLOWED = new Set([
   "security/dependency-floors",
   "brand/copy-guardrails",

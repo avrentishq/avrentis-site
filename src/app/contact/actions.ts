@@ -19,7 +19,7 @@ import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { CONTACT_FIELDS, type ContactFormState } from "./state";
 import { isContactIntent, type ContactIntent } from "@/lib/brand";
 import { submittedValues } from "@/lib/submitted-values";
-import { CONTACT_EMAIL } from "@/lib/contacts";
+import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -166,6 +166,6 @@ async function answerContact(formData: FormData): Promise<ContactFormState> {
 
   return {
     status: "success",
-    message: "Thanks — we've received your enquiry and will reply within one business day.",
+    message: `Thanks — we've received your enquiry and will reply ${ENQUIRY_REPLY_TIME}.`,
   };
 }

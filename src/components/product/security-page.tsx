@@ -45,6 +45,9 @@ import {
   InfraMockup,
 } from "./security-mockups";
 import { contactHref } from "@/app/contact/tabs";
+import { ENQUIRY_REPLY_TIME, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { COMPLIANCE_FRAMEWORKS, COMPLIANCE_STATUS_LABELS, ACCESS_ENDS } from "@/lib/compliance-posture";
+import { TRAIL_SEALED_WITH_FINGERPRINT } from "@/lib/record-keeping";
 
 const PILLARS = [
   {
@@ -63,13 +66,13 @@ const PILLARS = [
     icon: FileSearch,
     title: "Every action is on the record",
     body:
-      "Every submission, approval, question, and role change is recorded in a tamper-evident chain and sealed daily with a signed fingerprint you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.",
+      `Every submission, approval, question, and role change is recorded in a tamper-evident chain and ${TRAIL_SEALED_WITH_FINGERPRINT} you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.`,
   },
   {
     icon: KeyRound,
     title: "Access that keeps up with your people",
     body:
-      "When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends within seconds. Auditors and board-level guests get a clear start date and expiry.",
+      `When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends ${ACCESS_ENDS}. Auditors and board-level guests get a clear start date and expiry.`,
   },
 ];
 
@@ -112,12 +115,12 @@ const STACK = [
     number: "03",
     key: "session",
     title: "Session integrity",
-    subtitle: "When a role changes or a user leaves, their active sessions are invalid within seconds.",
+    subtitle: `When a role changes or a user leaves, their active sessions are invalid ${ACCESS_ENDS}.`,
     body:
       "Every active session is checked against a revocation signal on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation forces re-authentication on the next request. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
     icon: ShieldCheck,
     bullets: [
-      "Active sessions end within seconds of a role change, deactivation, or password change",
+      `Active sessions end ${ACCESS_ENDS} of a role change, deactivation, or password change`,
       "Two-factor sign-in by passkey, authenticator app, email code or SMS, with recovery codes — and your organisation decides which of those its people may enrol",
       "Require two-factor for everyone, or only for the roles you name. Single sign-on can count as that second factor, or be told not to when you would rather verify in-app. Platform administrators are always required, regardless",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
@@ -148,7 +151,7 @@ const STACK = [
     number: "05",
     key: "lifecycle",
     title: "Access lifecycle",
-    subtitle: "People come and go — access keeps up. Joiners get what they need; leavers lose access within seconds.",
+    subtitle: `People come and go — access keeps up. Joiners get what they need; leavers lose access ${ACCESS_ENDS}.`,
     body:
       "User provisioning flows in automatically from your identity provider (Okta, Microsoft Entra, Google Workspace). Auditor and board-level guests get a clear start date and expiry — access is withdrawn on the dot without manual clean-up. Document retention follows your plan; the audit trail itself is never purged while the account is active.",
     icon: KeyRound,
@@ -178,27 +181,6 @@ const STACK = [
     ],
     Mockup: InfraMockup,
     previewUrl: "encryption · platform infrastructure",
-  },
-];
-
-const COMPLIANCE = [
-  {
-    framework: "SOC 2",
-    status: "On our roadmap",
-    body:
-      "Our policies for access, audit, change management and encryption follow SOC 2 structure. A SOC 2 Type II audit and an independent penetration test are on our roadmap; neither is done yet.",
-  },
-  {
-    framework: "ISO 27001",
-    status: "Not certified",
-    body:
-      "Avrentis is not ISO 27001 certified and does not claim to be. If your review asks about it, we will walk your team through how our controls cover the areas you need.",
-  },
-  {
-    framework: "GDPR & NDPR",
-    status: "Designed-for",
-    body:
-      "Data-subject rights (access, rectification, deletion, export) are supported through the audit-log export and admin tooling. A DPA is available for signature on request.",
   },
 ];
 
@@ -704,19 +686,19 @@ export function SecurityProductPage() {
             through each control on a security review.
           </m.p>
 
-          <div
-            style={{ display: "grid", gap: "16px" }}
-            className="grid-cols-1 md:grid-cols-3"
-          >
-            {COMPLIANCE.map((c, i) => (
+          {/* Wrapping flex, not a 3-column grid: five frameworks would strand two
+              cards in a part-empty row; here every row's cards grow to fill it. */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
+            {COMPLIANCE_FRAMEWORKS.map((c, i) => (
               <m.div
-                key={c.framework}
+                key={c.key}
                 variants={fadeUp}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-40px" }}
                 transition={staggerDelay(i + 3)}
                 style={{
+                  flex: "1 1 300px",
                   backgroundColor: "rgba(var(--color-white-rgb), 0.03)",
                   border: "1px solid rgba(var(--color-white-rgb), 0.10)",
                   borderRadius: "10px",
@@ -732,7 +714,7 @@ export function SecurityProductPage() {
                       color: "var(--color-white)",
                     }}
                   >
-                    {c.framework}
+                    {c.name}
                   </span>
                   <span
                     style={{
@@ -747,7 +729,7 @@ export function SecurityProductPage() {
                       padding: "3px 8px",
                     }}
                   >
-                    {c.status}
+                    {COMPLIANCE_STATUS_LABELS[c.status].chip}
                   </span>
                 </div>
                 <p
@@ -801,7 +783,7 @@ export function SecurityProductPage() {
               >
                 Submit a responsible-disclosure report
               </Link>
-              . We triage within two business days and welcome good-faith
+              . We triage {SECURITY_TRIAGE_TIME} and welcome good-faith
               research. A DPA and sub-processor list are available on request.
             </p>
           </m.div>
@@ -933,7 +915,7 @@ export function SecurityProductPage() {
                   Got a question we haven&rsquo;t answered?
                 </div>
                 <div style={{ fontFamily: "var(--font-sans)", fontSize: "13px", color: "var(--color-text-muted)" }}>
-                  Talk directly with our team — we respond within one business day.
+                  Talk directly with our team — we respond {ENQUIRY_REPLY_TIME}.
                 </div>
               </div>
             </div>

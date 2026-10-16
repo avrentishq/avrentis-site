@@ -33,6 +33,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
+import { ACCESS_ENDS } from "@/lib/compliance-posture";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -86,7 +87,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "DIRECTORY PROVISIONING",
     title: "Users flow from your IdP — and leave when they should.",
     lede:
-      "SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked within seconds. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.",
+      `SCIM 2.0 keeps Avrentis in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked ${ACCESS_ENDS}. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.`,
     planFeature: "sso",
     integrations: [
       { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },

@@ -4,6 +4,7 @@ import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page
 import { canonical } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES, SITE_HOST } from "@/lib/brand";
+import { DATA_RESIDENCY, RESIDENCY_REQUEST_LINE, SUBPROCESSOR_CATEGORIES } from "@/lib/subprocessors";
 
 export const metadata: Metadata = {
   title: "Privacy policy — Avrentis",
@@ -199,25 +200,11 @@ const SECTIONS: LegalSection[] = [
           perform its function. The categories of provider we rely on today are:
         </p>
         <ul>
-          <li>Managed PostgreSQL for application data (UK, London).</li>
-          <li>Application hosting and compute (UK, London), with a global content-delivery edge.</li>
-          <li>Object storage for document attachments (European Union).</li>
-          <li>Encrypted off-site backups with an independent provider (European Union).</li>
-          <li>
-            Running the nightly backup job (US). The data is handled briefly, in memory, before it is encrypted, and
-            is not kept.
-          </li>
-          <li>Managed Redis for session state and rate-limiting (UK, London).</li>
-          <li>Background job processing (US).</li>
-          <li>Transactional email delivery (US).</li>
-          <li>WhatsApp and SMS notification delivery (Africa / international). WhatsApp is the primary real-time approval channel; recipient phone numbers and approval details are processed by this provider.</li>
-          <li>Payment processing, where enabled, for plan checkout and subscription billing.</li>
-          <li>
-            AI / large-language-model processing, where enabled. When you turn on optional AI features (such as
-            receipt and document extraction), the relevant document content is processed by a language model through a
-            model gateway configured for zero data retention.
-          </li>
-          <li>Error and performance monitoring (EU).</li>
+          {SUBPROCESSOR_CATEGORIES.map((category) => (
+            <li key={category.purpose}>
+              {category.purpose} — {category.region}.{category.detail ? ` ${category.detail}` : null}
+            </li>
+          ))}
         </ul>
         <p>
           The specific named providers in each category are shared with prospective
@@ -233,15 +220,13 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Primary application data is stored in the United Kingdom (London) on a managed PostgreSQL service. Document
-          attachments are stored in encrypted object storage in the European Union. Every night a full copy of the
-          data is encrypted with a key we hold offline and stored with an independent provider in the European Union,
-          locked against deletion: daily copies are kept for 30 days and monthly copies for 12 months.
+          Primary application data is stored in the {DATA_RESIDENCY.primary} on a managed PostgreSQL service. Document
+          attachments are stored in encrypted object storage in the {DATA_RESIDENCY.attachments}. Every night a full
+          copy of the data is encrypted with a key we hold offline and stored with an independent provider in the{" "}
+          {DATA_RESIDENCY.backups}, locked against deletion: daily copies are kept for 30 days and monthly copies for 12
+          months.
         </p>
-        <p>
-          If your data must stay in a specific country or region, contact us and we will tell you plainly what we can
-          support today.
-        </p>
+        <p>{RESIDENCY_REQUEST_LINE}</p>
       </>
     ),
   },
@@ -373,7 +358,7 @@ export default function PrivacyPage() {
       eyebrow="PRIVACY POLICY"
       title="How we handle your data."
       lede="This policy is a plain-language summary of how Avrentis collects, uses, and protects personal data. It is designed to be read by a person, not skimmed for keywords."
-      effectiveDate="7 October 2026"
+      effectiveDate="16 October 2026"
       sections={SECTIONS}
       footerNote={
         <>

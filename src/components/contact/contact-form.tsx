@@ -34,7 +34,8 @@ import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
 import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
 import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
-import { CONTACT_EMAIL } from "@/lib/contacts";
+import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { DATA_PROTECTION_LAW_NAMES } from "@/lib/compliance-posture";
 import { LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
 
 interface IntentCopy {
@@ -49,7 +50,7 @@ const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
     eyebrow: "CONTACT US",
     headline: "Talk to our team.",
     lede:
-      "Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. A real person replies within one business day.",
+      `Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. A real person replies ${ENQUIRY_REPLY_TIME}.`,
     cta: "Contact us",
   },
   security: {
@@ -63,14 +64,14 @@ const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
     eyebrow: "RESPONSIBLE DISCLOSURE",
     headline: "Report a security vulnerability.",
     lede:
-      "Thank you for looking. Describe what you found, how to reproduce it, and what impact you think it has. We triage security reports within two business days and do not pursue legal action against good-faith research.",
+      `Thank you for looking. Describe what you found, how to reproduce it, and what impact you think it has. We triage security reports ${SECURITY_TRIAGE_TIME} and do not pursue legal action against good-faith research.`,
     cta: "Submit report",
   },
   privacy: {
     eyebrow: "DATA-PROTECTION ENQUIRY",
     headline: "Privacy, data-subject rights, or a DPA.",
     lede:
-      "Whether you're exercising a right under GDPR / NDPR / CCPA, requesting our DPA, or asking a privacy-policy question — describe what you need and we'll route it to the right person.",
+      `Whether you're exercising a right under ${DATA_PROTECTION_LAW_NAMES.gdpr.short} / ${DATA_PROTECTION_LAW_NAMES.ndpa.short} / CCPA, requesting our DPA, or asking a privacy-policy question — describe what you need and we'll route it to the right person.`,
     cta: "Send privacy enquiry",
   },
   legal: {
@@ -126,7 +127,7 @@ const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
     eyebrow: "CONTACT US",
     headline: "Let's talk.",
     lede:
-      "Whether you're evaluating Avrentis, have a question our product pages didn't answer, or want to partner — we read every message and reply within one business day.",
+      `Whether you're evaluating Avrentis, have a question our product pages didn't answer, or want to partner — we read every message and reply ${ENQUIRY_REPLY_TIME}.`,
     cta: "Contact us",
   },
 };
@@ -339,7 +340,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             maxWidth: "420px",
           }}
         >
-          {state.message ?? "Thanks — we'll reply within one business day."}
+          {state.message ?? `Thanks — we'll reply ${ENQUIRY_REPLY_TIME}.`}
         </p>
         <Link
           href="/"
@@ -469,7 +470,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
               {[
                 "A real person reads every enquiry — no routing bots.",
-                "We reply within one business day.",
+                `We reply ${ENQUIRY_REPLY_TIME}.`,
                 "For enterprise enquiries, we can sign an NDA before the first call.",
               ].map((point) => (
                 <li key={point} style={{ display: "flex", gap: "9px", alignItems: "baseline" }}>

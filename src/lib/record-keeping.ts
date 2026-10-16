@@ -20,6 +20,14 @@ export const AUDIT_TRAIL_KEPT = "kept for the life of your account";
 /** Completes "Attachments are ___". */
 export const DOCUMENTS_KEPT = "kept for your plan's retention period, never less than the legal minimum";
 
+/**
+ * How often the trail is sealed with a signed fingerprint anyone can check —
+ * the adjectival form for a list, and the full clause for a sentence. One
+ * cadence, so no page can say "daily" while another says "hourly".
+ */
+export const TRAIL_SEALED = "sealed daily";
+export const TRAIL_SEALED_WITH_FINGERPRINT = "sealed every night with a signed fingerprint";
+
 /** Site-wide meta description: root layout and the SoftwareApplication schema. */
 export const SITE_DESCRIPTION =
   `${BRAND.name} replaces scattered emails, paper trails, and manual processes with structure, ` +

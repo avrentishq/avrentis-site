@@ -44,7 +44,7 @@ import {
 } from "./security-mockups";
 import { BrowserFrame } from "./previews/preview-primitives";
 import { contactHref } from "@/app/contact/tabs";
-import { ENQUIRY_REPLY_TIME, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { ENQUIRY_PROMISE, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
 import { COMPLIANCE_FRAMEWORKS, COMPLIANCE_STATUS_LABELS, ACCESS_ENDS } from "@/lib/compliance-posture";
 import { TRAIL_SEALED_WITH_FINGERPRINT } from "@/lib/record-keeping";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
@@ -708,7 +708,7 @@ export function SecurityProductPage() {
                   Got a question we haven&rsquo;t answered?
                 </div>
                 <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-muted)" }}>
-                  Talk directly with our team — we respond {ENQUIRY_REPLY_TIME}.
+                  Talk directly with our team. {ENQUIRY_PROMISE}
                 </div>
               </div>
             </div>

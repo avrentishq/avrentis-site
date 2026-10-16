@@ -37,7 +37,7 @@ import { submitContact } from "@/app/contact/actions";
 import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
 import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
 import { CONTACT_TOPICS } from "@/app/contact/topics";
-import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { CONTACT_EMAIL, ENQUIRY_PROMISE } from "@/lib/contacts";
 import { BRAND, LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
 import { FORM_LIMITS, hasEmailShape, MESSAGE_MIN_LENGTH } from "@/lib/form-rules";
 import { SITE_ROUTES } from "@/lib/routes";
@@ -204,7 +204,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             maxWidth: "var(--measure-compact)",
           }}
         >
-          {state.message ?? `Thanks — we'll reply ${ENQUIRY_REPLY_TIME}.`}
+          {state.message ?? `Thanks — we've received your enquiry. ${ENQUIRY_PROMISE}`}
         </p>
         <Link
           href={SITE_ROUTES.home}
@@ -306,8 +306,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
               {[
-                "A real person reads every enquiry — no routing bots.",
-                `We reply ${ENQUIRY_REPLY_TIME}.`,
+                `${ENQUIRY_PROMISE} No routing bots.`,
                 "For enterprise enquiries, we can sign an NDA before the first call.",
               ].map((point) => (
                 <li key={point} style={{ display: "flex", gap: "9px", alignItems: "baseline" }}>

@@ -131,9 +131,9 @@ Run these locally before you claim anything is done.
   names (`COMPLIANCE_FRAMEWORKS`, `DATA_PROTECTION_LAW_NAMES` keyed by core's law key,
   `TRUST_SIGNALS`) live in `src/lib/compliance-posture.ts`; sub-processor categories, regions
   and the residency summary in `src/lib/subprocessors.ts` (changing it changes the privacy
-  policy — bump its effective date); reply-time promises in `src/lib/contacts.ts`
-  (`ENQUIRY_REPLY_TIME`, `SECURITY_TRIAGE_TIME`; the trial queue promises none, like the
-  platform); seal cadence and retention phrases in `src/lib/record-keeping.ts`.
+  policy — bump its effective date); what an enquirer is promised in `src/lib/contacts.ts`
+  (`ENQUIRY_PROMISE` — a person reads every message, never a reply time, like the platform;
+  only `SECURITY_TRIAGE_TIME` states a time); seal cadence and retention phrases in `src/lib/record-keeping.ts`.
   `record-keeping.lock.test.ts` fails on a typed seal cadence, year count or "within seconds".
 - **Page metadata comes from `pageMetadata({ path, title, description })`** (`src/lib/seo.tsx`;
   suites use `suitePageMetadata(key)`). Next merges metadata shallowly, so a page that sets

@@ -73,6 +73,18 @@ describe("published addresses live in one place", () => {
     expect(CONTACT_EMAIL.security).toBe(BRAND.securityEmail);
   });
 
+  it("no copy promises a reply time", () => {
+    // The site promises a person reads every message (ENQUIRY_PROMISE), not when
+    // they answer; only security triage states a time. The privacy policy's own
+    // data-request commitment is legal text with its own effective date.
+    const REPLY_TIME = /\b(?:reply|replies|respond|responds)\b[^.\n]{0,40}\bbusiness\s+days?\b/i;
+    expect(REPLY_TIME.test("we reply within one business day")).toBe(true);
+    const files = offenders(REPLY_TIME).filter(
+      (file) => file !== join("src", "lib", "contacts.ts") && file !== join("src", "app", "privacy", "page.tsx"),
+    );
+    expect(files).toEqual([]);
+  });
+
   it("no file types the site URL; it comes from core", () => {
     expect(offenders(SITE_URL_LITERAL)).toEqual([]);
   });

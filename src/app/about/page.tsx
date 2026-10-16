@@ -9,7 +9,7 @@ import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { contactHref } from "@/app/contact/tabs";
-import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { ENQUIRY_PROMISE } from "@/lib/contacts";
 import { MARKET_REGION, MARKET_SCOPE } from "@/lib/market";
 import { SITE_ROUTES } from "@/lib/routes";
 import { cardGridProps } from "@/lib/card-grid";
@@ -300,7 +300,7 @@ export default function AboutPage() {
                 marginBottom: 0,
               }}
             >
-              We respond to all inquiries {ENQUIRY_REPLY_TIME}.
+              {ENQUIRY_PROMISE}
             </p>
           </div>
         </section>

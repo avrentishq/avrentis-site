@@ -7,15 +7,15 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { isContactIntent, SITE_PAGES, type ContactIntent, BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
-import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { ENQUIRY_PROMISE } from "@/lib/contacts";
 import { Z_INDEX } from "@/lib/layers";
 
 export const metadata: Metadata = pageMetadata({
   path: contactHref(),
   title: "Contact",
-  description: `Talk to ${BRAND.name}. Contact us for a walkthrough, request a security review, or share a use case. A real person replies ${ENQUIRY_REPLY_TIME}. To start a trial, use ${SITE_PAGES.trial()}.`,
+  description: `Talk to ${BRAND.name}. Contact us for a walkthrough, request a security review, or share a use case. ${ENQUIRY_PROMISE} To start a trial, use ${SITE_PAGES.trial()}.`,
   socialTitle: `Contact ${BRAND.name}`,
-  socialDescription: `Contact us or talk to our team. Real humans, a reply ${ENQUIRY_REPLY_TIME}.`,
+  socialDescription: `Contact us or talk to our team. ${ENQUIRY_PROMISE}`,
 });
 
 function resolveIntent(raw: string | string[] | undefined): ContactIntent {

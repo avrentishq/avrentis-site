@@ -18,15 +18,15 @@ export const CONTACT_EMAIL = {
 } as const;
 
 /**
- * The reply times the site promises — one wording each, so the contact page,
- * its form, its confirmation and the security pages cannot disagree.
+ * What the site promises someone who writes in — one wording, so the contact
+ * page, its form, its confirmation and the security pages cannot disagree.
  *
- * The product app makes no reply-time promise for support (its help page says
- * a person reads every message); these are the marketing site's own promises
- * for a sales enquiry and a security report. The trial's review queue promises
- * no time either — its confirmation is the platform's own message.
+ * No reply time: like the product app, the site promises that a person reads
+ * every message, not when they answer. The one time it does state is security
+ * triage (standard responsible-disclosure practice). The trial's review queue
+ * promises no time either — its confirmation is the platform's own message.
  */
-export const ENQUIRY_REPLY_TIME = "within one business day";
+export const ENQUIRY_PROMISE = "A real person reads every message.";
 export const SECURITY_TRIAGE_TIME = "within two business days";
 
 /**

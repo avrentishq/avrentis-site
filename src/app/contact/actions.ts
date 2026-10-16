@@ -19,7 +19,7 @@ import { CONTACT_FIELDS, type ContactFormState } from "./state";
 import { CONTACT_TOPICS } from "./topics";
 import { BRAND, isContactIntent, type ContactIntent } from "@/lib/brand";
 import { submittedValues } from "@/lib/submitted-values";
-import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { CONTACT_EMAIL, ENQUIRY_PROMISE } from "@/lib/contacts";
 import { isOrgSize } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { errorSummary } from "@/lib/safe-log";
@@ -121,6 +121,6 @@ async function answerContact(formData: FormData): Promise<ContactFormState> {
 
   return {
     status: "success",
-    message: `Thanks — we've received your enquiry and will reply ${ENQUIRY_REPLY_TIME}.`,
+    message: `Thanks — we've received your enquiry. ${ENQUIRY_PROMISE}`,
   };
 }

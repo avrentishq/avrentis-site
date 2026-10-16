@@ -5,7 +5,7 @@
  * (actions.ts), so a topic can never be shown one way and filed another.
  */
 import { BRAND, type ContactIntent } from "@/lib/brand";
-import { ENQUIRY_REPLY_TIME, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
+import { ENQUIRY_PROMISE, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
 import { DATA_PROTECTION_LAW_NAMES } from "@/lib/compliance-posture";
 
 export interface ContactTopicCopy {
@@ -24,7 +24,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopicCopy> = {
     eyebrow: "CONTACT US",
     headline: "Talk to our team.",
     lede:
-      `Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. A real person replies ${ENQUIRY_REPLY_TIME}.`,
+      `Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. ${ENQUIRY_PROMISE}`,
     cta: "Contact us",
     subjectLabel: "Personalised demo",
   },
@@ -112,7 +112,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopicCopy> = {
     eyebrow: "CONTACT US",
     headline: "Let's talk.",
     lede:
-      `Whether you're evaluating ${BRAND.name}, have a question our product pages didn't answer, or want to partner — we read every message and reply ${ENQUIRY_REPLY_TIME}.`,
+      `Whether you're evaluating ${BRAND.name}, have a question our product pages didn't answer, or want to partner. ${ENQUIRY_PROMISE}`,
     cta: "Contact us",
     subjectLabel: "General enquiry",
   },

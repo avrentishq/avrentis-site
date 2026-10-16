@@ -32,7 +32,12 @@ interface ChoiceGroupProps {
   onChange: (value: string) => void;
   options: readonly ChoiceOption[];
   ariaLabel: string;
-  variant?: "chips" | "cards";
+  /**
+   * "chips" (pills) and "cards" (a grid) are answers; "underline" is a quieter
+   * secondary row of plain text, the selected one underlined — for a choice
+   * nested under another choice group, so the two rows never look alike.
+   */
+  variant?: "chips" | "cards" | "underline";
   /** Grid columns for the "cards" variant. */
   columns?: number;
   invalid?: boolean;
@@ -46,6 +51,25 @@ interface ChoiceGroupProps {
   hrefFor?: (value: string) => string;
   /** The empty first choice of the no-script select when nothing is picked yet. */
   noScriptPlaceholder?: string;
+}
+
+/** An underline option's look: text, with a gold rule under the selected one. */
+function underlineOptionStyle(selected: boolean): React.CSSProperties {
+  return {
+    cursor: "pointer",
+    display: "inline-flex",
+    alignItems: "center",
+    height: "34px",
+    padding: "0 10px",
+    fontSize: "var(--text-sm)",
+    fontWeight: selected ? 600 : 500,
+    color: selected ? "var(--color-text-primary)" : "var(--color-text-secondary)",
+    backgroundColor: "transparent",
+    border: "none",
+    borderBottom: `2px solid ${selected ? "var(--color-gold)" : "transparent"}`,
+    borderRadius: 0,
+    transition: cssTransition(["border-color", "color"]),
+  };
 }
 
 /** One option's look, shared by the buttons and the no-script links. */
@@ -91,11 +115,15 @@ function optionStyle({
   };
 }
 
-/** The row (chips) or grid (cards) the options sit in. */
-function groupStyle(isCards: boolean, columns: number): React.CSSProperties {
-  return isCards
-    ? { display: "grid", gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, gap: "10px" }
-    : { display: "flex", flexWrap: "wrap", gap: "8px" };
+/** The row (chips, underline) or grid (cards) the options sit in. */
+function groupStyle(variant: "chips" | "cards" | "underline", columns: number): React.CSSProperties {
+  if (variant === "cards") {
+    return { display: "grid", gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, gap: "10px" };
+  }
+  if (variant === "underline") {
+    return { display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "4px 6px" };
+  }
+  return { display: "flex", flexWrap: "wrap", gap: "8px" };
 }
 
 export function ChoiceGroup({
@@ -113,7 +141,18 @@ export function ChoiceGroup({
 }: ChoiceGroupProps) {
   const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const isCards = variant === "cards";
+  const isUnderline = variant === "underline";
   const hasIcons = options.some((o) => o.icon);
+  const styleFor = (selected: boolean, optionInvalid: boolean, optionHasIcons: boolean) =>
+    isUnderline
+      ? underlineOptionStyle(selected)
+      : optionStyle({ selected, invalid: optionInvalid, isCards, hasIcons: optionHasIcons });
+  // The resting edge colour a hovered option returns to.
+  const restingBorder = isUnderline
+    ? "transparent"
+    : invalid
+      ? "var(--color-danger-invalid)"
+      : "var(--color-border)";
 
   const move = (from: number, dir: 1 | -1) => {
     const next = (from + dir + options.length) % options.length;
@@ -135,7 +174,7 @@ export function ChoiceGroup({
     <>
     {hrefFor ? (
       <noscript>
-        <nav aria-label={ariaLabel} style={groupStyle(isCards, columns)}>
+        <nav aria-label={ariaLabel} style={groupStyle(variant, columns)}>
           {options.map((option) => {
             const selected = option.value === value;
             return (
@@ -144,7 +183,7 @@ export function ChoiceGroup({
                 href={hrefFor(option.value)}
                 aria-current={selected ? "page" : undefined}
                 style={{
-                  ...optionStyle({ selected, invalid: false, isCards, hasIcons: false }),
+                  ...styleFor(selected, false, false),
                   textDecoration: "none",
                 }}
               >
@@ -169,7 +208,7 @@ export function ChoiceGroup({
       aria-label={ariaLabel}
       aria-invalid={invalid || undefined}
       aria-describedby={describedBy}
-      style={groupStyle(isCards, columns)}
+      style={groupStyle(variant, columns)}
     >
       {options.map((opt, i) => {
         const selected = opt.value === value;
@@ -187,12 +226,12 @@ export function ChoiceGroup({
             tabIndex={tabIndex}
             onClick={() => onChange(opt.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            style={optionStyle({ selected, invalid, isCards, hasIcons })}
+            style={styleFor(selected, invalid, hasIcons)}
             onMouseEnter={(e) => {
               if (!selected) e.currentTarget.style.borderColor = "var(--color-border-strong)";
             }}
             onMouseLeave={(e) => {
-              if (!selected) e.currentTarget.style.borderColor = invalid ? "var(--color-danger-invalid)" : "var(--color-border)";
+              if (!selected) e.currentTarget.style.borderColor = restingBorder;
             }}
           >
             {Icon && (

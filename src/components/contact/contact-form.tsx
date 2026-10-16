@@ -54,6 +54,20 @@ const COUNTRY_OPTIONS = COUNTRIES.map((country) => ({ value: country.code, label
 // Same bands as the trial (shared SSOT); prepend an opt-out for this optional field.
 const SIZE_OPTIONS = [{ value: "", label: "Prefer not to say" }, ...ORG_SIZE_OPTIONS];
 
+/**
+ * A topic headline always sits on one line: its size is the display size, or
+ * smaller when the headline would not fit the space available (the header's
+ * width, less the page's side padding). `HEADLINE_EM_PER_CHARACTER` is the
+ * heading font's average character width, measured in a real browser; topic
+ * headlines are capped at `HEADLINE_MAX_CHARACTERS` (topics.test.ts) so the
+ * smallest phone still gets a heading-sized line.
+ */
+const HEADLINE_EM_PER_CHARACTER = 0.52;
+function oneLineHeadlineSize(headline: string): string {
+  const widthInEm = (headline.length * HEADLINE_EM_PER_CHARACTER).toFixed(2);
+  return `min(var(--text-display-md), calc((min(100vw, var(--measure-wide)) - 2 * var(--page-side-padding)) / ${widthInEm}))`;
+}
+
 /** Name and email share a row on wider screens when they sit next to each other. */
 function inputRows(inputs: readonly ContactInput[]): ContactInput[][] {
   const rows: ContactInput[][] = [];
@@ -423,7 +437,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           <div style={{ marginTop: "14px", display: "flex", justifyContent: "center" }}>
             <ChoiceGroup
               name="contact_subtopic"
-              variant="chips"
+              variant="underline"
               value={intent}
               onChange={switchIntent}
               options={topicChoices(intent)}
@@ -437,19 +451,19 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
       {/* Centered intro header — matches the trial layout */}
       <m.div
         {...fadeUpOnLoad()}
-        style={{ textAlign: "center", maxWidth: "var(--measure)", margin: "0 auto 44px" }}
+        style={{ textAlign: "center", maxWidth: "var(--measure-wide)", margin: "0 auto 44px" }}
       >
         <Eyebrow style={{ display: "block", marginBottom: "14px" }}>{copy.eyebrow}</Eyebrow>
         <h1
           style={{
             fontWeight: 400,
-            fontSize: "var(--text-heading-2xl)",
+            fontSize: oneLineHeadlineSize(copy.headline),
+            whiteSpace: "nowrap",
             color: "var(--color-text-primary)",
             lineHeight: 1.2,
             margin: "0 0 12px",
             letterSpacing: "0.01em",
           }}
-          className="lg:!text-display-md"
         >
           {copy.headline}
         </h1>

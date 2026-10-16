@@ -55,4 +55,13 @@ describe("contact topics", () => {
     const joining = CONTACT_INTENTS.filter((intent) => CONTACT_TOPICS[intent].joinsUpdatesList);
     expect(joining.sort()).toEqual(["notify", "subscribe"]);
   });
+
+  it("every headline is short enough to stay on one line on a small phone", () => {
+    // The form shrinks a headline to fit one line (contact-form.tsx); this cap
+    // keeps the shrunk size heading-sized on a 320px screen.
+    const HEADLINE_MAX_CHARACTERS = 32;
+    for (const intent of CONTACT_INTENTS) {
+      expect(CONTACT_TOPICS[intent].headline.length, intent).toBeLessThanOrEqual(HEADLINE_MAX_CHARACTERS);
+    }
+  });
 });

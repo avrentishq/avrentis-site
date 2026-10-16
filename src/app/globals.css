@@ -191,6 +191,8 @@
   --measure-compact: 420px;
   /* A form card's inner padding: narrower on phones, where every pixel of field width counts. */
   --form-card-padding: clamp(20px, 5vw, 32px);
+  /* The horizontal padding of a full-width page section (e.g. /contact's main). */
+  --page-side-padding: clamp(16px, 5vw, 40px);
 }
 
 /* framer-motion's useScroll({ target }) measures the target's offset against

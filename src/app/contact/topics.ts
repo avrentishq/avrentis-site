@@ -226,7 +226,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
   security: {
     choiceLabel: "Book a security review",
     eyebrow: "SECURITY REVIEW",
-    headline: "Talk to us about the security posture.",
+    headline: "Talk to us about security.",
     lede:
       "We'll walk your CISO or security team through the stack — isolation, authority, audit, access lifecycle, encryption — and answer anything the page hasn't.",
     cta: "Book a security review",
@@ -273,7 +273,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
   privacy: {
     choiceLabel: "Privacy or data request",
     eyebrow: "DATA-PROTECTION ENQUIRY",
-    headline: "Privacy, data-subject rights, or a DPA.",
+    headline: "Privacy, data rights, or a DPA.",
     lede:
       `Whether you're exercising a right under ${DATA_PROTECTION_LAW_NAMES.gdpr.short} / ${DATA_PROTECTION_LAW_NAMES.ndpa.short} / CCPA, requesting our DPA, or asking a privacy-policy question — describe what you need and we'll route it to the right person.`,
     cta: "Send privacy enquiry",
@@ -304,7 +304,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
   legal: {
     choiceLabel: "Legal matter",
     eyebrow: "LEGAL ENQUIRY",
-    headline: "Notices, agreements, and legal questions.",
+    headline: "Legal notices and agreements.",
     lede:
       "Contract redlines, notices under our Terms of Service, vendor onboarding paperwork — send it here and our team will respond promptly.",
     cta: "Send legal enquiry",
@@ -330,7 +330,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
   subscribe: {
     choiceLabel: "Product updates",
     eyebrow: "SUBSCRIBE TO UPDATES",
-    headline: "Get notable changes in your inbox.",
+    headline: "Notable changes, in your inbox.",
     lede:
       "We send a short email when something material ships — release notes, security updates, and service-impacting incidents. No promotional material.",
     cta: "Subscribe me",
@@ -347,7 +347,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
   notify: {
     choiceLabel: "Launch alert",
     eyebrow: "LAUNCH NOTIFICATION",
-    headline: "Be the first to know when this launches.",
+    headline: "Know the moment it launches.",
     lede:
       "Drop your details and we'll reach out as soon as this module is generally available — plus a chance to join an early-access cohort.",
     cta: "Notify me at launch",

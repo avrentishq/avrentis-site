@@ -2,17 +2,14 @@
 
 import { ShieldCheck, FileSearch, Download, LockKeyhole, UserSearch } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "audit",
-  eyebrow: MODULES.audit.name,
+  moduleKey: "audit",
   headline: "Compliance without the scramble.",
   description:
     "Every submission, approval, query, signature, and access event — recorded to a tamper-evident audit trail, sealed daily, that no user — superadmins included — can edit. Export a regulator-ready bundle for any period up to a year, in one click.",
-  status: "available",
-  previewUrl: "Avrentis / audit",
+  previewPath: "audit",
   preview: <AuditPreview />,
 
   pillars: [
@@ -72,9 +69,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Every payment event lands in the audit trail automatically" },
-    { slug: "procure", name: MODULES.procure.name, desc: "PO lifecycle events — from submission to issue — all tracked" },
-    { slug: "vault", name: MODULES.vault.name, desc: "Document access and download events logged to the compliance trail" },
+    { moduleKey: "pay", desc: "Every payment event lands in the audit trail automatically" },
+    { moduleKey: "procure", desc: "PO lifecycle events — from submission to issue — all tracked" },
+    { moduleKey: "vault", desc: "Document access and download events logged to the compliance trail" },
   ],
 };
 

@@ -3,6 +3,7 @@ import { ProcureModulePage } from "@/components/product/pages/procure-module-pag
 import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductProcurePage() {
+  notFoundUnlessPublic("procure");
   const pricingData = await fetchPricingData();
   return (
     <ProcureModulePage

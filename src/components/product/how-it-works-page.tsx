@@ -11,6 +11,7 @@
 
 import { useRef } from "react";
 import { DOCUMENTS_KEPT } from "@/lib/record-keeping";
+import { requestTypeList } from "@/lib/module-copy";
 import Link from "next/link";
 import {
   m,
@@ -49,7 +50,7 @@ const STAGES = [
     title: "Submit",
     subtitle: "Structured request, not an email.",
     icon: FileCheck,
-    body: "Any team member raises a payment voucher, purchase order, or expense claim through a structured form — payee details, amount, purpose, department, cost code, supporting attachments. The form only accepts complete, valid information, so the person reviewing never has to chase details or send it back.",
+    body: `Any team member raises a ${requestTypeList("disjunction")} through a structured form — payee details, amount, purpose, department, cost code, supporting attachments. The form only accepts complete, valid information, so the person reviewing never has to chase details or send it back.`,
     bullets: [
       "Auto-saves as you go — no lost work if the browser closes unexpectedly",
       `Attach contracts, invoices, and quotes — ${DOCUMENTS_KEPT}`,
@@ -456,8 +457,7 @@ export function HowItWorksProductPage() {
               maxWidth: "640px",
             }}
           >
-            Every payment voucher, purchase order, and HR approval travels the
-            same four-stage lifecycle. Structured at submission, routed by
+            Every {requestTypeList()} travels the same four-stage lifecycle. Structured at submission, routed by
             role, sanctioned by authority, recorded on the audit trail. No email
             threads. No lost approvals. No guessing what changed.
           </m.p>

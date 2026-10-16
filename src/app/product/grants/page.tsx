@@ -3,6 +3,7 @@ import { GrantsModulePage } from "@/components/product/pages/grants-module-page"
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductGrantsPage() {
+  notFoundUnlessPublic("grants");
   const pricingData = await fetchPricingData();
   return <GrantsModulePage planAvailability={planAvailabilityFor("grants", pricingData)} />;
 }

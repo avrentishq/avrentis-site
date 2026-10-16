@@ -42,12 +42,12 @@ Run these locally before you claim anything is done.
 - **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
   `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
-  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain` and `locales`.**
+  `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain`, `locales`, `sectors` and `modules/catalog`.**
   Every other subpath of that package needs peer dependencies this repo does not install
   (`region/countries` has type-only imports; the `region` index pulls in a phone library; the
   two rate-limit modules need only the Upstash packages the site already has — the rest of
   `security/` does not, so it is admitted module by module, never as `security/*`).
-  Tests may also import the dependency-free `modules/catalog`, `security/dependency-floors` and
+  Tests may also import the dependency-free `security/dependency-floors` and
   `brand/copy-guardrails`
   — they back the parity lock tests and never ship. "Runtime" includes `next.config.ts`
   (Node loads it at build and start). `src/lib/core-imports.lock.test.ts` scans `src/` and
@@ -136,6 +136,16 @@ Run these locally before you claim anything is done.
   every payload (live or fallback) through `withServiceCommitmentGroup`
   (`src/lib/service-commitments.ts`, keys from core's `SERVICE_COMMITMENT_KEYS`), which reads
   per-plan `serviceCommitments` and falls back to `features` for an older payload.
+- **Modules come from core; the site owns only which ones it shows and their card words.**
+  `src/lib/brand.ts` reads each module's name, short name, suite and status from core's
+  `modules/catalog`; its `PUBLICLY_VISIBLE` flag is the one switch that hides a module's
+  page (`notFoundUnlessPublic(key)` in every module route, lock-tested), links, and sitemap
+  entry (the launch gate derives the route). A new core module fails type-check until it is
+  modelled or listed in `UNMODELLED_MODULE_KEYS`. Lists render `publicModuleKeys()`, link
+  with `moduleHref(key)`, shorten with `moduleShortName(key)`, and take icon, tagline and
+  summary from `MODULE_COPY` (`src/lib/module-copy.ts`); a sentence naming request types
+  uses `requestTypeList()`. `module-names.lock.test.ts` fails on a file that lists four or
+  more modules by hand.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts` (`moduleName(key)` in titles and prose —
   `module-names.lock.test.ts` fails on a typed "Avrentis <Module>" anywhere else). This includes BRANCHING on a tier:

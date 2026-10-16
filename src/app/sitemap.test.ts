@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import { STATIC_ROUTES } from "@/app/sitemap";
-import { publicModuleKeys, MODULES } from "@/lib/brand";
+import { publicModuleKeys, moduleHref } from "@/lib/brand";
 import { isLaunchHidden } from "@/lib/launch";
 
 /**
@@ -23,7 +23,7 @@ const INTENTIONALLY_ABSENT: Record<string, string> = {
 
 function sitemapPaths(): string[] {
   const moduleRoutes = publicModuleKeys().map(
-    (key) => `/product/${MODULES[key].slug}`,
+    (key) => moduleHref(key),
   );
   return [...STATIC_ROUTES, ...moduleRoutes].filter(
     (path) => !isLaunchHidden(path),
@@ -81,8 +81,8 @@ describe("sitemap", () => {
   it("excludes modules the site does not market", () => {
     const paths = sitemapPaths();
     // Requests is publiclyVisible:false, so its route must not appear.
-    expect(paths).not.toContain(`/product/${MODULES.people.slug}`);
-    expect(paths).toContain(`/product/${MODULES.pay.slug}`);
+    expect(paths).not.toContain(moduleHref("people"));
+    expect(paths).toContain(moduleHref("pay"));
   });
 
   it("keeps every intentionally-absent route genuinely absent", () => {

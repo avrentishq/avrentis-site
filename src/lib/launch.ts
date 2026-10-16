@@ -10,13 +10,17 @@
  * required — the page renders again and its nav/footer links reappear
  * automatically. No content is deleted; the routes stay in the repo.
  *
- * This file is intentionally dependency-free (pure predicates) so it can be
- * imported by both server pages and client nav components.
+ * Pure predicates, importable by both server pages and client nav components.
+ * A hidden MODULE is not listed here by hand: its page joins the gate from
+ * `brand.ts`'s visibility flag, so one switch hides the page, its links and its
+ * sitemap entry together.
  *
  * Rationale per entry is deliberately NOT recorded here. This repository is
  * public, and "why a page is not published yet" is commercial context. It
  * lives in `guides/public-site-setup.md`, which is gitignored.
  */
+
+import { hiddenModuleKeys, moduleHref } from "./brand";
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
   "/customers",
@@ -24,8 +28,8 @@ export const HIDDEN_AT_LAUNCH: readonly string[] = [
   "/changelog",
   "/docs",
   "/trust",
-  "/product/people",
-] as const;
+  ...hiddenModuleKeys().map(moduleHref),
+];
 
 /** True if `path` is hidden for launch (exact match or a sub-path). */
 export function isLaunchHidden(path: string): boolean {

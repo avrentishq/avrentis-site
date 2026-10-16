@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Card rows that fill the width at any count — pair with cardGridColumns(n). */
+@import "@avrentishq/core/ui/card-grid.css";
 
 /* `static` emits every token below whether or not a utility uses it. Inline
    styles read these as var(--color-…); without `static` Tailwind drops any token

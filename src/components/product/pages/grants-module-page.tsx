@@ -2,17 +2,14 @@
 
 import { Wallet, Gauge, Share2, FileText, Banknote, CalendarClock } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { GrantsPreview } from "@/components/product/previews/grants-preview";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "grants",
-  eyebrow: MODULES.grants.name,
+  moduleKey: "grants",
   headline: "Prove where every donor naira went.",
   description:
     "Grants ties every payment to its grant and budget line, tracks burn against each donor's restrictions, and produces a donor-ready report in the grant's own currency — from the same approvals your finance team already runs.",
-  status: "available",
-  previewUrl: "Avrentis / grants / GR-2026-014",
+  previewPath: "grants / GR-2026-014",
   preview: <GrantsPreview />,
 
   pillars: [
@@ -73,9 +70,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Disbursements to grantees and partners run through the payment workflow" },
-    { slug: "procure", name: MODULES.procure.name, desc: "Grant-funded purchases are tagged to the grant at the point of spend" },
-    { slug: "audit", name: MODULES.audit.name, desc: "Every allocation and report export is on the tamper-evident audit trail" },
+    { moduleKey: "pay", desc: "Disbursements to grantees and partners run through the payment workflow" },
+    { moduleKey: "procure", desc: "Grant-funded purchases are tagged to the grant at the point of spend" },
+    { moduleKey: "audit", desc: "Every allocation and report export is on the tamper-evident audit trail" },
   ],
 };
 

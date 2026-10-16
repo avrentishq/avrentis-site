@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { PeopleModulePage } from "@/components/product/pages/people-module-page";
-import { isLaunchHidden } from "@/lib/launch";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -22,8 +21,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductPeoplePage() {
-  // Launch gate first — never fetch pricing for a page we're about to 404.
-  if (isLaunchHidden("/product/people")) notFound();
+  // Visibility first — never fetch pricing for a page we're about to 404.
+  notFoundUnlessPublic("people");
   const pricingData = await fetchPricingData();
   return <PeopleModulePage planAvailability={planAvailabilityFor("people", pricingData)} />;
 }

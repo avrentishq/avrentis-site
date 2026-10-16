@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { isLaunchVisible } from "@/lib/launch";
-import { publicModuleKeys, MODULES, SUITES } from "@/lib/brand";
+import { publicModuleKeys, moduleHref, SUITES } from "@/lib/brand";
 import { SITE_URL } from "@/lib/seo";
 
 const BASE_URL = SITE_URL;
@@ -41,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = STATIC_ROUTES;
 
   const moduleRoutes = publicModuleKeys().map(
-    (key) => `/product/${MODULES[key].slug}`,
+    (key) => moduleHref(key),
   );
 
   // Suite pages are derived too, so a fifth suite is indexed the moment it has

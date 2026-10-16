@@ -7,19 +7,16 @@ import {
   type ModuleConfig,
   type ModulePlan,
 } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { AuthorityPreview } from "@/components/product/previews/authority-preview";
 
 const GROUP_USE_CASE = "One approval route, offered to every company in the group";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "authority",
-  eyebrow: MODULES.authority.name,
+  moduleKey: "authority",
   headline: "Who can approve what, up to how much.",
   description:
     "Every organisation already has approval rules. They usually live in a policy document nobody opens, and get enforced by whoever happens to be paying attention. Authority is where you write those rules down once — the limits, the levels, the exceptions — and have them enforced on every single request automatically, with the proof kept for you.",
-  status: "available",
-  previewUrl: "Avrentis / authority",
+  previewPath: "authority",
   preview: <AuthorityPreview />,
 
   pillars: [
@@ -78,9 +75,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Every payment voucher is routed and sanctioned by these rules" },
-    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders run through the same authority policy" },
-    { slug: "audit", name: MODULES.audit.name, desc: "Every approval, delegation, and policy change lands on the tamper-evident trail" },
+    { moduleKey: "pay", desc: "Every payment voucher is routed and sanctioned by these rules" },
+    { moduleKey: "procure", desc: "Purchase orders run through the same authority policy" },
+    { moduleKey: "audit", desc: "Every approval, delegation, and policy change lands on the tamper-evident trail" },
   ],
 };
 

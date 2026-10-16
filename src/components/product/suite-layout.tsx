@@ -18,7 +18,8 @@
 
 import Link from "next/link";
 
-import { BRAND_COLORS, MODULES, SUITES, moduleName, type ModuleSuite } from "@/lib/brand";
+import { BRAND_COLORS, SUITES, moduleHref, moduleName, type ModuleSuite } from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
 import { SUITE_PAGES, suiteModuleKeys } from "@/lib/product-suites";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { Navbar } from "@/components/layout/navbar";
@@ -212,11 +213,11 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
               const blurb = config.modules[key];
               // A module with no copy is a lock-test failure, not a blank card.
               if (!blurb) return null;
-              const Icon = blurb.icon;
+              const Icon = MODULE_COPY[key].icon;
               return (
                 <Link
                   key={key}
-                  href={`/product/${MODULES[key].slug}`}
+                  href={moduleHref(key)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",

@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { MODULES } from "@/lib/brand";
+import { MODULE_ORDER, MODULES } from "@/lib/brand";
 
 /**
  * A module's brand name ("Avrentis Payables") is typed once, in `MODULES`
@@ -42,6 +42,21 @@ describe("module names come from the brand registry, never from copy", () => {
       return; // shallow clone without that commit — the fixture test above still holds
     }
     expect(TYPED_NAME.test(old)).toBe(true);
+  });
+
+  it("no file keeps its own list of modules", () => {
+    // The product overview, homepage grid and docs index each once listed the
+    // modules by hand (`moduleName("pay")`, `moduleName("procure")`, …) and all
+    // three missed Authority. A list renders `publicModuleKeys()` and reads its
+    // words from `MODULE_COPY`; naming one or two modules in a sentence is fine.
+    const moduleKeys = MODULE_ORDER.join("|");
+    const NAMED_KEY = new RegExp(`(?:moduleName\\(\\s*|\\bkey:\\s*)["'](${moduleKeys})["']`, "g");
+    const keysNamedIn = (source: string) => new Set([...source.matchAll(NAMED_KEY)].map((match) => match[1]));
+    // Both spellings of a hand list the site used to have:
+    expect(keysNamedIn('{ key: "pay" }, { key: "procure" }, { key: "vault" }, { key: "audit" }').size).toBe(4);
+    expect(keysNamedIn('moduleName("pay") moduleName("guard") moduleName("grants") moduleName("connect")').size).toBe(4);
+    const offenders = sourceFiles().filter((file) => keysNamedIn(readFileSync(join(SRC, file), "utf8")).size >= 4);
+    expect(offenders, "render publicModuleKeys() instead of naming modules one by one").toEqual([]);
   });
 
   it("no source file types a module's brand name", () => {

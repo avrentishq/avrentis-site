@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { requestTypeList } from "@/lib/module-copy";
 import { HowItWorksProductPage } from "@/components/product/how-it-works-page";
 import { canonical } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "How Avrentis works — the complete approval lifecycle",
   description:
-    "Every request — payment voucher, purchase order, HR approval — travels a four-stage lifecycle: structured submission, role-enforced review, authoritative sanction, and a tamper-evident record. Here's how each stage works and what actually changes day-to-day.",
+    `Every request — ${requestTypeList()} — travels a four-stage lifecycle: structured submission, role-enforced review, authoritative sanction, and a tamper-evident record. Here's how each stage works and what actually changes day-to-day.`,
   alternates: { canonical: "/product/how-it-works" },
   openGraph: {
     title: "How Avrentis works — the complete approval lifecycle",

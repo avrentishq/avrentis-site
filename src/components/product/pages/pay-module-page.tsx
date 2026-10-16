@@ -15,7 +15,6 @@ import {
   type ModuleConfig,
   type ModulePlan,
 } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { SUPPORTED_CURRENCY_NAMES } from "@/lib/languages-and-currencies";
 import { PayPreview } from "@/components/product/previews/pay-preview";
@@ -25,13 +24,11 @@ const LEDGER_USE_CASE = "Give your accounting system entries, not paperwork";
 const GROUP_USE_CASE = "Settle what your group's companies owe each other";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "pay",
-  eyebrow: MODULES.pay.name,
+  moduleKey: "pay",
   headline: "Every payment, on record. End-to-end.",
   description:
     "From submission through finance validation to MD sanction, every payment voucher travels a defined approval chain. No email threads, no lost approvals — and a bank-ready PDF the moment the MD signs.",
-  status: "available",
-  previewUrl: "Avrentis / vouchers / PV-2026-0184",
+  previewPath: "vouchers / PV-2026-0184",
   preview: <PayPreview />,
 
   pillars: [
@@ -122,9 +119,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders on the same approval rails" },
-    { slug: "audit", name: MODULES.audit.name, desc: "The full compliance trail across every payment" },
-    { slug: "connect", name: MODULES.connect.name, desc: "Push payment events into your accounting system" },
+    { moduleKey: "procure", desc: "Purchase orders on the same approval rails" },
+    { moduleKey: "audit", desc: "The full compliance trail across every payment" },
+    { moduleKey: "connect", desc: "Push payment events into your accounting system" },
   ],
 };
 

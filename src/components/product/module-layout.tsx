@@ -15,7 +15,18 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, MODULES, type ModuleKey, SITE_PAGES } from "@/lib/brand";
+import {
+  BRAND,
+  BRAND_COLORS,
+  MODULE_STATUS_LABELS,
+  MODULES,
+  isModulePublic,
+  moduleHref,
+  moduleName,
+  type ModuleKey,
+  type ModuleStatus,
+  SITE_PAGES,
+} from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
@@ -29,8 +40,6 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
-
-export type ModuleStatus = "available" | "coming_soon" | "partial" | "roadmap";
 
 export interface ModulePillar {
   icon: LucideIcon;
@@ -66,19 +75,21 @@ export interface ModulePlan {
 }
 
 export interface ModuleRelated {
-  slug: string;
-  name: string;
+  moduleKey: ModuleKey;
+  /** How that module completes this one — the name and link come from the key. */
   desc: string;
 }
 
+/**
+ * A module page's own words. Its name, status, link and breadcrumb all follow
+ * from `moduleKey`, so a page cannot disagree with the catalogue about any of them.
+ */
 export interface ModuleConfig {
-  slug: string;
-  eyebrow: string;
+  moduleKey: ModuleKey;
   headline: string;
   description: string;
-  status: ModuleStatus;
-  /** Small caption above the preview frame, e.g. `Avrentis / vouchers / PV-2026-0184`. */
-  previewUrl: string;
+  /** Caption path above the preview frame, after the brand name: `vouchers / PV-2026-0184`. */
+  previewPath: string;
   /** React node for the browser-frame preview. Rendered inside a `MockupShell`-style container. */
   preview: React.ReactNode;
   pillars: ModulePillar[];
@@ -90,34 +101,21 @@ export interface ModuleConfig {
   secondaryCta?: { label: string; href: string };
 }
 
+const STATUS_RIBBON_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
+  available: {
+    bg: "rgba(var(--color-available-rgb), 0.12)",
+    color: "var(--color-available-on-dark)",
+    border: "1px solid rgba(var(--color-available-rgb), 0.3)",
+  },
+  partial: {
+    bg: "rgba(var(--color-gold-rgb), 0.12)",
+    color: "var(--color-gold)",
+    border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
+  },
+};
+
 function StatusRibbon({ status }: { status: ModuleStatus }) {
-  const config: Record<ModuleStatus, { label: string; bg: string; color: string; border: string }> = {
-    available: {
-      label: "Available now",
-      bg: "rgba(var(--color-available-rgb), 0.12)",
-      color: "var(--color-available-on-dark)",
-      border: "1px solid rgba(var(--color-available-rgb), 0.3)",
-    },
-    coming_soon: {
-      label: "Coming soon",
-      bg: "rgba(var(--color-gold-rgb), 0.12)",
-      color: "var(--color-gold)",
-      border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
-    },
-    partial: {
-      label: "Currently in beta",
-      bg: "rgba(var(--color-gold-rgb), 0.12)",
-      color: "var(--color-gold)",
-      border: "1px solid rgba(var(--color-gold-rgb), 0.3)",
-    },
-    roadmap: {
-      label: "On the roadmap",
-      bg: "rgba(var(--color-text-subtle-rgb), 0.10)",
-      color: "var(--color-text-subtle)",
-      border: "1px solid rgba(var(--color-text-subtle-rgb), 0.25)",
-    },
-  };
-  const c = config[status];
+  const style = STATUS_RIBBON_STYLES[status];
   return (
     <span
       style={{
@@ -129,9 +127,9 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
         fontWeight: 600,
         letterSpacing: "0.06em",
         textTransform: "uppercase",
-        color: c.color,
-        backgroundColor: c.bg,
-        border: c.border,
+        color: style.color,
+        backgroundColor: style.bg,
+        border: style.border,
         borderRadius: "3px",
         padding: "4px 10px",
       }}
@@ -141,44 +139,29 @@ function StatusRibbon({ status }: { status: ModuleStatus }) {
           width: "5px",
           height: "5px",
           borderRadius: "50%",
-          backgroundColor: c.color,
+          backgroundColor: style.color,
           display: "inline-block",
         }}
       />
-      {c.label}
+      {MODULE_STATUS_LABELS[status]}
     </span>
   );
 }
 
-function resolveCtas(config: ModuleConfig): {
+function resolveCtas(config: ModuleConfig, status: ModuleStatus): {
   primary: { label: string; href: string };
   secondary: { label: string; href: string };
 } {
-  if (config.primaryCta && config.secondaryCta) {
-    return { primary: config.primaryCta, secondary: config.secondaryCta };
+  if (status === "partial") {
+    return {
+      primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
+      secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
+    };
   }
-  switch (config.status) {
-    case "available":
-      return {
-        primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
-        secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
-      };
-    case "coming_soon":
-      return {
-        primary: config.primaryCta ?? { label: "Get notified at launch", href: contactHref("notify") },
-        secondary: config.secondaryCta ?? { label: "See the full roadmap", href: contactHref("roadmap") },
-      };
-    case "partial":
-      return {
-        primary: config.primaryCta ?? { label: "Join the beta", href: contactHref("beta") },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
-      };
-    case "roadmap":
-      return {
-        primary: config.primaryCta ?? { label: "Share your use case", href: contactHref("roadmap") },
-        secondary: config.secondaryCta ?? { label: "Talk to us", href: contactHref() },
-      };
-  }
+  return {
+    primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
+    secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
+  };
 }
 
 export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
@@ -189,8 +172,9 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const isMobile = useIsMobile();
-  const { primary, secondary } = resolveCtas(config);
-  const moduleName = MODULES[config.slug as ModuleKey]?.name ?? config.headline;
+  const { name, status } = MODULES[config.moduleKey];
+  const { primary, secondary } = resolveCtas(config, status);
+  const relatedModules = config.relatedModules.filter((related) => isModulePublic(related.moduleKey));
 
   return (
     <>
@@ -198,7 +182,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
           { name: "Platform", path: "/product" },
-          { name: moduleName, path: `/product/${config.slug}` },
+          { name, path: moduleHref(config.moduleKey) },
         ])}
       />
       <Navbar />
@@ -263,7 +247,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                 color: "var(--color-gold)",
               }}
             >
-              {config.eyebrow}
+              {name}
             </m.span>
 
             <m.div
@@ -273,7 +257,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               viewport={{ once: true, margin: "-40px" }}
               transition={staggerDelay(1)}
             >
-              <StatusRibbon status={config.status} />
+              <StatusRibbon status={status} />
             </m.div>
 
             <m.h1
@@ -413,7 +397,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                     textAlign: "center",
                   }}
                 >
-                  {config.previewUrl}
+                  {BRAND.name} / {config.previewPath}
                 </div>
               </div>
               <div>{config.preview}</div>
@@ -782,10 +766,10 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
               Other modules that complete the picture.
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-              {config.relatedModules.map((rm) => (
+              {relatedModules.map((related) => (
                 <Link
-                  key={rm.slug}
-                  href={`/product/${rm.slug}`}
+                  key={related.moduleKey}
+                  href={moduleHref(related.moduleKey)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
@@ -809,7 +793,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                         margin: "0 0 2px",
                       }}
                     >
-                      {rm.name}
+                      {moduleName(related.moduleKey)}
                     </p>
                     <p
                       style={{
@@ -819,7 +803,7 @@ export function ProductModuleLayout({ config }: { config: ModuleConfig }) {
                         margin: 0,
                       }}
                     >
-                      {rm.desc}
+                      {related.desc}
                     </p>
                   </div>
                   <ArrowRight size={16} strokeWidth={1.8} color={BRAND_COLORS.gold} aria-hidden="true" />

@@ -13,7 +13,8 @@
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
-import { BRAND_COLORS, moduleName, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND_COLORS, MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
 import { m, useScroll, useTransform } from "framer-motion";
 import {
   BookOpen,
@@ -124,15 +125,12 @@ const CATEGORIES: DocsCategory[] = [
     title: "How each module operates.",
     lede:
       "Deep-dive pages for every module — capabilities, use cases, plan availability, pairs-well-with.",
-    items: [
-      { title: moduleName("pay"), body: "Structured payment approvals.", href: "/product/pay", status: "live" },
-      { title: moduleName("procure"), body: "Procurement on record.", href: "/product/procure", status: "live" },
-      { title: moduleName("guard"), body: "Fraud & anomaly detection.", href: "/product/guard", status: "live" },
-      { title: moduleName("grants"), body: "Grant & fund accounting.", href: "/product/grants", status: "live" },
-      { title: moduleName("audit"), body: "Compliance & accountability.", href: "/product/audit", status: "live" },
-      { title: moduleName("vault"), body: "Financial records in one place.", href: "/product/vault", status: "live" },
-      { title: moduleName("connect"), body: "External systems.", href: "/product/connect", status: "live" },
-    ],
+    items: publicModuleKeys().map((moduleKey) => ({
+      title: moduleName(moduleKey),
+      body: `${MODULE_COPY[moduleKey].tagline}.`,
+      href: moduleHref(moduleKey),
+      status: MODULES[moduleKey].status === "available" ? ("live" as const) : ("wip" as const),
+    })),
   },
   {
     icon: ShieldCheck,

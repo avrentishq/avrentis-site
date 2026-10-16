@@ -2,17 +2,14 @@
 
 import { Archive, Search, FingerprintPattern, Share2, Gavel, CalendarClock, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "vault",
-  eyebrow: MODULES.vault.name,
+  moduleKey: "vault",
   headline: "Your financial records, in one place.",
   description:
     "Every payment voucher, purchase order, goods receipt and supplier invoice in one list, with the files, questions and submission history behind each. Find any of them by reference, payee, department, status or date, long after the person who raised it has moved on.",
-  status: "available",
-  previewUrl: "Avrentis / vault",
+  previewPath: "vault",
   preview: <VaultPreview />,
 
   pillars: [
@@ -89,9 +86,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: MODULES.audit.name, desc: "Every file opened and every PDF produced is on the audit trail" },
-    { slug: "pay", name: MODULES.pay.name, desc: "Vouchers and supplier invoices appear in Records as they are raised" },
-    { slug: "procure", name: MODULES.procure.name, desc: "Purchase orders and goods receipts in the same list" },
+    { moduleKey: "audit", desc: "Every file opened and every PDF produced is on the audit trail" },
+    { moduleKey: "pay", desc: "Vouchers and supplier invoices appear in Records as they are raised" },
+    { moduleKey: "procure", desc: "Purchase orders and goods receipts in the same list" },
   ],
 };
 

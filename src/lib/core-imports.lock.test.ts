@@ -35,11 +35,16 @@ import { dirname, join } from "node:path";
  *     No imports.
  *   - `sectors` — the industry list the trial form offers, and the rule the app
  *     validates a submitted industry with. Its only import is type-only.
+ *   - `modules/catalog` — each module's name, short name, suite and maturity,
+ *     which `brand.ts` reads instead of re-typing them. Its only import is type-only.
+ *   - `ui/card-grid` + `ui/card-grid.css` — card rows that fill the width at any
+ *     count, the same rule the product apps use. No imports; the stylesheet is
+ *     pulled into `globals.css`, which is why `.css` files are scanned too.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
  * at build time and by its test; never imported by a page) may also read
- * `billing/retention` and `modules/catalog` (and `sectors`, runtime-allowed above); so may
+ * `billing/retention` (and `modules/catalog` and `sectors`, runtime-allowed above); so may
  * tests, which check the generator's output against core.
  *
  * The last test below walks each allowed subpath's VALUE import graph inside
@@ -63,11 +68,13 @@ const RUNTIME_ALLOWED = new Set([
   "billing/reserved-mail-domain",
   "locales",
   "sectors",
+  "modules/catalog",
+  "ui/card-grid",
+  "ui/card-grid.css",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
-const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog"]);
+const BUILD_ONLY_ALLOWED = new Set(["billing/retention"]);
 const TEST_ONLY_ALLOWED = new Set([
-  "modules/catalog",
   "security/dependency-floors",
   "brand/copy-guardrails",
 ]);
@@ -81,7 +88,7 @@ const CORE_IMPORT = /(?:from\s+|import\s*\(\s*|import\s+)["']@avrentishq\/core(?
 
 function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
-    .filter((file) => /\.(tsx?|mjs)$/.test(file))
+    .filter((file) => /\.(tsx?|mjs|css)$/.test(file))
     .filter((file) => file !== SELF);
 }
 

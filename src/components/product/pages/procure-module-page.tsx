@@ -7,20 +7,18 @@ import {
   type ModuleConfig,
   type ModulePlan,
 } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
+import { moduleName } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
 
 const LEDGER_USE_CASE = "Code every line the way your ledger does";
 const GROUP_USE_CASE = "One supplier record for the whole group";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "procure",
-  eyebrow: MODULES.procure.name,
+  moduleKey: "procure",
   headline: "Procurement on record. Vendor to issue.",
   description:
     "Every purchase order submitted, reviewed by the department head, sanctioned by the MD, and issued to the vendor through a single system of record. Line items, vendors, and delivery terms — all structured, all traceable.",
-  status: "available",
-  previewUrl: "Avrentis / purchase-orders / PO-2026-0091",
+  previewPath: "purchase-orders / PO-2026-0091",
   preview: <ProcurePreview />,
 
   pillars: [
@@ -81,7 +79,7 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
     {
       title: "From PO to invoice to payment — one continuous chain of authority",
       body:
-        `A PO sanctioned here becomes the vendor's reference. When the invoice arrives, ${MODULES.pay.name} references the same PO number. Full traceability from request to bank instruction.`,
+        `A PO sanctioned here becomes the vendor's reference. When the invoice arrives, ${moduleName("pay")} references the same PO number. Full traceability from request to bank instruction.`,
     },
     {
       title: LEDGER_USE_CASE,
@@ -96,9 +94,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "pay", name: MODULES.pay.name, desc: "Turn sanctioned POs into paid invoices on the same rails" },
-    { slug: "audit", name: MODULES.audit.name, desc: "Every PO decision, every signature — on the audit trail" },
-    { slug: "vault", name: MODULES.vault.name, desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
+    { moduleKey: "pay", desc: "Turn sanctioned POs into paid invoices on the same rails" },
+    { moduleKey: "audit", desc: "Every PO decision, every signature — on the audit trail" },
+    { moduleKey: "vault", desc: "Store vendor quotes, receipts, and delivery notes alongside each PO" },
   ],
 };
 

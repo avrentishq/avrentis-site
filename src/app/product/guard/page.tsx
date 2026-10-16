@@ -3,6 +3,7 @@ import { GuardModulePage } from "@/components/product/pages/guard-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
+import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
 
 export const metadata: Metadata = {
@@ -20,6 +21,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductGuardPage() {
+  notFoundUnlessPublic("guard");
   const pricingData = await fetchPricingData();
   return <GuardModulePage planAvailability={planAvailabilityFor("guard", pricingData)} />;
 }

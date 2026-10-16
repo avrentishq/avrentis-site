@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { MODULE_ORDER, MODULES } from "@/lib/brand";
+import { MODULE_ORDER } from "@/lib/brand";
 
 /**
  * Plan inclusion must stay DERIVED. Two of the eight product module pages had
@@ -82,6 +82,17 @@ describe("product module pages — plan availability stays derived", () => {
     // Every module in the catalog owns a /product/<slug> route (including the
     // ones hidden from nav, which are launch-gated rather than absent);
     // /security, /how-it-works and /integrations are narrative pages, not modules.
-    expect(wired.sort()).toEqual(MODULE_ORDER.map((key) => MODULES[key].slug).sort());
+    expect(wired.sort()).toEqual([...MODULE_ORDER].sort());
+  });
+
+  it("every module route 404s when its module is hidden", () => {
+    // The visibility flag is the one switch; a route that forgets to ask it is
+    // served while every list hides it.
+    const routesDir = join(process.cwd(), "src/app/product");
+    const unguarded = MODULE_ORDER.filter((moduleKey) => {
+      const source = readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8");
+      return !source.includes(`notFoundUnlessPublic("${moduleKey}")`);
+    });
+    expect(unguarded, "routes missing notFoundUnlessPublic(<their own key>)").toEqual([]);
   });
 });

@@ -2,17 +2,14 @@
 
 import { Receipt, ShieldCheck, Tags } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
-import { MODULES } from "@/lib/brand";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
-  slug: "people",
-  eyebrow: MODULES.people.name,
+  moduleKey: "people",
   headline: "Staff expenses, on the same rails as payments.",
   description:
     "The approvals your organisation already runs for money — same engine, shaped for staff expense claims. Structured, routed, reimbursed — and every approval on record.",
-  status: "available",
-  previewUrl: "Avrentis / requests / expenses / ER-2026-0042",
+  previewPath: "requests / expenses / ER-2026-0042",
   preview: <PeoplePreview />,
 
   pillars: [
@@ -55,9 +52,9 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 
   relatedModules: [
-    { slug: "audit", name: MODULES.audit.name, desc: "Expense events flow into the same tamper-evident trail" },
-    { slug: "pay", name: MODULES.pay.name, desc: "Expense approvals run on the same review-and-sanction rails as payments" },
-    { slug: "connect", name: MODULES.connect.name, desc: "Emit expense events to your accounting or payroll system via webhook" },
+    { moduleKey: "audit", desc: "Expense events flow into the same tamper-evident trail" },
+    { moduleKey: "pay", desc: "Expense approvals run on the same review-and-sanction rails as payments" },
+    { moduleKey: "connect", desc: "Emit expense events to your accounting or payroll system via webhook" },
   ],
 };
 

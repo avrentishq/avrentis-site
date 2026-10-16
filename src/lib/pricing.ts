@@ -1,6 +1,7 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
 import { platformFetch } from "@/lib/platform-fetch";
+import { formatEnglishList } from "@/lib/english-list";
 import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
 /** One plan's price in one currency. Amounts are MAJOR units; the site formats
@@ -187,5 +188,5 @@ export function planNames(data: PricingData, featureKey?: string): string[] {
 
 /** "Enterprise", "Business and Enterprise", "Starter, Business and Enterprise". */
 export function formatPlanList(names: string[]): string {
-  return new Intl.ListFormat("en-GB", { style: "long", type: "conjunction" }).format(names);
+  return formatEnglishList(names);
 }

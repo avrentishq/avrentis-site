@@ -1,32 +1,24 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
-  CreditCard,
-  ShoppingCart,
-  Archive,
-  ClipboardCheck,
-  ShieldAlert,
-  Wallet,
-  Users,
-  Link2,
-  type LucideIcon,
-} from "lucide-react";
-import {
   BRAND_COLORS,
-  isModulePublic,
-  moduleName,
-  moduleSuite,
+  MODULE_STATUS_LABELS,
+  MODULES,
+  moduleHref,
+  moduleShortName,
   SUITES,
   type ModuleKey,
+  type ModuleStatus,
   SITE_PAGES,
 } from "@/lib/brand";
+import { MODULE_COPY } from "@/lib/module-copy";
+import { suiteModuleKeys } from "@/lib/product-suites";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import type { ModuleStatus } from "@/components/product/module-layout";
 import { canonical } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
@@ -44,98 +36,9 @@ export const metadata: Metadata = {
   },
 };
 
-interface Module {
-  slug: string;
-  name: string;
-  subtitle: string;
-  body: string;
-  icon: LucideIcon;
-  status: ModuleStatus;
-}
-
-const MODULES: Module[] = [
-  {
-    slug: "pay",
-    name: moduleName("pay"),
-    subtitle: "Payment approvals & authorisation",
-    body:
-      "Every payment voucher submitted, reviewed, and sanctioned through a defined approval chain. Bank-ready PDFs the moment the MD signs.",
-    icon: CreditCard,
-    status: "available",
-  },
-  {
-    slug: "procure",
-    name: moduleName("procure"),
-    subtitle: "Purchase orders on record",
-    body:
-      "Structured purchase order workflow with vendor management, line-item tracking, and role-based approval chains. Procurement without the paperwork gap.",
-    icon: ShoppingCart,
-    status: "available",
-  },
-  {
-    slug: "vault",
-    name: moduleName("vault"),
-    subtitle: "Financial records in one place",
-    body:
-      "Every voucher, purchase order, goods receipt and supplier invoice in one list, with its files and version history, findable by reference, payee, department, status or date.",
-    icon: Archive,
-    status: "available",
-  },
-  {
-    slug: "audit",
-    name: moduleName("audit"),
-    subtitle: "Compliance & accountability",
-    body:
-      "A tamper-evident log of every action — submissions, approvals, queries, signatures — sealed daily. Face internal and external audits without the manual scramble.",
-    icon: ClipboardCheck,
-    status: "available",
-  },
-  {
-    slug: "guard",
-    name: moduleName("guard"),
-    subtitle: "Fraud & anomaly detection",
-    body:
-      "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
-    icon: ShieldAlert,
-    status: "available",
-  },
-  {
-    slug: "grants",
-    name: moduleName("grants"),
-    subtitle: "Grant & fund accounting",
-    body:
-      "Tie every payment to its grant and budget line, track burn against each donor's restrictions, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
-    icon: Wallet,
-    status: "available",
-  },
-  {
-    slug: "people",
-    name: moduleName("people"),
-    subtitle: "Staff expense approvals",
-    body:
-      "Extend structured approvals to staff expense claims. The same approval engine and audit trail, shaped for people processes.",
-    icon: Users,
-    status: "available",
-  },
-  {
-    slug: "connect",
-    name: moduleName("connect"),
-    subtitle: "External systems & integrations",
-    body:
-      "Push Avrentis events into your accounting, HR, or data-warehouse stack via webhooks and a typed API. Your operational record flowing where it needs to go.",
-    icon: Link2,
-    status: "available",
-  },
-];
-
-const STATUS_BADGE: Record<
-  ModuleStatus,
-  { label: string; bg: string; color: string }
-> = {
-  available: { label: "Available", bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
-  coming_soon: { label: "Coming soon", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
-  partial: { label: "In beta", bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
-  roadmap: { label: "Roadmap", bg: "rgba(var(--color-text-subtle-rgb), 0.12)", color: "var(--color-text-muted)" },
+const STATUS_BADGE: Record<ModuleStatus, { bg: string; color: string }> = {
+  available: { bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
+  partial: { bg: "rgba(var(--color-gold-rgb), 0.12)", color: "var(--color-gold-on-light)" },
 };
 
 export default function ProductOverviewPage() {
@@ -218,8 +121,8 @@ export default function ProductOverviewPage() {
             }}
           >
             Avrentis is not a collection of unrelated tools — every financial
-            decision, procurement action, compliance event, and people process
-            flows through one delegation-of-authority engine: routed to the
+            decision, procurement action, and compliance event flows through
+            one delegation-of-authority engine: routed to the
             right approver by amount, department, and risk, enforced
             automatically, and provable on the same tamper-evident record.
           </p>
@@ -299,11 +202,7 @@ export default function ProductOverviewPage() {
           </h2>
 
           {SUITES.map((suite) => {
-            const modules = MODULES.filter(
-              (mod) =>
-                isModulePublic(mod.slug as ModuleKey) &&
-                moduleSuite(mod.slug as ModuleKey) === suite.key,
-            );
+            const modules = suiteModuleKeys(suite.key);
             // A suite the site markets nothing in renders nothing — no heading
             // over an empty row. (None today; true the day one is added.)
             if (modules.length === 0) return null;
@@ -332,10 +231,10 @@ export default function ProductOverviewPage() {
                 >
                   {suite.blurb}
                 </p>
-                {/* auto-fit, not a fixed 3-up: the suites hold three, two, two and
-                    one module, so a fixed three-column grid would leave Evidence
-                    two-thirds empty and Infrastructure a third full. auto-fit
-                    stretches whatever a suite has across the full width. */}
+                {/* auto-fit, not a fixed 3-up: suites hold different numbers of
+                    modules, so a fixed three-column grid would leave the smaller
+                    ones part-empty. auto-fit stretches whatever a suite has
+                    across the full width. */}
                 <div
                   style={{
                     display: "grid",
@@ -343,8 +242,8 @@ export default function ProductOverviewPage() {
                     gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                   }}
                 >
-                  {modules.map((mod) => (
-                    <ModuleCard key={mod.slug} mod={mod} />
+                  {modules.map((moduleKey) => (
+                    <ModuleCard key={moduleKey} moduleKey={moduleKey} />
                   ))}
                 </div>
               </div>
@@ -395,8 +294,8 @@ export default function ProductOverviewPage() {
               maxWidth: "640px",
             }}
           >
-            A payment voucher, a purchase order, an expense claim, and a vendor
-            onboarding all travel the same authority engine: routed to the right
+            A payment voucher, a purchase order, a grant disbursement, and a
+            vendor onboarding all travel the same authority engine: routed to the right
             approver by amount, department, and risk → enforced with no way
             around it → recorded on a tamper-evident trail. Define once who can
             approve what, up to how much, and under which conditions — every
@@ -473,12 +372,13 @@ export default function ProductOverviewPage() {
  * card is identical in every suite, so it is a component rather than the same
  * hundred lines repeated per bucket.
  */
-function ModuleCard({ mod }: { mod: Module }) {
-  const Icon = mod.icon;
-  const badge = STATUS_BADGE[mod.status];
+function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
+  const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
+  const { name, status } = MODULES[moduleKey];
+  const badge = STATUS_BADGE[status];
   return (
     <Link
-      href={`/product/${mod.slug}`}
+      href={moduleHref(moduleKey)}
       style={{
         backgroundColor: "var(--color-bg-light)",
         border: "1px solid var(--color-border)",
@@ -519,7 +419,7 @@ function ModuleCard({ mod }: { mod: Module }) {
             padding: "3px 8px",
           }}
         >
-          {badge.label}
+          {MODULE_STATUS_LABELS[status]}
         </span>
       </div>
 
@@ -533,7 +433,7 @@ function ModuleCard({ mod }: { mod: Module }) {
             margin: "0 0 2px",
           }}
         >
-          {mod.name}
+          {name}
         </h3>
         <p
           style={{
@@ -544,7 +444,7 @@ function ModuleCard({ mod }: { mod: Module }) {
             fontWeight: 500,
           }}
         >
-          {mod.subtitle}
+          {tagline}
         </p>
       </div>
 
@@ -558,7 +458,7 @@ function ModuleCard({ mod }: { mod: Module }) {
           flex: 1,
         }}
       >
-        {mod.body}
+        {summary}
       </p>
 
       <span
@@ -570,7 +470,7 @@ function ModuleCard({ mod }: { mod: Module }) {
           marginTop: "4px",
         }}
       >
-        Explore {mod.name.replace("Avrentis ", "")} →
+        Explore {moduleShortName(moduleKey)} →
       </span>
     </Link>
   );

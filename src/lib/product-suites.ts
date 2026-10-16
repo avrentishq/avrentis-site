@@ -4,9 +4,6 @@ import {
   Archive,
   ShieldAlert,
   SlidersHorizontal,
-  CreditCard,
-  ShoppingCart,
-  Wallet,
   Link2,
   Scale,
   FileLock2,
@@ -45,11 +42,11 @@ import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
  * fails otherwise, so a new module cannot ship into a suite with no words.
  */
 
+/** A module's block on its suite page; its icon is the module's own (`MODULE_COPY`). */
 export interface SuiteModuleBlurb {
   /** The one thing only this module does — a sentence, not a feature list. */
   claim: string;
   body: string;
-  icon: LucideIcon;
 }
 
 export interface SuiteSharedPoint {
@@ -98,19 +95,16 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
     ],
     modules: {
       pay: {
-        icon: CreditCard,
         claim: "Money going out to a supplier, a staff member, or a bank.",
         body:
           "Payment vouchers from submission through finance validation to sanction, with a bank-ready instruction at the end and the payment evidence — reference, value date, receipt — recorded against the voucher afterwards.",
       },
       procure: {
-        icon: ShoppingCart,
         claim: "Money committed before it is spent.",
         body:
           "Purchase orders with their vendors, line items and delivery terms, reviewed by the department head and issued to the supplier from one record — so a commitment is visible long before the invoice arrives.",
       },
       grants: {
-        icon: Wallet,
         claim: "Money that came with somebody else's rules attached.",
         body:
           "Restricted funds tied to their grant and budget line, burn tracked against each donor's restrictions, and a donor-ready report produced in the grant's own currency — from the same approvals finance already runs.",
@@ -147,13 +141,11 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
     ],
     modules: {
       authority: {
-        icon: SlidersHorizontal,
         claim: "Decides who is allowed to approve what.",
         body:
           "The delegation-of-authority engine every request runs on: limits, levels, approver groups, conditions and cover for when somebody is away. Define it once; it is enforced automatically and provable on the record.",
       },
       guard: {
-        icon: ShieldAlert,
         claim: "Watches for the rules being worked around.",
         body:
           "Checks each payment and order as it is submitted and raises the patterns that drain finance teams — duplicate payments, vendor bank-account switches, amounts split to slip under a limit — so a reviewer sees the risk before approval, not after the money has gone.",
@@ -190,13 +182,11 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
     ],
     modules: {
       vault: {
-        icon: Archive,
         claim: "The documents themselves, with their history.",
         body:
           "Every voucher, purchase order, goods receipt and supplier invoice, with its files and full submission history, in one list: the working memory of what your organisation has actually approved.",
       },
       audit: {
-        icon: ClipboardCheck,
         claim: "The proof of what was done and by whom.",
         body:
           "A tamper-evident trail of every submission, approval, query, signature and access event, with regulator-ready exports, data-retention controls and data-subject request handling on top.",
@@ -233,7 +223,6 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
     ],
     modules: {
       connect: {
-        icon: Link2,
         claim: "Connects Avrentis to everything around it.",
         body:
           "Webhooks and a typed REST API for accounting, HR and data-warehouse systems, scoped API keys, single sign-on, and the notification delivery the rest of the platform runs on.",

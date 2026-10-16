@@ -4,10 +4,10 @@ import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
 import { pageMetadata } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
-import { moduleName } from "@/lib/brand";
+import { moduleName, moduleHref } from "@/lib/brand";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product/procure",
+  path: moduleHref("procure"),
   title: `${moduleName("procure")} — Procurement on record`,
   description: "Every purchase order submitted, approved, and issued through a structured vendor and approval system. Line items, vendor directory, and a tamper-evident audit trail of every procurement decision.",
   socialDescription: "Submit, approve, and issue purchase orders through a single system of record. Vendor directory + line items + approval chain.",

@@ -4,9 +4,10 @@ import { ChangelogProductPage } from "@/components/changelog/changelog-page";
 import { isLaunchHidden } from "@/lib/launch";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/changelog",
+  path: SITE_ROUTES.changelog,
   title: "Changelog",
   description: `Release notes for the ${BRAND.name} platform. Notable changes, new capabilities, and platform-level shifts, written for operators — not a commit log.`,
   socialTitle: `${BRAND.name} changelog`,
@@ -14,6 +15,6 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function ChangelogPage() {
-  if (isLaunchHidden("/changelog")) notFound();
+  if (isLaunchHidden(SITE_ROUTES.changelog)) notFound();
   return <ChangelogProductPage />;
 }

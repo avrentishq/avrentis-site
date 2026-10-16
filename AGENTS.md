@@ -131,13 +131,19 @@ Run these locally before you claim anything is done.
   `<sub>.avrentis.com` host in `src/` or `next.config.ts`. `/.well-known/security.txt` is
   generated from them (expiry always a year ahead, rebuilt daily) — never replace it with a
   static file.
+- **Never type a path at all.** The site's own paths live in `src/lib/routes.ts`
+  (`SITE_ROUTES`); module and suite pages come from `moduleHref(key)` / `suiteHref(key)`;
+  core's from `LEGAL_PAGES` / `SITE_PAGES`. The chrome (desktop bar, its menu, the mobile menu,
+  the footer) renders only the lists in `src/lib/site-nav.ts` — one label per destination,
+  launch-hidden pages dropped — and `sitemap.test.ts` checks those links against `sitemap()`'s
+  real output. `site-pages.lock.test.ts` fails on a typed path anywhere, `next.config.ts` included.
 - **Never type a path core owns.** Other surfaces (product emails, trial screens, billing)
   link to this site through core's `@avrentishq/core/brand`, so the site links the same way:
   legal pages via `LEGAL_PAGES`, the trial via `SITE_PAGES.trial()`, contact via
   `contactHref(intent?)` (= `SITE_PAGES.contact`), topics from `CONTACT_INTENTS` /
   `isContactIntent`. `site-pages.lock.test.ts` proves every path core publishes is a real,
   sitemapped page here (moving one fails this build, not a customer's click) and forbids a
-  hand-typed copy outside the route inventories (`sitemap.ts`, `launch.ts`). The trust
+  hand-typed copy outside `routes.ts`. The trust
   centre is a named exception there while it is launch-hidden; meanwhile security.txt's
   Policy line (`disclosurePolicyPath()`) names the security overview, and switches to the
   trust centre by itself once the gate shows it.

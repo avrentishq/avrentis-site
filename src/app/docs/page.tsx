@@ -4,9 +4,10 @@ import { DocsHubPage } from "@/components/docs/docs-page";
 import { isLaunchHidden } from "@/lib/launch";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/docs",
+  path: SITE_ROUTES.docs,
   title: "Documentation",
   description: `${BRAND.name} documentation hub. Getting started, core concepts, modules, security, administration, integrations, API & webhooks, and governance.`,
   socialTitle: `${BRAND.name} documentation`,
@@ -14,6 +15,6 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function DocsPage() {
-  if (isLaunchHidden("/docs")) notFound();
+  if (isLaunchHidden(SITE_ROUTES.docs)) notFound();
   return <DocsHubPage />;
 }

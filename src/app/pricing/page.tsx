@@ -10,6 +10,7 @@ import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { pageMetadata } from "@/lib/seo";
 import { BRAND } from "@/lib/brand";
 import { MARKET_SCOPE } from "@/lib/market";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export async function generateMetadata(): Promise<Metadata> {
   // Tier names come from the pricing API (same cached fetch the page renders),
@@ -17,7 +18,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const names = planNames(await fetchPricingData());
   const description = `Simple, transparent plans for ${MARKET_SCOPE} — ${formatPlanList(names)}. Every plan includes the approval engine, a tamper-evident audit trail ${AUDIT_TRAIL_KEPT}, and the full security stack.`;
   return pageMetadata({
-    path: "/pricing",
+    path: SITE_ROUTES.pricing,
     title: "Pricing",
     description,
     socialTitle: `${BRAND.name} pricing — ${names.join(", ")}`,

@@ -37,6 +37,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
 import { TRIAL_SETUP_TIME } from "@/lib/trial-terms";
+import { SITE_ROUTES } from "@/lib/routes";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -69,14 +70,14 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "The complete approval lifecycle",
         body: "Submit → Review → Sanction → Record, with mockups of every stage.",
-        href: "/product/how-it-works",
+        href: SITE_ROUTES.howItWorks,
         status: "live",
       },
       {
         title: "Platform overview",
         body:
           "The four suites, the modules inside them, and the approval engine they share.",
-        href: "/product",
+        href: SITE_ROUTES.product,
         status: "live",
       },
       {
@@ -109,7 +110,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Document state machines",
         body: "Every transition a voucher or PO can take, and the roles that can cause them.",
-        href: "/product/how-it-works",
+        href: SITE_ROUTES.howItWorks,
         status: "live",
       },
       {
@@ -156,13 +157,13 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "SSO configuration (OIDC and SAML)",
         body: "Okta, Entra, Google Workspace setup walk-throughs.",
-        href: "/product/integrations#identity",
+        href: `${SITE_ROUTES.integrations}#identity`,
         status: "wip",
       },
       {
         title: "SCIM 2.0 provisioning",
         body: "Automated user lifecycle from your IdP.",
-        href: "/product/integrations#provisioning",
+        href: `${SITE_ROUTES.integrations}#provisioning`,
         status: "wip",
       },
       {
@@ -189,7 +190,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Integrations catalogue",
         body: "Every integration with honest availability labels.",
-        href: "/product/integrations",
+        href: SITE_ROUTES.integrations,
         status: "live",
       },
       { title: "Email notifications", body: "Configuring sender domains and templates.", href: contactHref("demo"), status: "wip" },
@@ -207,7 +208,7 @@ const CATEGORIES: DocsCategory[] = [
       {
         title: "Webhook payload reference",
         body: "Event types, signing, retries.",
-        href: "/product/integrations#developer",
+        href: `${SITE_ROUTES.integrations}#developer`,
         status: "live",
       },
       { title: "REST API reference (v1)", body: "Full resource docs being finalised for public release.", href: contactHref("demo"), status: "wip" },
@@ -221,7 +222,7 @@ const CATEGORIES: DocsCategory[] = [
     lede:
       "How Avrentis surfaces company-level governance — the Company Board, auditor role, board provisioning workflow.",
     items: [
-      { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: "/product/audit", status: "live" },
+      { title: "Company Board View", body: "The governance dashboard for MDs and directors.", href: moduleHref("audit"), status: "live" },
       { title: "Auditor role", body: "Time-bound, read-only access for external reviews.", href: LEGAL_PAGES.security, status: "live" },
       {
         title: "Board provisioning (maker-checker)",

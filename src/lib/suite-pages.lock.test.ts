@@ -2,8 +2,9 @@ import { describe, it, expect } from "vitest";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 
-import { SUITES, moduleSuite, isModulePublic, MODULE_ORDER, moduleName } from "./brand";
-import { SUITE_PAGES, SUITE_NAV, suiteModuleKeys } from "./product-suites";
+import { SUITES, moduleSuite, isModulePublic, MODULE_ORDER, moduleName, suiteHref } from "./brand";
+import { SUITE_PAGES, suiteModuleKeys } from "./product-suites";
+import { SUITE_NAV } from "./site-nav";
 
 /**
  * The navigation lists four suites and nothing else. That makes each suite page
@@ -74,10 +75,10 @@ describe("suite pages", () => {
   });
 
   it("points the nav at the pages that exist", () => {
-    expect(SUITE_NAV.map((s) => s.href)).toEqual(SUITES.map((s) => `/product/${s.key}`));
+    expect(SUITE_NAV.map((entry) => entry.href)).toEqual(SUITES.map((suite) => suiteHref(suite.key)));
     for (const entry of SUITE_NAV) {
       expect(entry.label.trim()).toBeTruthy();
-      expect(entry.desc.trim()).toBeTruthy();
+      expect(entry.description?.trim()).toBeTruthy();
     }
   });
 

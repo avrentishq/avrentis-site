@@ -41,6 +41,7 @@ import {
   SUBPROCESSOR_CATEGORIES,
 } from "@/lib/subprocessors";
 import { contactHref } from "@/app/contact/tabs";
+import { SITE_ROUTES } from "@/lib/routes";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -884,7 +885,7 @@ export function TrustProductPage() {
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <Link
-              href="/status"
+              href={SITE_ROUTES.status}
               style={{
                 fontFamily: sans,
                 fontWeight: 600,

@@ -4,10 +4,10 @@ import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
 import { pageMetadata } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
-import { moduleName } from "@/lib/brand";
+import { moduleName, moduleHref } from "@/lib/brand";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product/grants",
+  path: moduleHref("grants"),
   title: `${moduleName("grants")} — Prove where every donor naira went`,
   description: "Restricted-fund accounting built into your approvals: tag every payment to a grant and budget line, track burn per donor, oversee sub-grantees, and export donor-ready reports in the grant's own currency.",
   socialDescription: "Restricted-fund tracking, per-grant burn, sub-grantee oversight, and donor-ready report exports — from the same approvals your finance team already runs.",

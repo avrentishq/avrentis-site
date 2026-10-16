@@ -4,10 +4,10 @@ import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
 import { pageMetadata } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
-import { moduleName } from "@/lib/brand";
+import { moduleName, moduleHref } from "@/lib/brand";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product/guard",
+  path: moduleHref("guard"),
   title: `${moduleName("guard")} — Catch the bad payment before the money moves`,
   description: "Real-time flags on the patterns that drain finance teams — duplicate payments, vendor bank-account switches, and threshold-gaming — surfaced before approval, resolved on an audited review queue.",
   socialDescription: "Duplicate payments, vendor bank-account changes, and structuring flagged before approval — with an audited review-and-resolve queue.",

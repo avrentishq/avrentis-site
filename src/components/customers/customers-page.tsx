@@ -30,6 +30,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
+import { SITE_ROUTES } from "@/lib/routes";
 
 const sans = "var(--font-sans)";
 
@@ -738,7 +739,7 @@ export function CustomersProductPage() {
               Become a launch partner
             </Link>
             <Link
-              href="/product/how-it-works"
+              href={SITE_ROUTES.howItWorks}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

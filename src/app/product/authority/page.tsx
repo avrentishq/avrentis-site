@@ -4,13 +4,13 @@ import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
 import { pageMetadata } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
-import { moduleName } from "@/lib/brand";
+import { moduleName, moduleHref } from "@/lib/brand";
 
 const DESCRIPTION =
   "Write your approval rules down once — who can sanction what, up to how much, and what happens above that — and have them enforced on every request automatically, with the proof kept for you.";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product/authority",
+  path: moduleHref("authority"),
   title: `${moduleName("authority")} — who can approve what, up to how much`,
   description: DESCRIPTION,
   socialTitle: `${moduleName("authority")} — your approval rules, enforced automatically`,

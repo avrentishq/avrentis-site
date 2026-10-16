@@ -1,86 +1,79 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync } from "node:fs";
-import { STATIC_ROUTES } from "@/app/sitemap";
-import { publicModuleKeys, moduleHref } from "@/lib/brand";
+
+import sitemap from "@/app/sitemap";
+import { SITE_URL } from "@/lib/seo";
+import { moduleHref, suiteHref, SUITES } from "@/lib/brand";
 import { isLaunchHidden } from "@/lib/launch";
+import { SITE_ROUTES } from "@/lib/routes";
+import { chromeLinks } from "@/lib/site-nav";
 
 /**
  * Drift guard for indexing. The bug this prevents: a page ships, gets linked
  * from the navbar or footer, and nobody adds it to the sitemap — so it is
  * publicly reachable but never indexed. /product/integrations sat that way.
  *
- * Link hrefs are scraped from the chrome components rather than imported,
- * because those are "use client" modules that pull in framer-motion and will
- * not load in this node-environment suite. The scrape is guarded by a sanity
- * assertion below so it cannot silently match nothing and pass vacuously.
+ * Both sides are the real thing: the links every piece of chrome renders
+ * (`site-nav.ts` — the desktop bar, mobile menu and footer read nothing else)
+ * and the sitemap's own output. An earlier version scraped two of the three
+ * menus with a regex and rebuilt the sitemap by hand, missing the mobile menu,
+ * inline `href="…"` links and the suite pages.
  */
 
 /** Internal routes intentionally kept out of the sitemap, with the reason. */
 const INTENTIONALLY_ABSENT: Record<string, string> = {
-  "/status": "redirects to an external status page; sitemaps must not list redirects",
-  "/features": "redirects to /product",
+  [SITE_ROUTES.status]: "redirects to an external status page; sitemaps must not list redirects",
+  [SITE_ROUTES.features]: "redirects to /product",
 };
 
 function sitemapPaths(): string[] {
-  const moduleRoutes = publicModuleKeys().map(
-    (key) => moduleHref(key),
-  );
-  return [...STATIC_ROUTES, ...moduleRoutes].filter(
-    (path) => !isLaunchHidden(path),
-  );
+  return sitemap().map((entry) => {
+    const path = entry.url.slice(SITE_URL.length);
+    return path === "" ? SITE_ROUTES.home : path;
+  });
 }
 
 function linkedInternalPaths(): string[] {
-  const files = [
-    "src/components/layout/navbar.tsx",
-    "src/components/layout/footer.tsx",
+  return [
+    ...new Set(
+      chromeLinks()
+        .map((link) => link.href)
+        .filter((href) => href.startsWith("/"))
+        .map((href) => href.split("#")[0]!),
+    ),
   ];
-  const found = new Set<string>();
-  for (const file of files) {
-    const source = readFileSync(file, "utf8");
-    for (const match of source.matchAll(/href: "(\/[^"]*)"/g)) {
-      // Drop the fragment — /product/integrations#identity indexes as its page.
-      const path = match[1].split("#")[0];
-      if (path) found.add(path);
-    }
-  }
-  return [...found];
 }
 
 describe("sitemap", () => {
-  it("scrape actually finds links (guards against a vacuous pass)", () => {
+  it("sees the chrome's links (guards against a vacuous pass)", () => {
     const linked = linkedInternalPaths();
-    expect(
-      linked.length,
-      "expected to scrape several internal hrefs from navbar/footer",
-    ).toBeGreaterThan(5);
-    expect(linked, "the product hub is linked from the chrome").toContain(
-      "/product",
-    );
+    expect(linked.length).toBeGreaterThan(5);
+    expect(linked).toContain(SITE_ROUTES.product);
   });
 
-  it("lists every internal page linked from the navbar or footer", () => {
+  it("lists every internal page linked from the chrome", () => {
     const inSitemap = new Set(sitemapPaths());
     const missing = linkedInternalPaths()
       .filter((path) => !isLaunchHidden(path))
       .filter((path) => !(path in INTENTIONALLY_ABSENT))
       .filter((path) => !inSitemap.has(path));
-
     expect(
       missing,
-      `linked and reachable but not in the sitemap: ${missing.join(", ")}. ` +
-        "Add the route to STATIC_ROUTES, or to INTENTIONALLY_ABSENT with a reason.",
+      "linked and reachable but not in the sitemap. Add the route to STATIC_ROUTES, or to INTENTIONALLY_ABSENT with a reason.",
     ).toEqual([]);
   });
 
+  it("lists the suite pages", () => {
+    const paths = sitemapPaths();
+    for (const suite of SUITES) expect(paths).toContain(suiteHref(suite.key));
+  });
+
   it("does not list a launch-hidden route", () => {
-    const hidden = sitemapPaths().filter(isLaunchHidden);
-    expect(hidden, "launch-hidden routes must never be advertised").toEqual([]);
+    expect(sitemapPaths().filter(isLaunchHidden), "launch-hidden routes must never be advertised").toEqual([]);
   });
 
   it("excludes modules the site does not market", () => {
     const paths = sitemapPaths();
-    // Requests is publiclyVisible:false, so its route must not appear.
+    // Requests is not publicly visible, so its route must not appear.
     expect(paths).not.toContain(moduleHref("people"));
     expect(paths).toContain(moduleHref("pay"));
   });
@@ -88,10 +81,7 @@ describe("sitemap", () => {
   it("keeps every intentionally-absent route genuinely absent", () => {
     const inSitemap = new Set(sitemapPaths());
     for (const path of Object.keys(INTENTIONALLY_ABSENT)) {
-      expect(
-        inSitemap.has(path),
-        `${path} is documented as absent (${INTENTIONALLY_ABSENT[path]}) but is in the sitemap`,
-      ).toBe(false);
+      expect(inSitemap.has(path), `${path} is documented as absent (${INTENTIONALLY_ABSENT[path]}) but is in the sitemap`).toBe(false);
     }
   });
 });

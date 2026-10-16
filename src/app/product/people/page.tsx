@@ -4,10 +4,10 @@ import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
 import { pageMetadata } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
-import { moduleName } from "@/lib/brand";
+import { moduleName, moduleHref } from "@/lib/brand";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product/people",
+  path: moduleHref("people"),
   title: `${moduleName("people")} — staff expense approvals on the same rails`,
   description: "Staff expense claims structured through the same approval engine and audit trail as your financial decisions. Every approval on record for the life of your account.",
   socialDescription: "Staff expense claims — structured, routed, and every approval on record.",

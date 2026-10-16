@@ -22,9 +22,10 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product",
+  path: SITE_ROUTES.product,
   title: `The ${BRAND.name} platform — spend, oversight, evidence, on one record`,
   description: `${BRAND.name} structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.`,
   socialDescription: "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
@@ -140,7 +141,7 @@ export default function ProductOverviewPage() {
               {START_TRIAL_CTA}
             </Link>
             <Link
-              href="/product/how-it-works"
+              href={SITE_ROUTES.howItWorks}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,

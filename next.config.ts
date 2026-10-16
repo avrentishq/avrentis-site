@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { SITE_PAGE_ROUTES } from "@avrentishq/core/brand";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -71,9 +72,10 @@ const config: NextConfig = {
   async redirects() {
     return [
       {
-        source: "/contact",
+        // Core spells both paths, as it does for every other surface linking here.
+        source: SITE_PAGE_ROUTES.contact,
         has: [{ type: "query", key: "intent", value: "trial" }],
-        destination: "/trial",
+        destination: SITE_PAGE_ROUTES.trial,
         permanent: true,
       },
     ];

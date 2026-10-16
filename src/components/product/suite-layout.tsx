@@ -26,6 +26,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
   const config = SUITE_PAGES[suite];
@@ -37,7 +38,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Platform", path: "/product" },
+          { name: "Platform", path: SITE_ROUTES.product },
           { name: meta.label, path: suiteHref(suite) },
         ])}
       />
@@ -303,7 +304,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
               margin: "32px 0 0",
             }}
           >
-            <Link href="/product" style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>
+            <Link href={SITE_ROUTES.product} style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>
               See the whole platform &rarr;
             </Link>
           </p>

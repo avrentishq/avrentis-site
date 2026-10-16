@@ -42,6 +42,7 @@ import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
 import { EVERY_PLAN_NOTE, planScopeNote, type FeaturePlans } from "@/lib/plan-names";
+import { SITE_ROUTES } from "@/lib/routes";
 
 /**
  * Which plans a card's capability is on. `planFeature` names the plan feature
@@ -181,7 +182,7 @@ function resolveCtas(config: ModuleConfig, status: ModuleStatus): {
   }
   return {
     primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
-    secondary: config.secondaryCta ?? { label: "See how it works", href: "/product/how-it-works" },
+    secondary: config.secondaryCta ?? { label: "See how it works", href: SITE_ROUTES.howItWorks },
   };
 }
 
@@ -219,7 +220,7 @@ export function ProductModuleLayout({
       <JsonLd
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
-          { name: "Platform", path: "/product" },
+          { name: "Platform", path: SITE_ROUTES.product },
           { name, path: moduleHref(config.moduleKey) },
         ])}
       />
@@ -753,7 +754,7 @@ export function ProductModuleLayout({
               ))}
             </div>
             <Link
-              href="/pricing"
+              href={SITE_ROUTES.pricing}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontSize: "13px",

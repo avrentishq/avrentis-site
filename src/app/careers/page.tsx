@@ -4,9 +4,10 @@ import { CareersProductPage } from "@/components/careers/careers-page";
 import { isLaunchHidden } from "@/lib/launch";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/careers",
+  path: SITE_ROUTES.careers,
   title: "Careers",
   description: "Build the platform that runs African organisations. Small team, deliberate hiring, long-term horizon. Register your interest — it's how we hire.",
   socialTitle: `Careers at ${BRAND.name}`,
@@ -14,6 +15,6 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default function CareersPage() {
-  if (isLaunchHidden("/careers")) notFound();
+  if (isLaunchHidden(SITE_ROUTES.careers)) notFound();
   return <CareersProductPage />;
 }

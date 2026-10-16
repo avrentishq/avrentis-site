@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BRAND } from "@/lib/brand";
+import { SITE_ROUTES } from "@/lib/routes";
 
 /**
  * Branded 404. Standalone centred screen (no Navbar/Footer) so it renders
@@ -77,7 +78,7 @@ export default function NotFound() {
             Back to home
           </Link>
           <Link
-            href="/product"
+            href={SITE_ROUTES.product}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 500,

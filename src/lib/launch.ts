@@ -20,14 +20,15 @@
  * lives in `guides/public-site-setup.md`, which is gitignored.
  */
 
-import { hiddenModuleKeys, moduleHref } from "./brand";
+import { LEGAL_PAGES, hiddenModuleKeys, moduleHref } from "./brand";
+import { SITE_ROUTES } from "./routes";
 
 export const HIDDEN_AT_LAUNCH: readonly string[] = [
-  "/customers",
-  "/careers",
-  "/changelog",
-  "/docs",
-  "/trust",
+  SITE_ROUTES.customers,
+  SITE_ROUTES.careers,
+  SITE_ROUTES.changelog,
+  SITE_ROUTES.docs,
+  LEGAL_PAGES.trust,
   ...hiddenModuleKeys().map(moduleHref),
 ];
 

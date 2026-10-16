@@ -4,9 +4,10 @@ import { fetchPricingData } from "@/lib/pricing";
 import { featurePlans, planNames } from "@/lib/plan-names";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/product/integrations",
+  path: SITE_ROUTES.integrations,
   title: "Integrations",
   description: "Identity (OIDC / SAML / SCIM), notifications (email / WhatsApp / SMS), accounting (journal export for QuickBooks Online, Zoho Books and Sage Accounting), bank payment files (NIBSS, SEPA, Bacs, ACH), and a first-class developer platform. Every integration labelled honestly — available today, or delivered on request.",
   socialTitle: `${BRAND.name} integrations catalogue`,

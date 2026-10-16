@@ -9,11 +9,12 @@ import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 import { MARKET_SCOPE } from "@/lib/market";
+import { SITE_ROUTES } from "@/lib/routes";
 
 const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
 export const metadata: Metadata = pageMetadata({
-  path: "/about",
+  path: SITE_ROUTES.about,
   title: "About",
   description: ABOUT_DESCRIPTION,
   socialTitle: `About ${BRAND.name}`,

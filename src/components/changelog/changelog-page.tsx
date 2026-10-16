@@ -19,6 +19,7 @@ import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { contactHref } from "@/app/contact/tabs";
+import { SITE_ROUTES } from "@/lib/routes";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -63,7 +64,7 @@ const ENTRIES: Entry[] = [
       "Portuguese as a full interface language, beside English and French",
       "A test company for trying new routes, bank formats and integrations, with nothing leaving it",
     ],
-    link: { label: "See the integrations", href: "/product/integrations" },
+    link: { label: "See the integrations", href: SITE_ROUTES.integrations },
   },
   {
     date: "October 2026",
@@ -76,7 +77,7 @@ const ENTRIES: Entry[] = [
       `The audit trail of every action and decision is ${AUDIT_TRAIL_KEPT}`,
       `Documents and attached files are ${DOCUMENTS_KEPT}`,
     ],
-    link: { label: "See the integrations", href: "/product/integrations" },
+    link: { label: "See the integrations", href: SITE_ROUTES.integrations },
   },
   {
     date: "April 2026",
@@ -89,7 +90,7 @@ const ENTRIES: Entry[] = [
       "Trial data preserved for 30 days after expiry",
       "Exports carry a trial watermark until upgrade",
     ],
-    link: { label: "See the pricing", href: "/pricing" },
+    link: { label: "See the pricing", href: SITE_ROUTES.pricing },
   },
   {
     date: "April 2026",
@@ -104,7 +105,7 @@ const ENTRIES: Entry[] = [
       "People → Requests",
       "Connect → Integrations",
     ],
-    link: { label: "See the modules", href: "/product" },
+    link: { label: "See the modules", href: SITE_ROUTES.product },
   },
   {
     date: "March 2026",
@@ -131,7 +132,7 @@ const ENTRIES: Entry[] = [
       "Restrict sign-in to your organisation's approved IP addresses",
       "Import large numbers of users in a single upload",
     ],
-    link: { label: "Integrations catalogue", href: "/product/integrations" },
+    link: { label: "Integrations catalogue", href: SITE_ROUTES.integrations },
   },
   {
     date: "January 2026",
@@ -173,7 +174,7 @@ const ENTRIES: Entry[] = [
       "Digital signatures re-used across approvals, with fresh confirmation on high-value items",
       "Bank-ready payment letters with your company letterhead",
     ],
-    link: { label: "See how it works", href: "/product/how-it-works" },
+    link: { label: "See how it works", href: SITE_ROUTES.howItWorks },
   },
   {
     date: "October 2025",

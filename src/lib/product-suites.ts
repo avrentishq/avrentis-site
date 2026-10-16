@@ -264,11 +264,3 @@ export function suitePageMetadata(suite: ModuleSuite): Metadata {
     socialDescription: config.headline,
   });
 }
-
-/** Suite nav entries — label, blurb and href — in `SUITES` order. */
-export const SUITE_NAV = SUITES.map((suite) => ({
-  key: suite.key,
-  label: suite.label,
-  desc: suite.blurb,
-  href: suiteHref(suite.key),
-}));

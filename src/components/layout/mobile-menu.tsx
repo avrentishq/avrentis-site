@@ -4,43 +4,23 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { BRAND_COLORS, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
-import { SUITE_NAV } from "@/lib/product-suites";
+import { BRAND_COLORS } from "@/lib/brand";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { isLaunchVisible } from "@/lib/launch";
-import { contactHref } from "@/app/contact/tabs";
+import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
 
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
-  navLinks: { label: string; href: string }[];
-  signinUrl: string;
   pathname: string;
 }
 
-// Derived from the brand SSOT — excludes not-yet-public modules (HR) automatically.
-// Suites, not modules — mirroring the desktop dropdown. "All modules" keeps
-// the full catalogue one tap away.
-const PRODUCT_SUITES = [
-  ...SUITE_NAV.map((suite) => ({ name: suite.label, href: suite.href })),
-  { name: "All modules", href: "/product" },
-];
-
-const PRODUCT_PLATFORM = [
-  { name: "How it works", href: "/product/how-it-works" },
-  { name: "Security", href: LEGAL_PAGES.security },
-  { name: "Trust centre", href: LEGAL_PAGES.trust },
-];
+// The same lists the desktop bar renders (`site-nav.ts`): suites, then "All
+// modules" so the full catalogue stays one tap away.
+const PRODUCT_SUITES = [...SUITE_NAV, NAV_LINKS.allModules];
 
 const FONT = "var(--font-sans)";
 
-export function MobileMenu({
-  open,
-  onClose,
-  navLinks,
-  signinUrl,
-  pathname,
-}: MobileMenuProps) {
+export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -174,7 +154,7 @@ export function MobileMenu({
                       textDecoration: "none",
                     }}
                   >
-                    {mod.name}
+                    {mod.label}
                   </Link>
                 ))}
               </div>
@@ -190,7 +170,7 @@ export function MobileMenu({
 
               {/* Platform links */}
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                {PRODUCT_PLATFORM.filter((item) => isLaunchVisible(item.href)).map((item) => (
+                {PLATFORM_NAV.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -203,16 +183,14 @@ export function MobileMenu({
                       textDecoration: "none",
                     }}
                   >
-                    {item.name}
+                    {item.label}
                   </Link>
                 ))}
               </div>
             </div>
 
             {/* Top-level links other than Product (Product is expanded above) */}
-            {navLinks
-              .filter((link) => link.label !== "Product")
-              .map((link) => (
+            {TOP_NAV.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -242,7 +220,7 @@ export function MobileMenu({
             }}
           >
             <a
-              href={signinUrl}
+              href={NAV_LINKS.login.href}
               style={{
                 fontFamily: FONT,
                 fontWeight: 400,
@@ -252,10 +230,10 @@ export function MobileMenu({
                 textAlign: "center",
               }}
             >
-              Login
+              {NAV_LINKS.login.label}
             </a>
             <Link
-              href={contactHref()}
+              href={NAV_LINKS.contact.href}
               onClick={onClose}
               style={{
                 fontFamily: FONT,
@@ -274,10 +252,10 @@ export function MobileMenu({
                 width: "100%",
               }}
             >
-              Contact us
+              {NAV_LINKS.contact.label}
             </Link>
             <Link
-              href={SITE_PAGES.trial()}
+              href={NAV_LINKS.startTrial.href}
               onClick={onClose}
               style={{
                 fontFamily: FONT,
@@ -295,7 +273,7 @@ export function MobileMenu({
                 width: "100%",
               }}
             >
-              Start trial &rarr;
+              {NAV_LINKS.startTrial.label} &rarr;
             </Link>
           </div>
         </m.div>

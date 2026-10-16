@@ -27,6 +27,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
+import { SITE_ROUTES } from "@/lib/routes";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -597,7 +598,7 @@ export function CareersProductPage() {
               Register my interest
             </Link>
             <Link
-              href="/about"
+              href={SITE_ROUTES.about}
               style={{
                 fontFamily: sans,
                 fontWeight: 500,

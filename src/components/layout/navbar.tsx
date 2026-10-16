@@ -6,25 +6,8 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, ArrowRight } from "lucide-react";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
-import { SUITE_NAV } from "@/lib/product-suites";
-import { isLaunchVisible } from "@/lib/launch";
-import { LOGIN_URL } from "@/lib/platform";
-
-/* ── Data ─────────────────────────────────────────────────────────────────── */
-
-const NAV_LINKS = [
-  { label: "Product", href: "/product" },
-  { label: "Customers", href: "/customers" },
-  { label: "Pricing", href: "/pricing" },
-];
-
-const PLATFORM = [
-  { name: "How it works", href: "/product/how-it-works" },
-  { name: "Security", href: LEGAL_PAGES.security },
-  { name: "Trust centre", href: LEGAL_PAGES.trust },
-  { name: "Integrations catalogue", href: "/product/integrations" },
-];
+import { BRAND } from "@/lib/brand";
+import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
 
@@ -69,7 +52,7 @@ export function Navbar() {
 
   /* active link helper */
   const isActive = (href: string) => {
-    if (href === "/product") return pathname.startsWith("/product");
+    if (href === NAV_LINKS.product.href) return pathname.startsWith(href);
     return pathname === href;
   };
 
@@ -210,25 +193,25 @@ export function Navbar() {
               style={{ position: "relative" }}
             >
               <Link
-                href="/product"
+                href={NAV_LINKS.product.href}
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 style={{
-                  ...activeLinkStyle("/product"),
+                  ...activeLinkStyle(NAV_LINKS.product.href),
                   display: "inline-flex",
                   alignItems: "center",
                   gap: "4px",
                 }}
                 onMouseEnter={(e) => {
-                  if (!isActive("/product"))
+                  if (!isActive(NAV_LINKS.product.href))
                     e.currentTarget.style.color = barSurface.accent;
                 }}
                 onMouseLeave={(e) => {
-                  if (!isActive("/product"))
+                  if (!isActive(NAV_LINKS.product.href))
                     e.currentTarget.style.color = barSurface.text;
                 }}
               >
-                Product
+                {NAV_LINKS.product.label}
                 <ChevronDown
                   size={12}
                   style={{
@@ -321,14 +304,14 @@ export function Navbar() {
                               lineHeight: 1.4,
                             }}
                           >
-                            {suite.desc}
+                            {suite.description}
                           </div>
                         </Link>
                       ))}
                       {/* The module index is still one click away: the suites
                           group the catalogue, they do not hide it. */}
                       <Link
-                        href="/product"
+                        href={NAV_LINKS.allModules.href}
                         onClick={closeDropdownImmediate}
                         style={{
                           display: "inline-flex",
@@ -343,7 +326,7 @@ export function Navbar() {
                           textDecoration: "none",
                         }}
                       >
-                        All modules
+                        {NAV_LINKS.allModules.label}
                         <ArrowRight size={14} aria-hidden="true" />
                       </Link>
                     </div>
@@ -371,9 +354,7 @@ export function Navbar() {
                         gap: "2px",
                       }}
                     >
-                      {PLATFORM.filter((item) =>
-                        isLaunchVisible(item.href),
-                      ).map((item) => (
+                      {PLATFORM_NAV.map((item) => (
                         <Link
                           key={item.href}
                           href={item.href}
@@ -397,7 +378,7 @@ export function Navbar() {
                               "transparent";
                           }}
                         >
-                          {item.name}
+                          {item.label}
                         </Link>
                       ))}
                     </div>
@@ -406,21 +387,22 @@ export function Navbar() {
               )}
             </div>
 
-            {/* Pricing */}
-            <Link
-              href="/pricing"
-              style={activeLinkStyle("/pricing")}
-              onMouseEnter={(e) => {
-                if (!isActive("/pricing"))
-                  e.currentTarget.style.color = barSurface.accent;
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive("/pricing"))
-                  e.currentTarget.style.color = barSurface.text;
-              }}
-            >
-              Pricing
-            </Link>
+            {/* The top-level links after Product — the same list the mobile menu shows. */}
+            {TOP_NAV.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                style={activeLinkStyle(link.href)}
+                onMouseEnter={(e) => {
+                  if (!isActive(link.href)) e.currentTarget.style.color = barSurface.accent;
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive(link.href)) e.currentTarget.style.color = barSurface.text;
+                }}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
           {/* ── Right-side actions ─────────────────────────────────── */}
@@ -432,7 +414,7 @@ export function Navbar() {
             {!scrolled && (
               <>
                 <a
-                  href={LOGIN_URL}
+                  href={NAV_LINKS.login.href}
                   style={{
                     fontFamily: "var(--font-sans)",
                     fontWeight: 400,
@@ -448,13 +430,13 @@ export function Navbar() {
                     e.currentTarget.style.color = "var(--color-text-subtle)";
                   }}
                 >
-                  Login
+                  {NAV_LINKS.login.label}
                 </a>
               </>
             )}
 
             <a
-              href={SITE_PAGES.trial()}
+              href={NAV_LINKS.startTrial.href}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 500,
@@ -483,7 +465,7 @@ export function Navbar() {
                 e.currentTarget.style.backgroundColor = "var(--color-gold)";
               }}
             >
-              Start trial &rarr;
+              {NAV_LINKS.startTrial.label} &rarr;
             </a>
           </div>
 
@@ -515,8 +497,6 @@ export function Navbar() {
       <MobileMenu
         open={mobileOpen}
         onClose={() => setMobileOpen(false)}
-        navLinks={NAV_LINKS.filter((link) => isLaunchVisible(link.href))}
-        signinUrl={LOGIN_URL}
         pathname={pathname}
       />
     </>

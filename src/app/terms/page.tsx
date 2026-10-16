@@ -4,6 +4,7 @@ import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page
 import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES } from "@/lib/brand";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
   path: LEGAL_PAGES.terms,
@@ -47,7 +48,7 @@ const SECTIONS: LegalSection[] = [
         </p>
         <p>
           A detailed, current description of capabilities lives at{" "}
-          <Link href="/product">/product</Link> and is authoritative over any earlier marketing material.
+          <Link href={SITE_ROUTES.product}>{SITE_ROUTES.product}</Link> and is authoritative over any earlier marketing material.
         </p>
       </>
     ),
@@ -180,7 +181,7 @@ const SECTIONS: LegalSection[] = [
     body: (
       <>
         <p>
-          Paid plans and their fees are described at <Link href="/pricing">/pricing</Link> and any order form you
+          Paid plans and their fees are described at <Link href={SITE_ROUTES.pricing}>{SITE_ROUTES.pricing}</Link> and any order form you
           execute. Unless otherwise stated, fees are charged in advance for the subscription term, are
           non-refundable, and are exclusive of taxes.
         </p>

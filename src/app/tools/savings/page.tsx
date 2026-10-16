@@ -5,9 +5,10 @@ import { SavingsEstimator } from "./estimator";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
-  path: "/tools/savings",
+  path: SITE_ROUTES.savingsEstimator,
   title: "Approval savings estimator",
   description: "Estimate the hours and money structured approvals give your team back. Free, instant, no signup — your numbers, a transparent formula.",
   socialTitle: "What would structured approvals save you?",

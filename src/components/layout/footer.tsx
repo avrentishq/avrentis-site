@@ -2,60 +2,9 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
-import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
-import { SUITE_NAV } from "@/lib/product-suites";
-import { isLaunchVisible } from "@/lib/launch";
-import { LOGIN_URL } from "@/lib/platform";
-import { contactHref } from "@/app/contact/tabs";
+import { BRAND } from "@/lib/brand";
+import { FOOTER_COLUMNS } from "@/lib/site-nav";
 import { MARKET_SCOPE } from "@/lib/market";
-
-// The PRODUCT column lists the four SUITES, not the eight modules — the same
-// grouping the navbar uses. Every module page stays one click further on (from
-// its suite page, or from the module index this column ends with), and stays in
-// the sitemap. Derived from the brand SSOT, so a suite added there appears here.
-const PRODUCT_LINKS = [
-  ...SUITE_NAV.map((suite) => ({ label: suite.label, href: suite.href })),
-  { label: "All modules", href: "/product" },
-];
-
-const PLATFORM_LINKS = [
-  { label: "How it works", href: "/product/how-it-works" },
-  { label: "Security", href: LEGAL_PAGES.security },
-  { label: "Integrations", href: "/product/integrations" },
-  { label: "Pricing", href: "/pricing" },
-];
-
-const RESOURCES_LINKS = [
-  { label: "Documentation", href: "/docs" },
-  { label: "Changelog", href: "/changelog" },
-  { label: "Status", href: "/status" },
-  { label: "Customers", href: "/customers" },
-];
-
-const COMPANY_LINKS = [
-  { label: "About", href: "/about" },
-  { label: "Careers", href: "/careers" },
-  { label: "Trust centre", href: LEGAL_PAGES.trust },
-  { label: "Privacy policy", href: LEGAL_PAGES.privacy },
-  { label: "Terms of service", href: LEGAL_PAGES.terms },
-];
-
-const START_LINKS = [
-  { label: "Start trial", href: SITE_PAGES.trial() },
-  { label: "Contact us", href: contactHref() },
-  { label: "Login", href: LOGIN_URL },
-];
-
-// Hidden-at-launch links are filtered out; fully-empty columns are dropped.
-const FOOTER_COLUMNS = [
-  { label: "PRODUCT", links: PRODUCT_LINKS },
-  { label: "PLATFORM", links: PLATFORM_LINKS },
-  { label: "RESOURCES", links: RESOURCES_LINKS },
-  { label: "COMPANY", links: COMPANY_LINKS },
-  { label: "GET STARTED", links: START_LINKS },
-]
-  .map((col) => ({ ...col, links: col.links.filter((link) => isLaunchVisible(link.href)) }))
-  .filter((col) => col.links.length > 0);
 
 const linkStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",

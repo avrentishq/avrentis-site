@@ -21,6 +21,7 @@ import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core
 import { READ_ONLY_GRACE_DAYS, TRIAL_DURATION_DAYS, TRIAL_PLAN, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { LEAD_CURRENCY } from "@/lib/market";
+import { SITE_ROUTES } from "@/lib/routes";
 
 type BillingCycle = "monthly" | "annual";
 
@@ -949,7 +950,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           }}
         >
           <Link
-            href="/tools/savings"
+            href={SITE_ROUTES.savingsEstimator}
             style={{
               color: "var(--color-gold-on-light)",
               textDecoration: "none",

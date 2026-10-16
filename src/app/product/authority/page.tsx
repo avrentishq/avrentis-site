@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { AuthorityModulePage } from "@/components/product/pages/authority-module-page";
-import { fetchPricingData } from "@/lib/pricing";
+import { fetchPricingData, formatPlanList, planNames } from "@/lib/pricing";
 import { planAvailabilityFor } from "@/lib/module-availability";
 import { canonical } from "@/lib/seo";
 import { moduleName } from "@/lib/brand";
@@ -23,5 +23,10 @@ export const metadata: Metadata = {
 
 export default async function ProductAuthorityPage() {
   const pricingData = await fetchPricingData();
-  return <AuthorityModulePage planAvailability={planAvailabilityFor("authority", pricingData)} />;
+  return (
+    <AuthorityModulePage
+      planAvailability={planAvailabilityFor("authority", pricingData)}
+      groupPlans={formatPlanList(planNames(pricingData, "multiCompanyGroup"))}
+    />
+  );
 }

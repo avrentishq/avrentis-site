@@ -6,7 +6,7 @@ import { canonical } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Integrations — Avrentis",
   description:
-    "Identity (OIDC / SCIM, SAML on the roadmap), notifications (email / WhatsApp / SMS), accounting (QuickBooks / Xero / SAP), banking, and a first-class developer platform. Every integration labelled honestly — available today, or delivered on request.",
+    "Identity (OIDC / SAML / SCIM), notifications (email / WhatsApp / SMS), accounting (journal export for QuickBooks Online, Zoho Books and Sage Accounting), bank payment files (NIBSS, SEPA, Bacs, ACH), and a first-class developer platform. Every integration labelled honestly — available today, or delivered on request.",
   alternates: { canonical: "/product/integrations" },
   openGraph: {
     title: "Avrentis integrations catalogue",
@@ -20,6 +20,10 @@ export const metadata: Metadata = {
 export default async function IntegrationsPage() {
   const pricingData = await fetchPricingData();
   const plansFor = (featureKey: string) => formatPlanList(planNames(pricingData, featureKey));
-  const plansByFeature: PlansByFeature = { sso: plansFor("sso"), apiAccess: plansFor("apiAccess") };
+  const plansByFeature: PlansByFeature = {
+    sso: plansFor("sso"),
+    apiAccess: plansFor("apiAccess"),
+    budgetCodes: plansFor("budgetCodes"),
+  };
   return <IntegrationsCataloguePage plansByFeature={plansByFeature} />;
 }

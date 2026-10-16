@@ -9,6 +9,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
+import { INTERFACE_LANGUAGE_NAMES, SUPPORTED_CURRENCY_COUNT } from "@/lib/languages-and-currencies";
 
 // No testimonials and no invented metrics — the section states what the
 // platform enforces, which is verifiable, rather than borrowed credibility.
@@ -33,7 +34,7 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: MapPin,
     title: "Built for African finance teams",
-    body: "Naira-first, with USD, GBP, and EUR for international payables — designed for how mid-market organisations here actually operate.",
+    body: `Naira-first, with documents in ${SUPPORTED_CURRENCY_COUNT} currencies for regional and international payables, and an interface in ${INTERFACE_LANGUAGE_NAMES} — designed for how mid-market organisations here actually operate.`,
   },
 ];
 

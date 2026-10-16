@@ -24,7 +24,7 @@ import {
 } from "./map-response";
 import { ORG_SIZES as SIZES } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
-import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { platformFetch } from "@/lib/platform-fetch";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
 import { CONTACT_EMAIL } from "@/lib/contacts";
@@ -132,7 +132,7 @@ async function answerTrialRequest(formData: FormData): Promise<TrialFormState> {
 
   let response: Response;
   try {
-    response = await fetch(`${PLATFORM_ORIGIN}/api/v1/public/trial/request`, {
+    response = await platformFetch("/api/v1/public/trial/request", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -183,7 +183,7 @@ export async function reissueTrialToken(
 
   let response: Response;
   try {
-    response = await fetch(`${PLATFORM_ORIGIN}/api/v1/public/trial/reissue`, {
+    response = await platformFetch("/api/v1/public/trial/reissue", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),

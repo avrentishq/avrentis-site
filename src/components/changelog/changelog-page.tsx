@@ -47,6 +47,26 @@ const TAG_STYLES: Record<Tag, { label: string; color: string; bg: string; border
 const ENTRIES: Entry[] = [
   {
     date: "October 2026",
+    tag: "feature",
+    title: "Ledger-ready accounting, more bank schemes, and company groups.",
+    body:
+      "Approved spending now reaches your ledger coded your way, payments go out in more banks' own formats, and organisations with several companies can run them as one group.",
+    bullets: [
+      "Your own chart of accounts and cost centres on vouchers and order lines",
+      "Approved vouchers and payments exported once each as journal entries for QuickBooks Online, Zoho Books, Sage Accounting or a standard CSV",
+      "Bank payment files for UK Bacs (Standard 18) and US ACH (NACHA), beside NIBSS Direct Credit and SEPA",
+      "One sign-in per person across every company they work in",
+      "Single sign-on over SAML 2.0 as well as OIDC; a company can require it, and a group can share one identity provider",
+      "Directory groups mapped to roles, with any role beyond staff approved by a person",
+      "Group supplier records and approval templates, trading between group companies, and netting what they owe each other",
+      "Documents in Ghanaian cedi, Kenyan shilling, South African rand and West African CFA franc, beside naira, US dollars, pounds and euros — with exchange rates suggested from the European Central Bank's daily reference rates where it publishes them",
+      "Portuguese as a full interface language, beside English and French",
+      "A test company for trying new routes, bank formats and integrations, with nothing leaving it",
+    ],
+    link: { label: "See the integrations", href: "/product/integrations" },
+  },
+  {
+    date: "October 2026",
     tag: "improvement",
     title: "One webhook signature, and clearer record-keeping.",
     body:

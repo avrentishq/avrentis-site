@@ -1,9 +1,17 @@
 "use client";
 
 import { Workflow, Package, FileCheck, Truck, Store, PackageCheck } from "lucide-react";
-import { ProductModuleLayout, type ModuleConfig, type ModulePlan } from "@/components/product/module-layout";
+import {
+  ProductModuleLayout,
+  withPlanNotes,
+  type ModuleConfig,
+  type ModulePlan,
+} from "@/components/product/module-layout";
 import { MODULES } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
+
+const LEDGER_USE_CASE = "Code every line the way your ledger does";
+const GROUP_USE_CASE = "One supplier record for the whole group";
 
 const config: Omit<ModuleConfig, "planAvailability"> = {
   slug: "procure",
@@ -75,6 +83,16 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
       body:
         `A PO sanctioned here becomes the vendor's reference. When the invoice arrives, ${MODULES.pay.name} references the same PO number. Full traceability from request to bank instruction.`,
     },
+    {
+      title: LEDGER_USE_CASE,
+      body:
+        "Each order line carries your own accounting codes — the account, the cost centre, the project or fund — so spend splits across cost centres the way it was ordered, and a required code is checked before the order is submitted.",
+    },
+    {
+      title: GROUP_USE_CASE,
+      body:
+        "A group keeps a supplier's name, sector and address once, and each company links its own supplier to it. A change reaches every company, and a block switches the supplier off everywhere — while bank accounts, contacts and history stay with the company that pays.",
+    },
   ],
 
   relatedModules: [
@@ -84,6 +102,20 @@ const config: Omit<ModuleConfig, "planAvailability"> = {
   ],
 };
 
-export function ProcureModulePage({ planAvailability }: { planAvailability: ModulePlan[] }) {
-  return <ProductModuleLayout config={{ ...config, planAvailability }} />;
+/** `ledgerPlans` / `groupPlans` — the plans carrying `budgetCodes` and
+ *  `multiCompanyGroup`, read from the pricing API by the route; empty = unknown. */
+export function ProcureModulePage({
+  planAvailability,
+  ledgerPlans,
+  groupPlans,
+}: {
+  planAvailability: ModulePlan[];
+  ledgerPlans: string;
+  groupPlans: string;
+}) {
+  const useCases = withPlanNotes(config.useCases, {
+    [LEDGER_USE_CASE]: ledgerPlans,
+    [GROUP_USE_CASE]: groupPlans,
+  });
+  return <ProductModuleLayout config={{ ...config, useCases, planAvailability }} />;
 }

@@ -31,6 +31,8 @@ import { dirname, join } from "node:path";
  *     A small rate table; country types are type-only imports.
  *   - `billing/reserved-mail-domain` — the trial form refuses an address that
  *     can never receive mail, by the rule core shares with the app and console. No imports.
+ *   - `locales` — the product's interface languages, named in the site's copy.
+ *     No imports.
  * Tests may additionally import dependency-free modules that back parity locks
  * (`brand/copy-guardrails` has no imports at all; it backs the record-keeping lock).
  * The pricing-fallback generator (run by `scripts/generate-pricing-fallback.mjs`
@@ -57,6 +59,7 @@ const RUNTIME_ALLOWED = new Set([
   "billing/platform-tax",
   "region/sales-tax",
   "billing/reserved-mail-domain",
+  "locales",
 ]);
 const BUILD_FILES = new Set([join("lib", "pricing-fallback-build.ts"), join("data", "plan-copy.ts")]);
 const BUILD_ONLY_ALLOWED = new Set(["billing/retention", "modules/catalog", "sectors"]);

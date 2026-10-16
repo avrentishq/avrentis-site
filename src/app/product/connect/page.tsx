@@ -8,7 +8,7 @@ import { moduleName } from "@/lib/brand";
 export const metadata: Metadata = {
   title: `${moduleName("connect")} — Avrentis in your existing stack`,
   description:
-    "Typed webhooks, scoped API keys, a documented REST API, and SSO/SCIM. Push Avrentis events into the systems your organisation already runs.",
+    "Typed webhooks, scoped API keys, a documented REST API, journal entries for your ledger, and single sign-on (OIDC or SAML) with SCIM. Push Avrentis events into the systems your organisation already runs.",
   alternates: { canonical: "/product/connect" },
   openGraph: {
     title: `${moduleName("connect")} — Avrentis in your existing stack`,

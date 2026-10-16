@@ -155,7 +155,7 @@ const CATEGORIES: DocsCategory[] = [
       "User provisioning, SSO configuration, IP allowlisting and MFA. Written for admins and internal IT.",
     items: [
       {
-        title: "SSO configuration (OIDC; SAML on the roadmap)",
+        title: "SSO configuration (OIDC and SAML)",
         body: "Okta, Entra, Google Workspace setup walk-throughs.",
         href: "/product/integrations#identity",
         status: "wip",

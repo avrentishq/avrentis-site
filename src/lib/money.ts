@@ -24,3 +24,20 @@ export function formatCurrencyAmount(amount: number, currency: string): string {
   const minorUnits = Math.round(amount * 10 ** CURRENCIES[currency].minorUnit);
   return formatMoney({ amount: minorUnits, currency }, { showDecimals: false });
 }
+
+/** Whole counts are grouped one way everywhere, never by the visitor's browser language. */
+const COUNT_FORMAT = new Intl.NumberFormat("en", { maximumFractionDigits: 0 });
+
+/**
+ * A whole count for display — "1,250" — rounded, and grouped identically on
+ * the server and in every browser (a bare `toLocaleString()` follows the
+ * visitor's language, so a French browser and the server render disagree).
+ */
+export function formatCount(value: number): string {
+  return COUNT_FORMAT.format(Math.round(value));
+}
+
+/** The symbol core prints for `currency` — for a money input's prefix. */
+export function currencySymbol(currency: string): string {
+  return isCurrencyCode(currency) ? CURRENCIES[currency].symbol : currency;
+}

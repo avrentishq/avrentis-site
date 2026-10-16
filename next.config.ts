@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { SITE_PAGE_ROUTES } from "@avrentishq/core/brand";
+import { cspReportUrl, cspReportingDirectives, reportingEndpointsHeader } from "./src/lib/csp-reporting";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -25,6 +26,9 @@ const isDev = process.env.NODE_ENV !== "production";
  */
 const TURNSTILE_ORIGIN = "https://challenges.cloudflare.com";
 
+// Blocked-content reports go to Sentry when CSP_REPORT_URI is set (see csp-reporting.ts).
+const CSP_REPORT_URL = cspReportUrl(process.env.CSP_REPORT_URI, process.env.VERCEL_ENV ?? "development");
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -38,10 +42,12 @@ const contentSecurityPolicy = [
   `connect-src 'self' ${TURNSTILE_ORIGIN}${isDev ? " ws:" : ""}`,
   "form-action 'self'",
   ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  ...cspReportingDirectives(CSP_REPORT_URL),
 ].join("; ");
 
 const securityHeaders = [
   { key: "Content-Security-Policy", value: contentSecurityPolicy },
+  ...reportingEndpointsHeader(CSP_REPORT_URL),
   { key: "X-Frame-Options", value: "DENY" },
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },

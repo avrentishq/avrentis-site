@@ -103,6 +103,10 @@ Run these locally before you claim anything is done.
   `failClosed`), `src/lib/turnstile.ts` and `next.config.ts` encodes deliberate tradeoffs,
   not oversights.** Read the header comment in the file first. This repo is public, so the specifics live in
   `guides/security-posture.md`, which is gitignored.
+- **Blocked-content reports go to Sentry.** `next.config.ts` adds `report-uri` / `report-to`
+  and a `Reporting-Endpoints` header only when `CSP_REPORT_URI` (a Sentry project's security
+  endpoint, https) is set at BUILD time — headers are fixed into the build, so a change needs
+  a redeploy. Unset or invalid → no reporting directives (`src/lib/csp-reporting.ts`).
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
 - **The focus ring comes from the surface, never the component.** `src/lib/surfaces.ts` maps each
   background (token, or a strong translucent layer with what it sits on) to its ring; a new

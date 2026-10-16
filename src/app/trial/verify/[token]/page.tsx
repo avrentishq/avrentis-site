@@ -8,9 +8,10 @@ import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
 import { platformFetch } from "@/lib/platform-fetch";
+import { BRAND } from "@/lib/brand";
 
 export const metadata: Metadata = {
-  title: "Verifying your Avrentis trial",
+  title: `Verifying your ${BRAND.name} trial`,
   robots: { index: false, follow: false },
 };
 

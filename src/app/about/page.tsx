@@ -4,24 +4,19 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND } from "@avrentishq/core/brand";
-import { canonical } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
+import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 
 const ABOUT_DESCRIPTION = `Why we built Avrentis — the ${BRAND.positioningStatement} for Nigerian and African organisations where decisions require defined authority, structured process, and a lasting record of who approved what.`;
 
-export const metadata: Metadata = {
-  title: "About — Avrentis",
+export const metadata: Metadata = pageMetadata({
+  path: "/about",
+  title: "About",
   description: ABOUT_DESCRIPTION,
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "About Avrentis",
-    description: ABOUT_DESCRIPTION,
-    url: canonical("/about"),
-    type: "website",
-  },
-};
+  socialTitle: `About ${BRAND.name}`,
+});
 
 const VALUES = [
   {

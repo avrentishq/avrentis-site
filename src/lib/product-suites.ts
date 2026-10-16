@@ -11,7 +11,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import type { Metadata } from "next";
+
+import { pageMetadata } from "@/lib/seo";
 import {
+  BRAND,
+  suiteHref,
   SUITES,
   MODULE_ORDER,
   moduleSuite,
@@ -63,6 +68,8 @@ export interface SuitePageConfig {
   sharedTitle: string;
   shared: SuiteSharedPoint[];
   modules: Partial<Record<ModuleKey, SuiteModuleBlurb>>;
+  /** What the suite covers, after its name in the browser title: "payments, purchase orders and restricted funds". */
+  metaTitleTail: string;
   /** Meta description for the route. */
   metaDescription: string;
 }
@@ -110,6 +117,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
           "Restricted funds tied to their grant and budget line, burn tracked against each donor's restrictions, and a donor-ready report produced in the grant's own currency — from the same approvals finance already runs.",
       },
     },
+    metaTitleTail: "payments, purchase orders and restricted funds",
     metaDescription:
       `Payments, purchase orders and restricted funds on one approval path — routed to whoever is allowed to approve the amount, with every decision ${AUDIT_TRAIL_KEPT}.`,
   },
@@ -151,6 +159,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
           "Checks each payment and order as it is submitted and raises the patterns that drain finance teams — duplicate payments, vendor bank-account switches, amounts split to slip under a limit — so a reviewer sees the risk before approval, not after the money has gone.",
       },
     },
+    metaTitleTail: "approval authority, enforced and monitored",
     metaDescription:
       "Define who can approve what, up to how much — enforced on every request automatically, and monitored for the patterns that mean somebody is working around it.",
   },
@@ -192,6 +201,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
           "A tamper-evident trail of every submission, approval, query, signature and access event, with regulator-ready exports, data-retention controls and data-subject request handling on top.",
       },
     },
+    metaTitleTail: "a tamper-evident record of every decision",
     metaDescription:
       `A tamper-evident record of every approval and document, ${TRAIL_SEALED}, searchable years later and exportable for auditors and regulators in one step.`,
   },
@@ -228,6 +238,7 @@ export const SUITE_PAGES: Record<ModuleSuite, SuitePageConfig> = {
           "Webhooks and a typed REST API for accounting, HR and data-warehouse systems, scoped API keys, single sign-on, and the notification delivery the rest of the platform runs on.",
       },
     },
+    metaTitleTail: "access, alerts and integrations",
     metaDescription:
       "Single sign-on, enforced access policy, and typed webhooks and APIs that push what Avrentis approves into your accounting, HR and data systems.",
   },
@@ -242,10 +253,22 @@ export function suiteModuleKeys(suite: ModuleSuite): ModuleKey[] {
   return MODULE_ORDER.filter((key) => isModulePublic(key) && moduleSuite(key) === suite);
 }
 
+/** A suite route's metadata: "Avrentis Spend — payments, purchase orders and restricted funds". */
+export function suitePageMetadata(suite: ModuleSuite): Metadata {
+  const config = SUITE_PAGES[suite];
+  const label = SUITES.find((entry) => entry.key === suite)!.label;
+  return pageMetadata({
+    path: suiteHref(suite),
+    title: `${BRAND.name} ${label} — ${config.metaTitleTail}`,
+    description: config.metaDescription,
+    socialDescription: config.headline,
+  });
+}
+
 /** Suite nav entries — label, blurb and href — in `SUITES` order. */
 export const SUITE_NAV = SUITES.map((suite) => ({
   key: suite.key,
   label: suite.label,
   desc: suite.blurb,
-  href: `/product/${suite.key}`,
+  href: suiteHref(suite.key),
 }));

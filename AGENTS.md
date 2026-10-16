@@ -110,6 +110,12 @@ Run these locally before you claim anything is done.
   (`ENQUIRY_REPLY_TIME`, `SECURITY_TRIAGE_TIME`; the trial queue promises none, like the
   platform); seal cadence and retention phrases in `src/lib/record-keeping.ts`.
   `record-keeping.lock.test.ts` fails on a typed seal cadence, year count or "within seconds".
+- **Page metadata comes from `pageMetadata({ path, title, description })`** (`src/lib/seo.tsx`;
+  suites use `suitePageMetadata(key)`). Next merges metadata shallowly, so a page that sets
+  `openGraph` without `twitter` shares the homepage's card; the helper fills title (brand
+  suffix via `pageTitle`), canonical, Open Graph and Twitter together.
+  `page-metadata.lock.test.ts` fails on a page that builds its own, or types the brand name.
+  Brand values come through `@/lib/brand` — only `brand.ts` imports `@avrentishq/core/brand`.
 - **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`);
   the site URL is core's `BRAND.siteUrl`, used through `src/lib/seo.tsx` (`SITE_URL`,
   `canonical(path)`); `contacts.lock.test.ts` enforces both. The other origins are core's

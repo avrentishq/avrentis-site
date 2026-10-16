@@ -1,23 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 
-export const metadata: Metadata = {
-  title: "Terms of service — Avrentis",
-  description:
-    "The terms that govern your organisation's use of Avrentis — service description, acceptable use, data ownership, fees, liability, and termination.",
-  alternates: { canonical: LEGAL_PAGES.terms },
-  openGraph: {
-    title: "Avrentis terms of service",
-    description:
-      "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
-    url: canonical(LEGAL_PAGES.terms),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: LEGAL_PAGES.terms,
+  title: "Terms of service",
+  description: `The terms that govern your organisation's use of ${BRAND.name} — service description, acceptable use, data ownership, fees, liability, and termination.`,
+  socialTitle: `${BRAND.name} terms of service`,
+  socialDescription: "What we commit to, what we expect of you, who owns the data, and how the agreement can end.",
+});
 
 const SECTIONS: LegalSection[] = [
   {

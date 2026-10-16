@@ -14,14 +14,11 @@
  * All proportions derived from a single base unit: U = size × 0.10
  */
 
-import { BRAND } from "@/lib/brand";
+import { BRAND, type MarkVariant, getProps, WORDMARK_SPEC } from "@/lib/brand";
 import { cn } from "@/lib/utils";
-import { type MarkVariant, getProps, WORDMARK_SPEC } from "@avrentishq/core/brand";
 
 // The gate-mark geometry (getProps), the wordmark spec, and the variant type
-// come from the brand SSOT. The standalone SVG-string serializer is re-exported
-// so existing `@/components/ui/logo` importers keep working.
-export { avrentisMarkSvgString } from "@avrentishq/core/brand";
+// come from the brand SSOT.
 
 interface AvrentisMarkProps {
   size?: number;

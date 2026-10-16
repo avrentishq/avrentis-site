@@ -7,11 +7,11 @@ import { BRAND } from "@/lib/brand";
 import { JsonLd, organizationSchema } from "@/lib/seo";
 import { AUDIT_TRAIL_KEPT, SITE_DESCRIPTION } from "@/lib/record-keeping";
 import "./globals.css";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_SLOGAN, SITE_URL } from "@/lib/seo";
 import { NO_SCRIPT_CSS } from "@/lib/no-script";
 import { SURFACE_FOCUS_CSS } from "@/lib/surfaces";
 
-const OG_TITLE = `${BRAND.name} — Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
+const OG_TITLE = `${BRAND.name} — ${SITE_SLOGAN}`;
 const OG_DESCRIPTION = `Replace scattered approvals with structured authority — a tamper-evident audit trail of every decision, approval, and process your organisation runs, ${AUDIT_TRAIL_KEPT}.`;
 
 const archivo = Archivo({

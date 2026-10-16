@@ -4,21 +4,15 @@ import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Approval savings estimator — Avrentis",
-  description:
-    "Estimate the hours and money structured approvals give your team back. Free, instant, no signup — your numbers, a transparent formula.",
-  alternates: { canonical: "/tools/savings" },
-  openGraph: {
-    title: "What would structured approvals save you?",
-    description:
-      "A free, instant estimate of the time and cost you recover with structured approvals. No signup required.",
-    url: canonical("/tools/savings"),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/tools/savings",
+  title: "Approval savings estimator",
+  description: "Estimate the hours and money structured approvals give your team back. Free, instant, no signup — your numbers, a transparent formula.",
+  socialTitle: "What would structured approvals save you?",
+  socialDescription: "A free, instant estimate of the time and cost you recover with structured approvals. No signup required.",
+});
 
 export default function SavingsToolPage() {
   return (

@@ -2,21 +2,16 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CustomersProductPage } from "@/components/customers/customers-page";
 import { isLaunchHidden } from "@/lib/launch";
-import { canonical } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Customers — Avrentis",
-  description:
-    "Organisations that chose structure over speed. Who Avrentis is built for, the patterns we hear in every discovery call, and how the launch-partner programme works.",
-  alternates: { canonical: "/customers" },
-  openGraph: {
-    title: "Avrentis customers & launch partners",
-    description:
-      "Honest about where we are. Industries we serve, problems we hear, and the launch cohort that shapes what ships next.",
-    url: canonical("/customers"),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/customers",
+  title: "Customers",
+  description: `Organisations that chose structure over speed. Who ${BRAND.name} is built for, the patterns we hear in every discovery call, and how the launch-partner programme works.`,
+  socialTitle: `${BRAND.name} customers & launch partners`,
+  socialDescription: "Honest about where we are. Industries we serve, problems we hear, and the launch cohort that shapes what ships next.",
+});
 
 export default function CustomersPage() {
   if (isLaunchHidden("/customers")) notFound();

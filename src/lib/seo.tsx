@@ -6,6 +6,8 @@
  * bodies. Keep emitted facts truthful and in lockstep with the visible copy.
  */
 
+import type { Metadata } from "next";
+
 import { BRAND, siteUrl } from "@/lib/brand";
 import type { PricingData } from "@/lib/pricing";
 import { SITE_DESCRIPTION } from "@/lib/record-keeping";
@@ -17,6 +19,53 @@ export const SITE_URL = BRAND.siteUrl;
 /** Absolute canonical URL for a route path ("/" → site root). */
 export function canonical(path: string): string {
   return siteUrl(path);
+}
+
+/** The line under the brand — the root share card and the organisation schema both say it. */
+export const SITE_SLOGAN = `Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
+
+/** A page's browser title: "Privacy policy — Avrentis"; a title that already names the brand is left alone. */
+export function pageTitle(title: string): string {
+  return title.includes(BRAND.name) ? title : `${title} — ${BRAND.name}`;
+}
+
+export interface PageMetadataInput {
+  /** The route, e.g. "/pricing" — the canonical link and the share card's URL. */
+  path: string;
+  title: string;
+  description: string;
+  /** Share-card wording, when it should differ from the page's own. */
+  socialTitle?: string;
+  socialDescription?: string;
+}
+
+/**
+ * Every page's metadata, whole. Next merges metadata SHALLOWLY: a page that set
+ * its own `openGraph` but not `twitter` inherited the root layout's twitter card
+ * — so every page shared on X showed the homepage's title — and its `openGraph`
+ * replaced the root one, dropping the site name. Filling title, canonical, Open
+ * Graph and Twitter together from one input makes that impossible.
+ */
+export function pageMetadata({ path, title, description, socialTitle, socialDescription }: PageMetadataInput): Metadata {
+  const shareTitle = socialTitle ?? pageTitle(title);
+  const shareDescription = socialDescription ?? description;
+  return {
+    title: pageTitle(title),
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title: shareTitle,
+      description: shareDescription,
+      url: canonical(path),
+      siteName: BRAND.name,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: shareTitle,
+      description: shareDescription,
+    },
+  };
 }
 
 /** Renders a JSON-LD script tag. Safe in server or client components.
@@ -40,7 +89,7 @@ export function organizationSchema(): Record<string, unknown> {
     url: SITE_URL,
     logo: `${SITE_URL}/apple-touch-icon.png`,
     description: `${BRAND.positioningStatement} for organisations across Nigeria and Africa.`,
-    slogan: "Every organisation runs on decisions. Avrentis makes sure they stick.",
+    slogan: SITE_SLOGAN,
     contactPoint: {
       "@type": "ContactPoint",
       email: CONTACT_EMAIL.support,

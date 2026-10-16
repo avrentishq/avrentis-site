@@ -7,7 +7,7 @@ import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { BRAND, SITE_PAGES } from "@avrentishq/core/brand";
+import { BRAND, SITE_PAGES } from "@/lib/brand";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
 const slideInFromRight = {

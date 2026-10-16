@@ -1,24 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPageShell, type LegalSection } from "@/components/legal/legal-page";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES, SITE_HOST } from "@/lib/brand";
 import { DATA_RESIDENCY, RESIDENCY_REQUEST_LINE, SUBPROCESSOR_CATEGORIES } from "@/lib/subprocessors";
 
-export const metadata: Metadata = {
-  title: "Privacy policy — Avrentis",
-  description:
-    "How Avrentis collects, uses, shares, and protects personal data. Plain-language summary of our practices under the GDPR, the Nigeria Data Protection Act 2023, and equivalent data-protection laws.",
-  alternates: { canonical: LEGAL_PAGES.privacy },
-  openGraph: {
-    title: "Avrentis privacy policy",
-    description:
-      "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
-    url: canonical(LEGAL_PAGES.privacy),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: LEGAL_PAGES.privacy,
+  title: "Privacy policy",
+  description: `How ${BRAND.name} collects, uses, shares, and protects personal data. Plain-language summary of our practices under the GDPR, the Nigeria Data Protection Act 2023, and equivalent data-protection laws.`,
+  socialTitle: `${BRAND.name} privacy policy`,
+  socialDescription: "What we collect, why, how we store it, who processes it on our behalf, and your rights as a data subject.",
+});
 
 const SECTIONS: LegalSection[] = [
   {

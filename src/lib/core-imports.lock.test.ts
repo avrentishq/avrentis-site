@@ -110,9 +110,9 @@ describe("core imports stay inside the site's allowlist", () => {
   });
 
   it("scans the site (proves the walk sees a known importer)", () => {
-    const hero = join("components", "sections", "hero.tsx");
-    expect(sourceFiles()).toContain(hero);
-    expect(coreSubpaths(readFileSync(join(SRC, hero), "utf8"))).toContain("brand");
+    const brand = join("lib", "brand.ts");
+    expect(sourceFiles()).toContain(brand);
+    expect(coreSubpaths(readFileSync(join(SRC, brand), "utf8"))).toContain("brand");
   });
 
   it("scans next.config.ts too (proves the root file is read)", () => {
@@ -214,6 +214,17 @@ describe("every allowed core subpath reaches only packages the site installs", (
       (name) => !SITE_PACKAGES.has(name),
     );
     expect(missing, `@avrentishq/core/${subpath} needs packages the site does not install`).toEqual([]);
+  });
+});
+
+describe("brand values come through the site's re-export", () => {
+  it("only brand.ts imports @avrentishq/core/brand", () => {
+    // brand.ts is where the site adds its own view (modules, suites) on top of
+    // core's brand; a file importing core directly skips it and splits the import graph.
+    const importers = sourceFiles()
+      .filter((file) => !/\.test\.tsx?$/.test(file) && file !== join("lib", "brand.ts"))
+      .filter((file) => coreSubpaths(readFileSync(join(SRC, file), "utf8")).includes("brand"));
+    expect(importers, 'import from "@/lib/brand"').toEqual([]);
   });
 });
 

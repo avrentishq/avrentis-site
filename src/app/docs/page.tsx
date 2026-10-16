@@ -2,21 +2,16 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DocsHubPage } from "@/components/docs/docs-page";
 import { isLaunchHidden } from "@/lib/launch";
-import { canonical } from "@/lib/seo";
+import { BRAND } from "@/lib/brand";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Documentation — Avrentis",
-  description:
-    "Avrentis documentation hub. Getting started, core concepts, modules, security, administration, integrations, API & webhooks, and governance.",
-  alternates: { canonical: "/docs" },
-  openGraph: {
-    title: "Avrentis documentation",
-    description:
-      "Everything you need to run Avrentis, in one place — with honest signals for guides still in progress.",
-    url: canonical("/docs"),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/docs",
+  title: "Documentation",
+  description: `${BRAND.name} documentation hub. Getting started, core concepts, modules, security, administration, integrations, API & webhooks, and governance.`,
+  socialTitle: `${BRAND.name} documentation`,
+  socialDescription: `Everything you need to run ${BRAND.name}, in one place — with honest signals for guides still in progress.`,
+});
 
 export default function DocsPage() {
   if (isLaunchHidden("/docs")) notFound();

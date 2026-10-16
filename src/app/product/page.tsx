@@ -10,6 +10,7 @@ import {
   type ModuleKey,
   type ModuleStatus,
   SITE_PAGES,
+  BRAND,
 } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
 import { suiteModuleKeys } from "@/lib/product-suites";
@@ -19,22 +20,15 @@ import { CtaBanner } from "@/components/sections/cta-banner";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
-export const metadata: Metadata = {
-  title: "The Avrentis platform — spend, oversight, evidence, on one record",
-  description:
-    "Avrentis structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.",
-  alternates: { canonical: "/product" },
-  openGraph: {
-    title: "The Avrentis platform — spend, oversight, evidence, on one record",
-    description:
-      "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
-    url: canonical("/product"),
-    type: "website",
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  path: "/product",
+  title: `The ${BRAND.name} platform — spend, oversight, evidence, on one record`,
+  description: `${BRAND.name} structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.`,
+  socialDescription: "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
+});
 
 const STATUS_BADGE: Record<ModuleStatus, { bg: string; color: string }> = {
   available: { bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },

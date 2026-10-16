@@ -2,25 +2,20 @@ import type { Metadata } from "next";
 import { AuthorityModulePage } from "@/components/product/pages/authority-module-page";
 import { fetchPricingData } from "@/lib/pricing";
 import { modulePageData } from "@/lib/module-availability";
-import { canonical } from "@/lib/seo";
+import { pageMetadata } from "@/lib/seo";
 import { notFoundUnlessPublic } from "@/lib/module-route";
 import { moduleName } from "@/lib/brand";
 
 const DESCRIPTION =
   "Write your approval rules down once — who can sanction what, up to how much, and what happens above that — and have them enforced on every request automatically, with the proof kept for you.";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
+  path: "/product/authority",
   title: `${moduleName("authority")} — who can approve what, up to how much`,
   description: DESCRIPTION,
-  alternates: { canonical: "/product/authority" },
-  openGraph: {
-    title: `${moduleName("authority")} — your approval rules, enforced automatically`,
-    description:
-      "Approval limits per role, approver groups and quorum, separation of duties, and cover for absence — enforced on every request.",
-    url: canonical("/product/authority"),
-    type: "website",
-  },
-};
+  socialTitle: `${moduleName("authority")} — your approval rules, enforced automatically`,
+  socialDescription: "Approval limits per role, approver groups and quorum, separation of duties, and cover for absence — enforced on every request.",
+});
 
 export default async function ProductAuthorityPage() {
   notFoundUnlessPublic("authority");

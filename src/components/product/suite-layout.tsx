@@ -18,7 +18,7 @@
 
 import Link from "next/link";
 
-import { BRAND_COLORS, SUITES, moduleHref, moduleName, type ModuleSuite } from "@/lib/brand";
+import { BRAND_COLORS, SUITES, moduleHref, suiteHref, moduleName, type ModuleSuite } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
 import { SUITE_PAGES, suiteModuleKeys } from "@/lib/product-suites";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
@@ -38,7 +38,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
         data={breadcrumbSchema([
           { name: "Home", path: "/" },
           { name: "Platform", path: "/product" },
-          { name: meta.label, path: `/product/${suite}` },
+          { name: meta.label, path: suiteHref(suite) },
         ])}
       />
       <Navbar />

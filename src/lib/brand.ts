@@ -159,6 +159,11 @@ export function moduleHref(key: ModuleKey): string {
   return `/product/${key}`;
 }
 
+/** A suite's page. */
+export function suiteHref(suite: ModuleSuite): string {
+  return `/product/${suite}`;
+}
+
 /** The suite a module belongs to, from core. */
 export function moduleSuite(key: ModuleKey): ModuleSuite {
   return MODULES[key].suite;

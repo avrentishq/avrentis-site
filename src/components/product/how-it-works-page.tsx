@@ -12,7 +12,6 @@
 import { useRef } from "react";
 import { DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { requestTypeList } from "@/lib/module-copy";
-import Link from "next/link";
 import {
   m,
   useScroll,
@@ -33,8 +32,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll } from "@/lib/animations";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { RoleBadge } from "@/components/ui/role-badge";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
@@ -153,11 +154,7 @@ function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
   const Icon = copy.icon;
   return (
     <m.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={fadeUpTransition}
+      {...fadeUpOnScroll()}
       style={{
         display: "grid",
         gap: "56px",
@@ -277,11 +274,7 @@ function ChainCard({
 }) {
   return (
     <m.div
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
-      transition={staggerDelay(baseDelay + index)}
+      {...fadeUpOnScroll(baseDelay + index)}
       style={{
         display: "flex",
         flexDirection: "column",
@@ -339,124 +332,51 @@ export function HowItWorksProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.hiwHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "20px",
-            }}
-          >
-            How Avrentis works
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            surface="dark"
+            titleAs="h1"
+            eyebrow="How Avrentis works"
+            eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
+            title={
+              <>
+                From request to audit-ready record —
+                <br />
+                the complete lifecycle.
+              </>
+            }
+            titleStyle={{
               fontWeight: 700,
               fontSize: "36px",
-              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[56px]"
-          >
-            From request to audit-ready record —
-            <br />
-            the complete lifecycle.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            titleClassName="lg:!text-[56px]"
+            lede={
+              <>
+                Every {requestTypeList()} travels the same {numberInWords(APPROVAL_LIFECYCLE.length)}-stage lifecycle. Structured at submission, routed by
+                role, sanctioned by authority, recorded on the audit trail. No email
+                threads. No lost approvals. No guessing what changed.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
             }}
-          >
-            Every {requestTypeList()} travels the same {numberInWords(APPROVAL_LIFECYCLE.length)}-stage lifecycle. Structured at submission, routed by
-            role, sanctioned by authority, recorded on the audit trail. No email
-            threads. No lost approvals. No guessing what changed.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
-              href={SITE_PAGES.trial()}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={SITE_PAGES.trial()} size="md">
               {START_TRIAL_CTA}
-            </Link>
-            <a
-              href="#lifecycle"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            </ButtonLink>
+            <a href="#lifecycle" {...buttonProps({ variant: "secondary", surface: "dark", size: "md" })}>
               See the lifecycle →
             </a>
           </m.div>
@@ -487,91 +407,44 @@ export function HowItWorksProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.hiwApprovalChains} scrim="dark" />
-        <AmbientGlow top="20%" left="-120px" size={460} intensity={0.15} duration={34} />
-        <AmbientGlow bottom="-80px" right="-100px" size={520} intensity={0.13} duration={40} delay={0.5} />
+        <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            ROLE-ENFORCED AUTHORITY
-          </m.span>
-
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            surface="dark"
+            eyebrow="ROLE-ENFORCED AUTHORITY"
+            eyebrowStyle={{ marginBottom: "16px" }}
+            title="Two document types. Two defined chains."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-white)",
               lineHeight: 1.2,
               margin: "0 0 16px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Two document types. Two defined chains.
-          </m.h2>
-
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                Payment vouchers follow one authority chain. Purchase orders follow
+                another. Each chain is role-enforced, separation-of-duties-safe,
+                and on the audit trail. Authority at every stage.
+              </>
+            }
+            ledeStyle={{
               fontSize: "15px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 0 48px",
               maxWidth: "640px",
             }}
-          >
-            Payment vouchers follow one authority chain. Purchase orders follow
-            another. Each chain is role-enforced, separation-of-duties-safe,
-            and on the audit trail. Authority at every stage.
-          </m.p>
+          />
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }} className="md:!gap-[32px] lg:!gap-[48px]">
             <div>
-              <m.h3
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(3)}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--color-gold)",
-                  marginBottom: "16px",
-                }}
-              >
+              <Eyebrow as="h3" surface="dark" reveal="scroll" index={3} style={{ marginBottom: "16px" }}>
                 Payment Voucher Chain
-              </m.h3>
+              </Eyebrow>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PV_CHAIN.map((node, i) => (
                   <ChainCard key={node.label} node={node} index={i} baseDelay={4} active={i === 1} />
@@ -580,24 +453,9 @@ export function HowItWorksProductPage() {
             </div>
 
             <div>
-              <m.h3
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(3)}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--color-gold)",
-                  marginBottom: "16px",
-                }}
-              >
+              <Eyebrow as="h3" surface="dark" reveal="scroll" index={3} style={{ marginBottom: "16px" }}>
                 Purchase Order Chain
-              </m.h3>
+              </Eyebrow>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PO_CHAIN.map((node, i) => (
                   <ChainCard key={node.label} node={node} index={i} baseDelay={7} active={i === 1} />
@@ -612,64 +470,33 @@ export function HowItWorksProductPage() {
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.hiwNotifications} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            NOTIFICATION CHOREOGRAPHY
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            eyebrow="NOTIFICATION CHOREOGRAPHY"
+            eyebrowStyle={{ marginBottom: "16px" }}
+            title="Approvers hear about requests wherever they are."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "600px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Approvers hear about requests wherever they are.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: "var(--font-sans)",
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                Every stage of the lifecycle dispatches notifications through the
+                channels your approvers actually check. Decision makers are never
+                a bottleneck because they are never out of reach.
+              </>
+            }
+            ledeStyle={{
               fontSize: "15px",
-              color: "var(--color-text-muted)",
               lineHeight: 1.7,
               margin: "0 0 40px",
               maxWidth: "640px",
             }}
-          >
-            Every stage of the lifecycle dispatches notifications through the
-            channels your approvers actually check. Decision makers are never
-            a bottleneck because they are never out of reach.
-          </m.p>
+          />
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {NOTIFICATIONS.map((n, i) => {
@@ -677,11 +504,7 @@ export function HowItWorksProductPage() {
               return (
                 <m.div
                   key={n.channel}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 3)}
+                  {...fadeUpOnScroll(i + 3)}
                   style={{
                     backgroundColor: "var(--color-white)",
                     border: "1px solid var(--color-border)",
@@ -722,45 +545,20 @@ export function HowItWorksProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.hiwBeforeAfter} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "14px",
-            }}
-          >
-            THE CONTRAST
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            eyebrow="THE CONTRAST"
+            eyebrowStyle={{ marginBottom: "14px" }}
+            title="What actually changes day-to-day."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "600px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            What actually changes day-to-day.
-          </m.h2>
+            titleClassName="lg:!text-[38px]"
+          />
 
           <div
             style={{
@@ -826,11 +624,7 @@ export function HowItWorksProductPage() {
             {COMPARISON.map((row, i) => (
               <div key={row.avrentis} style={{ display: "contents" }}>
                 <m.div
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     padding: "20px 22px",
                     borderRight: "1px solid var(--color-border)",
@@ -844,11 +638,7 @@ export function HowItWorksProductPage() {
                   {row.old}
                 </m.div>
                 <m.div
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     padding: "20px 22px",
                     borderBottom: i < COMPARISON.length - 1 ? "1px solid var(--color-border)" : "none",

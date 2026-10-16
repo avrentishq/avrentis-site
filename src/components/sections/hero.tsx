@@ -2,9 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
-import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
+import { FADE_UP_VIEWPORT, MOTION_DURATION, MOTION_EASE, STAGGER_STEP, fadeUp, fadeUpOnScroll, fadeUpTransition, staggerDelay, cssTransition } from "@/lib/animations";
+import { isMobileViewport } from "@/lib/hooks/use-is-mobile";
+import { buttonProps } from "@/components/ui/button";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND, SITE_PAGES } from "@/lib/brand";
@@ -12,11 +14,6 @@ import { START_TRIAL_CTA, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial
 import { MARKET_SCOPE } from "@/lib/market";
 import { INBOX_DOCUMENTS, demoAmount, formatDemoRelative, type InboxStatus } from "@/components/product/demo-fixtures";
 import { BrowserFrame, TypeTag, appCaption } from "@/components/product/previews/preview-primitives";
-
-const slideInFromRight = {
-  hidden: { opacity: 0, x: 20 },
-  visible: { opacity: 1, x: 0 },
-};
 
 interface ApprovalRowStatus {
   label: string;
@@ -159,7 +156,7 @@ function LiveInbox({
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.4, ease: "easeOut", delay: i * 0.06 }}
+              transition={staggerDelay(i)}
             >
               <ApprovalRow
                 {...entry}
@@ -268,7 +265,7 @@ function ApprovalRow({
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                transition={{ duration: MOTION_DURATION.slow, ease: MOTION_EASE }}
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -382,28 +379,7 @@ function ApproveButton({
       type="button"
       onClick={onApprove}
       aria-label={`${label} ${reference}`}
-      style={{
-        fontFamily: "var(--font-sans)",
-        fontWeight: 600,
-        fontSize: "12px",
-        lineHeight: 1,
-        backgroundColor: "var(--color-gold)",
-        color: "var(--color-text-primary)",
-        border: "none",
-        borderRadius: "9999px",
-        height: "30px",
-        padding: "0 16px",
-        marginLeft: "4px",
-        cursor: "pointer",
-        flexShrink: 0,
-        transition: "background-color 150ms ease",
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = "var(--color-gold)";
-      }}
+      {...buttonProps({ size: "xs", style: { marginLeft: "4px", flexShrink: 0 } })}
     >
       {label}
     </button>
@@ -421,7 +397,6 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const isMobile = useIsMobile();
 
   return (
     <section
@@ -439,38 +414,8 @@ export function Hero() {
           legible and the warm trails read as navy/gold rather than red. */}
       <SectionBackdrop src={SECTION_BACKDROPS.hero} scrim="hero" priority />
 
-      {/* Ambient glow layers — sit behind everything, non-interactive */}
-      <AmbientGlow
-        top="-120px"
-        left="-120px"
-        size={520}
-        intensity={0.22}
-        duration={32}
-      />
-      <AmbientGlow
-        bottom="-140px"
-        right="-100px"
-        size={560}
-        intensity={0.18}
-        duration={38}
-        delay={0.5}
-      />
-
-      {/* Subtle grid texture overlay with scroll-linked parallax */}
-      <m.div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.05,
-          backgroundImage:
-            "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          pointerEvents: "none",
-          y: isMobile ? 0 : gridY,
-          zIndex: 1,
-        }}
-      />
+      {/* Ambient glows + grid texture with scroll-linked parallax */}
+      <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
       <div
         style={{
@@ -486,30 +431,15 @@ export function Hero() {
       >
         {/* Left — Copy */}
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "13px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              marginBottom: "20px",
-            }}
-          >
+          <Eyebrow surface="dark" size={13} reveal="scroll" style={{ marginBottom: "20px" }}>
             {BRAND.positioningStatement}
-          </m.span>
+          </Eyebrow>
 
           <m.h1
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            variants={{ visible: { transition: { staggerChildren: 0.07 } } }}
+            viewport={FADE_UP_VIEWPORT}
+            variants={{ visible: { transition: { staggerChildren: STAGGER_STEP } } }}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 700,
@@ -552,11 +482,7 @@ export function Hero() {
           </m.h1>
 
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
+            {...fadeUpOnScroll(2)}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
@@ -574,40 +500,12 @@ export function Hero() {
           </m.p>
 
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}
           >
             <a
               href={SITE_PAGES.trial()}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "16px",
-                lineHeight: 1,
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                border: "none",
-                borderRadius: "9999px",
-                height: "48px",
-                padding: "0 28px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                cursor: "pointer",
-                transition: "background-color 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  "var(--color-gold-hover)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-gold)";
-              }}
+              {...buttonProps({ size: "lg" })}
             >
               {START_TRIAL_CTA}
             </a>
@@ -633,7 +531,7 @@ export function Hero() {
                 textDecoration: "none",
                 cursor: "pointer",
                 transition:
-                  "border-color 150ms ease, background-color 150ms ease",
+                  cssTransition(["border-color", "background-color"]),
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.4)";
@@ -651,11 +549,7 @@ export function Hero() {
           </m.div>
 
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(4)}
+            {...fadeUpOnScroll(4)}
             style={{
               fontFamily: "var(--font-sans)",
               fontWeight: 400,
@@ -672,11 +566,7 @@ export function Hero() {
 
         {/* Right — Desktop approval inbox preview (mirrors the real platform UI) */}
         <m.div
-          variants={slideInFromRight}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(4)}
+          {...fadeUpOnScroll(4)}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -754,7 +644,7 @@ export function Hero() {
                 <m.div
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  transition={fadeUpTransition}
                   style={{
                     display: "flex",
                     alignItems: "center",

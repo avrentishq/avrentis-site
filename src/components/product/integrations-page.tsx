@@ -26,8 +26,7 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
@@ -37,6 +36,9 @@ import { ACCESS_ENDS } from "@/lib/compliance-posture";
 import { LEAD_CURRENCY } from "@/lib/market";
 import { toMinorUnits } from "@/lib/money";
 import { FEATURED_VOUCHER, featuredTrailEntry } from "./demo-fixtures";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 
 /**
  * The sample delivery: the featured demo voucher being sanctioned. Every value
@@ -273,11 +275,7 @@ function CategoryBlock({ category, index, planNote }: { category: Category; inde
   const Icon = category.icon;
   return (
     <m.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={fadeUpTransition}
+      {...fadeUpOnScroll()}
       id={category.id}
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
@@ -401,119 +399,58 @@ export function IntegrationsCataloguePage({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="INTEGRATIONS"
+            eyebrowStyle={{
               display: "inline-block",
               marginBottom: "20px",
             }}
-          >
-            INTEGRATIONS
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+            title="Avrentis plugs into the stack you already run."
+            titleStyle={{
               fontWeight: 700,
               fontSize: "36px",
-              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[56px]"
-          >
-            Avrentis plugs into the stack you already run.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+            titleClassName="lg:!text-[56px]"
+            lede={
+              <>
+                Identity, provisioning, notifications, accounting, banking, and a
+                first-class developer platform. Each integration labelled honestly —
+                available today or delivered on request as part of a conversation.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "660px",
             }}
-          >
-            Identity, provisioning, notifications, accounting, banking, and a
-            first-class developer platform. Each integration labelled honestly —
-            available today or delivered on request as part of a conversation.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
+            <ButtonLink
               href="#identity"
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="md"
             >
               Explore the catalogue
-            </Link>
-            <Link
+            </ButtonLink>
+            <ButtonLink
               href={contactHref("demo")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
             >
               Request a custom connector →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -585,40 +522,24 @@ export function IntegrationsCataloguePage({
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
+              {...fadeUpOnScroll()}
             >
-              <span
-                style={{
-                  fontFamily: sans,
-                  fontWeight: 600,
-                  fontSize: "12px",
-                  letterSpacing: "0.10em",
-                  textTransform: "uppercase",
-                  color: "var(--color-gold-on-light)",
-                  display: "block",
+              <SectionIntro
+                reveal="none"
+                eyebrow="DEVELOPER PLATFORM"
+                eyebrowStyle={{
                   marginBottom: "12px",
                 }}
-              >
-                DEVELOPER PLATFORM
-              </span>
-              <h2
-                style={{
-                  fontFamily: sans,
+                title="Every transition is an event you can subscribe to."
+                titleStyle={{
                   fontWeight: 400,
                   fontSize: "30px",
-                  color: "var(--color-text-primary)",
                   lineHeight: 1.2,
                   margin: "0 0 14px",
                   letterSpacing: "0.01em",
                 }}
-                className="lg:!text-[34px]"
-              >
-                Every transition is an event you can subscribe to.
-              </h2>
+                titleClassName="lg:!text-[34px]"
+              />
               <p style={{ fontFamily: sans, fontSize: "15px", color: "var(--color-text-muted)", lineHeight: 1.75, margin: "0 0 16px" }}>
                 Webhooks signed to the Standard Webhooks scheme, versioned
                 schemas, and retries with exponential backoff that keep the same
@@ -648,11 +569,7 @@ export function IntegrationsCataloguePage({
             </m.div>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
               style={{
                 backgroundColor: "var(--color-navy-primary)",
                 borderRadius: "10px",
@@ -716,16 +633,11 @@ export function IntegrationsCataloguePage({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsCustomConnector} scrim="dark" />
-        <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
-        <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
+        <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "900px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -747,11 +659,7 @@ export function IntegrationsCataloguePage({
             Built for your stack
           </m.div>
           <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
             style={{
               fontFamily: sans,
               fontWeight: 400,
@@ -766,11 +674,7 @@ export function IntegrationsCataloguePage({
             Need something specific? We&rsquo;ll build it.
           </m.h2>
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
+            {...fadeUpOnScroll(2)}
             style={{
               fontFamily: sans,
               fontSize: "15px",
@@ -786,49 +690,23 @@ export function IntegrationsCataloguePage({
             you run; we scope, build, and ship.
           </m.p>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
+            <ButtonLink
               href={contactHref("demo")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="md"
             >
               Scope a custom connector
-            </Link>
-            <Link
+            </ButtonLink>
+            <ButtonLink
               href={LEGAL_PAGES.security}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
             >
               How we secure integrations →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

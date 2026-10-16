@@ -224,3 +224,17 @@ form [role="alert"]:focus {
 .pc-group[open] > .pc-group-summary::before { transform: rotate(90deg); }
 
 .pc-row:hover { background: var(--color-gold-ghost); }
+
+/* ── Call-to-action hover (src/components/ui/button.tsx) ────────────────────
+   Inline styles cannot express :hover, so the button's resting look is inline
+   and only the hover swap lives here, keyed on `data-button`. !important is
+   what lets a stylesheet rule beat the inline resting colour. */
+[data-button="primary"]:not(:disabled):hover {
+  background-color: var(--color-gold-hover) !important;
+}
+[data-button="secondary-on-dark"]:hover {
+  border-color: rgba(var(--color-white-rgb), 0.5) !important;
+}
+[data-button="secondary-on-light"]:hover {
+  border-color: var(--color-navy-primary) !important;
+}

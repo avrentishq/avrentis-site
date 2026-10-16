@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { AvrentisLogo } from "@/components/ui/logo";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { BRAND } from "@/lib/brand";
 import { FOOTER_COLUMNS } from "@/lib/site-nav";
 import { MARKET_SCOPE } from "@/lib/market";
+import { cssTransition } from "@/lib/animations";
 
 const linkStyle: React.CSSProperties = {
   fontFamily: "var(--font-sans)",
@@ -14,23 +16,15 @@ const linkStyle: React.CSSProperties = {
   textDecoration: "none",
   display: "block",
   marginBottom: "8px",
-  transition: "color 150ms ease",
-};
-
-const labelStyle: React.CSSProperties = {
-  fontFamily: "var(--font-sans)",
-  fontWeight: 500,
-  fontSize: "10px",
-  letterSpacing: "0.10em",
-  textTransform: "uppercase",
-  color: "var(--color-gold)",
-  marginBottom: "14px",
+  transition: cssTransition("color"),
 };
 
 function FooterColumn({ label, links }: { label: string; links: { label: string; href: string }[] }) {
   return (
     <div>
-      <div style={labelStyle}>{label}</div>
+      <Eyebrow as="div" surface="dark" size={10} style={{ marginBottom: "14px" }}>
+        {label}
+      </Eyebrow>
       {links.map((link) => (
         <Link
           key={link.label}

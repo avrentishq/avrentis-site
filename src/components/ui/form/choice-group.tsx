@@ -15,6 +15,7 @@ import { useRef } from "react";
 import type { LucideIcon } from "lucide-react";
 import { JS_ONLY } from "@/lib/no-script";
 import { NoScriptSelect } from "./no-script-select";
+import { cssTransition } from "@/lib/animations";
 
 const sans = "var(--font-sans)";
 
@@ -88,7 +89,7 @@ function optionStyle({
     }`,
     borderRadius: isCards ? "10px" : "9999px",
     boxShadow: selected ? "0 0 0 3px rgba(var(--color-gold-rgb), 0.10)" : "none",
-    transition: "border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease",
+    transition: cssTransition(["border-color", "background-color", "box-shadow"]),
   };
 }
 

@@ -17,13 +17,16 @@ import { suiteModuleKeys } from "@/lib/product-suites";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { ButtonLink } from "@/components/ui/button";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
 import { APPROVAL_LIFECYCLE, lifecycleStepNumber } from "@/lib/approval-lifecycle";
+import { cssTransition } from "@/lib/animations";
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_ROUTES.product,
@@ -53,21 +56,7 @@ export default function ProductOverviewPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.productHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid />
 
         <div
           style={{
@@ -78,87 +67,42 @@ export default function ProductOverviewPage() {
             textAlign: "center",
           }}
         >
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "20px",
-            }}
-          >
-            The Avrentis Platform
-          </span>
-          <h1
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
-              lineHeight: 1.15,
-              margin: "0 0 24px",
-            }}
-            className="lg:!text-[52px]"
-          >
-            Spend, oversight, evidence. One approval engine. One tamper-evident
-            record.
-          </h1>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            surface="dark"
+            reveal="none"
+            eyebrow="The Avrentis Platform"
+            eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
+            titleAs="h1"
+            title={
+              <>
+                Spend, oversight, evidence. One approval engine. One tamper-evident
+                record.
+              </>
+            }
+            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-[52px]"
+            lede={
+              <>
+                Avrentis is not a collection of unrelated tools — every financial
+                decision, procurement action, and compliance event flows through
+                one delegation-of-authority engine: routed to the
+                right approver by amount, department, and risk, enforced
+                automatically, and provable on the same tamper-evident record.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 36px",
               maxWidth: "640px",
             }}
-          >
-            Avrentis is not a collection of unrelated tools — every financial
-            decision, procurement action, and compliance event flows through
-            one delegation-of-authority engine: routed to the
-            right approver by amount, department, and risk, enforced
-            automatically, and provable on the same tamper-evident record.
-          </p>
+          />
           <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link
-              href={SITE_PAGES.trial()}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              {START_TRIAL_CTA}
-            </Link>
-            <Link
-              href={SITE_ROUTES.howItWorks}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={SITE_PAGES.trial()}>{START_TRIAL_CTA}</ButtonLink>
+            <ButtonLink href={SITE_ROUTES.howItWorks} variant="secondary" surface="dark">
               See how it works →
-            </Link>
+            </ButtonLink>
           </div>
         </div>
       </section>
@@ -167,35 +111,21 @@ export default function ProductOverviewPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            THE FOUR SUITES
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            reveal="none"
+            eyebrow="THE FOUR SUITES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="Four suites. Each module in them does one thing, precisely."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "560px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Four suites. Each module in them does one thing, precisely.
-          </h2>
+            titleClassName="lg:!text-[38px]"
+          />
 
           {SUITES.map((suite) => {
             const modules = suiteModuleKeys(suite.key);
@@ -252,44 +182,20 @@ export default function ProductOverviewPage() {
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
         <div style={{ maxWidth: "1000px", margin: "0 auto" }}>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            ONE AUTHORITY ENGINE
-          </span>
-          <h2
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            reveal="none"
+            eyebrow="ONE AUTHORITY ENGINE"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="Every module runs on one delegation-of-authority engine."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.25,
               margin: "0 0 24px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Every module runs on one delegation-of-authority engine.
-          </h2>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "16px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 32px",
-              maxWidth: "640px",
-            }}
-          >
+            titleClassName="lg:!text-[38px]"
+            lede={<>
             A payment voucher, a purchase order, a grant disbursement, and a
             vendor onboarding all travel the same authority engine: routed to the right
             approver by amount, department, and risk → enforced with no way
@@ -297,7 +203,9 @@ export default function ProductOverviewPage() {
             approve what, up to how much, and under which conditions — every
             module obeys it. And for any decision, Avrentis shows exactly which
             rule applied and can prove what policy governed it, years later.
-          </p>
+            </>}
+            ledeStyle={{ fontSize: "16px", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "640px" }}
+          />
 
           <div
             style={{
@@ -380,7 +288,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
         flexDirection: "column",
         gap: "14px",
         textDecoration: "none",
-        transition: "border-color 200ms ease, transform 200ms ease",
+        transition: cssTransition(["border-color", "transform"], "base"),
       }}
       className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
     >

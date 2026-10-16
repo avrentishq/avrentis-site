@@ -6,11 +6,10 @@
  * the dropdown used to: it says what a group of modules is for, what they share,
  * and what each one adds on its own — then hands off to the module's own page.
  *
- * A SERVER component, deliberately, unlike `module-layout.tsx`. That one is
- * "use client" because it animates on scroll and embeds interactive previews;
- * this page has neither, and making it a client component would ship framer-
- * motion to render four headings and some prose. It borrows the same visual
- * language — navy hero, light body, gold eyebrow — without the machinery.
+ * A SERVER component, deliberately, unlike `module-layout.tsx`, which is
+ * "use client" because it animates on scroll and embeds interactive previews.
+ * This page renders its prose on the server; only the shared hero backdrop
+ * (its ambient glows) is a client island.
  *
  * Copy lives in `@/lib/product-suites`; nothing here is written inline, so the
  * lock test can hold a suite to having words for every module it contains.
@@ -25,8 +24,10 @@ import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SITE_ROUTES } from "@/lib/routes";
+import { cssTransition } from "@/lib/animations";
 
 export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
   const config = SUITE_PAGES[suite];
@@ -55,47 +56,26 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
           isolation: "isolate",
         }}
       >
-        <AmbientGlow top="-140px" left="-110px" size={520} intensity={0.2} duration={34} />
+        <DarkHeroBackdrop glows="hero" />
         <div style={{ maxWidth: "820px", margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "block",
-              marginBottom: "18px",
-            }}
-          >
-            {meta.label}
-          </span>
-          <h1
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 700,
-              fontSize: "34px",
-              color: "var(--color-white)",
-              lineHeight: 1.18,
-              margin: "0 0 22px",
-            }}
-            className="lg:!text-[46px]"
-          >
-            {config.headline}
-          </h1>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            surface="dark"
+            reveal="none"
+            eyebrow={meta.label}
+            eyebrowStyle={{ marginBottom: "18px" }}
+            titleAs="h1"
+            title={config.headline}
+            titleStyle={{ fontWeight: 700, fontSize: "34px", lineHeight: 1.18, margin: "0 0 22px" }}
+            titleClassName="lg:!text-[46px]"
+            lede={config.description}
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: 0,
               maxWidth: "640px",
             }}
-          >
-            {config.description}
-          </p>
+          />
         </div>
       </section>
 
@@ -228,7 +208,7 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
                     gap: "20px",
                     alignItems: "flex-start",
                     textDecoration: "none",
-                    transition: "border-color 200ms ease",
+                    transition: cssTransition("border-color", "base"),
                   }}
                   className="hover:!border-[rgba(var(--color-gold-rgb),0.4)]"
                 >

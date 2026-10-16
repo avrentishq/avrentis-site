@@ -13,13 +13,15 @@ import { m } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT, DOCUMENTS_KEPT } from "@/lib/record-keeping";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -235,61 +237,42 @@ export function ChangelogProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 32px 64px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.changelogHero} scrim="light" />
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
+          <SectionIntro
+            reveal="load"
+            titleAs="h1"
+            eyebrow="CHANGELOG"
+            eyebrowStyle={{
               marginBottom: "16px",
             }}
-          >
-            CHANGELOG
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+            title={
+              <>
+                What we&rsquo;ve shipped.
+              </>
+            }
+            titleStyle={{
               fontWeight: 500,
               fontSize: "36px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 18px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[44px]"
-          >
-            What we&rsquo;ve shipped.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+            titleClassName="lg:!text-[44px]"
+            lede={
+              <>
+                Notable changes, new capabilities, and platform-level shifts,
+                written in the language an operator would actually use. Ordered
+                newest first. Ask us for the full commit-level changelog if you
+                need it.
+              </>
+            }
+            ledeStyle={{
               fontSize: "16px",
               color: "var(--color-text-secondary)",
               lineHeight: 1.75,
               margin: 0,
               maxWidth: "600px",
             }}
-          >
-            Notable changes, new capabilities, and platform-level shifts,
-            written in the language an operator would actually use. Ordered
-            newest first. Ask us for the full commit-level changelog if you
-            need it.
-          </m.p>
+          />
         </div>
       </section>
 
@@ -300,11 +283,7 @@ export function ChangelogProductPage() {
           {ENTRIES.map((entry) => (
             <m.article
               key={entry.title}
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-80px" }}
-              transition={fadeUpTransition}
+              {...fadeUpOnScroll()}
               style={{
                 backgroundColor: "var(--color-white)",
                 border: "1px solid var(--color-border)",
@@ -396,11 +375,7 @@ export function ChangelogProductPage() {
 
           {/* Subscribe footer */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               marginTop: "32px",
               backgroundColor: "var(--color-white)",
@@ -434,24 +409,12 @@ export function ChangelogProductPage() {
                 </p>
               </div>
             </div>
-            <Link
+            <ButtonLink
               href={contactHref("subscribe")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "13px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 18px",
-                height: "40px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="sm"
             >
               Subscribe
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

@@ -113,6 +113,12 @@ describe("pages core owns are never linked by a hand-typed path", () => {
       .filter((file) => !ROUTE_INVENTORIES.has(file))
       .filter((file) => HAND_TYPED_PATH.test(withoutComments(readFileSync(join(SRC, file), "utf8"))));
     if (HAND_TYPED_PATH.test(withoutComments(readFileSync(join(process.cwd(), "next.config.ts"), "utf8")))) offenders.push("next.config.ts");
+    // The home page is "/", too common a string to match everywhere; a link to it is not.
+    const HOME_LINK = /\bhref(?:=|:\s*)["']\/["']/;
+    expect(HOME_LINK.test('<Link href="/">')).toBe(true);
+    for (const file of readdirSync(SRC, { recursive: true, encoding: "utf8" })) {
+      if (/\.tsx?$/.test(file) && !/\.test\.tsx?$/.test(file) && HOME_LINK.test(withoutComments(readFileSync(join(SRC, file), "utf8")))) offenders.push(file);
+    }
     expect(offenders, "link through SITE_ROUTES / moduleHref / suiteHref / LEGAL_PAGES / SITE_PAGES / contactHref").toEqual([]);
   });
 

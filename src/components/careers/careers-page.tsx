@@ -20,8 +20,10 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
@@ -97,97 +99,34 @@ export function CareersProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.careersHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "840px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "20px",
-            }}
-          >
-            CAREERS
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
-              fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
-              lineHeight: 1.15,
-              margin: "0 0 24px",
-            }}
-            className="lg:!text-[56px]"
-          >
-            Build the platform that runs African organisations.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="CAREERS"
+            eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
+            title="Build the platform that runs African organisations."
+            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-[56px]"
+            lede={
+              <>
+                We are small, deliberate, and building for the long run. If
+                you&rsquo;ve ever looked at how an African organisation handles
+                approvals, procurement, or audit and thought &ldquo;this should
+                work properly&rdquo; — we&rsquo;d like to hear from you.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
             }}
-          >
-            We are small, deliberate, and building for the long run. If
-            you&rsquo;ve ever looked at how an African organisation handles
-            approvals, procurement, or audit and thought &ldquo;this should
-            work properly&rdquo; — we&rsquo;d like to hear from you.
-          </m.p>
-          <m.a
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
-            href="#register-interest"
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "14px",
-              backgroundColor: "var(--color-gold)",
-              color: "var(--color-text-primary)",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
-          >
+          />
+          <m.a {...fadeUpOnLoad(3)} href="#register-interest" {...buttonProps()}>
             Register your interest
           </m.a>
         </div>
@@ -197,45 +136,20 @@ export function CareersProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersPrinciples} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            HOW WE WORK
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="HOW WE WORK"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="Four principles that shape every decision."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               maxWidth: "620px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Four principles that shape every decision.
-          </m.h2>
+            titleClassName="lg:!text-[38px]"
+          />
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
             {PRINCIPLES.map((p, i) => {
@@ -243,11 +157,7 @@ export function CareersProductPage() {
               return (
                 <m.div
                   key={p.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
@@ -296,44 +206,13 @@ export function CareersProductPage() {
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersWhoWeWant} scrim="light" />
         <div style={{ maxWidth: "880px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            WHO WE WANT TO HEAR FROM
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
-              fontWeight: 400,
-              fontSize: "30px",
-              color: "var(--color-text-primary)",
-              lineHeight: 1.25,
-              margin: "0 0 28px",
-              letterSpacing: "0.01em",
-            }}
-            className="lg:!text-[36px]"
-          >
-            We&rsquo;re deliberate about who joins — here&rsquo;s what we look for.
-          </m.h2>
+          <SectionIntro
+            eyebrow="WHO WE WANT TO HEAR FROM"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>We&rsquo;re deliberate about who joins — here&rsquo;s what we look for.</>}
+            titleStyle={{ fontWeight: 400, fontSize: "30px", lineHeight: 1.25, margin: "0 0 28px", letterSpacing: "0.01em" }}
+            titleClassName="lg:!text-[36px]"
+          />
 
           <ul
             style={{
@@ -348,11 +227,7 @@ export function CareersProductPage() {
             {LOOKING_FOR.map((line, i) => (
               <m.li
                 key={line}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 2)}
+                {...fadeUpOnScroll(i + 2)}
                 style={{
                   fontFamily: sans,
                   fontSize: "15px",
@@ -385,33 +260,13 @@ export function CareersProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.careersOpenRoles} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
+          <Eyebrow reveal="scroll" style={{ display: "block", marginBottom: "12px" }}>
             OPEN ROLES
-          </m.span>
+          </Eyebrow>
 
           {OPEN_ROLES.length === 0 ? (
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
               style={{
                 backgroundColor: "var(--color-bg-light)",
                 border: "1px solid var(--color-border)",
@@ -441,11 +296,7 @@ export function CareersProductPage() {
             </m.div>
           ) : (
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
               style={{
                 backgroundColor: "var(--color-white)",
                 border: "1px solid var(--color-border)",
@@ -485,24 +336,9 @@ export function CareersProductPage() {
                       {role.summary}
                     </p>
                   </div>
-                  <Link
-                    href={role.applyHref}
-                    style={{
-                      fontFamily: sans,
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      backgroundColor: "var(--color-gold)",
-                      color: "var(--color-text-primary)",
-                      borderRadius: "6px",
-                      padding: "0 18px",
-                      height: "40px",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      textDecoration: "none",
-                    }}
-                  >
+                  <ButtonLink href={role.applyHref} size="sm">
                     Apply
-                  </Link>
+                  </ButtonLink>
                 </div>
               ))}
             </m.div>
@@ -523,16 +359,11 @@ export function CareersProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.careersRegisterInterest} scrim="dark" />
-        <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
-        <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
+        <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "780px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
           <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               fontFamily: sans,
               fontWeight: 400,
@@ -547,11 +378,7 @@ export function CareersProductPage() {
             Register your interest — it&rsquo;s how we hire.
           </m.h2>
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
             style={{
               fontFamily: sans,
               fontSize: "15px",
@@ -570,53 +397,17 @@ export function CareersProductPage() {
             here. We read every message.
           </m.p>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
+            {...fadeUpOnScroll(2)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
-              href={contactHref("careers")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={contactHref("careers")}>
               <Mail size={16} strokeWidth={1.8} aria-hidden="true" />
               Register my interest
-            </Link>
-            <Link
-              href={SITE_ROUTES.about}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-                gap: "8px",
-              }}
-            >
+            </ButtonLink>
+            <ButtonLink href={SITE_ROUTES.about} variant="secondary" surface="dark">
               About the team
               <ArrowRight size={14} strokeWidth={1.8} aria-hidden="true" />
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

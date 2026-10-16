@@ -1,10 +1,11 @@
 "use client";
 
 import { m } from "framer-motion";
-import Link from "next/link";
 import { ShieldCheck, Database, Landmark, MapPin } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
+import { ButtonLink } from "@/components/ui/button";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
@@ -44,71 +45,28 @@ export function SocialProof() {
     <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
       <SectionBackdrop src={SECTION_BACKDROPS.socialProof} scrim="light" />
       <div style={{ maxWidth: "1200px", margin: "0 auto", position: "relative", zIndex: 1 }}>
-        {/* Eyebrow */}
-        <m.span
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            textAlign: "center",
-            marginBottom: "16px",
-          }}
-        >
-          WHY TEAMS TRUST AVRENTIS
-        </m.span>
-
-        {/* Headline */}
-        <m.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "36px",
-            color: "var(--color-text-primary)",
-            lineHeight: 1.3,
-            margin: "0 auto 12px",
-            textAlign: "center",
-          }}
-          className="lg:!text-[42px]"
-        >
-          Authority you can verify — down to the database.
-        </m.h2>
-
-        {/* Subheadline */}
-        <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
-          style={{
-            fontFamily: "var(--font-sans)",
+        <SectionIntro
+          align="center"
+          eyebrow="WHY TEAMS TRUST AVRENTIS"
+          eyebrowStyle={{ marginBottom: "16px" }}
+          title="Authority you can verify — down to the database."
+          titleStyle={{ fontWeight: 400, fontSize: "36px", lineHeight: 1.3, margin: "0 auto 12px" }}
+          titleClassName="lg:!text-[42px]"
+          lede={
+            <>
+              No fabricated metrics, no borrowed logos. Here is what actually protects
+              your organisation&rsquo;s decisions — the things your security, finance,
+              and audit teams can check for themselves.
+            </>
+          }
+          ledeStyle={{
             fontWeight: 400,
             fontSize: "16px",
-            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto 40px",
             maxWidth: "620px",
-            textAlign: "center",
           }}
-        >
-          No fabricated metrics, no borrowed logos. Here is what actually protects
-          your organisation&rsquo;s decisions — the things your security, finance,
-          and audit teams can check for themselves.
-        </m.p>
+        />
 
         {/* Trust pillars */}
         <div
@@ -120,11 +78,7 @@ export function SocialProof() {
             return (
               <m.div
                 key={pillar.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
@@ -183,11 +137,7 @@ export function SocialProof() {
 
         {/* Founding-partner band — honest, in place of customer proof */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(6)}
+          {...fadeUpOnScroll(6)}
           style={{
             backgroundColor: "var(--color-navy-primary)",
             borderRadius: "10px",
@@ -227,42 +177,10 @@ export function SocialProof() {
             </p>
           </div>
           <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            <Link
-              href={contactHref("demo")}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              Talk to us
-            </Link>
-            <Link
-              href={LEGAL_PAGES.security}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={contactHref("demo")}>Talk to us</ButtonLink>
+            <ButtonLink href={LEGAL_PAGES.security} variant="secondary" surface="dark">
               See the security stack →
-            </Link>
+            </ButtonLink>
           </div>
         </m.div>
       </div>

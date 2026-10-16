@@ -9,10 +9,11 @@
 
 import { m } from "framer-motion";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 
 export interface LegalSection {
   id: string;
@@ -43,65 +44,31 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
         }}
       >
         <div style={{ maxWidth: "760px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "16px",
-            }}
-          >
-            {eyebrow}
-          </m.span>
-
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            reveal="load"
+            eyebrow={eyebrow}
+            eyebrowStyle={{ marginBottom: "16px" }}
+            titleAs="h1"
+            title={title}
+            titleStyle={{
               fontWeight: 500,
               fontSize: "36px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 18px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[44px]"
-          >
-            {title}
-          </m.h1>
-
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+            titleClassName="lg:!text-[44px]"
+            lede={lede}
+            ledeStyle={{
               fontSize: "16px",
               color: "var(--color-text-secondary)",
               lineHeight: 1.75,
               margin: "0 0 8px",
             }}
-          >
-            {lede}
-          </m.p>
+          />
 
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{
               fontFamily: sans,
               fontSize: "13px",
@@ -114,10 +81,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
 
           {/* Section anchor nav */}
           <m.nav
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(4)}
+            {...fadeUpOnLoad(4)}
             aria-label="Document sections"
             style={{
               backgroundColor: "var(--color-white)",
@@ -127,20 +91,9 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
               marginBottom: "56px",
             }}
           >
-            <span
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "11px",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "12px",
-              }}
-            >
+            <Eyebrow size={11} style={{ display: "block", marginBottom: "12px" }}>
               Contents
-            </span>
+            </Eyebrow>
             <ol
               style={{
                 listStyle: "none",
@@ -180,11 +133,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
               <m.section
                 key={s.id}
                 id={s.id}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-80px" }}
-                transition={fadeUpTransition}
+                {...fadeUpOnScroll()}
                 style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
               >
                 <SectionBackdrop src={SECTION_BACKDROPS.legal} scrim="light" />
@@ -230,11 +179,7 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
 
           {footerNote && (
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
+              {...fadeUpOnScroll()}
               style={{
                 marginTop: "64px",
                 padding: "20px 24px",

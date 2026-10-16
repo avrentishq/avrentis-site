@@ -19,10 +19,12 @@ import Link from "next/link";
 import { m } from "framer-motion";
 import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
+import { buttonProps } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
 import { ORG_SIZE_OPTIONS, DEFAULT_ORG_SIZE } from "@/lib/org-size";
 import { BRAND, BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnLoad } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE, OTHER_ROLE, TRIAL_ROLES, type TrialFormState } from "./state";
 import { trialEmailError } from "./email-check";
@@ -47,6 +49,7 @@ import { LEAD_MARKET } from "@/lib/market";
 import { TrialTimeline } from "./timeline";
 import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
+import { SITE_ROUTES } from "@/lib/routes";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.
@@ -170,21 +173,7 @@ function SubmitButton({ isValid, pending }: { isValid: boolean; pending: boolean
     <button
       type="submit"
       disabled={disabled}
-      style={{
-        fontFamily: sans,
-        fontWeight: 600,
-        fontSize: "14px",
-        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "var(--color-text-primary)",
-        border: "none",
-        borderRadius: "9999px",
-        padding: "0 24px",
-        height: "44px",
-        display: "inline-flex",
-        alignItems: "center",
-        cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.6 : 1,
-      }}
+      {...buttonProps({ size: "md", shape: "pill", disabled })}
     >
       {pending ? "Sending…" : "Start my trial →"}
     </button>
@@ -318,26 +307,10 @@ export function TrialForm() {
       {/* Page intro — centered header. The reassurance line sits as a
           subheading under the H1. */}
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
+        {...fadeUpOnLoad()}
         style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
       >
-        <span
-          style={{
-            fontFamily: sans,
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            marginBottom: "14px",
-          }}
-        >
-          {TRIAL_LENGTH} trial
-        </span>
+        <Eyebrow style={{ display: "block", marginBottom: "14px" }}>{TRIAL_LENGTH} trial</Eyebrow>
         <h1
           style={{
             fontFamily: sans,
@@ -388,10 +361,7 @@ export function TrialForm() {
         <TrialStepper current={step + 1} />
       </div>
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
+        {...fadeUpOnLoad()}
         style={{ display: "grid", columnGap: "48px", rowGap: "40px", alignItems: "start" }}
         className="grid-cols-1 lg:grid-cols-[minmax(0,0.9fr)_1.2fr]"
       >
@@ -401,10 +371,7 @@ export function TrialForm() {
         action={action}
         onSubmit={submitWithoutReset(action)}
         className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={staggerDelay(2)}
+        {...fadeUpOnLoad(2)}
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
@@ -627,19 +594,7 @@ export function TrialForm() {
               type="button"
               onClick={() => step1Valid && setStep(2)}
               disabled={!step1Valid}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: step1Valid ? "var(--color-gold)" : "var(--color-gold-hover)",
-                color: "var(--color-text-primary)",
-                border: "none",
-                borderRadius: "9999px",
-                padding: "0 24px",
-                height: "44px",
-                cursor: step1Valid ? "pointer" : "not-allowed",
-                opacity: step1Valid ? 1 : 0.6,
-              }}
+              {...buttonProps({ size: "md", shape: "pill", disabled: !step1Valid })}
             >
               Continue →
             </button>
@@ -1044,7 +999,7 @@ function QueuedCard({ message, email }: { message: string; email?: string }) {
         {message}
       </p>
       <Link
-        href="/"
+        href={SITE_ROUTES.home}
         style={{
           fontFamily: sans,
           fontSize: "13px",

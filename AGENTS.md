@@ -110,6 +110,12 @@ Run these locally before you claim anything is done.
   (`form-submit.lock.test.ts`), gate buttons on `useHydrated()` so the server HTML never ships
   them disabled, spread `JS_ONLY` / `FORM_STEP` (`src/lib/no-script.ts`) on script-only controls
   and steps, and hand a refusal's posted values back (`src/lib/submitted-values.ts`).
+- **Use the UI kit, never a copy.** Buttons come from `src/components/ui/button.tsx`
+  (`ButtonLink`, or `buttonProps()` on an element that must stay `<a>`/`<button>`); section
+  eyebrows and intros from `section-intro.tsx`; the dark hero glows and grid from
+  `dark-hero-backdrop.tsx`; scroll and load reveals from `fadeUpOnScroll()` / `fadeUpOnLoad()`
+  and durations from `TRANSITION` in `src/lib/animations.ts` (staggers are capped).
+  `ui-kit.lock.test.ts` fails on a hand-copied CTA style, eyebrow, grid overlay or reveal.
 - **Never hardcode a colour.** Use the `@theme` tokens in `src/app/globals.css` as
   `var(--color-…)`, or `rgba(var(--color-…-rgb), alpha)` for a tint; add a role-named token
   for a genuinely new colour. Only `src/lib/static-colors.ts` (email, OG image) holds values.

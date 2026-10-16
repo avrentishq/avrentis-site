@@ -12,6 +12,7 @@
  */
 
 import { Check } from "lucide-react";
+import { cssTransition } from "@/lib/animations";
 
 const STEPS = ["Started", "Your setup", "Your details"];
 
@@ -50,7 +51,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
             height: "4px",
             backgroundColor: "var(--color-gold)",
             borderRadius: "9999px",
-            transition: "width 320ms ease",
+            transition: cssTransition("width", "slow"),
           }}
         />
         <div style={{ position: "relative", display: "flex", justifyContent: "space-between" }}>
@@ -75,7 +76,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
                   fontSize: "12px",
                   fontWeight: 600,
                   boxShadow: active ? "0 0 0 4px rgba(var(--color-gold-rgb), 0.12)" : "none",
-                  transition: "border-color 320ms ease, background-color 320ms ease, box-shadow 320ms ease",
+                  transition: cssTransition(["border-color", "background-color", "box-shadow"], "slow"),
                 }}
               >
                 {done ? <Check size={14} strokeWidth={2.5} style={{ color: "var(--color-text-primary)" }} /> : step}
@@ -102,7 +103,7 @@ export function TrialStepper({ current }: TrialStepperProps) {
                 color: done || active ? "var(--color-text-primary)" : "var(--color-text-subtle)",
                 textAlign: i === 0 ? "left" : i === STEPS.length - 1 ? "right" : "center",
                 flex: 1,
-                transition: "color 320ms ease",
+                transition: cssTransition("color", "slow"),
               }}
             >
               {label}

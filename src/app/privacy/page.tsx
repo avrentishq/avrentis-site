@@ -5,6 +5,7 @@ import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
 import { BRAND, LEGAL_PAGES, SITE_HOST } from "@/lib/brand";
 import { DATA_RESIDENCY, RESIDENCY_REQUEST_LINE, SUBPROCESSOR_CATEGORIES } from "@/lib/subprocessors";
+import { SITE_ROUTES } from "@/lib/routes";
 
 export const metadata: Metadata = pageMetadata({
   path: LEGAL_PAGES.privacy,
@@ -22,7 +23,7 @@ const SECTIONS: LegalSection[] = [
       <>
         <p>
           Avrentis (&ldquo;Avrentis&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the approval, procurement, and
-          records platform available at <Link href="/">{SITE_HOST}</Link> and{" "}
+          records platform available at <Link href={SITE_ROUTES.home}>{SITE_HOST}</Link> and{" "}
           <a href={BRAND.appUrl} rel="noreferrer">
             {new URL(BRAND.appUrl).host}
           </a>

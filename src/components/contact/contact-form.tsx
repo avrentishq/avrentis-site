@@ -15,8 +15,10 @@ import { useActionState, useCallback, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Check, ArrowLeft } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll, fadeUpOnLoad, cssTransition } from "@/lib/animations";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
+import { buttonProps } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
 import {
   describedBy,
@@ -38,6 +40,7 @@ import { CONTACT_TOPICS } from "@/app/contact/topics";
 import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 import { BRAND, LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
 import { FORM_LIMITS, hasEmailShape, MESSAGE_MIN_LENGTH } from "@/lib/form-rules";
+import { SITE_ROUTES } from "@/lib/routes";
 
 /** The country picker posts the alpha-2 code (as the trial does); the label is the name. */
 const COUNTRY_OPTIONS = COUNTRIES.map((country) => ({ value: country.code, label: country.name }));
@@ -67,7 +70,7 @@ const inputStyle: React.CSSProperties = {
   borderRadius: "6px",
   padding: "0 14px",
   backgroundColor: "var(--color-white)",
-  transition: "border-color 150ms ease, box-shadow 150ms ease",
+  transition: cssTransition(["border-color", "box-shadow"]),
 };
 
 const textareaStyle: React.CSSProperties = {
@@ -101,23 +104,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={disabled}
-      style={{
-        fontFamily: "var(--font-sans)",
-        fontWeight: 600,
-        fontSize: "14px",
-        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "var(--color-text-primary)",
-        border: "none",
-        borderRadius: "9999px",
-        padding: "0 24px",
-        height: "44px",
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.6 : 1,
-        transition: "background-color 150ms ease",
-      }}
+      {...buttonProps({ size: "md", shape: "pill", disabled })}
     >
       {pending ? "Sending…" : label}
     </button>
@@ -175,10 +162,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   if (state.status === "success") {
     return (
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
+        {...fadeUpOnLoad()}
         style={{
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
@@ -228,7 +212,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           {state.message ?? `Thanks — we'll reply ${ENQUIRY_REPLY_TIME}.`}
         </p>
         <Link
-          href="/"
+          href={SITE_ROUTES.home}
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "13px",
@@ -256,10 +240,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           intent. Sits outside <form>, so its hidden input never posts —
           the specific intent posts via the hidden field inside the form. */}
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
+        {...fadeUpOnLoad()}
         style={{ maxWidth: "640px", margin: "0 auto 24px" }}
       >
         <ChoiceGroup
@@ -274,26 +255,10 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
 
       {/* Centered intro header — matches the trial layout */}
       <m.div
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        transition={fadeUpTransition}
+        {...fadeUpOnLoad()}
         style={{ textAlign: "center", maxWidth: "640px", margin: "0 auto 44px" }}
       >
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            marginBottom: "14px",
-          }}
-        >
-          {copy.eyebrow}
-        </span>
+        <Eyebrow style={{ display: "block", marginBottom: "14px" }}>{copy.eyebrow}</Eyebrow>
         <h1
           style={{
             fontFamily: "var(--font-sans)",
@@ -335,11 +300,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             vertically centred against the taller form. */}
         <div className="order-2 lg:order-none lg:col-start-1 lg:row-start-1 lg:self-center">
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
             style={{
               fontFamily: "var(--font-sans)",
               fontSize: "14px",
@@ -376,11 +337,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               cost of getting in touch. The address is the same one the action
               falls back to when Resend fails. */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ marginTop: "32px" }}
           >
             <div
@@ -428,11 +385,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           action={action}
           onSubmit={submitWithoutReset(action)}
           className="order-1 lg:order-none lg:col-start-2 lg:row-start-1"
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
+          {...fadeUpOnScroll(2)}
           style={{
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",

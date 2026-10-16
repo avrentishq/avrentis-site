@@ -3,6 +3,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_ROUTES } from "@/lib/routes";
@@ -32,20 +33,7 @@ export default function SavingsToolPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.savingsHeader} scrim="light" />
         <div style={{ maxWidth: "1080px", margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: "640px", margin: "0 auto 48px", textAlign: "center" }}>
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "16px",
-              }}
-            >
-              Free tool · No signup
-            </span>
+            <Eyebrow style={{ display: "block", marginBottom: "16px" }}>Free tool · No signup</Eyebrow>
             <h1
               style={{
                 fontFamily: "var(--font-sans)",

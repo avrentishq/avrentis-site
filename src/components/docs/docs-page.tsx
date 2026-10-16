@@ -29,8 +29,7 @@ import {
   ArrowRight,
   Clock,
 } from "lucide-react";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
@@ -38,6 +37,9 @@ import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
 import { TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -264,11 +266,7 @@ function Category({ category, index }: { category: DocsCategory; index: number }
   const Icon = category.icon;
   return (
     <m.section
-      variants={fadeUp}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
-      transition={fadeUpTransition}
+      {...fadeUpOnScroll()}
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
       id={category.eyebrow.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
     >
@@ -388,122 +386,60 @@ export function DocsHubPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.docsHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="DOCUMENTATION"
+            eyebrowStyle={{
               display: "inline-block",
               marginBottom: "20px",
             }}
-          >
-            DOCUMENTATION
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+            title="Everything you need to run Avrentis — in one place."
+            titleStyle={{
               fontWeight: 700,
               fontSize: "36px",
-              color: "var(--color-white)",
               lineHeight: 1.15,
               margin: "0 0 24px",
             }}
-            className="lg:!text-[52px]"
-          >
-            Everything you need to run Avrentis — in one place.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+            titleClassName="lg:!text-[52px]"
+            lede={
+              <>
+                A hub for admins, developers, and internal IT. Pointers to the
+                deep-dive pages we already publish, and honest signals for the
+                guides we&rsquo;re still writing — with a direct line to a human
+                where a guide would have lived.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
             }}
-          >
-            A hub for admins, developers, and internal IT. Pointers to the
-            deep-dive pages we already publish, and honest signals for the
-            guides we&rsquo;re still writing — with a direct line to a human
-            where a guide would have lived.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
             <a
               href="#getting-started"
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              {...buttonProps({ size: "md" })}
             >
               Start here
             </a>
-            <Link
+            <ButtonLink
               href={contactHref("feedback")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                textDecoration: "none",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
             >
               <Mail size={14} strokeWidth={1.8} aria-hidden="true" />
               Request a guide
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -569,11 +505,7 @@ export function DocsHubPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.docsFeedbackFooter} scrim="light" />
         <div style={{ maxWidth: "820px", margin: "0 auto" }}>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               backgroundColor: "var(--color-bg-light)",
               border: "1px solid var(--color-border)",
@@ -603,24 +535,12 @@ export function DocsHubPage() {
                 actually ask for, not what marketing thinks we should publish.
               </p>
             </div>
-            <Link
+            <ButtonLink
               href={contactHref("feedback")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "13px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 18px",
-                height: "40px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
+              size="sm"
             >
               Request a guide
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

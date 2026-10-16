@@ -13,7 +13,8 @@ import { useActionState, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Check } from "lucide-react";
-import { fadeUp, fadeUpTransition } from "@/lib/animations";
+import { fadeUpOnLoad } from "@/lib/animations";
+import { buttonProps } from "@/components/ui/button";
 import { currencySymbol, formatCount } from "@/lib/money";
 import { BOUNDS, EFFICIENCY, SAVINGS_CURRENCY, clampInt, computeSavings, formatSavings } from "./compute";
 import { emailEstimate } from "./actions";
@@ -173,21 +174,7 @@ function SubmitButton({ disabled, pending }: { disabled: boolean; pending: boole
     <button
       type="submit"
       disabled={off}
-      style={{
-        fontFamily: sans,
-        fontWeight: 600,
-        fontSize: "14px",
-        backgroundColor: off ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "var(--color-text-primary)",
-        border: "none",
-        borderRadius: "9999px",
-        padding: "0 22px",
-        height: "44px",
-        cursor: off ? "not-allowed" : "pointer",
-        opacity: off ? 0.6 : 1,
-        flexShrink: 0,
-        transition: "background-color 150ms ease",
-      }}
+      {...buttonProps({ size: "md", shape: "pill", disabled: off, style: { flexShrink: 0 } })}
     >
       {pending ? "Sending…" : "Email it to me"}
     </button>
@@ -232,10 +219,7 @@ export function SavingsEstimator() {
 
   return (
     <m.div
-      variants={fadeUp}
-      initial="hidden"
-      animate="visible"
-      transition={fadeUpTransition}
+      {...fadeUpOnLoad()}
       style={{ display: "grid", gap: "40px", alignItems: "start" }}
       className="grid-cols-1 lg:grid-cols-[minmax(0,1fr)_1.1fr]"
     >

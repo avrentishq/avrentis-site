@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { ButtonLink } from "@/components/ui/button";
 import { BRAND } from "@/lib/brand";
 import { SITE_ROUTES } from "@/lib/routes";
 
@@ -59,42 +59,10 @@ export default function NotFound() {
           things back up.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <Link
-            href="/"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "14px",
-              backgroundColor: "var(--color-gold)",
-              color: "var(--color-text-primary)",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
-          >
-            Back to home
-          </Link>
-          <Link
-            href={SITE_ROUTES.product}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "14px",
-              color: "var(--color-white)",
-              border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
-          >
+          <ButtonLink href={SITE_ROUTES.home}>Back to home</ButtonLink>
+          <ButtonLink href={SITE_ROUTES.product} variant="secondary" surface="dark">
             Explore the platform →
-          </Link>
+          </ButtonLink>
         </div>
         <p
           style={{

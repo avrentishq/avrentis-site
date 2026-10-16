@@ -26,8 +26,10 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
@@ -110,121 +112,42 @@ export function TrustProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trustHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "880px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "20px",
-            }}
-          >
-            TRUST CENTRE
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
-              fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
-              lineHeight: 1.15,
-              margin: "0 0 24px",
-            }}
-            className="lg:!text-[56px]"
-          >
-            Where the controls live.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="TRUST CENTRE"
+            eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
+            title="Where the controls live."
+            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-[56px]"
+            lede={
+              <>
+                Everything your security, legal, or procurement team usually asks for,
+                on one page: the standards we hold ourselves to, the companies we
+                work with to run the service, where your data lives, how to sign
+                a data-protection agreement, and how to report a vulnerability.
+                Honest and straight to the point.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
             }}
-          >
-            Everything your security, legal, or procurement team usually asks for,
-            on one page: the standards we hold ourselves to, the companies we
-            work with to run the service, where your data lives, how to sign
-            a data-protection agreement, and how to report a vulnerability.
-            Honest and straight to the point.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
-              href={contactHref("security")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              Request a DPA or security review
-            </Link>
-            <Link
-              href={LEGAL_PAGES.security}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={contactHref("security")}>Request a DPA or security review</ButtonLink>
+            <ButtonLink href={LEGAL_PAGES.security} variant="secondary" surface="dark">
               Read the security stack →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -233,75 +156,35 @@ export function TrustProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustFrameworks} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            FRAMEWORKS WE ALIGN TO
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="FRAMEWORKS WE ALIGN TO"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>We don&rsquo;t hold certifications today. Here&rsquo;s what we do.</>}
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            We don&rsquo;t hold certifications today. Here&rsquo;s what we do.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 40px",
-              maxWidth: "640px",
-            }}
-          >
-            Avrentis has not yet completed a SOC 2 or ISO 27001 audit. Our
-            policies follow SOC 2 structure, and we&rsquo;re transparent about
-            where we are with each framework.
-          </m.p>
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                Avrentis has not yet completed a SOC 2 or ISO 27001 audit. Our
+                policies follow SOC 2 structure, and we&rsquo;re transparent about
+                where we are with each framework.
+              </>
+            }
+            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "640px" }}
+          />
 
           {/* Wrapping flex: every row's cards grow to fill it, whatever the count. */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: "16px" }}>
             {COMPLIANCE_FRAMEWORKS.map((f, i) => (
               <m.div
                 key={f.name}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
                   flex: "1 1 300px",
                   backgroundColor: "var(--color-bg-light)",
@@ -343,72 +226,32 @@ export function TrustProductPage() {
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustSubprocessors} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            SUB-PROCESSORS
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="SUB-PROCESSORS"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>The providers that help us run the service.</>}
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            The providers that help us run the service.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 32px",
-              maxWidth: "640px",
-            }}
-          >
-            We engage established infrastructure providers and limit each to
-            the data it needs to perform its function. We notify customers of
-            new sub-processors before onboarding them where we have that
-            obligation under your contract.
-          </m.p>
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                We engage established infrastructure providers and limit each to
+                the data it needs to perform its function. We notify customers of
+                new sub-processors before onboarding them where we have that
+                obligation under your contract.
+              </>
+            }
+            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 32px", maxWidth: "640px" }}
+          />
 
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
@@ -462,11 +305,7 @@ export function TrustProductPage() {
           </m.div>
 
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(4)}
+            {...fadeUpOnScroll(4)}
             style={{
               marginTop: "24px",
               padding: "22px 26px",
@@ -490,33 +329,13 @@ export function TrustProductPage() {
                 alongside a Data Processing Agreement.
               </div>
             </div>
-            <Link
-              href={contactHref("privacy")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "13px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 18px",
-                height: "40px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-                flexShrink: 0,
-              }}
-            >
+            <ButtonLink href={contactHref("privacy")} size="sm" style={{ flexShrink: 0 }}>
               Request the list
-            </Link>
+            </ButtonLink>
           </m.div>
 
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(5)}
+            {...fadeUpOnScroll(5)}
             style={{
               fontFamily: sans,
               fontSize: "13px",
@@ -538,45 +357,20 @@ export function TrustProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustDocuments} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            DOCUMENTS &amp; DIRECT LINES
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="DOCUMENTS &amp; DIRECT LINES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>What to read and who to email.</>}
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 40px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            What to read and who to email.
-          </m.h2>
+            titleClassName="lg:!text-[38px]"
+          />
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {DOCUMENTS.map((d, i) => {
@@ -585,11 +379,7 @@ export function TrustProductPage() {
               return (
                 <m.div
                   key={d.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
@@ -667,64 +457,28 @@ export function TrustProductPage() {
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.trustDataResidency} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            DATA RESIDENCY
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="DATA RESIDENCY"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>Where your data lives.</>}
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Where your data lives.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 40px",
-              maxWidth: "680px",
-            }}
-          >
-            Residency matters for regulated organisations and for customers
-            whose policies require data to stay in a specific jurisdiction.
-            Here is the honest picture.
-          </m.p>
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                Residency matters for regulated organisations and for customers
+                whose policies require data to stay in a specific jurisdiction.
+                Here is the honest picture.
+              </>
+            }
+            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "680px" }}
+          />
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2">
             {[
@@ -741,11 +495,7 @@ export function TrustProductPage() {
             ].map((r, i) => (
               <m.div
                 key={r.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
@@ -778,11 +528,7 @@ export function TrustProductPage() {
           </div>
 
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(6)}
+            {...fadeUpOnScroll(6)}
             style={{
               marginTop: "28px",
               padding: "20px 24px",
@@ -814,112 +560,40 @@ export function TrustProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trustStatusContact} scrim="dark" />
-        <AmbientGlow top="20%" left="-120px" size={420} intensity={0.15} duration={34} />
-        <AmbientGlow bottom="-80px" right="-100px" size={480} intensity={0.13} duration={40} delay={0.5} />
+        <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "880px", margin: "0 auto", position: "relative", zIndex: 2, textAlign: "center" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "16px",
-            }}
-          >
-            OPERATIONAL TRANSPARENCY
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
-              fontWeight: 400,
-              fontSize: "30px",
-              color: "var(--color-white)",
-              lineHeight: 1.2,
-              margin: "0 0 16px",
-              letterSpacing: "0.01em",
-            }}
-            className="lg:!text-[36px]"
-          >
-            All systems operational.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            surface="dark"
+            eyebrow="OPERATIONAL TRANSPARENCY"
+            eyebrowStyle={{ display: "inline-block", marginBottom: "16px" }}
+            title="All systems operational."
+            titleStyle={{ fontWeight: 400, fontSize: "30px", lineHeight: 1.2, margin: "0 0 16px", letterSpacing: "0.01em" }}
+            titleClassName="lg:!text-[36px]"
+            lede={
+              <>
+                Current subsystem status is published on the status page, with
+                incident history as it accrues. Enterprise customers receive
+                incident notifications under their order form; email to be added
+                to the general notification list.
+              </>
+            }
+            ledeStyle={{
               fontSize: "15px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 28px",
               maxWidth: "600px",
             }}
-          >
-            Current subsystem status is published on the status page, with
-            incident history as it accrues. Enterprise customers receive
-            incident notifications under their order form; email to be added
-            to the general notification list.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
-              href={SITE_ROUTES.status}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              Open the status page
-            </Link>
-            <Link
-              href={contactHref("security")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={SITE_ROUTES.status}>Open the status page</ButtonLink>
+            <ButtonLink href={contactHref("security")} variant="secondary" surface="dark">
               Talk to our team →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>

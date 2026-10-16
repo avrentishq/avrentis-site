@@ -22,6 +22,7 @@ import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
 import { confirmTrialVerification, reissueTrialToken } from "../../actions";
 import { INITIAL_VERIFY_STATE } from "./state";
 import { FormAlert } from "@/components/ui/form/form-alert";
+import { buttonProps } from "@/components/ui/button";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { contactHref } from "@/app/contact/tabs";
@@ -55,21 +56,7 @@ export function VerifyConfirm({ token }: { token: string }) {
         <button
           type="submit"
           disabled={pending}
-          style={{
-            fontFamily: sans,
-            fontWeight: 600,
-            fontSize: "14px",
-            backgroundColor: pending ? "var(--color-gold-hover)" : "var(--color-gold)",
-            color: "var(--color-text-primary)",
-            border: "none",
-            borderRadius: "9999px",
-            padding: "0 24px",
-            height: "44px",
-            display: "inline-flex",
-            alignItems: "center",
-            cursor: pending ? "not-allowed" : "pointer",
-            opacity: pending ? 0.6 : 1,
-          }}
+          {...buttonProps({ size: "md", shape: "pill", disabled: pending })}
         >
           {pending ? "Setting up…" : "Set up my workspace"}
         </button>
@@ -201,22 +188,7 @@ function ReissueButton({ pending }: { pending: boolean }) {
       type="submit"
       disabled={disabled}
       onClick={() => setCooldown(true)}
-      style={{
-        fontFamily: sans,
-        fontWeight: 600,
-        fontSize: "13px",
-        backgroundColor: disabled ? "var(--color-gold-hover)" : "var(--color-gold)",
-        color: "var(--color-text-primary)",
-        border: "none",
-        borderRadius: "9999px",
-        padding: "0 20px",
-        height: "40px",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "6px",
-        cursor: disabled ? "not-allowed" : "pointer",
-        opacity: disabled ? 0.6 : 1,
-      }}
+      {...buttonProps({ size: "sm", shape: "pill", disabled })}
     >
       <RefreshCcw size={14} strokeWidth={2} aria-hidden="true" />
       {pending ? "Sending…" : "Send me a new link"}

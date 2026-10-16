@@ -6,8 +6,12 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, ArrowRight } from "lucide-react";
 import { MobileMenu } from "@/components/layout/mobile-menu";
 import { AvrentisLogo } from "@/components/ui/logo";
+import { buttonProps } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/section-intro";
 import { BRAND } from "@/lib/brand";
 import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
+import { cssTransition } from "@/lib/animations";
+import { SITE_ROUTES } from "@/lib/routes";
 
 /* ── Navbar ───────────────────────────────────────────────────────────────── */
 
@@ -90,7 +94,7 @@ export function Navbar() {
       fontSize: "14px",
       color: active ? barSurface.accent : barSurface.text,
       textDecoration: "none",
-      transition: "color 150ms ease",
+      transition: cssTransition("color"),
       borderBottom: active
         ? `2px solid ${barSurface.accent}`
         : "2px solid transparent",
@@ -117,7 +121,7 @@ export function Navbar() {
             ? "0.5px solid transparent"
             : "0.5px solid rgba(var(--color-gold-rgb), 0.2)",
           zIndex: 50,
-          transition: "background-color 300ms ease, border-color 300ms ease",
+          transition: cssTransition(["background-color", "border-color"], "slow"),
         }}
       >
         <div
@@ -147,11 +151,11 @@ export function Navbar() {
             border: scrolled ? barSurface.border : "1px solid transparent",
             boxShadow: scrolled ? "0 8px 32px rgba(var(--color-shadow-rgb), 0.28)" : "none",
             transition:
-              "max-width 300ms ease, height 300ms ease, padding 300ms ease, background-color 300ms ease, border-color 300ms ease, box-shadow 300ms ease, border-radius 300ms ease",
+              cssTransition(["max-width", "height", "padding", "background-color", "border-color", "box-shadow", "border-radius"], "slow"),
           }}
         >
           {/* ── Logo ──────────────────────────────────────────────── */}
-          <Link href="/" aria-label={`${BRAND.name} home`}>
+          <Link href={SITE_ROUTES.home} aria-label={`${BRAND.name} home`}>
             {/* The MARK is the platform's `primary` lockup — gold container,
                 navy gate — in both scroll states, the same thing the app and
                 admin sidebars render. It used to be two static SVGs that swapped
@@ -215,7 +219,7 @@ export function Navbar() {
                 <ChevronDown
                   size={12}
                   style={{
-                    transition: "transform 200ms ease",
+                    transition: cssTransition("transform", "base"),
                     transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                   }}
                 />
@@ -244,19 +248,9 @@ export function Navbar() {
                 >
                   {/* Left column — Modules */}
                   <div style={{ flex: "0 0 60%" }}>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-sans)",
-                        fontWeight: 600,
-                        fontSize: "10px",
-                        color: barSurface.accent,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.10em",
-                        marginBottom: "12px",
-                      }}
-                    >
+                    <Eyebrow as="div" size={10} style={{ color: barSurface.accent, marginBottom: "12px" }}>
                       Suites
-                    </div>
+                    </Eyebrow>
                     <div
                       style={{
                         display: "flex",
@@ -274,7 +268,7 @@ export function Navbar() {
                             padding: "10px 8px",
                             borderRadius: "6px",
                             textDecoration: "none",
-                            transition: "background-color 150ms ease",
+                            transition: cssTransition("background-color"),
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor =
@@ -334,19 +328,9 @@ export function Navbar() {
 
                   {/* Right column — Platform */}
                   <div style={{ flex: "0 0 35%" }}>
-                    <div
-                      style={{
-                        fontFamily: "var(--font-sans)",
-                        fontWeight: 600,
-                        fontSize: "10px",
-                        color: barSurface.accent,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.10em",
-                        marginBottom: "12px",
-                      }}
-                    >
+                    <Eyebrow as="div" size={10} style={{ color: barSurface.accent, marginBottom: "12px" }}>
                       Platform
-                    </div>
+                    </Eyebrow>
                     <div
                       style={{
                         display: "flex",
@@ -367,7 +351,7 @@ export function Navbar() {
                             textDecoration: "none",
                             padding: "8px",
                             borderRadius: "6px",
-                            transition: "background-color 150ms ease",
+                            transition: cssTransition("background-color"),
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.backgroundColor =
@@ -421,7 +405,7 @@ export function Navbar() {
                     fontSize: "14px",
                     color: "var(--color-text-subtle)",
                     textDecoration: "none",
-                    transition: "color 150ms ease",
+                    transition: cssTransition("color"),
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.color = "var(--color-white)";
@@ -437,33 +421,7 @@ export function Navbar() {
 
             <a
               href={NAV_LINKS.startTrial.href}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "11px",
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                lineHeight: 1,
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                border: "none",
-                borderRadius: "9999px",
-                height: "32px",
-                padding: "0 16px",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                cursor: "pointer",
-                transition: "background-color 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  "var(--color-gold-hover)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "var(--color-gold)";
-              }}
+              {...buttonProps({ size: "nav" })}
             >
               {NAV_LINKS.startTrial.label} &rarr;
             </a>

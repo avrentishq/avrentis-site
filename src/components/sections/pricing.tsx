@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { m } from "framer-motion";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import Link from "next/link";
 import type {
@@ -80,7 +82,6 @@ interface PricingProps {
 }
 
 export function Pricing({ data, headingAs = "h2" }: PricingProps) {
-  const Headline = headingAs === "h1" ? m.h1 : m.h2;
   // Default to annual — the higher-value cycle we already frame as "N months
   // free". The card keeps the monthly-equivalent and annual total visible so
   // the default informs rather than tricks.
@@ -180,78 +181,37 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
           zIndex: 1,
         }}
       >
-        {/* Eyebrow */}
-        <m.span
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 600,
-            fontSize: "12px",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-gold-on-light)",
-            display: "block",
-            textAlign: "center",
-            marginBottom: "16px",
-          }}
-        >
-          PRICING
-        </m.span>
-
-        {/* Headline */}
-        <Headline
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
-          style={{
-            fontFamily: "var(--font-sans)",
+        <SectionIntro
+          align="center"
+          eyebrow="PRICING"
+          eyebrowStyle={{ marginBottom: "16px" }}
+          titleAs={headingAs}
+          title="Structured pricing for every stage of growth."
+          titleStyle={{
             fontWeight: 400,
             fontSize: "36px",
-            color: "var(--color-text-primary)",
             lineHeight: 1.3,
             margin: "0 auto 12px",
-            textAlign: "center",
           }}
-          className="lg:!text-[42px]"
-        >
-          Structured pricing for every stage of growth.
-        </Headline>
-
-        {/* Subheadline */}
-        <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
-          style={{
-            fontFamily: "var(--font-sans)",
+          titleClassName="lg:!text-[42px]"
+          lede={
+            <>
+              Every plan starts with a {trialDays}-day trial. {NO_CARD_REQUIRED}, nothing
+              to cancel. Scale as your organisation grows. No hidden fees.
+            </>
+          }
+          ledeStyle={{
             fontWeight: 400,
             fontSize: "16px",
-            color: "var(--color-text-muted)",
             lineHeight: 1.7,
             margin: "0 auto 32px",
-            textAlign: "center",
             maxWidth: "500px",
           }}
-        >
-          Every plan starts with a {trialDays}-day trial. {NO_CARD_REQUIRED}, nothing
-          to cancel. Scale as your organisation grows. No hidden fees.
-        </m.p>
+        />
 
         {/* Controls row */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(3)}
+          {...fadeUpOnScroll(3)}
           style={{
             display: "flex",
             justifyContent: "center",
@@ -281,7 +241,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "background-color 150ms ease, color 150ms ease",
+                transition: cssTransition(["background-color", "color"]),
                 backgroundColor:
                   billing === "monthly" ? "var(--color-navy-primary)" : "transparent",
                 color: billing === "monthly" ? "var(--color-white)" : "var(--color-text-muted)",
@@ -300,7 +260,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontFamily: "var(--font-sans)",
                 cursor: "pointer",
                 border: "none",
-                transition: "background-color 150ms ease, color 150ms ease",
+                transition: cssTransition(["background-color", "color"]),
                 backgroundColor:
                   billing === "annual" ? "var(--color-gold)" : "transparent",
                 color: billing === "annual" ? "var(--color-navy-primary)" : "var(--color-text-muted)",
@@ -333,7 +293,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     fontFamily: "var(--font-sans)",
                     cursor: "pointer",
                     border: "none",
-                    transition: "background-color 150ms ease, color 150ms ease",
+                    transition: cssTransition(["background-color", "color"]),
                     backgroundColor: currency === c ? "var(--color-navy-primary)" : "transparent",
                     color: currency === c ? "var(--color-white)" : "var(--color-text-muted)",
                   }}
@@ -352,11 +312,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
         >
           {/* Trial card — marketing-only, not a real plan */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(4)}
+            {...fadeUpOnScroll(4)}
             style={{
               backgroundColor: "var(--color-white)",
               border: "1px solid var(--color-border)",
@@ -487,7 +443,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 fontWeight: 600,
                 fontFamily: "var(--font-sans)",
                 textDecoration: "none",
-                transition: "border-color 150ms ease",
+                transition: cssTransition("border-color"),
                 backgroundColor: "transparent",
                 color: "var(--color-text-primary)",
                 border: "1px solid var(--color-border)",
@@ -575,11 +531,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
             return (
               <m.div
                 key={plan.key}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 4)}
+                {...fadeUpOnScroll(i + 4)}
                 style={{
                   backgroundColor: isFeatured ? "var(--color-navy-primary)" : "var(--color-white)",
                   border: isFeatured
@@ -865,51 +817,16 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                 </ul>
 
                 {/* CTA */}
-                <Link
+                <ButtonLink
                   href={isQuotePriced ? contactHref("demo") : SITE_PAGES.trial()}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "100%",
-                    height: "44px",
-                    borderRadius: "9999px",
-                    fontSize: "14px",
-                    fontWeight: 600,
-                    fontFamily: "var(--font-sans)",
-                    textDecoration: "none",
-                    transition: "background-color 150ms ease, border-color 150ms ease",
-                    ...(isFeatured
-                      ? {
-                          backgroundColor: "var(--color-gold)",
-                          color: "var(--color-text-primary)",
-                          border: "none",
-                        }
-                      : {
-                          backgroundColor: "transparent",
-                          color: "var(--color-text-primary)",
-                          border: "1px solid var(--color-border)",
-                        }),
-                  }}
-                  onMouseEnter={(e) => {
-                    if (isFeatured) {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--color-gold-hover)";
-                    } else {
-                      e.currentTarget.style.borderColor = "var(--color-navy-primary)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (isFeatured) {
-                      e.currentTarget.style.backgroundColor =
-                        "var(--color-gold)";
-                    } else {
-                      e.currentTarget.style.borderColor = "var(--color-border)";
-                    }
-                  }}
+                  variant={isFeatured ? "primary" : "secondary"}
+                  surface="light"
+                  size="md"
+                  shape="pill"
+                  fullWidth
                 >
                   {isQuotePriced ? "Talk to us" : "Start my trial"}
-                </Link>
+                </ButtonLink>
               </m.div>
             );
           })}
@@ -917,11 +834,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
 
         {/* Reassurance strip */}
         <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(8)}
+          {...fadeUpOnScroll(8)}
           style={{
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
@@ -937,11 +850,7 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
         </m.p>
 
         <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(9)}
+          {...fadeUpOnScroll(9)}
           style={{
             fontFamily: "var(--font-sans)",
             fontSize: "13px",

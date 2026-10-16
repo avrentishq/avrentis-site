@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { m } from "framer-motion";
 import { Lock, Check, Zap, Globe } from "lucide-react";
 import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll } from "@/lib/animations";
+import { ButtonLink } from "@/components/ui/button";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA, TRIAL_DURATION_DAYS, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
@@ -27,9 +27,6 @@ export function CtaBanner() {
         backgroundColor: "var(--color-navy-primary)",
         padding: "120px 40px",
         textAlign: "center",
-        backgroundImage:
-          "linear-gradient(rgba(var(--color-white-rgb), 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.05) 1px, transparent 1px)",
-        backgroundSize: "60px 60px",
         position: "relative",
         overflow: "hidden",
         isolation: "isolate",
@@ -38,8 +35,7 @@ export function CtaBanner() {
       <SectionBackdrop src={SECTION_BACKDROPS.ctaBanner} scrim="dark" />
       {/* Ambient glow frames the CTA from behind. Two offset glows keep the
           motion asymmetric so the cycle never looks mechanical. */}
-      <AmbientGlow top="-80px" left="20%" size={520} intensity={0.22} duration={38} />
-      <AmbientGlow bottom="-60px" right="15%" size={480} intensity={0.18} duration={44} delay={0.5} />
+      <DarkHeroBackdrop glows="centered" grid />
 
       <div
         style={{
@@ -54,11 +50,7 @@ export function CtaBanner() {
       >
         {/* Headline */}
         <m.h2
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={fadeUpTransition}
+          {...fadeUpOnScroll()}
           className="lg:!text-[42px]"
           style={{
             fontFamily: "var(--font-sans)",
@@ -75,11 +67,7 @@ export function CtaBanner() {
 
         {/* Subheadline */}
         <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(1)}
+          {...fadeUpOnScroll(1)}
           style={{
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
@@ -95,11 +83,7 @@ export function CtaBanner() {
 
         {/* CTAs */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(2)}
+          {...fadeUpOnScroll(2)}
           style={{
             display: "flex",
             gap: "12px",
@@ -107,71 +91,17 @@ export function CtaBanner() {
             justifyContent: "center",
           }}
         >
-          <Link
-            href={SITE_PAGES.trial()}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "16px",
-              backgroundColor: "var(--color-gold)",
-              color: "var(--color-text-primary)",
-              border: "none",
-              borderRadius: "9999px",
-              height: "52px",
-              padding: "0 32px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "background-color 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "var(--color-gold-hover)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "var(--color-gold)";
-            }}
-          >
+          <ButtonLink href={SITE_PAGES.trial()} size="xl">
             {START_TRIAL_CTA}
-          </Link>
-          <Link
-            href={contactHref()}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "16px",
-              backgroundColor: "transparent",
-              color: "var(--color-white)",
-              border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-              borderRadius: "9999px",
-              height: "48px",
-              padding: "0 32px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textDecoration: "none",
-              cursor: "pointer",
-              transition: "border-color 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.5)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = "rgba(var(--color-white-rgb), 0.2)";
-            }}
-          >
+          </ButtonLink>
+          <ButtonLink href={contactHref()} variant="secondary" surface="dark" size="xl">
             Contact us &rarr;
-          </Link>
+          </ButtonLink>
         </m.div>
 
         {/* Micro copy */}
         <m.p
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(3)}
+          {...fadeUpOnScroll(3)}
           style={{
             fontFamily: "var(--font-sans)",
             fontWeight: 400,
@@ -186,11 +116,7 @@ export function CtaBanner() {
 
         {/* Trust signals */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(4)}
+          {...fadeUpOnScroll(4)}
           style={{
             display: "flex",
             flexWrap: "wrap",

@@ -1,8 +1,9 @@
 "use client";
 
-import Link from "next/link";
+import { ButtonLink, buttonProps } from "@/components/ui/button";
 import { BRAND } from "@/lib/brand";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { SITE_ROUTES } from "@/lib/routes";
 
 /**
  * Branded route error boundary. Must be a Client Component (Next.js
@@ -66,44 +67,12 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
           and we&rsquo;ll take a look.
         </p>
         <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
-          <button
-            type="button"
-            onClick={reset}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "14px",
-              backgroundColor: "var(--color-gold)",
-              color: "var(--color-text-primary)",
-              border: "none",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-          >
+          <button type="button" onClick={reset} {...buttonProps({ size: "md" })}>
             Try again
           </button>
-          <Link
-            href="/"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "14px",
-              color: "var(--color-white)",
-              border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-              borderRadius: "6px",
-              padding: "0 22px",
-              height: "44px",
-              display: "inline-flex",
-              alignItems: "center",
-              textDecoration: "none",
-            }}
-          >
+          <ButtonLink href={SITE_ROUTES.home} variant="secondary" surface="dark">
             Back to home
-          </Link>
+          </ButtonLink>
         </div>
         <p
           style={{

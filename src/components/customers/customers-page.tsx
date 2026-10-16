@@ -23,8 +23,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { ButtonLink } from "@/components/ui/button";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
@@ -144,120 +146,41 @@ export function CustomersProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.customersHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center", position: "relative", zIndex: 2 }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              display: "inline-block",
-              marginBottom: "20px",
-            }}
-          >
-            CUSTOMERS
-          </m.span>
-          <m.h1
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
-              fontWeight: 700,
-              fontSize: "36px",
-              color: "var(--color-white)",
-              lineHeight: 1.15,
-              margin: "0 0 24px",
-            }}
-            className="lg:!text-[56px]"
-          >
-            Organisations that chose structure over speed.
-          </m.h1>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            surface="dark"
+            reveal="load"
+            titleAs="h1"
+            eyebrow="CUSTOMERS"
+            eyebrowStyle={{ display: "inline-block", marginBottom: "20px" }}
+            title="Organisations that chose structure over speed."
+            titleStyle={{ fontWeight: 700, fontSize: "36px", lineHeight: 1.15, margin: "0 0 24px" }}
+            titleClassName="lg:!text-[56px]"
+            lede={
+              <>
+                Avrentis is early. Rather than claim credit for logos we
+                haven&rsquo;t yet earned, here&rsquo;s an honest picture of who
+                we&rsquo;re built for, the patterns we hear in every discovery
+                call, and how our launch-partner programme works.
+              </>
+            }
+            ledeStyle={{
               fontSize: "17px",
               color: "var(--color-text-subtle)",
               lineHeight: 1.7,
               margin: "0 auto 32px",
               maxWidth: "640px",
             }}
-          >
-            Avrentis is early. Rather than claim credit for logos we
-            haven&rsquo;t yet earned, here&rsquo;s an honest picture of who
-            we&rsquo;re built for, the patterns we hear in every discovery
-            call, and how our launch-partner programme works.
-          </m.p>
+          />
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            transition={staggerDelay(3)}
+            {...fadeUpOnLoad(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
-              href={contactHref()}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              Contact us
-            </Link>
-            <Link
-              href="#launch-partners"
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={contactHref()}>Contact us</ButtonLink>
+            <ButtonLink href="#launch-partners" variant="secondary" surface="dark">
               About the launch programme →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -266,64 +189,28 @@ export function CustomersProductPage() {
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.customersIndustries} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            WHO WE BUILT THIS FOR
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="WHO WE BUILT THIS FOR"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>Six organisation types. One common problem.</>}
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            Six organisation types. One common problem.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 40px",
-              maxWidth: "640px",
-            }}
-          >
-            Avrentis is deliberately narrow. We serve organisations where
-            approval chains matter, audit trails are non-negotiable, and
-            authority cannot be left to email.
-          </m.p>
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                Avrentis is deliberately narrow. We serve organisations where
+                approval chains matter, audit trails are non-negotiable, and
+                authority cannot be left to email.
+              </>
+            }
+            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "640px" }}
+          />
 
           <div style={{ display: "grid", gap: "20px" }} className="grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {INDUSTRIES.map((ind, i) => {
@@ -331,11 +218,7 @@ export function CustomersProductPage() {
               return (
                 <m.div
                   key={ind.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 3)}
+                  {...fadeUpOnScroll(i + 3)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
@@ -376,74 +259,34 @@ export function CustomersProductPage() {
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.customersPatterns} scrim="light" />
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: sans,
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            WHAT WE HEAR, OVER AND OVER
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: sans,
+          <SectionIntro
+            eyebrow="WHAT WE HEAR, OVER AND OVER"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title={<>The same four problems, in every discovery call.</>}
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 14px",
               maxWidth: "640px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            The same four problems, in every discovery call.
-          </m.h2>
-          <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
-            style={{
-              fontFamily: sans,
-              fontSize: "15px",
-              color: "var(--color-text-muted)",
-              lineHeight: 1.7,
-              margin: "0 0 40px",
-              maxWidth: "640px",
-            }}
-          >
-            We&rsquo;ve sat through dozens of conversations with finance leads,
-            HODs, MDs, and internal auditors. The details change; the shape of
-            the problem does not.
-          </m.p>
+            titleClassName="lg:!text-[38px]"
+            lede={
+              <>
+                We&rsquo;ve sat through dozens of conversations with finance leads,
+                HODs, MDs, and internal auditors. The details change; the shape of
+                the problem does not.
+              </>
+            }
+            ledeStyle={{ fontSize: "15px", lineHeight: 1.7, margin: "0 0 40px", maxWidth: "640px" }}
+          />
 
           <div style={{ display: "grid", gap: "16px" }} className="grid-cols-1 md:grid-cols-2">
             {PATTERNS.map((p, i) => (
               <m.div
                 key={p.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 3)}
+                {...fadeUpOnScroll(i + 3)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
@@ -465,11 +308,7 @@ export function CustomersProductPage() {
           </div>
 
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(PATTERNS.length + 3)}
+            {...fadeUpOnScroll(PATTERNS.length + 3)}
             style={{
               fontFamily: sans,
               fontSize: "13px",
@@ -502,54 +341,25 @@ export function CustomersProductPage() {
         <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
+              {...fadeUpOnScroll()}
             >
-              <span
-                style={{
-                  fontFamily: sans,
-                  fontWeight: 600,
-                  fontSize: "12px",
-                  letterSpacing: "0.10em",
-                  textTransform: "uppercase",
-                  color: "var(--color-gold-on-light)",
-                  display: "block",
-                  marginBottom: "12px",
-                }}
-              >
-                LAUNCH PARTNER PROGRAMME
-              </span>
-              <h2
-                style={{
-                  fontFamily: sans,
-                  fontWeight: 400,
-                  fontSize: "32px",
-                  color: "var(--color-text-primary)",
-                  lineHeight: 1.2,
-                  margin: "0 0 16px",
-                  letterSpacing: "0.01em",
-                }}
-                className="lg:!text-[38px]"
-              >
-                Shape the platform. Keep your pricing.
-              </h2>
-              <p
-                style={{
-                  fontFamily: sans,
-                  fontSize: "15px",
-                  color: "var(--color-text-muted)",
-                  lineHeight: 1.75,
-                  margin: "0 0 20px",
-                }}
-              >
-                We&rsquo;re running a small cohort of launch partners through
-                2026. These are organisations that help us prove the platform
-                in production — and in return, keep a direct line to the team,
-                locked pricing, and priority on the roadmap.
-              </p>
+              <SectionIntro
+                reveal="none"
+                eyebrow="LAUNCH PARTNER PROGRAMME"
+                eyebrowStyle={{ marginBottom: "12px" }}
+                title="Shape the platform. Keep your pricing."
+                titleStyle={{ fontWeight: 400, fontSize: "32px", lineHeight: 1.2, margin: "0 0 16px", letterSpacing: "0.01em" }}
+                titleClassName="lg:!text-[38px]"
+                lede={
+                  <>
+                    We&rsquo;re running a small cohort of launch partners through
+                    2026. These are organisations that help us prove the platform
+                    in production — and in return, keep a direct line to the team,
+                    locked pricing, and priority on the roadmap.
+                  </>
+                }
+                ledeStyle={{ fontSize: "15px", lineHeight: 1.75, margin: "0 0 20px" }}
+              />
               <p
                 style={{
                   fontFamily: sans,
@@ -566,44 +376,20 @@ export function CustomersProductPage() {
                 and wondering whether a focused tool would do the job faster,
                 this is the route.
               </p>
-              <Link
-                href={contactHref("demo")}
-                style={{
-                  fontFamily: sans,
-                  fontWeight: 600,
-                  fontSize: "14px",
-                  backgroundColor: "var(--color-gold)",
-                  color: "var(--color-text-primary)",
-                  borderRadius: "6px",
-                  padding: "0 22px",
-                  height: "44px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  textDecoration: "none",
-                  gap: "8px",
-                }}
-              >
+              <ButtonLink href={contactHref("demo")}>
                 Apply to the launch cohort
                 <ArrowRight size={16} strokeWidth={1.8} aria-hidden="true" />
-              </Link>
+              </ButtonLink>
             </m.div>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
               style={{ display: "flex", flexDirection: "column", gap: "14px" }}
             >
               {PARTNER_BENEFITS.map((b, i) => (
                 <m.div
                   key={b.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
@@ -649,11 +435,7 @@ export function CustomersProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.customersStories} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto", textAlign: "center" }}>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               display: "inline-flex",
               alignItems: "center",
@@ -675,11 +457,7 @@ export function CustomersProductPage() {
             Partner stories — in progress
           </m.div>
           <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
             style={{
               fontFamily: sans,
               fontWeight: 400,
@@ -694,11 +472,7 @@ export function CustomersProductPage() {
             Real numbers. Real names. Soon.
           </m.h2>
           <m.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(2)}
+            {...fadeUpOnScroll(2)}
             style={{
               fontFamily: sans,
               fontSize: "15px",
@@ -713,49 +487,13 @@ export function CustomersProductPage() {
             metrics that matter to them — not marketing boilerplate.
           </m.p>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(3)}
+            {...fadeUpOnScroll(3)}
             style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
           >
-            <Link
-              href={contactHref("demo")}
-              style={{
-                fontFamily: sans,
-                fontWeight: 600,
-                fontSize: "14px",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
-              Become a launch partner
-            </Link>
-            <Link
-              href={SITE_ROUTES.howItWorks}
-              style={{
-                fontFamily: sans,
-                fontWeight: 500,
-                fontSize: "14px",
-                color: "var(--color-text-primary)",
-                border: "1px solid var(--color-border-strong)",
-                borderRadius: "6px",
-                padding: "0 22px",
-                height: "44px",
-                display: "inline-flex",
-                alignItems: "center",
-                textDecoration: "none",
-              }}
-            >
+            <ButtonLink href={contactHref("demo")}>Become a launch partner</ButtonLink>
+            <ButtonLink href={SITE_ROUTES.howItWorks} variant="secondary" surface="light">
               See how Avrentis works →
-            </Link>
+            </ButtonLink>
           </m.div>
         </div>
       </section>
@@ -774,11 +512,7 @@ export function CustomersProductPage() {
         <SectionBackdrop src={SECTION_BACKDROPS.customersFooterBand} scrim="light" />
         <div style={{ maxWidth: "900px", margin: "0 auto" }}>
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
             style={{
               display: "flex",
               gap: "16px",

@@ -29,10 +29,11 @@ import {
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
-import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { BrowserFrame, appCaption } from "./previews/preview-primitives";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
+import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
+import { ButtonLink } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -210,7 +211,6 @@ export function ProductModuleLayout({
     offset: ["start start", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-  const isMobile = useIsMobile();
   const { name, status } = MODULES[config.moduleKey];
   const { primary, secondary } = resolveCtas(config, status);
   const relatedModules = config.relatedModules.filter((related) => isModulePublic(related.moduleKey));
@@ -239,23 +239,7 @@ export function ProductModuleLayout({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.moduleHero} scrim="dark" />
-        <AmbientGlow top="-120px" left="-100px" size={520} intensity={0.22} duration={32} />
-        <AmbientGlow bottom="-140px" right="-80px" size={560} intensity={0.18} duration={38} delay={0.5} />
-
-        <m.div
-          aria-hidden="true"
-          style={{
-            position: "absolute",
-            inset: 0,
-            opacity: 0.05,
-            backgroundImage:
-              "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-            pointerEvents: "none",
-            y: isMobile ? 0 : gridY,
-            zIndex: 1,
-          }}
-        />
+        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div
           style={{
@@ -271,40 +255,18 @@ export function ProductModuleLayout({
         >
           {/* Left: copy */}
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            <m.span
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--color-gold)",
-              }}
-            >
+            <Eyebrow surface="dark" reveal="scroll">
               {name}
-            </m.span>
+            </Eyebrow>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
+              {...fadeUpOnScroll(1)}
             >
               <StatusRibbon status={status} />
             </m.div>
 
             <m.h1
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(2)}
+              {...fadeUpOnScroll(2)}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 700,
@@ -319,11 +281,7 @@ export function ProductModuleLayout({
             </m.h1>
 
             <m.p
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(3)}
+              {...fadeUpOnScroll(3)}
               style={{
                 fontFamily: "var(--font-sans)",
                 fontWeight: 400,
@@ -338,59 +296,18 @@ export function ProductModuleLayout({
             </m.p>
 
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(4)}
+              {...fadeUpOnScroll(4)}
               style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "8px" }}
             >
-              <Link
-                href={primary.href}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 600,
-                  fontSize: "14px",
-                  backgroundColor: "var(--color-gold)",
-                  color: "var(--color-text-primary)",
-                  borderRadius: "6px",
-                  padding: "0 22px",
-                  height: "44px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  textDecoration: "none",
-                }}
-              >
-                {primary.label}
-              </Link>
-              <Link
-                href={secondary.href}
-                style={{
-                  fontFamily: "var(--font-sans)",
-                  fontWeight: 500,
-                  fontSize: "14px",
-                  color: "var(--color-white)",
-                  border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                  borderRadius: "6px",
-                  padding: "0 22px",
-                  height: "44px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  textDecoration: "none",
-                }}
-              >
+              <ButtonLink href={primary.href}>{primary.label}</ButtonLink>
+              <ButtonLink href={secondary.href} variant="secondary" surface="dark">
                 {secondary.label} →
-              </Link>
+              </ButtonLink>
             </m.div>
           </div>
 
           {/* Right: preview */}
-          <m.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ ...fadeUpTransition, delay: 0.3 }}
-          >
+          <m.div {...fadeUpOnScroll(4)}>
             <BrowserFrame caption={appCaption(config.previewPath)} surface="dark">
               {config.preview}
             </BrowserFrame>
@@ -402,45 +319,20 @@ export function ProductModuleLayout({
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.modulePillars} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            CAPABILITIES
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            eyebrow="CAPABILITIES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="What this module does for your organisation."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "560px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            What this module does for your organisation.
-          </m.h2>
+            titleClassName="lg:!text-[38px]"
+          />
 
           <div
             style={{ display: "grid", gap: "20px" }}
@@ -451,11 +343,7 @@ export function ProductModuleLayout({
               return (
                 <m.div
                   key={pillar.title}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={staggerDelay(i + 2)}
+                  {...fadeUpOnScroll(i + 2)}
                   style={{
                     backgroundColor: "var(--color-bg-light)",
                     border: "1px solid var(--color-border)",
@@ -512,45 +400,20 @@ export function ProductModuleLayout({
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
         <SectionBackdrop src={SECTION_BACKDROPS.moduleUseCases} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <m.span
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 600,
-              fontSize: "12px",
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold-on-light)",
-              display: "block",
-              marginBottom: "12px",
-            }}
-          >
-            OUTCOMES
-          </m.span>
-          <m.h2
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
-            style={{
-              fontFamily: "var(--font-sans)",
+          <SectionIntro
+            eyebrow="OUTCOMES"
+            eyebrowStyle={{ marginBottom: "12px" }}
+            title="What changes operationally."
+            titleStyle={{
               fontWeight: 400,
               fontSize: "32px",
-              color: "var(--color-text-primary)",
               lineHeight: 1.2,
               margin: "0 0 48px",
               maxWidth: "560px",
               letterSpacing: "0.01em",
             }}
-            className="lg:!text-[38px]"
-          >
-            What changes operationally.
-          </m.h2>
+            titleClassName="lg:!text-[38px]"
+          />
 
           {/* An odd last card spans both columns, so the row fills the width at any count. */}
           <div
@@ -560,11 +423,7 @@ export function ProductModuleLayout({
             {useCases.map((uc, i) => (
               <m.div
                 key={uc.title}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-40px" }}
-                transition={staggerDelay(i + 2)}
+                {...fadeUpOnScroll(i + 2)}
                 style={{
                   backgroundColor: "var(--color-white)",
                   border: "1px solid var(--color-border)",
@@ -609,37 +468,16 @@ export function ProductModuleLayout({
         >
           {/* Plans */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={fadeUpTransition}
+            {...fadeUpOnScroll()}
           >
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "12px",
-              }}
-            >
-              AVAILABILITY
-            </span>
-            <h3
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 400,
-                fontSize: "24px",
-                color: "var(--color-text-primary)",
-                margin: "0 0 24px",
-              }}
-            >
-              Included in these plans.
-            </h3>
+            <SectionIntro
+              reveal="none"
+              eyebrow="AVAILABILITY"
+              eyebrowStyle={{ marginBottom: "12px" }}
+              titleAs="h3"
+              title="Included in these plans."
+              titleStyle={{ fontWeight: 400, fontSize: "24px", margin: "0 0 24px" }}
+            />
             <div
               style={{
                 backgroundColor: "var(--color-bg-light)",
@@ -726,37 +564,16 @@ export function ProductModuleLayout({
 
           {/* Related modules */}
           <m.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            transition={staggerDelay(1)}
+            {...fadeUpOnScroll(1)}
           >
-            <span
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.10em",
-                textTransform: "uppercase",
-                color: "var(--color-gold-on-light)",
-                display: "block",
-                marginBottom: "12px",
-              }}
-            >
-              PAIRS WELL WITH
-            </span>
-            <h3
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 400,
-                fontSize: "24px",
-                color: "var(--color-text-primary)",
-                margin: "0 0 24px",
-              }}
-            >
-              Other modules that complete the picture.
-            </h3>
+            <SectionIntro
+              reveal="none"
+              eyebrow="PAIRS WELL WITH"
+              eyebrowStyle={{ marginBottom: "12px" }}
+              titleAs="h3"
+              title="Other modules that complete the picture."
+              titleStyle={{ fontWeight: 400, fontSize: "24px", margin: "0 0 24px" }}
+            />
             <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               {relatedModules.map((related) => (
                 <Link
@@ -772,7 +589,7 @@ export function ProductModuleLayout({
                     alignItems: "center",
                     justifyContent: "space-between",
                     gap: "12px",
-                    transition: "border-color 150ms ease, background-color 150ms ease",
+                    transition: cssTransition(["border-color", "background-color"]),
                   }}
                 >
                   <div>

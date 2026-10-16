@@ -6,6 +6,9 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { AvrentisLogo } from "@/components/ui/logo";
+import { ButtonLink } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/section-intro";
+import { MOTION_DURATION, MOTION_EASE, fadeUp } from "@/lib/animations";
 import { NAV_LINKS, PLATFORM_NAV, SUITE_NAV, TOP_NAV } from "@/lib/site-nav";
 
 interface MobileMenuProps {
@@ -72,10 +75,11 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Menu"
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          transition={{ duration: MOTION_DURATION.base, ease: MOTION_EASE }}
           style={{
             position: "fixed",
             inset: 0,
@@ -125,19 +129,9 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
             {/* Product section */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0px" }}>
               {/* Section header */}
-              <div
-                style={{
-                  fontFamily: FONT,
-                  fontWeight: 600,
-                  fontSize: "10px",
-                  color: "var(--color-gold)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.10em",
-                  marginBottom: "16px",
-                }}
-              >
+              <Eyebrow as="div" surface="dark" size={10} style={{ marginBottom: "16px" }}>
                 Product
-              </div>
+              </Eyebrow>
 
               {/* Module links */}
               <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
@@ -232,49 +226,19 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
             >
               {NAV_LINKS.login.label}
             </a>
-            <Link
+            <ButtonLink
               href={NAV_LINKS.contact.href}
               onClick={onClose}
-              style={{
-                fontFamily: FONT,
-                fontWeight: 500,
-                fontSize: "14px",
-                letterSpacing: "0.04em",
-                backgroundColor: "transparent",
-                color: "var(--color-white)",
-                border: "1px solid rgba(var(--color-white-rgb), 0.2)",
-                borderRadius: "6px",
-                height: "44px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                width: "100%",
-              }}
+              variant="secondary"
+              surface="dark"
+              size="md"
+              fullWidth
             >
               {NAV_LINKS.contact.label}
-            </Link>
-            <Link
-              href={NAV_LINKS.startTrial.href}
-              onClick={onClose}
-              style={{
-                fontFamily: FONT,
-                fontWeight: 500,
-                fontSize: "14px",
-                letterSpacing: "0.04em",
-                backgroundColor: "var(--color-gold)",
-                color: "var(--color-text-primary)",
-                borderRadius: "6px",
-                height: "44px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                textDecoration: "none",
-                width: "100%",
-              }}
-            >
+            </ButtonLink>
+            <ButtonLink href={NAV_LINKS.startTrial.href} onClick={onClose} size="md" fullWidth>
               {NAV_LINKS.startTrial.label} &rarr;
-            </Link>
+            </ButtonLink>
           </div>
         </m.div>
       )}

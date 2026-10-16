@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { AmbientGlow } from "@/components/ui/ambient-glow";
-import { useIsMobile, isMobileViewport } from "@/lib/hooks/use-is-mobile";
+import { isMobileViewport } from "@/lib/hooks/use-is-mobile";
+import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
+import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
+import { MOTION_DURATION, cssTransition, fadeUpOnScroll } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
 import { APPROVAL_LIFECYCLE, type LifecycleStageKey } from "@/lib/approval-lifecycle";
@@ -75,7 +76,6 @@ export function HowItWorks() {
     offset: ["start end", "end start"],
   });
   const gridY = useTransform(scrollYProgress, [0, 1], [40, -80]);
-  const isMobile = useIsMobile();
 
   return (
     <section
@@ -91,35 +91,7 @@ export function HowItWorks() {
     >
       <SectionBackdrop src={SECTION_BACKDROPS.howItWorks} scrim="dark" />
       {/* Ambient background layers */}
-      <AmbientGlow
-        top="10%"
-        left="-150px"
-        size={520}
-        intensity={0.18}
-        duration={34}
-      />
-      <AmbientGlow
-        bottom="-80px"
-        right="-120px"
-        size={460}
-        intensity={0.15}
-        duration={40}
-        delay={0.5}
-      />
-      <m.div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.04,
-          backgroundImage:
-            "linear-gradient(rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-          pointerEvents: "none",
-          y: isMobile ? 0 : gridY,
-          zIndex: 1,
-        }}
-      />
+      <DarkHeroBackdrop glows="closing" grid gridY={gridY} />
 
       <div
         style={{
@@ -142,44 +114,20 @@ export function HowItWorks() {
           {/* ── Left Panel ──────────────────────────────────── */}
           <div className="w-full lg:flex-1">
             {/* ── Header ──────────────────────────────────── */}
-            <m.span
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={fadeUpTransition}
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 600,
-                fontSize: "12px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--color-gold)",
-                display: "block",
-                marginBottom: "16px",
-              }}
-            >
-              HOW IT WORKS
-            </m.span>
-            <m.h2
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(1)}
-              style={{
-                fontFamily: "var(--font-sans)",
+            <SectionIntro
+              surface="dark"
+              eyebrow="HOW IT WORKS"
+              eyebrowStyle={{ marginBottom: "16px" }}
+              title={<>{capitalisedNumberInWords(APPROVAL_LIFECYCLE.length)} steps. Zero paper. Complete record.</>}
+              titleStyle={{
                 fontWeight: 400,
                 fontSize: "24px",
-                color: "var(--color-white)",
                 lineHeight: 1.2,
                 margin: "0 0 16px",
                 maxWidth: "600px",
               }}
-              className="lg:!text-[42px]"
-            >
-              {capitalisedNumberInWords(APPROVAL_LIFECYCLE.length)} steps. Zero paper. Complete record.
-            </m.h2>
+              titleClassName="lg:!text-[42px]"
+            />
 
             {/* Left — Text. Reserved height so the mode="wait" swap (old
                 paragraph unmounts before the new one mounts) can't collapse the
@@ -192,7 +140,7 @@ export function HowItWorks() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: MOTION_DURATION.slow }}
                 >
                 <p
                   style={{
@@ -213,11 +161,7 @@ export function HowItWorks() {
 
             {/* ── Step Selector ───────────────────────────── */}
             <m.div
-              variants={fadeUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-40px" }}
-              transition={staggerDelay(3)}
+              {...fadeUpOnScroll(3)}
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -264,7 +208,7 @@ export function HowItWorks() {
                             ? "var(--color-gold)"
                             : "rgba(var(--color-neutral-tint-rgb), 0.25)",
                         zIndex: 0,
-                        transition: "background-color 0.3s ease",
+                        transition: cssTransition("background-color", "slow"),
                       }}
                     />
                   )}
@@ -286,7 +230,7 @@ export function HowItWorks() {
                       justifyContent: "center",
                       position: "relative",
                       zIndex: 1,
-                      transition: "background-color 0.3s ease, border-color 0.3s ease",
+                      transition: cssTransition(["background-color", "border-color"], "slow"),
                     }}
                   >
                     <span
@@ -295,7 +239,7 @@ export function HowItWorks() {
                         fontWeight: 600,
                         fontSize: "13px",
                         color: i === active ? "var(--color-navy-primary)" : "var(--color-text-muted)",
-                        transition: "color 0.3s ease",
+                        transition: cssTransition("color", "slow"),
                       }}
                     >
                       {i + 1}
@@ -309,7 +253,7 @@ export function HowItWorks() {
                       fontSize: "14px",
                       color: i === active ? "var(--color-white)" : "var(--color-text-muted)",
                       marginLeft: "14px",
-                      transition: "color 0.3s ease",
+                      transition: cssTransition("color", "slow"),
                     }}
                   >
                     {step.title}
@@ -345,7 +289,7 @@ export function HowItWorks() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: MOTION_DURATION.slow }}
                 style={{ maxWidth: "460px", width: "100%" }}
               >
                 <BrowserFrame caption={appCaption(previewPath)} surface="dark">
@@ -358,11 +302,7 @@ export function HowItWorks() {
 
         {/* ── Feature Callout Strip ───────────────────── */}
         <m.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          transition={staggerDelay(4)}
+          {...fadeUpOnScroll(4)}
           style={{
             backgroundColor: "var(--color-navy-mid)",
             borderRadius: "10px",

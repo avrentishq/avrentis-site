@@ -3,9 +3,11 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
+import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
+import { ButtonLink } from "@/components/ui/button";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME } from "@/lib/contacts";
 import { MARKET_SCOPE } from "@/lib/market";
@@ -62,39 +64,17 @@ export default function AboutPage() {
               textAlign: "center",
             }}
           >
-            <p
-              style={{
-                color: "var(--color-gold)",
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                margin: "0 0 16px",
-              }}
-            >
-              About Avrentis
-            </p>
-            <h1
-              style={{
-                color: "var(--color-white)",
-                fontSize: 36,
-                fontWeight: 400,
-                margin: "0 0 16px",
-                lineHeight: 1.3,
-              }}
-            >
-              We believe every organisation deserves operational structure.
-            </h1>
-            <p
-              style={{
-                color: "var(--color-text-muted)",
-                fontSize: 18,
-                fontWeight: 400,
-                margin: 0,
-              }}
-            >
-              Regardless of industry, size, or geography.
-            </p>
+            <SectionIntro
+              surface="dark"
+              reveal="none"
+              titleAs="h1"
+              eyebrow="About Avrentis"
+              eyebrowStyle={{ margin: "0 0 16px" }}
+              title="We believe every organisation deserves operational structure."
+              titleStyle={{ fontSize: 36, fontWeight: 400, margin: "0 0 16px", lineHeight: 1.3 }}
+              lede="Regardless of industry, size, or geography."
+              ledeStyle={{ color: "var(--color-text-muted)", fontSize: 18, fontWeight: 400, margin: 0 }}
+            />
           </div>
         </section>
 
@@ -138,18 +118,9 @@ export default function AboutPage() {
               Nigeria and Africa.
             </p>
 
-            <p
-              style={{
-                color: "var(--color-gold-on-light)",
-                fontSize: 10,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                margin: "0 0 12px",
-              }}
-            >
+            <Eyebrow as="p" size={10} style={{ margin: "0 0 12px" }}>
               THE VISION
-            </p>
+            </Eyebrow>
             <p
               style={{
                 color: "var(--color-text-secondary)",
@@ -180,19 +151,9 @@ export default function AboutPage() {
         >
           <SectionBackdrop src={SECTION_BACKDROPS.aboutValues} scrim="light" />
           <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-            <p
-              style={{
-                color: "var(--color-gold-on-light)",
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                textAlign: "center",
-                margin: "0 0 32px",
-              }}
-            >
+            <Eyebrow as="p" style={{ textAlign: "center", margin: "0 0 32px" }}>
               OUR VALUES
-            </p>
+            </Eyebrow>
             <div
               className="grid grid-cols-1 md:grid-cols-2"
               style={{ gap: 20 }}
@@ -252,62 +213,30 @@ export default function AboutPage() {
               textAlign: "center",
             }}
           >
-            <p
-              style={{
-                color: "var(--color-gold-on-light)",
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                margin: "0 0 16px",
-              }}
-            >
-              JOIN THE TEAM
-            </p>
-            <h2
-              style={{
-                color: "var(--color-text-primary)",
-                fontSize: 24,
-                fontWeight: 400,
-                lineHeight: 1.4,
-                margin: "0 0 16px",
-              }}
-            >
-              We are building the team that will bring operational structure to
-              organisations everywhere.
-            </h2>
-            <p
-              style={{
-                color: "var(--color-text-muted)",
-                fontSize: 15,
-                fontWeight: 400,
-                lineHeight: 1.7,
-                margin: "0 0 24px",
-              }}
-            >
-              No open roles right now — but we are always interested in
-              exceptional people. If you are passionate about building enterprise
-              software that solves real operational problems, we want to hear
-              from you.
-            </p>
-            <Link
-              href={contactHref("careers")}
-              style={{
-                display: "inline-block",
-                border: "1px solid var(--color-gold)",
-                color: "var(--color-gold-on-light)",
-                backgroundColor: "transparent",
-                padding: "10px 24px",
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: "0.06em",
-                textTransform: "uppercase",
-                textDecoration: "none",
-                borderRadius: 4,
-              }}
-            >
-              GET IN TOUCH
-            </Link>
+            <SectionIntro
+              reveal="none"
+              eyebrow="JOIN THE TEAM"
+              eyebrowStyle={{ margin: "0 0 16px" }}
+              title={
+                <>
+                  We are building the team that will bring operational structure to
+                  organisations everywhere.
+                </>
+              }
+              titleStyle={{ fontSize: 24, fontWeight: 400, lineHeight: 1.4, margin: "0 0 16px" }}
+              lede={
+                <>
+                  No open roles right now — but we are always interested in
+                  exceptional people. If you are passionate about building enterprise
+                  software that solves real operational problems, we want to hear
+                  from you.
+                </>
+              }
+              ledeStyle={{ fontSize: 15, fontWeight: 400, lineHeight: 1.7, margin: "0 0 24px" }}
+            />
+            <ButtonLink href={contactHref("careers")} variant="secondary" surface="light" size="sm">
+              Get in touch
+            </ButtonLink>
           </div>
         </section>
 

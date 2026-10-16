@@ -1,6 +1,6 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
-import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { platformFetch } from "@/lib/platform-fetch";
 import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
 /** One plan's price in one currency. Amounts are MAJOR units; the site formats
@@ -131,7 +131,7 @@ export interface PricingData {
   suiteOrder?: string[];
 }
 
-const PRICING_API = `${PLATFORM_ORIGIN}/api/v1/public/pricing`;
+const PRICING_PATH = "/api/v1/public/pricing";
 
 import fallback from "@/data/pricing-fallback.json";
 
@@ -143,7 +143,7 @@ export async function fetchPricingData(): Promise<PricingData> {
 
 async function fetchRawPricingData(): Promise<PricingData> {
   try {
-    const res = await fetch(PRICING_API, {
+    const res = await platformFetch(PRICING_PATH, {
       next: { revalidate: 3600 },
     });
 

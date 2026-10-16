@@ -7,6 +7,7 @@ import { TrialStepper } from "../../stepper";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { PLATFORM_ORIGIN } from "@/lib/platform";
+import { platformFetch } from "@/lib/platform-fetch";
 
 export const metadata: Metadata = {
   title: "Verifying your Avrentis trial",
@@ -35,7 +36,7 @@ export default async function VerifyPage({ params }: PageProps) {
   // Guard against absurd token input before forwarding to the platform.
   if (token && token.length <= 512) {
     try {
-      response = await fetch(`${PLATFORM_ORIGIN}/api/v1/public/trial/verify`, {
+      response = await platformFetch("/api/v1/public/trial/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token }),

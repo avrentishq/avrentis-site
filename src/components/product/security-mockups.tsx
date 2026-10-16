@@ -7,6 +7,7 @@
 
 import { Check, X, AlertTriangle, ShieldCheck, Clock } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
+import { FEATURED_VOUCHER, abbreviatedName, formatDemoTime, roleLabel } from "./demo-fixtures";
 
 const mono = "'IBM Plex Mono', monospace";
 const sans = "var(--font-sans)";
@@ -327,17 +328,21 @@ export function SessionMockup() {
 
 /* ── 04. Audit trail ────────────────────────────────────────────── */
 
-const AUDIT_EVENTS = [
-  { time: "14:42:17", actor: "Adaeze O.", role: "MD", action: "sanctioned", entity: "PV-2026-0184" },
-  { time: "14:29:03", actor: "Tunde A.", role: "Finance", action: "approved", entity: "PV-2026-0184" },
-  { time: "11:05:41", actor: "Kemi L.", role: "Staff", action: "submitted", entity: "PV-2026-0184" },
-];
+// The featured voucher's own trail, newest first — the same people and times
+// every other page shows for it.
+const AUDIT_EVENTS = [...FEATURED_VOUCHER.trail].reverse().map((entry) => ({
+  time: formatDemoTime(entry.at, { seconds: true }),
+  actor: abbreviatedName(entry.person),
+  role: roleLabel(entry.person),
+  action: entry.label.toLowerCase(),
+  entity: FEATURED_VOUCHER.reference,
+}));
 
 export function AuditMockup() {
   return (
     <div style={{ padding: "22px", backgroundColor: "var(--color-bg-light)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-        <Label>AUDIT TRAIL · PV-2026-0184</Label>
+        <Label>AUDIT TRAIL · {FEATURED_VOUCHER.reference}</Label>
         <span style={{ fontFamily: mono, fontSize: "10px", color: "var(--color-gold-on-light)", letterSpacing: "0.06em" }}>
           TAMPER-EVIDENT
         </span>

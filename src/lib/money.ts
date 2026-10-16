@@ -2,6 +2,8 @@
 
 import { formatMoney } from "@avrentishq/core/money/format";
 import { CURRENCIES, isCurrencyCode } from "@avrentishq/core/money/types";
+// Relative, not "@/": the pricing-fallback generator loads this file outside the bundler, where the alias does not resolve.
+import { numberInWords } from "./number-words";
 
 // Its own module, not part of `@/lib/pricing`: the pricing card is a client
 // component, and a formatter imported from there would hand the browser bundle
@@ -21,8 +23,28 @@ export function formatCurrencyAmount(amount: number, currency: string): string {
   if (!isCurrencyCode(currency)) {
     return `${currency} ${new Intl.NumberFormat("en").format(amount)}`;
   }
-  const minorUnits = Math.round(amount * 10 ** CURRENCIES[currency].minorUnit);
-  return formatMoney({ amount: minorUnits, currency }, { showDecimals: false });
+  return formatMoney({ amount: toMinorUnits(amount, currency), currency }, { showDecimals: false });
+}
+
+/**
+ * A whole-unit amount in the currency's minor units (kobo, cents) — what the
+ * product's API carries. Uses core's `minorUnit`, never a literal 100, so a
+ * currency with no minor unit (XOF) converts correctly. Throws on a currency
+ * core does not know: an API sample must never guess.
+ */
+export function toMinorUnits(amount: number, currency: string): number {
+  if (!isCurrencyCode(currency)) throw new RangeError(`Unknown currency: ${currency}`);
+  return Math.round(amount * 10 ** CURRENCIES[currency].minorUnit);
+}
+
+/**
+ * A whole-unit amount in words, as a voucher writes it under the figure —
+ * "eight hundred and fifty thousand Naira". The unit name is core's (the one
+ * its bank letters print), so the words and the symbol name the same currency.
+ */
+export function amountInWords(amount: number, currency: string): string {
+  const unitName = isCurrencyCode(currency) ? CURRENCIES[currency].majorUnitName : currency;
+  return `${numberInWords(Math.round(amount))} ${unitName}`;
 }
 
 /** Whole counts are grouped one way everywhere, never by the visitor's browser language. */

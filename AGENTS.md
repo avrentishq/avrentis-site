@@ -122,6 +122,12 @@ Run these locally before you claim anything is done.
   suffix via `pageTitle`), canonical, Open Graph and Twitter together.
   `page-metadata.lock.test.ts` fails on a page that builds its own, or types the brand name.
   Brand values come through `@/lib/brand` — only `brand.ts` imports `@avrentishq/core/brand`.
+- **Mockups draw from one demo story.** People, documents, amounts and times shown in previews
+  and the hero come from `src/components/product/demo-fixtures.ts` (amounts formatted with
+  `formatCurrencyAmount(…, LEAD_CURRENCY)`, times from fixed ISO instants and a fixed demo
+  "now"); the approval lifecycle's stages from `src/lib/approval-lifecycle.ts`; preview chrome
+  from `src/components/product/previews/preview-primitives.tsx`. `demo-fixtures.lock.test.ts`
+  fails on a typed `₦`, `NGN` or the featured voucher's reference anywhere else.
 - **Never type an address.** Contact emails live in `src/lib/contacts.ts` (`CONTACT_EMAIL`);
   the site URL is core's `BRAND.siteUrl`, used through `src/lib/seo.tsx` (`SITE_URL`,
   `canonical(path)`); `contacts.lock.test.ts` enforces both. The other origins are core's

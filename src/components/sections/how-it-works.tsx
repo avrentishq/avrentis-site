@@ -9,21 +9,26 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
 import { BRAND_COLORS } from "@/lib/brand";
+import { APPROVAL_LIFECYCLE, type LifecycleStageKey } from "@/lib/approval-lifecycle";
+import { capitalisedNumberInWords } from "@/lib/number-words";
+import { STAGE_MOCKUPS } from "@/components/product/stage-mockups";
+import { BrowserFrame, appCaption } from "@/components/product/previews/preview-primitives";
 
-const STEPS = [
-  {
-    title: "Submit",
-    body: "Any team member raises a request directly in Avrentis — payment voucher, purchase order, or any operational approval. They complete a structured form, attach supporting documents, and submit. The request enters the defined approval chain immediately — no emails, no chasing, no ambiguity about where it goes next.",
-  },
-  {
-    title: "Approve",
-    body: "The right person is notified instantly — via the platform, email, WhatsApp, or SMS. They review the complete request and approve or reject with a single action from any device, anywhere in the world. Decision makers are never a bottleneck because they are never out of reach.",
-  },
-  {
-    title: "Record",
-    body: "The moment a decision is made, Avrentis creates a complete, timestamped, tamper-evident record. Supporting documents are generated automatically. Every action is permanently attributed to a person, a time, and a decision. Your organisation builds institutional memory with every transaction — across every department, every team, every location.",
-  },
-];
+/**
+ * The homepage's own words for each lifecycle stage. The stages — titles,
+ * order and count — come from `APPROVAL_LIFECYCLE`, and the drawing for each
+ * from `STAGE_MOCKUPS`, the same one /product/how-it-works shows.
+ */
+const STAGE_BODY: Record<LifecycleStageKey, string> = {
+  submit:
+    "Any team member raises a request directly in Avrentis — payment voucher, purchase order, or any operational approval. They complete a structured form, attach supporting documents, and submit. The request enters the defined approval chain immediately — no emails, no chasing, no ambiguity about where it goes next.",
+  review:
+    "The right person is notified instantly — via the platform, email, WhatsApp, or SMS. They review the complete request and approve, query, or return it with a single action from any device, anywhere in the world. Decision makers are never a bottleneck because they are never out of reach.",
+  sanction:
+    "Final authority signs it off. The Managing Director sees every approval collected along the way and sanctions with a saved signature, stamped onto every document the request produces. Authority becomes binding — and the record shows exactly who gave it.",
+  record:
+    "The moment a decision is made, Avrentis creates a complete, timestamped, tamper-evident record. Supporting documents are generated automatically. Every action is permanently attributed to a person, a time, and a decision. Your organisation builds institutional memory with every transaction — across every department, every team, every location.",
+};
 
 const FEATURES = [
   { icon: Zap, label: "Real-time notifications" },
@@ -32,660 +37,14 @@ const FEATURES = [
   { icon: Globe, label: "Works across any location" },
 ];
 
-/* ── Mockup components — mirror the real platform UI ───────────────── */
-
-/**
- * Shared shell for every mockup: a light browser-framed card on the dark
- * section background, matching how the real Avrentis dashboard renders.
- */
-function MockupShell({
-  url,
-  children,
-}: {
-  url: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      style={{
-        borderRadius: "10px",
-        border: "1px solid rgba(var(--color-white-rgb), 0.10)",
-        backgroundColor: "var(--color-bg-light)",
-        boxShadow:
-          "0 0 40px rgba(var(--color-gold-rgb), 0.06), 0 20px 50px rgba(var(--color-shadow-rgb), 0.4)",
-        overflow: "hidden",
-      }}
-    >
-      {/* Browser chrome */}
-      <div
-        style={{
-          backgroundColor: "var(--color-navy-primary)",
-          padding: "8px 12px",
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
-        }}
-      >
-        <div style={{ display: "flex", gap: "5px" }}>
-          {[0, 1, 2].map((i) => (
-            <span
-              key={i}
-              style={{
-                width: "9px",
-                height: "9px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-              }}
-            />
-          ))}
-        </div>
-        <div
-          style={{
-            flex: 1,
-            backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-            borderRadius: "4px",
-            padding: "3px 10px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            color: "var(--color-text-subtle)",
-            textAlign: "center",
-          }}
-        >
-          {url}
-        </div>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function SubmitMockup() {
-  return (
-    <MockupShell url="Avrentis / vouchers / new">
-      <div style={{ padding: "20px 22px" }}>
-        {/* Page heading */}
-        <h3
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 400,
-            fontSize: "18px",
-            color: "var(--color-text-primary)",
-            margin: "0 0 4px",
-            letterSpacing: "0.01em",
-          }}
-        >
-          New payment voucher
-        </h3>
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "12px",
-            color: "var(--color-text-muted)",
-            margin: "0 0 18px",
-          }}
-        >
-          Step 1 of 4 &middot; Payee details
-        </p>
-
-        {/* Step dots */}
-        <div style={{ display: "flex", gap: "6px", marginBottom: "20px" }}>
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              style={{
-                flex: 1,
-                height: "3px",
-                borderRadius: "2px",
-                backgroundColor: i === 0 ? "var(--color-gold)" : "var(--color-border)",
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Fields */}
-        <MockupField
-          label="Payee name"
-          value="Brightpath Technologies"
-          filled
-        />
-        <MockupField label="Bank" value="Guaranty Trust Bank" filled />
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "10px",
-          }}
-        >
-          <MockupField label="Account number" value="0123456789" filled />
-          <MockupField
-            label="Account name"
-            value="Brightpath Technologies Ltd."
-            filled
-            compact
-          />
-        </div>
-
-        {/* Buttons */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "18px",
-          }}
-        >
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-white)",
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 16px",
-              cursor: "default",
-            }}
-          >
-            Save draft
-          </button>
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-navy-primary)",
-              color: "var(--color-white)",
-              border: "none",
-              borderRadius: "3px",
-              padding: "8px 18px",
-              cursor: "default",
-            }}
-          >
-            Continue &rarr;
-          </button>
-        </div>
-      </div>
-    </MockupShell>
-  );
-}
-
-function MockupField({
-  label,
-  value,
-  filled,
-  compact,
-}: {
-  label: string;
-  value: string;
-  filled?: boolean;
-  compact?: boolean;
-}) {
-  return (
-    <div style={{ marginBottom: "12px" }}>
-      <label
-        style={{
-          fontFamily: "var(--font-sans)",
-          fontSize: "10px",
-          fontWeight: 500,
-          color: "var(--color-text-muted)",
-          letterSpacing: "0.04em",
-          textTransform: "uppercase",
-          display: "block",
-          marginBottom: "5px",
-        }}
-      >
-        {label}
-      </label>
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "3px",
-          padding: compact ? "7px 10px" : "8px 10px",
-          fontFamily: "var(--font-sans)",
-          fontSize: compact ? "11px" : "12px",
-          color: filled ? "var(--color-text-primary)" : "var(--color-text-subtle)",
-          fontWeight: filled ? 500 : 400,
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function ApproveMockup() {
-  return (
-    <MockupShell url="Avrentis / vouchers / PV-2026-0041">
-      <div style={{ padding: "20px 22px" }}>
-        {/* Reference + type + status */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            flexWrap: "wrap",
-            marginBottom: "8px",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontFeatureSettings: '"tnum" 1',
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "var(--color-text-primary)",
-            }}
-          >
-            PV-2026-0041
-          </span>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              backgroundColor: "var(--color-navy-primary)",
-              color: "var(--color-gold)",
-              borderRadius: "3px",
-              padding: "1px 5px",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-            }}
-          >
-            PV
-          </span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-              color: "var(--color-warning)",
-              borderRadius: "3px",
-              padding: "2px 6px",
-            }}
-          >
-            <span
-              style={{
-                width: "5px",
-                height: "5px",
-                borderRadius: "50%",
-                backgroundColor: "var(--color-gold)",
-                display: "inline-block",
-              }}
-            />
-            Under review
-          </span>
-        </div>
-
-        {/* Summary block */}
-        <div
-          style={{
-            backgroundColor: "var(--color-white)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "4px",
-            padding: "14px 16px",
-            marginBottom: "14px",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "var(--color-text-primary)",
-              margin: "0 0 2px",
-            }}
-          >
-            Brightpath Technologies
-          </p>
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontFeatureSettings: '"tnum" 1',
-              fontSize: "20px",
-              fontWeight: 500,
-              color: "var(--color-text-primary)",
-              margin: "0 0 10px",
-            }}
-          >
-            ₦850,000
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "80px 1fr",
-              rowGap: "4px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-            }}
-          >
-            <span style={{ color: "var(--color-text-muted)" }}>Purpose</span>
-            <span style={{ color: "var(--color-text-primary)" }}>Diesel supply — November</span>
-            <span style={{ color: "var(--color-text-muted)" }}>Submitted</span>
-            <span style={{ color: "var(--color-text-primary)" }}>Fatima Abubakar · 2h ago</span>
-            <span style={{ color: "var(--color-text-muted)" }}>Department</span>
-            <span style={{ color: "var(--color-text-primary)" }}>Operations</span>
-          </div>
-        </div>
-
-        {/* Approval actions panel */}
-        <div
-          style={{
-            backgroundColor: "var(--color-white)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "4px",
-            padding: "14px 16px",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              margin: "0 0 10px",
-            }}
-          >
-            Your action
-          </p>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr 1fr",
-              gap: "8px",
-            }}
-          >
-            <button
-              type="button"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "12px",
-                backgroundColor: "var(--color-navy-primary)",
-                color: "var(--color-white)",
-                border: "none",
-                borderRadius: "3px",
-                padding: "8px 0",
-                cursor: "default",
-              }}
-            >
-              Approve
-            </button>
-            <button
-              type="button"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "12px",
-                backgroundColor: "var(--color-white)",
-                color: "var(--color-text-primary)",
-                border: "1px solid var(--color-border)",
-                borderRadius: "3px",
-                padding: "8px 0",
-                cursor: "default",
-              }}
-            >
-              Query
-            </button>
-            <button
-              type="button"
-              style={{
-                fontFamily: "var(--font-sans)",
-                fontWeight: 500,
-                fontSize: "12px",
-                backgroundColor: "var(--color-white)",
-                color: "var(--color-danger)",
-                border: "1px solid rgba(var(--color-danger-rgb), 0.3)",
-                borderRadius: "3px",
-                padding: "8px 0",
-                cursor: "default",
-              }}
-            >
-              Return
-            </button>
-          </div>
-        </div>
-      </div>
-    </MockupShell>
-  );
-}
-
-function RecordMockup() {
-  const stages = [
-    {
-      role: "Submitted",
-      actor: "Fatima Abubakar · Staff",
-      when: "15 Apr, 09:14",
-    },
-    {
-      role: "Reviewed",
-      actor: "Chinedu Okafor · Finance",
-      when: "15 Apr, 11:02",
-    },
-    { role: "Sanctioned", actor: "Aisha Danjuma · MD", when: "15 Apr, 14:32" },
-  ];
-  return (
-    <MockupShell url="Avrentis / vouchers / PV-2026-0041">
-      <div style={{ padding: "20px 22px" }}>
-        {/* Status strip */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            marginBottom: "14px",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "13px",
-              fontWeight: 500,
-              color: "var(--color-text-primary)",
-            }}
-          >
-            PV-2026-0041
-          </span>
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              backgroundColor: "rgba(var(--color-success-rgb), 0.08)",
-              color: "var(--color-success)",
-              borderRadius: "3px",
-              padding: "2px 6px",
-            }}
-          >
-            <span
-              style={{
-                width: "5px",
-                height: "5px",
-                borderRadius: "50%",
-                backgroundColor: "var(--color-success)",
-              }}
-            />
-            Approved
-          </span>
-          <span
-            style={{
-              marginLeft: "auto",
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              color: "var(--color-text-muted)",
-            }}
-          >
-            On record for good
-          </span>
-        </div>
-
-        {/* Approval timeline card */}
-        <div
-          style={{
-            backgroundColor: "var(--color-white)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "4px",
-            padding: "14px 16px",
-            marginBottom: "12px",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              margin: "0 0 12px",
-            }}
-          >
-            Approval timeline
-          </p>
-          <div style={{ position: "relative" }}>
-            {/* Vertical rail */}
-            <div
-              style={{
-                position: "absolute",
-                left: "9px",
-                top: "10px",
-                bottom: "10px",
-                width: "1px",
-                backgroundColor: "var(--color-border)",
-              }}
-            />
-            {stages.map((s) => (
-              <div
-                key={s.role}
-                style={{
-                  position: "relative",
-                  display: "flex",
-                  alignItems: "flex-start",
-                  gap: "12px",
-                  padding: "6px 0",
-                }}
-              >
-                <span
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    borderRadius: "50%",
-                    backgroundColor: "var(--color-white)",
-                    border: "1.5px solid var(--color-success)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexShrink: 0,
-                    zIndex: 1,
-                  }}
-                >
-                  <span
-                    style={{
-                      color: "var(--color-success)",
-                      fontSize: "10px",
-                      lineHeight: 1,
-                    }}
-                  >
-                    ✓
-                  </span>
-                </span>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "12px",
-                      fontWeight: 500,
-                      color: "var(--color-text-primary)",
-                      margin: 0,
-                    }}
-                  >
-                    {s.role}{" "}
-                    <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>
-                      — {s.actor}
-                    </span>
-                  </p>
-                  <p
-                    style={{
-                      fontFamily: "var(--font-sans)",
-                      fontSize: "11px",
-                      color: "var(--color-text-muted)",
-                      margin: "2px 0 0",
-                    }}
-                  >
-                    {s.when}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Export row */}
-        <div style={{ display: "flex", gap: "8px" }}>
-          <button
-            type="button"
-            style={{
-              flex: 1,
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-white)",
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
-            Download PDF
-          </button>
-          <button
-            type="button"
-            style={{
-              flex: 1,
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-white)",
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
-            Bank instruction
-          </button>
-        </div>
-      </div>
-    </MockupShell>
-  );
-}
-
-const MOCKUPS = [SubmitMockup, ApproveMockup, RecordMockup];
-
 /* ── Main section ──────────────────────────────────────── */
 
 export function HowItWorks() {
   const [active, setActive] = useState(0);
   const [autoAdvance, setAutoAdvance] = useState(true);
   const sectionRef = useRef<HTMLElement>(null);
-  const ActiveMockup = MOCKUPS[active];
+  const activeStage = APPROVAL_LIFECYCLE[active]!;
+  const { Mockup: ActiveMockup, previewPath } = STAGE_MOCKUPS[activeStage.key];
 
   // Auto-advance through steps every 6s. Pauses permanently once the user
   // clicks a step number (so the page doesn't fight their intent). Also
@@ -699,7 +58,7 @@ export function HowItWorks() {
     if (reducedMotion || isMobileViewport()) return;
 
     const timer = setInterval(() => {
-      setActive((i) => (i + 1) % STEPS.length);
+      setActive((i) => (i + 1) % APPROVAL_LIFECYCLE.length);
     }, 6000);
     return () => clearInterval(timer);
   }, [autoAdvance]);
@@ -819,7 +178,7 @@ export function HowItWorks() {
               }}
               className="lg:!text-[42px]"
             >
-              Three steps. Zero paper. Complete record.
+              {capitalisedNumberInWords(APPROVAL_LIFECYCLE.length)} steps. Zero paper. Complete record.
             </m.h2>
 
             {/* Left — Text. Reserved height so the mode="wait" swap (old
@@ -846,7 +205,7 @@ export function HowItWorks() {
                     maxWidth: "480px",
                   }}
                 >
-                  {STEPS[active].body}
+                  {STAGE_BODY[activeStage.key]}
                 </p>
                 </m.div>
               </AnimatePresence>
@@ -868,9 +227,9 @@ export function HowItWorks() {
                 position: "relative",
               }}
             >
-              {STEPS.map((step, i) => (
+              {APPROVAL_LIFECYCLE.map((step, i) => (
                 <div
-                  key={step.title}
+                  key={step.key}
                   style={{
                     display: "flex",
                     flexDirection: "row",
@@ -892,7 +251,7 @@ export function HowItWorks() {
                   }}
                 >
                   {/* Connecting line — between circles */}
-                  {i < STEPS.length - 1 && (
+                  {i < APPROVAL_LIFECYCLE.length - 1 && (
                     <div
                       style={{
                         position: "absolute",
@@ -971,10 +330,11 @@ export function HowItWorks() {
               justifyContent: "center",
               alignItems: "flex-start",
               width: "100%",
-              // Fixed render height: the mockups are ~428px (lg) / ~443px
-              // (mobile); reserving 460px stops the mode="wait" swap from
-              // collapsing the panel to zero and jumping the section each cycle.
-              minHeight: "460px",
+              // Fixed render height: the tallest framed stage mockup is ~462px
+              // (lg) / ~471px (mobile, the review stage); reserving 480px stops
+              // the mode="wait" swap from collapsing the panel to zero and
+              // jumping the section each cycle.
+              minHeight: "480px",
             }}
             className="lg:flex-1 lg:justify-end"
           >
@@ -988,7 +348,9 @@ export function HowItWorks() {
                 transition={{ duration: 0.3 }}
                 style={{ maxWidth: "460px", width: "100%" }}
               >
-                <ActiveMockup />
+                <BrowserFrame caption={appCaption(previewPath)} surface="dark">
+                  <ActiveMockup />
+                </BrowserFrame>
               </m.div>
             </AnimatePresence>
           </div>

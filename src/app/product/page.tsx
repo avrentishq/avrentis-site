@@ -23,6 +23,7 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
+import { APPROVAL_LIFECYCLE, lifecycleStepNumber } from "@/lib/approval-lifecycle";
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_ROUTES.product,
@@ -305,17 +306,13 @@ export default function ProductOverviewPage() {
               borderRadius: "8px",
               padding: "32px",
               display: "grid",
+              // One track per stage when they fit, so the strip fills the width at any stage count.
+              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
               gap: "24px",
             }}
-            className="grid-cols-1 md:grid-cols-4"
           >
-            {[
-              { step: "01", title: "Submit", body: "Any module, structured form." },
-              { step: "02", title: "Approve", body: "Role-based chain, any device." },
-              { step: "03", title: "Record", body: "Tamper-evident audit log entry." },
-              { step: "04", title: "Export", body: "Audit-ready PDF bundles." },
-            ].map((s) => (
-              <div key={s.step} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            {APPROVAL_LIFECYCLE.map((stage, index) => (
+              <div key={stage.key} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                 <span
                   style={{
                     fontFamily: "var(--font-sans)",
@@ -326,7 +323,7 @@ export default function ProductOverviewPage() {
                     color: "var(--color-gold-on-light)",
                   }}
                 >
-                  {s.step}
+                  {lifecycleStepNumber(index)}
                 </span>
                 <h4
                   style={{
@@ -337,7 +334,7 @@ export default function ProductOverviewPage() {
                     margin: 0,
                   }}
                 >
-                  {s.title}
+                  {stage.title}
                 </h4>
                 <p
                   style={{
@@ -348,7 +345,7 @@ export default function ProductOverviewPage() {
                     lineHeight: 1.6,
                   }}
                 >
-                  {s.body}
+                  {stage.summary}
                 </p>
               </div>
             ))}

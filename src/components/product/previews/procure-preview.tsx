@@ -5,76 +5,34 @@
  */
 
 import { formatCount } from "@/lib/money";
+import { PURCHASE_ORDER, PURCHASE_ORDER_TOTAL, demoAmount, lineTotal } from "@/components/product/demo-fixtures";
+import {
+  ButtonRow,
+  DocumentHeading,
+  MockButton,
+  PreviewBody,
+  PreviewCard,
+  PreviewLabel,
+  PreviewTable,
+} from "./preview-primitives";
 
 export function ProcurePreview() {
-  const lineItems = [
-    { description: "Industrial diesel · 10,000L", qty: 10000, unit: "₦720", total: "₦7,200,000" },
-    { description: "Fuel-grade additive (premium)", qty: 50, unit: "₦18,000", total: "₦900,000" },
-    { description: "On-site delivery · November", qty: 1, unit: "₦140,000", total: "₦140,000" },
-  ];
-
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Reference + badges */}
-      <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap", marginBottom: "10px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-          PO-2026-0091
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-gold)",
-            borderRadius: "3px",
-            padding: "1px 5px",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-          }}
-        >
-          PO
-        </span>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "4px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "rgba(var(--color-success-rgb), 0.08)",
-            color: "var(--color-success)",
-            borderRadius: "3px",
-            padding: "2px 6px",
-          }}
-        >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-success)" }} />
-          Issued
-        </span>
-        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "var(--color-text-muted)" }}>
-          3 line items
-        </span>
-      </div>
+    <PreviewBody>
+      <DocumentHeading
+        reference={PURCHASE_ORDER.reference}
+        typeTag="PO"
+        status={{ label: "Issued", tone: "success" }}
+        note={`${formatCount(PURCHASE_ORDER.lineItems.length)} line items`}
+      />
 
-      {/* Vendor + total */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-          marginBottom: "12px",
-        }}
-      >
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "10px", fontWeight: 500, color: "var(--color-text-muted)", letterSpacing: "0.04em", textTransform: "uppercase", margin: "0 0 6px" }}>
-          Vendor
-        </p>
+      <PreviewCard marginBottom="12px">
+        <PreviewLabel marginBottom="6px">Vendor</PreviewLabel>
         <p style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)", margin: "0 0 2px" }}>
-          Greenfields Logistics Ltd.
+          {PURCHASE_ORDER.vendor}
         </p>
         <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "0 0 10px" }}>
-          RC 1245890 · Zenith Bank · 2012345678
+          {PURCHASE_ORDER.vendorRegistration} · {PURCHASE_ORDER.vendorBank} · {PURCHASE_ORDER.vendorAccountNumber}
         </p>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", borderTop: "1px solid var(--color-border)", paddingTop: "10px" }}>
           <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)" }}>Total</span>
@@ -87,101 +45,39 @@ export function ProcurePreview() {
               color: "var(--color-text-primary)",
             }}
           >
-            ₦8,240,000
+            {demoAmount(PURCHASE_ORDER_TOTAL)}
           </span>
         </div>
-      </div>
+      </PreviewCard>
 
-      {/* Line items table */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          marginBottom: "12px",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 50px 80px",
-            gap: "10px",
-            padding: "8px 14px",
-            backgroundColor: "var(--color-bg-light)",
-            borderBottom: "1px solid var(--color-border)",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-          }}
-        >
-          <span>Item</span>
-          <span style={{ textAlign: "right" }}>Qty</span>
-          <span style={{ textAlign: "right" }}>Total</span>
-        </div>
-        {lineItems.map((item) => (
-          <div
-            key={item.description}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 50px 80px",
-              gap: "10px",
-              padding: "10px 14px",
-              borderBottom: "1px solid var(--color-border)",
-              fontFamily: "var(--font-sans)",
-              fontSize: "12px",
-              color: "var(--color-text-primary)",
-            }}
-          >
-            <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.description}</span>
-            <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', color: "var(--color-text-muted)" }}>
-              {formatCount(item.qty)}
-            </span>
-            <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', fontWeight: 500 }}>{item.total}</span>
-          </div>
-        ))}
-      </div>
+      <PreviewTable
+        columns={[{ label: "Item" }, { label: "Qty", align: "right" }, { label: "Total", align: "right" }]}
+        gridTemplateColumns="1fr 50px 80px"
+        rowPadding="10px 14px"
+        fontSize="12px"
+        marginBottom="12px"
+        rows={PURCHASE_ORDER.lineItems.map((line) => ({
+          key: line.description,
+          cells: (
+            <>
+              <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{line.description}</span>
+              <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', color: "var(--color-text-muted)" }}>
+                {formatCount(line.quantity)}
+              </span>
+              <span style={{ textAlign: "right", fontFeatureSettings: '"tnum" 1', fontWeight: 500 }}>{demoAmount(lineTotal(line))}</span>
+            </>
+          ),
+        }))}
+      />
 
-      {/* Actions */}
-      <div style={{ display: "flex", gap: "8px" }}>
-        <button
-          type="button"
-          style={{
-            flex: 1,
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-white)",
-            border: "none",
-            borderRadius: "3px",
-            padding: "8px 0",
-            cursor: "default",
-          }}
-        >
+      <ButtonRow>
+        <MockButton variant="primary" fill>
           Issue to vendor
-        </button>
-        <button
-          type="button"
-          style={{
-            flex: 1,
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-white)",
-            color: "var(--color-text-primary)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "3px",
-            padding: "8px 0",
-            cursor: "default",
-          }}
-        >
+        </MockButton>
+        <MockButton variant="secondary" fill>
           PO PDF
-        </button>
-      </div>
-    </div>
+        </MockButton>
+      </ButtonRow>
+    </PreviewBody>
   );
 }

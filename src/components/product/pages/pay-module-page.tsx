@@ -17,6 +17,7 @@ import {
 import { AUDIT_TRAIL_KEPT } from "@/lib/record-keeping";
 import { SUPPORTED_CURRENCY_NAMES } from "@/lib/languages-and-currencies";
 import { PayPreview } from "@/components/product/previews/pay-preview";
+import { FEATURED_VOUCHER } from "@/components/product/demo-fixtures";
 
 
 const config: ModuleConfig = {
@@ -24,7 +25,7 @@ const config: ModuleConfig = {
   headline: "Every payment, on record. End-to-end.",
   description:
     "From submission through finance validation to MD sanction, every payment voucher travels a defined approval chain. No email threads, no lost approvals — and a bank-ready PDF the moment the MD signs.",
-  previewPath: "vouchers / PV-2026-0184",
+  previewPath: `vouchers / ${FEATURED_VOUCHER.reference}`,
   preview: <PayPreview />,
 
   pillars: [

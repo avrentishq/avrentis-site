@@ -44,6 +44,7 @@ import {
   LifecycleMockup,
   InfraMockup,
 } from "./security-mockups";
+import { BrowserFrame } from "./previews/preview-primitives";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_REPLY_TIME, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
 import { COMPLIANCE_FRAMEWORKS, COMPLIANCE_STATUS_LABELS, ACCESS_ENDS } from "@/lib/compliance-posture";
@@ -92,7 +93,7 @@ const STACK = [
       "An automated check fails the build if any customer table loses its isolation rule",
     ],
     Mockup: IsolationMockup,
-    previewUrl: "tenant isolation · database layer",
+    caption: "tenant isolation · database layer",
   },
   {
     number: "02",
@@ -109,7 +110,7 @@ const STACK = [
       "Amount thresholds — high-value requests auto-escalate to the MD",
     ],
     Mockup: AuthorityMockup,
-    previewUrl: "role-based authority · attribute overlays",
+    caption: "role-based authority · attribute overlays",
   },
   {
     number: "03",
@@ -128,7 +129,7 @@ const STACK = [
       "One sign-in per person across every company they work in — one password, one set of two-step methods",
     ],
     Mockup: SessionMockup,
-    previewUrl: "session revocation · identity controls",
+    caption: "session revocation · identity controls",
   },
   {
     number: "04",
@@ -145,7 +146,7 @@ const STACK = [
       "One-click regulator-ready export for any period",
     ],
     Mockup: AuditMockup,
-    previewUrl: "tamper-evident audit trail · role-change log",
+    caption: "tamper-evident audit trail · role-change log",
   },
   {
     number: "05",
@@ -163,7 +164,7 @@ const STACK = [
       "Attachments served through short-lived, per-upload URLs",
     ],
     Mockup: LifecycleMockup,
-    previewUrl: "access lifecycle · SCIM provisioning",
+    caption: "access lifecycle · SCIM provisioning",
   },
   {
     number: "06",
@@ -180,7 +181,7 @@ const STACK = [
       "Encrypted object storage with short-lived, per-upload delivery URLs",
     ],
     Mockup: InfraMockup,
-    previewUrl: "encryption · platform infrastructure",
+    caption: "encryption · platform infrastructure",
   },
 ];
 
@@ -290,54 +291,9 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
       </div>
 
       {/* Mockup */}
-      <div
-        style={{
-          borderRadius: "10px",
-          border: "1px solid var(--color-border)",
-          backgroundColor: "var(--color-bg-light)",
-          boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.08), 0 4px 10px rgba(var(--color-navy-primary-rgb), 0.04)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "var(--color-navy-primary)",
-            padding: "10px 14px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          <div style={{ display: "flex", gap: "6px" }}>
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                }}
-              />
-            ))}
-          </div>
-          <div
-            style={{
-              flex: 1,
-              backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-              borderRadius: "5px",
-              padding: "4px 10px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-              color: "var(--color-text-subtle)",
-              textAlign: "center",
-            }}
-          >
-            {stage.previewUrl}
-          </div>
-        </div>
+      <BrowserFrame caption={stage.caption} surface="light">
         <Mockup />
-      </div>
+      </BrowserFrame>
     </m.div>
   );
 }

@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 
 type Role = "staff" | "hod" | "finance" | "md" | "admin";
 
-const ROLE_LABELS: Record<Role, string> = {
+export const ROLE_LABELS: Record<Role, string> = {
   staff: "Staff",
   hod: "HOD",
   finance: "Finance",

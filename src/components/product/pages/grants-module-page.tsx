@@ -3,13 +3,14 @@
 import { Wallet, Gauge, Share2, FileText, Banknote, CalendarClock } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { GrantsPreview } from "@/components/product/previews/grants-preview";
+import { GRANT } from "@/components/product/demo-fixtures";
 
 const config: ModuleConfig = {
   moduleKey: "grants",
   headline: "Prove where every donor naira went.",
   description:
     "Grants ties every payment to its grant and budget line, tracks burn against each donor's restrictions, and produces a donor-ready report in the grant's own currency — from the same approvals your finance team already runs.",
-  previewPath: "grants / GR-2026-014",
+  previewPath: `grants / ${GRANT.reference}`,
   preview: <GrantsPreview />,
 
   pillars: [

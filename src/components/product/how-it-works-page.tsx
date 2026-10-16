@@ -30,6 +30,7 @@ import {
   ShieldCheck,
   Check,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -40,30 +41,39 @@ import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { SubmitStageMockup, ReviewStageMockup, SanctionStageMockup, RecordStageMockup } from "./stage-mockups";
+import { STAGE_MOCKUPS } from "./stage-mockups";
+import { FEATURED_VOUCHER, PURCHASE_ORDER } from "./demo-fixtures";
+import { BrowserFrame, appCaption } from "./previews/preview-primitives";
+import {
+  APPROVAL_LIFECYCLE,
+  lifecycleStepNumber,
+  type LifecycleStage,
+  type LifecycleStageKey,
+} from "@/lib/approval-lifecycle";
+import { numberInWords } from "@/lib/number-words";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 
-const STAGES = [
-  {
-    number: "01",
-    key: "submit",
-    title: "Submit",
+/**
+ * This page's own words for each lifecycle stage. The stages themselves — their
+ * titles, order and count — come from `APPROVAL_LIFECYCLE`; a stage added there
+ * fails type-check here until it has its copy.
+ */
+const STAGE_COPY: Record<
+  LifecycleStageKey,
+  { subtitle: string; icon: LucideIcon; body: string; bullets: readonly string[] }
+> = {
+  submit: {
     subtitle: "Structured request, not an email.",
     icon: FileCheck,
     body: `Any team member raises a ${requestTypeList("disjunction")} through a structured form — payee details, amount, purpose, department, cost code, supporting attachments. The form only accepts complete, valid information, so the person reviewing never has to chase details or send it back.`,
     bullets: [
       "Auto-saves as you go — no lost work if the browser closes unexpectedly",
       `Attach contracts, invoices, and quotes — ${DOCUMENTS_KEPT}`,
-      "Every request gets a unique reference number on submit (PV-2026-0184, PO-2026-0091)",
+      `Every request gets a unique reference number on submit (${FEATURED_VOUCHER.reference}, ${PURCHASE_ORDER.reference})`,
       "Flags possible duplicates by vendor and amount so you don't pay the same invoice twice",
     ],
-    Mockup: SubmitStageMockup,
-    previewUrl: "Avrentis / vouchers / new",
   },
-  {
-    number: "02",
-    key: "review",
-    title: "Review",
+  review: {
     subtitle: "The right person, at the right time, with everything they need.",
     icon: UserCheck,
     body: "The request goes automatically to the right person — Finance for payments, the Head of Department for purchase orders. They see everything they need: payee, amount, purpose, attachments, and how much of the department's budget is still left. They approve, ask a question, or send it back. When they ask a question, the submitter answers right on the same request — no new email, no losing the thread.",
@@ -73,13 +83,8 @@ const STAGES = [
       "Out of office? Approvals automatically hand over to the person you named",
       "High-value items skip straight to the MD — no unnecessary stops",
     ],
-    Mockup: ReviewStageMockup,
-    previewUrl: "Avrentis / approvals",
   },
-  {
-    number: "03",
-    key: "sanction",
-    title: "Sanction",
+  sanction: {
     subtitle: "Final authority, signed and on record.",
     icon: Signature,
     body: "The Managing Director sees the full picture — what Finance or the Head of Department approved, what the submitter answered to any questions, every signature collected along the way. They sign it off digitally, and that signature is stamped onto every document the request produces. This is the moment authority becomes binding.",
@@ -89,13 +94,8 @@ const STAGES = [
       "The MD can never approve their own requests — a rule that can't be switched off",
       "Approve from your phone, tablet, or laptop — never held up by where you are",
     ],
-    Mockup: SanctionStageMockup,
-    previewUrl: "Avrentis / vouchers / PV-2026-0184",
   },
-  {
-    number: "04",
-    key: "record",
-    title: "Record",
+  record: {
     subtitle: "Every action recorded and sealed. Every document, bank-ready.",
     icon: Archive,
     body: "The moment the MD signs, Avrentis generates the bank-ready PDF and a timeline of the decision ready for audit. Both are filed in Records automatically. The record — every question, every change, every signature — is now sealed in a tamper-evident chain. Nobody, not even the person who runs the account, can edit history after the fact, and a change made any other way would show when the record is verified.",
@@ -105,21 +105,19 @@ const STAGES = [
       "Once approved, the record is sealed — any later edit or deletion would show when it is verified",
       "Export any period as a regulator-ready bundle with one click",
     ],
-    Mockup: RecordStageMockup,
-    previewUrl: "Avrentis / vouchers / PV-2026-0184",
   },
-];
+};
 
 const PV_CHAIN = [
-  { stage: "STAGE 01", role: "staff" as const, label: "Submitter", body: "Any team member raises the voucher with payee, amount, and purpose." },
-  { stage: "STAGE 02", role: "finance" as const, label: "Finance reviews", body: "Finance validates budget position and vendor standing before escalation." },
-  { stage: "STAGE 03", role: "md" as const, label: "MD sanctions", body: "The MD gives final authority. Bank-ready PDF generates on sign-off." },
+  { role: "staff" as const, label: "Submitter", body: "Any team member raises the voucher with payee, amount, and purpose." },
+  { role: "finance" as const, label: "Finance reviews", body: "Finance validates budget position and vendor standing before escalation." },
+  { role: "md" as const, label: "MD sanctions", body: "The MD gives final authority. Bank-ready PDF generates on sign-off." },
 ];
 
 const PO_CHAIN = [
-  { stage: "STAGE 01", role: "staff" as const, label: "Submitter", body: "Staff creates the purchase order with vendor, line items, and justification." },
-  { stage: "STAGE 02", role: "hod" as const, label: "HOD approves", body: "Head of Department confirms department need + budget." },
-  { stage: "STAGE 03", role: "md" as const, label: "MD sanctions", body: "The MD gives final authority. PO is issued to the vendor." },
+  { role: "staff" as const, label: "Submitter", body: "Staff creates the purchase order with vendor, line items, and justification." },
+  { role: "hod" as const, label: "HOD approves", body: "Head of Department confirms department need + budget." },
+  { role: "md" as const, label: "MD sanctions", body: "The MD gives final authority. PO is issued to the vendor." },
 ];
 
 const NOTIFICATIONS = [
@@ -148,10 +146,11 @@ const COMPARISON = [
   },
 ];
 
-function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: number }) {
+function StageRow({ stage, index }: { stage: LifecycleStage; index: number }) {
   const reverse = index % 2 === 1;
-  const Mockup = stage.Mockup;
-  const Icon = stage.icon;
+  const { Mockup, previewPath } = STAGE_MOCKUPS[stage.key];
+  const copy = STAGE_COPY[stage.key];
+  const Icon = copy.icon;
   return (
     <m.div
       variants={fadeUp}
@@ -193,7 +192,7 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
                 letterSpacing: "0.06em",
               }}
             >
-              STAGE {stage.number}
+              STAGE {lifecycleStepNumber(index)}
             </span>
             <h2
               style={{
@@ -221,7 +220,7 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
             margin: "0 0 14px",
           }}
         >
-          {stage.subtitle}
+          {copy.subtitle}
         </p>
         <p
           style={{
@@ -232,12 +231,12 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
             margin: "0 0 20px",
           }}
         >
-          {stage.body}
+          {copy.body}
         </p>
         <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "8px" }}>
-          {stage.bullets.map((b) => (
+          {copy.bullets.map((bullet) => (
             <li
-              key={b}
+              key={bullet}
               style={{
                 display: "flex",
                 gap: "10px",
@@ -249,61 +248,16 @@ function StageRow({ stage, index }: { stage: (typeof STAGES)[number]; index: num
               }}
             >
               <Check size={16} strokeWidth={2} color={BRAND_COLORS.gold} style={{ marginTop: "2px", flexShrink: 0 }} aria-hidden="true" />
-              <span>{b}</span>
+              <span>{bullet}</span>
             </li>
           ))}
         </ul>
       </div>
 
       {/* Mockup */}
-      <div
-        style={{
-          borderRadius: "10px",
-          border: "1px solid var(--color-border)",
-          backgroundColor: "var(--color-bg-light)",
-          boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.08), 0 4px 10px rgba(var(--color-navy-primary-rgb), 0.04)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: "var(--color-navy-primary)",
-            padding: "10px 14px",
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-          }}
-        >
-          <div style={{ display: "flex", gap: "6px" }}>
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                }}
-              />
-            ))}
-          </div>
-          <div
-            style={{
-              flex: 1,
-              backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-              borderRadius: "5px",
-              padding: "4px 10px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-              color: "var(--color-text-subtle)",
-              textAlign: "center",
-            }}
-          >
-            {stage.previewUrl}
-          </div>
-        </div>
+      <BrowserFrame caption={appCaption(previewPath)} surface="light">
         <Mockup />
-      </div>
+      </BrowserFrame>
     </m.div>
   );
 }
@@ -347,7 +301,7 @@ function ChainCard({
           color: "var(--color-text-secondary)",
         }}
       >
-        {node.stage}
+        STAGE {lifecycleStepNumber(index)}
       </span>
       <RoleBadge role={node.role} />
       <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: "14px", color: "var(--color-white)", margin: "2px 0 0" }}>
@@ -457,7 +411,7 @@ export function HowItWorksProductPage() {
               maxWidth: "640px",
             }}
           >
-            Every {requestTypeList()} travels the same four-stage lifecycle. Structured at submission, routed by
+            Every {requestTypeList()} travels the same {numberInWords(APPROVAL_LIFECYCLE.length)}-stage lifecycle. Structured at submission, routed by
             role, sanctioned by authority, recorded on the audit trail. No email
             threads. No lost approvals. No guessing what changed.
           </m.p>
@@ -516,7 +470,7 @@ export function HowItWorksProductPage() {
       >
         <SectionBackdrop src={SECTION_BACKDROPS.hiwLifecycle} scrim="light" />
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
-          {STAGES.map((stage, i) => (
+          {APPROVAL_LIFECYCLE.map((stage, i) => (
             <StageRow key={stage.key} stage={stage} index={i} />
           ))}
         </div>
@@ -620,7 +574,7 @@ export function HowItWorksProductPage() {
               </m.h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PV_CHAIN.map((node, i) => (
-                  <ChainCard key={node.stage} node={node} index={i} baseDelay={4} active={i === 1} />
+                  <ChainCard key={node.label} node={node} index={i} baseDelay={4} active={i === 1} />
                 ))}
               </div>
             </div>
@@ -646,7 +600,7 @@ export function HowItWorksProductPage() {
               </m.h3>
               <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
                 {PO_CHAIN.map((node, i) => (
-                  <ChainCard key={node.stage} node={node} index={i} baseDelay={7} active={i === 1} />
+                  <ChainCard key={node.label} node={node} index={i} baseDelay={7} active={i === 1} />
                 ))}
               </div>
             </div>

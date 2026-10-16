@@ -10,6 +10,8 @@ import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND, SITE_PAGES } from "@/lib/brand";
 import { START_TRIAL_CTA, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { MARKET_SCOPE } from "@/lib/market";
+import { INBOX_DOCUMENTS, demoAmount, formatDemoRelative, type InboxStatus } from "@/components/product/demo-fixtures";
+import { BrowserFrame, TypeTag, appCaption } from "@/components/product/previews/preview-primitives";
 
 const slideInFromRight = {
   hidden: { opacity: 0, x: 20 },
@@ -29,8 +31,10 @@ interface ApprovalRowProps {
   status: ApprovalRowStatus;
   label: string;
   submittedBy: string;
-  submittedWhen: string;
-  amount: string;
+  /** ISO instant; shown relative to the demo's "now". */
+  submittedAt: string;
+  /** Major units in the lead currency. */
+  amount: number;
   department: string;
   hideDivider?: boolean;
   /** Optional trailing control (e.g. the interactive Approve button on row 1). */
@@ -57,174 +61,25 @@ const STATUS = {
     text: "var(--color-queried)",
     dot: "var(--color-queried-accent)",
   },
-  approved: {
-    label: "Approved",
-    bg: "rgba(var(--color-success-rgb), 0.08)",
-    text: "var(--color-success)",
-    dot: "var(--color-success)",
-  },
   recorded: {
     label: "Recorded",
     bg: "rgba(var(--color-success-rgb), 0.08)",
     text: "var(--color-success)",
     dot: "var(--color-success)",
   },
-} as const;
+} as const satisfies Record<InboxStatus | "recorded", ApprovalRowStatus>;
 
 // The one-click CTA offered on a row depends on where it is in the flow, so
 // the demo shows a realistic mix (not just "Approve"). Whatever the verb, the
 // outcome is the same product promise: the decision lands on the audit trail.
-const CTA_VERB: Record<string, string> = {
-  "Under review": "Approve",
-  Submitted: "Review",
-  Queried: "Respond",
+const CTA_VERB: Record<InboxStatus, string> = {
+  underReview: "Approve",
+  submitted: "Review",
+  queried: "Respond",
 };
 
-// The full feed the list rotates through. First four are the default (and
-// reduced-motion) view; a mix of business and NGO / donor-funded flows so the
-// hero speaks to both — same approval authority and audit trail either way.
-const POOL: Omit<ApprovalRowProps, "hideDivider" | "action">[] = [
-  {
-    reference: "PV-2026-0184",
-    type: "PV",
-    status: STATUS.underReview,
-    label: "Brightpath Technologies",
-    submittedBy: "Fatima Abubakar",
-    submittedWhen: "2h ago",
-    amount: "₦850,000",
-    department: "Operations",
-  },
-  {
-    reference: "PV-2026-0181",
-    type: "PV",
-    status: STATUS.underReview,
-    label: "Kano field office — beneficiary stipends",
-    submittedBy: "Amina Bello",
-    submittedWhen: "3h ago",
-    amount: "₦1,450,000",
-    department: "Programmes",
-  },
-  {
-    reference: "PO-2026-0091",
-    type: "PO",
-    status: STATUS.submitted,
-    label: "Greenfields Logistics Ltd.",
-    submittedBy: "Tunde Okafor",
-    submittedWhen: "4h ago",
-    amount: "₦1,240,000",
-    department: "Supply Chain",
-  },
-  {
-    reference: "PV-2026-0183",
-    type: "PV",
-    status: STATUS.queried,
-    label: "Sahara Engineering Services",
-    submittedBy: "Chinelo Adeyemi",
-    submittedWhen: "Yesterday",
-    amount: "₦420,000",
-    department: "Facilities",
-  },
-  {
-    reference: "PV-2026-0175",
-    type: "PV",
-    status: STATUS.submitted,
-    label: "WASH project — Q2 grant expense",
-    submittedBy: "Grace Eze",
-    submittedWhen: "Yesterday",
-    amount: "₦2,310,000",
-    department: "Grants & Compliance",
-  },
-  {
-    reference: "PV-2026-0182",
-    type: "PV",
-    status: STATUS.underReview,
-    label: "Summit Office Supplies",
-    submittedBy: "Ifeoma Nwachukwu",
-    submittedWhen: "6h ago",
-    amount: "₦215,000",
-    department: "Administration",
-  },
-  {
-    reference: "PV-2026-0171",
-    type: "PV",
-    status: STATUS.underReview,
-    label: "Enugu outreach — medical supplies",
-    submittedBy: "Chidi Okonkwo",
-    submittedWhen: "1d ago",
-    amount: "₦1,180,000",
-    department: "Programmes",
-  },
-  {
-    reference: "PO-2026-0090",
-    type: "PO",
-    status: STATUS.submitted,
-    label: "Horizon Facility Services",
-    submittedBy: "Adewale Bankole",
-    submittedWhen: "Yesterday",
-    amount: "₦680,000",
-    department: "Facilities",
-  },
-  {
-    reference: "PO-2026-0088",
-    type: "PO",
-    status: STATUS.submitted,
-    label: "Lagos clinic — vaccine cold-chain units",
-    submittedBy: "Ngozi Umeh",
-    submittedWhen: "5h ago",
-    amount: "₦3,120,000",
-    department: "Programmes",
-  },
-  {
-    reference: "PV-2026-0169",
-    type: "PV",
-    status: STATUS.underReview,
-    label: "Scholarship disbursement — 2026 cohort",
-    submittedBy: "Yusuf Aliyu",
-    submittedWhen: "1d ago",
-    amount: "₦4,750,000",
-    department: "Grants & Compliance",
-  },
-  {
-    reference: "PV-2026-0167",
-    type: "PV",
-    status: STATUS.submitted,
-    label: "Ikeja HQ — annual software renewal",
-    submittedBy: "Blessing Obi",
-    submittedWhen: "2d ago",
-    amount: "₦1,920,000",
-    department: "IT",
-  },
-  {
-    reference: "PV-2026-0164",
-    type: "PV",
-    status: STATUS.underReview,
-    label: "Farmers' co-op — input subsidy batch 3",
-    submittedBy: "Hauwa Sani",
-    submittedWhen: "2d ago",
-    amount: "₦2,680,000",
-    department: "Programmes",
-  },
-  {
-    reference: "PO-2026-0085",
-    type: "PO",
-    status: STATUS.submitted,
-    label: "Port Harcourt depot — fuel & logistics",
-    submittedBy: "Emeka Nwosu",
-    submittedWhen: "2d ago",
-    amount: "₦940,000",
-    department: "Operations",
-  },
-  {
-    reference: "PV-2026-0162",
-    type: "PV",
-    status: STATUS.queried,
-    label: "Staff medical retainer — Q3",
-    submittedBy: "Zainab Bello",
-    submittedWhen: "3d ago",
-    amount: "₦560,000",
-    department: "People",
-  },
-];
+/** How many inbox rows show at once — the default (and reduced-motion) view is the feed's first four. */
+const VISIBLE_ROWS = 4;
 
 function LiveInbox({
   approved,
@@ -234,11 +89,10 @@ function LiveInbox({
   onApprove: () => void;
 }) {
   // The whole list is a live feed: every few seconds all four visible slots
-  // advance one step through POOL, cross-fading in a staggered cascade so the
+  // advance one step through INBOX_DOCUMENTS, cross-fading in a staggered cascade so the
   // list reads as continuously updating rather than one twitching row.
   // Rotation freezes once the visitor approves the top row (their action is
   // acknowledged) and is disabled entirely under reduced-motion.
-  const VISIBLE = 4;
   const [tick, setTick] = useState(0);
   // Which visible slot currently offers a one-click CTA. Starts at the top
   // (deterministic, so SSR and first client render agree) then hops to a
@@ -256,16 +110,16 @@ function LiveInbox({
     if (reducedMotion || isMobileViewport() || approved) return;
 
     const timer = setInterval(() => {
-      setTick((t) => (t + 1) % POOL.length);
-      setActiveRow(Math.floor(Math.random() * VISIBLE));
+      setTick((t) => (t + 1) % INBOX_DOCUMENTS.length);
+      setActiveRow(Math.floor(Math.random() * VISIBLE_ROWS));
     }, 4000);
 
     return () => clearInterval(timer);
   }, [approved]);
 
   const rows = Array.from(
-    { length: VISIBLE },
-    (_, i) => POOL[(tick + i) % POOL.length]!,
+    { length: VISIBLE_ROWS },
+    (_, i) => INBOX_DOCUMENTS[(tick + i) % INBOX_DOCUMENTS.length]!,
   );
 
   const handleEngage = (rowIndex: number) => {
@@ -289,11 +143,11 @@ function LiveInbox({
       }}
     >
       {rows.map((entry, i) => {
-        const isLast = i === VISIBLE - 1;
+        const isLast = i === VISIBLE_ROWS - 1;
         // The acted-on row freezes into a neutral "Recorded" state — whatever
         // the verb was, the payoff is the same: the decision lands on the audit trail.
         const isDone = engagedRow === i;
-        const status = isDone ? STATUS.recorded : entry.status;
+        const status = isDone ? STATUS.recorded : STATUS[entry.status];
         // One live CTA at a time, on a random slot; verb depends on the row's
         // stage (Approve / Review / Respond). Any click freezes the feed and
         // reveals the reciprocity nudge.
@@ -316,7 +170,7 @@ function LiveInbox({
                     <ApproveButton
                       onApprove={() => handleEngage(i)}
                       reference={entry.reference}
-                      label={CTA_VERB[entry.status.label] ?? "Approve"}
+                      label={CTA_VERB[entry.status]}
                     />
                   ) : undefined
                 }
@@ -332,7 +186,12 @@ function LiveInbox({
 /**
  * ApprovalRow — visually mirrors BulkApprovalList rows in the real platform.
  * Accent bar on the left, reference + type tag + status badge inline, label,
- * submitter + relative time underneath, amount + department right-aligned.
+ * submitter + relative time underneath, amount + department on the right.
+ *
+ * The details and the amount column wrap: where the row is too narrow for both
+ * side by side (a phone), the amount, department and action drop beneath the
+ * details instead of squeezing the reference onto three lines and the payee
+ * down to a few letters.
  */
 function ApprovalRow({
   reference,
@@ -340,7 +199,7 @@ function ApprovalRow({
   status,
   label,
   submittedBy,
-  submittedWhen,
+  submittedAt,
   amount,
   department,
   hideDivider = false,
@@ -350,7 +209,7 @@ function ApprovalRow({
     <div
       style={{
         display: "flex",
-        alignItems: "center",
+        alignItems: "stretch",
         gap: "12px",
         padding: "14px 16px",
         borderBottom: hideDivider ? "none" : "1px solid rgba(var(--color-navy-primary-rgb), 0.08)",
@@ -360,142 +219,146 @@ function ApprovalRow({
       <div
         style={{
           width: "4px",
-          height: "36px",
+          minHeight: "36px",
           borderRadius: "2px",
           backgroundColor: "var(--color-gold)",
           flexShrink: 0,
         }}
       />
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {/* Reference + type + status */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            flexWrap: "wrap",
-            marginBottom: "2px",
-          }}
-        >
-          <span
+      <div
+        style={{
+          flex: 1,
+          minWidth: 0,
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          columnGap: "12px",
+          rowGap: "8px",
+        }}
+      >
+        <div style={{ flex: "1 1 190px", minWidth: 0 }}>
+          {/* Reference + type + status */}
+          <div
             style={{
-              fontFamily: "var(--font-sans)",
-              fontFeatureSettings: '"tnum" 1',
-              fontSize: "12px",
-              fontWeight: 500,
-              color: "var(--color-text-primary)",
-              letterSpacing: "0.02em",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              flexWrap: "wrap",
+              marginBottom: "2px",
             }}
           >
-            {reference}
-          </span>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              backgroundColor: "var(--color-navy-primary)",
-              color: "var(--color-gold)",
-              borderRadius: "3px",
-              padding: "1px 5px",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-            }}
-          >
-            {type}
-          </span>
-          <AnimatePresence mode="wait" initial={false}>
-            <m.span
-              key={status.label}
-              initial={{ opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
+            <span
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "4px",
                 fontFamily: "var(--font-sans)",
-                fontSize: "10px",
+                fontFeatureSettings: '"tnum" 1',
+                fontSize: "12px",
                 fontWeight: 500,
-                backgroundColor: status.bg,
-                color: status.text,
-                borderRadius: "3px",
-                padding: "2px 6px",
+                color: "var(--color-text-primary)",
                 letterSpacing: "0.02em",
+                whiteSpace: "nowrap",
               }}
             >
-              <span
+              {reference}
+            </span>
+            <TypeTag>{type}</TypeTag>
+            <AnimatePresence mode="wait" initial={false}>
+              <m.span
+                key={status.label}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
                 style={{
-                  width: "5px",
-                  height: "5px",
-                  borderRadius: "50%",
-                  backgroundColor: status.dot,
-                  display: "inline-block",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  fontFamily: "var(--font-sans)",
+                  fontSize: "10px",
+                  fontWeight: 500,
+                  backgroundColor: status.bg,
+                  color: status.text,
+                  borderRadius: "3px",
+                  padding: "2px 6px",
+                  letterSpacing: "0.02em",
+                  whiteSpace: "nowrap",
                 }}
-              />
-              {status.label}
-            </m.span>
-          </AnimatePresence>
+              >
+                <span
+                  style={{
+                    width: "5px",
+                    height: "5px",
+                    borderRadius: "50%",
+                    backgroundColor: status.dot,
+                    display: "inline-block",
+                  }}
+                />
+                {status.label}
+              </m.span>
+            </AnimatePresence>
+          </div>
+
+          {/* Label */}
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "var(--color-text-primary)",
+              margin: "0 0 2px",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {label}
+          </p>
+
+          {/* Submitter + time */}
+          <p
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: "11px",
+              color: "var(--color-text-muted)",
+              margin: 0,
+            }}
+          >
+            Submitted by {submittedBy} &middot; {formatDemoRelative(submittedAt)}
+          </p>
         </div>
 
-        {/* Label */}
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            fontWeight: 500,
-            color: "var(--color-text-primary)",
-            margin: "0 0 2px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {label}
-        </p>
+        {/* Amount + department, then the action — pushed right, wrapping beneath on a phone */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginLeft: "auto", flexShrink: 0 }}>
+          <div style={{ textAlign: "right" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontFeatureSettings: '"tnum" 1',
+                fontSize: "14px",
+                fontWeight: 500,
+                color: "var(--color-text-primary)",
+                margin: "0 0 2px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {demoAmount(amount)}
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-sans)",
+                fontSize: "11px",
+                color: "var(--color-text-muted)",
+                margin: 0,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {department}
+            </p>
+          </div>
 
-        {/* Submitter + time */}
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "11px",
-            color: "var(--color-text-muted)",
-            margin: 0,
-          }}
-        >
-          Submitted by {submittedBy} &middot; {submittedWhen}
-        </p>
+          {action}
+        </div>
       </div>
-
-      {/* Amount + department */}
-      <div style={{ textAlign: "right", flexShrink: 0 }}>
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontFeatureSettings: '"tnum" 1',
-            fontSize: "14px",
-            fontWeight: 500,
-            color: "var(--color-text-primary)",
-            margin: "0 0 2px",
-          }}
-        >
-          {amount}
-        </p>
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "11px",
-            color: "var(--color-text-muted)",
-            margin: 0,
-          }}
-        >
-          {department}
-        </p>
-      </div>
-
-      {action}
     </div>
   );
 }
@@ -824,75 +687,9 @@ export function Hero() {
               surface that refracts the light-trails behind it, with a
               specular top edge. The inbox card inside stays opaque so the
               product UI reads crisply. */}
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "560px",
-              borderRadius: "16px",
-              border: "1px solid rgba(var(--color-white-rgb), 0.45)",
-              backgroundColor: "rgba(var(--color-bg-light-rgb), 0.72)",
-              backdropFilter: "blur(24px) saturate(1.4)",
-              WebkitBackdropFilter: "blur(24px) saturate(1.4)",
-              boxShadow:
-                "inset 0 1px 0 rgba(var(--color-white-rgb), 0.65), 0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.5)",
-              overflow: "hidden",
-            }}
-          >
-            {/* Browser chrome */}
-            <div
-              style={{
-                backgroundColor: "var(--color-navy-primary)",
-                padding: "10px 14px",
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
-                borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
-              }}
-            >
-              <div style={{ display: "flex", gap: "6px" }}>
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                  }}
-                />
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                  }}
-                />
-                <span
-                  style={{
-                    width: "10px",
-                    height: "10px",
-                    borderRadius: "50%",
-                    backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  flex: 1,
-                  backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-                  borderRadius: "5px",
-                  padding: "4px 10px",
-                  fontFamily: "var(--font-sans)",
-                  fontSize: "11px",
-                  color: "var(--color-text-subtle)",
-                  textAlign: "center",
-                }}
-              >
-                Avrentis / approvals
-              </div>
-            </div>
-
-            {/* Page content */}
-            <div style={{ padding: "24px 28px" }}>
+          <BrowserFrame caption={appCaption("approvals")} surface="glass" style={{ width: "100%", maxWidth: "560px" }}>
+            {/* Page content — tighter side padding on a phone so the rows keep their width */}
+            <div style={{ padding: "24px 16px" }} className="sm:!px-[28px]">
               {/* Page heading */}
               <div
                 style={{
@@ -923,7 +720,7 @@ export function Hero() {
                       margin: "2px 0 0",
                     }}
                   >
-                    4 documents awaiting your review
+                    {VISIBLE_ROWS} documents awaiting your review
                   </p>
                 </div>
                 <span
@@ -1007,12 +804,12 @@ export function Hero() {
                     textAlign: "right",
                   }}
                 >
-                  Showing 4 of 4 &middot; Act on one &mdash; your decision
+                  Showing {VISIBLE_ROWS} of {VISIBLE_ROWS} &middot; Act on one &mdash; your decision
                   stays on record
                 </p>
               )}
             </div>
-          </div>
+          </BrowserFrame>
         </m.div>
       </div>
     </section>

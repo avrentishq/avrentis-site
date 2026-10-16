@@ -4,6 +4,7 @@ import { ShieldCheck, FileSearch, Download, LockKeyhole, UserSearch } from "luci
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { AuditPreview } from "@/components/product/previews/audit-preview";
 import { TRAIL_SEALED, TRAIL_SEALED_WITH_FINGERPRINT } from "@/lib/record-keeping";
+import { AUDIT_QUERY_THRESHOLD, demoAmount } from "@/components/product/demo-fixtures";
 
 const config: ModuleConfig = {
   moduleKey: "audit",
@@ -53,7 +54,7 @@ const config: ModuleConfig = {
     {
       title: "External audit preparation in hours, not weeks",
       body:
-        "When an auditor asks for \"all approvals in Q3 over ₦1M\", a saved-view + export delivers the answer — with signatures, chains, and timestamps — before the meeting starts.",
+        `When an auditor asks for "all approvals in Q3 over ${demoAmount(AUDIT_QUERY_THRESHOLD)}", a saved-view + export delivers the answer — with signatures, chains, and timestamps — before the meeting starts.`,
     },
     {
       title: "Investigate \"who changed this?\" with certainty",

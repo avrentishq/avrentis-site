@@ -16,7 +16,6 @@ import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
-  BRAND,
   BRAND_COLORS,
   MODULE_STATUS_LABELS,
   MODULES,
@@ -31,6 +30,7 @@ import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
 import { m, useScroll, useTransform } from "framer-motion";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
+import { BrowserFrame, appCaption } from "./previews/preview-primitives";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { AmbientGlow } from "@/components/ui/ambient-glow";
 import { Navbar } from "@/components/layout/navbar";
@@ -111,9 +111,9 @@ export interface ModuleConfig {
   moduleKey: ModuleKey;
   headline: string;
   description: string;
-  /** Caption path above the preview frame, after the brand name: `vouchers / PV-2026-0184`. */
+  /** Caption path above the preview frame, after the brand name: `vouchers / new`. */
   previewPath: string;
-  /** React node for the browser-frame preview. Rendered inside a `MockupShell`-style container. */
+  /** React node for the browser-frame preview. Rendered inside a `BrowserFrame`. */
   preview: React.ReactNode;
   pillars: ModulePillar[];
   useCases: ModuleUseCase[];
@@ -391,56 +391,9 @@ export function ProductModuleLayout({
             viewport={{ once: true, margin: "-40px" }}
             transition={{ ...fadeUpTransition, delay: 0.3 }}
           >
-            <div
-              style={{
-                borderRadius: "10px",
-                border: "1px solid rgba(var(--color-white-rgb), 0.10)",
-                backgroundColor: "var(--color-bg-light)",
-                boxShadow: "0 0 60px rgba(var(--color-gold-rgb), 0.06), 0 30px 60px rgba(var(--color-shadow-rgb), 0.45)",
-                overflow: "hidden",
-              }}
-            >
-              {/* Browser chrome */}
-              <div
-                style={{
-                  backgroundColor: "var(--color-navy-primary)",
-                  padding: "10px 14px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  borderBottom: "1px solid rgba(var(--color-white-rgb), 0.06)",
-                }}
-              >
-                <div style={{ display: "flex", gap: "6px" }}>
-                  {[0, 1, 2].map((i) => (
-                    <span
-                      key={i}
-                      style={{
-                        width: "10px",
-                        height: "10px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(var(--color-white-rgb), 0.15)",
-                      }}
-                    />
-                  ))}
-                </div>
-                <div
-                  style={{
-                    flex: 1,
-                    backgroundColor: "rgba(var(--color-white-rgb), 0.06)",
-                    borderRadius: "5px",
-                    padding: "4px 10px",
-                    fontFamily: "var(--font-sans)",
-                    fontSize: "11px",
-                    color: "var(--color-text-subtle)",
-                    textAlign: "center",
-                  }}
-                >
-                  {BRAND.name} / {config.previewPath}
-                </div>
-              </div>
-              <div>{config.preview}</div>
-            </div>
+            <BrowserFrame caption={appCaption(config.previewPath)} surface="dark">
+              {config.preview}
+            </BrowserFrame>
           </m.div>
         </div>
       </section>

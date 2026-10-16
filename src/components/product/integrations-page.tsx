@@ -34,6 +34,44 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
 import { ACCESS_ENDS } from "@/lib/compliance-posture";
+import { LEAD_CURRENCY } from "@/lib/market";
+import { toMinorUnits } from "@/lib/money";
+import { FEATURED_VOUCHER, featuredTrailEntry } from "./demo-fixtures";
+
+/**
+ * The sample delivery: the featured demo voucher being sanctioned. Every value
+ * that describes the voucher comes from the demo fixtures, so the sample's
+ * reference, amount, currency, approver and time match the mockups on every
+ * other page; the amount is in minor units, as the real payload carries it.
+ */
+const sanction = featuredTrailEntry("sanction");
+const sanctionedAt = new Date(sanction.at);
+const WEBHOOK_SAMPLE = [
+  "content-type: application/json",
+  "webhook-id: 6f1c2a9e-4b7d-4e21-9c55-0d3a8e7b1f42",
+  `webhook-timestamp: ${Math.floor(sanctionedAt.getTime() / 1000)}`,
+  "webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=",
+  "",
+  JSON.stringify(
+    {
+      eventId: "evt_8c1f0b6e2d4a…",
+      type: "document.sanctioned",
+      tenantId: "0d9e4c1a-…",
+      createdAt: sanctionedAt.toISOString(),
+      data: {
+        documentType: FEATURED_VOUCHER.documentType,
+        referenceNumber: FEATURED_VOUCHER.reference,
+        amountMinor: toMinorUnits(FEATURED_VOUCHER.amount, LEAD_CURRENCY),
+        currency: LEAD_CURRENCY,
+        sanctionedBy: { name: sanction.person.name, role: sanction.person.role },
+        sanctionedAt: sanctionedAt.toISOString(),
+        departmentName: FEATURED_VOUCHER.department,
+      },
+    },
+    null,
+    2,
+  ),
+].join("\n");
 
 const sans = "var(--font-sans)";
 const mono = "'IBM Plex Mono', monospace";
@@ -646,26 +684,7 @@ export function IntegrationsCataloguePage({
                   wordBreak: "break-word",
                 }}
               >
-{`content-type: application/json
-webhook-id: 6f1c2a9e-4b7d-4e21-9c55-0d3a8e7b1f42
-webhook-timestamp: 1776782537
-webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=
-
-{
-  "eventId": "evt_8c1f0b6e2d4a…",
-  "type": "document.sanctioned",
-  "tenantId": "0d9e4c1a-…",
-  "createdAt": "2026-04-21T14:42:17.003Z",
-  "data": {
-    "documentType": "payment_voucher",
-    "referenceNumber": "PV-2026-0184",
-    "amountMinor": 1245000000,
-    "currency": "NGN",
-    "sanctionedBy": { "name": "Aisha Danjuma", "role": "md" },
-    "sanctionedAt": "2026-04-21T14:42:17Z",
-    "departmentName": "Operations"
-  }
-}`}
+{WEBHOOK_SAMPLE}
               </pre>
               <p
                 style={{

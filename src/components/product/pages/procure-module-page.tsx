@@ -8,6 +8,7 @@ import {
 } from "@/components/product/module-layout";
 import { moduleName } from "@/lib/brand";
 import { ProcurePreview } from "@/components/product/previews/procure-preview";
+import { PURCHASE_ORDER } from "@/components/product/demo-fixtures";
 
 
 const config: ModuleConfig = {
@@ -15,7 +16,7 @@ const config: ModuleConfig = {
   headline: "Procurement on record. Vendor to issue.",
   description:
     "Every purchase order submitted, reviewed by the department head, sanctioned by the MD, and issued to the vendor through a single system of record. Line items, vendors, and delivery terms — all structured, all traceable.",
-  previewPath: "purchase-orders / PO-2026-0091",
+  previewPath: `purchase-orders / ${PURCHASE_ORDER.reference}`,
   preview: <ProcurePreview />,
 
   pillars: [

@@ -3,13 +3,14 @@
 import { Receipt, ShieldCheck, Tags } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { PeoplePreview } from "@/components/product/previews/people-preview";
+import { EXPENSE_CLAIM } from "@/components/product/demo-fixtures";
 
 const config: ModuleConfig = {
   moduleKey: "people",
   headline: "Staff expenses, on the same rails as payments.",
   description:
     "The approvals your organisation already runs for money — same engine, shaped for staff expense claims. Structured, routed, reimbursed — and every approval on record.",
-  previewPath: "requests / expenses / ER-2026-0042",
+  previewPath: `requests / expenses / ${EXPENSE_CLAIM.reference}`,
   preview: <PeoplePreview />,
 
   pillars: [

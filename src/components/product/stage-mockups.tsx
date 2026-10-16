@@ -1,520 +1,232 @@
 /**
- * Stage-by-stage browser-frame mockups for /product/how-it-works.
- * Each mockup reflects the actual platform UI for that stage of the
- * approval lifecycle — not a fictional abstraction.
+ * One mockup per stage of the approval lifecycle — the drawing of the featured
+ * voucher's journey. Both the homepage's "How it works" section and
+ * /product/how-it-works render these (through `STAGE_MOCKUPS`), so the
+ * journey is drawn once. Each reflects the actual platform UI for its stage,
+ * and every person, time and amount comes from the demo fixtures.
  */
+
+import type { ComponentType } from "react";
+import type { LifecycleStageKey } from "@/lib/approval-lifecycle";
+import { LEAD_CURRENCY } from "@/lib/market";
+import { amountInWords } from "@/lib/money";
+import { capitaliseFirst } from "@/lib/number-words";
+import {
+  FEATURED_VOUCHER,
+  PURCHASE_ORDER,
+  demoAmount,
+  featuredTrailEntry,
+  formatDemoDayTime,
+  formatDemoTime,
+  personWithRole,
+  roleLabel,
+} from "./demo-fixtures";
+import {
+  ApprovalTimeline,
+  ButtonRow,
+  CompletedMark,
+  DocumentHeading,
+  MockButton,
+  PreviewBody,
+  PreviewCard,
+  PreviewLabel,
+} from "./previews/preview-primitives";
+
+const SANS = "var(--font-sans)";
+
+/** A filled form field: its label, and the value in an input-like box. */
+function FormField({
+  label,
+  value,
+  note,
+  emphasis = "regular",
+  monospace = false,
+}: {
+  label: string;
+  value: string;
+  note?: string;
+  emphasis?: "amount" | "regular" | "compact";
+  monospace?: boolean;
+}) {
+  const valueStyle = {
+    amount: { padding: "10px 12px", fontSize: "16px", fontWeight: 500, fontFeatureSettings: '"tnum" 1' },
+    regular: { padding: "10px 12px", fontSize: "13px", minHeight: "40px" },
+    compact: { padding: "8px 10px", fontSize: "12px" },
+  }[emphasis];
+  return (
+    <div>
+      <PreviewLabel marginBottom="5px">{label}</PreviewLabel>
+      <div
+        style={{
+          backgroundColor: "var(--color-white)",
+          border: "1px solid var(--color-border)",
+          borderRadius: "3px",
+          fontFamily: monospace ? "'IBM Plex Mono', monospace" : SANS,
+          color: "var(--color-text-primary)",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
+          ...valueStyle,
+        }}
+      >
+        {value}
+      </div>
+      {note ? <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: "4px 0 0" }}>{note}</p> : null}
+    </div>
+  );
+}
 
 // ── Stage 01 — Submit ────────────────────────────────────────────────
 
 export function SubmitStageMockup() {
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Heading */}
-      <h3 style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 4px" }}>
+    <PreviewBody>
+      <h3 style={{ fontFamily: SANS, fontWeight: 400, fontSize: "18px", color: "var(--color-text-primary)", margin: "0 0 4px" }}>
         New payment voucher
       </h3>
-      <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--color-text-muted)", margin: "0 0 18px" }}>
+      <p style={{ fontFamily: SANS, fontSize: "12px", color: "var(--color-text-muted)", margin: "0 0 18px" }}>
         Step 2 of 4 · Payment info
       </p>
 
       {/* Step dots */}
       <div style={{ display: "flex", gap: "6px", marginBottom: "20px" }}>
-        {[0, 1, 2, 3].map((i) => (
+        {[0, 1, 2, 3].map((step) => (
           <div
-            key={i}
+            key={step}
             style={{
               flex: 1,
               height: "3px",
               borderRadius: "2px",
-              backgroundColor: i <= 1 ? "var(--color-gold)" : "var(--color-border)",
+              backgroundColor: step <= 1 ? "var(--color-gold)" : "var(--color-border)",
             }}
           />
         ))}
       </div>
 
-      {/* Amount */}
-      <div style={{ marginBottom: "12px" }}>
-        <label
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            display: "block",
-            marginBottom: "5px",
-          }}
-        >
-          Amount (NGN)
-        </label>
-        <div
-          style={{
-            backgroundColor: "var(--color-white)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "3px",
-            padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
-            fontFeatureSettings: '"tnum" 1',
-            fontSize: "16px",
-            fontWeight: 500,
-            color: "var(--color-text-primary)",
-          }}
-        >
-          ₦850,000
-        </div>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "4px 0 0" }}>
-          Eight hundred and fifty thousand naira
-        </p>
-      </div>
-
-      {/* Purpose */}
-      <div style={{ marginBottom: "12px" }}>
-        <label
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            display: "block",
-            marginBottom: "5px",
-          }}
-        >
-          Purpose
-        </label>
-        <div
-          style={{
-            backgroundColor: "var(--color-white)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "3px",
-            padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "13px",
-            color: "var(--color-text-primary)",
-            minHeight: "40px",
-          }}
-        >
-          Diesel supply — November
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "16px" }}>
+        <FormField
+          label={`Amount (${LEAD_CURRENCY})`}
+          value={demoAmount(FEATURED_VOUCHER.amount)}
+          note={capitaliseFirst(amountInWords(FEATURED_VOUCHER.amount, LEAD_CURRENCY))}
+          emphasis="amount"
+        />
+        <FormField label="Purpose" value={FEATURED_VOUCHER.purpose} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+          <FormField label="Department" value={FEATURED_VOUCHER.department} emphasis="compact" />
+          <FormField label="Cost code" value={FEATURED_VOUCHER.costCode} emphasis="compact" monospace />
         </div>
       </div>
 
-      {/* Department + cost code */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "16px" }}>
-        <div>
-          <label
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              display: "block",
-              marginBottom: "5px",
-            }}
-          >
-            Department
-          </label>
-          <div
-            style={{
-              backgroundColor: "var(--color-white)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 10px",
-              fontFamily: "var(--font-sans)",
-              fontSize: "12px",
-              color: "var(--color-text-primary)",
-            }}
-          >
-            Operations
-          </div>
-        </div>
-        <div>
-          <label
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "10px",
-              fontWeight: 500,
-              color: "var(--color-text-muted)",
-              letterSpacing: "0.04em",
-              textTransform: "uppercase",
-              display: "block",
-              marginBottom: "5px",
-            }}
-          >
-            Cost code
-          </label>
-          <div
-            style={{
-              backgroundColor: "var(--color-white)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 10px",
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: "12px",
-              color: "var(--color-text-primary)",
-            }}
-          >
-            OPS-FUEL-Q4
-          </div>
-        </div>
-      </div>
-
-      {/* Buttons */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <button
-          type="button"
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-white)",
-            color: "var(--color-text-primary)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "3px",
-            padding: "8px 16px",
-            cursor: "default",
-          }}
-        >
-          ← Back
-        </button>
-        <button
-          type="button"
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-white)",
-            border: "none",
-            borderRadius: "3px",
-            padding: "8px 18px",
-            cursor: "default",
-          }}
-        >
+        <MockButton variant="secondary">← Back</MockButton>
+        <MockButton variant="primary" style={{ padding: "8px 18px" }}>
           Continue →
-        </button>
+        </MockButton>
       </div>
-    </div>
+    </PreviewBody>
   );
 }
 
 // ── Stage 02 — Review (query state) ─────────────────────────────────
 
 export function ReviewStageMockup() {
+  const submitted = featuredTrailEntry("submit");
+  const reviewer = featuredTrailEntry("review").person;
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Reference + status */}
-      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "10px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-          PV-2026-0184
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-gold)",
-            borderRadius: "3px",
-            padding: "1px 5px",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-          }}
-        >
-          PV
-        </span>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "4px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-            color: "var(--color-warning)",
-            borderRadius: "3px",
-            padding: "2px 6px",
-          }}
-        >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)" }} />
-          Under review
-        </span>
-        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "var(--color-text-muted)" }}>
-          Finance
-        </span>
-      </div>
+    <PreviewBody>
+      <DocumentHeading
+        reference={FEATURED_VOUCHER.reference}
+        typeTag="PV"
+        status={{ label: "Under review", tone: "pending" }}
+        note={roleLabel(reviewer)}
+      />
 
       {/* Summary */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "12px 14px",
-          marginBottom: "12px",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "6px" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-            Brightpath Technologies
+      <PreviewCard padding="12px 14px" marginBottom="12px">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "8px", marginBottom: "6px" }}>
+          <span style={{ fontFamily: SANS, fontSize: "12px", fontWeight: 500, color: "var(--color-text-primary)" }}>
+            {FEATURED_VOUCHER.payee}
           </span>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontFeatureSettings: '"tnum" 1',
-              fontSize: "14px",
-              fontWeight: 500,
-              color: "var(--color-text-primary)",
-            }}
-          >
-            ₦850,000
+          <span style={{ fontFamily: SANS, fontFeatureSettings: '"tnum" 1', fontSize: "14px", fontWeight: 500, color: "var(--color-text-primary)" }}>
+            {demoAmount(FEATURED_VOUCHER.amount)}
           </span>
         </div>
-        <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
-          Diesel supply — November · Operations · Submitted by Fatima Abubakar
+        <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: 0 }}>
+          {FEATURED_VOUCHER.purpose} · {FEATURED_VOUCHER.department} · Submitted by {submitted.person.name}
         </p>
-      </div>
+      </PreviewCard>
 
       {/* Query composition */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-          marginBottom: "12px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            margin: "0 0 8px",
-          }}
-        >
-          Query the submitter
-        </p>
+      <PreviewCard marginBottom="12px">
+        <PreviewLabel marginBottom="8px">Query the submitter</PreviewLabel>
         <div
           style={{
             backgroundColor: "var(--color-bg-light)",
             border: "1px solid var(--color-border)",
             borderRadius: "3px",
             padding: "10px 12px",
-            fontFamily: "var(--font-sans)",
+            fontFamily: SANS,
             fontSize: "12px",
             color: "var(--color-text-primary)",
             lineHeight: 1.55,
           }}
         >
-          Can you attach the quotation for the 10,000L diesel order? The
-          price per litre looks above the last quote from Greenfields.
+          Can you attach the quotation for the 10,000L diesel order? The price per litre looks above the last quote from{" "}
+          {PURCHASE_ORDER.vendorShortName}.
         </div>
-      </div>
+      </PreviewCard>
 
       {/* Action panel */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            margin: "0 0 10px",
-          }}
-        >
-          Your decision
-        </p>
+      <PreviewCard>
+        <PreviewLabel>Your decision</PreviewLabel>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px" }}>
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-white)",
-              color: "var(--color-text-primary)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
+          <MockButton variant="secondary" fill>
             Approve
-          </button>
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-gold)",
-              color: "var(--color-text-primary)",
-              border: "none",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
+          </MockButton>
+          <MockButton variant="accent" fill>
             Send query
-          </button>
-          <button
-            type="button"
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontWeight: 500,
-              fontSize: "12px",
-              backgroundColor: "var(--color-white)",
-              color: "var(--color-danger)",
-              border: "1px solid rgba(var(--color-danger-rgb), 0.3)",
-              borderRadius: "3px",
-              padding: "8px 0",
-              cursor: "default",
-            }}
-          >
+          </MockButton>
+          <MockButton variant="danger" fill>
             Return
-          </button>
+          </MockButton>
         </div>
-      </div>
-    </div>
+      </PreviewCard>
+    </PreviewBody>
   );
 }
 
 // ── Stage 03 — Sanction (MD signs off) ──────────────────────────────
 
 export function SanctionStageMockup() {
+  const priorSteps = [featuredTrailEntry("submit"), featuredTrailEntry("review")];
+  const sanctioner = featuredTrailEntry("sanction").person;
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Reference + status */}
-      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "10px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontFeatureSettings: '"tnum" 1', fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-          PV-2026-0184
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-gold)",
-            borderRadius: "3px",
-            padding: "1px 5px",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-          }}
-        >
-          PV
-        </span>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "4px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "rgba(var(--color-gold-rgb), 0.08)",
-            color: "var(--color-warning)",
-            borderRadius: "3px",
-            padding: "2px 6px",
-          }}
-        >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-gold)" }} />
-          MD sanction pending
-        </span>
-      </div>
+    <PreviewBody>
+      <DocumentHeading
+        reference={FEATURED_VOUCHER.reference}
+        typeTag="PV"
+        status={{ label: `${roleLabel(sanctioner)} sanction pending`, tone: "pending" }}
+      />
 
       {/* Prior approvers */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "12px 14px",
-          marginBottom: "12px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            margin: "0 0 10px",
-          }}
-        >
-          Prior approvals
-        </p>
-        {[
-          { role: "Submitted", actor: "Fatima Abubakar · Staff", when: "09:14" },
-          { role: "Reviewed", actor: "Chinedu Okafor · Finance", when: "11:02" },
-        ].map((s) => (
-          <div key={s.role} style={{ display: "flex", gap: "10px", alignItems: "center", padding: "4px 0" }}>
-            <span
-              style={{
-                width: "18px",
-                height: "18px",
-                borderRadius: "50%",
-                backgroundColor: "var(--color-white)",
-                border: "1.5px solid var(--color-success)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
-              <span style={{ color: "var(--color-success)", fontSize: "9px", lineHeight: 1 }}>✓</span>
+      <PreviewCard padding="12px 14px" marginBottom="12px">
+        <PreviewLabel>Prior approvals</PreviewLabel>
+        {priorSteps.map((step) => (
+          <div key={step.stage} style={{ display: "flex", gap: "10px", alignItems: "center", padding: "4px 0" }}>
+            <CompletedMark size={18} />
+            <span style={{ flex: 1, fontFamily: SANS, fontSize: "12px", color: "var(--color-text-primary)" }}>
+              {step.label} <span style={{ color: "var(--color-text-muted)" }}>— {personWithRole(step.person)}</span>
             </span>
-            <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontSize: "12px", color: "var(--color-text-primary)" }}>
-              {s.role} <span style={{ color: "var(--color-text-muted)" }}>— {s.actor}</span>
-            </span>
-            <span style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
-              {s.when}
+            <span style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", fontFeatureSettings: '"tnum" 1' }}>
+              {formatDemoTime(step.at)}
             </span>
           </div>
         ))}
-      </div>
+      </PreviewCard>
 
       {/* Signature capture + MD action */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            margin: "0 0 10px",
-          }}
-        >
-          Your sanction
-        </p>
+      <PreviewCard>
+        <PreviewLabel>Your sanction</PreviewLabel>
         <div
           style={{
             backgroundColor: "var(--color-bg-light)",
@@ -528,9 +240,7 @@ export function SanctionStageMockup() {
           }}
         >
           <div>
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "0 0 2px" }}>
-              Saved signature
-            </p>
+            <p style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-text-muted)", margin: "0 0 2px" }}>Saved signature</p>
             <p
               style={{
                 fontFamily: "'Dancing Script', cursive",
@@ -540,198 +250,65 @@ export function SanctionStageMockup() {
                 fontStyle: "italic",
               }}
             >
-              Aisha Danjuma
+              {sanctioner.name}
             </p>
           </div>
-          <span
-            style={{
-              fontFamily: "var(--font-sans)",
-              fontSize: "11px",
-              color: "var(--color-gold-on-light)",
-              fontWeight: 500,
-            }}
-          >
-            Change →
-          </span>
+          <span style={{ fontFamily: SANS, fontSize: "11px", color: "var(--color-gold-on-light)", fontWeight: 500 }}>Change →</span>
         </div>
-        <button
-          type="button"
-          style={{
-            width: "100%",
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "13px",
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-white)",
-            border: "none",
-            borderRadius: "3px",
-            padding: "10px 0",
-            cursor: "default",
-          }}
-        >
-          Sanction ₦850,000
-        </button>
-      </div>
-    </div>
+        <MockButton variant="primary" style={{ width: "100%", fontSize: "13px", padding: "10px 0" }}>
+          Sanction {demoAmount(FEATURED_VOUCHER.amount)}
+        </MockButton>
+      </PreviewCard>
+    </PreviewBody>
   );
 }
 
 // ── Stage 04 — Record ───────────────────────────────────────────────
 
 export function RecordStageMockup() {
-  const stages = [
-    { role: "Submitted", actor: "Fatima Abubakar · Staff", when: "15 Apr, 09:14" },
-    { role: "Reviewed", actor: "Chinedu Okafor · Finance", when: "15 Apr, 11:02" },
-    { role: "Sanctioned", actor: "Aisha Danjuma · MD", when: "15 Apr, 14:32" },
-  ];
   return (
-    <div style={{ padding: "22px 24px" }}>
-      {/* Status strip */}
-      <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "12px" }}>
-        <span style={{ fontFamily: "var(--font-sans)", fontSize: "13px", fontWeight: 500, color: "var(--color-text-primary)" }}>
-          PV-2026-0184
-        </span>
-        <span
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "4px",
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            backgroundColor: "rgba(var(--color-success-rgb), 0.08)",
-            color: "var(--color-success)",
-            borderRadius: "3px",
-            padding: "2px 6px",
-          }}
-        >
-          <span style={{ width: "5px", height: "5px", borderRadius: "50%", backgroundColor: "var(--color-success)" }} />
-          Approved
-        </span>
-        <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: "10px", color: "var(--color-text-muted)" }}>
-          Tamper-evident
-        </span>
-      </div>
+    <PreviewBody>
+      <DocumentHeading
+        reference={FEATURED_VOUCHER.reference}
+        status={{ label: "Approved", tone: "success" }}
+        note="Tamper-evident"
+        marginBottom="12px"
+      />
 
-      {/* Approval timeline */}
-      <div
-        style={{
-          backgroundColor: "var(--color-white)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "4px",
-          padding: "14px 16px",
-          marginBottom: "12px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-sans)",
-            fontSize: "10px",
-            fontWeight: 500,
-            color: "var(--color-text-muted)",
-            letterSpacing: "0.04em",
-            textTransform: "uppercase",
-            margin: "0 0 10px",
-          }}
-        >
-          Approval timeline
-        </p>
-        <div style={{ position: "relative" }}>
-          <div
-            style={{
-              position: "absolute",
-              left: "9px",
-              top: "8px",
-              bottom: "8px",
-              width: "1px",
-              backgroundColor: "var(--color-border)",
-            }}
-          />
-          {stages.map((s) => (
-            <div key={s.role} style={{ position: "relative", display: "flex", gap: "12px", padding: "4px 0" }}>
-              <span
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  borderRadius: "50%",
-                  backgroundColor: "var(--color-white)",
-                  border: "1.5px solid var(--color-success)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexShrink: 0,
-                  zIndex: 1,
-                }}
-              >
-                <span style={{ color: "var(--color-success)", fontSize: "10px", lineHeight: 1 }}>✓</span>
-              </span>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, color: "var(--color-text-primary)", margin: 0 }}>
-                  {s.role} <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}>— {s.actor}</span>
-                </p>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: "11px", color: "var(--color-text-muted)", margin: "1px 0 0" }}>
-                  {s.when}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <PreviewCard marginBottom="12px">
+        <PreviewLabel>Approval timeline</PreviewLabel>
+        <ApprovalTimeline
+          steps={FEATURED_VOUCHER.trail.map((entry) => ({
+            label: entry.label,
+            actor: personWithRole(entry.person),
+            when: formatDemoDayTime(entry.at),
+          }))}
+        />
+      </PreviewCard>
 
-      {/* Export affordances */}
-      <div style={{ display: "flex", gap: "8px" }}>
-        <button
-          type="button"
-          style={{
-            flex: 1,
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-navy-primary)",
-            color: "var(--color-white)",
-            border: "none",
-            borderRadius: "3px",
-            padding: "9px 0",
-            cursor: "default",
-          }}
-        >
+      <ButtonRow>
+        <MockButton variant="primary" fill style={{ padding: "9px 0" }}>
           Bank instruction
-        </button>
-        <button
-          type="button"
-          style={{
-            flex: 1,
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-white)",
-            color: "var(--color-text-primary)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "3px",
-            padding: "9px 0",
-            cursor: "default",
-          }}
-        >
+        </MockButton>
+        <MockButton variant="secondary" fill style={{ padding: "9px 0" }}>
           Voucher PDF
-        </button>
-        <button
-          type="button"
-          style={{
-            flex: 1,
-            fontFamily: "var(--font-sans)",
-            fontWeight: 500,
-            fontSize: "12px",
-            backgroundColor: "var(--color-white)",
-            color: "var(--color-text-primary)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "3px",
-            padding: "9px 0",
-            cursor: "default",
-          }}
-        >
+        </MockButton>
+        <MockButton variant="secondary" fill style={{ padding: "9px 0" }}>
           Audit export
-        </button>
-      </div>
-    </div>
+        </MockButton>
+      </ButtonRow>
+    </PreviewBody>
   );
 }
+
+/**
+ * Each lifecycle stage's drawing and the in-app path its frame captions.
+ * Keyed by the lifecycle registry, so a surface that renders the stages
+ * cannot drop, add or reorder a drawing.
+ */
+export const STAGE_MOCKUPS: Record<LifecycleStageKey, { Mockup: ComponentType; previewPath: string }> = {
+  submit: { Mockup: SubmitStageMockup, previewPath: "vouchers / new" },
+  review: { Mockup: ReviewStageMockup, previewPath: "approvals" },
+  sanction: { Mockup: SanctionStageMockup, previewPath: `vouchers / ${FEATURED_VOUCHER.reference}` },
+  record: { Mockup: RecordStageMockup, previewPath: `vouchers / ${FEATURED_VOUCHER.reference}` },
+};

@@ -28,6 +28,8 @@ const TYPED_TERMS: { name: string; pattern: RegExp }[] = [
   { name: "a grace count after a trial", pattern: /\b\d+ days? after (?:your |the )?trial/i },
   { name: "a trial seat count", pattern: /\b\d+-seat\b/i },
   { name: "the trial plan's name", pattern: new RegExp(`\\b(?:${PLAN_NAMES}) (?:tier|features|trial)\\b`) },
+  { name: "a day count after 'trial'", pattern: /\btrial\b[^\n.]{0,30}?\b(?:\d+|seven|fourteen|thirty|sixty)\s+days?\b/i },
+  { name: "a spelled-out day count before 'trial'", pattern: /\b(?:seven|fourteen|thirty|sixty)[- ]day\b[^\n]{0,30}\btrial\b/i },
   { name: "a typed no-card promise (NO_CARD_REQUIRED)", pattern: /\bno\s+(?:credit\s+)?card\b|\bcard\s+on\s+file\b/i },
   { name: "a typed setup time (TRIAL_SETUP_TIME)", pattern: /\b(?:under|less\s+than|within)\s+(?:\d+|one|two|three|five|ten|fifteen|twenty|thirty)\s+minutes?\b|\bsetup\s+in\s+minutes\b/i },
   { name: "the market typed out (MARKET_SCOPE)", pattern: /across Nigeria and Africa|Nigerian and African organisations|Pan-African platform/i },
@@ -42,7 +44,11 @@ function sourceFiles(): string[] {
 
 describe("trial terms come from core, never from copy", () => {
   it("the detectors catch typed terms", () => {
-    const [dayCount, graceCount, seatCount, planNameDetector, noCard, setupTime, market] = TYPED_TERMS.map((term) => term.pattern);
+    const [dayCount, graceCount, seatCount, planNameDetector, dayCountAfter, spelledDayCount, noCard, setupTime, market] =
+      TYPED_TERMS.map((term) => term.pattern);
+    expect(dayCountAfter!.test("Your trial lasts 30 days")).toBe(true);
+    expect(spelledDayCount!.test("a thirty-day trial")).toBe(true);
+    expect(dayCountAfter!.test("trial ${TRIAL_LENGTH}")).toBe(false);
     expect(dayCount!.test("Start your 30-day trial")).toBe(true);
     expect(dayCount!.test("30-DAY TRIAL")).toBe(true);
     expect(graceCount!.test("Data preserved for 30 days after trial end")).toBe(true);

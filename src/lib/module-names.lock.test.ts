@@ -16,9 +16,19 @@ import { MODULE_ORDER, MODULES } from "@/lib/brand";
  */
 
 const SRC = join(process.cwd(), "src");
+// brand.ts reads every name from core and types none.
 const HOME = join("lib", "brand.ts");
 const NAMES = Object.values(MODULES).map((module) => module.name);
-const TYPED_NAME = new RegExp(NAMES.map((name) => name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"));
+/** A brand name as typed in copy: any case, its words split by spaces, a line break or a non-breaking space. */
+const TYPED_NAME = new RegExp(
+  NAMES.map((name) =>
+    name
+      .split(/\s+/)
+      .map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))
+      .join("(?:\\s|&nbsp;|\\u00a0|\\{\" \"\\})+"),
+  ).join("|"),
+  "i",
+);
 
 function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
@@ -31,6 +41,10 @@ describe("module names come from the brand registry, never from copy", () => {
   it("the detector catches a typed name and passes the template", () => {
     expect(TYPED_NAME.test('title: "Avrentis Payables — Structured payment approvals"')).toBe(true);
     expect(TYPED_NAME.test("title: `${moduleName(\"pay\")} — Structured payment approvals`")).toBe(false);
+    expect(TYPED_NAME.test("the avrentis payables module")).toBe(true);
+    expect(TYPED_NAME.test("Avrentis\n            Payables")).toBe(true);
+    expect(TYPED_NAME.test("Avrentis&nbsp;Payables")).toBe(true);
+    expect(TYPED_NAME.test('Avrentis{" "}Payables')).toBe(true);
   });
 
   it("would have caught the files this lock was written for (proven on a pre-lock revision)", () => {

@@ -71,6 +71,16 @@ describe("product module pages — plan availability stays derived", () => {
     expect(unwired).toEqual([]);
   });
 
+  it("no route writes plan availability inline", () => {
+    // The route hands over modulePageData(); a literal list at the call site
+    // would pass every other check here.
+    const routesDir = join(process.cwd(), "src/app/product");
+    const inline = MODULE_ORDER.filter((moduleKey) =>
+      /\bplanAvailability\s*[:=]/.test(readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8")),
+    );
+    expect(inline).toEqual([]);
+  });
+
   it("every module route 404s when its module is hidden", () => {
     // The visibility flag is the one switch; a route that forgets to ask it is
     // served while every list hides it.

@@ -347,7 +347,7 @@ export function TrialForm() {
           backgroundColor: "var(--color-white)",
           border: "1px solid var(--color-border)",
           borderRadius: "var(--radius-2xl)",
-          padding: "32px",
+          padding: "var(--form-card-padding)",
           display: "flex",
           flexDirection: "column",
           gap: "18px",

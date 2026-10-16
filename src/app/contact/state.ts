@@ -8,20 +8,14 @@
  */
 
 import type { SubmittedValues } from "@/lib/submitted-values";
+import { CONTACT_INPUTS } from "./topics";
 
 /**
- * The fields an enquiry posts; a refusal hands them back (submitted-values.ts),
- * and each can carry an error of its own.
+ * The fields an enquiry can post — every topic input plus consent; a refusal
+ * hands them back (submitted-values.ts), and each can carry an error of its
+ * own. Which of them a topic shows is `CONTACT_TOPICS[intent].inputs`.
  */
-export const CONTACT_FIELDS = [
-  "name",
-  "email",
-  "organisation",
-  "size",
-  "country",
-  "message",
-  "consent",
-] as const;
+export const CONTACT_FIELDS = [...CONTACT_INPUTS, "consent"] as const;
 export type ContactField = (typeof CONTACT_FIELDS)[number];
 
 export interface ContactFormState {

@@ -189,6 +189,8 @@
   --measure-short: 520px;
   --measure-tight: 480px;
   --measure-compact: 420px;
+  /* A form card's inner padding: narrower on phones, where every pixel of field width counts. */
+  --form-card-padding: clamp(20px, 5vw, 32px);
 }
 
 /* framer-motion's useScroll({ target }) measures the target's offset against

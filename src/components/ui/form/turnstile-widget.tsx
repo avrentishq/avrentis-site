@@ -4,6 +4,9 @@ import { useCallback, useEffect, useRef } from "react";
 import Script from "next/script";
 import { TURNSTILE_SCRIPT_URL, TURNSTILE_SITE_KEY } from "@/lib/turnstile-config";
 
+/** Turnstile's standard widget is a fixed 300px wide; narrower forms get its compact size. */
+const STANDARD_WIDGET_WIDTH = 300;
+
 interface TurnstileApi {
   render: (element: HTMLElement, options: Record<string, unknown>) => void;
 }
@@ -24,7 +27,8 @@ export function TurnstileWidget({ fallbackEmail }: { fallbackEmail: string }) {
     if (!TURNSTILE_SITE_KEY || rendered.current || !containerRef.current) return;
     const turnstile = (window as unknown as { turnstile?: TurnstileApi }).turnstile;
     if (!turnstile) return;
-    turnstile.render(containerRef.current, { sitekey: TURNSTILE_SITE_KEY, theme: "light" });
+    const size = containerRef.current.clientWidth < STANDARD_WIDGET_WIDTH ? "compact" : "normal";
+    turnstile.render(containerRef.current, { sitekey: TURNSTILE_SITE_KEY, theme: "light", size });
     rendered.current = true;
   }, []);
 

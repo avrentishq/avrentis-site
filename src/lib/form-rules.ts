@@ -27,6 +27,8 @@ export const FORM_LIMITS = {
   message: 5000,
   /** The free-text detail behind an "Other" choice (role, industry). */
   otherDetail: 120,
+  /** A link a visitor shares (portfolio, write-up). */
+  link: 500,
   token: TRIAL_TOKEN_LENGTH.max,
 } as const;
 
@@ -57,6 +59,16 @@ export const MESSAGE_MIN_LENGTH = 10;
 export const HONEYPOT_FIELD = "fax_number";
 
 const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Is the value an absolute http(s) link? (A shared portfolio or write-up.) */
+export function isWebLink(value: string): boolean {
+  try {
+    const url = new URL(value);
+    return (url.protocol === "https:" || url.protocol === "http:") && url.hostname.includes(".");
+  } catch {
+    return false;
+  }
+}
 
 /** Does the value look like an email address at all? */
 export function hasEmailShape(email: string): boolean {

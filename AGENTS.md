@@ -96,6 +96,13 @@ Run these locally before you claim anything is done.
   `src/lib/email-html.ts`, and logs failures through `src/lib/safe-log.ts` (error name only —
   never a provider message, which can carry addresses). `form-rules.lock.test.ts` fails on a
   typed copy. Outgoing calls carry a timeout (`platformFetch`, Turnstile).
+- **Each contact topic declares its own form.** `CONTACT_TOPICS` (`src/app/contact/topics.ts`)
+  says, per topic, which inputs appear and which are required, their labels, the consent
+  wording, the confirmation and the inbox it reaches (`disclosure` → the security inbox, with
+  the general inbox copied). The form renders from it and the action validates against it, so
+  never add a field to one without the other; `topics.test.ts` holds the contract. Updates
+  signups join the Resend segment named by `RESEND_UPDATES_SEGMENT_ID`; unset, the team is
+  emailed instead (`addToUpdatesList` in `src/lib/email.ts`).
 - **A magic link is spent only by a person.** The trial verify page renders a confirm button;
   `confirmTrialVerification` (a server action) calls the platform and redirects. Never call the
   platform while rendering the GET — email link scanners open links before people do.

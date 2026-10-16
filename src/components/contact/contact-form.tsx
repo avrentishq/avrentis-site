@@ -6,9 +6,10 @@
  * swaps into a success state without a full page navigation.
  *
  * The form is intent-aware — `?intent=<kind>` query parameters set the
- * intent field and adjust the headline micro-copy. Trial requests live
- * on the dedicated /trial page; this form handles sales, security,
- * legal, privacy, disclosure, careers, feedback, subscribe, and roadmap.
+ * topic, and the topic decides everything the visitor sees: the words, which
+ * fields appear (and which are required), the consent wording and the
+ * confirmation — all from `CONTACT_TOPICS` (topics.ts), the same table the
+ * Server Action validates against. Trial requests live on the /trial page.
  */
 
 import { useActionState, useCallback, useMemo, useRef, useState } from "react";
@@ -34,12 +35,17 @@ import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
-import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
+import { INITIAL_STATE, type ContactField, type ContactFormState } from "@/app/contact/state";
 import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
-import { CONTACT_TOPICS } from "@/app/contact/topics";
-import { CONTACT_EMAIL, ENQUIRY_PROMISE } from "@/lib/contacts";
-import { BRAND, LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
-import { FORM_LIMITS, hasEmailShape, MESSAGE_MIN_LENGTH } from "@/lib/form-rules";
+import {
+  CONTACT_TOPICS,
+  inputRule,
+  topicEmail,
+  topicInputs,
+  type ContactInput,
+} from "@/app/contact/topics";
+import { LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
+import { FORM_LIMITS, hasEmailShape, isWebLink, MESSAGE_MIN_LENGTH } from "@/lib/form-rules";
 import { SITE_ROUTES } from "@/lib/routes";
 
 /** The country picker posts the alpha-2 code (as the trial does); the label is the name. */
@@ -47,6 +53,35 @@ const COUNTRY_OPTIONS = COUNTRIES.map((country) => ({ value: country.code, label
 
 // Same bands as the trial (shared SSOT); prepend an opt-out for this optional field.
 const SIZE_OPTIONS = [{ value: "", label: "Prefer not to say" }, ...ORG_SIZE_OPTIONS];
+
+/** Name and email share a row on wider screens when they sit next to each other. */
+function inputRows(inputs: readonly ContactInput[]): ContactInput[][] {
+  const rows: ContactInput[][] = [];
+  for (let index = 0; index < inputs.length; index += 1) {
+    if (inputs[index] === "name" && inputs[index + 1] === "email") {
+      rows.push(["name", "email"]);
+      index += 1;
+    } else {
+      rows.push([inputs[index]!]);
+    }
+  }
+  return rows;
+}
+
+/** The free-text inputs, their input type and the browser's autofill hint. */
+type TextInput = "name" | "email" | "organisation" | "link";
+const TEXT_INPUT_TYPES: Record<TextInput, "text" | "email" | "url"> = {
+  name: "text",
+  email: "email",
+  organisation: "text",
+  link: "url",
+};
+const AUTOCOMPLETE: Record<TextInput, string> = {
+  name: "name",
+  email: "email",
+  organisation: "organization",
+  link: "url",
+};
 
 /* ── Styling primitives ──────────────────────────────────────────── */
 
@@ -129,32 +164,171 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   const formRef = useRef<HTMLFormElement>(null);
   useFocusAfterFailure(formRef, state, state.status === "error", "contact-form-error");
 
+  const [consentValue, setConsentValue] = useState(posted.consent === "on");
   const switchIntent = useCallback((next: string) => {
     const value = next as ContactIntent;
     setIntent(value);
+    // Each topic's consent says something different, so agreement never carries over.
+    setConsentValue(false);
     // Keep the URL shareable/deep-linkable without a full navigation.
     window.history.replaceState(null, "", contactHref(value));
   }, []);
 
   // ── Controlled field state for validity computation ─────────────────
-  const [nameValue, setNameValue] = useState(posted.name ?? "");
-  const [emailValue, setEmailValue] = useState(posted.email ?? "");
-  const [organisationValue, setOrganisationValue] = useState(posted.organisation ?? "");
-  const [messageValue, setMessageValue] = useState(posted.message ?? "");
-  const [sizeValue, setSizeValue] = useState(posted.size ?? "");
-  const [countryValue, setCountryValue] = useState(posted.country ?? "");
-  const [consentValue, setConsentValue] = useState(posted.consent === "on");
+  // One value per input; a value survives a topic switch, but only the
+  // topic's own inputs render, post, or count towards validity.
+  const [values, setValues] = useState<Partial<Record<ContactInput, string>>>(posted);
+  const inputs = topicInputs(intent);
+  const setValue = useCallback(
+    (input: ContactInput, value: string) => {
+      setValues((current) => ({ ...current, [input]: value }));
+      clearFieldError(input);
+    },
+    [clearFieldError],
+  );
 
-  // ── Validity derivation ─────────────────────────────────────────────
+  // ── Validity derivation (mirrors the action's checks) ───────────────
   const isValid = useMemo(
     () =>
-      nameValue.trim().length > 0 &&
-      hasEmailShape(emailValue.trim()) &&
-      organisationValue.trim().length > 0 &&
-      messageValue.trim().length >= MESSAGE_MIN_LENGTH &&
-      consentValue === true,
-    [nameValue, emailValue, organisationValue, messageValue, consentValue],
+      consentValue &&
+      inputs.every((input) => {
+        const value = (values[input] ?? "").trim();
+        if (!value) return !inputRule(intent, input)!.required;
+        if (input === "email") return hasEmailShape(value);
+        if (input === "link") return isWebLink(value);
+        if (input === "message") return value.length >= MESSAGE_MIN_LENGTH;
+        return true;
+      }),
+    [consentValue, inputs, values, intent],
   );
+
+  const errorId = (input: string) => `contact-${input}-error`;
+  const fieldError = (input: ContactField) =>
+    fieldErrors[input] ? (
+      <span id={errorId(input)} style={errorStyle}>
+        {fieldErrors[input]}
+      </span>
+    ) : null;
+  const fieldLabel = (input: ContactInput, htmlFor?: string) => {
+    const rule = inputRule(intent, input)!;
+    return (
+      <label htmlFor={htmlFor} style={labelStyle}>
+        {rule.label}
+        {rule.required ? (
+          <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
+        ) : (
+          <span style={{ color: "var(--color-text-muted)", fontWeight: 400 }}> (optional)</span>
+        )}
+      </label>
+    );
+  };
+  const textInputStyle = (input: ContactInput) => ({
+    ...inputStyle,
+    borderColor: fieldErrors[input] ? "var(--color-danger)" : "var(--color-border)",
+  });
+
+  const renderInput = (input: ContactInput) => {
+    const rule = inputRule(intent, input)!;
+    const invalid = !!fieldErrors[input];
+    const described = describedBy(invalid && errorId(input));
+    switch (input) {
+      case "size":
+        return (
+          <div key={input}>
+            {fieldLabel(input)}
+            <ChoiceGroup
+              name="size"
+              variant="chips"
+              value={values.size ?? ""}
+              onChange={(value) => setValue("size", value)}
+              options={SIZE_OPTIONS}
+              ariaLabel={rule.label}
+              invalid={invalid}
+              describedBy={described}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      case "relationship":
+      case "requestType":
+        return (
+          <div key={input}>
+            {fieldLabel(input)}
+            <ChoiceGroup
+              name={input}
+              variant="chips"
+              value={values[input] ?? ""}
+              onChange={(value) => setValue(input, value)}
+              options={rule.options ?? []}
+              ariaLabel={rule.label}
+              invalid={invalid}
+              describedBy={described}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      case "country":
+      case "module":
+        return (
+          <div key={input}>
+            {fieldLabel(input)}
+            <SearchableSelect
+              name={input}
+              value={values[input] ?? ""}
+              onChange={(value) => setValue(input, value)}
+              options={input === "country" ? COUNTRY_OPTIONS : (rule.options ?? [])}
+              ariaLabel={rule.label}
+              placeholder={rule.placeholder ?? (input === "module" ? "Choose a module…" : undefined)}
+              searchLabel={input === "country" ? "countries" : "modules"}
+              invalid={invalid}
+              describedBy={described}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      case "message":
+        return (
+          <div key={input}>
+            {fieldLabel(input, "message")}
+            <textarea
+              id="message"
+              name="message"
+              required={rule.required}
+              minLength={MESSAGE_MIN_LENGTH}
+              maxLength={FORM_LIMITS.message}
+              value={values.message ?? ""}
+              onChange={(e) => setValue("message", e.target.value)}
+              aria-invalid={invalid || undefined}
+              aria-describedby={described}
+              style={{ ...textareaStyle, borderColor: textInputStyle(input).borderColor }}
+              placeholder={rule.placeholder}
+            />
+            {fieldError(input)}
+          </div>
+        );
+      default:
+        return (
+          <div key={input}>
+            {fieldLabel(input, input)}
+            <input
+              id={input}
+              name={input}
+              type={TEXT_INPUT_TYPES[input]}
+              required={rule.required}
+              maxLength={FORM_LIMITS[input]}
+              autoComplete={AUTOCOMPLETE[input]}
+              placeholder={rule.placeholder}
+              value={values[input] ?? ""}
+              onChange={(e) => setValue(input, e.target.value)}
+              aria-invalid={invalid || undefined}
+              aria-describedby={described}
+              style={textInputStyle(input)}
+            />
+            {fieldError(input)}
+          </div>
+        );
+    }
+  };
 
   if (state.status === "success") {
     return (
@@ -193,7 +367,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             margin: 0,
           }}
         >
-          Enquiry received.
+          {copy.successTitle}
         </h2>
         <p
           style={{
@@ -204,7 +378,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             maxWidth: "var(--measure-compact)",
           }}
         >
-          {state.message ?? `Thanks — we've received your enquiry. ${ENQUIRY_PROMISE}`}
+          {state.message ?? copy.successMessage}
         </p>
         <Link
           href={SITE_ROUTES.home}
@@ -305,10 +479,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               What happens next
             </div>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "9px" }}>
-              {[
-                `${ENQUIRY_PROMISE} No routing bots.`,
-                "For enterprise enquiries, we can sign an NDA before the first call.",
-              ].map((point) => (
+              {copy.nextSteps.map((point) => (
                 <li key={point} style={{ display: "flex", gap: "9px", alignItems: "baseline" }}>
                   <span
                     aria-hidden="true"
@@ -341,7 +512,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               Prefer email?
             </div>
             <a
-              href={`mailto:${CONTACT_EMAIL.general}`}
+              href={`mailto:${topicEmail(intent)}`}
               style={{
                 fontSize: "var(--text-lg)",
                 fontWeight: 500,
@@ -349,7 +520,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 textDecoration: "none",
               }}
             >
-              {CONTACT_EMAIL.general}
+              {topicEmail(intent)}
             </a>
             <p
               style={{
@@ -360,8 +531,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 maxWidth: "300px",
               }}
             >
-              We only use your details to reply to this enquiry — never for
-              marketing lists.
+              {copy.emailNote}
             </p>
           </m.div>
         </div>
@@ -377,7 +547,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             backgroundColor: "var(--color-white)",
             border: "1px solid var(--color-border)",
             borderRadius: "var(--radius-2xl)",
-            padding: "32px",
+            padding: "var(--form-card-padding)",
             display: "flex",
             flexDirection: "column",
             gap: "18px",
@@ -388,153 +558,15 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           <input type="hidden" name="intent" value={intent} />
           <HoneypotField />
 
-          <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
-            <div>
-              <label htmlFor="name" style={labelStyle}>
-                Full name
-                <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-              </label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                required
-                maxLength={FORM_LIMITS.name}
-                autoComplete="name"
-                value={nameValue}
-                onChange={(e) => {
-                  setNameValue(e.target.value);
-                  clearFieldError("name");
-                }}
-                aria-invalid={!!fieldErrors.name || undefined}
-                aria-describedby={describedBy(!!fieldErrors.name && "contact-name-error")}
-                style={{
-                  ...inputStyle,
-                  borderColor: fieldErrors.name ? "var(--color-danger)" : "var(--color-border)",
-                }}
-              />
-              {fieldErrors.name && <span id="contact-name-error" style={errorStyle}>{fieldErrors.name}</span>}
-            </div>
-            <div>
-              <label htmlFor="email" style={labelStyle}>
-                Work email
-                <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                maxLength={FORM_LIMITS.email}
-                autoComplete="email"
-                value={emailValue}
-                onChange={(e) => {
-                  setEmailValue(e.target.value);
-                  clearFieldError("email");
-                }}
-                aria-invalid={!!fieldErrors.email || undefined}
-                aria-describedby={describedBy(!!fieldErrors.email && "contact-email-error")}
-                style={{
-                  ...inputStyle,
-                  borderColor: fieldErrors.email ? "var(--color-danger)" : "var(--color-border)",
-                }}
-              />
-              {fieldErrors.email && <span id="contact-email-error" style={errorStyle}>{fieldErrors.email}</span>}
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="organisation" style={labelStyle}>
-              Organisation
-              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-            </label>
-            <input
-              id="organisation"
-              name="organisation"
-              type="text"
-              required
-              maxLength={FORM_LIMITS.organisation}
-              autoComplete="organization"
-              value={organisationValue}
-              onChange={(e) => {
-                setOrganisationValue(e.target.value);
-                clearFieldError("organisation");
-              }}
-              aria-invalid={!!fieldErrors.organisation || undefined}
-              aria-describedby={describedBy(!!fieldErrors.organisation && "contact-org-error")}
-              style={{
-                ...inputStyle,
-                borderColor: fieldErrors.organisation ? "var(--color-danger)" : "var(--color-border)",
-              }}
-            />
-            {fieldErrors.organisation && <span id="contact-org-error" style={errorStyle}>{fieldErrors.organisation}</span>}
-          </div>
-
-          <div>
-            <label style={labelStyle}>Organisation size</label>
-            <ChoiceGroup
-              name="size"
-              variant="chips"
-              value={sizeValue}
-              onChange={(value) => {
-                setSizeValue(value);
-                clearFieldError("size");
-              }}
-              options={SIZE_OPTIONS}
-              ariaLabel="Organisation size"
-              invalid={!!fieldErrors.size}
-              describedBy={describedBy(!!fieldErrors.size && "contact-size-error")}
-            />
-            {fieldErrors.size && <span id="contact-size-error" style={errorStyle}>{fieldErrors.size}</span>}
-          </div>
-
-          <div>
-            <label style={labelStyle}>Country (optional)</label>
-            <SearchableSelect
-              name="country"
-              value={countryValue}
-              onChange={(value) => {
-                setCountryValue(value);
-                clearFieldError("country");
-              }}
-              options={COUNTRY_OPTIONS}
-              ariaLabel="Country"
-              placeholder="Search your country…"
-              searchLabel="countries"
-              invalid={!!fieldErrors.country}
-              describedBy={describedBy(!!fieldErrors.country && "contact-country-error")}
-            />
-            {fieldErrors.country && (
-              <span id="contact-country-error" style={errorStyle}>{fieldErrors.country}</span>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="message" style={labelStyle}>
-              Tell us about your use case
-              <span style={{ color: "var(--color-required)", marginLeft: 4 }} aria-hidden="true">*</span>
-            </label>
-            <textarea
-              id="message"
-              name="message"
-              required
-              minLength={MESSAGE_MIN_LENGTH}
-              maxLength={FORM_LIMITS.message}
-              value={messageValue}
-              onChange={(e) => {
-                setMessageValue(e.target.value);
-                clearFieldError("message");
-              }}
-              aria-invalid={!!fieldErrors.message || undefined}
-              aria-describedby={describedBy(!!fieldErrors.message && "contact-message-error")}
-              style={{
-                ...textareaStyle,
-                borderColor: fieldErrors.message ? "var(--color-danger)" : "var(--color-border)",
-              }}
-              placeholder="What approvals or records are you trying to structure? How many people, how often?"
-            />
-            {fieldErrors.message && <span id="contact-message-error" style={errorStyle}>{fieldErrors.message}</span>}
-          </div>
+          {inputRows(inputs).map((row) =>
+            row.length === 1 ? (
+              renderInput(row[0]!)
+            ) : (
+              <div key={row.join("-")} style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
+                {row.map(renderInput)}
+              </div>
+            ),
+          )}
 
           <div>
             <label
@@ -564,7 +596,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
               />
               <span>
-                I agree that {BRAND.name} may use the details above to respond to this enquiry, in line with the{" "}
+                {copy.consent}, in line with the{" "}
                 <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
@@ -597,7 +629,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             </FormAlert>
           )}
 
-          <TurnstileWidget fallbackEmail={CONTACT_EMAIL.general} />
+          <TurnstileWidget fallbackEmail={topicEmail(intent)} />
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
             <SubmitButton label={copy.cta} isValid={!hydrated || isValid} pending={isPending} />

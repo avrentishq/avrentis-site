@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { CONTACT_TABS, contactHref, tabForIntent } from "./tabs";
+import { CONTACT_TABS, contactHref, tabForIntent, topicChoices } from "./tabs";
 import { CONTACT_INTENTS, type ContactIntent } from "@/lib/brand";
 
 describe("contact tabs", () => {
@@ -18,6 +18,15 @@ describe("contact tabs", () => {
     for (const tab of CONTACT_TABS) {
       expect(tab.members, tab.label).toContain(tab.value);
     }
+  });
+
+  it("offers every topic of a multi-topic tab as an on-page choice", () => {
+    for (const tab of CONTACT_TABS) {
+      const choices = topicChoices(tab.value).map((choice) => choice.value);
+      expect(choices, tab.label).toEqual(tab.members.length > 1 ? tab.members : []);
+    }
+    expect(topicChoices("security").map((choice) => choice.label)).toContain("Report a vulnerability");
+    expect(topicChoices("careers")).toEqual([]);
   });
 
   it("lights the parent tab for deep-linked members", () => {

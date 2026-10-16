@@ -45,6 +45,8 @@ export interface InputRule {
 export type ContactInbox = "general" | "security";
 
 export interface ContactTopic {
+  /** The topic's name in its tab's choice row (a tab with several topics). */
+  choiceLabel: string;
   /** The small upper-case line above the headline. */
   eyebrow: string;
   headline: string;
@@ -143,6 +145,7 @@ const ENQUIRY_RECEIVED = {
 
 export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
   general: {
+    choiceLabel: "A question",
     eyebrow: "CONTACT US",
     headline: "Let's talk.",
     lede:
@@ -160,6 +163,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   demo: {
+    choiceLabel: "A walkthrough",
     eyebrow: "CONTACT US",
     headline: "Talk to our team.",
     lede:
@@ -177,6 +181,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   roadmap: {
+    choiceLabel: "Share a use case",
     eyebrow: "SHARE YOUR USE CASE",
     headline: "Shape what we build next.",
     lede:
@@ -194,6 +199,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   feedback: {
+    choiceLabel: "Docs feedback",
     eyebrow: "DOCS FEEDBACK",
     headline: "What guide would have helped?",
     lede:
@@ -218,6 +224,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   security: {
+    choiceLabel: "Book a security review",
     eyebrow: "SECURITY REVIEW",
     headline: "Talk to us about the security posture.",
     lede:
@@ -235,6 +242,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   disclosure: {
+    choiceLabel: "Report a vulnerability",
     eyebrow: "RESPONSIBLE DISCLOSURE",
     headline: "Report a security vulnerability.",
     lede:
@@ -263,6 +271,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "security",
   },
   privacy: {
+    choiceLabel: "Privacy or data request",
     eyebrow: "DATA-PROTECTION ENQUIRY",
     headline: "Privacy, data-subject rights, or a DPA.",
     lede:
@@ -293,6 +302,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   legal: {
+    choiceLabel: "Legal matter",
     eyebrow: "LEGAL ENQUIRY",
     headline: "Notices, agreements, and legal questions.",
     lede:
@@ -318,6 +328,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   subscribe: {
+    choiceLabel: "Product updates",
     eyebrow: "SUBSCRIBE TO UPDATES",
     headline: "Get notable changes in your inbox.",
     lede:
@@ -334,6 +345,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     joinsUpdatesList: true,
   },
   notify: {
+    choiceLabel: "Launch alert",
     eyebrow: "LAUNCH NOTIFICATION",
     headline: "Be the first to know when this launches.",
     lede:
@@ -354,6 +366,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     joinsUpdatesList: true,
   },
   beta: {
+    choiceLabel: "Join the beta",
     eyebrow: "BETA ACCESS",
     headline: "Join the beta.",
     lede:
@@ -372,6 +385,7 @@ export const CONTACT_TOPICS: Record<ContactIntent, ContactTopic> = {
     inbox: "general",
   },
   careers: {
+    choiceLabel: "Register interest",
     eyebrow: "REGISTER YOUR INTEREST",
     headline: "Tell us what you’d like to own.",
     lede:

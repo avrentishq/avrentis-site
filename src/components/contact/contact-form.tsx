@@ -36,7 +36,7 @@ import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
 import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
 import { INITIAL_STATE, type ContactField, type ContactFormState } from "@/app/contact/state";
-import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
+import { CONTACT_TABS, contactHref, tabForIntent, topicChoices } from "@/app/contact/tabs";
 import {
   CONTACT_TOPICS,
   inputRule,
@@ -419,6 +419,19 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           ariaLabel="What are you contacting us about?"
           hrefFor={(value) => contactHref(value as ContactIntent)}
         />
+        {topicChoices(intent).length > 0 && (
+          <div style={{ marginTop: "14px", display: "flex", justifyContent: "center" }}>
+            <ChoiceGroup
+              name="contact_subtopic"
+              variant="chips"
+              value={intent}
+              onChange={switchIntent}
+              options={topicChoices(intent)}
+              ariaLabel="Which of these?"
+              hrefFor={(value) => contactHref(value as ContactIntent)}
+            />
+          </div>
+        )}
       </m.div>
 
       {/* Centered intro header — matches the trial layout */}

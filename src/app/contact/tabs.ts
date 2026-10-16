@@ -6,6 +6,7 @@
  * intent. Pure data + lookup so it can be unit-tested without the client form.
  */
 import { SITE_PAGES, type ContactIntent } from "@/lib/brand";
+import { CONTACT_TOPICS } from "./topics";
 
 export interface ContactTab {
   /** Intent posted (and copy shown) when the tab itself is clicked. */
@@ -36,4 +37,15 @@ export const contactHref = SITE_PAGES.contact;
 export function tabForIntent(intent: ContactIntent): ContactIntent {
   const tab = CONTACT_TABS.find((t) => t.members.includes(intent));
   return (tab ?? CONTACT_TABS[0]!).value;
+}
+
+/**
+ * The topics an intent's tab offers as a choice row, or none for a one-topic
+ * tab — so every topic (a vulnerability report, a launch alert…) can be
+ * reached on the page, not only through a deep link.
+ */
+export function topicChoices(intent: ContactIntent): { value: ContactIntent; label: string }[] {
+  const tab = CONTACT_TABS.find((candidate) => candidate.members.includes(intent));
+  if (!tab || tab.members.length < 2) return [];
+  return tab.members.map((member) => ({ value: member, label: CONTACT_TOPICS[member].choiceLabel }));
 }

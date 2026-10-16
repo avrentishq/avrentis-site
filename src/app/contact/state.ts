@@ -9,7 +9,10 @@
 
 import type { SubmittedValues } from "@/lib/submitted-values";
 
-/** The fields an enquiry posts; a refusal hands them back (submitted-values.ts). */
+/**
+ * The fields an enquiry posts; a refusal hands them back (submitted-values.ts),
+ * and each can carry an error of its own.
+ */
 export const CONTACT_FIELDS = [
   "name",
   "email",
@@ -24,7 +27,7 @@ export type ContactField = (typeof CONTACT_FIELDS)[number];
 export interface ContactFormState {
   status: "idle" | "success" | "error";
   message?: string;
-  fieldErrors?: Partial<Record<"name" | "email" | "organisation" | "message" | "consent", string>>;
+  fieldErrors?: Partial<Record<ContactField, string>>;
   /** What the visitor posted, so a page rendered without JavaScript keeps it. */
   values?: SubmittedValues<ContactField>;
 }

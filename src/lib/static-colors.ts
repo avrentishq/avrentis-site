@@ -22,3 +22,6 @@ export const STATIC_COLORS = {
   /** --color-navy-primary (brand) */
   navy: BRAND_COLORS.navy,
 } as const;
+
+/** The font stack outbound email HTML is set in — mail clients load no web fonts. */
+export const EMAIL_FONT_STACK = "Helvetica,Arial,sans-serif";

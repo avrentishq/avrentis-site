@@ -1,6 +1,7 @@
 /* ── Pricing API types and fetch ──────────────────────────────── */
 
 import { platformFetch } from "@/lib/platform-fetch";
+import { PLATFORM_API_PATHS } from "@/lib/platform";
 import { withServiceCommitmentGroup } from "@/lib/service-commitments";
 
 /** One plan's price in one currency. Amounts are MAJOR units; the site formats
@@ -131,19 +132,23 @@ export interface PricingData {
   suiteOrder?: string[];
 }
 
-const PRICING_PATH = "/api/v1/public/pricing";
+
+import { cache } from "react";
 
 import fallback from "@/data/pricing-fallback.json";
 
 /** Every payload the page renders — live or fallback — shows service
- *  commitments as their own comparison group (see `@/lib/service-commitments`). */
-export async function fetchPricingData(): Promise<PricingData> {
+ *  commitments as their own comparison group (see `@/lib/service-commitments`).
+ *  Memoised per render with React's `cache`: the request carries a timeout
+ *  signal, which opts it out of Next's own fetch de-duplication, so a page and
+ *  its metadata would otherwise each make the call. */
+export const fetchPricingData = cache(async (): Promise<PricingData> => {
   return withServiceCommitmentGroup(await fetchRawPricingData());
-}
+});
 
 async function fetchRawPricingData(): Promise<PricingData> {
   try {
-    const res = await platformFetch(PRICING_PATH, {
+    const res = await platformFetch(PLATFORM_API_PATHS.pricing, {
       next: { revalidate: 3600 },
     });
 

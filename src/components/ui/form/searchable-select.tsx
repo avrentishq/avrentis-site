@@ -23,7 +23,7 @@ interface SearchableSelectProps {
   name: string;
   value: string;
   onChange: (value: string) => void;
-  options: SelectOption[];
+  options: readonly SelectOption[];
   ariaLabel: string;
   placeholder?: string;
   /** What the open list's search box searches, plural ("countries", "industries"). */

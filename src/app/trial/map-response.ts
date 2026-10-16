@@ -27,31 +27,22 @@
  * one place — the rejection — so 403 alone is the reliable signal.
  */
 
-import type { TrialFormState } from "./state";
+import { TRIAL_ERROR_FIELDS, type TrialErrorField, type TrialFieldErrors, type TrialFormState } from "./state";
 import { CONTACT_EMAIL } from "@/lib/contacts";
+import { FORM_MESSAGES } from "@/lib/form-rules";
 
 /** Field keys the trial form actually renders, so a mapped error can be shown. */
-const RENDERED_FIELDS = new Set([
-  "name",
-  "email",
-  "organisation",
-  "role",
-  "orgSize",
-  "sector",
-  "country",
-  "consent",
-]);
+const RENDERED_FIELDS: ReadonlySet<string> = new Set(TRIAL_ERROR_FIELDS);
+
+function isRenderedField(key: string): key is TrialErrorField {
+  return RENDERED_FIELDS.has(key);
+}
 
 export interface TrialResponsePayload {
   status?: string;
   message?: string;
   errors?: { fieldErrors?: Record<string, string[]> };
 }
-
-type FieldErrors = Extract<
-  TrialFormState,
-  { status: "error" }
->["fieldErrors"];
 
 export function mapTrialResponse(
   httpStatus: number,
@@ -77,6 +68,7 @@ export function mapTrialResponse(
   if (httpStatus === 202 && payload.status === "queued_for_review") {
     return {
       status: "queued_for_review",
+      email,
       // The platform's own words when it omits a message: it promises a review,
       // never a time, and this fallback must not promise more than it does.
       message:
@@ -89,17 +81,17 @@ export function mapTrialResponse(
     const backend = payload.errors?.fieldErrors ?? {};
     // Only map keys the form renders — otherwise the field-error banner is
     // suppressed but nothing shows, which reads as a silent no-op.
-    const mapped: Record<string, string> = {};
+    const mapped: TrialFieldErrors = {};
     for (const [key, messages] of Object.entries(backend)) {
-      if (messages && messages[0] && RENDERED_FIELDS.has(key)) {
+      if (messages && messages[0] && isRenderedField(key)) {
         mapped[key] = messages[0];
       }
     }
     if (Object.keys(mapped).length > 0) {
       return {
         status: "error",
-        message: payload.message ?? "Please fix the highlighted fields.",
-        fieldErrors: mapped as FieldErrors,
+        message: payload.message ?? FORM_MESSAGES.fixHighlighted,
+        fieldErrors: mapped,
       };
     }
     // Rejected on a field the form doesn't render — always give feedback.
@@ -112,11 +104,7 @@ export function mapTrialResponse(
   }
 
   if (httpStatus === 429) {
-    return {
-      status: "error",
-      message:
-        "You've submitted a few trial requests in a short window. Please wait a moment and try again.",
-    };
+    return { status: "error", message: FORM_MESSAGES.rateLimited };
   }
 
   return {

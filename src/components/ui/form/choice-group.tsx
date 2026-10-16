@@ -30,7 +30,7 @@ interface ChoiceGroupProps {
   name: string;
   value: string;
   onChange: (value: string) => void;
-  options: ChoiceOption[];
+  options: readonly ChoiceOption[];
   ariaLabel: string;
   variant?: "chips" | "cards";
   /** Grid columns for the "cards" variant. */

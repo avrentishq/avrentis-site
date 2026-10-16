@@ -13,27 +13,26 @@
 
 import { sendEmail } from "@/lib/email";
 import { STATIC_COLORS } from "@/lib/static-colors";
-import { verifyTurnstile } from "@/lib/turnstile";
-import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
+import {
+  emailLink,
+  emailParagraph,
+  emailRow,
+  emailShell,
+  escapeHtml,
+  eyebrowRow,
+  headerSafe,
+  labelledRow,
+} from "@/lib/email-html";
+import { humanCheckRefusal, screenSubmission } from "@/lib/submission-guard";
 import { formatCount } from "@/lib/money";
 import { BOUNDS, clampInt, computeSavings, EFFICIENCY, formatSavings } from "./compute";
 import { ESTIMATE_FIELDS, type EstimateEmailState } from "./state";
 import { submittedValues } from "@/lib/submitted-values";
 import { canonical } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
-import { SITE_PAGES } from "@/lib/brand";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function escape(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
+import { BRAND, SITE_PAGES } from "@/lib/brand";
+import { errorSummary } from "@/lib/safe-log";
+import { exceedsLimit, hasEmailShape, tooLongMessage } from "@/lib/form-rules";
 
 export async function emailEstimate(
   _previous: EstimateEmailState,
@@ -46,46 +45,27 @@ export async function emailEstimate(
 }
 
 async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailState> {
-  // Honeypot — bots fill hidden fields. Silently "succeed" without sending.
-  const honeypot = formData.get("fax_number");
-  if (typeof honeypot === "string" && honeypot.trim() !== "") {
-    return { status: "success", message: "Sent — check your inbox." };
-  }
-
-  // Rate limit the send (this action emails an arbitrary recipient, so cap
-  // bursts to blunt spam-relay abuse).
-  const rateLimit = await limitVisitor("savingsEstimate");
-  if (!rateLimit.ok) {
-    return {
-      status: "error",
-      message:
-        rateLimit.status === 503
-          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
-          : "Too many requests — please try again in a few minutes.",
-    };
-  }
+  // The rate limit caps bursts: this action emails an address the visitor types.
+  const screen = await screenSubmission(formData, "savingsEstimate");
+  // A filled decoy field: answer as if it succeeded, and send nothing.
+  if (screen.outcome === "decoy") return { status: "success", message: "Sent — check your inbox." };
+  if (screen.outcome === "refused") return { status: "error", message: screen.message };
 
   const email = String(formData.get("email") ?? "").trim();
   const consent = formData.get("consent") === "on";
 
-  if (!email || !EMAIL_RE.test(email)) {
+  if (!email || !hasEmailShape(email)) {
     return { status: "error", fieldErrors: { email: "Enter a valid email so we can send it." } };
   }
-  if (email.length > 320) {
-    return { status: "error", fieldErrors: { email: "That email is too long." } };
+  if (exceedsLimit(email, "email")) {
+    return { status: "error", fieldErrors: { email: tooLongMessage("email", "email") } };
   }
   if (!consent) {
     return { status: "error", fieldErrors: { consent: "We need your consent to email you." } };
   }
 
-  // Bot defence — verified when Turnstile is configured.
-  const turnstile = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
-  if (!turnstile.ok) {
-    return {
-      status: "error",
-      message: "We couldn't verify that you're human. Please try again.",
-    };
-  }
+  const humanRefusal = await humanCheckRefusal(formData);
+  if (humanRefusal) return { status: "error", message: humanRefusal };
 
   // Re-parse and clamp every number server-side — never trust client math.
   const approvals = clampInt(formData.get("approvals"), BOUNDS.approvals);
@@ -93,37 +73,48 @@ async function answerEstimateEmail(formData: FormData): Promise<EstimateEmailSta
   const cost = clampInt(formData.get("cost"), BOUNDS.cost);
   const result = computeSavings({ approvals, minutes, cost });
 
-  const safeEmail = escape(email);
-  const pct = Math.round(EFFICIENCY * 100);
+  const efficiencyPercent = Math.round(EFFICIENCY * 100);
+  const reportTitle = `Your ${BRAND.name} savings estimate`;
 
-  const reportHtml = `
-    <table role="presentation" cellpadding="0" cellspacing="0" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};max-width:560px;">
-      <tr><td style="padding:0 0 8px;font-size:12px;color:${STATIC_COLORS.textMuted};letter-spacing:0.08em;text-transform:uppercase;">Your Avrentis savings estimate</td></tr>
-      <tr><td style="padding:0 0 16px;font-size:20px;font-weight:700;">${formatSavings(result.moneyPerYear)} <span style="font-size:14px;font-weight:400;color:${STATIC_COLORS.textMuted};">saved per year</span></td></tr>
-      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Time back</td></tr>
-      <tr><td style="padding:0 0 16px;">${formatCount(result.hoursPerMonth)} hours / month &middot; ${formatCount(result.hoursPerYear)} hours / year</td></tr>
-      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Based on your inputs</td></tr>
-      <tr><td style="padding:0 0 16px;">${formatCount(approvals)} approvals/month &middot; ${minutes} min coordination each &middot; ${formatSavings(cost)}/hour</td></tr>
-      <tr><td style="padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textSubtle};line-height:1.5;">Assumes structured approvals remove about ${pct}% of coordination time — a conservative estimate. Your inputs, your numbers.</td></tr>
-      <tr><td style="padding:8px 0 0;"><a href="${canonical(SITE_PAGES.trial())}" style="color:${STATIC_COLORS.gold};text-decoration:none;font-weight:600;">${START_TRIAL_CTA} →</a></td></tr>
-    </table>
-  `;
+  const reportHtml = emailShell(
+    [
+      eyebrowRow(reportTitle, 8),
+      emailRow(
+        `${formatSavings(result.moneyPerYear)} <span style="font-size:14px;font-weight:400;color:${STATIC_COLORS.textMuted};">saved per year</span>`,
+        "padding:0 0 16px;font-size:20px;font-weight:700;",
+      ),
+      labelledRow(
+        "Time back",
+        `${formatCount(result.hoursPerMonth)} hours / month &middot; ${formatCount(result.hoursPerYear)} hours / year`,
+        { bottomGap: 16 },
+      ),
+      labelledRow(
+        "Based on your inputs",
+        `${formatCount(approvals)} approvals/month &middot; ${minutes} min coordination each &middot; ${formatSavings(cost)}/hour`,
+        { bottomGap: 16 },
+      ),
+      emailRow(
+        `Assumes structured approvals remove about ${efficiencyPercent}% of coordination time — a conservative estimate. Your inputs, your numbers.`,
+        `padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textSubtle};line-height:1.5;`,
+      ),
+      emailRow(emailLink(canonical(SITE_PAGES.trial()), `${START_TRIAL_CTA} →`, "font-weight:600;"), "padding:8px 0 0;"),
+    ],
+    560,
+  );
 
   try {
     // Send the visitor their estimate.
-    await sendEmail({
-      to: email,
-      subject: "Your Avrentis savings estimate",
-      html: reportHtml,
-    });
+    await sendEmail({ to: email, subject: reportTitle, html: reportHtml });
     // Notify the internal inbox of the lead.
     await sendEmail({
-      subject: `[Avrentis — Savings estimate] ${safeEmail}`,
-      html: `<p style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};">Estimate requested by <strong>${safeEmail}</strong>: ${formatSavings(result.moneyPerYear)}/yr, ${formatCount(result.hoursPerYear)} hrs/yr — from ${formatCount(approvals)} approvals/mo, ${minutes} min each, ${formatSavings(cost)}/hr.</p>`,
+      subject: `[${BRAND.name} — Savings estimate] ${headerSafe(email)}`,
+      html: emailParagraph(
+        `Estimate requested by <strong>${escapeHtml(email)}</strong>: ${formatSavings(result.moneyPerYear)}/yr, ${formatCount(result.hoursPerYear)} hrs/yr — from ${formatCount(approvals)} approvals/mo, ${minutes} min each, ${formatSavings(cost)}/hr.`,
+      ),
       replyTo: email,
     });
-  } catch (err) {
-    console.error("Estimate email failed:", err);
+  } catch (error) {
+    console.error("Estimate email failed:", errorSummary(error));
     return {
       status: "error",
       message: "Something went wrong sending your estimate. Please try again shortly.",

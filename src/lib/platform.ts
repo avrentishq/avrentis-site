@@ -26,3 +26,11 @@ export const PLATFORM_ORIGIN = trimOrigin(
 
 /** Canonical login URL for the product app (browser-facing). */
 export const LOGIN_URL = `${BROWSER_PLATFORM_ORIGIN}/login`;
+
+/** The product app's public API paths the site calls (server-side, through `platformFetch`). */
+export const PLATFORM_API_PATHS = {
+  pricing: "/api/v1/public/pricing",
+  trialRequest: "/api/v1/public/trial/request",
+  trialReissue: "/api/v1/public/trial/reissue",
+  trialVerify: "/api/v1/public/trial/verify",
+} as const;

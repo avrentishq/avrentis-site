@@ -14,6 +14,9 @@
 import { Check } from "lucide-react";
 
 const STEPS = ["Started", "Your setup", "Your details"];
+
+/** `current` once every step is done (the request is sent) — the meter reads 100%. */
+export const TRIAL_STEPS_DONE = STEPS.length + 1;
 const sans = "var(--font-sans)";
 
 interface TrialStepperProps {

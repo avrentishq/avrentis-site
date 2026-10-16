@@ -14,19 +14,19 @@
  * Navbar + Footer wrapper, soft slate-50 main, card-styled form.
  */
 
-import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useActionState, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import Script from "next/script";
 import { m } from "framer-motion";
 import { Check, Mail, Clock, ArrowLeft, AlertCircle } from "lucide-react";
 import { ChoiceGroup } from "@/components/ui/form/choice-group";
 import { SearchableSelect } from "@/components/ui/form/searchable-select";
 import { ORG_SIZE_OPTIONS, DEFAULT_ORG_SIZE } from "@/lib/org-size";
-import { BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, BRAND_COLORS, LEGAL_PAGES } from "@/lib/brand";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
 import { submitTrialRequest } from "./actions";
-import { INITIAL_STATE, type TrialFormState } from "./state";
-import { hasEmailShape, trialEmailError } from "./email-check";
+import { INITIAL_STATE, OTHER_ROLE, TRIAL_ROLES, type TrialFormState } from "./state";
+import { trialEmailError } from "./email-check";
+import { FORM_LIMITS, hasEmailShape } from "@/lib/form-rules";
 import {
   describedBy,
   hasVisibleFieldErrors,
@@ -34,14 +34,16 @@ import {
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { useHydrated } from "@/components/ui/form/hydrated";
-import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { TurnstileWidget } from "@/components/ui/form/turnstile-widget";
+import { HoneypotField } from "@/components/ui/form/honeypot-field";
 import { FORM_STEP, JS_ONLY } from "@/lib/no-script";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
 import { SECTORS } from "@avrentishq/core/sectors";
-import { TrialStepper } from "./stepper";
+import { TRIAL_STEPS_DONE, TrialStepper } from "./stepper";
+import { LEAD_MARKET } from "@/lib/market";
 import { TrialTimeline } from "./timeline";
 import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
@@ -71,7 +73,10 @@ const FREE_EMAIL_DOMAINS = new Set([
   "yandex.ru",
 ]);
 
-/** 15-minute window in milliseconds for duplicate-submission detection. */
+/**
+ * 15-minute window in milliseconds for duplicate-submission detection. The
+ * address is kept in sessionStorage, so it also goes when the tab closes.
+ */
 const RECENT_SUBMISSION_TTL = 15 * 60 * 1000;
 
 interface RecentSubmission {
@@ -81,42 +86,34 @@ interface RecentSubmission {
 
 const RECENT_SUBMISSION_KEY = "avrentis-recent-trial";
 
-function readRecentSubmission(): RecentSubmission | null {
+/**
+ * The stored request as its raw JSON while it is inside the window, else null.
+ * A string, so consecutive reads compare equal (useSyncExternalStore snapshot).
+ */
+function readRecentSubmissionRecord(): string | null {
   try {
-    const raw = localStorage.getItem(RECENT_SUBMISSION_KEY);
+    const raw = sessionStorage.getItem(RECENT_SUBMISSION_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as RecentSubmission;
-    if (Date.now() - parsed.submittedAt > RECENT_SUBMISSION_TTL) {
-      localStorage.removeItem(RECENT_SUBMISSION_KEY);
-      return null;
-    }
-    return parsed;
+    return Date.now() - parsed.submittedAt > RECENT_SUBMISSION_TTL ? null : raw;
   } catch {
     return null;
   }
 }
 
+const subscribeNever = () => () => {};
+
 function persistSubmission(email: string) {
   try {
-    localStorage.setItem(
+    sessionStorage.setItem(
       RECENT_SUBMISSION_KEY,
       JSON.stringify({ email, submittedAt: Date.now() }),
     );
   } catch {
-    // localStorage unavailable — silently skip.
+    // sessionStorage unavailable — silently skip.
   }
 }
 
-// Role — tappable cards. Ordered likeliest-first, but NOT pre-selected and NOT
-// badged, so the qualifying signal stays honest (an explicit pick).
-const ROLE_OPTIONS = [
-  { value: "Finance Manager", label: "Finance Manager" },
-  { value: "Finance Director", label: "Finance Director" },
-  { value: "CFO", label: "CFO" },
-  { value: "Operations Manager", label: "Operations Manager" },
-  { value: "MD", label: "MD / CEO" },
-  { value: "Other", label: "Other" },
-];
 
 // Org-size options + default come from the shared SSOT (@/lib/org-size).
 
@@ -228,11 +225,13 @@ export function TrialForm() {
   useFocusAfterFailure(formRef, state, state.status === "error", "trial-form-error");
 
   // ── Duplicate-submission detection ──────────────────────────────
-  const [recentSubmission, setRecentSubmission] = useState<RecentSubmission | null>(null);
-  // Read from localStorage once on mount (browser-only API).
-  useEffect(() => {
-    setRecentSubmission(readRecentSubmission());
-  }, []);
+  // Read from sessionStorage in the browser; the server HTML (and hydration)
+  // see none, so the warning never mismatches.
+  const recentRecord = useSyncExternalStore(subscribeNever, readRecentSubmissionRecord, () => null);
+  const recentSubmission = useMemo(
+    () => (recentRecord ? (JSON.parse(recentRecord) as RecentSubmission) : null),
+    [recentRecord],
+  );
 
   // ── Controlled field state ──────────────────────────────────────────
   // Email: controlled for free-email hint + dupe check.
@@ -247,8 +246,8 @@ export function TrialForm() {
   const [sectorOtherValue, setSectorOtherValue] = useState(posted.sectorOther ?? "");
   const sectorComplete =
     sectorValue !== "" && (sectorValue !== "Other" || sectorOtherValue.trim().length > 0);
-  // country defaults to "NG" which is a valid selection.
-  const [countryValue, setCountryValue] = useState(posted.country ?? "NG");
+  // Country defaults to the lead market, which is a valid selection.
+  const [countryValue, setCountryValue] = useState<string>(posted.country ?? LEAD_MARKET);
   const [consentValue, setConsentValue] = useState(posted.consent === "on");
 
   // Two-step split: step 1 is the quick tappable setup (role/size/industry/
@@ -260,26 +259,7 @@ export function TrialForm() {
     orgSizeValue !== "" &&
     sectorComplete &&
     countryValue !== "" &&
-    (roleValue !== "Other" || roleOtherValue.trim().length > 0);
-
-  // ── Cloudflare Turnstile (bot defence) — same optional pattern as contact ──
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const turnstileRendered = useRef(false);
-  const renderTurnstile = useCallback(() => {
-    if (!turnstileSiteKey || turnstileRendered.current || !turnstileRef.current) return;
-    const turnstile = (
-      window as unknown as {
-        turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => void };
-      }
-    ).turnstile;
-    if (!turnstile) return;
-    turnstile.render(turnstileRef.current, { sitekey: turnstileSiteKey, theme: "light" });
-    turnstileRendered.current = true;
-  }, [turnstileSiteKey]);
-  useEffect(() => {
-    renderTurnstile();
-  }, [renderTurnstile]);
+    (roleValue !== OTHER_ROLE || roleOtherValue.trim().length > 0);
 
   // ── Validity derivation ─────────────────────────────────────────────
   const isValid = useMemo(
@@ -295,28 +275,21 @@ export function TrialForm() {
     [nameValue, emailValue, organisationValue, roleValue, orgSizeValue, sectorComplete, countryValue, consentValue],
   );
 
-  // ── Persist to localStorage when a successful submission completes ──
+  // ── Remember a successful request (sessionStorage) ─────────────
+  // Both success answers carry the address the request was made with, so the
+  // effect reads only the answer. The success card replaces the form, so the
+  // warning shows on the next visit to the form within the window (read above).
   useEffect(() => {
-    if (
-      state.status === "verification_sent" ||
-      state.status === "queued_for_review"
-    ) {
-      const submittedEmail =
-        state.status === "verification_sent" ? state.email : emailValue;
-      if (submittedEmail) {
-        persistSubmission(submittedEmail);
-        setRecentSubmission({ email: submittedEmail, submittedAt: Date.now() });
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.status]);
+    if (state.status !== "verification_sent" && state.status !== "queued_for_review") return;
+    if (state.email) persistSubmission(state.email);
+  }, [state]);
 
   if (state.status === "verification_sent") {
     return <VerificationSentCard email={state.email} message={state.message} />;
   }
 
   if (state.status === "queued_for_review") {
-    return <QueuedCard message={state.message} email={emailValue || undefined} />;
+    return <QueuedCard message={state.message} email={state.email || undefined} />;
   }
 
   if (state.status === "hard_blocked") {
@@ -449,15 +422,7 @@ export function TrialForm() {
         }}
         noValidate
       >
-        {/* Honeypot — hidden; real users never fill it in. */}
-        <input
-          type="text"
-          name="fax_number"
-          tabIndex={-1}
-          autoComplete="off"
-          aria-hidden="true"
-          style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
-        />
+        <HoneypotField />
         {/* Back to step 1 — the stepper above conveys the position. */}
         {step === 2 && (
           <button
@@ -486,7 +451,9 @@ export function TrialForm() {
                 setRoleValue(value);
                 clearFieldError("role");
               }}
-              options={ROLE_OPTIONS}
+              // Likeliest-first, but NOT pre-selected and NOT badged, so the
+              // qualifying signal stays honest (an explicit pick).
+              options={TRIAL_ROLES}
               ariaLabel="Your role"
               noScriptPlaceholder="Select your role"
               invalid={!!fieldErrors.role}
@@ -505,13 +472,13 @@ export function TrialForm() {
                 type="text"
                 name="roleOther"
                 defaultValue={posted.roleOther}
-                maxLength={120}
+                maxLength={FORM_LIMITS.otherDetail}
                 placeholder="If you chose Other, your role"
                 aria-label="If you chose Other, your role"
                 style={{ ...inputStyle, marginTop: "10px" }}
               />
             </noscript>
-            {roleValue === "Other" && (
+            {roleValue === OTHER_ROLE && (
               <div style={{ marginTop: "10px" }}>
                 <label style={labelStyle}>
                   Specify your role
@@ -523,6 +490,7 @@ export function TrialForm() {
                   type="text"
                   name="roleOther"
                   value={roleOtherValue}
+                  maxLength={FORM_LIMITS.otherDetail}
                   onChange={(e) => setRoleOtherValue(e.target.value)}
                   placeholder="Tell us your role"
                   aria-label="Specify your role"
@@ -590,7 +558,7 @@ export function TrialForm() {
                 type="text"
                 name="sectorOther"
                 defaultValue={posted.sectorOther}
-                maxLength={120}
+                maxLength={FORM_LIMITS.otherDetail}
                 placeholder="If you chose Other, your industry"
                 aria-label="If you chose Other, your industry"
                 style={{ ...inputStyle, marginTop: "10px" }}
@@ -608,7 +576,7 @@ export function TrialForm() {
                   type="text"
                   name="sectorOther"
                   value={sectorOtherValue}
-                  maxLength={120}
+                  maxLength={FORM_LIMITS.otherDetail}
                   onChange={(event) => {
                     setSectorOtherValue(event.target.value);
                     clearFieldError("sector");
@@ -694,6 +662,7 @@ export function TrialForm() {
               name="name"
               type="text"
               required
+              maxLength={FORM_LIMITS.name}
               autoComplete="name"
               aria-invalid={!!fieldErrors.name || undefined}
               aria-describedby={describedBy(!!fieldErrors.name && "trial-name-error")}
@@ -719,6 +688,7 @@ export function TrialForm() {
               name="email"
               type="email"
               required
+              maxLength={FORM_LIMITS.email}
               autoComplete="email"
               aria-invalid={!!emailError || undefined}
               aria-describedby={describedBy(
@@ -760,6 +730,7 @@ export function TrialForm() {
             name="organisation"
             type="text"
             required
+            maxLength={FORM_LIMITS.organisation}
             autoComplete="organization"
             aria-invalid={!!fieldErrors.organisation || undefined}
             aria-describedby={describedBy(!!fieldErrors.organisation && "trial-organisation-error")}
@@ -787,6 +758,7 @@ export function TrialForm() {
             name="source"
             type="text"
             defaultValue={posted.source}
+            maxLength={FORM_LIMITS.source}
             style={inputStyle}
             placeholder="Referral, search, colleague, event…"
           />
@@ -821,7 +793,7 @@ export function TrialForm() {
               style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
             />
             <span>
-              I agree that Avrentis may use the details above to provision and run my trial
+              I agree that {BRAND.name} may use the details above to provision and run my trial
               workspace, in line with the{" "}
               <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                 privacy policy
@@ -892,17 +864,7 @@ export function TrialForm() {
           </div>
         )}
 
-        {turnstileSiteKey && (
-          <>
-            <Script
-              src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-              strategy="afterInteractive"
-              onReady={renderTurnstile}
-            />
-            <div ref={turnstileRef} />
-            <TurnstileNoScriptNote email={CONTACT_EMAIL.trials} />
-          </>
-        )}
+        <TurnstileWidget fallbackEmail={CONTACT_EMAIL.trials} />
 
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
           <SubmitButton isValid={!hydrated || isValid} pending={isPending} />
@@ -930,7 +892,7 @@ export function TrialForm() {
 function VerificationSentCard({ email, message }: { email: string; message: string }) {
   return (
     <>
-      <TrialStepper current={4} />
+      <TrialStepper current={TRIAL_STEPS_DONE} />
     <div
       style={{
         maxWidth: "560px",
@@ -1014,7 +976,7 @@ function VerificationSentCard({ email, message }: { email: string; message: stri
 function QueuedCard({ message, email }: { message: string; email?: string }) {
   return (
     <>
-      <TrialStepper current={4} />
+      <TrialStepper current={TRIAL_STEPS_DONE} />
     <div
       style={{
         maxWidth: "560px",

@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { TRIAL_EMAIL_MAX_LENGTH, trialEmailError } from "./email-check";
+import { trialEmailError } from "./email-check";
+import { FORM_LIMITS } from "@/lib/form-rules";
 
 const RESERVED = "That address can't receive email. Please use the work email you check.";
 
@@ -27,7 +28,7 @@ describe("trialEmailError", () => {
   it("keeps the shape, presence and length messages ahead of the reserved rule", () => {
     expect(trialEmailError("")).toBe("Please share your work email.");
     expect(trialEmailError("not-an-email")).toBe("That doesn't look like a valid email.");
-    const long = `${"a".repeat(TRIAL_EMAIL_MAX_LENGTH)}@acme.com`;
-    expect(trialEmailError(long)).toBe("That email is too long.");
+    const long = `${"a".repeat(FORM_LIMITS.email)}@acme.com`;
+    expect(trialEmailError(long)).toBe("That email is too long (320 character max).");
   });
 });

@@ -4,14 +4,18 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 // so the test drives what the server does with a posted form, the same path a
 // visitor without JavaScript takes.
 const limitVisitor = vi.fn();
+vi.mock("server-only", () => ({}));
 vi.mock("@/lib/rate-limit", () => ({
   limitVisitor: (...args: unknown[]) => limitVisitor(...args),
+  visitorIp: async () => "203.0.113.7",
+  UNKNOWN_VISITOR_IP: "unknown",
   RATE_LIMIT_UNAVAILABLE_MESSAGE: "This form is temporarily unavailable.",
 }));
 vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: async () => ({ ok: true, skipped: true }) }));
 
 import { submitTrialRequest } from "./actions";
 import { INITIAL_STATE } from "./state";
+import { FORM_MESSAGES, HONEYPOT_FIELD } from "@/lib/form-rules";
 
 const platform = vi.fn();
 
@@ -108,5 +112,32 @@ describe("submitTrialRequest (the server path, with or without JavaScript)", () 
     const state = await submitTrialRequest(INITIAL_STATE, posted());
     expect(state).toMatchObject({ status: "error", message: "This form is temporarily unavailable." });
     expect(platform).not.toHaveBeenCalled();
+  });
+
+  it("refuses with the one rate-limit message when the visitor is over the limit", async () => {
+    limitVisitor.mockResolvedValue({ ok: false, status: 429 });
+    const state = await submitTrialRequest(INITIAL_STATE, posted());
+    expect(state).toMatchObject({ status: "error", message: FORM_MESSAGES.rateLimited });
+    expect(platform).not.toHaveBeenCalled();
+  });
+
+  it("answers a filled decoy field as if it succeeded, forwarding nothing and spending no attempt", async () => {
+    const state = await submitTrialRequest(INITIAL_STATE, posted({ [HONEYPOT_FIELD]: "bot" }));
+    expect(state.status).toBe("queued_for_review");
+    expect(platform).not.toHaveBeenCalled();
+    expect(limitVisitor).not.toHaveBeenCalled();
+  });
+
+  it("names the trial request path and bounds the 'Other' detail before forwarding", async () => {
+    await submitTrialRequest(INITIAL_STATE, posted({ role: "Other", roleOther: "x".repeat(500) }));
+    expect(String(platform.mock.calls[0]![0])).toMatch(/\/api\/v1\/public\/trial\/request$/);
+    const body = JSON.parse(platform.mock.calls[0]![1].body) as { source: string };
+    expect(body.source).toBe(`Role: ${"x".repeat(120)}`);
+  });
+
+  it("answers an unreachable platform with its state object instead of throwing", async () => {
+    platform.mockRejectedValue(new TypeError("fetch failed"));
+    const state = await submitTrialRequest(INITIAL_STATE, posted());
+    expect(state.status).toBe("error");
   });
 });

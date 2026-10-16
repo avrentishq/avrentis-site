@@ -1,6 +1,10 @@
 "use client";
 
 /**
+ * VerifyConfirm — the magic link's confirm card. Its button posts the token to
+ * `confirmTrialVerification`, which spends it and redirects to the workspace
+ * invite; works without JavaScript (the form posts to the action itself).
+ *
  * VerifyResult — renders the outcome of a magic-link verification. The
  * success path is handled server-side via redirect; this component
  * covers the four non-success states:
@@ -13,9 +17,10 @@
 
 import { useActionState, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Mail, AlertCircle, Clock, RefreshCcw } from "lucide-react";
+import { Mail, AlertCircle, Clock, RefreshCcw, ShieldCheck } from "lucide-react";
 import { BRAND_COLORS, SITE_PAGES } from "@/lib/brand";
-import { reissueTrialToken } from "../../actions";
+import { confirmTrialVerification, reissueTrialToken } from "../../actions";
+import { INITIAL_VERIFY_STATE } from "./state";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
@@ -28,6 +33,49 @@ interface Props {
   status: string;
   message: string;
   token: string;
+}
+
+export function VerifyConfirm({ token }: { token: string }) {
+  // The server action itself, so the form posts without JavaScript too.
+  const [state, action, pending] = useActionState(confirmTrialVerification, INITIAL_VERIFY_STATE);
+
+  if ("message" in state) {
+    return <VerifyResult status={state.status} message={state.message} token={token} />;
+  }
+
+  return (
+    <Card
+      variant="warning"
+      icon={<ShieldCheck size={26} color={BRAND_COLORS.gold} strokeWidth={1.8} />}
+      title="One step to your workspace."
+      message="Press the button to confirm it's you and open your new workspace. The link works once."
+    >
+      <form action={action} onSubmit={submitWithoutReset(action)} style={{ marginTop: "16px" }}>
+        <input type="hidden" name="token" value={token} />
+        <button
+          type="submit"
+          disabled={pending}
+          style={{
+            fontFamily: sans,
+            fontWeight: 600,
+            fontSize: "14px",
+            backgroundColor: pending ? "var(--color-gold-hover)" : "var(--color-gold)",
+            color: "var(--color-text-primary)",
+            border: "none",
+            borderRadius: "9999px",
+            padding: "0 24px",
+            height: "44px",
+            display: "inline-flex",
+            alignItems: "center",
+            cursor: pending ? "not-allowed" : "pointer",
+            opacity: pending ? 0.6 : 1,
+          }}
+        >
+          {pending ? "Setting up…" : "Set up my workspace"}
+        </button>
+      </form>
+    </Card>
+  );
 }
 
 export function VerifyResult({ status, message, token }: Props) {

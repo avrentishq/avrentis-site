@@ -14,12 +14,23 @@ import { PLATFORM_ORIGIN } from "@/lib/platform";
  * production talks to the public app, and a stray secret there would only leak
  * it to the origin it names. Server-only — never import into a client
  * component (`platform.ts` is the client-safe half).
+ *
+ * Every call gives up after PLATFORM_REQUEST_TIMEOUT_MS (a caller's own
+ * `signal` still applies too), so a slow platform rejects the promise instead
+ * of holding the visitor's request open. Callers treat a rejection as the
+ * platform being unreachable.
  */
+
+/** How long one call to the product app may take. */
+export const PLATFORM_REQUEST_TIMEOUT_MS = 10_000;
+
 export function platformFetch(path: string, init: RequestInit = {}): Promise<Response> {
   const headers = new Headers(init.headers);
   const bypass = process.env.PLATFORM_BYPASS_SECRET;
   if (bypass && process.env.VERCEL_ENV !== "production") {
     headers.set("x-vercel-protection-bypass", bypass);
   }
-  return fetch(`${PLATFORM_ORIGIN}${path}`, { ...init, headers });
+  const timeout = AbortSignal.timeout(PLATFORM_REQUEST_TIMEOUT_MS);
+  const signal = init.signal ? AbortSignal.any([init.signal, timeout]) : timeout;
+  return fetch(`${PLATFORM_ORIGIN}${path}`, { ...init, headers, signal });
 }

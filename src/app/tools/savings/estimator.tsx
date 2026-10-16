@@ -9,8 +9,7 @@
  * (see ./compute). No proprietary benchmarks appear here.
  */
 
-import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Script from "next/script";
+import { useActionState, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Check } from "lucide-react";
@@ -22,12 +21,14 @@ import { INITIAL_STATE } from "./state";
 import { describedBy, useServerFieldErrors } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { useHydrated } from "@/components/ui/form/hydrated";
-import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { TurnstileWidget } from "@/components/ui/form/turnstile-widget";
+import { HoneypotField } from "@/components/ui/form/honeypot-field";
+import { FORM_LIMITS } from "@/lib/form-rules";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { TRIAL_LENGTH, NO_CARD_REQUIRED } from "@/lib/trial-terms";
-import { LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES, SITE_PAGES } from "@/lib/brand";
 
 const sans = "var(--font-sans)";
 const pct = Math.round(EFFICIENCY * 100);
@@ -229,25 +230,6 @@ export function SavingsEstimator() {
   const formRef = useRef<HTMLFormElement>(null);
   useFocusAfterFailure(formRef, state, state.status === "error", ESTIMATE_ERROR_ID);
 
-  // Cloudflare Turnstile — same optional pattern as the contact form.
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const turnstileRendered = useRef(false);
-  const renderTurnstile = useCallback(() => {
-    if (!turnstileSiteKey || turnstileRendered.current || !turnstileRef.current) return;
-    const turnstile = (
-      window as unknown as {
-        turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => void };
-      }
-    ).turnstile;
-    if (!turnstile) return;
-    turnstile.render(turnstileRef.current, { sitekey: turnstileSiteKey, theme: "light" });
-    turnstileRendered.current = true;
-  }, [turnstileSiteKey]);
-  useEffect(() => {
-    renderTurnstile();
-  }, [renderTurnstile]);
-
   return (
     <m.div
       variants={fadeUp}
@@ -365,15 +347,7 @@ export function SavingsEstimator() {
             <input type="hidden" name="approvals" value={inputs.approvals} />
             <input type="hidden" name="minutes" value={inputs.minutes} />
             <input type="hidden" name="cost" value={inputs.cost} />
-            {/* Honeypot */}
-            <input
-              type="text"
-              name="fax_number"
-              tabIndex={-1}
-              autoComplete="off"
-              aria-hidden="true"
-              style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
-            />
+            <HoneypotField />
 
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
               <input
@@ -382,6 +356,7 @@ export function SavingsEstimator() {
                 type="email"
                 defaultValue={posted.email}
                 required
+                maxLength={FORM_LIMITS.email}
                 autoComplete="email"
                 placeholder="you@company.com"
                 aria-label="Your email"
@@ -421,7 +396,7 @@ export function SavingsEstimator() {
                 style={{ marginTop: "2px", accentColor: "var(--color-gold)", width: "15px", height: "15px" }}
               />
               <span>
-                Email me this estimate and occasional Avrentis updates, per the{" "}
+                Email me this estimate and occasional {BRAND.name} updates, per the{" "}
                 <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
@@ -439,17 +414,7 @@ export function SavingsEstimator() {
               </FormAlert>
             )}
 
-            {turnstileSiteKey && (
-              <>
-                <Script
-                  src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-                  strategy="afterInteractive"
-                  onReady={renderTurnstile}
-                />
-                <div ref={turnstileRef} />
-                <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
-              </>
-            )}
+            <TurnstileWidget fallbackEmail={CONTACT_EMAIL.general} />
           </form>
         )}
 

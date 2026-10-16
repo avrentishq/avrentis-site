@@ -10,22 +10,13 @@
  */
 
 import { isReservedEmailAddress } from "@avrentishq/core/billing/reserved-mail-domain";
-
-/** Mirrors the platform's Zod bound on the trial request's email. */
-export const TRIAL_EMAIL_MAX_LENGTH = 320;
-
-const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-/** Does the value look like an email address at all? */
-export function hasEmailShape(email: string): boolean {
-  return EMAIL_SHAPE.test(email);
-}
+import { exceedsLimit, hasEmailShape, tooLongMessage } from "@/lib/form-rules";
 
 /** The visitor-facing reason a trial email is refused, or `undefined` when it is fine. */
 export function trialEmailError(email: string): string | undefined {
   if (!email) return "Please share your work email.";
   if (!hasEmailShape(email)) return "That doesn't look like a valid email.";
-  if (email.length > TRIAL_EMAIL_MAX_LENGTH) return "That email is too long.";
+  if (exceedsLimit(email, "email")) return tooLongMessage("email", "email");
   if (isReservedEmailAddress(email)) {
     return "That address can't receive email. Please use the work email you check.";
   }

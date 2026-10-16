@@ -11,9 +11,8 @@
  * legal, privacy, disclosure, careers, feedback, subscribe, and roadmap.
  */
 
-import { useActionState, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useActionState, useCallback, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import Script from "next/script";
 import { m } from "framer-motion";
 import { Check, ArrowLeft } from "lucide-react";
 import { fadeUp, fadeUpTransition, staggerDelay } from "@/lib/animations";
@@ -26,7 +25,8 @@ import {
 } from "@/components/ui/form/field-errors";
 import { FormAlert } from "@/components/ui/form/form-alert";
 import { useHydrated } from "@/components/ui/form/hydrated";
-import { TurnstileNoScriptNote } from "@/components/ui/form/turnstile-no-script-note";
+import { TurnstileWidget } from "@/components/ui/form/turnstile-widget";
+import { HoneypotField } from "@/components/ui/form/honeypot-field";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { ORG_SIZE_OPTIONS } from "@/lib/org-size";
@@ -34,103 +34,13 @@ import { COUNTRIES } from "@/data/countries";
 import { submitContact } from "@/app/contact/actions";
 import { INITIAL_STATE, type ContactFormState } from "@/app/contact/state";
 import { CONTACT_TABS, contactHref, tabForIntent } from "@/app/contact/tabs";
-import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
-import { DATA_PROTECTION_LAW_NAMES } from "@/lib/compliance-posture";
-import { LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
+import { CONTACT_TOPICS } from "@/app/contact/topics";
+import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { BRAND, LEGAL_PAGES, type ContactIntent } from "@/lib/brand";
+import { FORM_LIMITS, hasEmailShape, MESSAGE_MIN_LENGTH } from "@/lib/form-rules";
 
-interface IntentCopy {
-  eyebrow: string;
-  headline: string;
-  lede: string;
-  cta: string;
-}
-
-const INTENT_COPY: Record<ContactIntent, IntentCopy> = {
-  demo: {
-    eyebrow: "CONTACT US",
-    headline: "Talk to our team.",
-    lede:
-      `Tell us what you're evaluating or what you need — a walkthrough, a question, or a use case. A real person replies ${ENQUIRY_REPLY_TIME}.`,
-    cta: "Contact us",
-  },
-  security: {
-    eyebrow: "SECURITY REVIEW",
-    headline: "Talk to us about the security posture.",
-    lede:
-      "We'll walk your CISO or security team through the stack — isolation, authority, audit, access lifecycle, encryption — and answer anything the page hasn't.",
-    cta: "Book a security review",
-  },
-  disclosure: {
-    eyebrow: "RESPONSIBLE DISCLOSURE",
-    headline: "Report a security vulnerability.",
-    lede:
-      `Thank you for looking. Describe what you found, how to reproduce it, and what impact you think it has. We triage security reports ${SECURITY_TRIAGE_TIME} and do not pursue legal action against good-faith research.`,
-    cta: "Submit report",
-  },
-  privacy: {
-    eyebrow: "DATA-PROTECTION ENQUIRY",
-    headline: "Privacy, data-subject rights, or a DPA.",
-    lede:
-      `Whether you're exercising a right under ${DATA_PROTECTION_LAW_NAMES.gdpr.short} / ${DATA_PROTECTION_LAW_NAMES.ndpa.short} / CCPA, requesting our DPA, or asking a privacy-policy question — describe what you need and we'll route it to the right person.`,
-    cta: "Send privacy enquiry",
-  },
-  legal: {
-    eyebrow: "LEGAL ENQUIRY",
-    headline: "Notices, agreements, and legal questions.",
-    lede:
-      "Contract redlines, notices under our Terms of Service, vendor onboarding paperwork — send it here and our team will respond promptly.",
-    cta: "Send legal enquiry",
-  },
-  careers: {
-    eyebrow: "REGISTER YOUR INTEREST",
-    headline: "Tell us what you\u2019d like to own.",
-    lede:
-      "We hire deliberately. Share a short note about what draws you to Avrentis, a link to something you're proud of, and the kind of work you want to do. We read every message.",
-    cta: "Register my interest",
-  },
-  feedback: {
-    eyebrow: "DOCS FEEDBACK",
-    headline: "What guide would have helped?",
-    lede:
-      "Tell us what you were looking for, what you couldn't find, and what you'd expect it to cover. We write docs that customers actually ask for.",
-    cta: "Send feedback",
-  },
-  subscribe: {
-    eyebrow: "SUBSCRIBE TO UPDATES",
-    headline: "Get notable changes in your inbox.",
-    lede:
-      "We send a short email when something material ships — release notes, security updates, and service-impacting incidents. No promotional material.",
-    cta: "Subscribe me",
-  },
-  notify: {
-    eyebrow: "LAUNCH NOTIFICATION",
-    headline: "Be the first to know when this launches.",
-    lede:
-      "Drop your details and we'll reach out as soon as this module is generally available — plus a chance to join an early-access cohort.",
-    cta: "Notify me at launch",
-  },
-  beta: {
-    eyebrow: "BETA ACCESS",
-    headline: "Join the beta.",
-    lede:
-      "Early-access users get hands-on support, a shorter feedback loop with our product team, and pricing locked at launch terms.",
-    cta: "Request beta access",
-  },
-  roadmap: {
-    eyebrow: "SHARE YOUR USE CASE",
-    headline: "Shape what we build next.",
-    lede:
-      "Tell us the approval or record-keeping problem you're trying to solve. We'll share where it sits on our roadmap and, where it fits, loop you in early.",
-    cta: "Share my use case",
-  },
-  general: {
-    eyebrow: "CONTACT US",
-    headline: "Let's talk.",
-    lede:
-      `Whether you're evaluating Avrentis, have a question our product pages didn't answer, or want to partner — we read every message and reply ${ENQUIRY_REPLY_TIME}.`,
-    cta: "Contact us",
-  },
-};
+/** The country picker posts the alpha-2 code (as the trial does); the label is the name. */
+const COUNTRY_OPTIONS = COUNTRIES.map((country) => ({ value: country.code, label: country.name }));
 
 // Same bands as the trial (shared SSOT); prepend an opt-out for this optional field.
 const SIZE_OPTIONS = [{ value: "", label: "Prefer not to say" }, ...ORG_SIZE_OPTIONS];
@@ -220,7 +130,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   // Intent starts from the ?intent= deep link, then becomes on-page switchable
   // via the topic tabs. It only drives copy + the hidden `intent` field.
   const [intent, setIntent] = useState<ContactIntent>(initialIntent);
-  const copy = INTENT_COPY[intent];
+  const copy = CONTACT_TOPICS[intent];
   const [state, action, isPending] = useActionState<ContactFormState, FormData>(
     submitContact,
     INITIAL_STATE,
@@ -242,31 +152,6 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
     window.history.replaceState(null, "", contactHref(value));
   }, []);
 
-  // ── Cloudflare Turnstile (bot defence) ──────────────────────────────
-  // Rendered only when NEXT_PUBLIC_TURNSTILE_SITE_KEY is set. Bot defence —
-  // verified when Turnstile is configured.
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-  const turnstileRef = useRef<HTMLDivElement>(null);
-  const turnstileRendered = useRef(false);
-
-  const renderTurnstile = useCallback(() => {
-    if (!turnstileSiteKey || turnstileRendered.current || !turnstileRef.current) return;
-    const turnstile = (
-      window as unknown as {
-        turnstile?: { render: (el: HTMLElement, opts: Record<string, unknown>) => void };
-      }
-    ).turnstile;
-    if (!turnstile) return;
-    turnstile.render(turnstileRef.current, { sitekey: turnstileSiteKey, theme: "light" });
-    turnstileRendered.current = true;
-  }, [turnstileSiteKey]);
-
-  // Re-render on mount (handles client-side nav where the script is already loaded
-  // and onReady won't fire again).
-  useEffect(() => {
-    renderTurnstile();
-  }, [renderTurnstile]);
-
   // ── Controlled field state for validity computation ─────────────────
   const [nameValue, setNameValue] = useState(posted.name ?? "");
   const [emailValue, setEmailValue] = useState(posted.email ?? "");
@@ -280,9 +165,9 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
   const isValid = useMemo(
     () =>
       nameValue.trim().length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue) &&
+      hasEmailShape(emailValue.trim()) &&
       organisationValue.trim().length > 0 &&
-      messageValue.trim().length >= 10 &&
+      messageValue.trim().length >= MESSAGE_MIN_LENGTH &&
       consentValue === true,
     [nameValue, emailValue, organisationValue, messageValue, consentValue],
   );
@@ -561,17 +446,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
           noValidate
         >
           <input type="hidden" name="intent" value={intent} />
-          {/* Honeypot — hidden field that real users never fill in. Field
-              name is chosen to look plausible to naive form crawlers while
-              being unusual enough that browsers won't autofill it. */}
-          <input
-            type="text"
-            name="fax_number"
-            tabIndex={-1}
-            autoComplete="off"
-            aria-hidden="true"
-            style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
-          />
+          <HoneypotField />
 
           <div style={{ display: "grid", gap: "14px" }} className="grid-cols-1 md:grid-cols-2">
             <div>
@@ -584,6 +459,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 name="name"
                 type="text"
                 required
+                maxLength={FORM_LIMITS.name}
                 autoComplete="name"
                 value={nameValue}
                 onChange={(e) => {
@@ -609,6 +485,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 name="email"
                 type="email"
                 required
+                maxLength={FORM_LIMITS.email}
                 autoComplete="email"
                 value={emailValue}
                 onChange={(e) => {
@@ -636,6 +513,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               name="organisation"
               type="text"
               required
+              maxLength={FORM_LIMITS.organisation}
               autoComplete="organization"
               value={organisationValue}
               onChange={(e) => {
@@ -658,10 +536,16 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               name="size"
               variant="chips"
               value={sizeValue}
-              onChange={setSizeValue}
+              onChange={(value) => {
+                setSizeValue(value);
+                clearFieldError("size");
+              }}
               options={SIZE_OPTIONS}
               ariaLabel="Organisation size"
+              invalid={!!fieldErrors.size}
+              describedBy={describedBy(!!fieldErrors.size && "contact-size-error")}
             />
+            {fieldErrors.size && <span id="contact-size-error" style={errorStyle}>{fieldErrors.size}</span>}
           </div>
 
           <div>
@@ -669,12 +553,20 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             <SearchableSelect
               name="country"
               value={countryValue}
-              onChange={setCountryValue}
-              options={COUNTRIES.map((c) => ({ value: c.name, label: c.name }))}
+              onChange={(value) => {
+                setCountryValue(value);
+                clearFieldError("country");
+              }}
+              options={COUNTRY_OPTIONS}
               ariaLabel="Country"
               placeholder="Search your country…"
               searchLabel="countries"
+              invalid={!!fieldErrors.country}
+              describedBy={describedBy(!!fieldErrors.country && "contact-country-error")}
             />
+            {fieldErrors.country && (
+              <span id="contact-country-error" style={errorStyle}>{fieldErrors.country}</span>
+            )}
           </div>
 
           <div>
@@ -686,7 +578,8 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
               id="message"
               name="message"
               required
-              minLength={10}
+              minLength={MESSAGE_MIN_LENGTH}
+              maxLength={FORM_LIMITS.message}
               value={messageValue}
               onChange={(e) => {
                 setMessageValue(e.target.value);
@@ -732,7 +625,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
                 style={{ marginTop: "3px", accentColor: "var(--color-gold)", width: "16px", height: "16px" }}
               />
               <span>
-                I agree that Avrentis may use the details above to respond to this enquiry, in line with the{" "}
+                I agree that {BRAND.name} may use the details above to respond to this enquiry, in line with the{" "}
                 <Link href={LEGAL_PAGES.privacy} style={{ color: "var(--color-gold-on-light)", textDecoration: "none" }}>
                   privacy policy
                 </Link>
@@ -766,17 +659,7 @@ export function ContactForm({ intent: initialIntent }: { intent: ContactIntent }
             </FormAlert>
           )}
 
-          {turnstileSiteKey && (
-            <>
-              <Script
-                src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-                strategy="afterInteractive"
-                onReady={renderTurnstile}
-              />
-              <div ref={turnstileRef} />
-              <TurnstileNoScriptNote email={CONTACT_EMAIL.general} />
-            </>
-          )}
+          <TurnstileWidget fallbackEmail={CONTACT_EMAIL.general} />
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "12px", flexWrap: "wrap" }}>
             <SubmitButton label={copy.cta} isValid={!hydrated || isValid} pending={isPending} />

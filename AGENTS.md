@@ -88,7 +88,16 @@ Run these locally before you claim anything is done.
   floated three majors and broke `pnpm lint` repo-wide. Re-run `pnpm lint` after any change.
 - **Name tests `*.test.ts`, never `*.test.tsx`.** The vitest glob excludes `.tsx`, so a
   `.tsx` test is silently never executed and appears to pass.
-- **Server Actions return a state object; they never throw to the client.**
+- **Server Actions return a state object; they never throw to the client.** Every form action
+  screens with `src/lib/submission-guard.ts` (decoy field, rate limit, human check with the
+  visitor's IP), reads limits, the email shape, the decoy field name and the shared refusal
+  wording from `src/lib/form-rules.ts` (inputs set `maxLength` from it), builds email with
+  `src/lib/email-html.ts`, and logs failures through `src/lib/safe-log.ts` (error name only —
+  never a provider message, which can carry addresses). `form-rules.lock.test.ts` fails on a
+  typed copy. Outgoing calls carry a timeout (`platformFetch`, Turnstile).
+- **A magic link is spent only by a person.** The trial verify page renders a confirm button;
+  `confirmTrialVerification` (a server action) calls the platform and redirects. Never call the
+  platform while rendering the GET — email link scanners open links before people do.
 - **The abuse-defence and CSP behaviour in `src/lib/rate-limit.ts` (each action's
   `failClosed`), `src/lib/turnstile.ts` and `next.config.ts` encodes deliberate tradeoffs,
   not oversights.** Read the header comment in the file first. This repo is public, so the specifics live in

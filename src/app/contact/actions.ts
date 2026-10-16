@@ -13,52 +13,28 @@
  */
 
 import { sendContactEmail } from "@/lib/email";
-import { STATIC_COLORS } from "@/lib/static-colors";
-import { verifyTurnstile } from "@/lib/turnstile";
-import { limitVisitor, RATE_LIMIT_UNAVAILABLE_MESSAGE } from "@/lib/rate-limit";
+import { emailLink, emailShell, escapeHtml, eyebrowRow, headerSafe, labelledRow } from "@/lib/email-html";
+import { humanCheckRefusal, screenSubmission } from "@/lib/submission-guard";
 import { CONTACT_FIELDS, type ContactFormState } from "./state";
-import { isContactIntent, type ContactIntent } from "@/lib/brand";
+import { CONTACT_TOPICS } from "./topics";
+import { BRAND, isContactIntent, type ContactIntent } from "@/lib/brand";
 import { submittedValues } from "@/lib/submitted-values";
 import { CONTACT_EMAIL, ENQUIRY_REPLY_TIME } from "@/lib/contacts";
+import { ORG_SIZES } from "@/lib/org-size";
+import { isSelectableCountry } from "@/data/countries";
+import { errorSummary } from "@/lib/safe-log";
+import {
+  exceedsLimit,
+  FORM_MESSAGES,
+  hasEmailShape,
+  MESSAGE_MIN_LENGTH,
+  tooLongMessage,
+} from "@/lib/form-rules";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const COUNTRY_NAMES = new Intl.DisplayNames(["en-GB"], { type: "region" });
 
-function escape(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function intentLabel(intent: ContactIntent): string {
-  switch (intent) {
-    case "demo":
-      return "Personalised demo";
-    case "security":
-      return "Security review";
-    case "disclosure":
-      return "Responsible disclosure";
-    case "privacy":
-      return "Data-protection enquiry";
-    case "legal":
-      return "Legal enquiry";
-    case "careers":
-      return "Careers — register interest";
-    case "feedback":
-      return "Docs feedback";
-    case "subscribe":
-      return "Subscribe to updates";
-    case "notify":
-      return "Launch notification";
-    case "beta":
-      return "Beta access";
-    case "roadmap":
-      return "Roadmap input";
-    case "general":
-      return "General enquiry";
-  }
+function isOrgSize(value: string): boolean {
+  return (ORG_SIZES as readonly string[]).includes(value);
 }
 
 export async function submitContact(
@@ -72,29 +48,18 @@ export async function submitContact(
 }
 
 async function answerContact(formData: FormData): Promise<ContactFormState> {
-  // Honeypot — bots fill every field they can see. If this is set, silently succeed.
-  // Field name is deliberately non-obvious so naive form crawlers fill it anyway.
-  const honeypot = formData.get("fax_number");
-  if (typeof honeypot === "string" && honeypot.trim() !== "") {
+  const screen = await screenSubmission(formData, "contact");
+  // A filled decoy field: answer as if it succeeded, and send nothing.
+  if (screen.outcome === "decoy") {
     return { status: "success", message: "Thanks — we'll be in touch shortly." };
   }
-
-  const rateLimit = await limitVisitor("contact");
-  if (!rateLimit.ok) {
-    return {
-      status: "error",
-      message:
-        rateLimit.status === 503
-          ? RATE_LIMIT_UNAVAILABLE_MESSAGE
-          : "Too many messages — please try again in a few minutes.",
-    };
-  }
+  if (screen.outcome === "refused") return { status: "error", message: screen.message };
 
   const name = String(formData.get("name") ?? "").trim();
   const email = String(formData.get("email") ?? "").trim();
   const organisation = String(formData.get("organisation") ?? "").trim();
   const size = String(formData.get("size") ?? "").trim();
-  const country = String(formData.get("country") ?? "").trim();
+  const country = String(formData.get("country") ?? "").trim().toUpperCase();
   const message = String(formData.get("message") ?? "").trim();
   const consent = formData.get("consent") === "on";
   const rawIntent = String(formData.get("intent") ?? "general");
@@ -103,61 +68,55 @@ async function answerContact(formData: FormData): Promise<ContactFormState> {
   const fieldErrors: ContactFormState["fieldErrors"] = {};
   if (!name) fieldErrors.name = "Please share your name.";
   if (!email) fieldErrors.email = "Please share your email.";
-  else if (!EMAIL_RE.test(email)) fieldErrors.email = "That doesn't look like a valid email.";
+  else if (!hasEmailShape(email)) fieldErrors.email = "That doesn't look like a valid email.";
   // Personal email is accepted on every intent — disclosure, careers, and
   // general enquiries legitimately come from non-corporate addresses.
   if (!organisation) fieldErrors.organisation = "Please share your organisation.";
-  if (!message || message.length < 10) {
+  // Size and country are optional, but only ever one the form offers.
+  if (size && !isOrgSize(size)) fieldErrors.size = "Please choose a size from the list.";
+  if (country && !isSelectableCountry(country)) {
+    fieldErrors.country = "Please choose your country from the list.";
+  }
+  if (message.length < MESSAGE_MIN_LENGTH) {
     fieldErrors.message = "A sentence or two about your use case helps us prepare.";
   }
   if (!consent) fieldErrors.consent = "We need your consent to process this enquiry.";
 
   // Length bounds — fields are HTML-escaped below, but cap them so the email
   // payload can't be inflated with megabytes of input.
-  if (name.length > 200) fieldErrors.name = "That name is too long (200 character max).";
-  if (email.length > 320) fieldErrors.email = "That email is too long.";
-  if (organisation.length > 200)
-    fieldErrors.organisation = "That organisation name is too long (200 character max).";
-  if (message.length > 5000)
-    fieldErrors.message = "That message is too long (5000 character max).";
+  if (exceedsLimit(name, "name")) fieldErrors.name = tooLongMessage("name", "name");
+  if (exceedsLimit(email, "email")) fieldErrors.email = tooLongMessage("email", "email");
+  if (exceedsLimit(organisation, "organisation")) {
+    fieldErrors.organisation = tooLongMessage("organisation name", "organisation");
+  }
+  if (exceedsLimit(message, "message")) fieldErrors.message = tooLongMessage("message", "message");
 
   if (Object.keys(fieldErrors).length > 0) {
-    return { status: "error", fieldErrors, message: "Please fix the highlighted fields." };
+    return { status: "error", fieldErrors, message: FORM_MESSAGES.fixHighlighted };
   }
 
-  // Bot defence — verified when Turnstile is configured.
-  const turnstile = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
-  if (!turnstile.ok) {
-    return {
-      status: "error",
-      message: "We couldn't verify that you're human. Please complete the challenge and try again.",
-    };
-  }
+  const humanRefusal = await humanCheckRefusal(formData);
+  if (humanRefusal) return { status: "error", message: humanRefusal };
 
-  // Strip CR/LF from user values used in the subject so they can't inject extra
-  // email headers (defence-in-depth — the HTML body is already escaped below).
-  const safeOrg = organisation.replace(/[\r\n]+/g, " ");
-  const safeName = name.replace(/[\r\n]+/g, " ");
-  const subject = `[Avrentis — ${intentLabel(intent)}] ${safeOrg} · ${safeName}`;
-  const html = `
-    <table role="presentation" cellpadding="0" cellspacing="0" style="font-family:Helvetica,Arial,sans-serif;font-size:14px;color:${STATIC_COLORS.textPrimary};max-width:640px;">
-      <tr><td style="padding:0 0 16px;font-size:12px;color:${STATIC_COLORS.textMuted};letter-spacing:0.08em;text-transform:uppercase;">Intent · ${escape(intentLabel(intent))}</td></tr>
-      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Name</td></tr>
-      <tr><td style="padding:0 0 12px;">${escape(name)}</td></tr>
-      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Work email</td></tr>
-      <tr><td style="padding:0 0 12px;"><a href="mailto:${escape(email)}" style="color:${STATIC_COLORS.gold};text-decoration:none;">${escape(email)}</a></td></tr>
-      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Organisation</td></tr>
-      <tr><td style="padding:0 0 12px;">${escape(organisation)}${size ? ` · ${escape(size)}` : ""}</td></tr>
-      ${country ? `<tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Country</td></tr><tr><td style="padding:0 0 12px;">${escape(country)}</td></tr>` : ""}
-      <tr><td style="padding:0 0 4px;color:${STATIC_COLORS.textMuted};font-size:12px;">Message</td></tr>
-      <tr><td style="padding:0 0 12px;white-space:pre-wrap;line-height:1.55;">${escape(message)}</td></tr>
-    </table>
-  `;
+  const topic = CONTACT_TOPICS[intent].subjectLabel;
+  const subject = `[${BRAND.name} — ${topic}] ${headerSafe(organisation)} · ${headerSafe(name)}`;
+  const countryName = country ? (COUNTRY_NAMES.of(country) ?? country) : "";
+  const html = emailShell(
+    [
+      eyebrowRow(`Intent · ${topic}`, 16),
+      labelledRow("Name", escapeHtml(name)),
+      labelledRow("Work email", emailLink(`mailto:${email}`, email)),
+      labelledRow("Organisation", `${escapeHtml(organisation)}${size ? ` · ${escapeHtml(size)}` : ""}`),
+      countryName ? labelledRow("Country", escapeHtml(countryName)) : "",
+      labelledRow("Message", escapeHtml(message), { valueStyle: "white-space:pre-wrap;line-height:1.55;" }),
+    ],
+    640,
+  );
 
   try {
     await sendContactEmail({ subject, html, replyTo: email });
-  } catch (err) {
-    console.error("Contact submission failed:", err);
+  } catch (error) {
+    console.error("Contact submission failed:", errorSummary(error));
     return {
       status: "error",
       message: `Something went wrong sending your enquiry. Please email ${CONTACT_EMAIL.general} directly.`,

@@ -1,5 +1,6 @@
 import "server-only";
 import { Resend } from "resend";
+import { BRAND } from "@/lib/brand";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 
 /**
@@ -8,8 +9,21 @@ import { CONTACT_EMAIL } from "@/lib/contacts";
  * check at send-time so local development without a key still renders pages.
  */
 
-const FROM = process.env.CONTACT_FROM ?? `Avrentis <${CONTACT_EMAIL.general}>`;
+const FROM = process.env.CONTACT_FROM ?? `${BRAND.emailSenderDefault} <${CONTACT_EMAIL.general}>`;
 const INBOX = process.env.CONTACT_INBOX ?? CONTACT_EMAIL.general;
+
+/**
+ * A send the provider refused. Carries only the provider's error name as
+ * `code` — its message can echo the recipient's address, so it is dropped.
+ */
+export class EmailSendError extends Error {
+  readonly code: string;
+  constructor(code: string) {
+    super(`Email provider refused the send (${code})`);
+    this.name = "EmailSendError";
+    this.code = code;
+  }
+}
 
 interface SendParams {
   subject: string;
@@ -26,7 +40,7 @@ export async function sendEmail({
 }: SendParams & { to?: string | string[] }): Promise<void> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    throw new Error("RESEND_API_KEY is not configured");
+    throw new EmailSendError("not_configured");
   }
 
   const resend = new Resend(apiKey);
@@ -39,7 +53,7 @@ export async function sendEmail({
   });
 
   if (error) {
-    throw new Error(`Resend failed: ${error.message}`);
+    throw new EmailSendError(error.name);
   }
 }
 

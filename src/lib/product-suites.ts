@@ -48,19 +48,19 @@ import { AUDIT_TRAIL_KEPT, TRAIL_SEALED_WITH_FINGERPRINT, TRAIL_SEALED } from "@
  */
 
 /** A module's block on its suite page; its icon is the module's own (`MODULE_COPY`). */
-export interface SuiteModuleBlurb {
+interface SuiteModuleBlurb {
   /** The one thing only this module does — a sentence, not a feature list. */
   claim: string;
   body: string;
 }
 
-export interface SuiteSharedPoint {
+interface SuiteSharedPoint {
   title: string;
   body: string;
   icon: LucideIcon;
 }
 
-export interface SuitePageConfig {
+interface SuitePageConfig {
   /** Page headline — outcome, not feature. */
   headline: string;
   description: string;

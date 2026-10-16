@@ -7,7 +7,7 @@ import { ACCESS_ENDS } from "@/lib/compliance-posture";
  * place stops the rendered copy and the structured data from drifting apart.
  */
 
-export interface SecurityFaq {
+interface SecurityFaq {
   q: string;
   a: string;
 }

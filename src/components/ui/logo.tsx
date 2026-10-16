@@ -80,7 +80,7 @@ function getColors(variant: MarkVariant) {
 
 // ── Mark component ────────────────────────────────────────────────────────────
 
-export function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMarkProps) {
+function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMarkProps) {
   const p = getProps(size);
   const c = getColors(variant);
 

@@ -19,7 +19,7 @@ const VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 /** How long the verification call may take before it counts as unverifiable. */
 const TURNSTILE_VERIFY_TIMEOUT_MS = 5_000;
 
-export interface TurnstileResult {
+interface TurnstileResult {
   ok: boolean;
   /** True when verification was skipped because the check is not configured. */
   skipped?: boolean;

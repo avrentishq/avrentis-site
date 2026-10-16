@@ -21,11 +21,12 @@ because both consume the same core geometry + font.
 | **Wordmark** | `wordmark-{gold,navy,white}{,-lg}.svg` + `.png`   | "AVRENTIS" logotype only       |
 | **Lockup**   | `lockup-{variant}-{48,64,128,256}.svg` + `.png`   | Mark + wordmark                |
 
-Variants: `primary` (navy container), `reversed` (gold container), `transparent-gold`,
-`transparent-navy`. Pick by background:
+Variants: `primary` (gold container, navy gate), `reversed` (navy container, gold gate
+with a gold hairline), `transparent-gold`, `transparent-navy`. Pick by background:
 
-- On **light** backgrounds → `*-navy` or `transparent-navy`, or `primary` lockup.
-- On **dark** backgrounds → `*-white` / `transparent-gold`, or `reversed` lockup.
+- On **light** backgrounds → `*-navy` or `transparent-navy`, or the `primary` lockup.
+- On **dark** backgrounds → `*-white` / `transparent-gold`, or the `primary` lockup (what the
+  site's navbar and footer use on navy); `reversed` only where its hairline edge is wanted.
 
 ## Safe to copy & re-upload externally
 

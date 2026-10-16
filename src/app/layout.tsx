@@ -54,7 +54,12 @@ export const metadata: Metadata = {
     description: OG_DESCRIPTION,
   },
   icons: {
-    icon: "/favicon.ico",
+    // The SVG first: browsers that support it render the mark crisply at any
+    // size; the .ico stays for those that do not.
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
     apple: "/apple-touch-icon.png",
   },
 };

@@ -11,7 +11,7 @@ export function trimOrigin(origin: string): string {
  * the server and client bundles — a server-only env var here renders one host
  * during SSR and another after hydration, causing a hydration mismatch.
  */
-export const BROWSER_PLATFORM_ORIGIN = trimOrigin(
+const BROWSER_PLATFORM_ORIGIN = trimOrigin(
   process.env.NEXT_PUBLIC_PLATFORM_URL ?? BRAND.appUrl,
 );
 

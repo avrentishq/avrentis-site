@@ -189,8 +189,6 @@ const STACK = [
   },
 ];
 
-const FAQS = SECURITY_FAQS;
-
 function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: number }) {
   const reverse = index % 2 === 1;
   const Mockup = stage.Mockup;
@@ -646,7 +644,7 @@ export function SecurityProductPage() {
               overflow: "hidden",
             }}
           >
-            {FAQS.map((f, i) => (
+            {SECURITY_FAQS.map((f, i) => (
               <m.details
                 key={f.q}
                 {...fadeUpOnScroll(i + 2)}
@@ -688,7 +686,7 @@ export function SecurityProductPage() {
           </div>
 
           <m.div
-            {...fadeUpOnScroll(FAQS.length + 2)}
+            {...fadeUpOnScroll(SECURITY_FAQS.length + 2)}
             style={{
               marginTop: "32px",
               padding: "22px 26px",

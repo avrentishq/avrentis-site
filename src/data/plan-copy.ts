@@ -29,13 +29,13 @@ import {
  * core fails the type check here until it has words.
  */
 
-export interface PlanCopyInput {
+interface PlanCopyInput {
   capacity: PlanCapacity;
   /** Financial-document retention in days for this plan (0 = kept indefinitely). */
   documentRetentionDays: number;
 }
 
-export interface PlanCopy {
+interface PlanCopy {
   description: (input: PlanCopyInput) => string;
   highlights: (input: PlanCopyInput) => string[];
 }

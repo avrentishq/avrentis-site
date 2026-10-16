@@ -18,7 +18,7 @@ export function isOrgSize(value: string): value is OrgSize {
   return (ORG_SIZES as readonly string[]).includes(value);
 }
 
-export interface OrgSizeOption {
+interface OrgSizeOption {
   value: string;
   label: string;
   badge?: string;

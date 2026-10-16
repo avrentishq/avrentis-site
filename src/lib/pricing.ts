@@ -22,7 +22,7 @@ export interface PricingCurrency {
 
 /** A plan's limits. `0` means unlimited for every figure (core's convention);
  *  the site formats its own lines from these numbers (`@/lib/plan-limits`). */
-export interface PlanLimits {
+interface PlanLimits {
   maxUsers: number;
   maxDocumentsPerMonth: number;
   maxStorageBytes: number;
@@ -80,7 +80,7 @@ export interface Plan {
   features: Record<string, boolean>;
 }
 
-export interface ModuleInfo {
+interface ModuleInfo {
   name: string;
   description: string;
   /** See `PlanModule.availableToSectors`. */
@@ -101,7 +101,7 @@ export interface FeatureGroup {
  *  real plan tier (`plan`), so what a trialist can actually use is that plan's
  *  entitlement — which is why the module pages derive their trial row from it
  *  rather than restating the trial's length and tier in eight places. */
-export interface TrialInfo {
+interface TrialInfo {
   enabled: boolean;
   days: number;
   /** Plan KEY the trial runs on (matches a `Plan.key`), not a display name. */

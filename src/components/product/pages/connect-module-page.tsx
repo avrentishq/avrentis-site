@@ -71,8 +71,8 @@ const config: ModuleConfig = {
   ],
 
   relatedModules: [
-    { moduleKey: "pay", desc: "Push sanctioned payments straight into accounting" },
-    { moduleKey: "procure", desc: "Sync issued POs into ERP and vendor portals" },
+    { moduleKey: "pay", desc: "Approved payments as journal entries for your ledger" },
+    { moduleKey: "procure", desc: "Send issued POs to your ERP through webhooks and the API" },
     { moduleKey: "audit", desc: "Stream audit events to your SIEM or log aggregator" },
   ],
 };

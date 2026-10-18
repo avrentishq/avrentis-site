@@ -285,7 +285,7 @@
         {
           "key": "connect",
           "name": "Avrentis Integrations",
-          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems connect through that API, webhooks, or CSV export — named connectors are delivered on request."
+          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems take Avrentis data through that API, webhooks, or the journal export files."
         },
         {
           "key": "grants",
@@ -540,7 +540,7 @@
     "connect": {
       "name": "Avrentis Integrations",
       "sidebarLabel": "Integrations",
-      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems connect through that API, webhooks, or CSV export — named connectors are delivered on request.",
+      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems take Avrentis data through that API, webhooks, or the journal export files.",
       "suite": "infrastructure",
       "features": [
         "apiAccess",

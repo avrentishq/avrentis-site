@@ -15,7 +15,7 @@ import { useRef } from "react";
 import Link from "next/link";
 import { m, useScroll, useTransform } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import { BRAND, LEGAL_PAGES } from "@/lib/brand";
+import { BRAND } from "@/lib/brand";
 import {
   KeyRound,
   UserCog,
@@ -24,7 +24,6 @@ import {
   Landmark,
   Webhook,
   ArrowRight,
-  Sparkles,
 } from "lucide-react";
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
@@ -77,7 +76,10 @@ const WEBHOOK_SAMPLE = [
 ].join("\n");
 
 
-type Availability = "available" | "request";
+// Only what ships is listed. Unbuilt "talk to us" items, banking connectors and
+// the custom-connector offer were removed: the page names nothing the product
+// does not do today (`integrations-claims.lock.test.ts`).
+type Availability = "available";
 
 interface Integration {
   name: string;
@@ -115,7 +117,6 @@ const CATEGORIES: Category[] = [
       { name: "Okta", summary: "Sign-in over OIDC or SAML 2.0.", availability: "available" },
       { name: "Microsoft Entra ID", summary: "Sign-in over OIDC or SAML 2.0.", availability: "available" },
       { name: "Google Workspace", summary: "OIDC federation with Workspace directory.", availability: "available" },
-      { name: "Apple Business Manager", summary: "OIDC sign-in for Apple-managed workforces.", availability: "request" },
       { name: "Required single sign-on", summary: "Make your identity provider the way your people sign in, with a password kept for administrators.", availability: "available" },
       { name: "One provider for a group", summary: "Companies in a group can accept the sign-in of the group's identity provider.", availability: "available" },
     ],
@@ -134,8 +135,6 @@ const CATEGORIES: Category[] = [
       { name: "Entra ID SCIM", summary: "User provisioning from Entra.", availability: "available" },
       { name: "Google Workspace SCIM", summary: "User provisioning from Workspace.", availability: "available" },
       { name: "Groups mapped to roles", summary: "Directory groups request roles; anything beyond staff waits for a person to approve it.", availability: "available" },
-      { name: "JumpCloud", summary: "Standard SCIM integration.", availability: "request" },
-      { name: "Rippling / BambooHR", summary: "HRIS-first provisioning bridges.", availability: "request" },
     ],
   },
   {
@@ -150,8 +149,6 @@ const CATEGORIES: Category[] = [
       { name: "WhatsApp", summary: `Approval alerts with a secure review link${MESSAGING_ON_EVERY_PLAN ? ", on every plan" : ""}.`, availability: "available" },
       { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
       { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
-      { name: "Slack", summary: "Approval shortcuts + alerts into team channels.", availability: "request" },
-      { name: "Microsoft Teams", summary: "Adaptive cards for approvals in Teams chat.", availability: "request" },
     ],
   },
   {
@@ -160,7 +157,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "ACCOUNTING & ERP",
     title: "Approved spending lands in your ledger, coded your way.",
     lede:
-      `${BRAND.name} owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.`,
+      `Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries in a file your accounting system imports — each entry exported once, so nothing is posted twice. Use a ready-made layout where your system has one; any other ledger takes the standard CSV, and plans with API access can also read the entries over our API.`,
     planFeature: "budgetCodes",
     integrations: [
       { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line.", availability: "available" },
@@ -169,37 +166,22 @@ const CATEGORIES: Category[] = [
       { name: "Sage Accounting", summary: "Journal entries in Sage Accounting's journal import template.", availability: "available" },
       { name: "Standard CSV journal", summary: "Every field, for any ledger that reads a CSV.", availability: "available" },
       { name: "CSV export", summary: "Period-bounded exports with full approval trail per line.", availability: "available" },
-      { name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks.", availability: "request" },
-      { name: "Sage Intacct", summary: "API bridge for mid-market finance teams.", availability: "request" },
-      { name: "SAP Business One", summary: "Connector for SAP-led procurement.", availability: "request" },
-      { name: "Oracle NetSuite", summary: "PO and voucher synchronisation.", availability: "request" },
+      { name: "Other accounting systems", summary: "Import the standard CSV journal — and tell us which system you use.", availability: "available" },
     ],
   },
   {
     id: "banking",
     icon: Landmark,
     eyebrow: "BANKING",
-    title: "Bank files and letters today. Live banking next.",
+    title: "Bank letters and payment files, in your bank's own scheme.",
     lede:
-      "Every sanctioned voucher produces a formally formatted bank letter with the MD's signature, and approved payments go out as a payment file in your bank's own scheme — upload it, and the money moves on your rails. Native banking APIs are on the roadmap.",
+      "Every sanctioned voucher produces a formally formatted bank letter with the MD's signature, and approved payments go out as a payment file in your bank's own scheme — upload it, and the money moves on your rails.",
     integrations: [
       { name: "Bank-ready PDF letter", summary: "Per-voucher letter with MD signature + letterhead.", availability: "available" },
       { name: "NIBSS Direct Credit", summary: "Naira batch files accepted by most Nigerian banks, plus GTBank and Access Bank portal imports.", availability: "available" },
       { name: "SEPA Credit Transfer", summary: "Euro payments to any IBAN, as an ISO 20022 file.", availability: "available" },
       { name: "Bacs Direct Credit (Standard 18)", summary: "Sterling payments to UK sort codes and account numbers.", availability: "available" },
       { name: "ACH credits (NACHA)", summary: "US dollar payments, each marked checking or savings from the payee's account.", availability: "available" },
-      { name: "SWIFT-format payment batches", summary: "Batched export for treasury teams.", availability: "request" },
-      {
-        name: "Nigerian bank connectors (GTBank, Zenith, Access)",
-        summary: "Direct payment initiation for Nigeria-based tenants.",
-        availability: "request",
-      },
-      {
-        name: "Pan-African banking (Mono / Okra)",
-        summary: "Aggregator-based balance + payment rails.",
-        availability: "request",
-      },
-      { name: "Stripe Treasury", summary: "For USD-denominated payouts.", availability: "request" },
     ],
   },
   {
@@ -214,8 +196,6 @@ const CATEGORIES: Category[] = [
       { name: "REST API (v1)", summary: "Read access to documents, users, vendors, budgets, journal entries, audit events, and reports.", availability: "available" },
       { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },
       { name: "Audit export", summary: "Regulator-ready audit bundles, downloadable for any period.", availability: "available" },
-      { name: "Zapier", summary: "No-code workflow bridge into 6,000+ apps.", availability: "request" },
-      { name: "n8n / Make", summary: "Trigger-node integration for ops teams.", availability: "request" },
     ],
   },
 ];
@@ -226,12 +206,6 @@ const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: st
     color: "var(--color-success)",
     bg: "var(--color-success-tint)",
     border: "rgba(var(--color-success-rgb), 0.28)",
-  },
-  request: {
-    label: "Talk to us",
-    color: "var(--color-gold-on-light)",
-    bg: "var(--color-gold-tint)",
-    border: "var(--color-gold-border)",
   },
 };
 
@@ -419,8 +393,8 @@ export function IntegrationsCataloguePage({
             lede={
               <>
                 Identity, provisioning, notifications, accounting, banking, and a
-                first-class developer platform. Each integration labelled honestly —
-                available today or delivered on request as part of a conversation.
+                first-class developer platform. Everything listed here is available
+                today.
               </>
             }
             ledeStyle={{
@@ -440,14 +414,6 @@ export function IntegrationsCataloguePage({
               size="md"
             >
               Explore the catalogue
-            </ButtonLink>
-            <ButtonLink
-              href={contactHref("demo")}
-              variant="secondary"
-              surface="dark"
-              size="md"
-            >
-              Request a custom connector →
             </ButtonLink>
           </m.div>
         </div>
@@ -614,92 +580,6 @@ export function IntegrationsCataloguePage({
               </p>
             </m.div>
           </div>
-        </div>
-      </section>
-
-      {/* ── CUSTOM CONNECTOR ───────────────────────────────── */}
-      <section
-        style={{
-          backgroundColor: "var(--color-navy-primary)",
-          padding: "100px 40px",
-          position: "relative",
-          overflow: "hidden",
-          isolation: "isolate",
-        }}
-      >
-        <SectionBackdrop src={SECTION_BACKDROPS.integrationsCustomConnector} scrim="dark" />
-        <DarkHeroBackdrop glows="closing" />
-
-        <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content, textAlign: "center" }}>
-          <m.div
-            {...fadeUpOnScroll()}
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              fontSize: "var(--text-xs)",
-              fontWeight: 600,
-              letterSpacing: "0.10em",
-              textTransform: "uppercase",
-              color: "var(--color-gold)",
-              backgroundColor: "var(--color-gold-tint)",
-              border: "1px solid var(--color-gold-border)",
-              borderRadius: "var(--radius-3xl)",
-              padding: "6px 14px",
-              marginBottom: "20px",
-            }}
-          >
-            <Sparkles size={14} strokeWidth={1.8} aria-hidden="true" />
-            Built for your stack
-          </m.div>
-          <m.h2
-            {...fadeUpOnScroll(1)}
-            style={{
-              fontWeight: 400,
-              fontSize: "var(--text-heading-xl)",
-              color: "var(--color-white)",
-              lineHeight: 1.2,
-              margin: "0 0 16px",
-              letterSpacing: "0.01em",
-            }}
-            className="lg:!text-display-xs"
-          >
-            Need something specific? We&rsquo;ll build it.
-          </m.h2>
-          <m.p
-            {...fadeUpOnScroll(2)}
-            style={{
-              fontSize: "var(--text-lg)",
-              color: "var(--color-text-subtle)",
-              lineHeight: 1.7,
-              margin: "0 auto 28px",
-              maxWidth: "var(--measure-snug)",
-            }}
-          >
-            Running a system we do not list? We build purpose-built connectors
-            for the systems already in production at your organisation —
-            banking rails, regional HRIS, in-house document stores. Tell us what
-            you run; we scope, build, and ship.
-          </m.p>
-          <m.div
-            {...fadeUpOnScroll(3)}
-            style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}
-          >
-            <ButtonLink
-              href={contactHref("demo")}
-              size="md"
-            >
-              Scope a custom connector
-            </ButtonLink>
-            <ButtonLink
-              href={LEGAL_PAGES.security}
-              variant="secondary"
-              surface="dark"
-              size="md"
-            >
-              How we secure integrations →
-            </ButtonLink>
-          </m.div>
         </div>
       </section>
 

@@ -115,7 +115,6 @@ export const SECTION_BACKDROPS = {
   integrationsCategories: { src: textureLight, opacity: 0.15 },
   integrationsCategoryBlock: { src: textureLight, opacity: 0.15 },
   integrationsDevTeaser: { src: textureFlow, opacity: 0.15 },
-  integrationsCustomConnector: { src: textureStructure, opacity: 0.45 },
 
   // ── /product/security ─────────────────────────────────────────────────
   securityHero: { src: textureFlow, opacity: 0.5 },

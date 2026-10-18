@@ -160,7 +160,7 @@ const CATEGORIES: Category[] = [
     eyebrow: "ACCOUNTING & ERP",
     title: "Approved spending lands in your ledger, coded your way.",
     lede:
-      `${BRAND.name} owns the approval chain; live connectors are delivered on request. Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries your accounting system imports — each entry exported once, so nothing is posted twice.`,
+      `Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries in a file your accounting system imports — each entry exported once, so nothing is posted twice. Use a ready-made layout where your system has one; any other ledger takes the standard CSV, and plans with API access can also read the entries over our API.`,
     planFeature: "budgetCodes",
     integrations: [
       { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line.", availability: "available" },
@@ -169,10 +169,7 @@ const CATEGORIES: Category[] = [
       { name: "Sage Accounting", summary: "Journal entries in Sage Accounting's journal import template.", availability: "available" },
       { name: "Standard CSV journal", summary: "Every field, for any ledger that reads a CSV.", availability: "available" },
       { name: "CSV export", summary: "Period-bounded exports with full approval trail per line.", availability: "available" },
-      { name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks.", availability: "request" },
-      { name: "Sage Intacct", summary: "API bridge for mid-market finance teams.", availability: "request" },
-      { name: "SAP Business One", summary: "Connector for SAP-led procurement.", availability: "request" },
-      { name: "Oracle NetSuite", summary: "PO and voucher synchronisation.", availability: "request" },
+      { name: "Other accounting systems", summary: "Import the standard CSV journal — and tell us which system you use.", availability: "available" },
     ],
   },
   {

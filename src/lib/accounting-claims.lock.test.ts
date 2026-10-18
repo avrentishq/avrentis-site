@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { accountingConnectionViolations } from "@avrentishq/core/brand/copy-guardrails";
 import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
@@ -13,18 +14,13 @@ import { stripComments } from "@/lib/test-support/strip-comments";
  * are delivered on request" — none of which exists.
  *
  * So copy may not name an accounting product the export has no layout for, and
- * may not call the export a connector or a sync.
+ * may not call the export a connector or a sync. The rule is core's
+ * (`accountingConnectionViolations`), the same one the app, the console and the
+ * module catalogue are held to; this file keeps the site's own proof that the
+ * scan sees its pages and leaves the true lines alone.
  */
 
 const SRC = join(process.cwd(), "src");
-
-/** Accounting products with no export layout. Naming one reads as "supported". */
-const UNSUPPORTED_LEDGER =
-  /\b(?:Xero|Intacct|NetSuite|SAP(?:\s+(?:Business\s+One|B1|S\/4HANA))?|Oracle\s+(?:Financials|Fusion)|Dynamics\s+365|Odoo|MYOB|FreshBooks|Tally(?:Prime)?)\b/;
-
-/** The export described as a live link to the ledger. */
-const CONNECTION_WORDING =
-  /\b(?:live|named|accounting|ERP|ledger)\s+connectors?\b|\b(?:two-way|live|real-time|bi-?directional)\s+sync\b|\bsyncs?\s+(?:with|to|into)\s+(?:QuickBooks|Zoho|Sage)\b/i;
 
 function copyFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
@@ -32,42 +28,28 @@ function copyFiles(): string[] {
     .filter((file) => !/\.test\.tsx?$/.test(file));
 }
 
-function offenders(pattern: RegExp): string[] {
-  return copyFiles().flatMap((file) => {
-    const match = stripComments(readFileSync(join(SRC, file), "utf8")).match(pattern);
-    return match ? [`${file}: "${match[0]}"`] : [];
-  });
-}
-
 describe("accounting copy — a file and a read API, not a connector", () => {
-  it("the detectors catch the wording they exist to stop", () => {
+  it("the shared rule catches the wording the site used to publish", () => {
     for (const old of [
       'name: "Xero", summary: "Bill and PO sync for Xero-led finance stacks."',
       'name: "Sage Intacct", summary: "API bridge for mid-market finance teams."',
       'name: "SAP Business One", summary: "Connector for SAP-led procurement."',
       'name: "Oracle NetSuite", summary: "PO and voucher synchronisation."',
-    ]) {
-      expect(UNSUPPORTED_LEDGER.test(old), old).toBe(true);
-    }
-    for (const old of [
       "owns the approval chain; live connectors are delivered on request.",
-      "Accounting and ERP systems connect through that API — named connectors are delivered on request.",
       "Two-way sync with your ledger.",
       "Avrentis syncs with QuickBooks.",
     ]) {
-      expect(CONNECTION_WORDING.test(old), old).toBe(true);
+      expect(accountingConnectionViolations(old), old).not.toEqual([]);
     }
   });
 
-  it("the detectors leave the true lines alone", () => {
+  it("the shared rule leaves the true lines alone", () => {
     for (const accurate of [
       "Journal entries in Sage Accounting's journal import template.",
       "Journal entries in QuickBooks Online's import layout.",
       "Import the standard CSV journal — and tell us which system you use.",
-      "Request a custom connector →",
-      "Nigerian bank connectors (GTBank, Zenith, Access)",
     ]) {
-      expect(UNSUPPORTED_LEDGER.test(accurate) || CONNECTION_WORDING.test(accurate), accurate).toBe(false);
+      expect(accountingConnectionViolations(accurate), accurate).toEqual([]);
     }
   });
 
@@ -75,18 +57,16 @@ describe("accounting copy — a file and a read API, not a connector", () => {
     expect(copyFiles()).toContain(join("components", "product", "integrations-page.tsx"));
   });
 
-  it("no copy names an accounting product the export has no layout for", () => {
+  it("no copy names an unsupported ledger or calls the export a connector or a sync", () => {
+    const offenders = copyFiles().flatMap((file) => {
+      const broken = accountingConnectionViolations(stripComments(readFileSync(join(SRC, file), "utf8")));
+      return broken.length > 0 ? [`${file}: ${broken.join(", ")}`] : [];
+    });
     expect(
-      offenders(UNSUPPORTED_LEDGER),
+      offenders,
       "Only QuickBooks Online, Zoho Books and Sage Accounting have an export layout; every other " +
-        "ledger uses the standard CSV or the read API. Do not name it as an integration.",
-    ).toEqual([]);
-  });
-
-  it("no copy calls the accounting export a connector or a sync", () => {
-    expect(
-      offenders(CONNECTION_WORDING),
-      "The export is a file and a read API: nothing is pushed into the ledger and nothing comes back.",
+        "ledger uses the standard CSV or the read API. The export is a file and a read API: nothing " +
+        "is pushed into the ledger and nothing comes back.",
     ).toEqual([]);
   });
 });

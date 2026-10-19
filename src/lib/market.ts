@@ -23,3 +23,15 @@ export const MARKET_REGION = `${LEAD_MARKET_NAME} and Africa`;
 
 /** "organisations across Nigeria and Africa" — completes "built for …". */
 export const MARKET_SCOPE = `organisations across ${MARKET_REGION}`;
+
+/**
+ * What the lead market's organisations need — completes "built for … ". The
+ * founder-approved market statement (2026-10-18) ends "a record that holds":
+ * documents follow the plan's retention period, so the claims rules forbid any
+ * wording that calls the record of documents everlasting (record-keeping.ts).
+ */
+export const MARKET_NEED =
+  "where decisions require defined authority, structured process, and a record that holds";
+
+/** The market-phase statement — sales, onboarding, the about page. Not the brand statement. */
+export const MARKET_STATEMENT = `Built for ${MARKET_SCOPE} ${MARKET_NEED}.`;

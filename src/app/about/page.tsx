@@ -10,11 +10,11 @@ import { pageMetadata } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
 import { contactHref } from "@/app/contact/tabs";
 import { ENQUIRY_PROMISE } from "@/lib/contacts";
-import { MARKET_REGION, MARKET_SCOPE } from "@/lib/market";
+import { MARKET_NEED, MARKET_REGION, MARKET_SCOPE } from "@/lib/market";
 import { SITE_ROUTES } from "@/lib/routes";
 import { cardGridProps } from "@/lib/card-grid";
 
-const ABOUT_DESCRIPTION = `Why we built ${BRAND.name} — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} where decisions require defined authority, structured process, and a lasting record of who approved what.`;
+const ABOUT_DESCRIPTION = `Why we built ${BRAND.name} — the ${BRAND.positioningStatement} for ${MARKET_SCOPE} ${MARKET_NEED}.`;
 
 export const metadata: Metadata = pageMetadata({
   path: SITE_ROUTES.about,

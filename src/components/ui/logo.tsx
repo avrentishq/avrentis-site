@@ -1,157 +1,166 @@
 /**
- * AVRENTIS Gate Mark — architectural two-post gate with beam, ledger,
- * document slot, and full-bleed ledger line.
+ * The brand mark and lockup (mark + wordmark).
  *
- * Four variants:
- *   primary          — the default lockup: FIXED navy mark on gold container in
- *                      BOTH themes (navbars, sidebars, auth panels). Its surfaces
- *                      are always navy chrome, so the gold lockup must not invert.
- *                      Driven by the theme-invariant --color-logo-* tokens.
- *   reversed         — navy mark on gold container (fixed, both themes)
- *   transparent-gold — gold mark, no background (dark surfaces)
- *   transparent-navy — navy mark, no background (light surfaces)
+ * The mark is DRAWING DATA owned by core (`BRAND_MARK`): role-tagged shapes on
+ * a square canvas. This component only decides the colour of each role — the
+ * shapes come from `markShapesAt(size)`, so a new logo is a new drawing in core,
+ * never an edit here.
  *
- * All proportions derived from a single base unit: U = size × 0.10
+ * Variants:
+ *   primary          — the default lockup: accent container, primary mark, FIXED
+ *                      in both themes (navbars, sidebars, auth panels sit on
+ *                      always-dark chrome). Theme-invariant `--color-logo-*` tokens.
+ *   reversed         — primary container, accent mark (core's MARK_VARIANTS).
+ *   transparent-gold — accent mark, no container (dark surfaces).
+ *   transparent-navy — primary mark, no container (light surfaces; flips with the
+ *                      theme so it stays readable in dark mode).
  */
 
-import { BRAND, type MarkVariant, getProps, WORDMARK_SPEC } from "@/lib/brand";
+import {
+  BRAND,
+  type MarkRole,
+  type MarkShape,
+  type MarkVariant,
+  BRAND_MARK,
+  markShapesAt,
+  WORDMARK_SPEC,
+} from "@/lib/brand";
 
-// The gate-mark geometry (getProps), the wordmark spec, and the variant type
-// come from the brand SSOT.
+// The standalone SVG-string serializer, re-exported so existing
+// `@/components/ui/logo` importers keep one import path.
+export { brandMarkSvgString } from "@/lib/brand";
 
-interface AvrentisMarkProps {
+interface BrandMarkProps {
   size?: number;
   variant?: MarkVariant;
   className?: string;
 }
 
-interface AvrentisLogoProps extends AvrentisMarkProps {
+interface BrandLogoProps extends BrandMarkProps {
   showWordmark?: boolean;
   wordmarkColor?: string;
 }
 
-// ── Colour engine ─────────────────────────────────────────────────────────────
-// (Proportion engine `getProps` lives in @avrentishq/core/brand — imported above.)
+interface VariantColors {
+  /** `none` → the container shape is not drawn. */
+  container: string;
+  stroke: string;
+  slot: string;
+  /** Hairline round the container, or `none`. */
+  border: string;
+}
 
-function getColors(variant: MarkVariant) {
+// ── Colour engine: which colour each role is painted in ─────────────────────
+// CSS-driven, so it works in server components without a JS theme read.
+
+function getColors(variant: MarkVariant): VariantColors {
   switch (variant) {
     case "primary":
-      // FIXED navy-on-gold lockup in both themes (gold container + navy gate),
-      // via the theme-invariant --color-logo-* tokens (globals.css). The mark
-      // only sits on always-navy chrome, so it must NOT invert per theme.
-      // CSS-driven so it works in server components without a JS theme read.
       return {
         container: "var(--color-logo-container)",
         stroke: "var(--color-logo-mark)",
         slot: "var(--color-logo-mark)",
-        slotOpacity: 0.35,
         border: "color-mix(in srgb, var(--color-logo-mark) 20%, transparent)",
-        transparent: false,
       };
     case "reversed":
       return {
-        container: "var(--color-accent)",
-        stroke: "var(--color-primary-800)",
-        slot: "var(--color-primary-800)",
-        slotOpacity: 0.35,
-        border: "none",
-        transparent: false,
+        container: "var(--color-logo-mark)",
+        stroke: "var(--color-logo-container)",
+        slot: "var(--color-logo-container)",
+        border: "color-mix(in srgb, var(--color-logo-container) 20%, transparent)",
       };
     case "transparent-gold":
       return {
         container: "none",
         stroke: "var(--color-accent)",
         slot: "var(--color-accent)",
-        slotOpacity: 0.35,
         border: "none",
-        transparent: true,
       };
     case "transparent-navy":
       return {
         container: "none",
         stroke: "var(--color-primary-800)",
         slot: "var(--color-primary-800)",
-        slotOpacity: 0.35,
         border: "none",
-        transparent: true,
       };
   }
 }
 
-// ── Mark component ────────────────────────────────────────────────────────────
+function fillFor(role: MarkRole, colors: VariantColors): string {
+  if (role === "container") return colors.container;
+  return role === "slot" ? colors.slot : colors.stroke;
+}
 
-function AvrentisMark({ size = 44, variant = "primary", className }: AvrentisMarkProps) {
-  const p = getProps(size);
-  const c = getColors(variant);
+function Shape({
+  shape,
+  colors,
+  hairline,
+}: {
+  shape: MarkShape;
+  colors: VariantColors;
+  hairline: number;
+}) {
+  const fill = fillFor(shape.role, colors);
+  if (shape.kind === "path") return <path d={shape.d} fill={fill} opacity={shape.opacity} />;
+  const outlined = shape.role === "container" && colors.border !== "none";
+  return (
+    <rect
+      x={shape.x}
+      y={shape.y}
+      width={shape.width}
+      height={shape.height}
+      rx={shape.radius}
+      fill={fill}
+      opacity={shape.opacity}
+      stroke={outlined ? colors.border : undefined}
+      strokeWidth={outlined ? hairline : undefined}
+    />
+  );
+}
+
+// ── Mark ────────────────────────────────────────────────────────────────────
+
+export function BrandMark({ size = 44, variant = "primary", className }: BrandMarkProps) {
+  const colors = getColors(variant);
+  const shapes = markShapesAt(size, { includeContainer: colors.container !== "none" });
+  // A 0.5px hairline, expressed in canvas units (the SVG scales the canvas to `size`).
+  const hairline = 0.5 * (BRAND_MARK.canvas / size);
 
   return (
     <svg
       width={size}
       height={size}
-      viewBox={`0 0 ${size} ${size}`}
+      viewBox={`0 0 ${BRAND_MARK.canvas} ${BRAND_MARK.canvas}`}
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label={BRAND.name.toUpperCase()}
+      aria-label={BRAND.name}
       role="img"
     >
-      {/* Container */}
-      {c.container !== "none" && (
-        <rect
-          width={size}
-          height={size}
-          rx={p.rx}
-          fill={c.container}
-          stroke={c.border !== "none" ? c.border : undefined}
-          strokeWidth={c.border !== "none" ? 0.5 : undefined}
-        />
-      )}
-
-      {/* Beam */}
-      <rect x={p.beamX} y={p.beamY} width={p.beamW} height={p.beamH} fill={c.stroke} />
-
-      {/* Left post */}
-      <rect x={p.leftPostX} y={p.postY} width={p.leftPostW} height={p.postH} fill={c.stroke} />
-
-      {/* Right post — optically narrower */}
-      <rect x={p.rightPostX} y={p.postY} width={p.rightPostW} height={p.postH} fill={c.stroke} />
-
-      {/* Document slot — golden ratio position, suppressed below 48px */}
-      {size >= 48 && (
-        <rect
-          x={p.slotX}
-          y={p.slotY}
-          width={p.slotW}
-          height={p.slotH}
-          fill={c.slot}
-          opacity={c.slotOpacity}
-        />
-      )}
-
-      {/* Ledger — ALWAYS full-bleed (edge-to-edge), every variant */}
-      <rect x={p.ledgerX} y={p.ledgerY} width={p.ledgerW} height={p.ledgerH} fill={c.stroke} />
+      {shapes.map((shape, index) => (
+        <Shape key={index} shape={shape} colors={colors} hairline={hairline} />
+      ))}
     </svg>
   );
 }
 
-// ── Logo (mark + wordmark) ────────────────────────────────────────────────────
+// ── Logo (mark + wordmark) ──────────────────────────────────────────────────
 
-export function AvrentisLogo({
+export function BrandLogo({
   size = 44,
   variant = "primary",
   showWordmark = true,
   wordmarkColor,
   className,
-}: AvrentisLogoProps) {
+}: BrandLogoProps) {
   const defaultWordmarkColor =
     variant === "transparent-navy" ? "var(--color-primary-800)" : "var(--color-white)";
-  const wColor = wordmarkColor ?? defaultWordmarkColor;
 
   return (
     <div
       className={["flex items-end", className].filter(Boolean).join(" ")}
       style={{ gap: Math.round(size * WORDMARK_SPEC.gapFactor) }}
     >
-      <AvrentisMark size={size} variant={variant} />
+      <BrandMark size={size} variant={variant} />
       {showWordmark && (
         <span
           className="av-wordmark"
@@ -160,11 +169,11 @@ export function AvrentisLogo({
             fontWeight: WORDMARK_SPEC.weight,
             fontSize: size * WORDMARK_SPEC.sizeFactor,
             letterSpacing: `${WORDMARK_SPEC.tracking}em`,
-            color: wColor,
+            color: wordmarkColor ?? defaultWordmarkColor,
             lineHeight: 1,
             textTransform: "uppercase" as const,
-            // Lift the cap-trimmed wordmark so its baseline lands on the gate
-            // mark's ledger bottom (lift === size × WORDMARK_SPEC.baselineLiftFactor).
+            // Lift the cap-trimmed wordmark so its baseline lands where the mark
+            // drawing says (lift === size × WORDMARK_SPEC.baselineLiftFactor).
             marginBottom: size * WORDMARK_SPEC.baselineLiftFactor,
           }}
         >
@@ -175,4 +184,4 @@ export function AvrentisLogo({
   );
 }
 
-export default AvrentisLogo;
+export default BrandLogo;

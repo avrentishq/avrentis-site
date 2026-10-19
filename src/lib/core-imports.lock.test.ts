@@ -88,6 +88,9 @@ const BUILD_ONLY_ALLOWED = new Set<string>([]);
 const TEST_ONLY_ALLOWED = new Set([
   "security/dependency-floors",
   "brand/copy-guardrails",
+  // The shared "brand / host never typed" detector and comment stripper; needs only
+  // `typescript`, which the site installs.
+  "brand/typed-brand",
 ]);
 
 const SRC = join(process.cwd(), "src");
@@ -133,7 +136,8 @@ describe("core imports stay inside the site's allowlist", () => {
         .map((subpath) => `${file}  @avrentishq/core/${subpath}`),
     );
     const sourceOffenders = sourceFiles().flatMap((file) => {
-      const isTest = /\.test\.tsx?$/.test(file);
+      // test-support/ holds helpers only tests import (nothing ships them).
+      const isTest = /\.test\.tsx?$/.test(file) || /(^|[\\/])test-support[\\/]/.test(file);
       return coreSubpaths(readFileSync(join(SRC, file), "utf8"))
         .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
         .filter((subpath) => !(isTest && (TEST_ONLY_ALLOWED.has(subpath) || BUILD_ONLY_ALLOWED.has(subpath))))

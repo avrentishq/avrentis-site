@@ -1,0 +1,30 @@
+/* GENERATED from @avrentishq/core BRAND_PALETTE (brand/constants.ts). Do not edit:
+ * change the palette in core, release, then regenerate this file. */
+:root {
+  --brand-primary-950: #020617;
+  --brand-primary-950-rgb: 2, 6, 23;
+  --brand-primary-900: #0f172a;
+  --brand-primary-900-rgb: 15, 23, 42;
+  --brand-primary-800: #1e293b;
+  --brand-primary-800-rgb: 30, 41, 59;
+  --brand-primary-700: #334155;
+  --brand-primary-700-rgb: 51, 65, 85;
+  --brand-accent: #c68b2f;
+  --brand-accent-rgb: 198, 139, 47;
+  --brand-accent-hover: #a87425;
+  --brand-accent-hover-rgb: 168, 116, 37;
+  --brand-accent-text: #8a5f1e;
+  --brand-accent-text-rgb: 138, 95, 30;
+  --brand-accent-surface: #fdf8ef;
+  --brand-accent-surface-rgb: 253, 248, 239;
+  --brand-accent-border: #e8c584;
+  --brand-accent-border-rgb: 232, 197, 132;
+  --brand-accent-text-on-dark: #d8a84e;
+  --brand-accent-text-on-dark-rgb: 216, 168, 78;
+  --brand-accent-strong-on-dark: #c89339;
+  --brand-accent-strong-on-dark-rgb: 200, 147, 57;
+  --brand-accent-surface-on-dark: #2a2110;
+  --brand-accent-surface-on-dark-rgb: 42, 33, 16;
+  --brand-accent-border-on-dark: #5a481f;
+  --brand-accent-border-on-dark-rgb: 90, 72, 31;
+}

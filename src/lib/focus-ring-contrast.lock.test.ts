@@ -9,6 +9,7 @@ import {
   TINT_MAX_ALPHA,
   surfaceStyleFragments,
 } from "./surfaces";
+import { GLOBALS_CSS, THEME_BLOCK } from "@/lib/test-support/theme-tokens";
 
 /**
  * The focus ring must stand out from the surface it is drawn over: at least
@@ -18,8 +19,8 @@ import {
  */
 
 const SRC = join(process.cwd(), "src");
-const css = readFileSync(join(SRC, "app", "globals.css"), "utf8");
-const themeBlock = css.match(/@theme[^{]*\{([\s\S]*?)\n\}/)?.[1] ?? "";
+const css = GLOBALS_CSS;
+const themeBlock = THEME_BLOCK;
 /** The token name inside a `var(--color-…)` reference. */
 const tokenName = (reference: string): string => reference.slice("var(--color-".length, -1);
 

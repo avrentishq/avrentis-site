@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { AvrentisLogo } from "@/components/ui/logo";
+import { BrandLogo } from "@/components/ui/logo";
 import { ButtonLink } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { MOTION_DURATION, MOTION_EASE, fadeUp } from "@/lib/animations";
@@ -99,7 +99,7 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
               flexShrink: 0,
             }}
           >
-            <AvrentisLogo size={28} variant="primary" wordmarkColor="var(--color-white)" />
+            <BrandLogo size={28} variant="primary" wordmarkColor="var(--color-white)" />
             <button
               ref={closeBtnRef}
               onClick={onClose}

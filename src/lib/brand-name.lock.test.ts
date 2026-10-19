@@ -2,31 +2,26 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { BRAND } from "@/lib/brand";
-import { stripComments } from "@/lib/test-support/strip-comments";
+import { BRAND, SITE_HOST } from "@/lib/brand";
+import { scannedLanguageFor, typedBrandLines, typedHostLines } from "@avrentishq/core/brand/typed-brand";
 
 /**
  * The brand name is core's (`BRAND.name`, through `@/lib/brand`), so renaming the
  * product is one edit in core. Copy reads it — `{BRAND.name}` in JSX,
- * `${BRAND.name}` in a string — and never types it. Comments may name it; the
- * changelog records what was true on its date and is exempt, as are tests.
+ * `${BRAND.name}` in a string — and never types it. Origins and inboxes are built
+ * from core too (`siteUrl`, `BRAND.appUrl`, `BRAND.contactEmail`, `SITE_HOST`).
+ * The detectors are core's, shared with the app and the console. Comments may
+ * name either; the changelog records what was true on its date and is exempt, as
+ * are tests.
  */
 
 const SRC = join(process.cwd(), "src");
-const EXEMPT_FILE = /^(?:lib[\\/]brand\.ts|components[\\/]changelog[\\/].*)$/;
-/** The wordmark in either case: a typed upper-case label is the same copy. */
-const TYPED_BRAND = new RegExp(`\\b(?:${BRAND.name}|${BRAND.name.toUpperCase()})\\b`);
-
-function typedBrandLines(source: string): string[] {
-  return stripComments(source)
-    .split("\n")
-    .filter((line) => TYPED_BRAND.test(line))
-    .map((line) => line.trim());
-}
-
+// pricing-fallback.json is generated from the platform API (`pnpm pricing:check`
+// locks it); it holds core's RESOLVED module names.
+const EXEMPT_FILE = /^(?:lib[\\/]brand\.ts|components[\\/]changelog[\\/].*|data[\\/]pricing-fallback\.json)$/;
 function scannedFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
-    .filter((file) => /\.tsx?$/.test(file))
+    .filter((file) => /\.(?:tsx?|json|css)$/.test(file))
     .filter((file) => !/\.test\.tsx?$/.test(file))
     .filter((file) => !EXEMPT_FILE.test(file));
 }
@@ -56,8 +51,23 @@ describe("the brand name is never typed", () => {
 
   it("no source file types the brand name", () => {
     const offenders = scannedFiles().flatMap((file) =>
-      typedBrandLines(readFileSync(join(SRC, file), "utf8")).map((line) => `${file}: ${line}`),
+      typedBrandLines(readFileSync(join(SRC, file), "utf8"), scannedLanguageFor(file)).map(
+        (line) => `${file}: ${line}`,
+      ),
     );
     expect(offenders, "read it from BRAND.name (@/lib/brand) so a rename is one edit in core").toEqual([]);
+  });
+
+  it("the host detector is live", () => {
+    expect(typedHostLines(`const url = "https://${SITE_HOST}/trial";`)).toHaveLength(1);
+  });
+
+  it("no source file types the site host", () => {
+    const offenders = scannedFiles().flatMap((file) =>
+      typedHostLines(readFileSync(join(SRC, file), "utf8"), scannedLanguageFor(file)).map(
+        (line) => `${file}: ${line}`,
+      ),
+    );
+    expect(offenders, "build it from core (siteUrl / BRAND.* / SITE_HOST) so a new domain is one edit").toEqual([]);
   });
 });

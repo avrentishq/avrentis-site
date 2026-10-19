@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { brandTokensCss } from "@avrentishq/core/brand";
+import { brandTokensCss } from "@edidi-hq/core/brand";
 
 /**
  * `src/app/brand-tokens.generated.css` is core's palette, exactly — written by

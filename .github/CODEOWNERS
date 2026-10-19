@@ -4,11 +4,11 @@
 # Broader patterns are placed earlier; specific overrides come later.
 #
 # Teams:
-#   @avrentishq/product    — Product Experience: marketing pages, design system, copy
-#   @avrentishq/platform   — Platform & Security: external service clients, platform API contracts
-#   @avrentishq/identity   — Identity & Compliance: legal copy, trust/security posture, disclosure controls
-#   @avrentishq/infra      — Infrastructure & DX: CI, deploy config, build tooling
-#   @avrentishq/founders   — Founder override for load-bearing public commitments
+#   @edidi-hq/product    — Product Experience: marketing pages, design system, copy
+#   @edidi-hq/platform   — Platform & Security: external service clients, platform API contracts
+#   @edidi-hq/identity   — Identity & Compliance: legal copy, trust/security posture, disclosure controls
+#   @edidi-hq/infra      — Infrastructure & DX: CI, deploy config, build tooling
+#   @edidi-hq/founders   — Founder override for load-bearing public commitments
 #
 # Teams not represented here (@workflow, @data) have no surface in the marketing
 # site and are intentionally unassigned. Add them only if scope changes warrant.
@@ -20,7 +20,7 @@
 # Specific carve-outs override these patterns below.
 # ─────────────────────────────────────────────────────────────────────────────
 
-src/                                    @avrentishq/product
+src/                                    @edidi-hq/product
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Platform & Security
@@ -28,13 +28,13 @@ src/                                    @avrentishq/product
 # ─────────────────────────────────────────────────────────────────────────────
 
 # Resend client — RESEND_API_KEY handling
-src/lib/email.ts                        @avrentishq/platform
+src/lib/email.ts                        @edidi-hq/platform
 
 # Trial flow — forwards to platform trial API + handles magic-link verify redirect
-src/app/trial/                          @avrentishq/product @avrentishq/platform
+src/app/trial/                          @edidi-hq/product @edidi-hq/platform
 
 # Contact form server action — dispatches mail via Resend
-src/app/contact/actions.ts              @avrentishq/product @avrentishq/platform
+src/app/contact/actions.ts              @edidi-hq/product @edidi-hq/platform
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Identity & Compliance
@@ -43,27 +43,27 @@ src/app/contact/actions.ts              @avrentishq/product @avrentishq/platform
 # component level too because the same component renders multiple routes.
 # ─────────────────────────────────────────────────────────────────────────────
 
-src/app/privacy/                        @avrentishq/identity @avrentishq/product
-src/app/terms/                          @avrentishq/identity @avrentishq/product
-src/app/trust/                          @avrentishq/identity @avrentishq/product
-src/app/product/security/               @avrentishq/identity @avrentishq/product
-src/components/legal/                   @avrentishq/identity @avrentishq/product
-src/components/trust/                   @avrentishq/identity @avrentishq/product
-src/components/product/security-page.tsx     @avrentishq/identity @avrentishq/product
-src/components/product/security-mockups.tsx  @avrentishq/identity @avrentishq/product
+src/app/privacy/                        @edidi-hq/identity @edidi-hq/product
+src/app/terms/                          @edidi-hq/identity @edidi-hq/product
+src/app/trust/                          @edidi-hq/identity @edidi-hq/product
+src/app/product/security/               @edidi-hq/identity @edidi-hq/product
+src/components/legal/                   @edidi-hq/identity @edidi-hq/product
+src/components/trust/                   @edidi-hq/identity @edidi-hq/product
+src/components/product/security-page.tsx     @edidi-hq/identity @edidi-hq/product
+src/components/product/security-mockups.tsx  @edidi-hq/identity @edidi-hq/product
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Infrastructure & DX
 # ─────────────────────────────────────────────────────────────────────────────
 
-/.github/                               @avrentishq/infra
-/package.json                           @avrentishq/infra
-/pnpm-lock.yaml                         @avrentishq/infra
-/tsconfig.json                          @avrentishq/infra
-/next.config.ts                         @avrentishq/infra
-/next-env.d.ts                          @avrentishq/infra
-/eslint.config.mjs                      @avrentishq/infra
-/postcss.config.mjs                     @avrentishq/infra
+/.github/                               @edidi-hq/infra
+/package.json                           @edidi-hq/infra
+/pnpm-lock.yaml                         @edidi-hq/infra
+/tsconfig.json                          @edidi-hq/infra
+/next.config.ts                         @edidi-hq/infra
+/next-env.d.ts                          @edidi-hq/infra
+/eslint.config.mjs                      @edidi-hq/infra
+/postcss.config.mjs                     @edidi-hq/infra
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Founder override — two-founder approval required for load-bearing public
@@ -71,6 +71,6 @@ src/components/product/security-mockups.tsx  @avrentishq/identity @avrentishq/pr
 # Listed last so they take precedence over all team assignments above.
 # ─────────────────────────────────────────────────────────────────────────────
 
-/.github/CODEOWNERS                     @avrentishq/founders
-/src/lib/pricing.ts                     @avrentishq/founders @avrentishq/product
-/src/data/pricing-fallback.json         @avrentishq/founders @avrentishq/product
+/.github/CODEOWNERS                     @edidi-hq/founders
+/src/lib/pricing.ts                     @edidi-hq/founders @edidi-hq/product
+/src/data/pricing-fallback.json         @edidi-hq/founders @edidi-hq/product

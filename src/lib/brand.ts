@@ -1,21 +1,21 @@
 /**
  * Avrentis brand — the parent-brand identity (BRAND constants, colours, fonts,
  * white-label resolvers, gate-mark geometry) is sourced from the SSOT
- * @avrentishq/core/brand, lifted so the app, marketing site, and admin console
+ * @edidi-hq/core/brand, lifted so the app, marketing site, and admin console
  * can't diverge. This file re-exports it, and adds the marketing view of core's
  * module catalogue below: core decides each module's name, suite and maturity;
  * the site decides only which modules it leads with and the words for suites.
  *
  * DO NOT add parent-brand values here — add them in core, release, bump the pin.
  */
-export * from "@avrentishq/core/brand";
+export * from "@edidi-hq/core/brand";
 
 import {
   MODULE_CATALOG,
   type ModuleKey as CatalogModuleKey,
   type ModuleMaturity,
   type ModuleSuite,
-} from "@avrentishq/core/modules/catalog";
+} from "@edidi-hq/core/modules/catalog";
 
 // ── Marketing module catalog ─────────────────────────────────────────────────
 

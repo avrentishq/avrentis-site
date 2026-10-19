@@ -43,14 +43,14 @@ import { CONTACT_EMAIL } from "@/lib/contacts";
 import { submitWithoutReset } from "@/components/ui/form/submit";
 import { useFocusAfterFailure } from "@/components/ui/form/focus-after-failure";
 import { COUNTRIES, isServedCountry } from "@/data/countries";
-import { SECTORS } from "@avrentishq/core/sectors";
+import { SECTORS } from "@edidi-hq/core/sectors";
 import { TRIAL_STEPS_DONE, TrialStepper } from "./stepper";
 import { LEAD_MARKET } from "@/lib/market";
 import { TrialTimeline } from "./timeline";
 import { READ_ONLY_GRACE_DAYS, TRIAL_LENGTH, TRIAL_MESSAGE_CAP, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED, TRIAL_SETUP_TIME, MAGIC_LINK_LIFETIME } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
-import { looksLikePublicEmailDomain } from "@avrentishq/core/domains/public-email";
+import { looksLikePublicEmailDomain } from "@edidi-hq/core/domains/public-email";
 
 // ────────────────────────────────────────────────────────────────────
 // Free-email domain list — Option B: nudge, not block.

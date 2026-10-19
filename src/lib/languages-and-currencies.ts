@@ -1,5 +1,5 @@
-import { CURRENCIES, SUPPORTED_CURRENCY_CODES } from "@avrentishq/core/money/types";
-import { LOCALES } from "@avrentishq/core/locales";
+import { CURRENCIES, SUPPORTED_CURRENCY_CODES } from "@edidi-hq/core/money/types";
+import { LOCALES } from "@edidi-hq/core/locales";
 
 import { formatEnglishList } from "@/lib/english-list";
 

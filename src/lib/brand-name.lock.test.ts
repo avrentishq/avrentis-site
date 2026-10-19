@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { BRAND, SITE_HOST } from "@/lib/brand";
-import { scannedLanguageFor, typedBrandLines, typedHostLines } from "@avrentishq/core/brand/typed-brand";
+import { scannedLanguageFor, typedBrandLines, typedHostLines } from "@edidi-hq/core/brand/typed-brand";
 
 /**
  * The brand name is core's (`BRAND.name`, through `@/lib/brand`), so renaming the

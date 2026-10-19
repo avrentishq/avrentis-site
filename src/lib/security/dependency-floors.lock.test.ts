@@ -6,7 +6,7 @@ import { describe, it, expect } from "vitest";
 import {
   DEPENDENCY_SECURITY_FLOORS,
   diffDependencyFloors,
-} from "@avrentishq/core/security/dependency-floors";
+} from "@edidi-hq/core/security/dependency-floors";
 
 /**
  * Parity lock for transitive dependency security floors.
@@ -55,7 +55,7 @@ describe("pnpm.overrides matches core's canonical dependency floors", () => {
     expect(
       { missing, mismatched },
       [
-        "pnpm.overrides has drifted from @avrentishq/core/security/dependency-floors.",
+        "pnpm.overrides has drifted from @edidi-hq/core/security/dependency-floors.",
         missing.length ? `MISSING: ${missing.join(", ")}` : "",
         mismatched.length
           ? `MISMATCHED: ${mismatched

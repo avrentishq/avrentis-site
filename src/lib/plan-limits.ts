@@ -1,6 +1,6 @@
 /* ── Plan limit lines, formatted on the site from the numbers ───── */
 
-import { formatByteSize, isUnlimited } from "@avrentishq/core/billing/limit-format";
+import { formatByteSize, isUnlimited } from "@edidi-hq/core/billing/limit-format";
 
 /**
  * Every limit line the site prints — the comparison table, the generated

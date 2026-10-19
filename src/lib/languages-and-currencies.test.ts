@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import { CURRENCIES, SUPPORTED_CURRENCY_CODES } from "@avrentishq/core/money/types";
-import { LOCALES } from "@avrentishq/core/locales";
+import { CURRENCIES, SUPPORTED_CURRENCY_CODES } from "@edidi-hq/core/money/types";
+import { LOCALES } from "@edidi-hq/core/locales";
 import {
   INTERFACE_LANGUAGE_NAMES,
   SUPPORTED_CURRENCY_COUNT,

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { COUNTRY_CODES } from "@avrentishq/core/region/countries";
+import { COUNTRY_CODES } from "@edidi-hq/core/region/countries";
 
 import { COUNTRIES, SERVED_COUNTRIES, isSelectableCountry, isServedCountry } from "./countries";
 

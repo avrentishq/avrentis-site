@@ -7,9 +7,9 @@
  * to the platform's actual capability, not marketing ambition.
  */
 
-import { PLAN_ORDER } from "@avrentishq/core/billing/catalog";
-import { PLAN_CAPACITY } from "@avrentishq/core/billing/capacity";
-import type { PlanFeatureKey } from "@avrentishq/core/billing/features";
+import { PLAN_ORDER } from "@edidi-hq/core/billing/catalog";
+import { PLAN_CAPACITY } from "@edidi-hq/core/billing/capacity";
+import type { PlanFeatureKey } from "@edidi-hq/core/billing/features";
 import { planScopeNote, type FeaturePlans } from "@/lib/plan-names";
 import { useRef } from "react";
 import Link from "next/link";

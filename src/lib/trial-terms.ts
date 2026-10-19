@@ -4,15 +4,15 @@ import {
   READ_ONLY_GRACE_DAYS,
   TRIAL_DURATION_DAYS,
   TRIAL_PLAN,
-} from "@avrentishq/core/billing/trial-deadlines";
+} from "@edidi-hq/core/billing/trial-deadlines";
 import {
   TRIAL_MESSAGE_CAP,
   TRIAL_SEAT_CAP,
   TRIAL_STORAGE_BYTES,
-} from "@avrentishq/core/billing/capacity";
-import { planName } from "@avrentishq/core/billing/catalog";
-import { formatByteSize } from "@avrentishq/core/billing/limit-format";
-import { MAGIC_LINK_EXPIRY_MS } from "@avrentishq/core/trial/request-terms";
+} from "@edidi-hq/core/billing/capacity";
+import { planName } from "@edidi-hq/core/billing/catalog";
+import { formatByteSize } from "@edidi-hq/core/billing/limit-format";
+import { MAGIC_LINK_EXPIRY_MS } from "@edidi-hq/core/trial/request-terms";
 
 /**
  * Every number the site states about a trial — its length, the read-only grace

@@ -4,13 +4,13 @@
  *
  * The countries the platform sets up on its own — currency, tax, bank-account
  * formats, working week, retention — are core's `COUNTRY_CODES`
- * (`@avrentishq/core/region/countries`, type-only imports, so no peer
+ * (`@edidi-hq/core/region/countries`, type-only imports, so no peer
  * dependencies). They are offered first. Any other country is still accepted:
  * the platform queues that request for its team to choose the setup.
  */
 
-import { COUNTRY_CODES } from "@avrentishq/core/region/countries";
-import { ISO_3166_ALPHA2 } from "@avrentishq/core/region/iso-3166";
+import { COUNTRY_CODES } from "@edidi-hq/core/region/countries";
+import { ISO_3166_ALPHA2 } from "@edidi-hq/core/region/iso-3166";
 
 /** Every assigned ISO 3166-1 alpha-2 code plus XK — core's list, the one the app's API validates against. */
 const ISO_3166_ALPHA2_CODES = [...ISO_3166_ALPHA2].sort();

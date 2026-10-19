@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { accountingConnectionViolations } from "@avrentishq/core/brand/copy-guardrails";
+import { accountingConnectionViolations } from "@edidi-hq/core/brand/copy-guardrails";
 import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**

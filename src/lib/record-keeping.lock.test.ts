@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
-import { RECORD_KEEPING_FORBIDDEN, recordKeepingViolations } from "@avrentishq/core/brand/copy-guardrails";
+import { RECORD_KEEPING_FORBIDDEN, recordKeepingViolations } from "@edidi-hq/core/brand/copy-guardrails";
 import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
@@ -11,7 +11,7 @@ import { stripComments } from "@/lib/test-support/strip-comments";
  * "stored with the document permanently" and "a permanent record" — a promise
  * the product does not keep, made in a market that will hold us to it.
  *
- * The rules are core's (`@avrentishq/core/brand/copy-guardrails`), so the site,
+ * The rules are core's (`@edidi-hq/core/brand/copy-guardrails`), so the site,
  * the app and the console all refuse the same wording. This file keeps only the
  * site's own proof that the detector is live and leaves accurate lines alone.
  * "Every action is permanently attributed" is TRUE (it is the audit trail) and

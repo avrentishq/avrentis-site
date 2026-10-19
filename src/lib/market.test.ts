@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { accountingConnectionViolations, recordKeepingViolations } from "@avrentishq/core/brand/copy-guardrails";
+import { accountingConnectionViolations, recordKeepingViolations } from "@edidi-hq/core/brand/copy-guardrails";
 
 import { MARKET_NEED, MARKET_SCOPE, MARKET_STATEMENT } from "./market";
 

@@ -11,7 +11,7 @@ import {
   userLimitLine,
 } from "@/lib/plan-limits";
 import fallback from "@/data/pricing-fallback.json";
-import { PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import { PLAN_ORDER } from "@edidi-hq/core/billing/catalog";
 import { softwareApplicationSchema } from "@/lib/seo";
 
 describe("pricing formatters (money path feeding the UI + JSON-LD)", () => {

@@ -2,13 +2,13 @@
 
 The public marketing site for Avrentis — a single Next.js 16 App Router service (React 19,
 TypeScript, Tailwind CSS 4 tokens, framer-motion), deployed on Vercel. Brand identity comes
-from the private `@avrentishq/core` package; pricing comes from the product's public pricing
+from the private `@edidi-hq/core` package; pricing comes from the product's public pricing
 API, with a generated offline fallback in `src/data/pricing-fallback.json`.
 
 ## Getting started
 
 Requires Node 22 and pnpm (version pinned in `package.json`). Installing needs read access to
-the private `@avrentishq/core` repository.
+the private `@edidi-hq/core` repository.
 
 ```bash
 pnpm install

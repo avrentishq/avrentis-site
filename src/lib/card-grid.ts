@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import { cardGridColumns, type CardGridOptions } from "@avrentishq/core/ui/card-grid";
+import { cardGridColumns, type CardGridOptions } from "@edidi-hq/core/ui/card-grid";
 
 /**
  * Props for a card row on core's `.card-grid` (fills the width at any count):

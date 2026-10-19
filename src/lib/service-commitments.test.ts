@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
-import { SERVICE_COMMITMENT_KEYS } from "@avrentishq/core/billing/features";
+import { PLAN_CATALOG, PLAN_ORDER } from "@edidi-hq/core/billing/catalog";
+import { SERVICE_COMMITMENT_KEYS } from "@edidi-hq/core/billing/features";
 import type { PricingData } from "@/lib/pricing";
 import { SERVICE_GROUP_KEY, withServiceCommitmentGroup } from "@/lib/service-commitments";
 import fallback from "@/data/pricing-fallback.json";

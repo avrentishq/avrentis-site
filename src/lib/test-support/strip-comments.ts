@@ -4,7 +4,7 @@
  * one the app and the console use, so every repo strips comments identically.
  * Test-only: it pulls in the TypeScript compiler.
  */
-import { scannedLanguageFor, stripComments } from "@avrentishq/core/brand/typed-brand";
+import { scannedLanguageFor, stripComments } from "@edidi-hq/core/brand/typed-brand";
 
 export { stripComments };
 

@@ -6,7 +6,7 @@
  * is the trial's pre-selected default.
  */
 
-import { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize } from "@avrentishq/core/trial/request-terms";
+import { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize } from "@edidi-hq/core/trial/request-terms";
 
 export { DEFAULT_ORG_SIZE, ORG_SIZES, isOrgSize, type OrgSize };
 

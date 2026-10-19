@@ -39,8 +39,8 @@ Run these locally before you claim anything is done.
 
 - **`import { m } from "framer-motion"`, never `motion`.** The app is wrapped in
   `LazyMotion strict`, so a stray `motion.*` throws at runtime.
-- **Runtime code imports only `@avrentishq/core/brand`, `@avrentishq/core/region/countries`,
-  `@avrentishq/core/security/rate-limit`, `@avrentishq/core/security/rate-limit-tiers` and the
+- **Runtime code imports only `@edidi-hq/core/brand`, `@edidi-hq/core/region/countries`,
+  `@edidi-hq/core/security/rate-limit`, `@edidi-hq/core/security/rate-limit-tiers` and the
   pure slices `billing/trial-deadlines`, `billing/capacity`, `billing/catalog`,
   `billing/limit-format`, `money/format`, `money/types`, `billing/features`, `billing/platform-tax`, `region/sales-tax`, `billing/reserved-mail-domain`, `billing/retention`, `locales`, `sectors`, `modules/catalog`, `region/iso-3166`, `domains/public-email`, `trial/request-terms` and `ui/card-grid` (+ its stylesheet, imported by `globals.css`).**
   Every other subpath of that package needs peer dependencies this repo does not install
@@ -71,7 +71,7 @@ Run these locally before you claim anything is done.
   customers before there are any.
 - **Rate limiting runs on core's shared limiter.** `src/lib/rate-limit.ts` holds one entry per
   Server Action and `limitVisitor(action)`; never build a limiter client in this repo. Every
-  limiter carries a `site_*` tier from `@avrentishq/core/security/rate-limit-tiers`, so refusals
+  limiter carries a `site_*` tier from `@edidi-hq/core/security/rate-limit-tiers`, so refusals
   show up in the platform console. How the store is shared between environments, and the local
   development switches, are in `guides/security-posture.md` (gitignored).
 - **Never hand-edit `src/data/pricing-fallback.json`.** It is generated from core's plan
@@ -82,7 +82,7 @@ Run these locally before you claim anything is done.
   differs, so after a core bump: run the script and commit the JSON. The generator and the
   plan copy are build-only — no page imports them (`core-imports.lock.test.ts`).
 - **`pnpm.overrides` materialises core's canonical floor map**
-  (`@avrentishq/core/security/dependency-floors`), enforced by
+  (`@edidi-hq/core/security/dependency-floors`), enforced by
   `src/lib/security/dependency-floors.lock.test.ts`. Change a shared floor in core, not here;
   copy the entries verbatim, reinstall, and confirm the lockfile moved. A site-only extra floor
   must be bounded to one major (use the version-ranged key form) — an unbounded one silently
@@ -158,7 +158,7 @@ Run these locally before you claim anything is done.
   `openGraph` without `twitter` shares the homepage's card; the helper fills title (brand
   suffix via `pageTitle`), canonical, Open Graph and Twitter together.
   `page-metadata.lock.test.ts` fails on a page that builds its own, or types the brand name.
-  Brand values come through `@/lib/brand` — only `brand.ts` imports `@avrentishq/core/brand`.
+  Brand values come through `@/lib/brand` — only `brand.ts` imports `@edidi-hq/core/brand`.
 - **Mockups draw from one demo story.** People, documents, amounts and times shown in previews
   and the hero come from `src/components/product/demo-fixtures.ts` (amounts formatted with
   `formatCurrencyAmount(…, LEAD_CURRENCY)`, times from fixed ISO instants and a fixed demo
@@ -181,7 +181,7 @@ Run these locally before you claim anything is done.
   launch-hidden pages dropped — and `sitemap.test.ts` checks those links against `sitemap()`'s
   real output. `site-pages.lock.test.ts` fails on a typed path anywhere, `next.config.ts` included.
 - **Never type a path core owns.** Other surfaces (product emails, trial screens, billing)
-  link to this site through core's `@avrentishq/core/brand`, so the site links the same way:
+  link to this site through core's `@edidi-hq/core/brand`, so the site links the same way:
   legal pages via `LEGAL_PAGES`, the trial via `SITE_PAGES.trial()`, contact via
   `contactHref(intent?)` (= `SITE_PAGES.contact`), topics from `CONTACT_INTENTS` /
   `isContactIntent`. `site-pages.lock.test.ts` proves every path core publishes is a real,

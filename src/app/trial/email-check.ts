@@ -9,7 +9,7 @@
  * (`billing/reserved-mail-domain`), shared with the app and the console.
  */
 
-import { isReservedEmailAddress } from "@avrentishq/core/billing/reserved-mail-domain";
+import { isReservedEmailAddress } from "@edidi-hq/core/billing/reserved-mail-domain";
 import { exceedsLimit, hasEmailShape, tooLongMessage } from "@/lib/form-rules";
 
 /** The visitor-facing reason a trial email is refused, or `undefined` when it is fine. */

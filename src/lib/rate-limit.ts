@@ -5,12 +5,12 @@ import {
   checkRateLimit,
   makeLimiter,
   type RateLimitVerdict,
-} from "@avrentishq/core/security/rate-limit";
-import type { RateLimitTierKey } from "@avrentishq/core/security/rate-limit-tiers";
+} from "@edidi-hq/core/security/rate-limit";
+import type { RateLimitTierKey } from "@edidi-hq/core/security/rate-limit-tiers";
 
 /**
  * Rate limits for the four public Server Actions, run on core's shared limiter
- * (`@avrentishq/core/security/rate-limit`) — the same seam the tenant app and
+ * (`@edidi-hq/core/security/rate-limit`) — the same seam the tenant app and
  * the platform console use. Each limiter is tagged with its registry tier, so
  * a refusal is counted where the platform console can see it.
  *

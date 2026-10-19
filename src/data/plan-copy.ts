@@ -1,8 +1,8 @@
 /* ── The site's plan copy — words only, never figures ─────────── */
 
-import type { PlanCapacity } from "@avrentishq/core/billing/capacity";
-import type { PlanKey } from "@avrentishq/core/billing/catalog";
-import { MODULE_CATALOG } from "@avrentishq/core/modules/catalog";
+import type { PlanCapacity } from "@edidi-hq/core/billing/capacity";
+import type { PlanKey } from "@edidi-hq/core/billing/catalog";
+import { MODULE_CATALOG } from "@edidi-hq/core/modules/catalog";
 import {
   retentionAdjective,
   storageLimitLine,

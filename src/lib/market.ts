@@ -1,4 +1,4 @@
-import { COUNTRY_PROFILES, type CountryCode } from "@avrentishq/core/region/countries";
+import { COUNTRY_PROFILES, type CountryCode } from "@edidi-hq/core/region/countries";
 
 /**
  * Who the site is for — the one statement of the market it leads with.

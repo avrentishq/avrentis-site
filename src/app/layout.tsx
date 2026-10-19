@@ -28,10 +28,10 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-// Wordmark font — self-hosted from the brand SSOT (@avrentishq/core/brand/fonts),
+// Wordmark font — self-hosted from the brand SSOT (@edidi-hq/core/brand/fonts),
 // so the file lives in exactly one place across app / site / admin.
 const cabinetGrotesk = localFont({
-  src: "../../node_modules/@avrentishq/core/src/brand/fonts/CabinetGrotesk-Extrabold.woff2",
+  src: "../../node_modules/@edidi-hq/core/src/brand/fonts/CabinetGrotesk-Extrabold.woff2",
   weight: "800",
   variable: "--font-cabinet-grotesk",
   display: "swap",

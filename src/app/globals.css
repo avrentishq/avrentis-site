@@ -1,6 +1,6 @@
 @import "tailwindcss";
 /* Card rows that fill the width at any count — pair with cardGridColumns(n). */
-@import "@avrentishq/core/ui/card-grid.css";
+@import "@edidi-hq/core/ui/card-grid.css";
 /* The brand palette from core (`pnpm generate:brand-tokens`); brand tokens below
  * read `var(--brand-…)`. */
 @import "./brand-tokens.generated.css";

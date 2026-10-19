@@ -20,7 +20,7 @@ import { TRUST_SIGNALS } from "@/lib/compliance-posture";
 import { priceTaxNote } from "@/lib/price-tax";
 import { BRAND, isModulePublic, moduleShortNameFor, SITE_PAGES } from "@/lib/brand";
 import { formatEnglishList } from "@/lib/english-list";
-import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import { ANNUAL_BILLED_MONTHS, PLAN_CATALOG, PLAN_ORDER } from "@edidi-hq/core/billing/catalog";
 import { READ_ONLY_GRACE_DAYS, TRIAL_DURATION_DAYS, TRIAL_PLAN, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, TRIAL_STORAGE, NO_CARD_REQUIRED } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { LEAD_CURRENCY } from "@/lib/market";

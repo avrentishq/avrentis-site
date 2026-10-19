@@ -1,6 +1,6 @@
 #!/bin/sh
 # Vercel's install step (vercel.json "installCommand"). The private
-# @avrentishq/core git dependency is cloned over https; git asks a credential
+# @edidi-hq/core git dependency is cloned over https; git asks a credential
 # helper that reads GITHUB_TOKEN from the environment when it needs it, so the
 # token is never written into a URL or a file and a failed clone's error shows
 # only the plain address.

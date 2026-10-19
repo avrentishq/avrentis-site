@@ -21,9 +21,9 @@
 
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { PLAN_CATALOG, PLAN_ORDER, annualPriceMinor } from "@avrentishq/core/billing/catalog";
-import { CURRENCIES } from "@avrentishq/core/money/types";
-import { effectiveDocumentRetentionDays } from "@avrentishq/core/billing/retention";
+import { PLAN_CATALOG, PLAN_ORDER, annualPriceMinor } from "@edidi-hq/core/billing/catalog";
+import { CURRENCIES } from "@edidi-hq/core/money/types";
+import { effectiveDocumentRetentionDays } from "@edidi-hq/core/billing/retention";
 
 import { serialisePricingFallback } from "@/lib/pricing-fallback-build";
 import fallback from "./pricing-fallback.json";

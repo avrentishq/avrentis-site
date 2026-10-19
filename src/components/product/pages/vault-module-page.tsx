@@ -3,7 +3,7 @@
 import { Archive, Search, FingerprintPattern, Share2, Gavel, CalendarClock, ShieldCheck } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { VaultPreview } from "@/components/product/previews/vault-preview";
-import { financialRetentionFloorYears } from "@avrentishq/core/billing/retention";
+import { financialRetentionFloorYears } from "@edidi-hq/core/billing/retention";
 
 /** The floor the platform enforces on a Nigerian company's financial records (core: platform floor or the country's own, whichever is longer). */
 const NIGERIA_RETENTION_YEARS = financialRetentionFloorYears("NG");

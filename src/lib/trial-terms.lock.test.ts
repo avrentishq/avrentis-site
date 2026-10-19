@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { PLAN_CATALOG, PLAN_ORDER } from "@avrentishq/core/billing/catalog";
+import { PLAN_CATALOG, PLAN_ORDER } from "@edidi-hq/core/billing/catalog";
 
 /**
  * The trial's terms — its length, the grace after it, its seat cap and the plan

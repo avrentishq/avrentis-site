@@ -17,7 +17,7 @@
     "generate:brand-tokens": "vitest run src/lib/brand-tokens.lock.test.ts -u"
   },
   "dependencies": {
-    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.275.0",
+    "@edidi-hq/core": "github:edidi-hq/core#v0.276.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "framer-motion": "^12.38.0",

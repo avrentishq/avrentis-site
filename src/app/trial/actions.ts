@@ -34,7 +34,7 @@ import { isOrgSize } from "@/lib/org-size";
 import { isSelectableCountry } from "@/data/countries";
 import { platformFetch } from "@/lib/platform-fetch";
 import { PLATFORM_API_PATHS, PLATFORM_ORIGIN } from "@/lib/platform";
-import { buildSectorValue, isStorableSector } from "@avrentishq/core/sectors";
+import { buildSectorValue, isStorableSector } from "@edidi-hq/core/sectors";
 import { humanCheckRefusal, rateLimitRefusal, screenSubmission } from "@/lib/submission-guard";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 import { exceedsLimit, FORM_MESSAGES, tooLongMessage, withinLimit } from "@/lib/form-rules";

@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 
 /**
- * The site takes small slices of `@avrentishq/core`, never the whole package:
+ * The site takes small slices of `@edidi-hq/core`, never the whole package:
  * most subpaths need peer dependencies this repo does not install (database,
  * auth, cloud SDKs), and importing one breaks the build or the bundle.
  *
@@ -98,7 +98,7 @@ const SRC = join(process.cwd(), "src");
 const ROOT_RUNTIME_FILES = ["next.config.ts"];
 // This file's own detector fixtures name disallowed subpaths on purpose.
 const SELF = join("lib", "core-imports.lock.test.ts");
-const CORE_IMPORT = /(?:from\s+|import\s*\(\s*|import\s+)["']@avrentishq\/core(?:\/([^"']+))?["']/g;
+const CORE_IMPORT = /(?:from\s+|import\s*\(\s*|import\s+)["']@edidi-hq\/core(?:\/([^"']+))?["']/g;
 
 function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
@@ -113,10 +113,10 @@ function coreSubpaths(text: string): string[] {
 
 describe("core imports stay inside the site's allowlist", () => {
   it("the detector finds static, dynamic and side-effect imports", () => {
-    expect(coreSubpaths('import { BRAND } from "@avrentishq/core/brand";')).toEqual(["brand"]);
-    expect(coreSubpaths('await import("@avrentishq/core/db/rls")')).toEqual(["db/rls"]);
-    expect(coreSubpaths('import "@avrentishq/core";')).toEqual([""]);
-    expect(coreSubpaths('// see @avrentishq/core/brand')).toEqual([]);
+    expect(coreSubpaths('import { BRAND } from "@edidi-hq/core/brand";')).toEqual(["brand"]);
+    expect(coreSubpaths('await import("@edidi-hq/core/db/rls")')).toEqual(["db/rls"]);
+    expect(coreSubpaths('import "@edidi-hq/core";')).toEqual([""]);
+    expect(coreSubpaths('// see @edidi-hq/core/brand')).toEqual([]);
   });
 
   it("scans the site (proves the walk sees a known importer)", () => {
@@ -133,7 +133,7 @@ describe("core imports stay inside the site's allowlist", () => {
     const rootOffenders = ROOT_RUNTIME_FILES.flatMap((file) =>
       coreSubpaths(readFileSync(join(process.cwd(), file), "utf8"))
         .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
-        .map((subpath) => `${file}  @avrentishq/core/${subpath}`),
+        .map((subpath) => `${file}  @edidi-hq/core/${subpath}`),
     );
     const sourceOffenders = sourceFiles().flatMap((file) => {
       // test-support/ holds helpers only tests import (nothing ships them).
@@ -142,7 +142,7 @@ describe("core imports stay inside the site's allowlist", () => {
         .filter((subpath) => !RUNTIME_ALLOWED.has(subpath))
         .filter((subpath) => !(isTest && (TEST_ONLY_ALLOWED.has(subpath) || BUILD_ONLY_ALLOWED.has(subpath))))
         .filter((subpath) => !(BUILD_FILES.has(file) && BUILD_ONLY_ALLOWED.has(subpath)))
-        .map((subpath) => `src/${file}  @avrentishq/core/${subpath}`);
+        .map((subpath) => `src/${file}  @edidi-hq/core/${subpath}`);
     });
     const offenders = [...rootOffenders, ...sourceOffenders];
     expect(
@@ -156,13 +156,13 @@ describe("core imports stay inside the site's allowlist", () => {
 
 /* ── The allowed subpaths' own import graphs ─────────────────────── */
 
-const CORE_ROOT = join(process.cwd(), "node_modules", "@avrentishq", "core");
+const CORE_ROOT = join(process.cwd(), "node_modules", "@edidi-hq", "core");
 const SITE_PACKAGES = (() => {
   const manifest = JSON.parse(readFileSync(join(process.cwd(), "package.json"), "utf8"));
   return new Set([...Object.keys(manifest.dependencies ?? {}), ...Object.keys(manifest.devDependencies ?? {})]);
 })();
 
-/** The file an `@avrentishq/core/<subpath>` import resolves to, via the package's `exports`. */
+/** The file an `@edidi-hq/core/<subpath>` import resolves to, via the package's `exports`. */
 function coreEntryFile(subpath: string): string {
   const exportsMap: Record<string, string> = JSON.parse(
     readFileSync(join(CORE_ROOT, "package.json"), "utf8"),
@@ -174,7 +174,7 @@ function coreEntryFile(subpath: string): string {
     const prefix = pattern.slice(2, -1);
     if (subpath.startsWith(prefix)) return join(CORE_ROOT, target.replace("*", subpath.slice(prefix.length)));
   }
-  throw new Error(`@avrentishq/core/${subpath} is not exported`);
+  throw new Error(`@edidi-hq/core/${subpath} is not exported`);
 }
 
 /** Specifiers a file imports for their VALUE (`import type` / `export type` are erased). */
@@ -224,12 +224,12 @@ describe("every allowed core subpath reaches only packages the site installs", (
     const missing = packagesReachedFrom(coreEntryFile(subpath)).filter(
       (name) => !SITE_PACKAGES.has(name),
     );
-    expect(missing, `@avrentishq/core/${subpath} needs packages the site does not install`).toEqual([]);
+    expect(missing, `@edidi-hq/core/${subpath} needs packages the site does not install`).toEqual([]);
   });
 });
 
 describe("brand values come through the site's re-export", () => {
-  it("only brand.ts imports @avrentishq/core/brand", () => {
+  it("only brand.ts imports @edidi-hq/core/brand", () => {
     // brand.ts is where the site adds its own view (modules, suites) on top of
     // core's brand; a file importing core directly skips it and splits the import graph.
     const importers = sourceFiles()

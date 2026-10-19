@@ -10,7 +10,7 @@
  * in `src/app` or `src/components`.
  */
 
-import { TRIAL_REQUEST_LIMITS, TRIAL_TOKEN_LENGTH } from "@avrentishq/core/trial/request-terms";
+import { TRIAL_REQUEST_LIMITS, TRIAL_TOKEN_LENGTH } from "@edidi-hq/core/trial/request-terms";
 
 /**
  * The longest value each field accepts, in characters. Name, email,

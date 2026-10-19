@@ -1,7 +1,7 @@
 /* ── Money display ───────────────────────────────────────────── */
 
-import { formatMoney } from "@avrentishq/core/money/format";
-import { CURRENCIES, isCurrencyCode } from "@avrentishq/core/money/types";
+import { formatMoney } from "@edidi-hq/core/money/format";
+import { CURRENCIES, isCurrencyCode } from "@edidi-hq/core/money/types";
 // Relative, not "@/": the pricing-fallback generator loads this file outside the bundler, where the alias does not resolve.
 import { numberInWords } from "./number-words";
 

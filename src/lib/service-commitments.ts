@@ -2,7 +2,7 @@
 
 // Relative and package imports only: the fallback generator loads this file
 // through jiti, outside the Next/Vitest alias config.
-import { SERVICE_COMMITMENT_KEYS } from "@avrentishq/core/billing/features";
+import { SERVICE_COMMITMENT_KEYS } from "@edidi-hq/core/billing/features";
 import type { PricingData } from "./pricing";
 
 /**

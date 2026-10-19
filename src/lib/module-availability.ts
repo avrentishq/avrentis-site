@@ -1,7 +1,7 @@
 /* ── Per-module plan availability, DERIVED ────────────────────── */
 
-import { MODULE_CATALOG } from "@avrentishq/core/modules/catalog";
-import type { PlanKey } from "@avrentishq/core/billing/catalog";
+import { MODULE_CATALOG } from "@edidi-hq/core/modules/catalog";
+import type { PlanKey } from "@edidi-hq/core/billing/catalog";
 
 import type { ModuleKey } from "@/lib/brand";
 import { retentionLimitLine, storageLimitLine } from "@/lib/plan-limits";

@@ -3,7 +3,7 @@
 Generated, portable brand assets for use **inside the app and on external services**
 (favicon generators, social/OG cards, email, Slack, app stores, partner sites).
 
-All files here are generated from the brand SSOT, **`@avrentishq/core/brand`** (the
+All files here are generated from the brand SSOT, **`@edidi-hq/core/brand`** (the
 gate-mark geometry, wordmark spec, variant colours, and the **Cabinet Grotesk Extrabold**
 wordmark font). Do not hand-edit the SVG/PNG files.
 
@@ -55,5 +55,5 @@ They are the Gate Mark only (no wordmark) and are maintained separately from thi
 ## Brand colours
 
 Gold `#C68B2F` · Navy `#0F172A`. The canonical values are `BRAND_COLORS` in
-`@avrentishq/core/brand` (re-exported by `src/lib/brand.ts`). Components use the `@theme`
+`@edidi-hq/core/brand` (re-exported by `src/lib/brand.ts`). Components use the `@theme`
 tokens in `src/app/globals.css`, never these literals.

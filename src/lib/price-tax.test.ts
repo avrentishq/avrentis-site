@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import type { PlatformTaxRegistration } from "@avrentishq/core/billing/platform-tax";
-import { STANDARD_SALES_TAX } from "@avrentishq/core/region/sales-tax";
-import type { CountryCode } from "@avrentishq/core/region/countries";
+import type { PlatformTaxRegistration } from "@edidi-hq/core/billing/platform-tax";
+import { STANDARD_SALES_TAX } from "@edidi-hq/core/region/sales-tax";
+import type { CountryCode } from "@edidi-hq/core/region/countries";
 import { formatTaxRate, priceTaxNote, taxLabel } from "@/lib/price-tax";
 import fallback from "@/data/pricing-fallback.json";
 import { readFileSync } from "node:fs";
@@ -13,8 +13,8 @@ import { readFileSync } from "node:fs";
 const registrationsUnderTest = vi.hoisted(() => ({
   current: undefined as Readonly<Partial<Record<CountryCode, PlatformTaxRegistration>>> | undefined,
 }));
-vi.mock("@avrentishq/core/billing/platform-tax", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@avrentishq/core/billing/platform-tax")>();
+vi.mock("@edidi-hq/core/billing/platform-tax", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@edidi-hq/core/billing/platform-tax")>();
   return {
     ...actual,
     platformSalesTax: (currency: Parameters<typeof actual.platformSalesTax>[0]) =>

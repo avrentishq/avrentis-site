@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { RATE_LIMIT_TIERS } from "@avrentishq/core/security/rate-limit-tiers";
+import { RATE_LIMIT_TIERS } from "@edidi-hq/core/security/rate-limit-tiers";
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/headers", () => ({
@@ -48,7 +48,7 @@ describe("site rate limits", () => {
     vi.stubEnv("UPSTASH_REDIS_REST_URL", "https://rate-limit.test.invalid");
     vi.stubEnv("UPSTASH_REDIS_REST_TOKEN", "test-token");
     const { SITE_RATE_LIMITS, limiterFor } = await loadSeam();
-    const { limiterTier } = await import("@avrentishq/core/security/rate-limit");
+    const { limiterTier } = await import("@edidi-hq/core/security/rate-limit");
 
     const expected = {
       contact: "site_contact",
@@ -87,7 +87,7 @@ describe("site rate limits", () => {
 
   it("checks the visitor's first forwarded address under the action's identifier", async () => {
     const checkSpy = vi.fn(async () => ({ ok: true }) as const);
-    vi.doMock("@avrentishq/core/security/rate-limit", async (importOriginal) => ({
+    vi.doMock("@edidi-hq/core/security/rate-limit", async (importOriginal) => ({
       ...(await importOriginal<object>()),
       checkRateLimit: checkSpy,
     }));
@@ -98,7 +98,7 @@ describe("site rate limits", () => {
       await limitVisitor("contact");
       expect(checkSpy).toHaveBeenLastCalledWith(null, "contact:203.0.113.7", { failClosed: false });
     } finally {
-      vi.doUnmock("@avrentishq/core/security/rate-limit");
+      vi.doUnmock("@edidi-hq/core/security/rate-limit");
     }
   });
 });

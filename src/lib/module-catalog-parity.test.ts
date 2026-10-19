@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { MODULE_CATALOG, MODULE_ORDER as CORE_MODULE_ORDER, SUITE_ORDER } from "@avrentishq/core/modules/catalog";
+import { MODULE_CATALOG, MODULE_ORDER as CORE_MODULE_ORDER, SUITE_ORDER } from "@edidi-hq/core/modules/catalog";
 
 import { MODULES, MODULE_ORDER, SUITES, UNMODELLED_MODULE_KEYS, publicModuleKeys } from "./brand";
 

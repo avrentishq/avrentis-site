@@ -40,7 +40,7 @@ Takes a git range. If none was given, ask, or default to `main@{1}..main` for
    | `src/components/ui/**`, `providers/**` | `conventions.md` reuse list + animation rules |
    | `src/app/globals.css` | `conventions.md` styling tokens |
    | `**/*.test.ts`, `vitest.config.ts` | `conventions.md` testing table |
-   | `@avrentishq/core` pin in `package.json` | `boundaries.md` §1 — re-check the version, the exports map, and whether any new subpath is imported (`rg -n "@avrentishq/core" src/`) |
+   | `@edidi-hq/core` pin in `package.json` | `boundaries.md` §1 — re-check the version, the exports map, and whether any new subpath is imported (`rg -n "@edidi-hq/core" src/`) |
 
 4. **Verify before you rewrite.** For each section you touch, confirm the new fact against
    the actual code — `rg` for the symbol, read the specific lines. Same standard as the

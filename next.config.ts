@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { SITE_PAGE_ROUTES } from "@avrentishq/core/brand";
+import { SITE_PAGE_ROUTES } from "@edidi-hq/core/brand";
 import { cspReportUrl, cspReportingDirectives, reportingEndpointsHeader } from "./src/lib/csp-reporting";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -67,8 +67,8 @@ const securityHeaders = [
 const config: NextConfig = {
   // Don't disclose the framework/version.
   poweredByHeader: false,
-  // @avrentishq/core ships raw TypeScript (brand SSOT, etc.) — transpile it here.
-  transpilePackages: ["@avrentishq/core"],
+  // @edidi-hq/core ships raw TypeScript (brand SSOT, etc.) — transpile it here.
+  transpilePackages: ["@edidi-hq/core"],
   turbopack: {
     root: __dirname,
   },

@@ -1,4 +1,4 @@
-import type { DataProtectionLaw } from "@avrentishq/core/region/countries";
+import type { DataProtectionLaw } from "@edidi-hq/core/region/countries";
 
 import { formatEnglishList } from "@/lib/english-list";
 import { BRAND } from "@/lib/brand";

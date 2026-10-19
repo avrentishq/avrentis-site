@@ -1,9 +1,9 @@
 /* ── Sales tax on a listed price ───────────────────────────────── */
 
 // Package imports only: the fallback generator loads this file through jiti.
-import { platformSalesTax } from "@avrentishq/core/billing/platform-tax";
-import { isCurrencyCode } from "@avrentishq/core/money/types";
-import type { SalesTaxKind } from "@avrentishq/core/region/sales-tax";
+import { platformSalesTax } from "@edidi-hq/core/billing/platform-tax";
+import { isCurrencyCode } from "@edidi-hq/core/money/types";
+import type { SalesTaxKind } from "@edidi-hq/core/region/sales-tax";
 
 /**
  * Listed prices are BEFORE tax. A currency the platform bills itself (naira,

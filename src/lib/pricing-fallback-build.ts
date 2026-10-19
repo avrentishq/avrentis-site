@@ -12,24 +12,24 @@ import {
   planIncludesFeature,
   planModules,
   type PlanKey,
-} from "@avrentishq/core/billing/catalog";
-import { TRIAL_SEAT_CAP } from "@avrentishq/core/billing/capacity";
+} from "@edidi-hq/core/billing/catalog";
+import { TRIAL_SEAT_CAP } from "@edidi-hq/core/billing/capacity";
 import {
   FOUNDATION_CAPABILITY_IDS,
   SELLABLE_FEATURE_KEYS,
   SERVICE_COMMITMENT_KEYS,
-} from "@avrentishq/core/billing/features";
-import { TRIAL_DURATION_DAYS, TRIAL_PLAN } from "@avrentishq/core/billing/trial-deadlines";
+} from "@edidi-hq/core/billing/features";
+import { TRIAL_DURATION_DAYS, TRIAL_PLAN } from "@edidi-hq/core/billing/trial-deadlines";
 import {
   MODULE_CATALOG,
   MODULE_ORDER,
   SUITE_ORDER,
   type ModuleKey,
-} from "@avrentishq/core/modules/catalog";
-import { CURRENCIES, type CurrencyCode } from "@avrentishq/core/money/types";
-import { SECTORS, isModuleAllowedForSector, sectorRestrictedModuleKeys } from "@avrentishq/core/sectors";
+} from "@edidi-hq/core/modules/catalog";
+import { CURRENCIES, type CurrencyCode } from "@edidi-hq/core/money/types";
+import { SECTORS, isModuleAllowedForSector, sectorRestrictedModuleKeys } from "@edidi-hq/core/sectors";
 
-import { effectiveDocumentRetentionDays } from "@avrentishq/core/billing/retention";
+import { effectiveDocumentRetentionDays } from "@edidi-hq/core/billing/retention";
 
 import { FEATURE_LABELS, PLAN_COPY } from "../data/plan-copy";
 import { formatCurrencyAmount } from "./money";

@@ -140,7 +140,7 @@ describe("the detectors fire on a typed value and stay silent on a token", () =>
       silent: [`zIndex: Z_INDEX.header`, `className="lg:order-none"`],
     },
     brandColors: {
-      fires: [`<Icon color={BRAND_COLORS.gold} />`, `import { BRAND_COLORS } from "@/lib/brand";`],
+      fires: [`<Icon color={BRAND_COLORS.accent} />`, `import { BRAND_COLORS } from "@/lib/brand";`],
       silent: [`<Icon color="var(--color-gold)" />`],
     },
     matchMedia: {

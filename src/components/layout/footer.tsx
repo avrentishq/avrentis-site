@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AvrentisLogo } from "@/components/ui/logo";
+import { BrandLogo } from "@/components/ui/logo";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { BRAND } from "@/lib/brand";
 import { FOOTER_COLUMNS } from "@/lib/site-nav";
@@ -65,7 +65,7 @@ export function Footer() {
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
             {/* The platform lockup: gold container, navy gate, white wordmark.
                 Was a bare gold gate with a gold wordmark. */}
-            <AvrentisLogo variant="primary" size={28} wordmarkColor="var(--color-white)" />
+            <BrandLogo variant="primary" size={28} wordmarkColor="var(--color-white)" />
             <span
               style={{
                 fontFamily: "var(--font-mono)",

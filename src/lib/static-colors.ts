@@ -18,9 +18,9 @@ export const STATIC_COLORS = {
   /** --color-white */
   white: "#ffffff",
   /** --color-gold (brand) */
-  gold: BRAND_COLORS.gold,
+  gold: BRAND_COLORS.accent,
   /** --color-navy-primary (brand) */
-  navyPrimary: BRAND_COLORS.navy,
+  navyPrimary: BRAND_COLORS.primary,
 } as const;
 
 /** The font stack outbound email HTML is set in — mail clients load no web fonts. */

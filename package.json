@@ -13,10 +13,11 @@
     "test": "vitest run",
     "prebuild": "node scripts/generate-pricing-fallback.mjs",
     "predev": "node scripts/generate-pricing-fallback.mjs",
-    "pricing:check": "node scripts/generate-pricing-fallback.mjs --check"
+    "pricing:check": "node scripts/generate-pricing-fallback.mjs --check",
+    "generate:brand-tokens": "vitest run src/lib/brand-tokens.lock.test.ts -u"
   },
   "dependencies": {
-    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.273.0",
+    "@avrentishq/core": "github:avrentishq/avrentis-core#v0.275.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.38.0",
     "framer-motion": "^12.38.0",

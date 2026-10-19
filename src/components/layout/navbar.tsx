@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, ArrowRight } from "lucide-react";
 import { MobileMenu } from "@/components/layout/mobile-menu";
-import { AvrentisLogo } from "@/components/ui/logo";
+import { BrandLogo } from "@/components/ui/logo";
 import { buttonProps } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { BRAND } from "@/lib/brand";
@@ -168,7 +168,7 @@ export function Navbar() {
                 cream once scrolled. White on cream is unreadable, so it takes
                 the readable colour for its surface. The gold-on-navy container
                 carries the brand either way. */}
-            <AvrentisLogo
+            <BrandLogo
               size={scrolled ? 30 : 36}
               variant="primary"
               wordmarkColor={barSurface.text}

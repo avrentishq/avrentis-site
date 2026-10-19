@@ -2,6 +2,7 @@ import { describe, it, expect } from "vitest";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { BRAND_COLORS } from "@/lib/brand";
+import { THEME_BLOCK, THEME_BLOCK_RAW } from "@/lib/test-support/theme-tokens";
 import { STATIC_COLORS } from "@/lib/static-colors";
 
 /**
@@ -30,16 +31,17 @@ const NAMED = new RegExp(
   String.raw`(?:\b(?:color|background|backgroundColor|background-color|border\w*|border-[\w-]*|outline\w*|outline-[\w-]*|fill|stroke|stop-color|stopColor|boxShadow|box-shadow|textShadow|text-shadow|textDecorationColor|text-decoration-color|caretColor|caret-color|accentColor|accent-color)\s*[:=]\s*["'\x60{]?[^;\n"'\x60}]*?)(?<![-\w#.])(?:${NAMED_COLOURS})\b(?![-\w(])`,
 );
 
-const globalsCss = readFileSync(join(SRC, "app", "globals.css"), "utf8");
-const themeBlock = globalsCss.match(/@theme[^{]*\{([\s\S]*?)\n\}/)?.[1] ?? "";
+const themeBlock = THEME_BLOCK_RAW;
 const TOKENS = new Map(
-  [...themeBlock.matchAll(/--color-([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]),
+  [...THEME_BLOCK.matchAll(/--color-([\w-]+):\s*([^;]+);/g)].map((m) => [m[1], m[2].trim()]),
 );
 
 function sourceFiles(): string[] {
   return readdirSync(SRC, { recursive: true, encoding: "utf8" })
     .filter((file) => /\.(tsx?|css)$/.test(file))
-    .filter((file) => !file.endsWith(".test.ts"));
+    .filter((file) => !file.endsWith(".test.ts"))
+    // Core's palette, written out by the brand-tokens lock — it IS the brand's definition.
+    .filter((file) => file !== join("app", "brand-tokens.generated.css"));
 }
 
 /** Colour literals in `text`, ignoring the @theme block of globals.css. */
@@ -145,17 +147,17 @@ describe("colours come from theme tokens", () => {
       const base = TOKENS.get(name.slice(0, -"-rgb".length));
       if (base?.startsWith("#")) expect(value, `--color-${name}`).toBe(hexToTriplet(base));
     }
-    expect(TOKENS.get("gold")).toBe(BRAND_COLORS.gold);
-    expect(TOKENS.get("navy-primary")).toBe(BRAND_COLORS.navy);
+    expect(TOKENS.get("gold")).toBe(BRAND_COLORS.accent);
+    expect(TOKENS.get("navy-primary")).toBe(BRAND_COLORS.primary);
   });
 
   it("the logo aliases point at the brand tokens, never a second copy of the value", () => {
     expect(TOKENS.get("accent")).toBe("var(--color-gold)");
     expect(TOKENS.get("primary-800")).toBe("var(--color-navy-primary)");
     expect(TOKENS.get("shell")).toBe("var(--color-navy-primary)");
-    expect(resolved("accent")).toBe(BRAND_COLORS.gold);
-    expect(resolved("primary-800")).toBe(BRAND_COLORS.navy);
-    expect(resolved("logo-mark")).toBe(BRAND_COLORS.navy);
+    expect(resolved("accent")).toBe(BRAND_COLORS.accent);
+    expect(resolved("primary-800")).toBe(BRAND_COLORS.primary);
+    expect(resolved("logo-mark")).toBe(BRAND_COLORS.primary);
   });
 
   it("static colours (email, OG image) equal the tokens they mirror", () => {

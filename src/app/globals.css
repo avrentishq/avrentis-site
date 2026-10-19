@@ -1,28 +1,31 @@
 @import "tailwindcss";
 /* Card rows that fill the width at any count — pair with cardGridColumns(n). */
 @import "@avrentishq/core/ui/card-grid.css";
+/* The brand palette from core (`pnpm generate:brand-tokens`); brand tokens below
+ * read `var(--brand-…)`. */
+@import "./brand-tokens.generated.css";
 
 /* `static` emits every token below whether or not a utility uses it. Inline
    styles read these as var(--color-…); without `static` Tailwind drops any token
    it cannot see written out in source, and the colour silently vanishes. */
 @theme static {
   /* Navy */
-  --color-navy-primary: #0f172a;
-  --color-navy-deep: #020617;
-  --color-navy-primary-rgb: 15, 23, 42;
-  --color-navy-mid: #1e293b;
-  --color-navy-light: #334155;
+  --color-navy-primary: var(--brand-primary-900);
+  --color-navy-deep: var(--brand-primary-950);
+  --color-navy-primary-rgb: var(--brand-primary-900-rgb);
+  --color-navy-mid: var(--brand-primary-800);
+  --color-navy-light: var(--brand-primary-700);
 
   /* Gold — canonical accent (matches the product app's brand gold). */
-  --color-gold: #c68b2f;
-  --color-gold-rgb: 198, 139, 47;
-  --color-gold-hover: #a87425;
-  /* Accessible gold for TEXT on light backgrounds — bright gold (#c68b2f)
+  --color-gold: var(--brand-accent);
+  --color-gold-rgb: var(--brand-accent-rgb);
+  --color-gold-hover: var(--brand-accent-hover);
+  /* Accessible gold for TEXT on light backgrounds — the bright accent
      fails WCAG AA on white. Use this for gold text/labels on white or light
      surfaces; keep --color-gold for text on dark/navy backgrounds, and for
      borders, icons, and fills (non-text, 3:1 bar). */
-  --color-gold-on-light: #8a5f1e;
-  --color-gold-surface: #fdf8ef;
+  --color-gold-on-light: var(--brand-accent-text);
+  --color-gold-surface: var(--brand-accent-surface);
   /* Gold tints, faintest to strongest — washes and chip fills behind content,
      then hairlines and borders. A tint below surfaces.ts's TINT_MAX_ALPHA is
      never a surface: the focus ring reads off what lies beneath it. */
@@ -33,7 +36,7 @@
   --color-gold-border-strong: rgba(var(--color-gold-rgb), 0.4);
 
   /* Logo tokens — mirror the platform app (source of truth) so the shared
-     AvrentisLogo component renders identically here. accent === gold,
+     BrandLogo component renders identically here. accent === gold,
      primary-800/shell === navy; primary lockup = gold container + navy mark. */
   --color-accent: var(--color-gold);
   --color-primary-800: var(--color-navy-primary);
@@ -213,7 +216,7 @@ body {
 
 /* Wordmark lockup baseline — trims the wordmark's line box to cap-height →
    alphabetic baseline so its visual bottom (the caps) sits flush on the gate
-   mark's ledger; AvrentisLogo lifts the trimmed span by size × 0.19 against an
+   mark's ledger; BrandLogo lifts the trimmed span by size × 0.19 against an
    items-end row (see src/components/ui/logo.tsx). */
 .av-wordmark {
   text-box-trim: trim-both;

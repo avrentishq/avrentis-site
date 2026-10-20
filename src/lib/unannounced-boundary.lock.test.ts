@@ -35,7 +35,9 @@ describe("published code never imports an unannounced page", () => {
   it("every @/ import in a tracked file resolves inside src/", () => {
     const tracked = execFileSync("git", ["ls-files", "src", "scripts"], { encoding: "utf8" })
       .split("\n")
-      .filter((file) => /\.(ts|tsx|mjs)$/.test(file));
+      .filter((file) => /\.(ts|tsx|mjs)$/.test(file))
+      // Tests are not published code (and this file quotes a bad import on purpose).
+      .filter((file) => !/\.test\.(ts|tsx)$/.test(file));
     expect(tracked.length).toBeGreaterThan(100);
     const offenders = tracked.flatMap((file) =>
       unresolved(readFileSync(join(process.cwd(), file), "utf8")).map((specifier) => `${file} → ${specifier}`),

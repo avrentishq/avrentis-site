@@ -25,6 +25,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { SectionIntro } from "@/components/ui/section-intro";
+import { ButtonLink } from "@/components/ui/button";
+import { PRODUCT_HERO_CTAS } from "@/lib/product-hero-ctas";
 import { SITE_ROUTES } from "@/lib/routes";
 import { cssTransition } from "@/lib/animations";
 import { Z_INDEX } from "@/lib/layers";
@@ -50,13 +52,17 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
       <section
         style={{
           backgroundColor: "var(--color-navy-primary)",
-          padding: "112px 40px 88px",
+          padding: "120px 40px 96px",
           position: "relative",
           overflow: "hidden",
           isolation: "isolate",
         }}
       >
-        <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
+        {/* The page's own width, so the hero starts on the same left edge as
+            every section below it (and as the module pages' heroes); the
+            reading width only caps how far the words run. */}
+        <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
+          <div style={{ maxWidth: "var(--layout-reading-width)" }}>
           <SectionIntro
             surface="dark"
             reveal="none"
@@ -75,6 +81,13 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
               maxWidth: "var(--measure)",
             }}
           />
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "32px" }}>
+            <ButtonLink href={PRODUCT_HERO_CTAS.primary.href}>{PRODUCT_HERO_CTAS.primary.label}</ButtonLink>
+            <ButtonLink href={PRODUCT_HERO_CTAS.secondary.href} variant="secondary" surface="dark">
+              {PRODUCT_HERO_CTAS.secondary.label} →
+            </ButtonLink>
+          </div>
+          </div>
         </div>
       </section>
 

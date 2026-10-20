@@ -671,20 +671,18 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     "Custom pricing — tailored to your organisation"
                   ) : billing === "annual" ? (
                     priceData?.annualTotal != null ? (
+                      // The per-month figure is the big price above; this
+                      // line is what is actually paid — once, for the year.
                       <>
-                        Monthly equivalent ·{" "}
                         <strong
                           style={{
                             fontWeight: 600,
                             color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                           }}
                         >
-                          {formatCurrencyAmount(
-                            priceData.annualTotal,
-                            currency,
-                          )}{" "}
-                          billed annually
-                        </strong>
+                          {formatCurrencyAmount(priceData.annualTotal, currency)}
+                        </strong>{" "}
+                        billed once a year
                       </>
                     ) : (
                       "Billed annually"

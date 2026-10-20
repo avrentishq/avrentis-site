@@ -23,7 +23,6 @@ import {
   moduleName,
   type ModuleKey,
   type ModuleStatus,
-  SITE_PAGES,
 } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
@@ -35,7 +34,7 @@ import { ButtonLink } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { PRODUCT_HERO_CTAS } from "@/lib/product-hero-ctas";
 import { contactHref } from "@/app/contact/tabs";
 import type { PlanFeatureKey } from "@edidi-hq/core/billing/features";
 import { EVERY_PLAN_NOTE, planScopeNote, type FeaturePlans } from "@/lib/plan-names";
@@ -166,8 +165,8 @@ function resolveCtas(config: ModuleConfig, status: ModuleStatus): {
     };
   }
   return {
-    primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
-    secondary: config.secondaryCta ?? { label: "See how it works", href: SITE_ROUTES.howItWorks },
+    primary: config.primaryCta ?? PRODUCT_HERO_CTAS.primary,
+    secondary: config.secondaryCta ?? PRODUCT_HERO_CTAS.secondary,
   };
 }
 

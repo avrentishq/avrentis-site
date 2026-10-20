@@ -13,6 +13,7 @@ import type { PricingData } from "@/lib/pricing";
 import { SITE_DESCRIPTION } from "@/lib/record-keeping";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 import { MARKET_SCOPE } from "@/lib/market";
+import { isLaunchHidden } from "@/lib/launch";
 
 /** The site's canonical origin — core's, the same one every other surface links to. */
 export const SITE_URL = BRAND.siteUrl;
@@ -47,7 +48,18 @@ export interface PageMetadataInput {
  * replaced the root one, dropping the site name. Filling title, canonical, Open
  * Graph and Twitter together from one input makes that impossible.
  */
+/** The not-found page's title — also what a page hidden for launch shows in its tab. */
+export const NOT_FOUND_TITLE = "Page not found";
+
+/**
+ * A page's metadata. A page hidden for launch (`src/lib/launch.ts`) renders the
+ * not-found page, so it gets the not-found title too — never its real name in
+ * the tab beside a "this page isn't here" screen — and is kept out of search.
+ */
 export function pageMetadata({ path, title, description, socialTitle, socialDescription }: PageMetadataInput): Metadata {
+  if (isLaunchHidden(path)) {
+    return { title: pageTitle(NOT_FOUND_TITLE), robots: { index: false, follow: false } };
+  }
   const shareTitle = socialTitle ?? pageTitle(title);
   const shareDescription = socialDescription ?? description;
   return {

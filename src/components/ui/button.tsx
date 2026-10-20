@@ -23,14 +23,11 @@ export type ButtonSurface = "light" | "dark";
  * lg: the home hero · xl: the closing banner.
  */
 export type ButtonSize = "xs" | "nav" | "sm" | "md" | "lg" | "xl";
-export type ButtonShape = "rounded" | "pill";
 
 export interface ButtonOptions {
   variant?: ButtonVariant;
   size?: ButtonSize;
   surface?: ButtonSurface;
-  /** Defaults by size: sm/md rounded, the rest pill. */
-  shape?: ButtonShape;
   fullWidth?: boolean;
   /** A primary that cannot be pressed yet (form not complete, request pending). */
   disabled?: boolean;
@@ -54,9 +51,8 @@ const SIZES: Record<ButtonSize, CSSProperties> = {
   xl: { height: "52px", padding: "0 32px", fontSize: "var(--text-xl)" },
 };
 
-const PILL_BY_DEFAULT: ReadonlySet<ButtonSize> = new Set(["xs", "nav", "lg", "xl"]);
-
-const RADIUS: Record<ButtonShape, string> = { rounded: "var(--radius-md)", pill: "var(--radius-pill)" };
+/** Every button is square-cornered: the brand is flat and institutional, not soft. */
+const BUTTON_RADIUS = "var(--radius-2xs)";
 
 const SECONDARY: Record<ButtonSurface, CSSProperties> = {
   dark: {
@@ -82,12 +78,10 @@ export function buttonStyle({
   variant = "primary",
   size = "md",
   surface = "dark",
-  shape,
   fullWidth = false,
   disabled = false,
   style,
 }: ButtonOptions = {}): CSSProperties {
-  const resolvedShape = shape ?? (PILL_BY_DEFAULT.has(size) ? "pill" : "rounded");
   const colours: CSSProperties =
     variant === "primary"
       ? {
@@ -97,14 +91,14 @@ export function buttonStyle({
         }
       : SECONDARY[surface];
   return {
-    // The navbar pill is set lighter: at 11px uppercase, 600 reads as shouting.
+    // The navbar button is set lighter: at 11px uppercase, 600 reads as shouting.
     fontWeight: variant === "primary" && size !== "nav" ? 600 : 500,
     display: fullWidth ? "flex" : "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "8px",
     textDecoration: "none",
-    borderRadius: RADIUS[resolvedShape],
+    borderRadius: BUTTON_RADIUS,
     cursor: disabled ? "not-allowed" : "pointer",
     transition: cssTransition(["background-color", "border-color"]),
     ...SIZES[size],
@@ -130,7 +124,6 @@ export function ButtonLink({
   variant,
   size,
   surface,
-  shape,
   fullWidth,
   disabled,
   style,
@@ -139,7 +132,7 @@ export function ButtonLink({
   return (
     <Link
       {...linkProps}
-      {...buttonProps({ variant, size, surface, shape, fullWidth, disabled, style })}
+      {...buttonProps({ variant, size, surface, fullWidth, disabled, style })}
     />
   );
 }

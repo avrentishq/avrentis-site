@@ -1,5 +1,6 @@
 "use client";
 
+import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
 import { m } from "framer-motion";
 import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
@@ -11,24 +12,10 @@ import {
   MODULES,
   moduleName,
   publicModuleKeys,
-  type ModuleStatus,
 } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
 import { cardGridProps } from "@/lib/card-grid";
 import { Z_INDEX } from "@/lib/layers";
-
-const BADGE_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
-  available: {
-    bg: "rgba(var(--color-available-rgb), 0.1)",
-    color: "var(--color-available)",
-    border: "1px solid rgba(var(--color-available-rgb), 0.2)",
-  },
-  partial: {
-    bg: "var(--color-gold-tint)",
-    color: "var(--color-gold-on-light)",
-    border: "1px solid var(--color-gold-divider)",
-  },
-};
 
 export function FeaturesGrid() {
   const moduleKeys = publicModuleKeys();
@@ -68,7 +55,7 @@ export function FeaturesGrid() {
           {moduleKeys.map((moduleKey, i) => {
             const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
             const { status } = MODULES[moduleKey];
-            const badge = BADGE_STYLES[status];
+            const badge = MODULE_STATUS_CHIP.light[status];
             return (
               <m.div
                 key={moduleKey}

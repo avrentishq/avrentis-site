@@ -795,7 +795,6 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   variant={isFeatured ? "primary" : "secondary"}
                   surface="light"
                   size="md"
-                  shape="pill"
                   fullWidth
                 >
                   {isQuotePriced ? "Talk to us" : "Start my trial"}

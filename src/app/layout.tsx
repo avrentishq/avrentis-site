@@ -9,7 +9,7 @@ import { AUDIT_TRAIL_KEPT, SITE_DESCRIPTION } from "@/lib/record-keeping";
 import "./globals.css";
 import { SITE_SLOGAN, SITE_URL } from "@/lib/seo";
 import { NO_SCRIPT_CSS } from "@/lib/no-script";
-import { SURFACE_FOCUS_CSS } from "@/lib/surfaces";
+import { SURFACE_CSS } from "@/lib/surfaces";
 
 const OG_TITLE = `${BRAND.name} — ${SITE_SLOGAN}`;
 const OG_DESCRIPTION = `Replace scattered approvals with structured authority — a tamper-evident audit trail of every decision, approval, and process your organisation runs, ${AUDIT_TRAIL_KEPT}.`;
@@ -28,12 +28,12 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-// Wordmark font — self-hosted from the brand SSOT (@edidi-hq/core/brand/fonts),
+// Display font — self-hosted from the brand SSOT (@edidi-hq/core/brand/fonts),
 // so the file lives in exactly one place across app / site / admin.
-const cabinetGrotesk = localFont({
-  src: "../../node_modules/@edidi-hq/core/src/brand/fonts/CabinetGrotesk-Extrabold.woff2",
-  weight: "800",
-  variable: "--font-cabinet-grotesk",
+const marcellus = localFont({
+  src: "../../node_modules/@edidi-hq/core/src/brand/fonts/Marcellus-Regular.ttf",
+  weight: "400",
+  variable: "--font-marcellus",
   display: "swap",
 });
 
@@ -72,14 +72,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${ibmPlexMono.variable} ${cabinetGrotesk.variable}`}
+      className={`${archivo.variable} ${ibmPlexMono.variable} ${marcellus.variable}`}
     >
       <head>
         <JsonLd data={organizationSchema()} />
       </head>
       <body className="antialiased">
         {/* Each painted surface's focus-ring colour (src/lib/surfaces.ts). */}
-        <style>{SURFACE_FOCUS_CSS}</style>
+        <style>{SURFACE_CSS}</style>
         {/* Only when JavaScript is off: show what script would otherwise reveal. */}
         <noscript>
           <style>{NO_SCRIPT_CSS}</style>

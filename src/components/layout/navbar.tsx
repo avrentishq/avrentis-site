@@ -73,8 +73,8 @@ export function Navbar() {
    */
   const onLight = scrolled;
   const barSurface = {
-    background: onLight ? "rgba(var(--color-nav-surface-rgb), 0.9)" : "var(--color-navy-primary)",
-    // The SAME colour, opaque. The bar is a thin strip, so 0.9 + blur reads as
+    background: onLight ? "rgba(var(--color-nav-surface-rgb), 0.96)" : "var(--color-navy-primary)",
+    // The SAME colour, opaque. The bar is a thin strip, so 0.96 + blur reads as
     // frosted glass; the dropdown is a 520px panel over body copy, and at the
     // same alpha the page showed straight through it — headings behind the menu
     // were legible through the menu. Matching the bar means matching its colour,
@@ -83,7 +83,7 @@ export function Navbar() {
     blur: "blur(12px)",
     border: onLight ? "1px solid var(--color-navy-hairline)" : "1px solid var(--color-gold-tint)",
     text: onLight ? "var(--color-text-primary)" : "var(--color-white)",
-    mutedText: onLight ? "var(--color-text-secondary)" : "var(--color-text-muted)",
+    mutedText: onLight ? "var(--color-text-secondary)" : "var(--color-text-inverse-muted)",
     accent: onLight ? "var(--color-gold-on-light)" : "var(--color-gold)",
   };
 
@@ -170,7 +170,7 @@ export function Navbar() {
                 carries the brand either way. */}
             <BrandLogo
               size={scrolled ? 30 : 36}
-              variant="primary"
+              variant={onLight ? "on-light" : "on-dark"}
               wordmarkColor={barSurface.text}
             />
           </Link>

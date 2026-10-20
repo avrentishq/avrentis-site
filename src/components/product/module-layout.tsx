@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * ProductModuleLayout — shared template for every Avrentis module product
- * page (Payables / Procurement / Records / Compliance / Guard / Grants / Integrations). Each page passes
+ * ProductModuleLayout — shared template for every module product
+ * page (Payables / Procurement / Records / Compliance / Integrity / Grants / Integrations). Each page passes
  * a `ModuleConfig` and the layout handles hero, pillars, platform preview,
  * use cases, plan availability, and related modules in a consistent shell.
  *
@@ -12,6 +12,7 @@
  *   - Light content sections with fade-up entrance
  */
 
+import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
 import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
@@ -125,21 +126,8 @@ export interface ModuleConfig {
   secondaryCta?: { label: string; href: string };
 }
 
-const STATUS_RIBBON_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
-  available: {
-    bg: "rgba(var(--color-available-rgb), 0.12)",
-    color: "var(--color-available-on-dark)",
-    border: "1px solid rgba(var(--color-available-rgb), 0.3)",
-  },
-  partial: {
-    bg: "var(--color-gold-tint)",
-    color: "var(--color-gold)",
-    border: "1px solid var(--color-gold-border)",
-  },
-};
-
 function StatusRibbon({ status }: { status: ModuleStatus }) {
-  const style = STATUS_RIBBON_STYLES[status];
+  const style = MODULE_STATUS_CHIP.dark[status];
   return (
     <span
       style={{

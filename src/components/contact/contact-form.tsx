@@ -150,7 +150,7 @@ function SubmitButton({
     <button
       type="submit"
       disabled={disabled}
-      {...buttonProps({ size: "md", shape: "pill", disabled })}
+      {...buttonProps({ size: "md", disabled })}
     >
       {pending ? "Sending…" : label}
     </button>

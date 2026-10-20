@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
 import Link from "next/link";
 import {
   MODULE_STATUS_LABELS,
@@ -7,7 +8,6 @@ import {
   moduleShortName,
   SUITES,
   type ModuleKey,
-  type ModuleStatus,
   SITE_PAGES,
   BRAND,
 } from "@/lib/brand";
@@ -34,11 +34,6 @@ export const metadata: Metadata = pageMetadata({
   description: `${BRAND.name} structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.`,
   socialDescription: "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
 });
-
-const STATUS_BADGE: Record<ModuleStatus, { bg: string; color: string }> = {
-  available: { bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
-  partial: { bg: "var(--color-gold-tint)", color: "var(--color-gold-on-light)" },
-};
 
 export default function ProductOverviewPage() {
   return (
@@ -270,7 +265,7 @@ export default function ProductOverviewPage() {
 function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
   const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
   const { name, status } = MODULES[moduleKey];
-  const badge = STATUS_BADGE[status];
+  const badge = MODULE_STATUS_CHIP.light[status];
   return (
     <Link
       href={moduleHref(moduleKey)}
@@ -309,6 +304,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
             textTransform: "uppercase",
             color: badge.color,
             backgroundColor: badge.bg,
+            border: badge.border,
             borderRadius: "var(--radius-xs)",
             padding: "3px 8px",
           }}

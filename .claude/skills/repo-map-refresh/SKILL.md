@@ -1,6 +1,6 @@
 ---
 name: repo-map-refresh
-description: Update the avrentis-site architecture reference docs in docs/architecture/ from a git range instead of re-exploring the codebase. Use after merging work, before a handoff, when a reference doc has gone stale or contradicts the code, or when asked to refresh, update, or re-sync the repo map, architecture docs, boundaries, conventions, or glossary.
+description: Update the marketing-site architecture reference docs in docs/architecture/ from a git range instead of re-exploring the codebase. Use after merging work, before a handoff, when a reference doc has gone stale or contradicts the code, or when asked to refresh, update, or re-sync the repo map, architecture docs, boundaries, conventions, or glossary.
 ---
 
 # Refresh the architecture reference

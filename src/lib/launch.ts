@@ -43,3 +43,10 @@ export function isLaunchHidden(path: string): boolean {
 export function isLaunchVisible(path: string): boolean {
   return !isLaunchHidden(path);
 }
+
+/**
+ * The one line that says where the product stands — the brand brief's approved
+ * wording ("Pre-launch; built and tested, piloting now"). Never a customer
+ * count, logo or uptime figure until there is one to state.
+ */
+export const LAUNCH_STATUS = "Pre-launch; built and tested, piloting now.";

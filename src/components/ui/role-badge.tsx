@@ -12,7 +12,7 @@ export const ROLE_LABELS: Record<Role, string> = {
 const ROLE_STYLES: Record<Role, { bg: string; text: string; border?: string }> = {
   staff: { bg: "var(--color-bg)", text: "var(--color-text-secondary)" },
   hod: { bg: "var(--color-gold-surface)", text: "var(--color-warning-strong)", border: "var(--color-gold)" },
-  finance: { bg: "var(--color-success-wash)", text: "var(--color-success)" },
+  finance: { bg: "var(--color-bg)", text: "var(--color-success)", border: "var(--color-success-border)" },
   md: { bg: "var(--color-navy-primary)", text: "var(--color-gold)", border: "var(--color-gold)" },
   admin: { bg: "var(--color-navy-mid)", text: "var(--color-text-inverse-muted)", border: "var(--color-navy-light)" },
 };

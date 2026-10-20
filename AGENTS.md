@@ -6,11 +6,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 <!-- Everything above is tool-managed. Add rules below this line only. -->
 
-# avrentis-site
+# The marketing site
 
-The public marketing site for Avrentis (avrentis.com) — a single Next.js 16 App Router
-service on Vercel. Brand identity comes from a private shared package, pricing comes from
-the platform API at `app.avrentis.com`, and the only server code is four Server Actions.
+The public marketing site for the brand (`BRAND.name`, on core's `SITE_HOST`) — a single
+Next.js 16 App Router service on Vercel. Brand identity comes from a private shared package,
+pricing comes from the platform API (`BRAND.appUrl`), and the only server code is four
+Server Actions.
 
 ## Architecture questions → invoke `repo-map`
 
@@ -119,10 +120,23 @@ Run these locally before you claim anything is done.
   endpoint, https) is set at BUILD time — headers are fixed into the build, so a change needs
   a redeploy. Unset or invalid → no reporting directives (`src/lib/csp-reporting.ts`).
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
-- **The focus ring comes from the surface, never the component.** `src/lib/surfaces.ts` maps each
-  background (token, or a strong translucent layer with what it sits on) to its ring; a new
-  background must be registered there or `focus-ring-contrast.lock.test.ts` fails, and every
-  pairing is held at 3:1. Never set `outline` on a component.
+- **The focus ring and the text greys come from the surface, never the component.**
+  `src/lib/surfaces.ts` maps each background (token, or a strong translucent layer with what it
+  sits on) to its ring and its `tone`: a dark surface re-points `--color-text-secondary/muted/
+  subtle` to the on-dark grey for itself and everything inside it, a light one (a parchment card
+  inside an ink section) points them back. A new background must be registered there or
+  `focus-ring-contrast.lock.test.ts` fails; rings are held at 3:1 and each tone's grey at 4.5:1.
+  Never set `outline` on a component, and never pick a grey per section.
+- **Status chips are shape + word, never colour alone.** `<StatusMark>` draws core's
+  `STATUS_MARKS` (approved ● pending ○ flagged ◆ rejected –); a module's availability chip reads
+  `MODULE_STATUS_CHIP[surface][status]` (`src/lib/module-status-styles.ts`), never its own colours.
+- **Buttons are square-cornered.** `buttonProps` / `ButtonLink` have no shape option; the brand
+  is flat (no glows or grid texture in the homepage hero).
+- **Claims follow the brand brief.** `brand-claims.lock.test.ts` runs core's `brandClaimViolations`
+  over all copy: no certification we do not hold (a denial such as "not ISO 27001 certified"
+  passes), never "we move/hold money", never "catches all fraud", no legal-instrument or
+  "sealed forever" claim, the name never split or shortened. Where the product stands is
+  `LAUNCH_STATUS` (`src/lib/launch.ts`) — never a customer count or logo until there is one.
 - **Forms work without JavaScript.** Pass the server action itself to `useActionState` (never a
   client wrapper), submit with `onSubmit={submitWithoutReset(action)}` next to `action`
   (`form-submit.lock.test.ts`), gate buttons on `useHydrated()` so the server HTML never ships
@@ -171,7 +185,7 @@ Run these locally before you claim anything is done.
   too — the app (`BRAND.appUrl`; the browser never calls it, so it is not in the CSP's
   `connect-src`), the status page (`statusUrl()`) and the docs
   (`docsUrl(path)`), all built from `SITE_HOST`; `site-pages.lock.test.ts` fails on any typed
-  `<sub>.avrentis.com` host in `src/` or `next.config.ts`. `/.well-known/security.txt` is
+  `<sub>.<SITE_HOST>` host in `src/` or `next.config.ts`. `/.well-known/security.txt` is
   generated from them (expiry always a year ahead, rebuilt daily) — never replace it with a
   static file.
 - **Never type a path at all.** The site's own paths live in `src/lib/routes.ts`
@@ -217,11 +231,11 @@ Run these locally before you claim anything is done.
   more modules by hand.
 - **Never type the brand name.** Copy reads `BRAND.name` (from `@/lib/brand`); a module's
   short name is `moduleShortName(key)` / `moduleShortNameFor(apiModule)`, never a cut prefix.
-  `brand-name.lock.test.ts` fails on a typed "Avrentis" outside `brand.ts` and the changelog.
+  `brand-name.lock.test.ts` fails on a typed brand name outside `brand.ts` and the changelog.
   Lock tests strip comments with the shared `src/lib/test-support/strip-comments.ts`.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts` (`moduleName(key)` in titles and prose —
-  `module-names.lock.test.ts` fails on a typed "Avrentis <Module>" anywhere else). This includes BRANCHING on a tier:
+  `module-names.lock.test.ts` fails on a typed "<brand> <Module>" anywhere else). This includes BRANCHING on a tier:
   `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,
   the struck-through price and the annual saving, and is wrong the moment a second tier
   is quote-priced or Enterprise becomes self-serve. Read `plan.selfServeCheckout`, which

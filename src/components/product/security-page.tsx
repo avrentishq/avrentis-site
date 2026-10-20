@@ -550,7 +550,6 @@ export function SecurityProductPage() {
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       color: "var(--color-gold)",
-                      backgroundColor: "var(--color-gold-tint)",
                       border: "1px solid var(--color-gold-border)",
                       borderRadius: "var(--radius-xs)",
                       padding: "3px 8px",

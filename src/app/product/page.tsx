@@ -17,7 +17,6 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { ButtonLink } from "@/components/ui/button";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
@@ -51,7 +50,6 @@ export default function ProductOverviewPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.productHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid />
 
         <div
           style={{

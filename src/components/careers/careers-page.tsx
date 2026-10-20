@@ -8,9 +8,8 @@
  * array to render the usual roles block.
  */
 
-import { useRef } from "react";
 import Link from "next/link";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Compass,
   ShieldCheck,
@@ -74,12 +73,6 @@ const LOOKING_FOR = [
 const OPEN_ROLES: { title: string; location: string; summary: string; applyHref: string }[] = [];
 
 export function CareersProductPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <>
@@ -88,7 +81,6 @@ export function CareersProductPage() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -98,7 +90,6 @@ export function CareersProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.careersHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"

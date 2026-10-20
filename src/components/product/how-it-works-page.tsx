@@ -9,14 +9,9 @@
  * 0.4s ease-out, no scale/rotation).
  */
 
-import { useRef } from "react";
 import { DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { requestTypeList } from "@/lib/module-copy";
-import {
-  m,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { m } from "framer-motion";
 import {
   FileCheck,
   UserCheck,
@@ -306,12 +301,6 @@ function ChainCard({
 }
 
 export function HowItWorksProductPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <>
@@ -320,7 +309,6 @@ export function HowItWorksProductPage() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -330,7 +318,6 @@ export function HowItWorksProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.hiwHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro

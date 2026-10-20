@@ -10,12 +10,11 @@
  * flagged honestly as in-progress with a direct contact route.
  */
 
-import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { BRAND, MODULES, moduleHref, moduleName, publicModuleKeys, LEGAL_PAGES } from "@/lib/brand";
 import { MODULE_COPY } from "@/lib/module-copy";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import {
   BookOpen,
   Compass,
@@ -37,7 +36,6 @@ import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
 import { TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Z_INDEX } from "@/lib/layers";
@@ -360,12 +358,6 @@ function Category({ category, index }: { category: DocsCategory; index: number }
 }
 
 export function DocsHubPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <>
@@ -374,7 +366,6 @@ export function DocsHubPage() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -384,7 +375,6 @@ export function DocsHubPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.docsHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"

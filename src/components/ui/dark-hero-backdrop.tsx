@@ -6,8 +6,10 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { Z_INDEX } from "@/lib/layers";
 
 /**
- * DarkHeroBackdrop — the ambient layer behind every navy section: two drifting
- * gold glows and, optionally, the faint 60px grid. Drop it inside a section
+ * DarkHeroBackdrop — the ambient layer behind a dark section further down a
+ * page: two drifting gold glows and, optionally, the faint 60px grid. A page's
+ * opening hero never takes it: heroes are flat ink over their photo (the brand
+ * brief), so there is no hero glow pair to ask for. Drop it inside a section
  * styled `position: relative; overflow: hidden; isolation: isolate`, after any
  * SectionBackdrop and before the content (which sits at zIndex 2).
  *
@@ -27,15 +29,10 @@ interface GlowSpec {
 }
 
 /**
- * hero: a page's opening section, glows in the top-left and bottom-right corners.
  * closing: a dark section further down the page, softer and lower.
  * centered: the closing CTA banner, glows pulled in to frame centred copy.
  */
 export const BACKDROP_GLOWS = {
-  hero: [
-    { top: "-120px", left: "-100px", size: 520, intensity: 0.22, duration: 32 },
-    { bottom: "-140px", right: "-80px", size: 560, intensity: 0.18, duration: 38, delay: 0.5 },
-  ],
   closing: [
     { top: "20%", left: "-120px", size: 420, intensity: 0.15, duration: 34 },
     { bottom: "-80px", right: "-100px", size: 480, intensity: 0.13, duration: 40, delay: 0.5 },
@@ -51,14 +48,14 @@ export type BackdropGlows = keyof typeof BACKDROP_GLOWS;
 const GRID_LINE = "rgba(var(--color-white-rgb), 0.4) 1px, transparent 1px";
 
 interface DarkHeroBackdropProps {
-  glows?: BackdropGlows;
+  glows: BackdropGlows;
   /** Draw the grid texture over the glows. */
   grid?: boolean;
   /** Scroll-linked offset for the grid (parallax). Ignored on phones. */
   gridY?: MotionValue<number>;
 }
 
-export function DarkHeroBackdrop({ glows = "hero", grid = false, gridY }: DarkHeroBackdropProps) {
+export function DarkHeroBackdrop({ glows, grid = false, gridY }: DarkHeroBackdropProps) {
   const isMobile = useIsMobile();
   return (
     <>

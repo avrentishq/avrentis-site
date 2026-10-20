@@ -24,7 +24,6 @@ import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { SITE_ROUTES } from "@/lib/routes";
 import { cssTransition } from "@/lib/animations";
@@ -57,7 +56,6 @@ export function ProductSuiteLayout({ suite }: { suite: ModuleSuite }) {
           isolation: "isolate",
         }}
       >
-        <DarkHeroBackdrop glows="hero" />
         <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"

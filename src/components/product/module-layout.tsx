@@ -13,7 +13,6 @@
  */
 
 import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
-import { useRef } from "react";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -28,10 +27,9 @@ import {
 } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import { BrowserFrame, appCaption } from "./previews/preview-primitives";
 import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { ButtonLink } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
@@ -193,12 +191,6 @@ export function ProductModuleLayout({
 }: ModulePageData & { config: ModuleConfig }) {
   const pillars = withPlanScope(config.pillars, featurePlans, planAvailability);
   const useCases = withPlanScope(config.useCases, featurePlans, planAvailability);
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const { name, status } = MODULES[config.moduleKey];
   const { primary, secondary } = resolveCtas(config, status);
   const relatedModules = config.relatedModules.filter((related) => isModulePublic(related.moduleKey));
@@ -217,7 +209,6 @@ export function ProductModuleLayout({
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -227,7 +218,6 @@ export function ProductModuleLayout({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.moduleHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div
           style={{

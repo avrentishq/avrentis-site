@@ -11,9 +11,8 @@ import { PLAN_ORDER } from "@edidi-hq/core/billing/catalog";
 import { PLAN_CAPACITY } from "@edidi-hq/core/billing/capacity";
 import type { PlanFeatureKey } from "@edidi-hq/core/billing/features";
 import { planScopeNote, type FeaturePlans } from "@/lib/plan-names";
-import { useRef } from "react";
 import Link from "next/link";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 import { BRAND } from "@/lib/brand";
 import {
@@ -35,7 +34,6 @@ import { ACCESS_ENDS } from "@/lib/compliance-posture";
 import { LEAD_CURRENCY } from "@/lib/market";
 import { toMinorUnits } from "@/lib/money";
 import { FEATURED_VOUCHER, featuredTrailEntry } from "./demo-fixtures";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Z_INDEX } from "@/lib/layers";
@@ -347,12 +345,6 @@ export function IntegrationsCataloguePage({
   featurePlans: FeaturePlans;
   allPlanNames: string[];
 }) {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <>
@@ -361,7 +353,6 @@ export function IntegrationsCataloguePage({
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -371,7 +362,6 @@ export function IntegrationsCataloguePage({
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.integrationsHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"

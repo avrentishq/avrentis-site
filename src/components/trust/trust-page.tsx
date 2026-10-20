@@ -12,9 +12,8 @@
  * needing to email sales first.
  */
 
-import { useRef } from "react";
 import Link from "next/link";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import {
   ShieldCheck,
   FileText,
@@ -88,12 +87,6 @@ const DOCUMENTS = [
 ];
 
 export function TrustProductPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <>
@@ -102,7 +95,6 @@ export function TrustProductPage() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -112,7 +104,6 @@ export function TrustProductPage() {
         }}
       >
         <SectionBackdrop src={SECTION_BACKDROPS.trustHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"

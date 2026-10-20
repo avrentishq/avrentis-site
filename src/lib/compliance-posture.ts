@@ -61,7 +61,7 @@ export const COMPLIANCE_FRAMEWORKS: readonly ComplianceFramework[] = [
     name: "SOC 2 (Type II)",
     status: "policies_aligned",
     body:
-      "Our policies for access, change management, encryption, security, uptime and incident response follow SOC 2 structure. A SOC 2 Type II audit and an independent penetration test are on our roadmap; neither is done yet. We can walk your team through each area on a review call.",
+      "Our policies for access, change management, encryption, security, uptime and incident response follow SOC 2 structure. A SOC 2 Type II audit is on our roadmap; it is not done yet. We can walk your team through each area on a review call.",
   },
   {
     key: "iso27001",

@@ -29,59 +29,32 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
 import { ACCESS_ENDS } from "@/lib/compliance-posture";
-import { LEAD_CURRENCY } from "@/lib/market";
-import { toMinorUnits } from "@/lib/money";
-import { FEATURED_VOUCHER, featuredTrailEntry } from "./demo-fixtures";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { Z_INDEX } from "@/lib/layers";
 
 /**
- * The sample delivery: the featured demo voucher being sanctioned. Every value
- * that describes the voucher comes from the demo fixtures, so the sample's
- * reference, amount, currency, approver and time match the mockups on every
- * other page; the amount is in minor units, as the real payload carries it.
+ * What a webhook can tell you about, in plain words — families of events, not
+ * their exact names. The names and payloads are API documentation, given to
+ * API customers with their access, not published on a marketing page.
  */
-const sanction = featuredTrailEntry("sanction");
-const sanctionedAt = new Date(sanction.at);
-const WEBHOOK_SAMPLE = [
-  "content-type: application/json",
-  "webhook-id: 6f1c2a9e-4b7d-4e21-9c55-0d3a8e7b1f42",
-  `webhook-timestamp: ${Math.floor(sanctionedAt.getTime() / 1000)}`,
-  "webhook-signature: v1,K5oZfzN95Z9UVu1EsfQmfVNQhnkZ2pj9o9NDN/H/pI4=",
-  "",
-  JSON.stringify(
-    {
-      eventId: "evt_8c1f0b6e2d4a…",
-      type: "document.sanctioned",
-      tenantId: "0d9e4c1a-…",
-      createdAt: sanctionedAt.toISOString(),
-      data: {
-        documentType: FEATURED_VOUCHER.documentType,
-        referenceNumber: FEATURED_VOUCHER.reference,
-        amountMinor: toMinorUnits(FEATURED_VOUCHER.amount, LEAD_CURRENCY),
-        currency: LEAD_CURRENCY,
-        sanctionedBy: { name: sanction.person.name, role: sanction.person.role },
-        sanctionedAt: sanctionedAt.toISOString(),
-        departmentName: FEATURED_VOUCHER.department,
-      },
-    },
-    null,
-    2,
-  ),
-].join("\n");
+const WEBHOOK_EVENT_GROUPS: ReadonlyArray<{ name: string; detail: string }> = [
+  { name: "Requests", detail: "Every step from submission to the bank: submitted, queried, returned, approved, sanctioned, ready for the bank — and a payment the bank sends back." },
+  { name: "People and roles", detail: "Invited, activated, role changed, deactivated, access expired." },
+  { name: "Suppliers", detail: "Added, updated, bank details changed, deactivated." },
+  { name: "Goods received", detail: "Each goods received note as it is recorded." },
+  { name: "Delegations", detail: "Cover set up for an absence, and ended." },
+  { name: "Privacy requests", detail: "Each step of a data-subject request." },
+];
 
 
 // Only what ships is listed. Unbuilt "talk to us" items, banking connectors and
 // the custom-connector offer were removed: the page names nothing the product
-// does not do today (`integrations-claims.lock.test.ts`).
-type Availability = "available";
-
+// does not do today (`integrations-claims.lock.test.ts`). So there is no
+// per-row "Available" badge — the hero says everything here is available.
 interface Integration {
   name: string;
   summary: string;
-  availability: Availability;
-  note?: string;
 }
 
 interface Category {
@@ -108,13 +81,9 @@ const CATEGORIES: Category[] = [
       `${BRAND.name} speaks the standard identity protocols — OpenID Connect and SAML 2.0 — with no per-provider hacks. Sessions, revocation, and MFA all work the same whether you're on Okta, Entra, or Google Workspace, and each person keeps one sign-in across every company they work in.`,
     planFeature: "sso",
     integrations: [
-      { name: "SAML 2.0", summary: "Federated sign-in with signed assertions, for any SAML identity provider.", availability: "available" },
-      { name: "OpenID Connect (OIDC)", summary: "OIDC flow for modern identity providers.", availability: "available" },
-      { name: "Okta", summary: "Sign-in over OIDC or SAML 2.0.", availability: "available" },
-      { name: "Microsoft Entra ID", summary: "Sign-in over OIDC or SAML 2.0.", availability: "available" },
-      { name: "Google Workspace", summary: "OIDC federation with Workspace directory.", availability: "available" },
-      { name: "Required single sign-on", summary: "Make your identity provider the way your people sign in, with a password kept for administrators.", availability: "available" },
-      { name: "One provider for a group", summary: "Companies in a group can accept the sign-in of the group's identity provider.", availability: "available" },
+      { name: "Single sign-on", summary: "Any SAML 2.0 or OpenID Connect identity provider — tested with Okta, Microsoft Entra ID and Google Workspace." },
+      { name: "Required single sign-on", summary: "Make your identity provider the way your people sign in, with a password kept for administrators." },
+      { name: "One provider for a group", summary: "Companies in a group can accept the sign-in of the group's identity provider." },
     ],
   },
   {
@@ -126,11 +95,8 @@ const CATEGORIES: Category[] = [
       `SCIM 2.0 keeps ${BRAND.name} in sync with your directory. Add a user in Okta, they land here. Mark them inactive, their session is revoked ${ACCESS_ENDS}. Directory groups can ask for roles — but beyond basic staff access, a person in your organisation approves each one first.`,
     planFeature: "sso",
     integrations: [
-      { name: "SCIM 2.0", summary: "User provisioning — create, update, and deactivate.", availability: "available" },
-      { name: "Okta SCIM", summary: "Tested against Okta's lifecycle provisioning.", availability: "available" },
-      { name: "Entra ID SCIM", summary: "User provisioning from Entra.", availability: "available" },
-      { name: "Google Workspace SCIM", summary: "User provisioning from Workspace.", availability: "available" },
-      { name: "Groups mapped to roles", summary: "Directory groups request roles; anything beyond staff waits for a person to approve it.", availability: "available" },
+      { name: "Automatic user provisioning", summary: "SCIM 2.0 creates, updates and deactivates people from Okta or Microsoft Entra ID." },
+      { name: "Groups mapped to roles", summary: "Directory groups request roles; anything beyond staff waits for a person to approve it." },
     ],
   },
   {
@@ -141,10 +107,10 @@ const CATEGORIES: Category[] = [
     lede:
       "Every stage of the approval lifecycle can dispatch to the channels your approvers actually check. Multi-channel by default, all tracked to the audit trail.",
     integrations: [
-      { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider.", availability: "available" },
-      { name: "WhatsApp", summary: `Approval alerts with a secure review link${MESSAGING_ON_EVERY_PLAN ? ", on every plan" : ""}.`, availability: "available" },
-      { name: "SMS", summary: "Critical alerts to Nigerian and international numbers.", availability: "available" },
-      { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page.", availability: "available" },
+      { name: "Email (transactional)", summary: "Approval-quality emails with deep links, delivered by an enterprise-grade email provider." },
+      { name: "WhatsApp", summary: `Approval alerts with a secure review link${MESSAGING_ON_EVERY_PLAN ? ", on every plan" : ""}.` },
+      { name: "SMS", summary: "Critical alerts to Nigerian and international numbers." },
+      { name: "In-app inbox", summary: "Live badge + typed workspace inbox on every page." },
     ],
   },
   {
@@ -156,13 +122,11 @@ const CATEGORIES: Category[] = [
       `Vouchers and order lines carry your own accounting codes, and approved vouchers and payments become balanced journal entries in a file your accounting system imports — each entry exported once, so nothing is posted twice. Use a ready-made layout where your system has one; any other ledger takes the standard CSV, and plans with API access can also read the entries over our API.`,
     planFeature: "budgetCodes",
     integrations: [
-      { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line.", availability: "available" },
-      { name: "QuickBooks Online", summary: "Journal entries in QuickBooks Online's import layout.", availability: "available" },
-      { name: "Zoho Books", summary: "Journal entries in Zoho Books' manual-journal import.", availability: "available" },
-      { name: "Sage Accounting", summary: "Journal entries in Sage Accounting's journal import template.", availability: "available" },
-      { name: "Standard CSV journal", summary: "Every field, for any ledger that reads a CSV.", availability: "available" },
-      { name: "CSV export", summary: "Period-bounded exports with full approval trail per line.", availability: "available" },
-      { name: "Other accounting systems", summary: "Import the standard CSV journal — and tell us which system you use.", availability: "available" },
+      { name: "Your chart of accounts", summary: "Accounts, cost centres, projects and funds on every voucher and order line." },
+      { name: "QuickBooks Online", summary: "Journal entries in QuickBooks Online's import layout." },
+      { name: "Zoho Books", summary: "Journal entries in Zoho Books' manual-journal import." },
+      { name: "Sage Accounting", summary: "Journal entries in Sage Accounting's journal import template." },
+      { name: "Any other ledger", summary: "A standard CSV journal with every field, plus period exports with the approval trail on each line." },
     ],
   },
   {
@@ -173,11 +137,9 @@ const CATEGORIES: Category[] = [
     lede:
       "Every sanctioned voucher produces a formally formatted bank letter with the MD's signature, and approved payments go out as a payment file in your bank's own scheme — upload it, and the money moves on your rails.",
     integrations: [
-      { name: "Bank-ready PDF letter", summary: "Per-voucher letter with MD signature + letterhead.", availability: "available" },
-      { name: "NIBSS Direct Credit", summary: "Naira batch files accepted by most Nigerian banks, plus GTBank and Access Bank portal imports.", availability: "available" },
-      { name: "SEPA Credit Transfer", summary: "Euro payments to any IBAN, as an ISO 20022 file.", availability: "available" },
-      { name: "Bacs Direct Credit (Standard 18)", summary: "Sterling payments to UK sort codes and account numbers.", availability: "available" },
-      { name: "ACH credits (NACHA)", summary: "US dollar payments, each marked checking or savings from the payee's account.", availability: "available" },
+      { name: "Bank-ready PDF letter", summary: "Per-voucher letter with MD signature + letterhead." },
+      { name: "NIBSS Direct Credit", summary: "Naira batch files accepted by most Nigerian banks, plus GTBank and Access Bank portal imports." },
+      { name: "International payment files", summary: "SEPA (euro, ISO 20022), Bacs Standard 18 (sterling) and ACH NACHA (US dollar) files." },
     ],
   },
   {
@@ -189,56 +151,12 @@ const CATEGORIES: Category[] = [
       "A read-access REST API exposes your documents, users, vendors, budgets, accounting codes, journal entries, audit events, and reports, with webhooks for every state transition. Each API key permission opens exactly the endpoints it names, and long lists come back a page at a time.",
     planFeature: "apiAccess",
     integrations: [
-      { name: "REST API (v1)", summary: "Read access to documents, users, vendors, budgets, journal entries, audit events, and reports.", availability: "available" },
-      { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme.", availability: "available" },
-      { name: "Audit export", summary: "Regulator-ready audit bundles, downloadable for any period.", availability: "available" },
+      { name: "REST API (v1)", summary: "Read access to documents, users, vendors, budgets, journal entries, audit events, and reports." },
+      { name: "Webhooks", summary: "Per-tenant event subscriptions with retries, signed to the Standard Webhooks scheme." },
+      { name: "Audit export", summary: "Regulator-ready audit bundles, downloadable for any period." },
     ],
   },
 ];
-
-const STATUS_STYLES: Record<Availability, { label: string; color: string; bg: string; border: string }> = {
-  available: {
-    label: "Available",
-    color: "var(--color-success)",
-    bg: "var(--color-success-tint)",
-    border: "rgba(var(--color-success-rgb), 0.28)",
-  },
-};
-
-function Badge({ availability }: { availability: Availability }) {
-  const s = STATUS_STYLES[availability];
-  return (
-    <span
-      style={{
-        fontFamily: "var(--font-mono)",
-        fontSize: "var(--text-3xs)",
-        fontWeight: 500,
-        letterSpacing: "0.06em",
-        textTransform: "uppercase",
-        color: s.color,
-        backgroundColor: s.bg,
-        border: `1px solid ${s.border}`,
-        borderRadius: "var(--radius-xs)",
-        padding: "3px 8px",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: "5px",
-        flexShrink: 0,
-      }}
-    >
-      <span
-        style={{
-          width: "5px",
-          height: "5px",
-          borderRadius: "var(--radius-circle)",
-          backgroundColor: s.color,
-          display: "inline-block",
-        }}
-      />
-      {s.label}
-    </span>
-  );
-}
 
 function CategoryBlock({ category, index, planNote }: { category: Category; index: number; planNote: string }) {
   const Icon = category.icon;
@@ -324,7 +242,6 @@ function CategoryBlock({ category, index, planNote }: { category: Category; inde
                   {integration.summary}
                 </p>
               </div>
-              <Badge availability={integration.availability} />
             </div>
           ))}
         </div>
@@ -522,45 +439,36 @@ export function IntegrationsCataloguePage({
                 boxShadow: "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.18)",
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "var(--text-3xs)",
-                    color: "var(--color-text-subtle)",
-                    letterSpacing: "0.06em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  POST · /webhooks/your-endpoint
-                </span>
-              </div>
-              <pre
-                style={{
-                  fontFamily: "var(--font-mono)",
-                  fontSize: "var(--text-xs)",
-                  color: "var(--color-border)",
-                  lineHeight: 1.7,
-                  margin: 0,
-                  whiteSpace: "pre-wrap",
-                  wordBreak: "break-word",
-                }}
-              >
-{WEBHOOK_SAMPLE}
-              </pre>
               <p
                 style={{
-                  fontSize: "var(--text-xs)",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "var(--text-3xs)",
                   color: "var(--color-text-subtle)",
-                  lineHeight: 1.6,
-                  margin: "14px 0 0",
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  margin: "0 0 6px",
                 }}
               >
-                Verify <code style={{ fontFamily: "var(--font-mono)" }}>webhook-signature</code> (HMAC-SHA256 over{" "}
-                <code style={{ fontFamily: "var(--font-mono)" }}>{"{webhook-id}.{webhook-timestamp}.{body}"}</code> with your
-                subscription secret), reject timestamps more than five minutes off your clock, and ignore ids you have
-                already processed. These three Standard Webhooks headers are the only signature a delivery carries.
+                What you can subscribe to
               </p>
+              <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+                {WEBHOOK_EVENT_GROUPS.map((group, index) => (
+                  <li
+                    key={group.name}
+                    style={{
+                      padding: "14px 0",
+                      borderTop: index === 0 ? "none" : "1px solid rgba(var(--color-neutral-tint-rgb), 0.12)",
+                    }}
+                  >
+                    <span style={{ display: "block", fontSize: "var(--text-md)", fontWeight: 600, color: "var(--color-white)", marginBottom: "3px" }}>
+                      {group.name}
+                    </span>
+                    <span style={{ display: "block", fontSize: "var(--text-sm)", color: "var(--color-text-subtle)", lineHeight: 1.55 }}>
+                      {group.detail}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </m.div>
           </div>
         </div>

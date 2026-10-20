@@ -156,10 +156,10 @@ const STACK = [
     title: "Access lifecycle",
     subtitle: `People come and go — access keeps up. Joiners get what they need; leavers lose access ${ACCESS_ENDS}.`,
     body:
-      "User provisioning flows in automatically from your identity provider (Okta, Microsoft Entra, Google Workspace). Auditor and board-level guests get a clear start date and expiry — access is withdrawn on the dot without manual clean-up. Document retention follows your plan; the audit trail itself is never purged while the account is active.",
+      "User provisioning flows in automatically from your identity provider (Okta or Microsoft Entra). Auditor and board-level guests get a clear start date and expiry — access is withdrawn on the dot without manual clean-up. Document retention follows your plan; the audit trail itself is never purged while the account is active.",
     icon: KeyRound,
     bullets: [
-      "Automated user provisioning (SCIM) with Okta, Microsoft Entra, and Google Workspace",
+      "Automated user provisioning (SCIM) with Okta and Microsoft Entra",
       "Directory groups mapped to roles — anything beyond staff access waits for a person in your organisation to approve it",
       "Time-bound access for auditors and provisional board members, with automatic revocation",
       "Per-plan document retention, with the audit trail itself never purged",

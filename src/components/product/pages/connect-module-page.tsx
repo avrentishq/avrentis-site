@@ -19,14 +19,14 @@ const config: ModuleConfig = {
       title: "Typed webhooks for every lifecycle event",
       planFeature: "apiAccess",
       body:
-        "Subscribe to document.sanctioned, user.role_changed, vendor.bank_details_updated, and more lifecycle events. Each payload is versioned and typed; deliveries are signed to the Standard Webhooks scheme and retried on failure with exponential backoff.",
+        "Subscribe to every step of a request, every change to people and roles, and every change to a supplier's bank details. Each payload is versioned and typed; deliveries are signed to the Standard Webhooks scheme and retried on failure.",
     },
     {
       icon: KeyRound,
       title: "Scoped, rotatable API keys",
       planFeature: "apiAccess",
       body:
-        "Generate keys per integration and give each only the read permissions it needs — every permission opens exactly the endpoints it names, and long lists come back a page at a time. Every key call is logged with a masked IP address, user-agent, and response. Rotate keys without downtime.",
+        "Generate keys per integration and give each only the read permissions it needs — every permission opens exactly the endpoints it names, and long lists come back a page at a time. Every call made with a key is logged. Rotate keys without downtime.",
     },
     {
       icon: Network,
@@ -39,7 +39,7 @@ const config: ModuleConfig = {
       icon: ShieldCheck,
       title: "Security on by default",
       body:
-        "All delivery URLs must be HTTPS. Every delivery is signed with HMAC-SHA256 over its id, timestamp and body using a per-subscription secret, so your receiver can reject forged or replayed requests. Rotating a secret keeps the old one valid for 24 hours, and every delivery attempt is logged and can be retried.",
+        "All delivery URLs must be HTTPS. Every delivery is signed with a secret only your subscription holds, so your receiver can reject forged or replayed requests. Secrets rotate without downtime, and every delivery attempt is logged and can be retried.",
     },
   ],
 
@@ -48,19 +48,19 @@ const config: ModuleConfig = {
       title: `Reconcile ${BRAND.name} payments into your accounting system`,
       planFeature: "apiAccess",
       body:
-        `When the MD sanctions a voucher, ${BRAND.name} fires a signed document.sanctioned webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap. Or read the balanced journal entries for approved vouchers and payments straight from the API, coded with your own chart of accounts.`,
+        `When the MD sanctions a voucher, ${BRAND.name} fires a signed webhook carrying the vendor, amount, reference, and department. Your integration posts it to your accounting system as a bill — no double-entry, no month-end reconciliation gap. Or read the balanced journal entries for approved vouchers and payments straight from the API, coded with your own chart of accounts.`,
     },
     {
       title: "React to role changes in your own systems",
       planFeature: "apiAccess",
       body:
-        `Subscribe to the user.role_changed webhook and forward it wherever you need — an internal dashboard, a review queue, your data warehouse. (${BRAND.name} emits the event; provisioning stays one-directional — your IdP remains the source of authority via inbound SCIM.)`,
+        `Subscribe to role-change events and forward them wherever you need — an internal dashboard, a review queue, your data warehouse. (${BRAND.name} emits the event; provisioning stays one-directional — your IdP remains the source of authority via inbound SCIM.)`,
     },
     {
       title: "Notify the right Slack channel on every sanction",
       planFeature: "apiAccess",
       body:
-        "Point a webhook at your Slack workspace and every high-value approval lands in #finance-audit in real time — built on the same signed document.sanctioned event, without granting broad access to the platform UI.",
+        "Point a webhook at your Slack workspace and every high-value approval lands in #finance-audit in real time — built on the same signed sanction event, without granting broad access to the platform UI.",
     },
     {
       title: "Build your own internal integrations",

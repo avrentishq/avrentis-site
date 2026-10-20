@@ -67,7 +67,7 @@ describe("site rate limits", () => {
     expect(new Set(ACTIONS.map((action) => SITE_RATE_LIMITS[action].tier)).size).toBe(ACTIONS.length);
   });
 
-  it("refuses the outbound-email actions when no limiter can run, and only those", async () => {
+  it("refuses every action when no limiter can run — none is left unlimited", async () => {
     const { limitVisitor } = await loadSeam();
     const statuses = Object.fromEntries(
       await Promise.all(
@@ -78,7 +78,7 @@ describe("site rate limits", () => {
       ),
     );
     expect(statuses).toEqual({
-      contact: "allowed",
+      contact: 503,
       savingsEstimate: 503,
       trialRequest: 503,
       trialResend: 503,
@@ -96,7 +96,7 @@ describe("site rate limits", () => {
       await limitVisitor("trialResend");
       expect(checkSpy).toHaveBeenLastCalledWith(null, "reissue:203.0.113.7", { failClosed: true });
       await limitVisitor("contact");
-      expect(checkSpy).toHaveBeenLastCalledWith(null, "contact:203.0.113.7", { failClosed: false });
+      expect(checkSpy).toHaveBeenLastCalledWith(null, "contact:203.0.113.7", { failClosed: true });
     } finally {
       vi.doUnmock("@edidi-hq/core/security/rate-limit");
     }

@@ -72,6 +72,13 @@ const config: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  experimental: {
+    // Next 16.3 turned on Turbopack's build cache by default, and Vercel
+    // restores `.next/cache` between deployments. A staging build restored
+    // that cache and shipped the previous release's stylesheet over current
+    // source. Every build compiles from source.
+    turbopackFileSystemCacheForBuild: false,
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

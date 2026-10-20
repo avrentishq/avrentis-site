@@ -153,10 +153,10 @@ Run these locally before you claim anything is done.
   and steps, and hand a refusal's posted values back (`src/lib/submitted-values.ts`).
 - **Use the UI kit, never a copy.** Buttons come from `src/components/ui/button.tsx`
   (`ButtonLink`, or `buttonProps()` on an element that must stay `<a>`/`<button>`); section
-  eyebrows and intros from `section-intro.tsx`; the dark hero glows and grid from
-  `dark-hero-backdrop.tsx`; scroll and load reveals from `fadeUpOnScroll()` / `fadeUpOnLoad()`
+  eyebrows and intros from `section-intro.tsx`; the dark section glows from
+  `dark-hero-backdrop.tsx` (no grid texture anywhere — the brand is flat); scroll and load reveals from `fadeUpOnScroll()` / `fadeUpOnLoad()`
   and durations from `TRANSITION` in `src/lib/animations.ts` (staggers are capped).
-  `ui-kit.lock.test.ts` fails on a hand-copied CTA style, eyebrow, grid overlay or reveal.
+  `ui-kit.lock.test.ts` fails on a hand-copied CTA style, eyebrow or reveal, and on any grid overlay.
 - **Every design value is a token.** Font sizes (`--text-*`), radii (`--radius-*`), widths
   (`--layout-*`, `--measure-*`) and recurring tints are `@theme` tokens in
   `src/app/globals.css`; fonts are `var(--font-mono)` / inherited sans; stacking order is

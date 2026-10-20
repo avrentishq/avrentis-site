@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { m, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
+import { m, AnimatePresence } from "framer-motion";
 import { isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { isReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
@@ -44,7 +44,6 @@ const FEATURES = [
 export function HowItWorks() {
   const [active, setActive] = useState(0);
   const [autoAdvance, setAutoAdvance] = useState(true);
-  const sectionRef = useRef<HTMLElement>(null);
   const activeStage = APPROVAL_LIFECYCLE[active]!;
   const { Mockup: ActiveMockup, previewPath } = STAGE_MOCKUPS[activeStage.key];
 
@@ -67,18 +66,9 @@ export function HowItWorks() {
     setAutoAdvance(false);
   }
 
-  // Scroll-linked parallax on the grid overlay; travels up ~80px over the
-  // section's full scroll range.
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [40, -80]);
-
   return (
     <section
       id="how-it-works"
-      ref={sectionRef}
       style={{
         backgroundColor: "var(--color-navy-primary)",
         padding: "120px 40px",
@@ -88,7 +78,7 @@ export function HowItWorks() {
       }}
     >
       {/* Ambient background layers */}
-      <DarkHeroBackdrop glows="closing" grid gridY={gridY} />
+      <DarkHeroBackdrop glows="closing" />
 
       <div
         style={{

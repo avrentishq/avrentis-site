@@ -33,7 +33,7 @@ export function CtaBanner() {
     >
       {/* Ambient glow frames the CTA from behind. Two offset glows keep the
           motion asymmetric so the cycle never looks mechanical. */}
-      <DarkHeroBackdrop glows="centered" grid />
+      <DarkHeroBackdrop glows="centered" />
 
       <div
         style={{

@@ -7,9 +7,9 @@
 export const Z_INDEX = {
   /** In-flow layers: ambient glows, a connector line under its nodes. */
   base: 0,
-  /** Above the base layer: the grid overlay, or content in a section without one. */
+  /** Above the base layer: a section's raised content. */
   raised: 1,
-  /** Section content above the grid overlay. */
+  /** Section content above its raised layers. */
   content: 2,
   /** A form control's open list. */
   dropdown: 30,

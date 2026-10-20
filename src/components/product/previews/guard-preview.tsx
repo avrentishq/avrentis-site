@@ -1,10 +1,11 @@
 /**
- * GuardPreview — browser-frame for /product/guard. Shows the Guard flags
+ * GuardPreview — browser-frame for /product/guard. Shows the Integrity flags
  * inbox: each flag carries a rule type, the document/vendor it concerns, a
  * severity, and where it is in the review-and-resolve loop. Data is illustrative
  * and PII-free — mirrors the real inbox, which never renders bank/payee detail.
  */
 
+import { moduleShortName } from "@/lib/brand";
 import { FLAGGED_SUBJECTS, STIPEND_VOUCHER } from "@/components/product/demo-fixtures";
 import { formatCount } from "@/lib/money";
 import { CodeTag, HeaderAction, PreviewBody, PreviewHeader, PreviewTable } from "./preview-primitives";
@@ -66,7 +67,7 @@ export function GuardPreview() {
   return (
     <PreviewBody>
       <PreviewHeader
-        title="Guard flags"
+        title={`${moduleShortName("guard")} flags`}
         subtitle={`${formatCount(UNRESOLVED_COUNT)} open · caught before approval`}
         action={<HeaderAction>Review &amp; resolve</HeaderAction>}
       />

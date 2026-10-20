@@ -237,7 +237,7 @@ export const QUERIED_VOUCHER: InboxDocument = {
   department: "Facilities",
 };
 
-/** A stipend run Guard flagged as split to stay under an approval limit. */
+/** A stipend run Integrity flagged as split to stay under an approval limit. */
 export const STIPEND_VOUCHER: InboxDocument = {
   reference: "PV-2026-0181",
   type: "PV",
@@ -290,7 +290,7 @@ export const INBOX_DOCUMENTS: readonly InboxDocument[] = [
 
 /* ── Other documents the previews show ───────────────────────────── */
 
-/** What Guard flagged, beyond the inbox's own stipend voucher. */
+/** What Integrity flagged, beyond the inbox's own stipend voucher. */
 export const FLAGGED_SUBJECTS = {
   duplicatePaymentReference: "PV-2026-0188",
   duplicateInvoiceReference: "PO-2026-0074",

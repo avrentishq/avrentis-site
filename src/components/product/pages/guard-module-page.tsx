@@ -3,13 +3,16 @@
 import { Copy, Landmark, Split, ListChecks } from "lucide-react";
 import { ProductModuleLayout, type ModuleConfig, type ModulePageData } from "@/components/product/module-layout";
 import { GuardPreview } from "@/components/product/previews/guard-preview";
+import { moduleShortName } from "@/lib/brand";
+
+const INTEGRITY = moduleShortName("guard");
 
 const config: ModuleConfig = {
   moduleKey: "guard",
   headline: "Catch the bad payment before the money moves.",
   description:
-    "Guard checks every payment and purchase order as it's submitted and flags the patterns that drain finance teams — duplicate payments, vendor bank-account switches, and amounts split to slip under an approval limit — so a reviewer sees the risk before it's approved, not after the money is gone.",
-  previewPath: "guard / flags",
+    `${INTEGRITY} checks every payment and purchase order as it's submitted and flags the patterns that drain finance teams — duplicate payments, vendor bank-account switches, and amounts split to slip under an approval limit — so a reviewer sees the risk before it's approved, not after the money is gone.`,
+  previewPath: `${INTEGRITY.toLowerCase()} / flags`,
   preview: <GuardPreview />,
 
   pillars: [
@@ -23,7 +26,7 @@ const config: ModuleConfig = {
       icon: Landmark,
       title: "Vendor bank-account-change alerts",
       body:
-        "When a vendor's account details change, Guard raises a flag recording who changed them and when. The classic \"switch the account the day before payday\" fraud, surfaced instead of missed.",
+        `When a vendor's account details change, ${INTEGRITY} raises a flag recording who changed them and when. The classic "switch the account the day before payday" trick, put in front of a reviewer instead of missed.`,
     },
     {
       icon: Split,
@@ -35,15 +38,15 @@ const config: ModuleConfig = {
       icon: ListChecks,
       title: "A review-and-resolve queue",
       body:
-        "Every flag lands in a Guard inbox where a reviewer clears it or escalates it — and each action is written to the tamper-evident audit trail. Detection, review, and resolution in one loop.",
+        `Every flag lands in a ${INTEGRITY} inbox where a reviewer clears it or escalates it — and each action is written to the tamper-evident audit trail. Detection, review, and resolution in one loop.`,
     },
   ],
 
   useCases: [
     {
-      title: "Stop the account-swap fraud before payday",
+      title: "Flag the account swap before payday",
       body:
-        "A vendor's bank account is changed days before a large payment. Guard flags the change for review before the voucher is approved — the money doesn't leave to the wrong account first.",
+        `A vendor's bank account is changed days before a large payment. ${INTEGRITY} flags the change for review before the voucher is approved — the money doesn't leave to the wrong account first.`,
     },
     {
       title: "Answer \"who changed this?\" with certainty",
@@ -53,12 +56,12 @@ const config: ModuleConfig = {
     {
       title: "Give the risk committee a real control",
       body:
-        "Every flag raised, cleared, or escalated is on the audit trail. The board's risk committee sees a working anti-fraud control, not a policy document nobody enforces.",
+        "Every flag raised, cleared, or escalated is on the audit trail. The board's risk committee sees a working control, not a policy document nobody enforces.",
     },
   ],
 
   relatedModules: [
-    { moduleKey: "pay", desc: "Guard checks every payment voucher as it enters the approval chain" },
+    { moduleKey: "pay", desc: `${INTEGRITY} checks every payment voucher as it enters the approval chain` },
     { moduleKey: "procure", desc: "Purchase orders and invoices are screened for duplicates too" },
     { moduleKey: "audit", desc: "Every flag raised or resolved is written to the tamper-evident trail" },
   ],

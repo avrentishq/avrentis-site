@@ -29,8 +29,6 @@ import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CONTACT_EMAIL, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
@@ -103,7 +101,6 @@ export function TrustProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.trustHero} scrim="dark" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
@@ -145,7 +142,6 @@ export function TrustProductPage() {
 
       {/* ── FRAMEWORKS ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.trustFrameworks} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="FRAMEWORKS WE ALIGN TO"
@@ -215,7 +211,6 @@ export function TrustProductPage() {
 
       {/* ── SUB-PROCESSORS ─────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.trustSubprocessors} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="SUB-PROCESSORS"
@@ -345,7 +340,6 @@ export function TrustProductPage() {
 
       {/* ── DOCUMENTS ──────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.trustDocuments} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="DOCUMENTS &amp; DIRECT LINES"
@@ -443,7 +437,6 @@ export function TrustProductPage() {
 
       {/* ── DATA RESIDENCY ─────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.trustDataResidency} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="DATA RESIDENCY"
@@ -546,7 +539,6 @@ export function TrustProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.trustStatusContact} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content, textAlign: "center" }}>

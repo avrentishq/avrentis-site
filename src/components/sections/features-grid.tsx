@@ -3,9 +3,7 @@
 import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
 import { m } from "framer-motion";
 import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import {
   BRAND,
   MODULE_STATUS_LABELS,
@@ -21,7 +19,6 @@ export function FeaturesGrid() {
   const moduleKeys = publicModuleKeys();
   return (
     <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-      <SectionBackdrop src={SECTION_BACKDROPS.featuresGrid} scrim="light" />
       <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
         <SectionIntro
           align="center"

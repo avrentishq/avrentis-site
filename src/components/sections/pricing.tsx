@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { m } from "framer-motion";
 import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import Link from "next/link";
 import type {
   PricingData,
@@ -173,7 +171,6 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
         isolation: "isolate",
       }}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.pricing} scrim="light" />
       <div
         style={{
           maxWidth: "var(--layout-max-width)",

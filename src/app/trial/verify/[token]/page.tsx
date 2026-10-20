@@ -3,8 +3,6 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { VerifyConfirm, VerifyResult } from "./client";
 import { TRIAL_STEPS_DONE, TrialStepper } from "../../stepper";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@/lib/brand";
 import { exceedsLimit } from "@/lib/form-rules";
 import { VERIFY_FAILED_MESSAGE } from "./state";
@@ -44,7 +42,6 @@ export default async function VerifyPage({ params }: PageProps) {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.trialVerify} scrim="light" />
         <div style={{ maxWidth: "var(--measure-narrow)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <TrialStepper current={TRIAL_STEPS_DONE} />
           {plausible ? (

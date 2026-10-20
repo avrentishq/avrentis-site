@@ -24,8 +24,6 @@ import {
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
@@ -137,7 +135,6 @@ export function CustomersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.customersHero} scrim="dark" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
@@ -178,7 +175,6 @@ export function CustomersProductPage() {
 
       {/* ── INDUSTRIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.customersIndustries} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="WHO WE BUILT THIS FOR"
@@ -248,7 +244,6 @@ export function CustomersProductPage() {
 
       {/* ── COMMON PATTERNS ────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.customersPatterns} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="WHAT WE HEAR, OVER AND OVER"
@@ -327,7 +322,6 @@ export function CustomersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.customersLaunchPartners} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div
@@ -421,7 +415,6 @@ export function CustomersProductPage() {
 
       {/* ── COMING SOON: STORIES ───────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.customersStories} scrim="light" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center" }}>
           <m.div
             {...fadeUpOnScroll()}
@@ -495,7 +488,6 @@ export function CustomersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.customersFooterBand} scrim="light" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto" }}>
           <m.div
             {...fadeUpOnScroll()}

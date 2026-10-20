@@ -6,8 +6,6 @@ import { isMobileViewport } from "@/lib/hooks/use-is-mobile";
 import { isReducedMotion } from "@/lib/hooks/use-reduced-motion";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { MOTION_DURATION, cssTransition, fadeUpOnScroll } from "@/lib/animations";
 import { Zap, Smartphone, Lock, Globe } from "lucide-react";
 import { APPROVAL_LIFECYCLE, type LifecycleStageKey } from "@/lib/approval-lifecycle";
@@ -89,7 +87,6 @@ export function HowItWorks() {
         isolation: "isolate",
       }}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.howItWorks} scrim="dark" />
       {/* Ambient background layers */}
       <DarkHeroBackdrop glows="closing" grid gridY={gridY} />
 
@@ -218,8 +215,11 @@ export function HowItWorks() {
                       height: "32px",
                       borderRadius: "var(--radius-circle)",
                       flexShrink: 0,
+                      // An inactive circle is filled with the section's own
+                      // surface, so the connecting line stops at its edge
+                      // instead of running behind the number.
                       backgroundColor:
-                        i === active ? "var(--color-gold)" : "transparent",
+                        i === active ? "var(--color-gold)" : "var(--color-navy-primary)",
                       border:
                         i === active
                           ? "2px solid var(--color-gold)"

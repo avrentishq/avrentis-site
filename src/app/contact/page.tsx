@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/contact/contact-form";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { isContactIntent, SITE_PAGES, type ContactIntent, BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
 import { contactHref } from "@/app/contact/tabs";
@@ -44,7 +42,6 @@ export default async function ContactPage({
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.contactForm} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <ContactForm intent={intent} />
         </div>

@@ -1,8 +1,7 @@
 "use client";
 
 /**
- * The homepage hero — the brand brief's layout: an ink field (with the
- * photographic backdrop held well back under an ink scrim), the category
+ * The homepage hero — the brand brief's layout: a flat ink field, the category
  * eyebrow, the headline set in the display face, two square buttons, the launch
  * line, and one decision card that walks the approval lifecycle to "Recorded".
  *
@@ -19,9 +18,7 @@ import { m } from "framer-motion";
 import { fadeUp, fadeUpOnScroll, fadeUpTransition, FADE_UP_VIEWPORT, STAGGER_STEP } from "@/lib/animations";
 import { buttonProps } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { StatusMark } from "@/components/ui/status-mark";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND, SITE_PAGES } from "@/lib/brand";
 import { LAUNCH_STATUS } from "@/lib/launch";
 import { START_TRIAL_CTA, NO_CARD_REQUIRED } from "@/lib/trial-terms";
@@ -134,10 +131,6 @@ export function Hero() {
         isolation: "isolate",
       }}
     >
-      {/* The photographic backdrop, held well back under an ink scrim so the
-          headline reads; the field itself is the flat ink of the shell. */}
-      <SectionBackdrop src={SECTION_BACKDROPS.hero} scrim="hero" priority />
-
       <div
         style={{
           maxWidth: "var(--layout-max-width)",

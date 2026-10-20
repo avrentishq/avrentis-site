@@ -25,8 +25,6 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
@@ -250,7 +248,6 @@ function CategoryBlock({ category, index, planNote }: { category: Category; inde
       id={category.id}
       style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategoryBlock} scrim="light" />
       <div style={{ display: "grid", gap: "40px", alignItems: "start" }} className="grid-cols-1 lg:grid-cols-[0.85fr_1.15fr]">
         <div>
           <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
@@ -361,7 +358,6 @@ export function IntegrationsCataloguePage({
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.integrationsHero} scrim="dark" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
@@ -411,7 +407,6 @@ export function IntegrationsCataloguePage({
 
       {/* ── CATEGORY NAV ───────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "40px 40px", borderBottom: "1px solid var(--color-border)", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategoryNav} scrim="light" />
         <div
           style={{
             maxWidth: "var(--layout-max-width)",
@@ -456,7 +451,6 @@ export function IntegrationsCataloguePage({
 
       {/* ── CATEGORIES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg-light)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.integrationsCategories} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "88px" }}>
           {CATEGORIES.map((c, i) => (
             <CategoryBlock
@@ -471,7 +465,6 @@ export function IntegrationsCataloguePage({
 
       {/* ── DEV TEASER ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.integrationsDevTeaser} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <div style={{ display: "grid", gap: "48px", alignItems: "center" }} className="grid-cols-1 lg:grid-cols-2">
             <m.div

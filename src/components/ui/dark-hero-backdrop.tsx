@@ -8,10 +8,10 @@ import { Z_INDEX } from "@/lib/layers";
 /**
  * DarkHeroBackdrop — the ambient layer behind a dark section further down a
  * page: two drifting gold glows and, optionally, the faint 60px grid. A page's
- * opening hero never takes it: heroes are flat ink over their photo (the brand
- * brief), so there is no hero glow pair to ask for. Drop it inside a section
- * styled `position: relative; overflow: hidden; isolation: isolate`, after any
- * SectionBackdrop and before the content (which sits at zIndex 2).
+ * opening hero never takes it: heroes are flat ink (the brand brief), so
+ * there is no hero glow pair to ask for. Drop it inside a section styled
+ * `position: relative; overflow: hidden; isolation: isolate`, before the
+ * content (which sits at zIndex 2).
  *
  * The one home of the glow pairs and the grid texture —
  * ui-kit.lock.test.ts fails on the grid gradient typed anywhere else.

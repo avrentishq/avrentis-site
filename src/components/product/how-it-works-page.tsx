@@ -35,8 +35,6 @@ import { RoleBadge } from "@/components/ui/role-badge";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { STAGE_MOCKUPS } from "./stage-mockups";
 import { FEATURED_VOUCHER, PURCHASE_ORDER } from "./demo-fixtures";
 import { BrowserFrame, appCaption } from "./previews/preview-primitives";
@@ -317,7 +315,6 @@ export function HowItWorksProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.hiwHero} scrim="dark" />
 
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
@@ -373,7 +370,6 @@ export function HowItWorksProductPage() {
         id="lifecycle"
         style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.hiwLifecycle} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {APPROVAL_LIFECYCLE.map((stage, i) => (
             <StageRow key={stage.key} stage={stage} index={i} />
@@ -391,7 +387,6 @@ export function HowItWorksProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.hiwApprovalChains} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
@@ -453,7 +448,6 @@ export function HowItWorksProductPage() {
 
       {/* ── NOTIFICATIONS ──────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.hiwNotifications} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="NOTIFICATION CHOREOGRAPHY"
@@ -528,7 +522,6 @@ export function HowItWorksProductPage() {
 
       {/* ── BEFORE vs AFTER ────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.hiwBeforeAfter} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="THE CONTRAST"

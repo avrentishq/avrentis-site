@@ -18,8 +18,6 @@ import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
@@ -49,7 +47,6 @@ export default function ProductOverviewPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.productHero} scrim="dark" />
 
         <div
           style={{
@@ -102,7 +99,6 @@ export default function ProductOverviewPage() {
 
       {/* ── MODULE GRID ─────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="none"
@@ -171,7 +167,6 @@ export default function ProductOverviewPage() {
 
       {/* ── PLATFORM RHYTHM (how modules share the engine) ─────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
         <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="none"

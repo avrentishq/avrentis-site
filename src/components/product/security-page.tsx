@@ -28,8 +28,6 @@ import {
 } from "lucide-react";
 
 import { SECURITY_FAQS } from "@/lib/security-faqs";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -309,7 +307,6 @@ export function SecurityProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.securityHero} scrim="dark" />
 
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
@@ -372,7 +369,6 @@ export function SecurityProductPage() {
 
       {/* ── PILLARS ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.securityPillars} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="TRUST POSTURE"
@@ -450,7 +446,6 @@ export function SecurityProductPage() {
 
       {/* ── STACK ──────────────────────────────────────────── */}
       <section id="stack" style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.securityStack} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
             <StackRow key={s.key} stage={s} index={i} />
@@ -468,7 +463,6 @@ export function SecurityProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.securityCompliance} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
@@ -604,7 +598,6 @@ export function SecurityProductPage() {
 
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.securityFaq} scrim="light" />
         <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="QUESTIONS YOUR SECURITY TEAM WILL ASK"

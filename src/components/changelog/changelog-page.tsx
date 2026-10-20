@@ -16,8 +16,6 @@ import { AUDIT_TRAIL_KEPT, DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { contactHref } from "@/app/contact/tabs";
 import { SITE_ROUTES } from "@/lib/routes";
 import { ButtonLink } from "@/components/ui/button";
@@ -233,7 +231,6 @@ export function ChangelogProductPage() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 32px 64px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.changelogHero} scrim="light" />
         <div style={{ maxWidth: "var(--layout-prose-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="load"
@@ -276,7 +273,6 @@ export function ChangelogProductPage() {
 
       {/* ── TIMELINE ───────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg-light)", padding: "64px 32px 100px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.changelogTimeline} scrim="light" />
         <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "16px" }}>
           {ENTRIES.map((entry) => (
             <m.article

@@ -35,8 +35,6 @@ import { ButtonLink } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import type { PlanFeatureKey } from "@edidi-hq/core/billing/features";
@@ -217,7 +215,6 @@ export function ProductModuleLayout({
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.moduleHero} scrim="dark" />
 
         <div
           style={{
@@ -293,7 +290,6 @@ export function ProductModuleLayout({
 
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.modulePillars} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="CAPABILITIES"
@@ -369,7 +365,6 @@ export function ProductModuleLayout({
 
       {/* ── USE CASES ────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.moduleUseCases} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="OUTCOMES"
@@ -430,7 +425,6 @@ export function ProductModuleLayout({
 
       {/* ── PLAN AVAILABILITY + RELATED MODULES ──────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.modulePlan} scrim="light" />
         <div
           style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "grid", gap: "48px" }}
           className="grid-cols-1 lg:grid-cols-2"

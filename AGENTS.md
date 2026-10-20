@@ -33,6 +33,7 @@ those files are internal engineering detail. Keep them on disk; never track them
 | `pnpm test` | `vitest run`. |
 | `pnpm lint` | `eslint .` — expect `0 problems`. |
 | `pnpm type-check` | `tsc --noEmit`. **Turbopack dev does not typecheck — run this before claiming done.** |
+| `pnpm check:contrast` | After `pnpm build` (under Doppler): every sitemap page at desktop and phone width in a real browser, each run of text measured against the pixels behind it (WCAG AA). Run it for any visual change. |
 
 Run these locally before you claim anything is done.
 
@@ -132,6 +133,14 @@ Run these locally before you claim anything is done.
   `MODULE_STATUS_CHIP[surface][status]` (`src/lib/module-status-styles.ts`), never its own colours.
 - **Buttons are square-cornered.** `buttonProps` / `ButtonLink` have no shape option; the brand
   is flat (no glows or grid texture in the homepage hero).
+- **Surfaces are flat colour — no photographs or textures behind text.** A section's background
+  is one registered surface token (`src/lib/surfaces.ts`). The old section textures were removed
+  because text failed contrast over them while every token pairing passed. `pnpm check:contrast`
+  measures the rendered pixels, so it catches what the token tests cannot (an image, a glow, a
+  line behind a word).
+- **The lockup is always the full mark.** `BrandLogo` with its wordmark draws the full Gate-N
+  (ring, gate, ledger) at every size, as core's lockup files do; the small ringless drawing is for
+  the bare mark alone (favicons, icons).
 - **Claims follow the brand brief.** `brand-claims.lock.test.ts` runs core's `brandClaimViolations`
   over all copy: no certification we do not hold (a denial such as "not ISO 27001 certified"
   passes), never "we move/hold money", never "catches all fraud", no legal-instrument or

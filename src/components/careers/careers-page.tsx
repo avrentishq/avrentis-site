@@ -22,8 +22,6 @@ import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { ButtonLink, buttonProps } from "@/components/ui/button";
 import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { contactHref } from "@/app/contact/tabs";
@@ -89,7 +87,6 @@ export function CareersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.careersHero} scrim="dark" />
         <div style={{ maxWidth: "var(--layout-reading-width)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
             surface="dark"
@@ -124,7 +121,6 @@ export function CareersProductPage() {
 
       {/* ── PRINCIPLES ─────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.careersPrinciples} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="HOW WE WORK"
@@ -193,7 +189,6 @@ export function CareersProductPage() {
 
       {/* ── WHO WE WANT ────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.careersWhoWeWant} scrim="light" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="WHO WE WANT TO HEAR FROM"
@@ -246,7 +241,6 @@ export function CareersProductPage() {
 
       {/* ── OPEN ROLES / HONEST NO-ROLES STATE ─────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.careersOpenRoles} scrim="light" />
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto" }}>
           <Eyebrow reveal="scroll" style={{ display: "block", marginBottom: "12px" }}>
             OPEN ROLES
@@ -344,7 +338,6 @@ export function CareersProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.careersRegisterInterest} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "var(--layout-prose-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content, textAlign: "center" }}>

@@ -10,6 +10,7 @@ import {
   surfaceStyleFragments,
 } from "./surfaces";
 import { GLOBALS_CSS, THEME_BLOCK } from "@/lib/test-support/theme-tokens";
+import { contrastRatio } from "../../scripts/wcag-contrast.mjs";
 
 /**
  * The focus ring must stand out from the surface it is drawn over: at least
@@ -33,18 +34,7 @@ const token = (name: string): string => {
 type Rgb = [number, number, number];
 const rgbOf = (hex: string): Rgb => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)) as Rgb;
 
-function luminance([red, green, blue]: Rgb): number {
-  const channel = (value: number) => {
-    const unit = value / 255;
-    return unit <= 0.03928 ? unit / 12.92 : ((unit + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue);
-}
-
-function contrast(first: Rgb, second: Rgb): number {
-  const [light, dark] = [luminance(first), luminance(second)].sort((a, b) => b - a);
-  return (light! + 0.05) / (dark! + 0.05);
-}
+const contrast = (first: Rgb, second: Rgb): number => contrastRatio(first, second);
 
 const TRANSLUCENT = /^rgba\(var\(--color-([\w-]+)-rgb\), ?([0-9.]+)\)$/;
 

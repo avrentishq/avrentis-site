@@ -5,8 +5,9 @@
  * (the full Gate-N from 48px up, a ringless small drawing below, the app-icon
  * tile). This component only decides the colour of each role — the shapes come
  * from `markShapesAt(size)`, so a new logo is new drawings in core, never an
- * edit here. The lockup (`BrandLogo` with its wordmark) always takes the full
- * drawing, whatever its size — see the note in `BrandLogo`.
+ * edit here. The lockup (`BrandLogo`, with or without its wordmark) always
+ * takes the full drawing, whatever its size — the same rule as the product's
+ * copy of this component; see the note in `BrandLogo`.
  *
  * Variants are named for the surface the mark sits on (core's MARK_VARIANTS):
  *   on-light   — ink ring and gate, gold signature (light pages).
@@ -130,10 +131,12 @@ export function BrandLogo({
 }: BrandLogoProps) {
   // A lockup always draws the FULL mark (ring, gate, ledger), at any size: it
   // is the official lockup (core's logos), and the wordmark's size and baseline
-  // are proportioned to it. The small ringless drawing is for the bare mark
-  // alone (favicons, icons) — set beside the wordmark it reads larger than the
-  // word and leaves the word sitting low.
-  const drawing = showWordmark ? BRAND_MARK : markDrawingFor(size);
+  // are proportioned to it — and the same mark with the wordmark hidden, as the
+  // product's collapsed sidebar does, so the logo never changes shape. The
+  // small ringless drawing is for the bare mark alone (`BrandMark`: favicons,
+  // icons) — set beside the wordmark it reads larger than the word and leaves
+  // the word sitting low.
+  const drawing = BRAND_MARK;
   return (
     <div
       className={["flex items-end", className].filter(Boolean).join(" ")}

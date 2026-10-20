@@ -203,6 +203,9 @@
      measures (how wide a column of copy may run). */
   --layout-max-width: 1200px;
   --layout-narrow-width: 1000px;
+  /* The header once it floats as a pill: room for the logo, the nav links,
+     Login, Contact us and the trial button. */
+  --nav-pill-max-width: 1040px;
   --layout-reading-width: 820px;
   --layout-prose-width: 760px;
   --measure-wide: 900px;

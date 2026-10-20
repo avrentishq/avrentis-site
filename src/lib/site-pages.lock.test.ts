@@ -44,9 +44,14 @@ describe("every page core links to is a page the site serves", () => {
     expect(hasPage("/no-such-page")).toBe(false);
   });
 
-  it.each(legalPages)("LEGAL_PAGES.%s (%s) is a real page", (_key, path) => {
-    expect(hasPage(path), `${path} has no page.tsx under src/app`).toBe(true);
-  });
+  // A pending page is served only once it is announced; until then its page
+  // lives in the git-ignored unannounced/ folder (see unannounced-boundary).
+  it.each(legalPages.filter(([key]) => !(key in HIDDEN_LEGAL_PAGES_PENDING)))(
+    "LEGAL_PAGES.%s (%s) is a real page",
+    (_key, path) => {
+      expect(hasPage(path), `${path} has no page.tsx under src/app`).toBe(true);
+    },
+  );
 
   it.each(legalPages)("LEGAL_PAGES.%s (%s) is in the sitemap's STATIC_ROUTES", (_key, path) => {
     expect(STATIC_ROUTES).toContain(path);

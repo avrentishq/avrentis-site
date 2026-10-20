@@ -1,5 +1,5 @@
 import { CONTACT_EMAIL, SECURITY_TRIAGE_TIME } from "@/lib/contacts";
-import { DATA_RESIDENCY_SUMMARY, RESIDENCY_REQUEST_LINE } from "@/lib/subprocessors";
+import { DATA_RESIDENCY_PUBLIC, RESIDENCY_REQUEST_LINE } from "@/lib/subprocessors";
 import { ACCESS_ENDS } from "@/lib/compliance-posture";
 import { BRAND } from "@/lib/brand";
 /**
@@ -32,7 +32,7 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Where is our data hosted and can it stay in a specific region?",
-    a: `${DATA_RESIDENCY_SUMMARY} ${RESIDENCY_REQUEST_LINE}`,
+    a: `${DATA_RESIDENCY_PUBLIC} ${RESIDENCY_REQUEST_LINE}`,
   },
   {
     q: "Can we sign a Data Processing Agreement?",

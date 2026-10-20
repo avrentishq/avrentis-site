@@ -57,3 +57,7 @@ next-env.d.ts
 /guides/
 .claude/*
 !.claude/skills/
+
+# Pages not yet announced — a clone of a private companion repo; see
+# AGENTS.md "Unannounced pages".
+/unannounced

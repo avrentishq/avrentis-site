@@ -210,9 +210,18 @@ Run these locally before you claim anything is done.
   `isContactIntent`. `site-pages.lock.test.ts` proves every path core publishes is a real,
   sitemapped page here (moving one fails this build, not a customer's click) and forbids a
   hand-typed copy outside `routes.ts`. The trust
-  centre is a named exception there while it is launch-hidden; meanwhile security.txt's
+  centre is a named exception there while it is unannounced; meanwhile security.txt's
   Policy line (`disclosurePolicyPath()`) names the security overview, and switches to the
   trust centre by itself once the gate shows it.
+- **Unannounced pages are not in this repository.** This repo is public, so a page that is
+  not launched yet lives in the git-ignored `unannounced/` folder — a clone of a private
+  companion repository whose README says how to set it up and how to launch a page — and
+  its path answers the not-found page. The `@/` alias falls back to `unannounced/src`, so
+  those pages type-check locally; without the folder (as on Vercel) the site builds and every
+  test passes. `unannounced-boundary.lock.test.ts` fails if a `HIDDEN_AT_LAUNCH` path has a
+  page under `src/app`, or if published code imports a file that resolves only in the
+  folder. To launch: move the files back to the same paths, then drop the path from
+  `HIDDEN_AT_LAUNCH` (a module: flip its `PUBLICLY_VISIBLE` flag in `brand.ts`).
 - **Prices and limits are formatted on the site from the numbers.** A price goes through
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
@@ -231,8 +240,9 @@ Run these locally before you claim anything is done.
 - **Modules come from core; the site owns only which ones it shows and their card words.**
   `src/lib/brand.ts` reads each module's name, short name, suite and status from core's
   `modules/catalog`; its `PUBLICLY_VISIBLE` flag is the one switch that hides a module's
-  page (`notFoundUnlessPublic(key)` in every module route, lock-tested), links, and sitemap
-  entry (the launch gate derives the route). A new core module fails type-check until it is
+  page (`notFoundUnlessPublic(key)` in every module route, lock-tested; a hidden module's
+  route itself waits in `unannounced/`), links, and sitemap entry (the launch gate derives
+  the route). A new core module fails type-check until it is
   modelled or listed in `UNMODELLED_MODULE_KEYS`. Lists render `publicModuleKeys()`, link
   with `moduleHref(key)`, shorten with `moduleShortName(key)`, and take icon, tagline and
   summary from `MODULE_COPY` (`src/lib/module-copy.ts`); a sentence naming request types

@@ -2,13 +2,16 @@
  * Launch visibility gate — the single, reversible source of truth for which
  * routes are currently hidden.
  *
- * Each hidden page calls `notFound()` when `isLaunchHidden(path)` is true, and
- * the nav + footer link lists filter their hrefs through `isLaunchVisible(href)`
- * so a hidden page is neither reachable nor advertised.
+ * A hidden page has no file in this repository: its code lives in the
+ * git-ignored `unannounced/` folder (a private companion repository), so its
+ * path answers the not-found page. The nav + footer link lists filter their
+ * hrefs through `isLaunchVisible(href)`, the sitemap leaves it out, and
+ * `pageMetadata` titles it "Page not found" — a hidden page is neither
+ * reachable, advertised nor readable here. `unannounced-boundary.lock.test.ts`
+ * fails if a listed path gets a page under `src/app`.
  *
- * To re-enable a page: delete its entry below. That is the ONLY change
- * required — the page renders again and its nav/footer links reappear
- * automatically. No content is deleted; the routes stay in the repo.
+ * To launch a page: move its files from `unannounced/` back to the same paths
+ * here and delete its entry below (see AGENTS.md "Unannounced pages").
  *
  * Pure predicates, importable by both server pages and client nav components.
  * A hidden MODULE is not listed here by hand: its page joins the gate from

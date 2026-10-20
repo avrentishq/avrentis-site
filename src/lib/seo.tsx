@@ -25,7 +25,7 @@ export function canonical(path: string): string {
 /** The line under the brand — the root share card and the organisation schema both say it. */
 export const SITE_SLOGAN = `Every organisation runs on decisions. ${BRAND.name} makes sure they stick.`;
 
-/** A page's browser title: "Privacy policy — Avrentis"; a title that already names the brand is left alone. */
+/** A page's browser title: "Privacy policy — <brand>"; a title that already names the brand is left alone. */
 export function pageTitle(title: string): string {
   return title.includes(BRAND.name) ? title : `${title} — ${BRAND.name}`;
 }

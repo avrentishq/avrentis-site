@@ -2,6 +2,8 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 
+import { SITE_HOST } from "@/lib/brand";
+
 /**
  * Published addresses have one home each: contact emails in `contacts.ts`, the
  * site's own URL in core (`BRAND.siteUrl`, re-exported as `SITE_URL` by
@@ -13,9 +15,10 @@ const SRC = join(process.cwd(), "src");
 // contacts.ts reads core's addresses and types none, so nothing is exempt.
 const HOMES = new Set<string>();
 /** Any mailbox at the domain or a subdomain of it: hello@, x@mail.… */
-const EMAIL = /\b[a-z0-9._%+-]+@(?:[a-z0-9-]+\.)*avrentis\.com\b/i;
-/** The site's origin or bare host, quoted: "https://avrentis.com", 'http://avrentis.com/x', "avrentis.com". */
-const SITE_URL_LITERAL = /["'`](?:https?:\/\/)?avrentis\.com(?=["'`/])/;
+const HOST = SITE_HOST.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const EMAIL = new RegExp(String.raw`\b[a-z0-9._%+-]+@(?:[a-z0-9-]+\.)*${HOST}\b`, "i");
+/** The site's origin or bare host, quoted: "https://<host>", 'http://<host>/x', "<host>". */
+const SITE_URL_LITERAL = new RegExp(String.raw`["'\x60](?:https?:\/\/)?${HOST}(?=["'\x60/])`);
 
 /** Root files and folders outside src/ that are built or run, checked too. */
 const ROOT_FILES = ["next.config.ts"];
@@ -43,16 +46,16 @@ function offenders(pattern: RegExp): string[] {
 
 describe("published addresses live in one place", () => {
   it("the detectors catch a retyped address", () => {
-    expect(EMAIL.test('href="mailto:hello@avrentis.com"')).toBe(true);
-    expect(SITE_URL_LITERAL.test('new URL("https://avrentis.com")')).toBe(true);
-    expect(SITE_URL_LITERAL.test('"https://avrentis.com/pricing"')).toBe(true);
-    expect(EMAIL.test('"alerts@mail.avrentis.com"')).toBe(true);
-    expect(SITE_URL_LITERAL.test('"http://avrentis.com"')).toBe(true);
-    expect(SITE_URL_LITERAL.test('const host = "avrentis.com";')).toBe(true);
-    expect(SITE_URL_LITERAL.test('"docs.avrentis.com"')).toBe(false);
+    expect(EMAIL.test(`href="mailto:hello@${SITE_HOST}"`)).toBe(true);
+    expect(SITE_URL_LITERAL.test(`new URL("https://${SITE_HOST}")`)).toBe(true);
+    expect(SITE_URL_LITERAL.test(`"https://${SITE_HOST}/pricing"`)).toBe(true);
+    expect(EMAIL.test(`"alerts@mail.${SITE_HOST}"`)).toBe(true);
+    expect(SITE_URL_LITERAL.test(`"http://${SITE_HOST}"`)).toBe(true);
+    expect(SITE_URL_LITERAL.test(`const host = "${SITE_HOST}";`)).toBe(true);
+    expect(SITE_URL_LITERAL.test(`"docs.${SITE_HOST}"`)).toBe(false);
   });
 
-  it("no file outside contacts.ts types an @avrentis.com address", () => {
+  it("no file outside contacts.ts types an address on the brand domain", () => {
     expect(offenders(EMAIL)).toEqual([]);
   });
 

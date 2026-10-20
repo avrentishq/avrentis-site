@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * DocsHubPage — the /docs landing. Avrentis ships product copy that's
+ * DocsHubPage — the /docs landing. The platform ships product copy that's
  * already quite explanatory, so the docs hub's first job is to route
  * readers to the right existing surface — Security, Integrations, How
  * it works, individual modules — rather than duplicate that material.

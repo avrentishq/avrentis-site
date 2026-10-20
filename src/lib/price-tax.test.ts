@@ -7,7 +7,7 @@ import fallback from "@/data/pricing-fallback.json";
 import { readFileSync } from "node:fs";
 
 // Core's real `platformSalesTax`, run against a registration list the test
-// controls: by default core's own list (empty today — Avrentis is not
+// controls: by default core's own list (empty today — the platform is not
 // registered anywhere), or a registered-for-Nigerian-VAT one to prove the
 // registered branch without waiting for core to change.
 const registrationsUnderTest = vi.hoisted(() => ({

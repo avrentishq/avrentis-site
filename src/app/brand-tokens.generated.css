@@ -1,14 +1,14 @@
 /* GENERATED from @edidi-hq/core BRAND_PALETTE (brand/constants.ts). Do not edit:
  * change the palette in core, release, then regenerate this file. */
 :root {
-  --brand-primary-950: #020617;
-  --brand-primary-950-rgb: 2, 6, 23;
-  --brand-primary-900: #0f172a;
-  --brand-primary-900-rgb: 15, 23, 42;
-  --brand-primary-800: #1e293b;
-  --brand-primary-800-rgb: 30, 41, 59;
-  --brand-primary-700: #334155;
-  --brand-primary-700-rgb: 51, 65, 85;
+  --brand-primary-950: #1f1e1b;
+  --brand-primary-950-rgb: 31, 30, 27;
+  --brand-primary-900: #1f1e1b;
+  --brand-primary-900-rgb: 31, 30, 27;
+  --brand-primary-800: #2a2926;
+  --brand-primary-800-rgb: 42, 41, 38;
+  --brand-primary-700: #3a3833;
+  --brand-primary-700-rgb: 58, 56, 51;
   --brand-accent: #c68b2f;
   --brand-accent-rgb: 198, 139, 47;
   --brand-accent-hover: #a87425;
@@ -19,12 +19,26 @@
   --brand-accent-surface-rgb: 253, 248, 239;
   --brand-accent-border: #e8c584;
   --brand-accent-border-rgb: 232, 197, 132;
-  --brand-accent-text-on-dark: #d8a84e;
-  --brand-accent-text-on-dark-rgb: 216, 168, 78;
+  --brand-background: #f5f0e6;
+  --brand-background-rgb: 245, 240, 230;
+  --brand-fill: #eae2d2;
+  --brand-fill-rgb: 234, 226, 210;
+  --brand-divider: #d6ccb8;
+  --brand-divider-rgb: 214, 204, 184;
+  --brand-field-border: #8c8576;
+  --brand-field-border-rgb: 140, 133, 118;
+  --brand-text-secondary: #6b665c;
+  --brand-text-secondary-rgb: 107, 102, 92;
+  --brand-accent-text-on-dark: #c68b2f;
+  --brand-accent-text-on-dark-rgb: 198, 139, 47;
   --brand-accent-strong-on-dark: #c89339;
   --brand-accent-strong-on-dark-rgb: 200, 147, 57;
   --brand-accent-surface-on-dark: #2a2110;
   --brand-accent-surface-on-dark-rgb: 42, 33, 16;
   --brand-accent-border-on-dark: #5a481f;
   --brand-accent-border-on-dark-rgb: 90, 72, 31;
+  --brand-text-secondary-on-dark: #a39c8e;
+  --brand-text-secondary-on-dark-rgb: 163, 156, 142;
+  --brand-field-border-on-dark: #7a7468;
+  --brand-field-border-on-dark-rgb: 122, 116, 104;
 }

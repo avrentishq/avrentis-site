@@ -17,7 +17,7 @@ import {
  * dependency, so every consumer must physically materialise it — that
  * duplication is forced by the package manager. What is NOT forced is letting
  * the copies drift, and this site is the proof of what happens without a test:
- * avrentis-app and avrentis-admin have carried this lock for a while; this repo
+ * the app and the console have carried this lock for a while; this repo
  * had eight ad-hoc overrides of its own, in caret syntax, matching nothing.
  *
  * It was also ten core releases behind with Dependabot alerts switched OFF, so

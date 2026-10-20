@@ -5,7 +5,7 @@ import { FORM_MESSAGES } from "@/lib/form-rules";
 /**
  * Pins the platform contract for POST /api/v1/public/trial/request.
  *
- * The response shape lives in the avrentis-app repo and is not exported from
+ * The response shape lives in the app repo and is not exported from
  * @edidi-hq/core, so this mirror can drift with nothing to catch it — and it
  * did: the 403 branch matched a status string ("hard_blocked") the platform has
  * never sent, so every rejection fell through to the generic error message.

@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { BRAND } from "@/lib/brand";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, sep } from "node:path";
 import { stripComments } from "@/lib/test-support/strip-comments";
@@ -54,7 +55,7 @@ describe("demo figures and the lead currency are stated once", () => {
     for (const old of [
       'amount: "₦850,000",',
       '"currency": "NGN",',
-      '<MockupShell url="Avrentis / vouchers / PV-2026-0184">',
+      `<MockupShell url="${BRAND.name} / vouchers / PV-2026-0184">`,
       "<span>Amount (NGN)</span>",
     ]) {
       expect(violations(old), old).not.toEqual([]);

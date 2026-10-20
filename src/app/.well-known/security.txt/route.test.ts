@@ -1,5 +1,9 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { BRAND } from "@/lib/brand";
+
+const escape = (text: string) => text.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
+
 import * as launch from "@/lib/launch";
 import { GET, securityTxt } from "./route";
 
@@ -8,23 +12,23 @@ afterEach(() => vi.restoreAllMocks());
 describe("security.txt", () => {
   it("names the security contact, the policy and a canonical URL", () => {
     const text = securityTxt(new Date("2026-10-04T00:00:00Z"));
-    expect(text).toContain("Contact: mailto:security@avrentis.com\n");
-    expect(text).toMatch(/^Policy: https:\/\/avrentis\.com\/(trust|product\/security)$/m);
-    expect(text).toContain("Canonical: https://avrentis.com/.well-known/security.txt\n");
+    expect(text).toContain(`Contact: mailto:${BRAND.securityEmail}\n`);
+    expect(text).toMatch(new RegExp(`^Policy: ${escape(BRAND.siteUrl)}/(trust|product/security)$`, "m"));
+    expect(text).toContain(`Canonical: ${BRAND.siteUrl}/.well-known/security.txt\n`);
   });
 
   it("points the policy at the security overview while the trust centre is launch-hidden", () => {
     vi.spyOn(launch, "isLaunchHidden").mockImplementation((path) => path === "/trust");
-    expect(securityTxt()).toContain("Policy: https://avrentis.com/product/security\n");
+    expect(securityTxt()).toContain(`Policy: ${BRAND.siteUrl}/product/security\n`);
   });
 
   it("points the policy at the trust centre once it is shown, with no other edit", () => {
     vi.spyOn(launch, "isLaunchHidden").mockReturnValue(false);
-    expect(securityTxt()).toContain("Policy: https://avrentis.com/trust\n");
+    expect(securityTxt()).toContain(`Policy: ${BRAND.siteUrl}/trust\n`);
   });
 
   it("never names a page the launch gate hides today", () => {
-    const policy = securityTxt().match(/^Policy: https:\/\/avrentis\.com(\S+)$/m)![1]!;
+    const policy = securityTxt().match(new RegExp(`^Policy: ${escape(BRAND.siteUrl)}(\\S+)$`, "m"))![1]!;
     expect(launch.isLaunchHidden(policy)).toBe(false);
   });
 

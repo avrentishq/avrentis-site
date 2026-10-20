@@ -114,7 +114,7 @@ describe("colours come from theme tokens", () => {
 
   it("scans the site (proves the walk sees a known file)", () => {
     expect(sourceFiles()).toContain(join("components", "sections", "hero.tsx"));
-    expect(TOKENS.get("text-primary")).toBe("#0f172a");
+    expect(TOKENS.get("text-primary")).toBe(BRAND_COLORS.primary);
   });
 
   it("no hard-coded colour outside the token definitions", () => {
@@ -157,20 +157,22 @@ describe("colours come from theme tokens", () => {
     expect(TOKENS.get("shell")).toBe("var(--color-navy-primary)");
     expect(resolved("accent")).toBe(BRAND_COLORS.accent);
     expect(resolved("primary-800")).toBe(BRAND_COLORS.primary);
-    expect(resolved("logo-mark")).toBe(BRAND_COLORS.primary);
+    expect(resolved("logo-ink")).toBe(BRAND_COLORS.primary);
+    expect(resolved("logo-light")).toBe(BRAND_COLORS.background);
+    expect(resolved("logo-signature")).toBe(BRAND_COLORS.accent);
   });
 
   it("static colours (email, OG image) equal the tokens they mirror", () => {
     const keys = Object.keys(STATIC_COLORS) as (keyof typeof STATIC_COLORS)[];
     expect(keys.length).toBeGreaterThan(0);
     for (const key of keys) {
-      expect(STATIC_COLORS[key], `STATIC_COLORS.${key} mirrors --color-${kebab(key)}`).toBe(TOKENS.get(kebab(key)));
+      expect(STATIC_COLORS[key], `STATIC_COLORS.${key} mirrors --color-${kebab(key)}`).toBe(resolved(kebab(key)));
     }
   });
 
   it("the SVG check catches an off-brand colour and passes the brand ones", () => {
     expect(svgFiles()).toContain("favicon.svg");
-    expect(offBrandSvgColours('<rect fill="#C68B2F" stroke="rgba(15,23,42,0.25)"/>')).toEqual([]);
+    expect(offBrandSvgColours(`<rect fill="${BRAND_COLORS.accent.toUpperCase()}" stroke="rgba(${hexToTriplet(BRAND_COLORS.primary).replace(/ /g, "")},0.25)"/>`)).toEqual([]);
     expect(offBrandSvgColours('<rect fill="#c68b30"/>')).toEqual(["#c68b30"]);
     expect(offBrandSvgColours('<rect fill="rgba(16,23,42,0.25)"/>')).toHaveLength(1);
     expect(offBrandSvgColours('<rect fill="oklch(0.7 0.1 80)"/>')).toHaveLength(1);
@@ -182,6 +184,6 @@ describe("colours come from theme tokens", () => {
     const offenders = svgFiles().flatMap((file) =>
       offBrandSvgColours(readFileSync(join(PUBLIC, file), "utf8")).map((colour) => `public/${file}  ${colour}`),
     );
-    expect(offenders, "Use core's BRAND_COLORS values (gold, navy) or white in static SVGs").toEqual([]);
+    expect(offenders, "Use core's BRAND_COLORS values (gold, ink, parchment) or white in static SVGs").toEqual([]);
   });
 });

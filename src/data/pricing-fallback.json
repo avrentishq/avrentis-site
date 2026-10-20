@@ -38,17 +38,17 @@
       "modules": [
         {
           "key": "pay",
-          "name": "Avrentis Payables",
-          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
+          "name": "Novorit Payables",
+          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Novorit Authority engine; final money movement is handed off to a licensed bank."
         },
         {
           "key": "procure",
-          "name": "Avrentis Procurement",
-          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine."
+          "name": "Novorit Procurement",
+          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Novorit Authority engine."
         },
         {
           "key": "vault",
-          "name": "Avrentis Records",
+          "name": "Novorit Records",
           "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history."
         }
       ],
@@ -100,7 +100,7 @@
       "highlights": [
         "Up to 50 users",
         "Full compliance audit trail",
-        "Fraud & anomaly detection (Guard)",
+        "Anomaly and control flags (Integrity)",
         "Grant & restricted-fund tracking (Grants)",
         "Custom approval chains & branding",
         "Analytics, recurring templates, delegation",
@@ -137,32 +137,32 @@
       "modules": [
         {
           "key": "pay",
-          "name": "Avrentis Payables",
-          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
+          "name": "Novorit Payables",
+          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Novorit Authority engine; final money movement is handed off to a licensed bank."
         },
         {
           "key": "procure",
-          "name": "Avrentis Procurement",
-          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine."
+          "name": "Novorit Procurement",
+          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Novorit Authority engine."
         },
         {
           "key": "vault",
-          "name": "Avrentis Records",
+          "name": "Novorit Records",
           "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history."
         },
         {
           "key": "audit",
-          "name": "Avrentis Compliance",
+          "name": "Novorit Compliance",
           "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes"
         },
         {
           "key": "guard",
-          "name": "Avrentis Guard",
-          "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
+          "name": "Novorit Integrity",
+          "description": "Flags anomalies and control lapses for review across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
         },
         {
           "key": "grants",
-          "name": "Avrentis Grants",
+          "name": "Novorit Grants",
           "description": "Donor grant and restricted-fund tracking — allocate budgets per grant and tag spend against them for donor-ready reporting.",
           "availableToSectors": [
             "NGO & Non-profit",
@@ -254,42 +254,42 @@
       "modules": [
         {
           "key": "pay",
-          "name": "Avrentis Payables",
-          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank."
+          "name": "Novorit Payables",
+          "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Novorit Authority engine; final money movement is handed off to a licensed bank."
         },
         {
           "key": "procure",
-          "name": "Avrentis Procurement",
-          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine."
+          "name": "Novorit Procurement",
+          "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Novorit Authority engine."
         },
         {
           "key": "vault",
-          "name": "Avrentis Records",
+          "name": "Novorit Records",
           "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history."
         },
         {
           "key": "audit",
-          "name": "Avrentis Compliance",
+          "name": "Novorit Compliance",
           "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes"
         },
         {
           "key": "guard",
-          "name": "Avrentis Guard",
-          "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
+          "name": "Novorit Integrity",
+          "description": "Flags anomalies and control lapses for review across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on."
         },
         {
           "key": "people",
-          "name": "Avrentis Requests",
+          "name": "Novorit Requests",
           "description": "Employee expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow."
         },
         {
           "key": "connect",
-          "name": "Avrentis Integrations",
-          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems take Avrentis data through that API, webhooks, or the journal export files."
+          "name": "Novorit Integrations",
+          "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems take Novorit data through that API, webhooks, or the journal export files."
         },
         {
           "key": "grants",
-          "name": "Avrentis Grants",
+          "name": "Novorit Grants",
           "description": "Donor grant and restricted-fund tracking — allocate budgets per grant and tag spend against them for donor-ready reporting.",
           "availableToSectors": [
             "NGO & Non-profit",
@@ -475,9 +475,9 @@
   ],
   "modules": {
     "pay": {
-      "name": "Avrentis Payables",
+      "name": "Novorit Payables",
       "sidebarLabel": "Payables",
-      "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Avrentis Authority engine; final money movement is handed off to a licensed bank.",
+      "description": "Payment voucher creation, digital signatures, bank-ready PDF output, and payment status tracking. Approvals run on the Novorit Authority engine; final money movement is handed off to a licensed bank.",
       "suite": "spend",
       "features": [
         "pdfExport",
@@ -487,9 +487,9 @@
       ]
     },
     "procure": {
-      "name": "Avrentis Procurement",
+      "name": "Novorit Procurement",
       "sidebarLabel": "Procurement",
-      "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Avrentis Authority engine.",
+      "description": "Purchase order generation, vendor/supplier directory, quotation and invoice tracking. PO approvals run on the Novorit Authority engine.",
       "suite": "spend",
       "features": [
         "documentAttachments",
@@ -499,7 +499,7 @@
       ]
     },
     "vault": {
-      "name": "Avrentis Records",
+      "name": "Novorit Records",
       "sidebarLabel": "Records",
       "description": "One place to find every voucher, purchase order, goods receipt and supplier invoice you may see — with its supporting files, query threads and full submission history.",
       "suite": "evidence",
@@ -509,7 +509,7 @@
       ]
     },
     "audit": {
-      "name": "Avrentis Compliance",
+      "name": "Novorit Compliance",
       "sidebarLabel": "Compliance",
       "description": "Regulator-ready compliance exports, audit-log delivery to your SIEM, signed access reviews, a separation-of-duties report, the decryption log, and controls monitoring with signed attestation — on top of the tamper-evident audit trail, nightly sealed evidence and data-subject request handling every plan includes",
       "suite": "evidence",
@@ -521,9 +521,9 @@
       ]
     },
     "guard": {
-      "name": "Avrentis Guard",
-      "sidebarLabel": "Guard",
-      "description": "Fraud, anomaly and control-lapse detection across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on.",
+      "name": "Novorit Integrity",
+      "sidebarLabel": "Integrity",
+      "description": "Flags anomalies and control lapses for review across payments, orders, invoices, payees and sign-in — duplicate and split payments, duplicate invoices, amounts just under a limit, payee bank-detail changes, shared bank accounts, new suppliers paid quickly, very fast approvals, sanctions matches, non-compliant suppliers, dormant approvers and lapsed sign-in domains — each raised as a case someone takes, decides with a reason and closes, beside a live view of which controls are on.",
       "suite": "oversight",
       "features": [
         "vendorRiskNetwork",
@@ -531,16 +531,16 @@
       ]
     },
     "people": {
-      "name": "Avrentis Requests",
+      "name": "Novorit Requests",
       "sidebarLabel": "Requests",
       "description": "Employee expense requests — routed through the same approval engine and audit trail as the Payables and Procurement modules. Deliberately NOT an HR suite (no payroll / core-HR records); it adds employee-initiated request types to the Delegation-of-Authority workflow.",
       "suite": "spend",
       "features": []
     },
     "connect": {
-      "name": "Avrentis Integrations",
+      "name": "Novorit Integrations",
       "sidebarLabel": "Integrations",
-      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems take Avrentis data through that API, webhooks, or the journal export files.",
+      "description": "Webhooks and typed API for accounting, HR, and data-warehouse systems; SSO authentication; bank verification; notification delivery. Accounting and ERP systems take Novorit data through that API, webhooks, or the journal export files.",
       "suite": "infrastructure",
       "features": [
         "apiAccess",
@@ -548,7 +548,7 @@
       ]
     },
     "grants": {
-      "name": "Avrentis Grants",
+      "name": "Novorit Grants",
       "availableToSectors": [
         "NGO & Non-profit",
         "Religious Organisations"
@@ -562,7 +562,7 @@
   "platformModules": [
     {
       "key": "authority",
-      "name": "Avrentis Authority",
+      "name": "Novorit Authority",
       "description": "The delegation-of-authority engine every approval runs on — define who can approve what, up to how much, under which conditions; enforced automatically and provable on the tamper-evident record."
     }
   ],

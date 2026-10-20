@@ -4,7 +4,7 @@ import { formatEnglishList } from "@/lib/english-list";
 import { BRAND } from "@/lib/brand";
 
 /**
- * Where Avrentis stands against each framework and law a buyer asks about —
+ * Where the platform stands against each framework and law a buyer asks about —
  * the one statement the security overview, the trust centre, the trust strips
  * and the contact form all read.
  *

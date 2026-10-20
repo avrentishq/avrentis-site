@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ChangelogPage — hand-curated release notes for the Avrentis platform.
+ * ChangelogPage — hand-curated release notes for the platform.
  * Entries are listed newest-first with a date + tag + short narrative +
  * bullet list of user-facing changes. Deliberately brief — the real
  * audience is operators wondering "is the thing I asked for live?",
@@ -11,7 +11,7 @@
 import Link from "next/link";
 import { m } from "framer-motion";
 import { Sparkles, ArrowRight } from "lucide-react";
-import { LEGAL_PAGES } from "@/lib/brand";
+import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import { AUDIT_TRAIL_KEPT, DOCUMENTS_KEPT } from "@/lib/record-keeping";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { Navbar } from "@/components/layout/navbar";
@@ -73,7 +73,7 @@ const ENTRIES: Entry[] = [
     body:
       "Webhook deliveries are now signed only with the Standard Webhooks headers, so there is one way to check a delivery is genuine. We also made the site precise about what is kept and for how long.",
     bullets: [
-      "Webhooks carry webhook-id, webhook-timestamp and webhook-signature only — the old X-Avrentis-Signature webhook header is no longer sent",
+      "Webhooks carry webhook-id, webhook-timestamp and webhook-signature only — the old brand-named signature header is no longer sent",
       `The audit trail of every action and decision is ${AUDIT_TRAIL_KEPT}`,
       `Documents and attached files are ${DOCUMENTS_KEPT}`,
     ],
@@ -112,10 +112,10 @@ const ENTRIES: Entry[] = [
     tag: "feature",
     title: "Board views — for your company and for ours.",
     body:
-      "Two new dashboards built for the people who run things. A Company Board gives your MD and non-executive directors the health-of-the-organisation view. A Platform Board gives the Avrentis team the operational view we use to run the service well. Numbers refresh regularly through the day.",
+      `Two new dashboards built for the people who run things. A Company Board gives your MD and non-executive directors the health-of-the-organisation view. A Platform Board gives the ${BRAND.name} team the operational view we use to run the service well. Numbers refresh regularly through the day.`,
     bullets: [
       "A Company Board for your MD and directors to see organisational health at a glance",
-      "Operational metrics for the Avrentis team to run the service well",
+      `Operational metrics for the ${BRAND.name} team to run the service well`,
       "Board access is granted carefully — one person provisions, another approves",
       "Key numbers refresh regularly through the day",
     ],
@@ -125,9 +125,9 @@ const ENTRIES: Entry[] = [
     tag: "platform",
     title: "Platform tools for enterprise operations teams.",
     body:
-      "A set of capabilities for larger customers who need tighter control. Subscribe to what's happening inside Avrentis from your own systems, track incidents in one place, restrict sign-in to your office IP addresses, and import users in bulk.",
+      `A set of capabilities for larger customers who need tighter control. Subscribe to what's happening inside ${BRAND.name} from your own systems, track incidents in one place, restrict sign-in to your office IP addresses, and import users in bulk.`,
     bullets: [
-      "Subscribe to events inside Avrentis from your own systems",
+      `Subscribe to events inside ${BRAND.name} from your own systems`,
       "Track incidents directly from the admin dashboard",
       "Restrict sign-in to your organisation's approved IP addresses",
       "Import large numbers of users in a single upload",

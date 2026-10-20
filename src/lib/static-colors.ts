@@ -1,4 +1,4 @@
-import { BRAND_COLORS } from "@/lib/brand";
+import { BRAND_COLORS, BRAND_PALETTE } from "@/lib/brand";
 
 /**
  * Colours for renderers that cannot read CSS variables: outbound email HTML
@@ -10,11 +10,11 @@ import { BRAND_COLORS } from "@/lib/brand";
  */
 export const STATIC_COLORS = {
   /** --color-text-primary */
-  textPrimary: "#0f172a",
+  textPrimary: BRAND_PALETTE.primary900,
   /** --color-text-muted */
-  textMuted: "#64748b",
+  textMuted: BRAND_PALETTE.textSecondary,
   /** --color-text-subtle */
-  textSubtle: "#94a3b8",
+  textSubtle: BRAND_PALETTE.textSecondary,
   /** --color-white */
   white: "#ffffff",
   /** --color-gold (brand) */

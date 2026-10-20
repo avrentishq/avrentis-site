@@ -5,7 +5,7 @@
  * HowItWorks section. Walks through the complete approval lifecycle in
  * four detailed stages, then explains the role-enforced chains,
  * notification choreography, and contrasts the "old way" with the
- * Avrentis way. Uses the same brand motion spec (fade-up only,
+ * platform way. Uses the same brand motion spec (fade-up only,
  * 0.4s ease-out, no scale/rotation).
  */
 
@@ -133,19 +133,19 @@ const NOTIFICATIONS = [
 const COMPARISON = [
   {
     old: "Approver A emails approver B, who emails back the requester, who forwards to approver C…",
-    avrentis: "One submission travels the defined chain automatically. No one guesses where it is.",
+    withPlatform: "One submission travels the defined chain automatically. No one guesses where it is.",
   },
   {
     old: "Printed paper voucher signed in pen, scanned, emailed, filed somewhere.",
-    avrentis: "Digital signature attached at sanction. Bank-ready PDF and audit trail generated instantly.",
+    withPlatform: "Digital signature attached at sanction. Bank-ready PDF and audit trail generated instantly.",
   },
   {
     old: "\"Who approved this?\" requires an archaeology expedition through 6 months of email.",
-    avrentis: "Every action is permanently recorded — who did it, when, from where, and exactly what they saw.",
+    withPlatform: "Every action is permanently recorded — who did it, when, from where, and exactly what they saw.",
   },
   {
     old: "Quarterly audit means 2 weeks of manual reconciliation and explaining missing records.",
-    avrentis: "One-click export delivers a regulator-ready bundle for any period. Auditors show up once, leave satisfied.",
+    withPlatform: "One-click export delivers a regulator-ready bundle for any period. Auditors show up once, leave satisfied.",
   },
 ];
 
@@ -618,7 +618,7 @@ export function HowItWorksProductPage() {
             </div>
 
             {COMPARISON.map((row, i) => (
-              <div key={row.avrentis} style={{ display: "contents" }}>
+              <div key={row.withPlatform} style={{ display: "contents" }}>
                 <m.div
                   {...fadeUpOnScroll(i + 2)}
                   style={{
@@ -643,7 +643,7 @@ export function HowItWorksProductPage() {
                     lineHeight: 1.6,
                   }}
                 >
-                  {row.avrentis}
+                  {row.withPlatform}
                 </m.div>
               </div>
             ))}

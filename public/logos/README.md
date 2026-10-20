@@ -1,59 +1,49 @@
-# Avrentis brand logo assets
+# Brand logo assets
 
-Generated, portable brand assets for use **inside the app and on external services**
-(favicon generators, social/OG cards, email, Slack, app stores, partner sites).
+Generated, portable brand assets for use **inside the product and on external services**
+(social/OG cards, email, Slack, app stores, partner sites).
 
-All files here are generated from the brand SSOT, **`@edidi-hq/core/brand`** (the
-gate-mark geometry, wordmark spec, variant colours, and the **Cabinet Grotesk Extrabold**
-wordmark font). Do not hand-edit the SVG/PNG files.
+Every file here is generated from the brand SSOT, **`@edidi-hq/core/brand`**: the Gate-N
+drawings (full mark from 48px, ringless small mark below, the app-icon tile), the variant
+colours, the wordmark spec and the **Marcellus** display font. Do not hand-edit them.
 
-They are produced by the shared logo generator (which lives in the product app, where the
-`opentype.js` / `@resvg/resvg-js` build deps are present) and committed here — so the
-marketing site carries no image-toolchain dependency. When the brand changes in core,
-regenerate in the app and copy the assets across; the output is byte-identical everywhere
-because both consume the same core geometry + font.
+They are produced by the shared generator in the product app
+(`public/logos/generate-logos.ts`, run with `pnpm generate:logos`; it needs
+`opentype.js` and `@resvg/resvg-js`, which only the app carries) and copied unchanged to
+the console and the site. The generator clears the old files first, so a renamed variant
+leaves nothing stale. Each repo's `brand-logo-assets` lock test fails if a mark file stops
+matching what core draws.
 
 ## Families
 
-| Family       | Files                                             | Contents                       |
-| ------------ | ------------------------------------------------- | ------------------------------ |
-| **Mark**     | `mark-{variant}-{48,64,128,256,512}.svg` + `.png` | Gate Mark only (pure geometry) |
-| **Wordmark** | `wordmark-{gold,navy,white}{,-lg}.svg` + `.png`   | "AVRENTIS" logotype only       |
-| **Lockup**   | `lockup-{variant}-{48,64,128,256}.svg` + `.png`   | Mark + wordmark                |
+| Family       | Files                                               | Contents             |
+| ------------ | --------------------------------------------------- | -------------------- |
+| **Mark**     | `mark-{variant}-{48,64,128,256,512}.svg` + `.png`   | The Gate-N mark      |
+| **Lockup**   | `lockup-{variant}-{48,64,128,256}.svg` + `.png`     | Mark + wordmark      |
+| **Wordmark** | `wordmark-{variant}{,-lg}.svg` + `.png`             | The name alone       |
 
-Variants: `primary` (gold container, navy gate), `reversed` (navy container, gold gate
-with a gold hairline), `transparent-gold`, `transparent-navy`. Pick by background:
+Variants are named for the surface they sit on:
 
-- On **light** backgrounds → `*-navy` or `transparent-navy`, or the `primary` lockup.
-- On **dark** backgrounds → `*-white` / `transparent-gold`, or the `primary` lockup (what the
-  site's navbar and footer use on navy); `reversed` only where its hairline edge is wanted.
+- `on-light` — ink gate and ring, gold signature. Parchment or white backgrounds.
+- `on-dark` — parchment gate and ring, gold signature. The ink shell.
+- `mono-ink` / `mono-white` — one colour, for single-colour print, stamps and embossing.
+- `app-icon` — the small mark on an ink tile (marks only; never a lockup).
 
-## Safe to copy & re-upload externally
+The gold diagonal is the only gold part, and it never appears on its own.
 
-**Yes — all of them.** The wordmark is rendered as **outlined vector `<path>` data**, not
-live `<text>`, so:
+## Safe to copy and re-upload externally
 
-- there is **no font dependency** — the asset renders identically anywhere, even on a
-  service that does not have Cabinet Grotesk installed; and
-- the viewBox is sized to the real glyph advance, so **no character is ever clipped**.
-
-> Historical note: an earlier generator sized the wordmark box with a `fontSize * 5.2`
-> approximation that was ~12px too narrow, which clipped the trailing **S** so the
-> rasterized logo read "AVRENTI". That is fixed; the spelling in source was always
-> correct. A lock test in the product app (`src/lib/brand-logo-assets.lock.test.ts`, which
-> runs against the app's copy of these files) re-derives the on-canvas glyph extent from each
-> committed SVG and fails if any future change reintroduces clipping. This repo has no such
-> test, so copy the regenerated files across unchanged.
+**Yes — all of them.** The wordmark is **outlined vector `<path>` data**, not live
+`<text>`, so it needs no font installed and the view box is sized to the real glyph
+advance, so no letter is ever clipped.
 
 ## Browser icons
 
-The browser icons live one level up in `public/` (`favicon.svg`, `favicon.ico`,
-`apple-touch-icon.png`); `src/app/layout.tsx` references `favicon.ico` and
-`apple-touch-icon.png` through its `metadata.icons`. There is no web manifest on this site.
-They are the Gate Mark only (no wordmark) and are maintained separately from this folder.
+The generator also writes the browser icons one level up in `public/` from the app
+icon: `favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`.
+Copy the ones a repo serves.
 
 ## Brand colours
 
-Gold `#C68B2F` · Navy `#0F172A`. The canonical values are `BRAND_COLORS` in
-`@edidi-hq/core/brand` (re-exported by `src/lib/brand.ts`). Components use the `@theme`
-tokens in `src/app/globals.css`, never these literals.
+The canonical values are `BRAND_COLORS` / `BRAND_PALETTE` in `@edidi-hq/core/brand`.
+Components use the theme tokens in `globals.css`, never literal values.

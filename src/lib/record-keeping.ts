@@ -1,5 +1,5 @@
 /**
- * How long Avrentis keeps things — the one place the site states it.
+ * How long the platform keeps things — the one place the site states it.
  *
  * Two different promises, and copy must never blur them:
  *

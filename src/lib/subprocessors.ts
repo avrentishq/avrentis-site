@@ -1,5 +1,5 @@
 /**
- * The kinds of provider that process customer data for Avrentis, and where —
+ * The kinds of provider that process customer data for the platform, and where —
  * the one list the privacy policy, the trust centre and the security FAQ read.
  *
  * They used to be typed separately and had drifted: the trust centre listed the

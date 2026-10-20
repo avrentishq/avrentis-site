@@ -7,7 +7,7 @@ import type { SalesTaxKind } from "@edidi-hq/core/region/sales-tax";
 
 /**
  * Listed prices are BEFORE tax. A currency the platform bills itself (naira,
- * through Paystack) adds sales tax on top ONLY where Avrentis is registered to
+ * through Paystack) adds sales tax on top ONLY where the platform is registered to
  * collect it — core's `platformSalesTax` (its `PLATFORM_TAX_REGISTRATIONS`
  * list) is the sole authority on WHETHER a tax line shows. Stripe currencies
  * (USD, …) get tax computed per customer at checkout, so the site states no

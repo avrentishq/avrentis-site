@@ -253,7 +253,7 @@ export function suiteModuleKeys(suite: ModuleSuite): ModuleKey[] {
   return MODULE_ORDER.filter((key) => isModulePublic(key) && moduleSuite(key) === suite);
 }
 
-/** A suite route's metadata: "Avrentis Spend — payments, purchase orders and restricted funds". */
+/** A suite route's metadata: "<brand> Spend — payments, purchase orders and restricted funds". */
 export function suitePageMetadata(suite: ModuleSuite): Metadata {
   const config = SUITE_PAGES[suite];
   const label = SUITES.find((entry) => entry.key === suite)!.label;

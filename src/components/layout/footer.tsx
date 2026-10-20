@@ -63,9 +63,8 @@ export function Footer() {
         >
           {/* Brand column */}
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {/* The platform lockup: gold container, navy gate, white wordmark.
-                Was a bare gold gate with a gold wordmark. */}
-            <BrandLogo variant="primary" size={28} wordmarkColor="var(--color-white)" />
+            {/* The lockup for the ink shell: parchment mark, gold signature. */}
+            <BrandLogo variant="on-dark" size={28} />
             <span
               style={{
                 fontFamily: "var(--font-mono)",
@@ -76,7 +75,7 @@ export function Footer() {
                 color: "var(--color-gold)",
               }}
             >
-              {BRAND.tagline}
+              {BRAND.publicTagline}
             </span>
             <span
               style={{

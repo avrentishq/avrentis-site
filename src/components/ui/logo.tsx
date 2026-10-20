@@ -5,7 +5,8 @@
  * (the full Gate-N from 48px up, a ringless small drawing below, the app-icon
  * tile). This component only decides the colour of each role — the shapes come
  * from `markShapesAt(size)`, so a new logo is new drawings in core, never an
- * edit here.
+ * edit here. The lockup (`BrandLogo` with its wordmark) always takes the full
+ * drawing, whatever its size — see the note in `BrandLogo`.
  *
  * Variants are named for the surface the mark sits on (core's MARK_VARIANTS):
  *   on-light   — ink ring and gate, gold signature (light pages).
@@ -20,12 +21,14 @@
 import {
   BRAND,
   BRAND_APP_ICON,
+  BRAND_MARK,
   markDrawingFor,
   markRoleColor,
   markShapesAt,
   WORDMARK_SPEC,
   wordmarkBaselineLiftFactor,
   type MarkColors,
+  type MarkDrawing,
   type MarkShape,
   type MarkVariant,
 } from "@/lib/brand";
@@ -40,7 +43,8 @@ interface BrandMarkProps {
   className?: string;
 }
 
-interface BrandLogoProps extends BrandMarkProps {
+interface BrandLogoProps extends Omit<BrandMarkProps, "variant"> {
+  variant?: Exclude<MarkVariant, "app-icon">;
   showWordmark?: boolean;
   wordmarkColor?: string;
 }
@@ -79,8 +83,23 @@ function Shape({ shape, colors }: { shape: MarkShape; colors: MarkColors }) {
 // ── Mark ────────────────────────────────────────────────────────────────────
 
 export function BrandMark({ size = 44, variant = "on-dark", className }: BrandMarkProps) {
+  return (
+    <MarkSvg
+      size={size}
+      variant={variant}
+      className={className}
+      drawing={variant === "app-icon" ? BRAND_APP_ICON : markDrawingFor(size)}
+    />
+  );
+}
+
+function MarkSvg({
+  size,
+  variant,
+  className,
+  drawing,
+}: Required<Omit<BrandMarkProps, "className">> & { className?: string; drawing: MarkDrawing }) {
   const colors = VARIANT_COLORS[variant];
-  const drawing = variant === "app-icon" ? BRAND_APP_ICON : markDrawingFor(size);
   const shapes = markShapesAt(size, { drawing, includeContainer: colors.container !== undefined });
 
   return (
@@ -109,12 +128,18 @@ export function BrandLogo({
   wordmarkColor,
   className,
 }: BrandLogoProps) {
+  // A lockup always draws the FULL mark (ring, gate, ledger), at any size: it
+  // is the official lockup (core's logos), and the wordmark's size and baseline
+  // are proportioned to it. The small ringless drawing is for the bare mark
+  // alone (favicons, icons) — set beside the wordmark it reads larger than the
+  // word and leaves the word sitting low.
+  const drawing = showWordmark ? BRAND_MARK : markDrawingFor(size);
   return (
     <div
       className={["flex items-end", className].filter(Boolean).join(" ")}
       style={{ gap: Math.round(size * WORDMARK_SPEC.gapFactor) }}
     >
-      <BrandMark size={size} variant={variant} />
+      <MarkSvg size={size} variant={variant} drawing={drawing} />
       {showWordmark && (
         <span
           className="av-wordmark"
@@ -129,7 +154,7 @@ export function BrandLogo({
             fontSynthesis: "none",
             // Lift the cap-trimmed wordmark so its baseline lands on the ledger
             // of the drawing used at this size.
-            marginBottom: size * wordmarkBaselineLiftFactor(markDrawingFor(size)),
+            marginBottom: size * wordmarkBaselineLiftFactor(drawing),
           }}
         >
           {BRAND.name}

@@ -67,7 +67,7 @@ interface RecentSubmission {
   submittedAt: number;
 }
 
-const RECENT_SUBMISSION_KEY = "avrentis-recent-trial";
+const RECENT_SUBMISSION_KEY = "edidi-recent-trial";
 
 /**
  * The stored request as its raw JSON while it is inside the window, else null.
@@ -148,7 +148,7 @@ function SubmitButton({ isValid, pending }: { isValid: boolean; pending: boolean
     <button
       type="submit"
       disabled={disabled}
-      {...buttonProps({ size: "md", shape: "pill", disabled })}
+      {...buttonProps({ size: "md", disabled })}
     >
       {pending ? "Sending…" : "Start my trial →"}
     </button>
@@ -565,7 +565,7 @@ export function TrialForm() {
               type="button"
               onClick={() => step1Valid && setStep(2)}
               disabled={!step1Valid}
-              {...buttonProps({ size: "md", shape: "pill", disabled: !step1Valid })}
+              {...buttonProps({ size: "md", disabled: !step1Valid })}
             >
               Continue →
             </button>

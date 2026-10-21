@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SavingsEstimator } from "./estimator";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { Eyebrow } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_ROUTES } from "@/lib/routes";
 import { Z_INDEX } from "@/lib/layers";
@@ -31,7 +29,6 @@ export default function SavingsToolPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.savingsHeader} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <div style={{ maxWidth: "var(--measure)", margin: "0 auto 48px", textAlign: "center" }}>
             <Eyebrow style={{ display: "block", marginBottom: "16px" }}>Free tool · No signup</Eyebrow>

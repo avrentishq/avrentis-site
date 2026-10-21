@@ -6,11 +6,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 <!-- Everything above is tool-managed. Add rules below this line only. -->
 
-# avrentis-site
+# The marketing site
 
-The public marketing site for Avrentis (avrentis.com) — a single Next.js 16 App Router
-service on Vercel. Brand identity comes from a private shared package, pricing comes from
-the platform API at `app.avrentis.com`, and the only server code is four Server Actions.
+The public marketing site for the brand (`BRAND.name`, on core's `SITE_HOST`) — a single
+Next.js 16 App Router service on Vercel. Brand identity comes from a private shared package,
+pricing comes from the platform API (`BRAND.appUrl`), and the only server code is four
+Server Actions.
 
 ## Architecture questions → invoke `repo-map`
 
@@ -32,6 +33,7 @@ those files are internal engineering detail. Keep them on disk; never track them
 | `pnpm test` | `vitest run`. |
 | `pnpm lint` | `eslint .` — expect `0 problems`. |
 | `pnpm type-check` | `tsc --noEmit`. **Turbopack dev does not typecheck — run this before claiming done.** |
+| `pnpm check:contrast` | After `pnpm build` (under Doppler): every sitemap page at desktop and phone width in a real browser, each run of text measured against the pixels behind it (WCAG AA). Run it for any visual change. |
 
 Run these locally before you claim anything is done.
 
@@ -119,10 +121,31 @@ Run these locally before you claim anything is done.
   endpoint, https) is set at BUILD time — headers are fixed into the build, so a change needs
   a redeploy. Unset or invalid → no reporting directives (`src/lib/csp-reporting.ts`).
 - **Never weaken the origin check before `redirect()`** in `src/app/trial/verify/[token]/`.
-- **The focus ring comes from the surface, never the component.** `src/lib/surfaces.ts` maps each
-  background (token, or a strong translucent layer with what it sits on) to its ring; a new
-  background must be registered there or `focus-ring-contrast.lock.test.ts` fails, and every
-  pairing is held at 3:1. Never set `outline` on a component.
+- **The focus ring and the text greys come from the surface, never the component.**
+  `src/lib/surfaces.ts` maps each background (token, or a strong translucent layer with what it
+  sits on) to its ring and its `tone`: a dark surface re-points `--color-text-secondary/muted/
+  subtle` to the on-dark grey for itself and everything inside it, a light one (a parchment card
+  inside an ink section) points them back. A new background must be registered there or
+  `focus-ring-contrast.lock.test.ts` fails; rings are held at 3:1 and each tone's grey at 4.5:1.
+  Never set `outline` on a component, and never pick a grey per section.
+- **Status chips are shape + word, never colour alone.** `<StatusMark>` draws core's
+  `STATUS_MARKS` (approved ● pending ○ flagged ◆ rejected –); a module's availability chip reads
+  `MODULE_STATUS_CHIP[surface][status]` (`src/lib/module-status-styles.ts`), never its own colours.
+- **Buttons are square-cornered.** `buttonProps` / `ButtonLink` have no shape option; the brand
+  is flat (no glows or grid texture in the homepage hero).
+- **Surfaces are flat colour — no photographs or textures behind text.** A section's background
+  is one registered surface token (`src/lib/surfaces.ts`). The old section textures were removed
+  because text failed contrast over them while every token pairing passed. `pnpm check:contrast`
+  measures the rendered pixels, so it catches what the token tests cannot (an image, a glow, a
+  line behind a word).
+- **The lockup is always the full mark.** `BrandLogo` with its wordmark draws the full Gate-N
+  (ring, gate, ledger) at every size, as core's lockup files do; the small ringless drawing is for
+  the bare mark alone (favicons, icons).
+- **Claims follow the brand brief.** `brand-claims.lock.test.ts` runs core's `brandClaimViolations`
+  over all copy: no certification we do not hold (a denial such as "not ISO 27001 certified"
+  passes), never "we move/hold money", never "catches all fraud", no legal-instrument or
+  "sealed forever" claim, the name never split or shortened. Where the product stands is
+  `LAUNCH_STATUS` (`src/lib/launch.ts`) — never a customer count or logo until there is one.
 - **Forms work without JavaScript.** Pass the server action itself to `useActionState` (never a
   client wrapper), submit with `onSubmit={submitWithoutReset(action)}` next to `action`
   (`form-submit.lock.test.ts`), gate buttons on `useHydrated()` so the server HTML never ships
@@ -130,10 +153,10 @@ Run these locally before you claim anything is done.
   and steps, and hand a refusal's posted values back (`src/lib/submitted-values.ts`).
 - **Use the UI kit, never a copy.** Buttons come from `src/components/ui/button.tsx`
   (`ButtonLink`, or `buttonProps()` on an element that must stay `<a>`/`<button>`); section
-  eyebrows and intros from `section-intro.tsx`; the dark hero glows and grid from
-  `dark-hero-backdrop.tsx`; scroll and load reveals from `fadeUpOnScroll()` / `fadeUpOnLoad()`
+  eyebrows and intros from `section-intro.tsx`; the dark section glows from
+  `dark-hero-backdrop.tsx` (no grid texture anywhere — the brand is flat); scroll and load reveals from `fadeUpOnScroll()` / `fadeUpOnLoad()`
   and durations from `TRANSITION` in `src/lib/animations.ts` (staggers are capped).
-  `ui-kit.lock.test.ts` fails on a hand-copied CTA style, eyebrow, grid overlay or reveal.
+  `ui-kit.lock.test.ts` fails on a hand-copied CTA style, eyebrow or reveal, and on any grid overlay.
 - **Every design value is a token.** Font sizes (`--text-*`), radii (`--radius-*`), widths
   (`--layout-*`, `--measure-*`) and recurring tints are `@theme` tokens in
   `src/app/globals.css`; fonts are `var(--font-mono)` / inherited sans; stacking order is
@@ -171,7 +194,7 @@ Run these locally before you claim anything is done.
   too — the app (`BRAND.appUrl`; the browser never calls it, so it is not in the CSP's
   `connect-src`), the status page (`statusUrl()`) and the docs
   (`docsUrl(path)`), all built from `SITE_HOST`; `site-pages.lock.test.ts` fails on any typed
-  `<sub>.avrentis.com` host in `src/` or `next.config.ts`. `/.well-known/security.txt` is
+  `<sub>.<SITE_HOST>` host in `src/` or `next.config.ts`. `/.well-known/security.txt` is
   generated from them (expiry always a year ahead, rebuilt daily) — never replace it with a
   static file.
 - **Never type a path at all.** The site's own paths live in `src/lib/routes.ts`
@@ -187,9 +210,18 @@ Run these locally before you claim anything is done.
   `isContactIntent`. `site-pages.lock.test.ts` proves every path core publishes is a real,
   sitemapped page here (moving one fails this build, not a customer's click) and forbids a
   hand-typed copy outside `routes.ts`. The trust
-  centre is a named exception there while it is launch-hidden; meanwhile security.txt's
+  centre is a named exception there while it is unannounced; meanwhile security.txt's
   Policy line (`disclosurePolicyPath()`) names the security overview, and switches to the
   trust centre by itself once the gate shows it.
+- **Unannounced pages are not in this repository.** This repo is public, so a page that is
+  not launched yet lives in the git-ignored `unannounced/` folder — a clone of a private
+  companion repository whose README says how to set it up and how to launch a page — and
+  its path answers the not-found page. The `@/` alias falls back to `unannounced/src`, so
+  those pages type-check locally; without the folder (as on Vercel) the site builds and every
+  test passes. `unannounced-boundary.lock.test.ts` fails if a `HIDDEN_AT_LAUNCH` path has a
+  page under `src/app`, or if published code imports a file that resolves only in the
+  folder. To launch: move the files back to the same paths, then drop the path from
+  `HIDDEN_AT_LAUNCH` (a module: flip its `PUBLICLY_VISIBLE` flag in `brand.ts`).
 - **Prices and limits are formatted on the site from the numbers.** A price goes through
   `formatCurrencyAmount` (`src/lib/money.ts`, core's `formatMoney`); a limit through
   `src/lib/plan-limits.ts` (`0` = unlimited; storage via core's `formatByteSize`, so GiB).
@@ -208,8 +240,9 @@ Run these locally before you claim anything is done.
 - **Modules come from core; the site owns only which ones it shows and their card words.**
   `src/lib/brand.ts` reads each module's name, short name, suite and status from core's
   `modules/catalog`; its `PUBLICLY_VISIBLE` flag is the one switch that hides a module's
-  page (`notFoundUnlessPublic(key)` in every module route, lock-tested), links, and sitemap
-  entry (the launch gate derives the route). A new core module fails type-check until it is
+  page (`notFoundUnlessPublic(key)` in every module route, lock-tested; a hidden module's
+  route itself waits in `unannounced/`), links, and sitemap entry (the launch gate derives
+  the route). A new core module fails type-check until it is
   modelled or listed in `UNMODELLED_MODULE_KEYS`. Lists render `publicModuleKeys()`, link
   with `moduleHref(key)`, shorten with `moduleShortName(key)`, and take icon, tagline and
   summary from `MODULE_COPY` (`src/lib/module-copy.ts`); a sentence naming request types
@@ -217,11 +250,11 @@ Run these locally before you claim anything is done.
   more modules by hand.
 - **Never type the brand name.** Copy reads `BRAND.name` (from `@/lib/brand`); a module's
   short name is `moduleShortName(key)` / `moduleShortNameFor(apiModule)`, never a cut prefix.
-  `brand-name.lock.test.ts` fails on a typed "Avrentis" outside `brand.ts` and the changelog.
+  `brand-name.lock.test.ts` fails on a typed brand name outside `brand.ts` and the changelog.
   Lock tests strip comments with the shared `src/lib/test-support/strip-comments.ts`.
 - **Never hardcode a plan tier or module name.** Tiers come from the pricing API; module
   names come from `MODULES` in `src/lib/brand.ts` (`moduleName(key)` in titles and prose —
-  `module-names.lock.test.ts` fails on a typed "Avrentis <Module>" anywhere else). This includes BRANCHING on a tier:
+  `module-names.lock.test.ts` fails on a typed "<brand> <Module>" anywhere else). This includes BRANCHING on a tier:
   `plan.key === "enterprise"` is the same bug as printing the name — it decided the CTA,
   the struck-through price and the annual saving, and is wrong the moment a second tier
   is quote-priced or Enterprise becomes self-serve. Read `plan.selfServeCheckout`, which

@@ -6,8 +6,6 @@ import { SITE_PAGES } from "@/lib/brand";
 import { fadeUpOnScroll } from "@/lib/animations";
 import { ButtonLink } from "@/components/ui/button";
 import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { START_TRIAL_CTA, TRIAL_DURATION_DAYS, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
 import { contactHref } from "@/app/contact/tabs";
 import { TRUST_SIGNALS } from "@/lib/compliance-posture";
@@ -33,10 +31,9 @@ export function CtaBanner() {
         isolation: "isolate",
       }}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.ctaBanner} scrim="dark" />
       {/* Ambient glow frames the CTA from behind. Two offset glows keep the
           motion asymmetric so the cycle never looks mechanical. */}
-      <DarkHeroBackdrop glows="centered" grid />
+      <DarkHeroBackdrop glows="centered" />
 
       <div
         style={{

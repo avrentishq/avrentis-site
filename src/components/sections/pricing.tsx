@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { m } from "framer-motion";
 import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import Link from "next/link";
 import type {
   PricingData,
@@ -173,7 +171,6 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
         isolation: "isolate",
       }}
     >
-      <SectionBackdrop src={SECTION_BACKDROPS.pricing} scrim="light" />
       <div
         style={{
           maxWidth: "var(--layout-max-width)",
@@ -674,20 +671,18 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                     "Custom pricing — tailored to your organisation"
                   ) : billing === "annual" ? (
                     priceData?.annualTotal != null ? (
+                      // The per-month figure is the big price above; this
+                      // line is what is actually paid — once, for the year.
                       <>
-                        Monthly equivalent ·{" "}
                         <strong
                           style={{
                             fontWeight: 600,
                             color: isFeatured ? "var(--color-white)" : "var(--color-text-primary)",
                           }}
                         >
-                          {formatCurrencyAmount(
-                            priceData.annualTotal,
-                            currency,
-                          )}{" "}
-                          billed annually
-                        </strong>
+                          {formatCurrencyAmount(priceData.annualTotal, currency)}
+                        </strong>{" "}
+                        billed once a year
                       </>
                     ) : (
                       "Billed annually"
@@ -795,7 +790,6 @@ export function Pricing({ data, headingAs = "h2" }: PricingProps) {
                   variant={isFeatured ? "primary" : "secondary"}
                   surface="light"
                   size="md"
-                  shape="pill"
                   fullWidth
                 >
                   {isQuotePriced ? "Talk to us" : "Start my trial"}

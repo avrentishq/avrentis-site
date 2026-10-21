@@ -37,7 +37,7 @@ export const SITE_RATE_LIMITS = {
     identifierPrefix: "contact",
     requests: 5,
     windowSeconds: TEN_MINUTES_SECONDS,
-    failClosed: false,
+    failClosed: true,
   },
   savingsEstimate: {
     tier: "site_savings_estimate",

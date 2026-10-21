@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
 import { STATIC_ROUTES } from "@/app/sitemap";
-import { LEGAL_PAGES, MODULE_ORDER, SITE_PAGE_ROUTES, SUITES, moduleHref, suiteHref, type LegalPageKey } from "@/lib/brand";
+import { LEGAL_PAGES, MODULE_ORDER, SITE_HOST, SITE_PAGE_ROUTES, SUITES, moduleHref, suiteHref, type LegalPageKey } from "@/lib/brand";
 import { SITE_ROUTES } from "@/lib/routes";
 import { isLaunchHidden } from "@/lib/launch";
 import { stripComments } from "@/lib/test-support/strip-comments";
@@ -44,9 +44,14 @@ describe("every page core links to is a page the site serves", () => {
     expect(hasPage("/no-such-page")).toBe(false);
   });
 
-  it.each(legalPages)("LEGAL_PAGES.%s (%s) is a real page", (_key, path) => {
-    expect(hasPage(path), `${path} has no page.tsx under src/app`).toBe(true);
-  });
+  // A pending page is served only once it is announced; until then its page
+  // lives in the git-ignored unannounced/ folder (see unannounced-boundary).
+  it.each(legalPages.filter(([key]) => !(key in HIDDEN_LEGAL_PAGES_PENDING)))(
+    "LEGAL_PAGES.%s (%s) is a real page",
+    (_key, path) => {
+      expect(hasPage(path), `${path} has no page.tsx under src/app`).toBe(true);
+    },
+  );
 
   it.each(legalPages)("LEGAL_PAGES.%s (%s) is in the sitemap's STATIC_ROUTES", (_key, path) => {
     expect(STATIC_ROUTES).toContain(path);
@@ -128,24 +133,27 @@ describe("pages core owns are never linked by a hand-typed path", () => {
 });
 
 /**
- * Core owns every Avrentis origin — the app (`BRAND.appUrl`), the status page
+ * Core owns every brand origin — the app (`BRAND.appUrl`), the status page
  * (`statusUrl`) and the docs site (`docsUrl`) — all built from `SITE_HOST`. A
  * retyped `status.`/`docs.`/`app.` host is how a link quietly keeps pointing
  * at the old place after the domain moves. Email addresses are not hosts here
  * (they have their own home, `contacts.ts`), so `@…` is not matched.
  */
-const HAND_TYPED_HOST = /(?<![@\w.-])(?:[a-z0-9-]+\.)+avrentis\.com\b/i;
+const HAND_TYPED_HOST = new RegExp(
+  String.raw`(?<![@\w.-])(?:[a-z0-9-]+\.)+${SITE_HOST.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\b`,
+  "i",
+);
 /** Files outside `src/` that build origins (the CSP in `next.config.ts`). */
 const ROOT_FILES = ["next.config.ts"];
 
-describe("Avrentis hosts are never typed by hand", () => {
+describe("brand hosts are never typed by hand", () => {
   it("the detector catches a typed subdomain host and ignores emails and the bare site host", () => {
-    expect(HAND_TYPED_HOST.test('const url = "https://status.avrentis.com/";')).toBe(true);
-    expect(HAND_TYPED_HOST.test('href="https://docs.avrentis.com/scim"')).toBe(true);
-    expect(HAND_TYPED_HOST.test("`connect-src 'self' https://app.avrentis.com`")).toBe(true);
-    expect(HAND_TYPED_HOST.test("<a>app.avrentis.com</a>")).toBe(true);
-    expect(HAND_TYPED_HOST.test('"mailto:status@avrentis.com"')).toBe(false);
-    expect(HAND_TYPED_HOST.test("the site at avrentis.com")).toBe(false);
+    expect(HAND_TYPED_HOST.test(`const url = "https://status.${SITE_HOST}/";`)).toBe(true);
+    expect(HAND_TYPED_HOST.test(`href="https://docs.${SITE_HOST}/scim"`)).toBe(true);
+    expect(HAND_TYPED_HOST.test(`\`connect-src 'self' https://app.${SITE_HOST}\``)).toBe(true);
+    expect(HAND_TYPED_HOST.test(`<a>app.${SITE_HOST}</a>`)).toBe(true);
+    expect(HAND_TYPED_HOST.test(`"mailto:status@${SITE_HOST}"`)).toBe(false);
+    expect(HAND_TYPED_HOST.test(`the site at ${SITE_HOST}`)).toBe(false);
   });
 
   it("no source file (or next.config.ts) types one; it comes from core", () => {

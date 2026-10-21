@@ -73,8 +73,8 @@ export function Navbar() {
    */
   const onLight = scrolled;
   const barSurface = {
-    background: onLight ? "rgba(var(--color-nav-surface-rgb), 0.9)" : "var(--color-navy-primary)",
-    // The SAME colour, opaque. The bar is a thin strip, so 0.9 + blur reads as
+    background: onLight ? "rgba(var(--color-nav-surface-rgb), 0.96)" : "var(--color-navy-primary)",
+    // The SAME colour, opaque. The bar is a thin strip, so 0.96 + blur reads as
     // frosted glass; the dropdown is a 520px panel over body copy, and at the
     // same alpha the page showed straight through it — headings behind the menu
     // were legible through the menu. Matching the bar means matching its colour,
@@ -83,9 +83,27 @@ export function Navbar() {
     blur: "blur(12px)",
     border: onLight ? "1px solid var(--color-navy-hairline)" : "1px solid var(--color-gold-tint)",
     text: onLight ? "var(--color-text-primary)" : "var(--color-white)",
-    mutedText: onLight ? "var(--color-text-secondary)" : "var(--color-text-muted)",
+    mutedText: onLight ? "var(--color-text-secondary)" : "var(--color-text-inverse-muted)",
     accent: onLight ? "var(--color-gold-on-light)" : "var(--color-gold)",
   };
+
+  /** Login and Contact us: quieter than the nav links, brightening on hover. */
+  const secondaryActionProps = {
+    style: {
+      fontWeight: 400,
+      fontSize: "var(--text-md)",
+      color: barSurface.mutedText,
+      textDecoration: "none",
+      whiteSpace: "nowrap",
+      transition: cssTransition("color"),
+    },
+    onMouseEnter: (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.currentTarget.style.color = barSurface.text;
+    },
+    onMouseLeave: (event: React.MouseEvent<HTMLAnchorElement>) => {
+      event.currentTarget.style.color = barSurface.mutedText;
+    },
+  } satisfies React.AnchorHTMLAttributes<HTMLAnchorElement>;
 
   const activeLinkStyle = (href: string): React.CSSProperties => {
     const active = isActive(href);
@@ -120,6 +138,10 @@ export function Navbar() {
           borderBottom: scrolled
             ? "0.5px solid transparent"
             : "0.5px solid var(--color-gold-divider)",
+          // The page's side padding lives on the bar, so the content box
+          // inside it is exactly as wide as every section's content: the logo
+          // lines up with the headings below it.
+          padding: "0 var(--page-side-padding)",
           zIndex: Z_INDEX.header,
           transition: cssTransition(["background-color", "border-color"], "slow"),
         }}
@@ -128,9 +150,9 @@ export function Navbar() {
           style={{
             // On scroll this container morphs into a centered frosted pill.
             width: "100%",
-            maxWidth: scrolled ? "920px" : "var(--layout-max-width)",
+            maxWidth: scrolled ? "var(--nav-pill-max-width)" : "var(--layout-max-width)",
             margin: "0 auto",
-            padding: scrolled ? "0 24px" : "0 40px",
+            padding: scrolled ? "0 24px" : "0",
             height: scrolled ? "48px" : "64px",
             display: "flex",
             alignItems: "center",
@@ -170,7 +192,7 @@ export function Navbar() {
                 carries the brand either way. */}
             <BrandLogo
               size={scrolled ? 30 : 36}
-              variant="primary"
+              variant={onLight ? "on-light" : "on-dark"}
               wordmarkColor={barSurface.text}
             />
           </Link>
@@ -390,29 +412,14 @@ export function Navbar() {
             className="hidden md:flex"
             style={{ alignItems: "center", gap: "24px" }}
           >
-            {/* Collapse to a single CTA once the bar morphs into the pill. */}
-            {!scrolled && (
-              <>
-                <a
-                  href={NAV_LINKS.login.href}
-                  style={{
-                    fontWeight: 400,
-                    fontSize: "var(--text-md)",
-                    color: "var(--color-text-subtle)",
-                    textDecoration: "none",
-                    transition: cssTransition("color"),
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = "var(--color-white)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = "var(--color-text-subtle)";
-                  }}
-                >
-                  {NAV_LINKS.login.label}
-                </a>
-              </>
-            )}
+            {/* Login and Contact us stay in both states — the pill keeps them,
+                in the colours of the surface it sits on. */}
+            <a href={NAV_LINKS.login.href} {...secondaryActionProps}>
+              {NAV_LINKS.login.label}
+            </a>
+            <Link href={NAV_LINKS.contact.href} {...secondaryActionProps}>
+              {NAV_LINKS.contact.label}
+            </Link>
 
             <a
               href={NAV_LINKS.startTrial.href}

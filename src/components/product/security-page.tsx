@@ -14,9 +14,8 @@
  * framing only, per the stated trust posture.
  */
 
-import { useRef } from "react";
 import Link from "next/link";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Database,
   ShieldCheck,
@@ -29,8 +28,6 @@ import {
 } from "lucide-react";
 
 import { SECURITY_FAQS } from "@/lib/security-faqs";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
@@ -60,25 +57,25 @@ const PILLARS = [
     icon: Database,
     title: "Your data is yours — always",
     body:
-      "Each customer's workspace is walled off from every other, directly inside the database. Not a rule we enforce with the app — a rule enforced by the database engine itself. There is no path from one customer's session to another's.",
+      "Each customer's workspace is walled off by the database itself, not just by the app.",
   },
   {
     icon: UserCog,
     title: "Real authority, not just a role label",
     body:
-      "Roles don't just hide buttons — they decide what every single action is allowed to do. Plus a second layer of rules on top: who can approve what, within which department, up to what amount. Checked on every click.",
+      "Who can approve what, in which department and up to what amount — checked on every click.",
   },
   {
     icon: FileSearch,
     title: "Every action is on the record",
     body:
-      `Every submission, approval, question, and role change is recorded in a tamper-evident chain and ${TRAIL_SEALED_WITH_FINGERPRINT} you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.`,
+      `Every action is recorded in a tamper-evident chain and ${TRAIL_SEALED_WITH_FINGERPRINT} you can verify yourself.`,
   },
   {
     icon: KeyRound,
     title: "Access that keeps up with your people",
     body:
-      `When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends ${ACCESS_ENDS}. Auditors and board-level guests get a clear start date and expiry.`,
+      `Joiners get what their role needs; leavers lose access ${ACCESS_ENDS}.`,
   },
 ];
 
@@ -95,7 +92,7 @@ const STACK = [
       "Isolation rules enforced by the database on every table that holds customer data",
       "Every request runs inside its own organisation's context",
       "Fails closed: a request with no organisation sees no rows at all",
-      "An automated check fails the build if any customer table loses its isolation rule",
+      "Checked automatically before every release",
     ],
     Mockup: IsolationMockup,
     caption: "tenant isolation · database layer",
@@ -123,15 +120,13 @@ const STACK = [
     title: "Session integrity",
     subtitle: `When a role changes or a user leaves, their active sessions are invalid ${ACCESS_ENDS}.`,
     body:
-      "Every active session is checked against a revocation signal on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation forces re-authentication on the next request. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
+      "Every session is checked on every click. A role change, deactivation, password change, access expiry, or a company-wide sign-out means signing in again on the next click. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
     icon: ShieldCheck,
     bullets: [
       `Active sessions end ${ACCESS_ENDS} of a role change, deactivation, or password change`,
-      "Two-factor sign-in by passkey, authenticator app, email code or SMS, with recovery codes — and your organisation decides which of those its people may enrol",
-      "Require two-factor for everyone, or only for the roles you name. Single sign-on can count as that second factor, or be told not to when you would rather verify in-app. Platform administrators are always required, regardless",
+      "Two-factor sign-in by passkey, authenticator app, email code or SMS — required for everyone or for the roles you choose",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
-      "Single sign-on via OpenID Connect (OIDC) or SAML 2.0, which a company can require for its people; companies in a group can share one identity provider. Sensitive tokens encrypted at rest",
-      "One sign-in per person across every company they work in — one password, one set of two-step methods",
+      "Single sign-on via OpenID Connect (OIDC) or SAML 2.0, which a company can require; one sign-in per person across every company they work in",
     ],
     Mockup: SessionMockup,
     caption: "session revocation · identity controls",
@@ -142,7 +137,7 @@ const STACK = [
     title: "Audit trail",
     subtitle: "Every action recorded and sealed. Every export, regulator-ready.",
     body:
-      `The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. The only deletions allowed are lawful retention purges of old login history and document versions, and each leaves a verifiable tombstone in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting ${BRAND.name}.`,
+      `The audit log records who did what, when and from where, for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and edits and deletions are refused by the database. Lawful retention purges leave a verifiable marker in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting ${BRAND.name}.`,
     icon: FileSearch,
     bullets: [
       "Every approval, query, and role change written to an append-only log",
@@ -159,10 +154,10 @@ const STACK = [
     title: "Access lifecycle",
     subtitle: `People come and go — access keeps up. Joiners get what they need; leavers lose access ${ACCESS_ENDS}.`,
     body:
-      "User provisioning flows in automatically from your identity provider (Okta, Microsoft Entra, Google Workspace). Auditor and board-level guests get a clear start date and expiry — access is withdrawn on the dot without manual clean-up. Document retention follows your plan; the audit trail itself is never purged while the account is active.",
+      "User provisioning flows in automatically from your identity provider (Okta or Microsoft Entra). Auditor and board-level guests get a clear start date and expiry — access is withdrawn on the dot without manual clean-up. Document retention follows your plan; the audit trail itself is never purged while the account is active.",
     icon: KeyRound,
     bullets: [
-      "Automated user provisioning (SCIM) with Okta, Microsoft Entra, and Google Workspace",
+      "Automated user provisioning (SCIM) with Okta and Microsoft Entra",
       "Directory groups mapped to roles — anything beyond staff access waits for a person in your organisation to approve it",
       "Time-bound access for auditors and provisional board members, with automatic revocation",
       "Per-plan document retention, with the audit trail itself never purged",
@@ -294,12 +289,6 @@ function StackRow({ stage, index }: { stage: (typeof STACK)[number]; index: numb
 }
 
 export function SecurityProductPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
 
   return (
     <>
@@ -308,7 +297,6 @@ export function SecurityProductPage() {
 
       {/* ── HERO ───────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -317,8 +305,6 @@ export function SecurityProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.securityHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div style={{ maxWidth: "var(--measure-wide)", margin: "0 auto", textAlign: "center", position: "relative", zIndex: Z_INDEX.content }}>
           <SectionIntro
@@ -381,7 +367,6 @@ export function SecurityProductPage() {
 
       {/* ── PILLARS ────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.securityPillars} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="TRUST POSTURE"
@@ -459,7 +444,6 @@ export function SecurityProductPage() {
 
       {/* ── STACK ──────────────────────────────────────────── */}
       <section id="stack" style={{ backgroundColor: "var(--color-white)", padding: "120px 40px", scrollMarginTop: "80px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.securityStack} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "flex", flexDirection: "column", gap: "120px" }}>
           {STACK.map((s, i) => (
             <StackRow key={s.key} stage={s} index={i} />
@@ -477,7 +461,6 @@ export function SecurityProductPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.securityCompliance} scrim="dark" />
         <DarkHeroBackdrop glows="closing" />
 
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.content }}>
@@ -504,9 +487,9 @@ export function SecurityProductPage() {
             lede={
               <>
                 {BRAND.name} does not hold SOC 2 or ISO 27001 certification today. Our
-                policies follow SOC 2 structure, a SOC 2 Type II audit and an
-                independent penetration test are on our roadmap, and we can walk you
-                through each control on a security review.
+                policies follow SOC 2 structure, a SOC 2 Type II audit is on our
+                roadmap, and we can walk you through each control on a security
+                review.
               </>
             }
             ledeStyle={{
@@ -550,7 +533,6 @@ export function SecurityProductPage() {
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
                       color: "var(--color-gold)",
-                      backgroundColor: "var(--color-gold-tint)",
                       border: "1px solid var(--color-gold-border)",
                       borderRadius: "var(--radius-xs)",
                       padding: "3px 8px",
@@ -614,7 +596,6 @@ export function SecurityProductPage() {
 
       {/* ── FAQ ────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.securityFaq} scrim="light" />
         <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="QUESTIONS YOUR SECURITY TEAM WILL ASK"

@@ -17,16 +17,16 @@ const TABULAR_FIGURES = '"tnum" 1';
 
 /* ── Browser frame ───────────────────────────────────────────────── */
 
-/** "Avrentis / vouchers / new" — the frame caption for an in-app path. */
+/** "<brand> / vouchers / new" — the frame caption for an in-app path. */
 export function appCaption(path: string): string {
   return `${BRAND.name} / ${path}`;
 }
 
 /**
- * What the frame sits on: a dark section (soft gold glow), a light section
- * (navy drop shadow), or the hero's frosted glass over the backdrop.
+ * What the frame sits on: a dark section (soft gold glow) or a light section
+ * (navy drop shadow).
  */
-type FrameSurface = "dark" | "light" | "glass";
+type FrameSurface = "dark" | "light";
 
 const FRAME_SURFACES: Record<FrameSurface, CSSProperties> = {
   dark: {
@@ -41,15 +41,6 @@ const FRAME_SURFACES: Record<FrameSurface, CSSProperties> = {
     backgroundColor: "var(--color-bg-light)",
     boxShadow:
       "0 20px 50px rgba(var(--color-navy-primary-rgb), 0.08), 0 4px 10px rgba(var(--color-navy-primary-rgb), 0.04)",
-  },
-  glass: {
-    borderRadius: "var(--radius-2xl)",
-    border: "1px solid rgba(var(--color-white-rgb), 0.45)",
-    backgroundColor: "rgba(var(--color-bg-light-rgb), 0.72)",
-    backdropFilter: "blur(24px) saturate(1.4)",
-    WebkitBackdropFilter: "blur(24px) saturate(1.4)",
-    boxShadow:
-      "inset 0 1px 0 rgba(var(--color-white-rgb), 0.65), 0 0 60px var(--color-gold-ghost), 0 30px 60px rgba(var(--color-shadow-rgb), 0.5)",
   },
 };
 

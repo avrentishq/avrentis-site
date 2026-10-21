@@ -99,7 +99,7 @@ export function MobileMenu({ open, onClose, pathname }: MobileMenuProps) {
               flexShrink: 0,
             }}
           >
-            <BrandLogo size={28} variant="primary" wordmarkColor="var(--color-white)" />
+            <BrandLogo size={28} variant="on-dark" />
             <button
               ref={closeBtnRef}
               onClick={onClose}

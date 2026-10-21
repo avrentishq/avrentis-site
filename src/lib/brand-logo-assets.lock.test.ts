@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { MARK_VARIANTS, markSvgString, type MarkVariant } from "@/lib/brand";
+import { MARK_VARIANTS, markVariantSvgString, type MarkVariant } from "@/lib/brand";
 
 /**
  * The logo files in public/logos are the product app's generator output, copied
@@ -21,10 +21,9 @@ describe("public/logos marks are core's current mark", () => {
     expect(marks.length).toBeGreaterThanOrEqual(Object.keys(MARK_VARIANTS).length);
   });
 
-  it.each(marks)("%s matches markSvgString", (file) => {
+  it.each(marks)("%s matches core's drawing of the variant", (file) => {
     const [, variant, size] = MARK_FILE.exec(file)!;
-    expect(readFileSync(join(LOGOS, file), "utf8")).toBe(
-      markSvgString({ size: Number(size), colors: MARK_VARIANTS[variant as MarkVariant] }),
-    );
+    expect(variant! in MARK_VARIANTS, `${file} names no current variant`).toBe(true);
+    expect(readFileSync(join(LOGOS, file), "utf8")).toBe(markVariantSvgString(variant as MarkVariant, Number(size)));
   });
 });

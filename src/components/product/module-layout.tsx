@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * ProductModuleLayout — shared template for every Avrentis module product
- * page (Payables / Procurement / Records / Compliance / Guard / Grants / Integrations). Each page passes
+ * ProductModuleLayout — shared template for every module product
+ * page (Payables / Procurement / Records / Compliance / Integrity / Grants / Integrations). Each page passes
  * a `ModuleConfig` and the layout handles hero, pillars, platform preview,
  * use cases, plan availability, and related modules in a consistent shell.
  *
@@ -12,7 +12,7 @@
  *   - Light content sections with fade-up entrance
  */
 
-import { useRef } from "react";
+import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -23,22 +23,18 @@ import {
   moduleName,
   type ModuleKey,
   type ModuleStatus,
-  SITE_PAGES,
 } from "@/lib/brand";
 import { JsonLd, breadcrumbSchema } from "@/lib/seo";
 import { ArrowRight } from "lucide-react";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import { BrowserFrame, appCaption } from "./previews/preview-primitives";
 import { fadeUpOnScroll, cssTransition } from "@/lib/animations";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
 import { ButtonLink } from "@/components/ui/button";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
-import { START_TRIAL_CTA } from "@/lib/trial-terms";
+import { PRODUCT_HERO_CTAS } from "@/lib/product-hero-ctas";
 import { contactHref } from "@/app/contact/tabs";
 import type { PlanFeatureKey } from "@edidi-hq/core/billing/features";
 import { EVERY_PLAN_NOTE, planScopeNote, type FeaturePlans } from "@/lib/plan-names";
@@ -125,21 +121,8 @@ export interface ModuleConfig {
   secondaryCta?: { label: string; href: string };
 }
 
-const STATUS_RIBBON_STYLES: Record<ModuleStatus, { bg: string; color: string; border: string }> = {
-  available: {
-    bg: "rgba(var(--color-available-rgb), 0.12)",
-    color: "var(--color-available-on-dark)",
-    border: "1px solid rgba(var(--color-available-rgb), 0.3)",
-  },
-  partial: {
-    bg: "var(--color-gold-tint)",
-    color: "var(--color-gold)",
-    border: "1px solid var(--color-gold-border)",
-  },
-};
-
 function StatusRibbon({ status }: { status: ModuleStatus }) {
-  const style = STATUS_RIBBON_STYLES[status];
+  const style = MODULE_STATUS_CHIP.dark[status];
   return (
     <span
       style={{
@@ -182,8 +165,8 @@ function resolveCtas(config: ModuleConfig, status: ModuleStatus): {
     };
   }
   return {
-    primary: config.primaryCta ?? { label: START_TRIAL_CTA, href: SITE_PAGES.trial() },
-    secondary: config.secondaryCta ?? { label: "See how it works", href: SITE_ROUTES.howItWorks },
+    primary: config.primaryCta ?? PRODUCT_HERO_CTAS.primary,
+    secondary: config.secondaryCta ?? PRODUCT_HERO_CTAS.secondary,
   };
 }
 
@@ -205,12 +188,6 @@ export function ProductModuleLayout({
 }: ModulePageData & { config: ModuleConfig }) {
   const pillars = withPlanScope(config.pillars, featurePlans, planAvailability);
   const useCases = withPlanScope(config.useCases, featurePlans, planAvailability);
-  const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const gridY = useTransform(scrollYProgress, [0, 1], [0, -60]);
   const { name, status } = MODULES[config.moduleKey];
   const { primary, secondary } = resolveCtas(config, status);
   const relatedModules = config.relatedModules.filter((related) => isModulePublic(related.moduleKey));
@@ -229,7 +206,6 @@ export function ProductModuleLayout({
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section
-        ref={heroRef}
         style={{
           backgroundColor: "var(--color-navy-primary)",
           padding: "120px 40px 96px",
@@ -238,8 +214,6 @@ export function ProductModuleLayout({
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.moduleHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid gridY={gridY} />
 
         <div
           style={{
@@ -315,7 +289,6 @@ export function ProductModuleLayout({
 
       {/* ── PILLARS ──────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.modulePillars} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="CAPABILITIES"
@@ -391,7 +364,6 @@ export function ProductModuleLayout({
 
       {/* ── USE CASES ────────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.moduleUseCases} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             eyebrow="OUTCOMES"
@@ -452,7 +424,6 @@ export function ProductModuleLayout({
 
       {/* ── PLAN AVAILABILITY + RELATED MODULES ──────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.modulePlan} scrim="light" />
         <div
           style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", display: "grid", gap: "48px" }}
           className="grid-cols-1 lg:grid-cols-2"

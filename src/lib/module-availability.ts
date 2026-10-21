@@ -181,7 +181,7 @@ const MODULE_PLAN_NOTES: Partial<Record<ModuleKey, Partial<Record<PlanKey | "tri
         : retentionLimitLine(plan.limits.documentRetentionDays),
   },
   guard: {
-    // Guard's rules are not separate plan features, so the data has no list to show.
+    // Integrity's rules are not separate plan features, so the data has no list to show.
     business: "All rule-based flags and the review queue",
   },
   grants: {

@@ -5,15 +5,15 @@ import { STAGGER_MAX_TOTAL, STAGGER_STEP, fadeUpOnScroll, staggerDelay } from "@
 import { stripComments } from "@/lib/test-support/strip-comments";
 
 /**
- * The shared UI kit holds four patterns that were once copied by hand, and
- * drifted (button heights, eyebrow tracking, glow sizes, stagger lengths):
+ * The shared UI kit holds three patterns that were once copied by hand, and
+ * drifted (button heights, eyebrow tracking, stagger lengths):
  *
  *   - the gold call-to-action        → components/ui/button.tsx
  *   - the fade-up-on-scroll props    → lib/animations.ts (fadeUpOnScroll)
- *   - the 60px grid texture          → components/ui/dark-hero-backdrop.tsx
  *   - the uppercase gold eyebrow     → components/ui/section-intro.tsx
  *
- * This test fails on a fresh copy of any of them outside its home.
+ * This test fails on a fresh copy of any of them outside its home. The 60px
+ * grid texture has no home: the brand is flat, so it fails anywhere.
  */
 
 const SRC = join(process.cwd(), "src");
@@ -92,7 +92,6 @@ function eyebrowObjects(source: string): string[] {
 
 const HOMES = {
   goldCta: "components/ui/button.tsx",
-  grid: "components/ui/dark-hero-backdrop.tsx",
   eyebrow: new Set(["components/ui/section-intro.tsx", "components/ui/button.tsx"]),
 };
 
@@ -137,8 +136,6 @@ describe("detectors fire on a copy and stay silent on the shared form", () => {
 
   it("the scan reaches the homes", () => {
     const source = (path: string) => files.find((entry) => entry.file === path)?.source ?? "";
-    // The grid home holds the literal texture, so the detector sees real files.
-    expect(gridOverlays(source(HOMES.grid)).length).toBeGreaterThan(0);
     // The button's gold sits in a size-free colour object, which is why the
     // home is allowed rather than relying on the detector missing it.
     expect(source(HOMES.goldCta)).toContain('"var(--color-gold)"');
@@ -159,10 +156,8 @@ describe("the UI kit is the only home of its patterns", () => {
     expect(offenders).toEqual([]);
   });
 
-  it("no grid overlay outside dark-hero-backdrop.tsx", () => {
-    const offenders = files
-      .filter(({ file }) => file !== HOMES.grid)
-      .flatMap(({ file, source }) => gridOverlays(source).map(() => file));
+  it("no grid overlay anywhere — the brand is flat", () => {
+    const offenders = files.flatMap(({ file, source }) => gridOverlays(source).map(() => file));
     expect(offenders).toEqual([]);
   });
 

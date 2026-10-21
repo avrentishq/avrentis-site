@@ -1,5 +1,5 @@
 /**
- * The kinds of provider that process customer data for Avrentis, and where —
+ * The kinds of provider that process customer data for the platform, and where —
  * the one list the privacy policy, the trust centre and the security FAQ read.
  *
  * They used to be typed separately and had drifted: the trust centre listed the
@@ -75,10 +75,12 @@ export const RESIDENCY_REQUEST_LINE =
   "If your data must stay in a specific country or region, talk to us and we will tell you plainly what we can support today.";
 
 /**
- * The residency summary, in one paragraph: where the record lives, where files
- * and backups are kept, and that some processing happens elsewhere.
+ * Where data lives, as the public pages say it: the primary region only. The
+ * full map (attachments, backups, the providers that process data elsewhere)
+ * goes out on request and in the DPA, not on a page anyone can read. The
+ * privacy notice keeps its own, fuller statement — the law asks it to.
  */
-export const DATA_RESIDENCY_SUMMARY =
-  `Primary application data is hosted in the ${DATA_RESIDENCY.primary}. Document attachments are stored in the ${DATA_RESIDENCY.attachments}, ` +
-  `and nightly encrypted backups are kept with an independent provider in the ${DATA_RESIDENCY.backups}. ` +
-  "Email, background processing and notification delivery use providers outside the United Kingdom, and a global edge network sits in front.";
+export const DATA_RESIDENCY_PUBLIC =
+  `Primary application data is hosted in the ${DATA_RESIDENCY.primary}. ` +
+  "The full list of where data is processed, and by whom, is available on request.";
+

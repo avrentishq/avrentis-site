@@ -39,7 +39,7 @@ export default function OpengraphImage() {
           {BRAND.name}
         </div>
         <div style={{ color: STATIC_COLORS.textSubtle, fontSize: 44, marginTop: 28 }}>
-          {BRAND.tagline}
+          {BRAND.publicTagline}
         </div>
       </div>
     ),

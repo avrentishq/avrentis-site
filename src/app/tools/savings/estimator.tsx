@@ -167,7 +167,7 @@ function SubmitButton({ disabled, pending }: { disabled: boolean; pending: boole
     <button
       type="submit"
       disabled={off}
-      {...buttonProps({ size: "md", shape: "pill", disabled: off, style: { flexShrink: 0 } })}
+      {...buttonProps({ size: "md", disabled: off, style: { flexShrink: 0 } })}
     >
       {pending ? "Sending…" : "Email it to me"}
     </button>

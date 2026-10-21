@@ -55,7 +55,7 @@ export function VerifyConfirm({ token }: { token: string }) {
         <button
           type="submit"
           disabled={pending}
-          {...buttonProps({ size: "md", shape: "pill", disabled: pending })}
+          {...buttonProps({ size: "md", disabled: pending })}
         >
           {pending ? "Setting up…" : "Set up my workspace"}
         </button>
@@ -184,7 +184,7 @@ function ReissueButton({ pending }: { pending: boolean }) {
       type="submit"
       disabled={disabled}
       onClick={() => setCooldown(true)}
-      {...buttonProps({ size: "sm", shape: "pill", disabled })}
+      {...buttonProps({ size: "sm", disabled })}
     >
       <RefreshCcw size={14} strokeWidth={2} aria-hidden="true" />
       {pending ? "Sending…" : "Send me a new link"}

@@ -8,9 +8,7 @@
  */
 
 import { m } from "framer-motion";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { fadeUpOnScroll, fadeUpOnLoad } from "@/lib/animations";
@@ -133,7 +131,6 @@ export function LegalPageShell({ eyebrow, title, lede, effectiveDate, sections, 
                 {...fadeUpOnScroll()}
                 style={{ scrollMarginTop: "90px", position: "relative", overflow: "hidden", isolation: "isolate" }}
               >
-                <SectionBackdrop src={SECTION_BACKDROPS.legal} scrim="light" />
                 <h2
                   style={{
                     fontWeight: 600,

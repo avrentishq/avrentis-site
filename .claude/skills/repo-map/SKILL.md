@@ -1,11 +1,11 @@
 ---
 name: repo-map
-description: Read FIRST when working in the avrentis-site repo and you need to know where anything lives or how it fits together — where code lives, which directory owns what, where a route or component or helper should go, how modules relate and which way dependencies flow, how data flows through a page or a form, where state lives, what this repo talks to that it does not own (the @edidi-hq/core shared package, the app.avrentis.com platform API, Resend, Upstash, Turnstile, Doppler, Vercel), which env vars exist and what breaks without them, what conventions to follow for naming, styling, animation, error handling, logging or tests, how to add a feature or a product module, what a domain term means (module, launch gate, org size, plan tier, feature group, section backdrop, Verification Network), and which known landmines and deliberate tradeoffs must not be naively "fixed". Use instead of exploring the codebase from scratch.
+description: Read FIRST when working in the marketing-site repo and you need to know where anything lives or how it fits together — where code lives, which directory owns what, where a route or component or helper should go, how modules relate and which way dependencies flow, how data flows through a page or a form, where state lives, what this repo talks to that it does not own (the @edidi-hq/core shared package, the platform API (BRAND.appUrl), Resend, Upstash, Turnstile, Doppler, Vercel), which env vars exist and what breaks without them, what conventions to follow for naming, styling, animation, error handling, logging or tests, how to add a feature or a product module, what a domain term means (module, launch gate, org size, plan tier, feature group, section backdrop, Verification Network), and which known landmines and deliberate tradeoffs must not be naively "fixed". Use instead of exploring the codebase from scratch.
 ---
 
-# Repo map — avrentis-site
+# Repo map — marketing site
 
-Public marketing site for Avrentis. One Next.js 16 App Router service; brand identity comes
+Public marketing site for the brand. One Next.js 16 App Router service; brand identity comes
 from a private shared package; the only server surfaces are four Server Actions.
 
 Reference docs live in `docs/architecture/`. **Read the one file that answers your

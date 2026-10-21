@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MODULE_STATUS_CHIP } from "@/lib/module-status-styles";
 import Link from "next/link";
 import {
   MODULE_STATUS_LABELS,
@@ -7,7 +8,6 @@ import {
   moduleShortName,
   SUITES,
   type ModuleKey,
-  type ModuleStatus,
   SITE_PAGES,
   BRAND,
 } from "@/lib/brand";
@@ -17,10 +17,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { ButtonLink } from "@/components/ui/button";
-import { DarkHeroBackdrop } from "@/components/ui/dark-hero-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { pageMetadata } from "@/lib/seo";
 import { START_TRIAL_CTA } from "@/lib/trial-terms";
 import { SITE_ROUTES } from "@/lib/routes";
@@ -34,11 +31,6 @@ export const metadata: Metadata = pageMetadata({
   description: `${BRAND.name} structures how your organisation spends, who is allowed to approve it, and the record that proves what happened — four suites on one delegation-of-authority engine, one tamper-evident record.`,
   socialDescription: "Spend, Oversight, Evidence and Infrastructure — four suites sharing one approval engine and one tamper-evident record.",
 });
-
-const STATUS_BADGE: Record<ModuleStatus, { bg: string; color: string }> = {
-  available: { bg: "rgba(var(--color-available-rgb), 0.12)", color: "var(--color-success)" },
-  partial: { bg: "var(--color-gold-tint)", color: "var(--color-gold-on-light)" },
-};
 
 export default function ProductOverviewPage() {
   return (
@@ -55,8 +47,6 @@ export default function ProductOverviewPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.productHero} scrim="dark" />
-        <DarkHeroBackdrop glows="hero" grid />
 
         <div
           style={{
@@ -109,7 +99,6 @@ export default function ProductOverviewPage() {
 
       {/* ── MODULE GRID ─────────────────────────────────────────────── */}
       <section style={{ backgroundColor: "var(--color-white)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.productModuleGrid} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="none"
@@ -178,7 +167,6 @@ export default function ProductOverviewPage() {
 
       {/* ── PLATFORM RHYTHM (how modules share the engine) ─────────── */}
       <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-        <SectionBackdrop src={SECTION_BACKDROPS.productPlatformRhythm} scrim="light" />
         <div style={{ maxWidth: "var(--layout-narrow-width)", margin: "0 auto" }}>
           <SectionIntro
             reveal="none"
@@ -270,7 +258,7 @@ export default function ProductOverviewPage() {
 function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
   const { icon: Icon, tagline, summary } = MODULE_COPY[moduleKey];
   const { name, status } = MODULES[moduleKey];
-  const badge = STATUS_BADGE[status];
+  const badge = MODULE_STATUS_CHIP.light[status];
   return (
     <Link
       href={moduleHref(moduleKey)}
@@ -309,6 +297,7 @@ function ModuleCard({ moduleKey }: { moduleKey: ModuleKey }) {
             textTransform: "uppercase",
             color: badge.color,
             backgroundColor: badge.bg,
+            border: badge.border,
             borderRadius: "var(--radius-xs)",
             padding: "3px 8px",
           }}

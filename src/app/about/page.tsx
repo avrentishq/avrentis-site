@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { Eyebrow, SectionIntro } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND } from "@/lib/brand";
 import { pageMetadata } from "@/lib/seo";
 import { ButtonLink } from "@/components/ui/button";
@@ -57,7 +55,6 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.aboutHero} scrim="dark" />
           <div
             style={{
               maxWidth: 800,
@@ -89,7 +86,6 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.aboutMission} scrim="light" />
           <div style={{ maxWidth: 720, margin: "0 auto" }}>
             <p
               style={{
@@ -150,7 +146,6 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.aboutValues} scrim="light" />
           <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto" }}>
             <Eyebrow as="p" style={{ textAlign: "center", margin: "0 0 32px" }}>
               OUR VALUES
@@ -203,7 +198,6 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.aboutJoinUs} scrim="light" />
           <div
             style={{
               maxWidth: "var(--measure)",
@@ -248,7 +242,6 @@ export default function AboutPage() {
             isolation: "isolate",
           }}
         >
-          <SectionBackdrop src={SECTION_BACKDROPS.aboutContact} scrim="dark" />
           <div
             style={{
               maxWidth: "var(--measure)",

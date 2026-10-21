@@ -73,7 +73,7 @@ export const PLAN_COPY: Readonly<Record<PlanKey, PlanCopy>> = {
     highlights: (input) => [
       userLimitLine(input.capacity.maxUsers),
       "Full compliance audit trail",
-      `Fraud & anomaly detection (${moduleLabel("guard")})`,
+      `Anomaly and control flags (${moduleLabel("guard")})`,
       `Grant & restricted-fund tracking (${moduleLabel("grants")})`,
       "Custom approval chains & branding",
       "Analytics, recurring templates, delegation",

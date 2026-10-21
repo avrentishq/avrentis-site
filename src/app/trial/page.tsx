@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { TrialForm } from "./trial-form";
 import { pageMetadata } from "@/lib/seo";
 import { TRIAL_LENGTH, TRIAL_PLAN_NAME, TRIAL_SEAT_CAP, NO_CARD_REQUIRED, TRIAL_SETUP_TIME } from "@/lib/trial-terms";
@@ -32,7 +30,6 @@ export default function TrialPage() {
           isolation: "isolate",
         }}
       >
-        <SectionBackdrop src={SECTION_BACKDROPS.trialForm} scrim="light" />
         <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
           <TrialForm />
         </div>

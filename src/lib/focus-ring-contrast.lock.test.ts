@@ -4,12 +4,13 @@ import { join } from "node:path";
 import {
   DEFAULT_FOCUS_RING,
   NON_SURFACE_FILLS,
-  SURFACE_FOCUS_CSS,
-  SURFACE_FOCUS_RINGS,
+  SURFACE_CSS,
+  SURFACES,
   TINT_MAX_ALPHA,
   surfaceStyleFragments,
 } from "./surfaces";
 import { GLOBALS_CSS, THEME_BLOCK } from "@/lib/test-support/theme-tokens";
+import { contrastRatio } from "../../scripts/wcag-contrast.mjs";
 
 /**
  * The focus ring must stand out from the surface it is drawn over: at least
@@ -33,18 +34,7 @@ const token = (name: string): string => {
 type Rgb = [number, number, number];
 const rgbOf = (hex: string): Rgb => [1, 3, 5].map((offset) => parseInt(hex.slice(offset, offset + 2), 16)) as Rgb;
 
-function luminance([red, green, blue]: Rgb): number {
-  const channel = (value: number) => {
-    const unit = value / 255;
-    return unit <= 0.03928 ? unit / 12.92 : ((unit + 0.055) / 1.055) ** 2.4;
-  };
-  return 0.2126 * channel(red) + 0.7152 * channel(green) + 0.0722 * channel(blue);
-}
-
-function contrast(first: Rgb, second: Rgb): number {
-  const [light, dark] = [luminance(first), luminance(second)].sort((a, b) => b - a);
-  return (light! + 0.05) / (dark! + 0.05);
-}
+const contrast = (first: Rgb, second: Rgb): number => contrastRatio(first, second);
 
 const TRANSLUCENT = /^rgba\(var\(--color-([\w-]+)-rgb\), ?([0-9.]+)\)$/;
 
@@ -52,13 +42,13 @@ const TRANSLUCENT = /^rgba\(var\(--color-([\w-]+)-rgb\), ?([0-9.]+)\)$/;
 function shownColour(surface: string): Rgb {
   const layer = surface.match(TRANSLUCENT);
   if (!layer) return rgbOf(token(tokenName(surface)));
-  const over = SURFACE_FOCUS_RINGS.find((entry) => entry.surface === surface)?.over;
+  const over = SURFACES.find((entry) => entry.surface === surface)?.over;
   if (!over) throw new Error(`${surface} is translucent but names no backdrop (over)`);
   const [top, alpha, beneath] = [rgbOf(token(layer[1]!)), Number(layer[2]), shownColour(over)];
   return top.map((value, index) => value * alpha + beneath[index]! * (1 - alpha)) as Rgb;
 }
 
-const OPAQUE_SURFACES = SURFACE_FOCUS_RINGS.filter(({ surface }) => !TRANSLUCENT.test(surface)).map(
+const OPAQUE_SURFACES = SURFACES.filter(({ surface }) => !TRANSLUCENT.test(surface)).map(
   ({ surface }) => tokenName(surface),
 );
 
@@ -67,12 +57,12 @@ describe("focus ring contrast, per surface", () => {
     const gold = rgbOf(token("gold"));
     const goldOnLight = rgbOf(token("gold-on-light"));
     expect(contrast(gold, rgbOf(token("white")))).toBeLessThan(3);
-    const shown = SURFACE_FOCUS_RINGS.map(({ surface }) => shownColour(surface));
+    const shown = SURFACES.map(({ surface }) => shownColour(surface));
     expect(shown.some((colour) => contrast(goldOnLight, colour) < 3)).toBe(true);
     expect(shown.some((colour) => contrast(gold, colour) < 3)).toBe(true);
   });
 
-  it.each(SURFACE_FOCUS_RINGS.map(({ surface, ring }) => [surface, ring]))(
+  it.each(SURFACES.map(({ surface, ring }) => [surface, ring]))(
     "the ring on %s (%s) is at least 3:1",
     (surface, ring) => {
       const ratio = contrast(rgbOf(token(tokenName(ring))), shownColour(surface));
@@ -80,12 +70,30 @@ describe("focus ring contrast, per surface", () => {
     },
   );
 
-  it("a surface sets the ring for what sits on it, not for itself (a ring is drawn outside)", () => {
-    for (const rule of SURFACE_FOCUS_CSS.split("\n")) {
+  it.each(SURFACES.map(({ surface, tone }) => [surface, tone]))(
+    "the %s surface's grey text (%s tone) is at least 4.5:1",
+    (surface, tone) => {
+      const grey = rgbOf(token(`text-secondary-on-${tone}`));
+      expect(contrast(grey, shownColour(surface)), `${tone} grey on ${surface}`).toBeGreaterThanOrEqual(4.5);
+    },
+  );
+
+  it("the tone check fails the wrong grey (the light grey on ink is the bug it exists to stop)", () => {
+    expect(contrast(rgbOf(token("text-secondary-on-light")), rgbOf(token("navy-primary")))).toBeLessThan(4.5);
+    expect(SURFACE_CSS).toContain("--color-text-muted:var(--color-text-secondary-on-dark)");
+  });
+
+  it("a surface sets the ring for what sits on it, and the greys for itself", () => {
+    const rules = SURFACE_CSS.split("\n");
+    expect(rules).toHaveLength(SURFACES.length * 2);
+    for (const rule of rules) {
       const selectorList = rule.slice(0, rule.indexOf("{"));
       const selectorCount = selectorList.split("[style*=").length - 1;
       expect(selectorCount).toBeGreaterThan(0);
-      expect(selectorList.split('"]>*').length - 1, rule).toBe(selectorCount);
+      // A ring is drawn outside, over the parent's fill: children only. Text sits
+      // on the element's own fill: the element itself (and it inherits down).
+      const childSelectors = selectorList.split('"]>*').length - 1;
+      expect(childSelectors, rule).toBe(rule.includes("--focus-ring") ? selectorCount : 0);
     }
   });
 
@@ -103,7 +111,7 @@ describe("focus ring contrast, per surface", () => {
   it("the generated CSS covers both the server's and the browser's spelling of each surface", () => {
     const navy = "var(--color-navy-primary)";
     for (const fragment of surfaceStyleFragments(navy)) {
-      expect(SURFACE_FOCUS_CSS).toContain(`[style*="${fragment}"]>*`);
+      expect(SURFACE_CSS).toContain(`[style*="${fragment}"]>*`);
     }
     expect(surfaceStyleFragments(navy)).toContain("background-color:var(--color-navy-primary)");
     expect(surfaceStyleFragments(navy)).toContain("background-color: var(--color-navy-primary)");
@@ -168,13 +176,13 @@ describe("every background in the code is a known surface or fill", () => {
     expect(scanned).toContain(join("app", "globals.css"));
     expect(
       [...unknown],
-      "Add the token to SURFACE_FOCUS_RINGS (with its ring) or NON_SURFACE_FILLS in src/lib/surfaces.ts",
+      "Add the token to SURFACES (with its ring) or NON_SURFACE_FILLS in src/lib/surfaces.ts",
     ).toEqual([]);
   });
 
   it("every strong translucent background is a registered surface", () => {
     const STRONG = /rgba\(var\(--color-[\w-]+-rgb\), ?([0-9.]+)\)/g;
-    const registered = new Set(SURFACE_FOCUS_RINGS.map(({ surface }) => surface));
+    const registered = new Set(SURFACES.map(({ surface }) => surface));
     const unregistered = new Set<string>();
     for (const file of readdirSync(SRC, { recursive: true, encoding: "utf8" })) {
       if (!/\.tsx?$/.test(file) || /\.test\.ts$/.test(file) || file === join("lib", "surfaces.ts")) continue;
@@ -184,7 +192,7 @@ describe("every background in the code is a known surface or fill", () => {
         }
       }
     }
-    expect([...unregistered], "Register it in SURFACE_FOCUS_RINGS with the surface it sits on").toEqual([]);
+    expect([...unregistered], "Register it in SURFACES with the surface it sits on").toEqual([]);
   });
 });
 

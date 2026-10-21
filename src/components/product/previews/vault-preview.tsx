@@ -46,7 +46,7 @@ const RECORDS = [
     category: "Purchase order",
     files: "1 file",
     tag: "Issued",
-    tagColour: "var(--color-gold)",
+    tagColour: "var(--color-gold-on-light)",
     tagBackground: "var(--color-gold-ghost)",
     added: formatDemoRelative(purchaseOrder.at),
   },

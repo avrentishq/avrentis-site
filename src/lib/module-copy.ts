@@ -73,7 +73,7 @@ export const MODULE_COPY: Record<ModuleKey, ModuleCopy> = {
   },
   guard: {
     icon: ShieldAlert,
-    tagline: "Fraud and anomaly detection",
+    tagline: "Anomaly and control flags",
     summary:
       "Catch the payments that shouldn't go out — duplicate payments, vendor bank-account switches, and amounts split to dodge an approval limit — flagged before approval and resolved on an audited review queue.",
   },

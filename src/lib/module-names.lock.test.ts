@@ -2,10 +2,10 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { MODULE_ORDER, MODULES } from "@/lib/brand";
+import { BRAND, MODULE_ORDER, MODULES } from "@/lib/brand";
 
 /**
- * A module's brand name ("Avrentis Payables") is typed once, in `MODULES`
+ * A module's brand name ("<brand> Payables") is typed once, in `MODULES`
  * (`src/lib/brand.ts`, itself proven against core by
  * `module-catalog-parity.test.ts`). Every title, card, link and sentence that
  * names a module reads it from there — `moduleName(key)` / `MODULES[key].name`
@@ -39,12 +39,12 @@ function sourceFiles(): string[] {
 
 describe("module names come from the brand registry, never from copy", () => {
   it("the detector catches a typed name and passes the template", () => {
-    expect(TYPED_NAME.test('title: "Avrentis Payables — Structured payment approvals"')).toBe(true);
+    expect(TYPED_NAME.test(`title: "${BRAND.name} Payables — Structured payment approvals"`)).toBe(true);
     expect(TYPED_NAME.test("title: `${moduleName(\"pay\")} — Structured payment approvals`")).toBe(false);
-    expect(TYPED_NAME.test("the avrentis payables module")).toBe(true);
-    expect(TYPED_NAME.test("Avrentis\n            Payables")).toBe(true);
-    expect(TYPED_NAME.test("Avrentis&nbsp;Payables")).toBe(true);
-    expect(TYPED_NAME.test('Avrentis{" "}Payables')).toBe(true);
+    expect(TYPED_NAME.test(`the ${BRAND.name.toLowerCase()} payables module`)).toBe(true);
+    expect(TYPED_NAME.test(`${BRAND.name}\n            Payables`)).toBe(true);
+    expect(TYPED_NAME.test(`${BRAND.name}&nbsp;Payables`)).toBe(true);
+    expect(TYPED_NAME.test(`${BRAND.name}{" "}Payables`)).toBe(true);
   });
 
   it("would have caught the files this lock was written for (proven on a pre-lock revision)", () => {
@@ -55,7 +55,9 @@ describe("module names come from the brand registry, never from copy", () => {
     } catch {
       return; // shallow clone without that commit — the fixture test above still holds
     }
-    expect(TYPED_NAME.test(old)).toBe(true);
+    // That revision typed the brand of its day; the brand has been renamed
+    // since, so put today's name in its place — the SHAPE is what is proven.
+    expect(TYPED_NAME.test(old.replace(/\bAvrentis\b/g, BRAND.name))).toBe(true);
   });
 
   it("no file keeps its own list of modules", () => {

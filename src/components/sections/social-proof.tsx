@@ -3,10 +3,8 @@
 import { m } from "framer-motion";
 import { ShieldCheck, Database, Landmark, MapPin } from "lucide-react";
 import { fadeUpOnScroll } from "@/lib/animations";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
 import { ButtonLink } from "@/components/ui/button";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import { BRAND, LEGAL_PAGES } from "@/lib/brand";
 import type { LucideIcon } from "lucide-react";
 import { contactHref } from "@/app/contact/tabs";
@@ -45,7 +43,6 @@ const TRUST_PILLARS: { icon: LucideIcon; title: string; body: string }[] = [
 export function SocialProof() {
   return (
     <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-      <SectionBackdrop src={SECTION_BACKDROPS.socialProof} scrim="light" />
       <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
         <SectionIntro
           align="center"

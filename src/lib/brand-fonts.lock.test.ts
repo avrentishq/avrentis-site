@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { BRAND_FONTS, WORDMARK_FONT_FILES } from "@/lib/brand";
+import { BRAND_FONTS, DISPLAY_FONT_FILES } from "@/lib/brand";
 
 /**
  * Fonts are code, not data: `next/font` needs a literal import per family, so
@@ -22,7 +22,8 @@ describe("the layout loads core's brand fonts", () => {
     }
   });
 
-  it("loads the wordmark font from the file core ships", () => {
-    expect(layout).toContain(WORDMARK_FONT_FILES.woff2.split("/").pop()!);
+  it("loads the display font from the file core ships", () => {
+    expect(BRAND_FONTS.display).toBe("Marcellus");
+    expect(layout).toContain(DISPLAY_FONT_FILES.ttf.split("/").pop()!);
   });
 });

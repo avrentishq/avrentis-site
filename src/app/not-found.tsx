@@ -1,16 +1,26 @@
+import type { Metadata } from "next";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
 import { ButtonLink } from "@/components/ui/button";
-import { BRAND } from "@/lib/brand";
 import { SITE_ROUTES } from "@/lib/routes";
+import { NOT_FOUND_TITLE, pageTitle } from "@/lib/seo";
+
+export const metadata: Metadata = { title: pageTitle(NOT_FOUND_TITLE) };
 
 /**
- * Branded 404. Standalone centred screen (no Navbar/Footer) so it renders
- * cleanly even when something upstream is wrong. Leads with an <h1> for a11y.
+ * Branded 404, inside the site's own menu bar and footer, so a visitor who
+ * followed a dead link still has the whole site one click away. Leads with an
+ * <h1> for a11y. Pages hidden for launch render this too (their tab title
+ * comes from `pageMetadata`, which gives them the same title).
  */
 export default function NotFound() {
   return (
+    <>
+    <Navbar />
     <main
+      id="main"
       style={{
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 64px)",
         backgroundColor: "var(--color-navy-primary)",
         display: "flex",
         alignItems: "center",
@@ -62,20 +72,9 @@ export default function NotFound() {
             Explore the platform →
           </ButtonLink>
         </div>
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontWeight: 500,
-            fontSize: "var(--text-4xs)",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-text-subtle)",
-            margin: "40px 0 0",
-          }}
-        >
-          {BRAND.poweredBy}
-        </p>
       </div>
     </main>
+    <Footer />
+    </>
   );
 }

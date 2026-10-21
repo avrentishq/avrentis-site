@@ -6,7 +6,7 @@
  * tools/savings/{compute,actions}.ts — so the contract can be tested without
  * a network, a rate limiter, or Turnstile. This mirror is the single most
  * drift-prone code in the repo: the response shape is defined in the
- * avrentis-app repo, is NOT exported from @edidi-hq/core, and neither side
+ * app repo, is NOT exported from @edidi-hq/core, and neither side
  * has a test pinning it. It silently broke once already (see below), so any
  * change here belongs with a case in map-response.test.ts.
  *

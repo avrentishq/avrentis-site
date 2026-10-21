@@ -1,7 +1,6 @@
 "use client";
 
 import { ButtonLink, buttonProps } from "@/components/ui/button";
-import { BRAND } from "@/lib/brand";
 import { CONTACT_EMAIL } from "@/lib/contacts";
 import { SITE_ROUTES } from "@/lib/routes";
 
@@ -72,19 +71,6 @@ export default function Error({ reset }: { error: Error & { digest?: string }; r
             Back to home
           </ButtonLink>
         </div>
-        <p
-          style={{
-            fontFamily: "var(--font-mono)",
-            fontWeight: 500,
-            fontSize: "var(--text-4xs)",
-            letterSpacing: "0.10em",
-            textTransform: "uppercase",
-            color: "var(--color-text-subtle)",
-            margin: "40px 0 0",
-          }}
-        >
-          {BRAND.poweredBy}
-        </p>
       </div>
     </main>
   );

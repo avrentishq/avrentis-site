@@ -1,5 +1,5 @@
 /**
- * AVRENTIS animation utilities — constrained by brand spec.
+ * Brand animation utilities — constrained by brand spec.
  *
  * Hard rules:
  * - Fade-up ONLY (opacity + translateY)

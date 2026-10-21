@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { MODULE_ORDER } from "@/lib/brand";
+import { MODULE_ORDER, isModulePublic, type ModuleKey } from "@/lib/brand";
 
 /**
  * Plan inclusion must stay DERIVED. Two of the eight product module pages had
@@ -21,6 +21,29 @@ function modulePageFiles(): string[] {
   return readdirSync(join(process.cwd(), PAGES_DIR)).filter((f) =>
     f.endsWith("-module-page.tsx"),
   );
+}
+
+/**
+ * A module's route file. A public module's lives in `src/app/product`; a
+ * hidden one's lives in the git-ignored `unannounced/` folder, which only some
+ * checkouts have — so a hidden module with no local copy is skipped (null),
+ * while a public module with no route is a failure.
+ */
+function routeSource(moduleKey: ModuleKey): string | null {
+  for (const root of ["src/app/product", "unannounced/src/app/product"]) {
+    const file = join(process.cwd(), root, moduleKey, "page.tsx");
+    if (existsSync(file)) return readFileSync(file, "utf8");
+  }
+  if (isModulePublic(moduleKey)) throw new Error(`public module ${moduleKey} has no route under src/app/product`);
+  return null;
+}
+
+/** The routes this checkout can see, keyed by module. */
+function moduleRoutes(): [ModuleKey, string][] {
+  return MODULE_ORDER.flatMap((moduleKey) => {
+    const source = routeSource(moduleKey);
+    return source === null ? [] : [[moduleKey, source] as [ModuleKey, string]];
+  });
 }
 
 describe("product module pages — plan availability stays derived", () => {
@@ -63,32 +86,27 @@ describe("product module pages — plan availability stays derived", () => {
     // from the pricing API, not from a literal at the call site. Derived from the
     // module catalog, not listed here: a hardcoded expectation in the test that
     // polices hardcoding is the same bug wearing a lab coat.
-    const routesDir = join(process.cwd(), "src/app/product");
-    const unwired = MODULE_ORDER.filter((moduleKey) => {
-      const source = readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8");
-      return !source.includes(`modulePageData("${moduleKey}", pricingData)`);
-    });
+    const unwired = moduleRoutes()
+      .filter(([moduleKey, source]) => !source.includes(`modulePageData("${moduleKey}", pricingData)`))
+      .map(([moduleKey]) => moduleKey);
     expect(unwired).toEqual([]);
   });
 
   it("no route writes plan availability inline", () => {
     // The route hands over modulePageData(); a literal list at the call site
     // would pass every other check here.
-    const routesDir = join(process.cwd(), "src/app/product");
-    const inline = MODULE_ORDER.filter((moduleKey) =>
-      /\bplanAvailability\s*[:=]/.test(readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8")),
-    );
+    const inline = moduleRoutes()
+      .filter(([, source]) => /\bplanAvailability\s*[:=]/.test(source))
+      .map(([moduleKey]) => moduleKey);
     expect(inline).toEqual([]);
   });
 
   it("every module route 404s when its module is hidden", () => {
     // The visibility flag is the one switch; a route that forgets to ask it is
     // served while every list hides it.
-    const routesDir = join(process.cwd(), "src/app/product");
-    const unguarded = MODULE_ORDER.filter((moduleKey) => {
-      const source = readFileSync(join(routesDir, moduleKey, "page.tsx"), "utf8");
-      return !source.includes(`notFoundUnlessPublic("${moduleKey}")`);
-    });
+    const unguarded = moduleRoutes()
+      .filter(([moduleKey, source]) => !source.includes(`notFoundUnlessPublic("${moduleKey}")`))
+      .map(([moduleKey]) => moduleKey);
     expect(unguarded, "routes missing notFoundUnlessPublic(<their own key>)").toEqual([]);
   });
 });

@@ -37,7 +37,7 @@ describe("accounting copy — a file and a read API, not a connector", () => {
       'name: "Oracle NetSuite", summary: "PO and voucher synchronisation."',
       "owns the approval chain; live connectors are delivered on request.",
       "Two-way sync with your ledger.",
-      "Avrentis syncs with QuickBooks.",
+      "The platform syncs with QuickBooks.",
     ]) {
       expect(accountingConnectionViolations(old), old).not.toEqual([]);
     }

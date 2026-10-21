@@ -1,5 +1,5 @@
 /**
- * Avrentis brand — the parent-brand identity (BRAND constants, colours, fonts,
+ * The brand — the parent-brand identity (BRAND constants, colours, fonts,
  * white-label resolvers, gate-mark geometry) is sourced from the SSOT
  * @edidi-hq/core/brand, lifted so the app, marketing site, and admin console
  * can't diverge. This file re-exports it, and adds the marketing view of core's
@@ -69,7 +69,7 @@ const MARKETABLE_MATURITIES: ReadonlySet<ModuleMaturity> = new Set(["ga", "beta"
 
 export interface SiteModule {
   key: ModuleKey;
-  /** Brand name, from core: "Avrentis Payables". */
+  /** Brand name, from core: "<brand> Payables". */
   name: string;
   /** Short name, from core's sidebar label: "Payables". */
   shortName: string;
@@ -144,12 +144,12 @@ export function isModulePublic(key: string): key is ModuleKey {
   return Object.hasOwn(MODULES, key) && MODULES[key as ModuleKey].publiclyVisible;
 }
 
-/** A module's brand name, from core: "Avrentis Payables". */
+/** A module's brand name, from core: "<brand> Payables". */
 export function moduleName(key: ModuleKey): string {
   return MODULES[key].name;
 }
 
-/** A module's short name, from core: "Payables". Never strip "Avrentis " off the brand name. */
+/** A module's short name, from core: "Payables". Never strip the parent name off the brand name. */
 export function moduleShortName(key: ModuleKey): string {
   return MODULES[key].shortName;
 }
@@ -187,22 +187,22 @@ export const SUITES: ReadonlyArray<{ key: ModuleSuite; label: string; blurb: str
   {
     key: "spend",
     label: "Spend",
-    blurb: "Everything that asks for money to leave the organisation.",
+    blurb: "Nothing leaves the account without a decision behind it.",
   },
   {
     key: "oversight",
     label: "Oversight",
-    blurb: "Who may approve what — and the checks that catch the rules being worked around.",
+    blurb: "The rules are written down, enforced, and watched.",
   },
   {
     key: "evidence",
     label: "Evidence",
-    blurb: "The record of what happened, and the proof it was not altered.",
+    blurb: "What happened, and proof it was not edited afterwards.",
   },
   {
     key: "infrastructure",
     label: "Infrastructure",
-    blurb: "How Avrentis reaches your people and connects to your other systems.",
+    blurb: "It reaches your people, and it talks to your other systems.",
   },
 ];
 

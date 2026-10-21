@@ -2,9 +2,7 @@
 
 import { m } from "framer-motion";
 import { fadeUpOnScroll } from "@/lib/animations";
-import { SectionBackdrop } from "@/components/ui/section-backdrop";
 import { SectionIntro } from "@/components/ui/section-intro";
-import { SECTION_BACKDROPS } from "@/lib/section-backdrops";
 import {
   Mail,
   Printer,
@@ -53,76 +51,60 @@ const CARDS: { icon: LucideIcon; title: string; body: string }[] = [
 
 export function Problem() {
   return (
-    <section style={{ backgroundColor: "var(--color-bg)", padding: "100px 40px", position: "relative", overflow: "hidden", isolation: "isolate" }}>
-      <SectionBackdrop src={SECTION_BACKDROPS.problem} scrim="light" />
+    // Continues the hero's ink field: the public tagline, then the six problems
+    // it answers, as one flat band of hairline-ruled cells.
+    <section style={{ backgroundColor: "var(--color-navy-primary)", padding: "0 var(--page-side-padding) 112px", position: "relative", isolation: "isolate" }}>
       <div style={{ maxWidth: "var(--layout-max-width)", margin: "0 auto", position: "relative", zIndex: Z_INDEX.raised }}>
+        <div style={{ height: "1px", backgroundColor: "var(--color-white-border)", marginBottom: "56px" }} />
         <SectionIntro
-          eyebrow="SOUND FAMILIAR?"
-          eyebrowStyle={{ marginBottom: "16px" }}
-          title="This is how most organisations still operate."
+          surface="dark"
+          title={BRAND.publicTagline}
           titleStyle={{
-            fontWeight: 400,
             fontSize: "var(--text-display-xs)",
-            lineHeight: 1.3,
+            color: "var(--color-text-on-shell)",
+            lineHeight: 1.2,
             margin: "0 0 12px",
-            maxWidth: "var(--measure-snug)",
           }}
           titleClassName="lg:!text-display-lg"
-          lede={
-            <>
-              Across industries, geographies, and organisation sizes — the same
-              operational problems keep showing up.
-            </>
-          }
+          lede="This is how most organisations still operate — across industries, places and sizes."
           ledeStyle={{
-            fontWeight: 400,
             fontSize: "var(--text-xl)",
+            color: "var(--color-text-inverse-muted)",
             lineHeight: 1.7,
             margin: "0 0 40px",
             maxWidth: "var(--measure-narrow)",
           }}
         />
 
-        <div {...cardGridProps(CARDS.length, { max: 3 }, { gap: "20px" })}>
-          {CARDS.map((card, i) => {
+        <div
+          {...cardGridProps(
+            CARDS.length,
+            { max: 3 },
+            {
+              gap: "0",
+              borderTop: "1px solid var(--color-white-border-strong)",
+              borderLeft: "1px solid var(--color-white-border-strong)",
+            },
+          )}
+        >
+          {CARDS.map((card, index) => {
             const Icon = card.icon;
             return (
               <m.div
                 key={card.title}
-                {...fadeUpOnScroll(i + 3)}
+                {...fadeUpOnScroll(index + 2)}
                 style={{
-                  backgroundColor: "var(--color-white)",
-                  border: "1px solid var(--color-border)",
-                  borderRadius: "var(--radius-card)",
+                  borderRight: "1px solid var(--color-white-border-strong)",
+                  borderBottom: "1px solid var(--color-white-border-strong)",
                   padding: "24px",
-                  boxShadow: "0 1px 3px rgba(var(--color-shadow-rgb), 0.04)",
                 }}
               >
-                <div
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "var(--radius-md)",
-                    backgroundColor: "var(--color-gold-ghost)",
-                    border: "1px solid var(--color-gold-divider)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    marginBottom: "14px",
-                  }}
-                >
-                  <Icon
-                    size={16}
-                    strokeWidth={1.5}
-                    color="var(--color-gold)"
-                    aria-hidden="true"
-                  />
-                </div>
+                <Icon size={18} strokeWidth={1.5} color="var(--color-gold)" aria-hidden="true" style={{ marginBottom: "14px" }} />
                 <h3
                   style={{
                     fontWeight: 500,
                     fontSize: "var(--text-md)",
-                    color: "var(--color-text-primary)",
+                    color: "var(--color-text-on-shell)",
                     margin: "0 0 6px",
                   }}
                 >
@@ -130,9 +112,8 @@ export function Problem() {
                 </h3>
                 <p
                   style={{
-                    fontWeight: 400,
                     fontSize: "var(--text-sm)",
-                    color: "var(--color-text-muted)",
+                    color: "var(--color-text-inverse-muted)",
                     lineHeight: 1.6,
                     margin: 0,
                   }}
@@ -149,7 +130,7 @@ export function Problem() {
           style={{
             fontWeight: 500,
             fontSize: "var(--text-3xl)",
-            color: "var(--color-text-primary)",
+            color: "var(--color-text-on-shell)",
             textAlign: "center",
             marginTop: "48px",
             marginBottom: 0,

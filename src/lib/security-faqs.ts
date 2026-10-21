@@ -28,7 +28,7 @@ export const SECURITY_FAQS: SecurityFaq[] = [
   },
   {
     q: "Do you support SSO and SCIM?",
-    a: "Yes — OpenID Connect (OIDC) or SAML 2.0 for SSO, tested with Okta, Microsoft Entra and Google Workspace, and SCIM 2.0 for provisioning from Okta and Microsoft Entra. A company can require single sign-on, and companies in a group can share one identity provider. Directory groups can be mapped to roles, but any role beyond staff access is approved by a person in your organisation before it applies. Client secrets and tokens are encrypted at rest.",
+    a: "Yes — single sign-on with any OpenID Connect (OIDC) or SAML 2.0 provider, tested with Okta, Microsoft Entra and Google Workspace, and automatic user setup (SCIM 2.0) from Okta and Microsoft Entra. Roles beyond staff access are approved by a person in your organisation first.",
   },
   {
     q: "Where is our data hosted and can it stay in a specific region?",

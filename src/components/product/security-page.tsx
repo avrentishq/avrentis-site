@@ -57,25 +57,25 @@ const PILLARS = [
     icon: Database,
     title: "Your data is yours — always",
     body:
-      "Each customer's workspace is walled off from every other, directly inside the database. Not a rule we enforce with the app — a rule enforced by the database engine itself. There is no path from one customer's session to another's.",
+      "Each customer's workspace is walled off by the database itself, not just by the app.",
   },
   {
     icon: UserCog,
     title: "Real authority, not just a role label",
     body:
-      "Roles don't just hide buttons — they decide what every single action is allowed to do. Plus a second layer of rules on top: who can approve what, within which department, up to what amount. Checked on every click.",
+      "Who can approve what, in which department and up to what amount — checked on every click.",
   },
   {
     icon: FileSearch,
     title: "Every action is on the record",
     body:
-      `Every submission, approval, question, and role change is recorded in a tamper-evident chain and ${TRAIL_SEALED_WITH_FINGERPRINT} you can verify yourself. Nobody can edit the record from inside the product — not your administrator, not us — and a change made any other way would show up when the chain is checked.`,
+      `Every action is recorded in a tamper-evident chain and ${TRAIL_SEALED_WITH_FINGERPRINT} you can verify yourself.`,
   },
   {
     icon: KeyRound,
     title: "Access that keeps up with your people",
     body:
-      `When someone joins, they get what their role requires — automatically, from your identity system. When someone leaves or changes role, their access ends ${ACCESS_ENDS}. Auditors and board-level guests get a clear start date and expiry.`,
+      `Joiners get what their role needs; leavers lose access ${ACCESS_ENDS}.`,
   },
 ];
 
@@ -92,7 +92,7 @@ const STACK = [
       "Isolation rules enforced by the database on every table that holds customer data",
       "Every request runs inside its own organisation's context",
       "Fails closed: a request with no organisation sees no rows at all",
-      "An automated check fails the build if any customer table loses its isolation rule",
+      "Checked automatically before every release",
     ],
     Mockup: IsolationMockup,
     caption: "tenant isolation · database layer",
@@ -120,15 +120,13 @@ const STACK = [
     title: "Session integrity",
     subtitle: `When a role changes or a user leaves, their active sessions are invalid ${ACCESS_ENDS}.`,
     body:
-      "Every active session is checked against a revocation signal on every request. A role change, deactivation, password change, access expiry, or tenant-wide revocation forces re-authentication on the next request. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
+      "Every session is checked on every click. A role change, deactivation, password change, access expiry, or a company-wide sign-out means signing in again on the next click. Two-factor sign-in accepts a passkey, an authenticator app, or a one-time code by email or SMS, with secured recovery codes behind them. Per-tenant IP allowlisting (both IPv4 and IPv6) is available as a hard sign-in gate.",
     icon: ShieldCheck,
     bullets: [
       `Active sessions end ${ACCESS_ENDS} of a role change, deactivation, or password change`,
-      "Two-factor sign-in by passkey, authenticator app, email code or SMS, with recovery codes — and your organisation decides which of those its people may enrol",
-      "Require two-factor for everyone, or only for the roles you name. Single sign-on can count as that second factor, or be told not to when you would rather verify in-app. Platform administrators are always required, regardless",
+      "Two-factor sign-in by passkey, authenticator app, email code or SMS — required for everyone or for the roles you choose",
       "Per-tenant IP allowlist (IPv4 and IPv6) available as a hard sign-in gate",
-      "Single sign-on via OpenID Connect (OIDC) or SAML 2.0, which a company can require for its people; companies in a group can share one identity provider. Sensitive tokens encrypted at rest",
-      "One sign-in per person across every company they work in — one password, one set of two-step methods",
+      "Single sign-on via OpenID Connect (OIDC) or SAML 2.0, which a company can require; one sign-in per person across every company they work in",
     ],
     Mockup: SessionMockup,
     caption: "session revocation · identity controls",
@@ -139,7 +137,7 @@ const STACK = [
     title: "Audit trail",
     subtitle: "Every action recorded and sealed. Every export, regulator-ready.",
     body:
-      `The audit log records actor, role, action, entity, masked IP address, user-agent, and payload for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and database triggers refuse edits and deletions. Lawful retention purges leave a verifiable marker in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting ${BRAND.name}.`,
+      `The audit log records who did what, when and from where, for every meaningful event. Role changes and board-access lifecycle events have their own dedicated trails. Each entry is chained to the one before it, and edits and deletions are refused by the database. Lawful retention purges leave a verifiable marker in the chain. Every night the chain is sealed with a signed fingerprint your auditor can check without trusting ${BRAND.name}.`,
     icon: FileSearch,
     bullets: [
       "Every approval, query, and role change written to an append-only log",

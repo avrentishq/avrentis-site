@@ -123,7 +123,7 @@ export function IsolationMockup() {
 
 const AUTHORITY_ROWS = [
   { capability: "Raise voucher / PO", staff: true, hod: true, finance: true, md: true, admin: true },
-  { capability: "Approve as HOD", staff: false, hod: true, finance: false, md: false, admin: false },
+  { capability: "Approve for a department", staff: false, hod: true, finance: false, md: false, admin: false },
   { capability: "Finance review", staff: false, hod: false, finance: true, md: false, admin: false },
   { capability: "MD sanction", staff: false, hod: false, finance: false, md: true, admin: false },
   { capability: "Change a role", staff: false, hod: false, finance: false, md: false, admin: true },
@@ -148,9 +148,10 @@ export function AuthorityMockup() {
         }}
       >
         <div
+          className="grid-cols-[minmax(0,1fr)_repeat(5,1.75rem)] gap-x-1 sm:grid-cols-[1.6fr_repeat(5,1fr)] sm:gap-x-1.5"
           style={{
             display: "grid",
-            gridTemplateColumns: "1.6fr repeat(5, 1fr)",
+            alignItems: "end",
             padding: "10px 14px",
             backgroundColor: "var(--color-bg-light)",
             borderBottom: "1px solid var(--color-border)",
@@ -159,9 +160,11 @@ export function AuthorityMockup() {
           <span style={{ fontFamily: "var(--font-mono)", fontSize: "var(--text-3xs)", color: "var(--color-text-muted)", letterSpacing: "0.06em" }}>
             CAPABILITY
           </span>
-          {["STAFF", "HOD", "FIN", "MD", "ADM"].map((r) => (
+          {["STAFF", "DEPT HEAD", "FINANCE", "MD", "ADMIN"].map((r) => (
             <span
               key={r}
+              // Phones: headings stand on end so five roles fit beside the capability column.
+              className="justify-self-center rotate-180 [writing-mode:vertical-rl] sm:rotate-0 sm:[writing-mode:horizontal-tb]"
               style={{
                 fontFamily: "var(--font-mono)",
                 fontSize: "var(--text-3xs)",
@@ -177,10 +180,10 @@ export function AuthorityMockup() {
         {AUTHORITY_ROWS.map((row, i) => (
           <div
             key={row.capability}
+            className="grid-cols-[minmax(0,1fr)_repeat(5,1.75rem)] gap-x-1 sm:grid-cols-[1.6fr_repeat(5,1fr)] sm:gap-x-1.5"
             style={{
               display: "grid",
-              gridTemplateColumns: "1.6fr repeat(5, 1fr)",
-              padding: "10px 14px",
+                padding: "10px 14px",
               borderTop: i === 0 ? "none" : "1px solid var(--color-bg)",
               alignItems: "center",
             }}
@@ -215,8 +218,8 @@ export function AuthorityMockup() {
       >
         <AlertTriangle size={14} color="var(--color-gold)" strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
         <span>
-          <b>Separation of duties</b> — the submitter of a voucher cannot also approve it. Enforced in the state
-          machine, not at the UI.
+          <b>Separation of duties</b> — the submitter of a voucher cannot also approve it. Enforced by the system,
+          not just hidden on screen.
         </span>
       </div>
     </div>
@@ -268,7 +271,7 @@ export function SessionMockup() {
             Previous · <span style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>Finance</span>
           </div>
           <div style={{ color: "var(--color-text-muted)" }}>
-            New · <span style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>HOD</span>
+            New · <span style={{ color: "var(--color-text-primary)", fontWeight: 500 }}>Dept head</span>
           </div>
         </div>
         <div
@@ -284,7 +287,7 @@ export function SessionMockup() {
         >
           <ShieldCheck size={14} style={{ color: "var(--color-success)" }} strokeWidth={2} aria-hidden="true" />
           <span style={{ fontSize: "var(--text-xs)", color: "var(--color-text-primary)" }}>
-            <b>12 active sessions revoked</b> in 0.8s · next request forces re-auth
+            <b>All active sessions ended</b> · signing in again is required
           </span>
         </div>
       </div>
@@ -308,7 +311,7 @@ export function SessionMockup() {
           "Account deactivated",
           "Password changed",
           "Access expiry hit",
-          "Tenant-wide revocation",
+          "Company-wide sign-out",
         ].map((t) => (
           <div key={t} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <Check size={12} color="var(--color-gold)" strokeWidth={2.5} aria-hidden="true" />
@@ -392,7 +395,7 @@ export function AuditMockup() {
               </span>
             </div>
             <span style={{ fontSize: "var(--text-2xs)", color: "var(--color-text-muted)" }}>
-              entity · {e.entity} · IP 154.113.x.x · via web
+              {e.entity} · via web
             </span>
           </div>
         ))}
@@ -414,8 +417,7 @@ export function AuditMockup() {
       >
         <ShieldCheck size={14} color="var(--color-gold)" strokeWidth={2} aria-hidden="true" style={{ marginTop: "2px" }} />
         <span>
-          Database triggers block <b>UPDATE</b> and <b>DELETE</b> on audit rows. Not even a platform administrator can
-          edit history.
+          No one can edit or delete a record, not even our own staff.
         </span>
       </div>
     </div>
@@ -445,7 +447,7 @@ export function LifecycleMockup() {
             Temidayo A. · External Auditor
           </div>
           <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-muted)", marginTop: "2px" }}>
-            temidayo@ext-auditors.com
+            temidayo@auditfirm.example
           </div>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
@@ -533,7 +535,7 @@ export function LifecycleMockup() {
 
 const STACK_LAYERS = [
   { label: "Browser", detail: "Modern TLS · strict browser-side policies" },
-  { label: "Edge / app", detail: "Autoscaling compute · secure session cookies · bot protection" },
+  { label: "Edge / app", detail: "Autoscaling compute · secure session cookies" },
   { label: "Database", detail: "Encrypted at rest · daily snapshots" },
   { label: "Sensitive fields", detail: "Encrypted again, with keys per company" },
   { label: "Object storage", detail: "Encrypted · short-lived per-upload delivery URLs" },

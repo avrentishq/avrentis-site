@@ -19,6 +19,7 @@ import { fadeUp, fadeUpOnScroll, fadeUpTransition, FADE_UP_VIEWPORT, STAGGER_STE
 import { buttonProps } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/section-intro";
 import { StatusMark } from "@/components/ui/status-mark";
+import { BrandLogo } from "@/components/ui/logo";
 import { BRAND, SITE_PAGES } from "@/lib/brand";
 import { LAUNCH_STATUS } from "@/lib/launch";
 import { START_TRIAL_CTA, NO_CARD_REQUIRED } from "@/lib/trial-terms";
@@ -116,6 +117,23 @@ function DecisionCard() {
           </li>
         ))}
       </ol>
+
+      {/* The card is the product's own record, so it carries the product's credit line. */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          marginTop: "16px",
+          paddingTop: "14px",
+          borderTop: "1px solid var(--color-border)",
+          fontSize: "var(--text-xs)",
+          color: "var(--color-text-secondary)",
+        }}
+      >
+        <BrandLogo size={18} variant="on-light" showWordmark={false} />
+        <span>Powered by {BRAND.name}</span>
+      </div>
     </div>
   );
 }

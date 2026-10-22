@@ -232,6 +232,36 @@ const SECTIONS: LegalSection[] = [
     ),
   },
   {
+    id: "custom-branding",
+    heading: "Custom branding and document verification",
+    body: (
+      <>
+        <p>
+          <strong>Your brand.</strong>{" "}Where your plan includes custom branding, the Service and the documents it
+          produces carry your name and logo. We remove our name from letterheads, document footers, report credits
+          and the emails sent on your behalf.
+        </p>
+        <p>
+          <strong>Verification stays ours.</strong>{" "}Every document the Service produces can be checked by anyone
+          who holds it. That check, and every statement that a record is sealed, intact or unchanged, is made by{" "}
+          {BRAND.name} and names {BRAND.name} as the party making it. This covers the evidence seal, the audit
+          integrity statement, the evidence certificate and the public verification page. Custom branding does not
+          extend to them. You may not remove, obscure or alter them, or present them as made by you or anyone else.
+          A seal is only worth something because it comes from someone other than the party it vouches for.
+        </p>
+        <p>
+          <strong>What verification confirms.</strong>{" "}It confirms that a document matches the record the
+          Service holds: what was approved, by whom and when. It does not confirm that a payment was made, and{" "}
+          {BRAND.name} does not move, hold or guarantee money.
+        </p>
+        <p>
+          This section applies under any order form, including a negotiated one, unless that order form expressly
+          says otherwise.
+        </p>
+      </>
+    ),
+  },
+  {
     id: "warranties",
     heading: "Warranties and disclaimers",
     body: (
@@ -342,7 +372,7 @@ export default function TermsPage() {
       eyebrow="TERMS OF SERVICE"
       title="The terms of our agreement."
       lede={`These terms describe what ${BRAND.name} commits to, what we expect of our customers, how data is handled, and how the agreement can end. Written for people, not just lawyers.`}
-      effectiveDate="21 April 2026"
+      effectiveDate="21 October 2026"
       sections={SECTIONS}
       footerNote={
         <>
